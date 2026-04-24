@@ -8,31 +8,26 @@ function toggleSection(id) {
   if (chev) chev.classList.toggle('open', !isOpen);
 }
 
-// ── ACTIVE STATE from URL ──
+// ── ACTIVE NAV from URL ──
 function setActiveNav() {
   const path = window.location.pathname;
   document.querySelectorAll('.sb-topic, .sb-subtopic').forEach(el => {
-    const href = el.getAttribute('href');
-    if (href && path.endsWith(href.replace('./', '').replace('../', ''))) {
+    const href = el.getAttribute('href') || '';
+    const page = href.split('/').pop();
+    if (page && path.endsWith(page)) {
       el.classList.add('active');
-      // open parent section
       const section = el.closest('.sb-children');
       if (section) {
         section.classList.add('open');
-        const chev = document.getElementById(section.id.replace('-children', '-chev'));
+        const id = section.id.replace('-children', '');
+        const chev = document.getElementById(id + '-chev');
         if (chev) chev.classList.add('open');
       }
     }
   });
-  // active level tab
-  document.querySelectorAll('.level-tab').forEach(tab => {
-    if (path.includes(tab.dataset.level)) tab.classList.add('active');
-  });
 }
 
 // ── TEACHER AUTH ──
-// NOTE: This is a simple client-side password for convenience.
-// For sensitive content, use a proper server-side auth solution.
 const TEACHER_PASSWORD = 'engsciteacher2025';
 const SESSION_KEY = 'ess_teacher_auth';
 
@@ -52,21 +47,13 @@ function teacherLogin(event) {
 
 function checkTeacherAuth() {
   if (sessionStorage.getItem(SESSION_KEY) !== 'true') {
-    window.location.href = 'login.html';
+    window.location.href = '../teacher/login.html';
   }
 }
 
 function teacherLogout() {
   sessionStorage.removeItem(SESSION_KEY);
   window.location.href = '../index.html';
-}
-
-// ── PDF EMBED helper ──
-// Pass a Google Drive file ID to embed the PDF
-function embedDrivePDF(fileId, containerId) {
-  const url = `https://drive.google.com/file/d/${fileId}/preview`;
-  const iframe = document.getElementById(containerId);
-  if (iframe) iframe.src = url;
 }
 
 document.addEventListener('DOMContentLoaded', setActiveNav);

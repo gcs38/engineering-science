@@ -1,7 +1,6 @@
-// Sidebar navigation — injected into every page via:
-// document.getElementById('sidebar').innerHTML = buildSidebar('n5');
+function buildSidebar(level, depth) {
+  const d = depth || '../../';
 
-function buildSidebar(level) {
   const n5 = `
     <div class="sb-section">
       <button class="sb-section-btn" onclick="toggleSection('ec-n5')">
@@ -9,10 +8,10 @@ function buildSidebar(level) {
         <span class="sb-chevron open" id="ec-n5-chev">›</span>
       </button>
       <div class="sb-children open" id="ec-n5-children">
-        <a class="sb-topic" href="../contexts/index.html">Overview</a>
-        <a class="sb-subtopic" href="../contexts/systems.html">Engineering systems</a>
-        <a class="sb-subtopic" href="../contexts/energy.html">Energy &amp; sustainability</a>
-        <a class="sb-subtopic" href="../contexts/roles.html">Roles &amp; impacts</a>
+        <a class="sb-topic" href="${d}n5/contexts/index.html">Overview</a>
+        <a class="sb-subtopic" href="${d}n5/contexts/systems/index.html">Engineering systems</a>
+        <a class="sb-subtopic" href="${d}n5/contexts/energy/index.html">Energy &amp; sustainability</a>
+        <a class="sb-subtopic" href="${d}n5/contexts/roles/index.html">Roles &amp; impacts</a>
       </div>
     </div>
     <div class="sb-section">
@@ -21,10 +20,10 @@ function buildSidebar(level) {
         <span class="sb-chevron open" id="elec-n5-chev">›</span>
       </button>
       <div class="sb-children open" id="elec-n5-children">
-        <a class="sb-topic" href="../electronics/index.html">Overview</a>
-        <a class="sb-subtopic" href="../electronics/analogue.html">Analogue electronics</a>
-        <a class="sb-subtopic" href="../electronics/digital.html">Digital electronics</a>
-        <a class="sb-subtopic" href="../electronics/microcontrollers.html">Microcontrollers</a>
+        <a class="sb-topic" href="${d}n5/electronics/index.html">Overview</a>
+        <a class="sb-subtopic" href="${d}n5/electronics/analogue/index.html">Analogue electronics</a>
+        <a class="sb-subtopic" href="${d}n5/electronics/digital/index.html">Digital electronics</a>
+        <a class="sb-subtopic" href="${d}n5/electronics/microcontrollers/index.html">Microcontrollers</a>
       </div>
     </div>
     <div class="sb-section">
@@ -33,11 +32,11 @@ function buildSidebar(level) {
         <span class="sb-chevron open" id="mech-n5-chev">›</span>
       </button>
       <div class="sb-children open" id="mech-n5-children">
-        <a class="sb-topic" href="../mechanisms/index.html">Overview</a>
-        <a class="sb-subtopic" href="../mechanisms/drive-systems.html">Drive systems</a>
-        <a class="sb-subtopic" href="../mechanisms/converting-motion.html">Converting motion</a>
-        <a class="sb-subtopic" href="../mechanisms/structures-forces.html">Structures &amp; forces</a>
-        <a class="sb-subtopic" href="../mechanisms/materials.html">Materials</a>
+        <a class="sb-topic" href="${d}n5/mechanisms/index.html">Overview</a>
+        <a class="sb-subtopic" href="${d}n5/mechanisms/drive-systems/index.html">Drive systems</a>
+        <a class="sb-subtopic" href="${d}n5/mechanisms/converting-motion/index.html">Converting motion</a>
+        <a class="sb-subtopic" href="${d}n5/mechanisms/structures-forces/index.html">Structures &amp; forces</a>
+        <a class="sb-subtopic" href="${d}n5/mechanisms/materials/index.html">Materials</a>
       </div>
     </div>`;
 
@@ -48,10 +47,10 @@ function buildSidebar(level) {
         <span class="sb-chevron open" id="ec-h-chev">›</span>
       </button>
       <div class="sb-children open" id="ec-h-children">
-        <a class="sb-topic" href="../contexts/index.html">Overview</a>
-        <a class="sb-subtopic" href="../contexts/systems.html">Engineering systems</a>
-        <a class="sb-subtopic" href="../contexts/energy.html">Energy &amp; sustainability</a>
-        <a class="sb-subtopic" href="../contexts/roles.html">Roles &amp; impacts</a>
+        <a class="sb-topic" href="${d}higher/contexts/index.html">Overview</a>
+        <a class="sb-subtopic" href="${d}higher/contexts/systems/index.html">Engineering systems</a>
+        <a class="sb-subtopic" href="${d}higher/contexts/energy/index.html">Energy &amp; sustainability</a>
+        <a class="sb-subtopic" href="${d}higher/contexts/roles/index.html">Roles &amp; impacts</a>
       </div>
     </div>
     <div class="sb-section">
@@ -60,10 +59,10 @@ function buildSidebar(level) {
         <span class="sb-chevron open" id="elec-h-chev">›</span>
       </button>
       <div class="sb-children open" id="elec-h-children">
-        <a class="sb-topic" href="../electronics/index.html">Overview</a>
-        <a class="sb-subtopic" href="../electronics/analogue.html">Analogue electronics</a>
-        <a class="sb-subtopic" href="../electronics/digital.html">Digital electronics</a>
-        <a class="sb-subtopic" href="../electronics/microcontrollers.html">Microcontrollers</a>
+        <a class="sb-topic" href="${d}higher/electronics/index.html">Overview</a>
+        <a class="sb-subtopic" href="${d}higher/electronics/analogue/index.html">Analogue electronics</a>
+        <a class="sb-subtopic" href="${d}higher/electronics/digital/index.html">Digital electronics</a>
+        <a class="sb-subtopic" href="${d}higher/electronics/microcontrollers/index.html">Microcontrollers</a>
       </div>
     </div>
     <div class="sb-section">
@@ -72,11 +71,11 @@ function buildSidebar(level) {
         <span class="sb-chevron open" id="mech-h-chev">›</span>
       </button>
       <div class="sb-children open" id="mech-h-children">
-        <a class="sb-topic" href="../mechanisms/index.html">Overview</a>
-        <a class="sb-subtopic" href="../mechanisms/drive-systems.html">Drive systems</a>
-        <a class="sb-subtopic" href="../mechanisms/converting-motion.html">Converting motion</a>
-        <a class="sb-subtopic" href="../mechanisms/structures-forces.html">Structures &amp; forces</a>
-        <a class="sb-subtopic" href="../mechanisms/materials.html">Materials</a>
+        <a class="sb-topic" href="${d}higher/mechanisms/index.html">Overview</a>
+        <a class="sb-subtopic" href="${d}higher/mechanisms/drive-systems/index.html">Drive systems</a>
+        <a class="sb-subtopic" href="${d}higher/mechanisms/converting-motion/index.html">Converting motion</a>
+        <a class="sb-subtopic" href="${d}higher/mechanisms/structures-forces/index.html">Structures &amp; forces</a>
+        <a class="sb-subtopic" href="${d}higher/mechanisms/materials/index.html">Materials</a>
       </div>
     </div>`;
 
@@ -87,10 +86,10 @@ function buildSidebar(level) {
         <span class="sb-chevron open" id="pm-ah-chev">›</span>
       </button>
       <div class="sb-children open" id="pm-ah-children">
-        <a class="sb-topic" href="../project-management/index.html">Overview</a>
-        <a class="sb-subtopic" href="../project-management/gantt.html">Gantt charts</a>
-        <a class="sb-subtopic" href="../project-management/critical-path.html">Critical path analysis</a>
-        <a class="sb-subtopic" href="../project-management/cost.html">Cost management</a>
+        <a class="sb-topic" href="${d}ah/project-management/index.html">Overview</a>
+        <a class="sb-subtopic" href="${d}ah/project-management/gantt/index.html">Gantt charts</a>
+        <a class="sb-subtopic" href="${d}ah/project-management/critical-path/index.html">Critical path analysis</a>
+        <a class="sb-subtopic" href="${d}ah/project-management/cost/index.html">Cost management</a>
       </div>
     </div>
     <div class="sb-section">
@@ -99,12 +98,12 @@ function buildSidebar(level) {
         <span class="sb-chevron open" id="elec-ah-chev">›</span>
       </button>
       <div class="sb-children open" id="elec-ah-children">
-        <a class="sb-topic" href="../electronics/index.html">Overview</a>
-        <a class="sb-subtopic" href="../electronics/kirchhoff.html">Kirchhoff's laws</a>
-        <a class="sb-subtopic" href="../electronics/transistor.html">Transistor biasing</a>
-        <a class="sb-subtopic" href="../electronics/op-amp-oscillators.html">Op-amp oscillators</a>
-        <a class="sb-subtopic" href="../electronics/adc-dac.html">ADC &amp; DAC</a>
-        <a class="sb-subtopic" href="../electronics/power.html">Power generation</a>
+        <a class="sb-topic" href="${d}ah/electronics/index.html">Overview</a>
+        <a class="sb-subtopic" href="${d}ah/electronics/kirchhoff/index.html">Kirchhoff&#39;s laws</a>
+        <a class="sb-subtopic" href="${d}ah/electronics/transistor/index.html">Transistor biasing</a>
+        <a class="sb-subtopic" href="${d}ah/electronics/op-amp/index.html">Op-amp oscillators</a>
+        <a class="sb-subtopic" href="${d}ah/electronics/adc-dac/index.html">ADC &amp; DAC</a>
+        <a class="sb-subtopic" href="${d}ah/electronics/power/index.html">Power generation</a>
       </div>
     </div>
     <div class="sb-section">
@@ -113,13 +112,12 @@ function buildSidebar(level) {
         <span class="sb-chevron open" id="mech-ah-chev">›</span>
       </button>
       <div class="sb-children open" id="mech-ah-children">
-        <a class="sb-topic" href="../mechanisms/index.html">Overview</a>
-        <a class="sb-subtopic" href="../mechanisms/shear-bending.html">Shear force &amp; bending moments</a>
-        <a class="sb-subtopic" href="../mechanisms/second-moment.html">Second moment of area</a>
-        <a class="sb-subtopic" href="../mechanisms/beam-deflection.html">Beam deflection</a>
+        <a class="sb-topic" href="${d}ah/mechanisms/index.html">Overview</a>
+        <a class="sb-subtopic" href="${d}ah/mechanisms/shear-bending/index.html">Shear force &amp; bending</a>
+        <a class="sb-subtopic" href="${d}ah/mechanisms/second-moment/index.html">Second moment of area</a>
+        <a class="sb-subtopic" href="${d}ah/mechanisms/beam-deflection/index.html">Beam deflection</a>
       </div>
     </div>`;
 
-  const map = { n5, higher, ah };
-  return map[level] || n5;
+  return { n5, higher, ah }[level] || n5;
 }
