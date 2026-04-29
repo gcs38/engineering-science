@@ -37,19 +37,42 @@
     </div>
     <div class="content">
       <div class="resource-page">
-        <a href="index.html" class="back-link">&larr; Back to Energy &amp; sustainability</a>
-        <div class="open-card">
-          <div class="open-card-icon">🔬</div>
-          <div class="open-card-title">Practical activities</div>
-          <div class="open-card-sub">Hands-on activities and NoStrain simulation tasks for this topic.</div>
-          <a href="https://drive.google.com/file/d/REPLACE_WITH_DRIVE_ID/view" target="_blank" class="open-btn">
-            <svg viewBox="0 0 16 16" fill="none"><path d="M6 2h4l4 4v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M6 2v4h4M8 8v5M6 11l2 2 2-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Open document
-          </a>
-        </div>
-        <div class="info-note">
-          <strong>Note:</strong> The document will open in a new tab. Use your browser&rsquo;s back button or the link above to return to this page.
-        </div>
+        <a href="index.html" class="back-link">&larr; Back</a>
+      <!-- ============================================================
+        HOW TO ADD YOUR DOCUMENT:
+        1. Upload your PDF to Google Drive
+        2. Share it: right-click > Share > Anyone with the link can view
+        3. Open the file, copy the ID from the URL (the part between /d/ and /view)
+        4. Replace the word REPLACE_WITH_DRIVE_ID below with that ID
+        5. Save this file and push via GitHub Desktop
+        If REPLACE_WITH_DRIVE_ID is left unchanged, the page shows "Material coming soon"
+      ============================================================ -->
+      <script>
+        var driveFileId = "REPLACE_WITH_DRIVE_ID";
+        var icon = "🔬";
+        var title = "Practical activities";
+        var desc = "Hands-on activities and NoStrain simulation tasks for this topic.";
+
+        if (driveFileId === "REPLACE_WITH_DRIVE_ID") {
+          document.write('<div class="open-card" style="background:var(--gray-50);border:1px dashed var(--gray-200);">' +
+            '<div class="open-card-icon" style="font-size:32px;">📂</div>' +
+            '<div class="open-card-title" style="color:var(--gray-600);">Material coming soon</div>' +
+            '<div class="open-card-sub">This resource is being prepared and will be available here shortly.</div>' +
+          '</div>');
+        } else {
+          var url = "https://drive.google.com/file/d/" + driveFileId + "/view";
+          document.write('<div class="open-card">' +
+            '<div class="open-card-icon">' + icon + '</div>' +
+            '<div class="open-card-title">' + title + '</div>' +
+            '<div class="open-card-sub">' + desc + '</div>' +
+            '<a href="' + url + '" target="_blank" class="open-btn">' +
+            '<svg viewBox="0 0 16 16" fill="none"><path d="M6 2h4l4 4v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M6 2v4h4M8 8v5M6 11l2 2 2-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+            'Open document</a>' +
+          '</div>' +
+          '<div class="info-note"><strong>Note:</strong> The document opens in a new tab. Use your browser back button to return to this page.</div>');
+        }
+      </script>
+      </div>
         </div>
     </div>
   </div>
