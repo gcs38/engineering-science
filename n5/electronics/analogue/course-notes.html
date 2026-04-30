@@ -1,50 +1,1036 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Course notes — Analogue electronic control systems — Engineering Science Scotland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Analogue Electronics &mdash; Course Notes &mdash; Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .resource-page{max-width:680px;margin:0 auto;padding:32px 32px 64px;}
-    .open-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px 24px;text-align:center;margin-bottom:16px;}
-    .open-card-icon{font-size:36px;margin-bottom:10px;}
-    .open-card-title{font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:-.4px;margin-bottom:6px;}
-    .open-card-sub{font-size:13px;color:var(--gray-600);margin-bottom:20px;line-height:1.5;}
-    .open-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-400);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .open-btn:hover{background:var(--teal-600);}
-    .sim-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-800);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .sim-btn:hover{background:var(--teal-600);}
-    .back-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:20px;}
-    .back-link:hover{color:var(--teal-800);}
-    .info-note{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;margin-top:12px;}
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .back-link:hover { color:var(--teal-800); }
+
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:24px 0 10px; }
+    .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:18px 0 8px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+    .warning { background:#FFF7ED; border-left:4px solid #F97316; border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#9A3412; }
+    .spec-note { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:10px 14px; margin:10px 0; font-size:12px; color:var(--gray-500); }
+    .spec-note strong { color:var(--gray-900); }
+    .extension-note { background:#faf5ff; border-left:4px solid #8b5cf6; border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:13px; color:#5b21b6; }
+
+    /* Component symbol grid */
+    .comp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin:16px 0; }
+    .comp-card-sym { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:14px 12px 10px; text-align:center; }
+    .comp-card-sym svg { display:block; margin:0 auto 8px; }
+    .comp-card-sym .comp-name { font-size:12px; font-weight:700; color:var(--gray-900); }
+    .comp-card-sym .comp-unit { font-size:11px; color:var(--gray-400); margin-top:2px; }
+
+    /* Formula boxes */
+    .formula-box { background:white; border:2px solid var(--teal-100); border-radius:var(--radius-lg); padding:16px 20px; margin:16px 0; text-align:center; }
+    .formula { font-size:18px; font-weight:600; color:var(--teal-800); font-family:monospace; letter-spacing:.02em; }
+    .formula-sub { font-size:12px; color:var(--gray-400); margin-top:6px; }
+    .triangle-box { display:inline-block; background:var(--teal-50); border:2px solid var(--teal-200); border-radius:var(--radius-md); padding:16px 24px; margin:10px 0; }
+    .triangle-top { font-size:20px; font-weight:900; color:var(--teal-800); font-family:monospace; border-bottom:2px solid var(--teal-400); padding-bottom:8px; margin-bottom:8px; text-align:center; }
+    .triangle-bottom { display:flex; gap:0; }
+    .triangle-cell { flex:1; font-size:20px; font-weight:900; color:var(--teal-800); font-family:monospace; text-align:center; padding:0 8px; }
+    .triangle-cell + .triangle-cell { border-left:2px solid var(--teal-400); }
+
+    /* Worked examples */
+    .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:18px 20px; margin:16px 0; }
+    .worked-example-title { font-size:13px; font-weight:600; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+    .step { display:flex; gap:12px; margin-bottom:10px; }
+    .step-num { width:24px; height:24px; border-radius:50%; background:var(--teal-400); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .step-content { font-size:13px; color:var(--gray-600); line-height:1.6; flex:1; }
+    .step-content strong { color:var(--gray-900); }
+
+    /* Tables */
+    .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .data-table tr:nth-child(even) td { background:var(--gray-50); }
+    .data-table td.answer-cell { background:var(--gray-50); min-width:80px; min-height:32px; }
+
+    /* Assignment boxes */
+    .assignment { background:white; border:2px solid var(--teal-400); border-radius:var(--radius-lg); margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; display:flex; align-items:center; gap:10px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:8px; font-weight:500; }
+    .task-q-sub { font-size:13px; color:var(--gray-700); margin:6px 0 6px 16px; }
+    .task-space { background:var(--gray-50); border:1px dashed var(--gray-300); border-radius:var(--radius-sm); min-height:60px; padding:10px; margin-top:6px; font-size:11px; color:var(--gray-400); }
+    .task-space-sm { background:var(--gray-50); border:1px dashed var(--gray-300); border-radius:var(--radius-sm); min-height:36px; padding:8px; margin-top:4px; font-size:11px; color:var(--gray-400); }
+    .extension-task { border:2px solid #8b5cf6; border-radius:var(--radius-lg); margin:16px 0; overflow:hidden; }
+    .extension-header { background:#8b5cf6; padding:8px 14px; }
+    .extension-header-text { font-size:13px; font-weight:700; color:white; }
+    .extension-body { padding:14px 16px; background:#faf5ff; }
+
+    /* Simulator embed */
+    .sim-embed-section { margin:24px 0; }
+    .sim-embed-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+    .sim-embed-title { font-size:14px; font-weight:500; color:var(--gray-900); display:flex; align-items:center; gap:8px; }
+    .sim-embed-title span { font-size:18px; }
+    .sim-fullscreen-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 14px; background:var(--teal-800); color:white; border-radius:var(--radius-md); font-size:12px; font-weight:500; text-decoration:none; transition:all var(--transition); border:none; cursor:pointer; }
+    .sim-fullscreen-btn:hover { background:var(--teal-600); }
+    .sim-wrap { border-radius:var(--radius-lg); overflow:hidden; border:2px solid #eab30840; }
+    .sim-iframe { width:100%; height:540px; border:none; display:block; }
+    .sim-credit { font-size:11px; color:var(--gray-400); margin-top:5px; text-align:right; }
+    .sim-instruction { background:#fefce8; border:1px solid #fde047; border-radius:var(--radius-md); padding:10px 14px; margin-bottom:10px; font-size:13px; color:#78350f; }
+
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+
+    /* Circuit diagram SVGs inline */
+    .circuit-figure { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:16px; margin:16px 0; text-align:center; }
+    .circuit-figure figcaption { font-size:12px; color:var(--gray-400); margin-top:8px; font-style:italic; }
   </style>
-</head><body>
-<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a><a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+</head>
+<body>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a>
+    <a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
+
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero">
-      <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Analogue electronic control systems</div>
-      <h1 class="hero-title">📄 Course notes</h1>
-      <p class="hero-sub">Analogue electronic control systems</p>
-      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../index.html">Electronics and Control</a> &rsaquo; <a href="index.html">Analogue electronic control systems</a> &rsaquo; <span>Course notes</span></div>
-    </div>
-    <div class="content">
-      <div class="resource-page">
-        <a href="index.html" class="back-link">&larr; Back to Analogue electronic control systems</a>
-      <!-- EDIT BELOW: replace REPLACE_WITH_DRIVE_ID with your Google Drive file ID -->
-      <script>
-        var driveFileId = "REPLACE_WITH_DRIVE_ID";
-        if (driveFileId === "REPLACE_WITH_DRIVE_ID") {
-          document.write('<div class="open-card" style="background:var(--gray-50);border:1px dashed var(--gray-200);"><div class="open-card-icon" style="font-size:32px;">📂</div><div class="open-card-title" style="color:var(--gray-600);">Material coming soon</div><div class="open-card-sub">This resource is being prepared and will be available here shortly.</div></div>');
-        } else {
-          var url = "https://drive.google.com/file/d/" + driveFileId + "/view";
-          document.write('<div class="open-card"><div class="open-card-icon">📄</div><div class="open-card-title">Course notes</div><div class="open-card-sub">Notes, explanations and worked examples aligned to the SQA specification.</div><a href="' + url + '" target="_blank" class="open-btn"><svg viewBox="0 0 16 16" fill="none"><path d="M6 2h4l4 4v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M6 2v4h4M8 8v5M6 11l2 2 2-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Open document</a></div><div class="info-note"><strong>Note:</strong> Opens in a new tab. Use your browser back button to return.</div>');
-        }
-      </script>
+      <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Analogue Electronics</div>
+      <h1 class="hero-title">&#x26A1; Analogue Electronics &mdash; Course Notes</h1>
+      <p class="hero-sub">Current, voltage, resistance, Ohm's law, circuit types, components and transistor switching</p>
+      <div class="breadcrumb">
+        <a href="../../../../index.html">Home</a> &rsaquo;
+        <a href="../index.html">Electronics and Control</a> &rsaquo;
+        <a href="index.html">Analogue Electronics</a> &rsaquo;
+        <span>Course notes</span>
       </div>
+    </div>
+
+    <div class="content">
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to Analogue Electronics</a>
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 1: Current, Voltage and Resistance</h1>
+
+      <h2 class="notes-h2">Introducing electricity</h2>
+      <p class="notes-p">Electricity is one of the most important forms of energy in everyday life. The devices around us &mdash; phones, computers, heating systems &mdash; all rely on electrical circuits to work. In this section you will learn how circuits work and what the key quantities are.</p>
+
+      <p class="notes-p">An electric circuit is a <strong>closed loop</strong> made up of components such as batteries, lamps, switches and wires. Current can only flow if the circuit is complete.</p>
+
+      <h2 class="notes-h2">The three key quantities</h2>
+
+      <h3 class="notes-h3">Current</h3>
+      <p class="notes-p">Electric current is the flow of negatively charged particles called <strong>electrons</strong>. In Engineering Science, current flows from the positive (+) terminal of the power supply, through the circuit, to the negative (0V) terminal.</p>
+      <div class="key-point">Current is measured in <strong>Amperes (A)</strong>. A milliamp (mA) is one thousandth of an amp: 1 mA = 0.001 A.</div>
+
+      <h3 class="notes-h3">Voltage</h3>
+      <p class="notes-p">Voltage is the electrical force that pushes current around a circuit. It comes from a battery or power supply. The bigger the voltage, the harder it pushes the electrons.</p>
+      <div class="key-point">Voltage is measured in <strong>Volts (V)</strong>.</div>
+
+      <h3 class="notes-h3">Resistance</h3>
+      <p class="notes-p">All components in a circuit resist the flow of current to some degree. A <strong>resistor</strong> is a component specifically designed to reduce current flow. The greater the resistance, the less current will flow for a given voltage.</p>
+      <div class="key-point">Resistance is measured in <strong>Ohms (&Omega;)</strong>. Larger values are written as k&Omega; (kilohms, &times;1000) or M&Omega; (megohms, &times;1&nbsp;000&nbsp;000).</div>
+
+      <!-- Investigate first task (Ash comment 4) -->
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 1 &mdash; Investigating resistance</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Open the NoResistance simulator below. Build a simple circuit with a battery, a resistor and an ammeter. Change the resistance value using the Properties panel and record the current in the table.</p>
+          <div class="task-item">
+            <div class="task-q">1. Complete the table. Keep the voltage at 9 V.</div>
+            <table class="data-table">
+              <tr><th>Resistance (&Omega;)</th><th>Current (mA)</th></tr>
+              <tr><td>10 000</td><td class="answer-cell"></td></tr>
+              <tr><td>5 000</td><td class="answer-cell"></td></tr>
+              <tr><td>1 000</td><td class="answer-cell"></td></tr>
+              <tr><td>500</td><td class="answer-cell"></td></tr>
+            </table>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Describe what happens to the current as the resistance decreases.</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Now reset the resistance to 1 k&Omega;. Change the battery voltage and complete the table.</div>
+            <table class="data-table">
+              <tr><th>Voltage (V)</th><th>Current (mA)</th></tr>
+              <tr><td>10</td><td class="answer-cell"></td></tr>
+              <tr><td>8</td><td class="answer-cell"></td></tr>
+              <tr><td>6</td><td class="answer-cell"></td></tr>
+              <tr><td>4</td><td class="answer-cell"></td></tr>
+              <tr><td>2</td><td class="answer-cell"></td></tr>
+            </table>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. Describe what happens to the current as the voltage decreases.</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> NoResistance Simulator</div>
+          <a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Drag components from the left panel onto the canvas. Click <strong>SIMULATE</strong> to see live readings. Click a component to change its value in the Properties panel.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-main" title="NoResistance circuit simulator" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoResistanceSim V1.4 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 2: Ohm's Law</h1>
+
+      <p class="notes-p">From your investigation you will have found that <strong>doubling the voltage doubles the current</strong> through a resistor. This relationship is known as <strong>Ohm's Law</strong>:</p>
+
+      <div class="formula-box">
+        <div class="formula">V = I &times; R</div>
+        <div class="formula-sub">Voltage (V) = Current (A) &times; Resistance (&Omega;)</div>
+      </div>
+
+      <p class="notes-p">You can rearrange this formula to find any of the three quantities. The <strong>VIR triangle</strong> is a useful memory aid:</p>
+
+      <div style="text-align:center;margin:16px 0;">
+        <div class="triangle-box">
+          <div class="triangle-top">V</div>
+          <div class="triangle-bottom">
+            <div class="triangle-cell">I</div>
+            <div class="triangle-cell">R</div>
+          </div>
+        </div>
+        <p style="font-size:12px;color:var(--gray-400);margin-top:8px;">Cover the quantity you want to find &mdash; the other two show how to calculate it.</p>
+      </div>
+
+      <p class="notes-p">So: &nbsp; <strong>V = I &times; R</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>I = V &divide; R</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>R = V &divide; I</strong></p>
+
+      <h2 class="notes-h2">Using Ohm's Law &mdash; worked examples</h2>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked example 1 &mdash; Find the current</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A 6 V battery is connected to a 300 &Omega; resistor. Calculate the current.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Write the formula:</strong> I = V &divide; R</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Substitute values:</strong> I = 6 &divide; 300</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate:</strong> I = 0.02 A = <strong>20 mA</strong></div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked example 2 &mdash; Find the resistance</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A lamp has 9 V across it and 45 mA flowing through it. Calculate the resistance.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Convert mA to A:</strong> 45 mA = 0.045 A</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Write the formula:</strong> R = V &divide; I</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Substitute and calculate:</strong> R = 9 &divide; 0.045 = <strong>200 &Omega;</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 1 &mdash; Ohm's Law calculations</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1a. A circuit has a 9 V battery and a 1 k&Omega; resistor. Calculate the current in mA.</div>
+            <div class="task-space">Working here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">1b. Find the resistance of a component with 12 V across it and 60 mA through it.</div>
+            <div class="task-space">Working here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">1c. A 470 &Omega; resistor has 25 mA flowing through it. Calculate the voltage across it.</div>
+            <div class="task-space">Working here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">1d. A circuit has a 6 V battery and 30 mA of current. What is the total resistance?</div>
+            <div class="task-space">Working here&hellip;</div>
+          </div>
+          <p style="font-size:12px;color:var(--teal-600);margin-top:8px;">&#x26A1; Check your answers using the simulator above.</p>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 3: Measuring Voltage and Current</h1>
+
+      <h2 class="notes-h2">Measuring voltage with a voltmeter</h2>
+      <p class="notes-p">A <strong>voltmeter</strong> measures the voltage (potential difference) <em>across</em> a component. It is connected in <strong>parallel</strong> &mdash; one probe on each side of the component. A voltmeter has very high resistance so it takes almost no current from the circuit.</p>
+
+      <div class="key-point">Voltmeter = connected in <strong>parallel</strong> &mdash; does not break the circuit.</div>
+
+      <h2 class="notes-h2">Measuring current with an ammeter</h2>
+      <p class="notes-p">An <strong>ammeter</strong> measures the current <em>through</em> a component. It must be connected in <strong>series</strong> &mdash; the circuit must be broken and the ammeter inserted. An ammeter has very low resistance so it barely affects the circuit.</p>
+
+      <div class="key-point">Ammeter = connected in <strong>series</strong> &mdash; the circuit must be broken to insert it.</div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 2 &mdash; Measuring voltage and current</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Build the following circuit in the NoResistance simulator: a 9 V battery, a 1 k&Omega; resistor and a 470 &Omega; resistor in series. Add a voltmeter across each component and an ammeter in series.</p>
+          <div class="task-item">
+            <div class="task-q">1. Record the voltage across each component.</div>
+            <table class="data-table">
+              <tr><th>Component</th><th>Voltage (V)</th></tr>
+              <tr><td>Battery</td><td class="answer-cell"></td></tr>
+              <tr><td>1 k&Omega; resistor</td><td class="answer-cell"></td></tr>
+              <tr><td>470 &Omega; resistor</td><td class="answer-cell"></td></tr>
+              <tr><td>Total (R1 + R2)</td><td class="answer-cell"></td></tr>
+            </table>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. What do you notice about the total voltage across both resistors compared to the battery voltage? This is <strong>Kirchhoff's second law</strong>.</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Move the ammeter to different positions in the series circuit. What do you notice about the current at each point?</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="notes-h2">Kirchhoff's Laws</h2>
+      <p class="notes-p">Two important rules govern voltage and current in circuits:</p>
+      <ul class="notes-ul">
+        <li><strong>Kirchhoff's Voltage Law (KVL):</strong> The sum of the voltage drops around any complete loop equals the supply voltage.</li>
+        <li><strong>Kirchhoff's Current Law (KCL):</strong> The current flowing into a junction equals the current flowing out.</li>
+      </ul>
+
+      <div class="key-point">In a <strong>series circuit</strong>: the current is the same everywhere, and the voltages add up to the supply voltage.</div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 4: Resistors in Series</h1>
+
+      <p class="notes-p">When resistors are connected one after another (in series), their resistances <strong>add together</strong>:</p>
+
+      <div class="formula-box">
+        <div class="formula">R<sub>total</sub> = R<sub>1</sub> + R<sub>2</sub> + R<sub>3</sub> + &hellip;</div>
+      </div>
+
+      <p class="notes-p">This is because the current must pass through every resistor, so each one adds to the total opposition.</p>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked example &mdash; Series resistors</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">Three resistors are connected in series: 100 &Omega;, 220 &Omega; and 330 &Omega;. The supply voltage is 9 V. Find the total resistance and the circuit current.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Total resistance:</strong> R<sub>T</sub> = 100 + 220 + 330 = <strong>650 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Circuit current:</strong> I = V &divide; R = 9 &divide; 650 = <strong>13.8 mA</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Voltage across 100 &Omega; resistor:</strong> V = I &times; R = 0.0138 &times; 100 = <strong>1.38 V</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 2 &mdash; Series circuits</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Two resistors (150 &Omega; and 270 &Omega;) are connected in series across a 9 V supply. Calculate:</div>
+            <div class="task-q-sub">a) the total resistance</div><div class="task-space-sm"></div>
+            <div class="task-q-sub">b) the circuit current</div><div class="task-space-sm"></div>
+            <div class="task-q-sub">c) the voltage drop across each resistor</div><div class="task-space-sm"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Three resistors (15 &Omega;, 24 &Omega; and 60 &Omega;) are in series. Calculate the total resistance.</div>
+            <div class="task-space-sm"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Two resistors in series: 25 &Omega; and 75 &Omega;. The voltage across the 25 &Omega; resistor is 4 V. Find the circuit current and the supply voltage.</div>
+            <div class="task-space"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A series circuit has a 12 V supply. The current is 20 mA. One resistor is 220 &Omega;. Using Kirchhoff's second law, find the value of the second resistor.</div>
+            <div class="task-space"></div>
+          </div>
+          <p style="font-size:12px;color:var(--teal-600);margin-top:8px;">&#x26A1; Build these circuits in the simulator and check your answers.</p>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 5: Components and Circuit Symbols</h1>
+
+      <p class="notes-p">In Engineering Science you need to recognise and draw standard circuit symbols. These are the same symbols used by engineers worldwide, known as <strong>QS (Qualification Standard) symbols</strong>.</p>
+
+      <h2 class="notes-h2">Output devices</h2>
+
+      <div class="comp-grid">
+        <div class="comp-card-sym">
+          <svg width="80" height="40" viewBox="0 0 80 40">
+            <line x1="2" y1="20" x2="18" y2="20" stroke="#334155" stroke-width="2"/>
+            <circle cx="40" cy="20" r="18" fill="white" stroke="#334155" stroke-width="2"/>
+            <line x1="33" y1="13" x2="47" y2="27" stroke="#334155" stroke-width="1.5"/>
+            <line x1="47" y1="13" x2="33" y2="27" stroke="#334155" stroke-width="1.5"/>
+            <line x1="58" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+          </svg>
+          <div class="comp-name">Lamp</div>
+          <div class="comp-unit">Output &mdash; light</div>
+        </div>
+        <div class="comp-card-sym">
+          <svg width="80" height="40" viewBox="0 0 80 40">
+            <line x1="2" y1="20" x2="18" y2="20" stroke="#334155" stroke-width="2"/>
+            <circle cx="40" cy="20" r="18" fill="white" stroke="#334155" stroke-width="2"/>
+            <text x="40" y="25" text-anchor="middle" font-size="14" font-weight="900" fill="#334155">M</text>
+            <line x1="58" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+          </svg>
+          <div class="comp-name">Motor</div>
+          <div class="comp-unit">Output &mdash; motion</div>
+        </div>
+        <div class="comp-card-sym">
+          <svg width="80" height="40" viewBox="0 0 80 40">
+            <line x1="4" y1="12" x2="20" y2="12" stroke="#334155" stroke-width="2"/>
+            <line x1="4" y1="28" x2="20" y2="28" stroke="#334155" stroke-width="2"/>
+            <path d="M 30 6 L 30 34 A 14 14 0 0 1 30 6 Z" fill="white" stroke="#334155" stroke-width="2"/>
+          </svg>
+          <div class="comp-name">Buzzer</div>
+          <div class="comp-unit">Output &mdash; sound</div>
+        </div>
+      </div>
+
+      <h2 class="notes-h2">Switches</h2>
+      <p class="notes-p">Switches are <strong>input devices</strong> (also called transducers). They control whether current can flow. The most common types are:</p>
+
+      <div class="comp-grid">
+        <div class="comp-card-sym">
+          <svg width="80" height="40" viewBox="0 0 80 40">
+            <line x1="2" y1="20" x2="20" y2="20" stroke="#334155" stroke-width="2"/>
+            <circle cx="20" cy="20" r="3" fill="#334155"/>
+            <line x1="20" y1="20" x2="55" y2="10" stroke="#334155" stroke-width="2"/>
+            <circle cx="58" cy="20" r="3" fill="white" stroke="#334155" stroke-width="2"/>
+            <line x1="58" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+          </svg>
+          <div class="comp-name">SPST Switch</div>
+          <div class="comp-unit">Single Pole Single Throw</div>
+        </div>
+        <div class="comp-card-sym">
+          <svg width="80" height="48" viewBox="0 0 80 48">
+            <line x1="2" y1="24" x2="20" y2="24" stroke="#334155" stroke-width="2"/>
+            <circle cx="20" cy="24" r="3" fill="#334155"/>
+            <line x1="20" y1="24" x2="52" y2="14" stroke="#334155" stroke-width="2"/>
+            <circle cx="55" cy="12" r="3" fill="white" stroke="#334155" stroke-width="2"/>
+            <line x1="55" y1="12" x2="78" y2="12" stroke="#334155" stroke-width="2"/>
+            <circle cx="55" cy="36" r="3" fill="white" stroke="#334155" stroke-width="2"/>
+            <line x1="55" y1="36" x2="78" y2="36" stroke="#334155" stroke-width="2"/>
+          </svg>
+          <div class="comp-name">SPDT Switch</div>
+          <div class="comp-unit">Single Pole Double Throw</div>
+        </div>
+        <div class="comp-card-sym">
+          <svg width="80" height="40" viewBox="0 0 80 40">
+            <line x1="2" y1="20" x2="20" y2="20" stroke="#334155" stroke-width="2"/>
+            <line x1="58" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+            <circle cx="20" cy="20" r="3" fill="white" stroke="#334155" stroke-width="1.5"/>
+            <circle cx="58" cy="20" r="3" fill="white" stroke="#334155" stroke-width="1.5"/>
+            <line x1="18" y1="10" x2="60" y2="10" stroke="#334155" stroke-width="2"/>
+            <line x1="40" y1="10" x2="40" y2="2" stroke="#334155" stroke-width="1.5"/>
+          </svg>
+          <div class="comp-name">Push-to-make</div>
+          <div class="comp-unit">Normally open</div>
+        </div>
+      </div>
+
+      <p class="notes-p">A <strong>DPDT (Double Pole Double Throw)</strong> switch is used to reverse the direction of a motor. It switches two separate circuits at the same time.</p>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 3 &mdash; Switch circuits</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Build and simulate the following circuits in NoResistance. For each, describe what needs to happen to switch the output on.</p>
+          <div class="task-item">
+            <div class="task-q">a) A lamp must light when two switches are both closed (AND behaviour). How are the switches connected?</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) A buzzer must sound when <em>either</em> of two switches is pressed (OR behaviour). How are the switches connected?</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) A red LED lights when a motor is not running. When a switch is pressed, the LED switches off and the motor starts. Describe your circuit design.</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="notes-h2">Diodes</h2>
+      <p class="notes-p">A diode allows current to flow in <strong>one direction only</strong>. The two terminals are the <strong>anode</strong> (+) and <strong>cathode</strong> (&minus;). Current only flows when the anode is connected to the positive supply.</p>
+
+      <div class="comp-grid">
+        <div class="comp-card-sym">
+          <svg width="80" height="40" viewBox="0 0 80 40">
+            <line x1="2" y1="20" x2="22" y2="20" stroke="#334155" stroke-width="2"/>
+            <polygon points="22,10 22,30 42,20" fill="#334155"/>
+            <line x1="42" y1="10" x2="42" y2="30" stroke="#334155" stroke-width="2.5"/>
+            <line x1="42" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+            <text x="22" y="8" font-size="9" fill="#dc2626" font-weight="700">A</text>
+            <text x="42" y="8" font-size="9" fill="#3b82f6" font-weight="700">K</text>
+          </svg>
+          <div class="comp-name">Diode</div>
+          <div class="comp-unit">One-way current</div>
+        </div>
+        <div class="comp-card-sym">
+          <svg width="80" height="40" viewBox="0 0 80 40">
+            <line x1="2" y1="20" x2="22" y2="20" stroke="#334155" stroke-width="2"/>
+            <polygon points="22,10 22,30 42,20" fill="#ef4444"/>
+            <line x1="42" y1="10" x2="42" y2="30" stroke="#334155" stroke-width="2.5"/>
+            <line x1="42" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+            <line x1="45" y1="6" x2="52" y2="0" stroke="#ca8a04" stroke-width="1.5"/>
+            <line x1="49" y1="9" x2="56" y2="3" stroke="#ca8a04" stroke-width="1.5"/>
+          </svg>
+          <div class="comp-name">LED</div>
+          <div class="comp-unit">Emits light</div>
+        </div>
+      </div>
+
+      <p class="notes-p">A <strong>Light-Emitting Diode (LED)</strong> is a special diode that produces light when current flows through it. The short leg (cathode) must be connected to 0V. LEDs are used as indicators to show when a circuit is working.</p>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> Try it &mdash; Diode and LED circuits</div>
+          <a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Build a circuit with a battery, resistor and LED. Press <strong>SIMULATE</strong> to see the LED light. Then reverse the LED and observe what happens.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-diode" title="Diode circuit" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoResistanceSim V1.4 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 3 &mdash; Components and symbols</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Draw the circuit symbol for a) a lamp, b) a motor, c) an LED, d) a diode.</div>
+            <div class="task-space" style="min-height:80px;">Draw here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. In the simulator, build a circuit where a green LED lights when switch A <strong>AND</strong> switch B are both closed. Describe your circuit.</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Why do we use circuit symbols rather than pictures of components?</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 6: Parallel Circuits</h1>
+
+      <h2 class="notes-h2">What is a parallel circuit?</h2>
+      <p class="notes-p">In a parallel circuit there is more than one path for current to flow. Each branch receives the <strong>full supply voltage</strong>, so devices operate independently. A common example is the lighting in a room &mdash; each light has its own switch and works independently of the others.</p>
+
+      <div class="key-point">In a parallel circuit: each branch gets the full supply voltage, and the currents in each branch add together to give the total current.</div>
+
+      <h2 class="notes-h2">Resistors in parallel</h2>
+      <p class="notes-p">When resistors are connected in parallel, the combined resistance is <strong>less</strong> than any individual resistor. This is because more paths are available for current to flow.</p>
+
+      <p class="notes-p"><strong>General formula</strong> (for any number of resistors):</p>
+      <div class="formula-box">
+        <div class="formula">1/R<sub>T</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub> + 1/R<sub>3</sub> + &hellip;</div>
+      </div>
+
+      <p class="notes-p"><strong>Special case: two resistors in parallel</strong> (the most common situation):</p>
+      <div class="formula-box">
+        <div class="formula">R<sub>T</sub> = (R<sub>1</sub> &times; R<sub>2</sub>) &divide; (R<sub>1</sub> + R<sub>2</sub>)</div>
+        <div class="formula-sub">Product &divide; Sum &mdash; only works for <em>two</em> resistors</div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked example 1 &mdash; Two resistors in parallel</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">R<sub>1</sub> = 270 &Omega;, R<sub>2</sub> = 100 &Omega;. Find the combined resistance.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Use product/sum:</strong> R<sub>T</sub> = (270 &times; 100) &divide; (270 + 100)</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">R<sub>T</sub> = 27 000 &divide; 370 = <strong>73 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content">Note: 73 &Omega; is less than both 270 &Omega; and 100 &Omega; &mdash; this is expected.</div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked example 2 &mdash; Three resistors in parallel</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">R<sub>1</sub> = 220 &Omega;, R<sub>2</sub> = 100 &Omega;, R<sub>3</sub> = 330 &Omega;. Find the combined resistance.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Use the general formula:</strong> 1/R<sub>T</sub> = 1/220 + 1/100 + 1/330</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">1/R<sub>T</sub> = 0.00455 + 0.01 + 0.00303 = 0.01758</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content">R<sub>T</sub> = 1 &divide; 0.01758 = <strong>56.9 &Omega;</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 4 &mdash; Parallel circuits</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. A 10 &Omega; and 14 &Omega; resistor are connected in parallel across a 6 V supply. Calculate:</div>
+            <div class="task-q-sub">a) total resistance</div><div class="task-space-sm"></div>
+            <div class="task-q-sub">b) circuit current</div><div class="task-space-sm"></div>
+            <div class="task-q-sub">c) current through each resistor</div><div class="task-space-sm"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A 660 &Omega; and 470 &Omega; resistor are in parallel. The supply voltage is 9 V. Calculate the total resistance, circuit current, and current through each branch. Use Kirchhoff's first law to verify your answer.</div>
+            <div class="task-space"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A 440 &Omega; resistor is in parallel with a 330 &Omega; resistor. The current through the 440 &Omega; is 300 mA. Find the current through the 330 &Omega;.</div>
+            <div class="task-space"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A 6 &Omega; and 75 &Omega; resistor are in parallel across 12 V. Calculate the total circuit current.</div>
+            <div class="task-space-sm"></div>
+          </div>
+          <div class="extension-task">
+            <div class="extension-header"><div class="extension-header-text">&#x2B50; Extension tasks</div></div>
+            <div class="extension-body">
+              <div class="task-item">
+                <div class="task-q">5. For the circuit below, calculate a) combined resistance, b) current from battery, c) current in each branch.</div>
+                <p style="font-size:12px;color:var(--gray-500);margin:4px 0 8px;">R<sub>1</sub> = 100 &Omega;, R<sub>2</sub> = 150 &Omega;, R<sub>3</sub> = 300 &Omega; all in parallel across 12 V.</p>
+                <div class="task-space"></div>
+              </div>
+            </div>
+          </div>
+          <p style="font-size:12px;color:var(--teal-600);margin-top:8px;">&#x26A1; Build these circuits in the simulator and check your answers.</p>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 7: Combined Series and Parallel Circuits</h1>
+
+      <p class="notes-p">Real circuits often have a mix of series and parallel connections. To solve these you must <strong>simplify step by step</strong>:</p>
+      <ol class="notes-ol">
+        <li>Find the combined resistance of the <strong>parallel section</strong> first (call it R<sub>P</sub>).</li>
+        <li>Add R<sub>P</sub> to any series resistors to find the <strong>total resistance</strong> R<sub>T</sub>.</li>
+        <li>Use Ohm's Law to find the circuit current.</li>
+        <li>Use Kirchhoff's laws to find individual voltages and currents.</li>
+      </ol>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked example &mdash; Series/parallel circuit</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">R<sub>1</sub> = 100 &Omega; in series with a parallel combination of R<sub>2</sub> = 300 &Omega; and R<sub>3</sub> = 150 &Omega;. Supply = 9 V.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Parallel section:</strong> R<sub>P</sub> = (300 &times; 150) &divide; (300 + 150) = 45 000 &divide; 450 = <strong>100 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Total resistance:</strong> R<sub>T</sub> = R<sub>1</sub> + R<sub>P</sub> = 100 + 100 = <strong>200 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Circuit current:</strong> I<sub>C</sub> = V &divide; R<sub>T</sub> = 9 &divide; 200 = <strong>45 mA</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Voltage across R<sub>1</sub>:</strong> V<sub>R1</sub> = 0.045 &times; 100 = <strong>4.5 V</strong></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-content"><strong>Voltage across parallel section</strong> (Kirchhoff's 2nd law): V<sub>P</sub> = 9 &minus; 4.5 = <strong>4.5 V</strong></div></div>
+        <div class="step"><div class="step-num">6</div><div class="step-content"><strong>Current through R<sub>2</sub>:</strong> I<sub>2</sub> = 4.5 &divide; 300 = <strong>15 mA</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 5 &mdash; Combined circuits</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. A 1 k&Omega; resistor is in series with two parallel resistors (both 500 &Omega;) across a 9 V supply. Calculate:</div>
+            <div class="task-q-sub">a) combined resistance</div><div class="task-space-sm"></div>
+            <div class="task-q-sub">b) circuit current</div><div class="task-space-sm"></div>
+            <div class="task-q-sub">c) voltage across the 1 k&Omega; resistor</div><div class="task-space-sm"></div>
+            <div class="task-q-sub">d) current through each 500 &Omega; resistor</div><div class="task-space-sm"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A 1 k&Omega; resistor is in series with two parallel resistors (both 1 k&Omega;) across 12 V. Find the combined resistance, circuit current, voltage across the series resistor, and current through each parallel resistor.</div>
+            <div class="task-space"></div>
+          </div>
+          <div class="extension-task">
+            <div class="extension-header"><div class="extension-header-text">&#x2B50; Extension task</div></div>
+            <div class="extension-body">
+              <div class="task-item">
+                <div class="task-q">3. A 10 k&Omega; resistor is in series with a parallel combination of 500 &Omega; and 1 k&Omega; across 9 V. Find a) combined resistance, b) circuit current, c) voltage across the 10 k&Omega;, d) current through the 500 &Omega;.</div>
+                <div class="task-space"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 8: Voltage Dividers</h1>
+
+      <p class="notes-p">In a series circuit, each resistor gets a <strong>share</strong> of the supply voltage. The bigger the resistor, the bigger its share. This principle allows us to build <strong>sensor circuits</strong> where the output voltage changes in response to environmental conditions.</p>
+
+      <div class="formula-box">
+        <div class="formula">V<sub>out</sub> = V<sub>supply</sub> &times; R<sub>2</sub> &divide; R<sub>T</sub></div>
+        <div class="formula-sub">where R<sub>2</sub> is the lower resistor and R<sub>T</sub> is the total resistance (R<sub>1</sub> + R<sub>2</sub>)</div>
+      </div>
+
+      <p class="notes-p">You can also use the ratio rule: V<sub>1</sub>/V<sub>2</sub> = R<sub>1</sub>/R<sub>2</sub></p>
+
+      <h2 class="notes-h2">Sensor components</h2>
+      <p class="notes-p">Three components change their resistance in response to their environment, making them ideal for voltage divider sensors:</p>
+
+      <div class="comp-grid">
+        <div class="comp-card-sym">
+          <svg width="80" height="40" viewBox="0 0 80 40">
+            <line x1="2" y1="20" x2="12" y2="20" stroke="#334155" stroke-width="2"/>
+            <rect x="12" y="12" width="32" height="16" rx="2" fill="white" stroke="#334155" stroke-width="2"/>
+            <line x1="44" y1="20" x2="54" y2="20" stroke="#334155" stroke-width="2"/>
+            <line x1="56" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+            <text x="28" y="24" text-anchor="middle" font-size="7" font-weight="900" fill="#334155">R</text>
+            <line x1="18" y1="32" x2="36" y2="8" stroke="#334155" stroke-width="1.5"/>
+            <polygon points="36,8 30,10 34,14" fill="#334155"/>
+          </svg>
+          <div class="comp-name">Variable Resistor</div>
+          <div class="comp-unit">Adjusts by hand</div>
+        </div>
+        <div class="comp-card-sym">
+          <svg width="80" height="40" viewBox="0 0 80 40">
+            <line x1="2" y1="20" x2="12" y2="20" stroke="#334155" stroke-width="2"/>
+            <rect x="12" y="12" width="32" height="16" rx="0" fill="white" stroke="#334155" stroke-width="2"/>
+            <line x1="44" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+            <line x1="18" y1="34" x2="18" y2="28" stroke="#334155" stroke-width="1.5"/>
+            <line x1="18" y1="28" x2="38" y2="12" stroke="#334155" stroke-width="1.5"/>
+            <text x="28" y="24" text-anchor="middle" font-size="7" font-weight="900" fill="#334155">-t&deg;</text>
+          </svg>
+          <div class="comp-name">Thermistor</div>
+          <div class="comp-unit">Responds to temperature</div>
+        </div>
+        <div class="comp-card-sym">
+          <svg width="80" height="40" viewBox="0 0 80 40">
+            <circle cx="28" cy="20" r="14" fill="none" stroke="#334155" stroke-width="1.5"/>
+            <rect x="16" y="15" width="24" height="10" fill="white" stroke="#334155" stroke-width="1.5"/>
+            <line x1="2" y1="20" x2="16" y2="20" stroke="#334155" stroke-width="2"/>
+            <line x1="40" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+            <line x1="18" y1="4" x2="24" y2="10" stroke="#ca8a04" stroke-width="1.5"/>
+            <line x1="23" y1="4" x2="29" y2="10" stroke="#ca8a04" stroke-width="1.5"/>
+          </svg>
+          <div class="comp-name">LDR</div>
+          <div class="comp-unit">Responds to light</div>
+        </div>
+      </div>
+
+      <p class="notes-p">Typically, a thermistor or LDR is connected in series with a fixed resistor to form a voltage divider. The output is taken from across the fixed resistor (or the sensor, depending on whether you want the voltage to rise or fall as the condition changes).</p>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> Try it &mdash; LDR voltage divider</div>
+          <a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Build a circuit with a 9 V battery, an LDR and a 10 k&Omega; resistor in series. Add a voltmeter across the 10 k&Omega;. Press <strong>SIMULATE</strong> then click the LDR and adjust the light level with the slider. Watch how the voltage changes.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-ldr" title="LDR voltage divider" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoResistanceSim V1.4 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 4 &mdash; LDR voltage divider</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. With a 9 V supply, R<sub>fixed</sub> = 10 k&Omega; and LDR at different light levels, record the output voltage across the fixed resistor.</div>
+            <table class="data-table">
+              <tr><th>Light level</th><th>LDR resistance (approx.)</th><th>V<sub>out</sub> across R<sub>fixed</sub></th></tr>
+              <tr><td>Very bright</td><td class="answer-cell">~100 &Omega;</td><td class="answer-cell"></td></tr>
+              <tr><td>Medium</td><td class="answer-cell">~5 k&Omega;</td><td class="answer-cell"></td></tr>
+              <tr><td>Dark</td><td class="answer-cell">~100 k&Omega;</td><td class="answer-cell"></td></tr>
+            </table>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Describe what happens to V<sub>out</sub> as the light level decreases. Explain why.</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Swap the positions of the LDR and the fixed resistor. Describe what happens to V<sub>out</sub> now as the light level decreases.</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 6 &mdash; Voltage divider calculations</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. A voltage divider has R<sub>1</sub> = 200 &Omega; and R<sub>2</sub> = 600 &Omega; with a 12 V supply. Calculate the voltage across each resistor.</div>
+            <div class="task-space-sm"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A voltage divider has R<sub>1</sub> = 1.2 k&Omega; and R<sub>2</sub> = 2.4 k&Omega; with a 9 V supply. Calculate the voltage across the 1.2 k&Omega; resistor.</div>
+            <div class="task-space-sm"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A voltage divider produces 4 V across R<sub>2</sub> from a 12 V supply. If R<sub>2</sub> = 300 &Omega;, calculate R<sub>1</sub>.</div>
+            <div class="task-space"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A thermistor is used in a voltage divider with a 10 k&Omega; fixed resistor and 9 V supply. At 80&deg;C the thermistor resistance is 500 &Omega;. At 20&deg;C it is 10 k&Omega;.</div>
+            <div class="task-q-sub">a) Calculate V<sub>out</sub> across the fixed resistor at 80&deg;C.</div><div class="task-space-sm"></div>
+            <div class="task-q-sub">b) Calculate V<sub>out</sub> across the fixed resistor at 20&deg;C.</div><div class="task-space-sm"></div>
+            <div class="task-q-sub">c) What happens to the voltage across the <em>thermistor</em> as temperature increases? Explain why.</div><div class="task-space"></div>
+          </div>
+          <div class="extension-task">
+            <div class="extension-header"><div class="extension-header-text">&#x2B50; Extension task</div></div>
+            <div class="extension-body">
+              <div class="task-item">
+                <div class="task-q">5. A voltage divider is required to give V<sub>out</sub> = 4.5 V from a 9 V supply when a thermistor has a resistance of 2 k&Omega; at 100&deg;C. Calculate a suitable value for the fixed resistor. State whether V<sub>out</sub> will increase or decrease as temperature drops, and explain your answer.</div>
+                <div class="task-space"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 9: Transistors</h1>
+
+      <h2 class="notes-h2">What is a transistor?</h2>
+      <p class="notes-p">A transistor is an electronic <strong>switch</strong> (and amplifier). The type used in N5 Engineering Science is the <strong>NPN Bipolar Junction Transistor (BJT)</strong>. It has three connections:</p>
+
+      <div class="comp-grid">
+        <div class="comp-card-sym">
+          <svg width="80" height="80" viewBox="0 0 80 80">
+            <line x1="2" y1="40" x2="20" y2="40" stroke="#334155" stroke-width="2"/>
+            <line x1="20" y1="20" x2="20" y2="60" stroke="#334155" stroke-width="3"/>
+            <line x1="20" y1="28" x2="45" y2="10" stroke="#334155" stroke-width="2"/>
+            <line x1="45" y1="10" x2="45" y2="0" stroke="#334155" stroke-width="2"/>
+            <line x1="20" y1="52" x2="45" y2="70" stroke="#334155" stroke-width="2"/>
+            <line x1="45" y1="70" x2="45" y2="80" stroke="#334155" stroke-width="2"/>
+            <polygon points="30,60 37,62 34,55" fill="#334155"/>
+            <text x="4" y="38" font-size="9" fill="#334155">B</text>
+            <text x="48" y="10" font-size="9" fill="#334155">C</text>
+            <text x="48" y="76" font-size="9" fill="#334155">E</text>
+          </svg>
+          <div class="comp-name">NPN Transistor</div>
+          <div class="comp-unit">B=Base, C=Collector, E=Emitter</div>
+        </div>
+      </div>
+
+      <p class="notes-p">The transistor acts as an electronically controlled switch:</p>
+      <ul class="notes-ul">
+        <li>When about <strong>0.7 V</strong> is applied to the <strong>base</strong>, a small base current flows.</li>
+        <li>This switches the transistor <strong>ON</strong> &mdash; a much larger current can now flow from <strong>collector to emitter</strong>.</li>
+        <li>When the base voltage drops below 0.7 V, the transistor switches <strong>OFF</strong> and no current flows.</li>
+      </ul>
+
+      <div class="key-point">A small base current controls a much larger collector current. This is the <strong>current amplification</strong> property of the transistor.</div>
+
+      <div class="warning">&#x26A0;&#xFE0F; At N5, we treat the transistor as a simple <strong>on/off switch</strong>. The gradual dimming of a bulb as base voltage changes is beyond the scope of the course.</div>
+
+      <h2 class="notes-h2">Transistor switching circuit</h2>
+      <p class="notes-p">A typical transistor switching circuit uses a <strong>voltage divider sensor</strong> to control the base voltage. When conditions change (e.g. it gets dark), the base voltage rises above 0.7 V, switching the transistor on and activating the output device.</p>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> Try it &mdash; Transistor as a switch</div>
+          <a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Build a circuit: battery → lamp → collector. Emitter → 0V. Add a resistor (10 k&Omega;) from the battery to the base. Simulate it and touch a wire to the base resistor junction. The lamp should light. Now build a voltage divider (LDR + 10 k&Omega;) connected to the base to make a light-sensing switch.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-transistor" title="Transistor switch" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoResistanceSim V1.4 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 5 &mdash; Transistor switching</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Build a light-sensing transistor circuit in the simulator. Use a 9 V supply, an LDR in series with a 10 k&Omega; resistor as the voltage divider (base circuit), and an LED in series with a 470 &Omega; resistor as the output (collector circuit).</p>
+          <div class="task-item">
+            <div class="task-q">1a. Simulate the circuit. Adjust the LDR light level. Describe what happens to the LED in bright and dark conditions.</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">1b. Use a voltmeter to measure the voltage at the transistor base. At what voltage does the transistor switch on?</div>
+            <div class="task-space-sm">Answer here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Build a temperature-sensing circuit using a thermistor instead of the LDR. Describe what happens as the temperature is varied.</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Adjust the variable resistor in the base circuit to a lower value (around 1 k&Omega;). Describe the difference this makes to the sensitivity of the circuit.</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 7 &mdash; Transistor circuit design</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Design and simulate transistor circuits (in the simulator) that will perform the following functions. Sketch your final circuit designs below each question.</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">1. A motor switches on when it gets light.</div>
+            <div class="task-space" style="min-height:100px;">Circuit design here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A solenoid switches on when it gets cold.</div>
+            <div class="task-space" style="min-height:100px;">Circuit design here&hellip;</div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 10: Relays</h1>
+
+      <h2 class="notes-h2">Why use a relay?</h2>
+      <p class="notes-p">Many output devices &mdash; such as motors in electric cars or industrial machinery &mdash; require much higher voltages and currents than a low-power electronic circuit can supply. A <strong>relay</strong> is the link between the low-power control circuit and the high-power output circuit.</p>
+
+      <h2 class="notes-h2">How the relay works</h2>
+      <p class="notes-p">When current flows through the relay <strong>coil</strong>, it becomes an <strong>electromagnet</strong>. This attracts the metal <strong>armature</strong> (a flexible metal strip), which moves and connects or disconnects the switch contacts. This allows a small current to control a large one.</p>
+
+      <div class="key-point">Relay: a switch operated by electromagnetism. A small current in the coil switches a larger current in the output circuit.</div>
+
+      <h2 class="notes-h2">Protective diode</h2>
+      <p class="notes-p">When a relay (or motor, solenoid or buzzer) switches off, the collapsing magnetic field in the coil generates a large <strong>reverse voltage spike</strong> (back e.m.f.). This can destroy transistors and other components. A <strong>protective diode</strong> connected in reverse across the coil provides a safe path for this reverse current to flow.</p>
+
+      <div class="comp-grid">
+        <div class="comp-card-sym">
+          <svg width="80" height="80" viewBox="0 0 80 80">
+            <rect x="5" y="5" width="70" height="70" fill="none" stroke="#94a3b8" stroke-dasharray="3,3"/>
+            <rect x="12" y="20" width="22" height="40" fill="white" stroke="#334155" stroke-width="1.5"/>
+            <line x1="23" y1="5" x2="23" y2="20" stroke="#334155" stroke-width="1.5"/>
+            <line x1="23" y1="60" x2="23" y2="75" stroke="#334155" stroke-width="1.5"/>
+            <line x1="55" y1="5" x2="55" y2="25" stroke="#334155" stroke-width="1.5"/>
+            <line x1="55" y1="25" x2="62" y2="38" stroke="#334155" stroke-width="1.5"/>
+            <line x1="48" y1="48" x2="48" y2="75" stroke="#334155" stroke-width="1.5"/>
+            <line x1="62" y1="48" x2="62" y2="75" stroke="#334155" stroke-width="1.5"/>
+            <polygon points="44,50 48,48 48,52" fill="#334155"/>
+            <polygon points="58,50 62,48 62,52" fill="#334155"/>
+          </svg>
+          <div class="comp-name">Relay SPDT</div>
+          <div class="comp-unit">Coil + switch</div>
+        </div>
+      </div>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> Try it &mdash; Relay circuit</div>
+          <a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Build a relay circuit. Connect a transistor to switch the relay coil on. Connect a lamp to the relay's normally-open contacts and a higher voltage supply. Simulate and observe how activating the transistor switches the relay and turns on the lamp.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-relay" title="Relay circuit" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoResistanceSim V1.4 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 8 &mdash; Relays</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Explain in your own words why a relay is needed in some circuits.</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Simulate the relay circuit. What happens when the transistor is switched on?</div>
+            <div class="task-space-sm">Answer here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Explain the purpose of the protective diode in a relay circuit.</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A solenoid also requires a protective diode. Explain why.</div>
+            <div class="task-space">Answer here&hellip;</div>
+          </div>
+          <div class="extension-task">
+            <div class="extension-header"><div class="extension-header-text">&#x2B50; Extension task</div></div>
+            <div class="extension-body">
+              <div class="task-item">
+                <div class="task-q">5. Using a DPDT relay, design a circuit where a motor reverses direction when the relay is energised. Simulate it and sketch the circuit.</div>
+                <div class="task-space" style="min-height:100px;">Circuit design here&hellip;</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 11: Circuit Construction &mdash; Breadboards</h1>
+
+      <p class="notes-p">A <strong>prototype circuit board</strong> (breadboard) lets you build and test circuits without soldering. Components and wires can be inserted and removed easily, making it ideal for testing and fault-finding before making a permanent circuit.</p>
+
+      <h2 class="notes-h2">How a breadboard works</h2>
+      <ul class="notes-ul">
+        <li>The <strong>centre area</strong> has columns of 5 holes connected together. Each column is one node.</li>
+        <li>Components are placed across the centre gap, with each leg in a different column.</li>
+        <li>The <strong>outer rows</strong> (marked + and &minus;) run the full length and are used for power supply connections.</li>
+        <li>Wires connect different columns to create the circuit paths.</li>
+      </ul>
+
+      <div class="key-point">Always make the 0V connection before the +V connection. Check all connections before applying power.</div>
+
+      <h2 class="notes-h2">Using a digital multimeter</h2>
+      <p class="notes-p">A <strong>digital multimeter (DMM)</strong> can measure voltage, current and resistance. Key rules for using it:</p>
+
+      <table class="data-table">
+        <tr><th>Measurement</th><th>Connection</th><th>Position in circuit</th></tr>
+        <tr><td><strong>Voltage</strong></td><td>Red → VΩ, Black → COM</td><td>In <strong>parallel</strong> across component</td></tr>
+        <tr><td><strong>Current</strong></td><td>Red → mA, Black → COM</td><td>In <strong>series</strong> (break circuit)</td></tr>
+        <tr><td><strong>Resistance</strong></td><td>Red → VΩ, Black → COM</td><td>Component removed from circuit</td></tr>
+      </table>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 9 &mdash; Circuit construction</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. In the simulator, build an LED series circuit with a 9 V battery, 470 &Omega; resistor and red LED. Measure the voltage across each component using a voltmeter. Record your readings.</div>
+            <table class="data-table">
+              <tr><th>Component</th><th>Voltage (V)</th></tr>
+              <tr><td>Battery</td><td class="answer-cell"></td></tr>
+              <tr><td>Resistor</td><td class="answer-cell"></td></tr>
+              <tr><td>LED</td><td class="answer-cell"></td></tr>
+            </table>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Add an ammeter to the circuit. Record the current.</div>
+            <div class="task-space-sm">Current = ___________</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Verify Kirchhoff's voltage law using your measurements. Show your working.</div>
+            <div class="task-space">Working here&hellip;</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. Build the transistor switching circuit from Section 9 and measure the base-emitter voltage when the transistor is on. What value do you get?</div>
+            <div class="task-space-sm">Answer here&hellip;</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
     </div>
   </div>
 </div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
-<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script><script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script></body></html>
+
+<footer class="footer">
+  <span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span>
+  <a href="../../../../teacher/login.html">Teacher area</a>
+</footer>
+
+<script src="../../../../js/site.js"></script>
+<script src="../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
+
+<script>
+// Lazy-load all NoResistance simulator iframes on scroll into view
+document.addEventListener('DOMContentLoaded', function() {
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const iframe = entry.target;
+        if (!iframe.src || iframe.src === window.location.href) {
+          iframe.src = "../../../../simulators/electronics.html";
+        }
+        observer.unobserve(iframe);
+      }
+    });
+  }, { rootMargin: '200px' });
+
+  document.querySelectorAll('.sim-iframe').forEach(iframe => {
+    observer.observe(iframe);
+  });
+});
+</script>
+
+</body>
+</html>
