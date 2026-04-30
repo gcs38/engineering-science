@@ -5,56 +5,144 @@
   <title>Practical activities — Pneumatics — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .resource-page{max-width:680px;margin:0 auto;padding:32px 32px 64px;}
-    .open-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px 24px;text-align:center;margin-bottom:16px;}
-    .open-card-icon{font-size:36px;margin-bottom:10px;}
-    .open-card-title{font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:-.4px;margin-bottom:6px;}
-    .open-card-sub{font-size:13px;color:var(--gray-600);margin-bottom:20px;line-height:1.5;}
-    .open-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-400);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .open-btn:hover{background:var(--teal-600);}
-    .sim-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-800);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .sim-btn:hover{background:var(--teal-600);}
+    .resource-page{max-width:860px;margin:0 auto;padding:24px 32px 64px;}
     .back-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:20px;}
     .back-link:hover{color:var(--teal-800);}
-    .info-note{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;margin-top:12px;}
+    .sim-section{margin-bottom:28px;}
+    .sim-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:10px;}
+    .sim-title{font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:-.3px;color:var(--gray-900);}
+    .sim-actions{display:flex;gap:8px;align-items:center;}
+    .fullscreen-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--teal-800);color:var(--white);border-radius:var(--radius-md);font-size:13px;font-weight:500;text-decoration:none;transition:all var(--transition);}
+    .fullscreen-btn:hover{background:var(--teal-600);}
+    .fullscreen-btn svg{width:14px;height:14px;}
+    .sim-embed-wrap{border-radius:var(--radius-lg);overflow:hidden;border:2px solid var(--teal-100);box-shadow:0 4px 20px rgba(0,0,0,0.08);}
+    .sim-embed{width:100%;height:600px;border:none;display:block;}
+    .sim-credit{font-size:11px;color:var(--gray-400);margin-top:8px;text-align:right;}
+    .sim-credit a{color:var(--teal-400);text-decoration:none;}
+    .how-to{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:18px 20px;margin-bottom:24px;}
+    .how-to-title{font-size:13px;font-weight:500;color:var(--gray-900);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+    .how-to ol{padding-left:20px;}
+    .how-to li{font-size:13px;color:var(--gray-600);margin-bottom:6px;line-height:1.5;}
+    .manual-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:16px 18px;display:flex;align-items:center;gap:14px;text-decoration:none;transition:all var(--transition);margin-bottom:12px;}
+    .manual-card:hover{border-color:var(--teal-100);background:var(--teal-50);}
+    .manual-icon{font-size:24px;flex-shrink:0;}
+    .manual-title{font-size:13px;font-weight:500;color:var(--gray-900);margin-bottom:2px;}
+    .manual-sub{font-size:12px;color:var(--gray-400);}
+    .manual-arrow{margin-left:auto;color:var(--teal-400);font-size:16px;}
+    .info-note{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;margin-top:16px;}
   </style>
-</head><body>
-<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a><a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+</head>
+<body>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a>
+    <a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
+
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero">
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Pneumatics</div>
-      <h1 class="hero-title">🔬 Practical activities</h1>
-      <p class="hero-sub">Pneumatics</p>
-      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../index.html">Mechanisms and Structures</a> &rsaquo; <a href="index.html">Pneumatics</a> &rsaquo; <span>Practical activities</span></div>
+      <h1 class="hero-title">&#x1F52C; Practical activities</h1>
+      <p class="hero-sub">Pneumatics &mdash; interactive simulation activities</p>
+      <div class="breadcrumb">
+        <a href="../../../../index.html">Home</a> &rsaquo;
+        <a href="../index.html">Mechanisms and Structures</a> &rsaquo;
+        <a href="index.html">Pneumatics</a> &rsaquo;
+        <span>Practical activities</span>
+      </div>
     </div>
+
     <div class="content">
       <div class="resource-page">
         <a href="index.html" class="back-link">&larr; Back to Pneumatics</a>
-      <!-- EDIT BELOW: replace REPLACE_WITH_DRIVE_ID with your Google Drive file ID -->
-      <script>
-        var driveFileId = "REPLACE_WITH_DRIVE_ID";
-        if (driveFileId === "REPLACE_WITH_DRIVE_ID") {
-          document.write('<div class="open-card" style="background:var(--gray-50);border:1px dashed var(--gray-200);"><div class="open-card-icon" style="font-size:32px;">📂</div><div class="open-card-title" style="color:var(--gray-600);">Material coming soon</div><div class="open-card-sub">This resource is being prepared and will be available here shortly.</div></div>');
-        } else {
-          var url = "https://drive.google.com/file/d/" + driveFileId + "/view";
-          document.write('<div class="open-card"><div class="open-card-icon">🔬</div><div class="open-card-title">Practical activities</div><div class="open-card-sub">Hands-on activities for this topic.</div><a href="' + url + '" target="_blank" class="open-btn"><svg viewBox="0 0 16 16" fill="none"><path d="M6 2h4l4 4v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M6 2v4h4M8 8v5M6 11l2 2 2-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Open document</a></div><div class="info-note"><strong>Note:</strong> Opens in a new tab. Use your browser back button to return.</div>');
-        }
-      </script>
-      <div class="open-card" style="border-color:var(--teal-100);background:var(--teal-50);">
-        <div class="open-card-icon">🖥️</div>
-        <div class="open-card-title">NoStrain — Pneumatics simulator</div>
-        <div class="open-card-sub">Build and test pneumatic circuits with interactive components.</div>
-        <a href="https://sites.google.com/view/nostrainsim/pneumatics" target="_blank" class="sim-btn">
-          <svg viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5 14h6M8 12v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-          Launch simulator
+
+        <div class="sim-section">
+          <div class="sim-header">
+            <div class="sim-title">&#x1F5A5;&#xFE0F; No Pressure Sim &mdash; Pneumatics simulator</div>
+            <div class="sim-actions">
+              <a href="../../../../simulators/pneumatics.html" target="_blank" class="fullscreen-btn">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M2 2h5M2 2v5M14 2h-5M14 2v5M2 14h5M2 14v-5M14 14h-5M14 14v-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                Open full screen
+              </a>
+            </div>
+          </div>
+
+          <div class="how-to">
+            <div class="how-to-title">&#x2139;&#xFE0F; How to use the simulator</div>
+            <ol>
+              <li>Click and drag components from the left-hand panel onto the canvas</li>
+              <li>Click a red port on one component, then click a red port on another to connect them with a pipe</li>
+              <li>Click <strong>&#9654; SIMULATE</strong> to start the simulation &mdash; blue pipes show pressurised air</li>
+              <li>Click buttons and valves during simulation to see the circuit respond</li>
+              <li>Click <strong>&#9632; STOP</strong> to return to build mode</li>
+              <li>Use <strong>Switch to Symbols</strong> to toggle between block and ISO symbol views</li>
+            </ol>
+          </div>
+
+          <div class="sim-embed-wrap">
+            <iframe
+              src="../../../../simulators/pneumatics.html"
+              class="sim-embed"
+              title="No Pressure Sim — Pneumatics simulator"
+              allow="fullscreen">
+            </iframe>
+          </div>
+          <div class="sim-credit">
+            No Pressure Sim V2.4 &mdash; developed by <a href="https://sites.google.com/view/nostrainsim/home" target="_blank">Peter Strain, Bearsden Academy</a>
+          </div>
+        </div>
+
+        <div class="section-label" style="margin-top:8px;">Simulator user manual</div>
+        <a href="../../../../simulators/pneumatics-manual.html" target="_blank" class="manual-card">
+          <div class="manual-icon">&#x1F4D6;</div>
+          <div>
+            <div class="manual-title">No Pressure Sim &mdash; User Manual</div>
+            <div class="manual-sub">Full guide to building and simulating pneumatic circuits</div>
+          </div>
+          <div class="manual-arrow">&rsaquo;</div>
         </a>
-      </div>
-      <div class="info-note">The simulator will open in a new tab. Use your browser back button to return to this page.</div>
+
+        <div class="section-label" style="margin-top:8px;">Tasks</div>
+        <div class="how-to">
+          <div class="how-to-title">&#x270F;&#xFE0F; Simulation tasks</div>
+          <ol>
+            <li>Build a simple circuit containing an air supply, a 3/2 button valve and a single-acting cylinder. Test it using the simulate button.</li>
+            <li>Modify your circuit to use a 5/2 pilot-pilot valve and a double-acting cylinder.</li>
+            <li>Switch to symbol view. Can you identify all the ISO symbols?</li>
+            <li>Add a flow restrictor to control the speed of your cylinder. What effect does the restriction percentage have?</li>
+          </ol>
+        </div>
+
+        <div class="info-note">
+          <strong>Tip:</strong> You can save your circuit at any time using the save button in the toolbar. Load it again in a future lesson to continue your work.
+        </div>
+
       </div>
     </div>
   </div>
 </div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
-<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script><script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script></body></html>
+
+<footer class="footer">
+  <span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span>
+  <a href="../../../../teacher/login.html">Teacher area</a>
+</footer>
+
+<script src="../../../../js/site.js"></script>
+<script src="../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
+</body>
+</html>
