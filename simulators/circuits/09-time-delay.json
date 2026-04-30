@@ -1,0 +1,201 @@
+{
+  "description": "Time delay circuit \u2014 restrictor and reservoir before instroke",
+  "components": [
+    {
+      "id": "s1",
+      "type": "supply",
+      "x": 160,
+      "y": 360,
+      "rot": 0,
+      "lbl": "",
+      "restrict": 0,
+      "capped": false,
+      "manual": false,
+      "flipV": false,
+      "flipH": false,
+      "normallyOpen": false
+    },
+    {
+      "id": "t1",
+      "type": "tpiece",
+      "x": 280,
+      "y": 300,
+      "rot": 0,
+      "lbl": "",
+      "restrict": 0,
+      "capped": false,
+      "manual": false,
+      "flipV": false,
+      "flipH": false,
+      "normallyOpen": false
+    },
+    {
+      "id": "vA",
+      "type": "valve32",
+      "x": 380,
+      "y": 200,
+      "rot": 90,
+      "lbl": "A",
+      "restrict": 0,
+      "capped": false,
+      "manual": false,
+      "flipV": false,
+      "flipH": false,
+      "normallyOpen": false
+    },
+    {
+      "id": "v52",
+      "type": "valve52",
+      "x": 560,
+      "y": 300,
+      "rot": 0,
+      "lbl": "",
+      "restrict": 0,
+      "capped": false,
+      "manual": false,
+      "flipV": false,
+      "flipH": false,
+      "normallyOpen": false,
+      "startPos": false
+    },
+    {
+      "id": "c1",
+      "type": "dac",
+      "x": 760,
+      "y": 260,
+      "rot": 0,
+      "lbl": "",
+      "restrict": 0,
+      "capped": false,
+      "manual": false,
+      "flipV": false,
+      "flipH": false,
+      "normallyOpen": false
+    },
+    {
+      "id": "rB",
+      "type": "valve32roller",
+      "x": 540,
+      "y": 480,
+      "rot": 90,
+      "lbl": "A+",
+      "restrict": 0,
+      "capped": false,
+      "manual": false,
+      "flipV": false,
+      "flipH": false,
+      "normallyOpen": false
+    },
+    {
+      "id": "r1",
+      "type": "unidir",
+      "x": 680,
+      "y": 480,
+      "rot": 0,
+      "lbl": "",
+      "restrict": 0.7,
+      "capped": false,
+      "manual": false,
+      "flipV": false,
+      "flipH": false,
+      "normallyOpen": false
+    },
+    {
+      "id": "res",
+      "type": "reservoir",
+      "x": 800,
+      "y": 440,
+      "rot": 0,
+      "lbl": "",
+      "restrict": 0,
+      "capped": false,
+      "manual": false,
+      "flipV": false,
+      "flipH": false,
+      "normallyOpen": false
+    }
+  ],
+  "pipes": [
+    {
+      "p1_comp": "s1",
+      "p1_idx": 0,
+      "p2_comp": "t1",
+      "p2_idx": 0,
+      "points": [],
+      "dashed": false
+    },
+    {
+      "p1_comp": "t1",
+      "p1_idx": 1,
+      "p2_comp": "vA",
+      "p2_idx": 0,
+      "points": [],
+      "dashed": false
+    },
+    {
+      "p1_comp": "t1",
+      "p1_idx": 2,
+      "p2_comp": "v52",
+      "p2_idx": 0,
+      "points": [],
+      "dashed": false
+    },
+    {
+      "p1_comp": "vA",
+      "p1_idx": 1,
+      "p2_comp": "v52",
+      "p2_idx": 3,
+      "points": [],
+      "dashed": true
+    },
+    {
+      "p1_comp": "v52",
+      "p1_idx": 2,
+      "p2_comp": "c1",
+      "p2_idx": 0,
+      "points": [],
+      "dashed": false
+    },
+    {
+      "p1_comp": "v52",
+      "p1_idx": 1,
+      "p2_comp": "c1",
+      "p2_idx": 1,
+      "points": [],
+      "dashed": false
+    },
+    {
+      "p1_comp": "c1",
+      "p1_idx": 0,
+      "p2_comp": "rB",
+      "p2_idx": 0,
+      "points": [],
+      "dashed": false
+    },
+    {
+      "p1_comp": "rB",
+      "p1_idx": 1,
+      "p2_comp": "r1",
+      "p2_idx": 0,
+      "points": [],
+      "dashed": false
+    },
+    {
+      "p1_comp": "r1",
+      "p1_idx": 1,
+      "p2_comp": "res",
+      "p2_idx": 0,
+      "points": [],
+      "dashed": false
+    },
+    {
+      "p1_comp": "res",
+      "p1_idx": 0,
+      "p2_comp": "v52",
+      "p2_idx": 4,
+      "points": [],
+      "dashed": true
+    }
+  ],
+  "version": "V2.4"
+}

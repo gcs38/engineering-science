@@ -438,6 +438,18 @@
         makeDraggable(document.getElementById('inspector'), document.getElementById('insp-header'));
         function renderSidebarIcons() { const oldViewMode = state.viewMode; state.viewMode = 'block'; document.querySelectorAll('.comp-card').forEach(card => { const type = card.dataset.type; if(type === 'text') return; const canvas = card.querySelector('canvas'); if (!canvas) return; const ctx = canvas.getContext('2d'); ctx.clearRect(0, 0, canvas.width, canvas.height); const c = createComponent(type, 0, 0); if (!c) return; ctx.save(); ctx.translate(canvas.width / 2, canvas.height / 2); let s = 0.8; if (type.startsWith('valve52')) s = 0.6; else if (type.startsWith('valve32')) { s = 0.35; ctx.translate(0, 4); } else if (type === 'sac' || type === 'dac') { s = 0.3; ctx.translate(-20, 0); } else if (type === 'manifold') s = 0.6; else if (type === 'reservoir') s = 0.6; else if (type === 'unidir') s = 0.65; else if (type === 'shuttle') s = 0.7; else if (type === 'signal') s = 0.95; else if (type === 'bleed') s = 0.95; ctx.scale(s, s); if (c.rot) ctx.rotate(c.rot * Math.PI / 180); if (c.drawBlock) c.drawBlock(ctx); else if (c.drawSymbol) c.drawSymbol(ctx); ctx.restore(); }); state.viewMode = oldViewMode; }
         window.onload = () => { recordState(); draw(); renderSidebarIcons(); };
+        // Accept circuit data from parent page via postMessage
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'loadCircuit') {
+                try {
+                    loadStateJSON(JSON.stringify(event.data.circuit));
+                    recordState();
+                    setTimeout(fitToScreen, 100);
+                } catch(e) {
+                    console.log('postMessage circuit load error:', e);
+                }
+            }
+        });
     </script>
 </body>
 </html>

@@ -1,50 +1,571 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Course notes — Pneumatics — Engineering Science Scotland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pneumatics — Course Notes — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .resource-page{max-width:680px;margin:0 auto;padding:32px 32px 64px;}
-    .open-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px 24px;text-align:center;margin-bottom:16px;}
-    .open-card-icon{font-size:36px;margin-bottom:10px;}
-    .open-card-title{font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:-.4px;margin-bottom:6px;}
-    .open-card-sub{font-size:13px;color:var(--gray-600);margin-bottom:20px;line-height:1.5;}
-    .open-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-400);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .open-btn:hover{background:var(--teal-600);}
-    .sim-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-800);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .sim-btn:hover{background:var(--teal-600);}
-    .back-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:20px;}
-    .back-link:hover{color:var(--teal-800);}
-    .info-note{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;margin-top:12px;}
+    /* ── NOTES PAGE LAYOUT ── */
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .back-link:hover { color:var(--teal-800); }
+
+    /* ── TYPOGRAPHY ── */
+    .notes-section { margin-bottom: 36px; }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:24px 0 10px; }
+    .notes-h3 { font-size:15px; font-weight:500; color:var(--gray-900); margin:18px 0 8px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+    .warning { background:#FFF7ED; border-left:4px solid #F97316; border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#9A3412; }
+    .spec-note { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:10px 14px; margin:10px 0; font-size:12px; color:var(--gray-400); }
+    .spec-note strong { color:var(--gray-900); }
+    
+    /* ── PORT TABLE ── */
+    .port-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .port-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .port-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .port-table tr:nth-child(even) td { background:var(--gray-50); }
+
+    /* ── FORMULA BOX ── */
+    .formula-box { background:var(--white); border:2px solid var(--teal-100); border-radius:var(--radius-lg); padding:16px 20px; margin:16px 0; text-align:center; }
+    .formula { font-size:16px; font-weight:500; color:var(--teal-800); font-family:monospace; }
+    .formula-sub { font-size:12px; color:var(--gray-400); margin-top:6px; }
+
+    /* ── WORKED EXAMPLE ── */
+    .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:18px 20px; margin:16px 0; }
+    .worked-example-title { font-size:13px; font-weight:500; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+    .step { display:flex; gap:12px; margin-bottom:10px; }
+    .step-num { width:24px; height:24px; border-radius:50%; background:var(--teal-400); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .step-content { font-size:13px; color:var(--gray-600); line-height:1.6; flex:1; }
+    .step-content strong { color:var(--gray-900); }
+
+    /* ── ASSIGNMENT BOXES ── */
+    .assignment { background:var(--white); border:2px solid var(--teal-400); border-radius:var(--radius-lg); margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; display:flex; align-items:center; gap:10px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:8px; font-weight:500; }
+    .task-space { background:var(--gray-50); border:1px dashed var(--gray-200); border-radius:var(--radius-sm); min-height:60px; padding:10px; margin-top:6px; font-size:11px; color:var(--gray-400); }
+    .truth-table { width:auto; border-collapse:collapse; margin:10px 0; font-size:13px; }
+    .truth-table th { background:var(--teal-800); color:white; padding:6px 16px; text-align:center; }
+    .truth-table td { border:1px solid var(--gray-200); padding:6px 16px; text-align:center; min-width:80px; min-height:30px; }
+
+    /* ── SIMULATOR EMBED ── */
+    .sim-embed-section { margin:24px 0; }
+    .sim-embed-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+    .sim-embed-title { font-size:14px; font-weight:500; color:var(--gray-900); display:flex; align-items:center; gap:8px; }
+    .sim-embed-title span { font-size:18px; }
+    .sim-fullscreen-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 14px; background:var(--teal-800); color:white; border-radius:var(--radius-md); font-size:12px; font-weight:500; text-decoration:none; transition:all var(--transition); border:none; cursor:pointer; }
+    .sim-fullscreen-btn:hover { background:var(--teal-600); }
+    .sim-wrap { border-radius:var(--radius-lg); overflow:hidden; border:2px solid var(--teal-100); }
+    .sim-iframe { width:100%; height:520px; border:none; display:block; }
+    .sim-credit { font-size:11px; color:var(--gray-400); margin-top:5px; text-align:right; }
+    .sim-instruction { background:var(--teal-50); border:1px solid var(--teal-100); border-radius:var(--radius-md); padding:10px 14px; margin-bottom:10px; font-size:13px; color:var(--teal-800); }
+
+    /* ── SECTION DIVIDER ── */
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
   </style>
-</head><body>
-<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a><a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+</head>
+<body>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a>
+    <a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
+
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero">
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Pneumatics</div>
-      <h1 class="hero-title">📄 Course notes</h1>
-      <p class="hero-sub">Pneumatics</p>
-      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../index.html">Mechanisms and Structures</a> &rsaquo; <a href="index.html">Pneumatics</a> &rsaquo; <span>Course notes</span></div>
-    </div>
-    <div class="content">
-      <div class="resource-page">
-        <a href="index.html" class="back-link">&larr; Back to Pneumatics</a>
-      <!-- EDIT BELOW: replace REPLACE_WITH_DRIVE_ID with your Google Drive file ID -->
-      <script>
-        var driveFileId = "REPLACE_WITH_DRIVE_ID";
-        if (driveFileId === "REPLACE_WITH_DRIVE_ID") {
-          document.write('<div class="open-card" style="background:var(--gray-50);border:1px dashed var(--gray-200);"><div class="open-card-icon" style="font-size:32px;">📂</div><div class="open-card-title" style="color:var(--gray-600);">Material coming soon</div><div class="open-card-sub">This resource is being prepared and will be available here shortly.</div></div>');
-        } else {
-          var url = "https://drive.google.com/file/d/" + driveFileId + "/view";
-          document.write('<div class="open-card"><div class="open-card-icon">📄</div><div class="open-card-title">Course notes</div><div class="open-card-sub">Notes, explanations and worked examples aligned to the SQA specification.</div><a href="' + url + '" target="_blank" class="open-btn"><svg viewBox="0 0 16 16" fill="none"><path d="M6 2h4l4 4v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M6 2v4h4M8 8v5M6 11l2 2 2-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Open document</a></div><div class="info-note"><strong>Note:</strong> Opens in a new tab. Use your browser back button to return.</div>');
-        }
-      </script>
+      <h1 class="hero-title">&#x1F4A8; Pneumatics &mdash; Course Notes</h1>
+      <p class="hero-sub">Components, circuits, control systems and force calculations</p>
+      <div class="breadcrumb">
+        <a href="../../../../index.html">Home</a> &rsaquo;
+        <a href="../index.html">Mechanisms and Structures</a> &rsaquo;
+        <a href="index.html">Pneumatics</a> &rsaquo;
+        <span>Course notes</span>
       </div>
+    </div>
+
+    <div class="content">
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to Pneumatics</a>
+
+      <!-- ═══════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 1: Pneumatic Systems</h1>
+
+      <h2 class="notes-h2">Introduction</h2>
+      <p class="notes-p">Pneumatics is used widely in industry and in everyday life. You would expect to see pneumatic systems in factories, production lines and processing plants, where they are used to move, hold or shape objects.</p>
+      <p class="notes-p">Every pneumatic system makes use of <strong>compressed air</strong>. Compressed air is the air that we breathe forced into a smaller space. We can use the energy stored in this compressed air to do useful work.</p>
+      <p class="notes-p">All pneumatic systems can be described using a simple systems diagram:</p>
+
+      <div class="key-point">Input (compressed air) &rarr; Process (valves and cylinders) &rarr; Output (linear motion or force)</div>
+
+      <h2 class="notes-h2">Advantages of pneumatics</h2>
+      <p class="notes-p">Pneumatics is chosen over other systems such as hydraulics and electrics for a number of reasons:</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0 20px;">
+        <div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 14px;">
+          <div style="font-size:13px;font-weight:500;color:var(--teal-800);margin-bottom:4px;">&#x2705; Clean</div>
+          <div style="font-size:12px;color:var(--gray-600);">Uses compressed air &mdash; any leaks are harmless. Suitable for food production.</div>
+        </div>
+        <div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 14px;">
+          <div style="font-size:13px;font-weight:500;color:var(--teal-800);margin-bottom:4px;">&#x2705; Safe</div>
+          <div style="font-size:12px;color:var(--gray-600);">No sparks &mdash; suitable for paint spraying and explosive environments.</div>
+        </div>
+        <div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 14px;">
+          <div style="font-size:13px;font-weight:500;color:var(--teal-800);margin-bottom:4px;">&#x2705; Reliable</div>
+          <div style="font-size:12px;color:var(--gray-600);">Components last a long time with few breakdowns.</div>
+        </div>
+        <div style="background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 14px;">
+          <div style="font-size:13px;font-weight:500;color:var(--teal-800);margin-bottom:4px;">&#x2705; Flexible</div>
+          <div style="font-size:12px;color:var(--gray-600);">Components can be reconfigured for different tasks easily.</div>
+        </div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Assignment 1</div></div>
+        <div class="assignment-body">
+          <div class="task-item"><div class="task-q">1. Give three examples of the everyday use of pneumatics.</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">2. What is compressed air?</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">3. Give two reasons why pneumatic systems are used in industry rather than other types of system.</div><div class="task-space">Answer here&hellip;</div></div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 2: Cylinders</h1>
+      <p class="notes-p">Cylinders are the &lsquo;muscles&rsquo; of pneumatic systems. They convert the energy stored in compressed air into <strong>linear motion</strong> &mdash; movement in a straight line. There are two types you need to know.</p>
+
+      <h2 class="notes-h2">Single-acting cylinder (SAC)</h2>
+      <p class="notes-p">A single-acting cylinder requires only <strong>one air supply</strong>. When compressed air is supplied, it pushes the piston and the cylinder <strong>outstrokes</strong> (goes positive). When the air is removed, a spring inside returns the piston &mdash; the cylinder <strong>instrokes</strong> (goes negative).</p>
+      <div class="key-point">SAC symbol: a rectangle with a spring on one side and a single port.</div>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> Try it &mdash; Basic single-acting cylinder circuit</div>
+          <a href="../../../../simulators/pneumatics.html?circuit=01-basic-sac" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Press the <strong>button valve</strong> to outstroke the cylinder. Release it to see the spring return the piston.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-01" title="Basic SAC circuit"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <h2 class="notes-h2">Double-acting cylinder (DAC)</h2>
+      <p class="notes-p">A double-acting cylinder has <strong>no spring</strong>. It requires two air supplies &mdash; one to outstroke the piston and one to instroke it. This makes it more versatile as both the outstroke and instroke can be used to do work.</p>
+      <div class="key-point">DAC symbol: a rectangle with ports on both sides and no spring.</div>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> Try it &mdash; Basic double-acting cylinder circuit</div>
+          <a href="../../../../simulators/pneumatics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">This uses a 5/2 valve. Press <strong>SIMULATE</strong> then click the valve to switch it between states and see the DAC outstroke and instroke.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-11" title="Basic DAC circuit"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 3: Valves</h1>
+      <p class="notes-p">Valves control the flow of compressed air to cylinders. They can turn air on or off, change its direction, or slow it down.</p>
+
+      <h2 class="notes-h2">The 3/2 valve</h2>
+      <p class="notes-p">A <strong>3/2 valve</strong> has <strong>3 ports</strong> and <strong>2 states</strong>. A port is a connection point for a pipe. A state is a position the valve can be in.</p>
+
+      <table class="port-table">
+        <tr><th>Port</th><th>Name</th><th>Description</th></tr>
+        <tr><td><strong>1</strong></td><td>Main air</td><td>Connected to the compressed air supply (manifold)</td></tr>
+        <tr><td><strong>2</strong></td><td>Output</td><td>Connected to the cylinder or next component</td></tr>
+        <tr><td><strong>3</strong></td><td>Exhaust</td><td>Allows trapped air to escape when the cylinder instrokes</td></tr>
+      </table>
+
+      <h3 class="notes-h3">States of a 3/2 valve</h3>
+      <p class="notes-p"><strong>State 1 (Off/Unactuated):</strong> Main air is blocked. Any air in the cylinder can exhaust through port 3, allowing the cylinder to instroke.</p>
+      <p class="notes-p"><strong>State 2 (On/Actuated):</strong> Main air flows from port 1 to port 2, supplying the cylinder.</p>
+
+      <h2 class="notes-h2">Actuators</h2>
+      <p class="notes-p">An actuator is the mechanism used to change the state of a valve. Common types include:</p>
+      <ul class="notes-ul">
+        <li><strong>Push button</strong> &mdash; pressed by an operator, spring return</li>
+        <li><strong>Roller</strong> &mdash; tripped by a moving cylinder (used in automatic circuits)</li>
+        <li><strong>Pilot air</strong> &mdash; changed by a pulse of compressed air from another valve</li>
+        <li><strong>Solenoid</strong> &mdash; operated electrically</li>
+      </ul>
+
+      <h2 class="notes-h2">The 5/2 valve</h2>
+      <p class="notes-p">A <strong>5/2 valve</strong> has <strong>5 ports</strong> and <strong>2 states</strong>. It is most commonly used to control a double-acting cylinder as it provides a constant air supply to keep the piston in position.</p>
+
+      <table class="port-table">
+        <tr><th>Port</th><th>Description</th></tr>
+        <tr><td><strong>1</strong></td><td>Main air supply</td></tr>
+        <tr><td><strong>2</strong></td><td>Output &mdash; typically connected to instroke the DAC</td></tr>
+        <tr><td><strong>3</strong></td><td>Exhaust from port 2 side</td></tr>
+        <tr><td><strong>4</strong></td><td>Output &mdash; typically connected to outstroke the DAC</td></tr>
+        <tr><td><strong>5</strong></td><td>Exhaust from port 4 side</td></tr>
+      </table>
+
+      <div class="key-point">The 5/2 valve holds the piston in position because it always supplies air to one side of the cylinder, even when not being actuated.</div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 4: Simple Circuits</h1>
+
+      <h2 class="notes-h2">Car park barrier &mdash; SAC circuit</h2>
+      <p class="notes-p">A car park has a barrier controlled by a single-acting cylinder. The attendant presses a button to raise it.</p>
+      <ul class="notes-ul">
+        <li>When the button is pressed, the 3/2 valve actuates and supplies air to the SAC &mdash; the cylinder outstrokes and raises the barrier.</li>
+        <li>When released, the valve returns to its off state and the spring instrokes the piston, lowering the barrier.</li>
+      </ul>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> Car park barrier &mdash; SAC circuit</div>
+          <a href="../../../../simulators/pneumatics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Press <strong>SIMULATE</strong> then click the button valve to raise the barrier. Release to lower it.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-02" title="Car park barrier SAC"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Assignment 2 &mdash; Car park barrier (SAC)</div></div>
+        <div class="assignment-body">
+          <div class="task-item"><div class="task-q">1. Build or simulate the car park barrier circuit above. Press the button and keep it pressed. What happens?</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">2. Release the button. What happens and why?</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">3. Using correct terminology, explain how the circuit operates to raise and lower the barrier.</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">4. The attendant needs to hold the barrier up while directing traffic. What actuator could replace the push button? How would this change the operation?</div><div class="task-space">Answer here&hellip;</div></div>
+        </div>
+      </div>
+
+      <h2 class="notes-h2">T-piece &mdash; operating two cylinders</h2>
+      <p class="notes-p">A <strong>T-piece</strong> splits the airflow so that two cylinders can operate simultaneously from one valve.</p>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> T-piece &mdash; braking system circuit</div>
+          <a href="../../../../simulators/pneumatics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Press <strong>SIMULATE</strong> then click the valve. Watch how both cylinders outstroke simultaneously.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-03" title="T-piece two SACs"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 5: 5/2 Valve and DAC Circuits</h1>
+
+      <p class="notes-p">Controlling a double-acting cylinder with two 3/2 valves has problems &mdash; the piston can be pushed easily because air can exhaust back through the valve. A <strong>5/2 valve</strong> solves this by always keeping one side of the cylinder pressurised.</p>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> Car park barrier &mdash; 5/2 pilot valve circuit</div>
+          <a href="../../../../simulators/pneumatics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Press <strong>SIMULATE</strong>. Click valve A to outstroke the barrier. Click valve B to instroke it. Notice how the piston holds its position without being held.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-05" title="Car park barrier 5/2"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Assignment 3 &mdash; 5/2 valve circuit</div></div>
+        <div class="assignment-body">
+          <div class="task-item"><div class="task-q">1. Build or simulate the circuit above. Press valve A to outstroke the cylinder. Does it instroke when you release the button?</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">2. Now press valve B. What happens?</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">3. Try pushing against the piston during simulation. Compare this to the two 3/2 valve circuit. What is the difference?</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">4. Explain why the 5/2 valve is better for controlling a double-acting cylinder.</div><div class="task-space">Answer here&hellip;</div></div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 6: Restrictors</h1>
+      <p class="notes-p">Cylinders can move very quickly, which may be dangerous or cause problems in a circuit. A <strong>unidirectional restrictor</strong> slows the airflow in one direction only.</p>
+
+      <div class="spec-note"><strong>SQA spec note:</strong> You only need to know the unidirectional restrictor for N5. The bi-directional (throttle) valve is not in the specification.</div>
+
+      <p class="notes-p">The unidirectional restrictor works by:</p>
+      <ul class="notes-ul">
+        <li>Air flowing <strong>into port 1</strong> &mdash; a ball blocks the bypass route, air is forced through the restriction &rarr; <strong>slowed down</strong></li>
+        <li>Air flowing <strong>into port 2</strong> &mdash; the ball moves away, air flows freely &rarr; <strong>unrestricted</strong></li>
+      </ul>
+
+      <div class="key-point">We always restrict the <strong>exhaust air</strong> leaving a cylinder. This gives a smoother, more controlled piston movement.</div>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> Unidirectional restrictor circuit</div>
+          <a href="../../../../simulators/pneumatics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Press <strong>SIMULATE</strong> then click the valve. Notice how the cylinder outstrokes more slowly because of the restrictor. Try adjusting the restriction percentage in the Properties panel.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-08" title="Restrictor SAC"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 7: AND Control</h1>
+      <p class="notes-p">AND control uses two 3/2 valves connected in <strong>series</strong>. The cylinder will only outstroke when valve A <strong>AND</strong> valve B are pressed simultaneously. This is used as a safety feature to prevent accidents.</p>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> AND control circuit</div>
+          <a href="../../../../simulators/pneumatics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Press <strong>SIMULATE</strong>. Try pressing only valve A. Now try only valve B. Then press both at the same time.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-06" title="AND control"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Assignment 4 &mdash; AND control</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Build or simulate the AND control circuit above. Complete the truth table from your results.</div>
+            <table class="truth-table">
+              <tr><th>Valve A</th><th>Valve B</th><th>Cylinder</th></tr>
+              <tr><td>0</td><td>0</td><td></td></tr>
+              <tr><td>1</td><td>0</td><td></td></tr>
+              <tr><td>0</td><td>1</td><td></td></tr>
+              <tr><td>1</td><td>1</td><td></td></tr>
+            </table>
+          </div>
+          <div class="task-item"><div class="task-q">Explain how this circuit could be used as a safety feature on a machine.</div><div class="task-space">Answer here&hellip;</div></div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 8: OR Control</h1>
+      <p class="notes-p">OR control uses two 3/2 valves connected in <strong>parallel</strong> with a <strong>shuttle valve</strong>. The cylinder outstrokes when valve A <strong>OR</strong> valve B is pressed. This allows a circuit to be operated from more than one location.</p>
+
+      <h2 class="notes-h2">The shuttle valve</h2>
+      <p class="notes-p">A shuttle valve contains a small ball that is blown from side to side. It allows air from either input to reach the output, preventing air from backflowing into the other valve.</p>
+      <div class="warning">&#x26A0;&#xFE0F; A T-piece cannot replace a shuttle valve in an OR circuit &mdash; air would backflow through the inactive valve and exhaust, preventing the cylinder from operating.</div>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> OR control circuit</div>
+          <a href="../../../../simulators/pneumatics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Press <strong>SIMULATE</strong>. Try pressing valve A alone, then valve B alone, then both together. Record your results in the truth table below.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-07" title="OR control"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Assignment 5 &mdash; OR control</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Complete the truth table from your simulation results.</div>
+            <table class="truth-table">
+              <tr><th>Valve A</th><th>Valve B</th><th>Cylinder</th></tr>
+              <tr><td>0</td><td>0</td><td></td></tr>
+              <tr><td>1</td><td>0</td><td></td></tr>
+              <tr><td>0</td><td>1</td><td></td></tr>
+              <tr><td>1</td><td>1</td><td></td></tr>
+            </table>
+          </div>
+          <div class="task-item"><div class="task-q">Explain why a T-piece cannot be used instead of a shuttle valve in an OR circuit. Simulate it to confirm your answer.</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">Give a real-world example where OR control would be useful.</div><div class="task-space">Answer here&hellip;</div></div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 9: Time Delay</h1>
+      <p class="notes-p">A time delay is created using a <strong>unidirectional restrictor</strong> and a <strong>reservoir</strong>. The restrictor slows the air filling the reservoir, creating a pause. The larger the reservoir or the greater the restriction, the longer the delay.</p>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> Time delay circuit</div>
+          <a href="../../../../simulators/pneumatics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Press <strong>SIMULATE</strong> then click valve A. The cylinder outstrokes immediately. Watch how the reservoir fills slowly, then triggers the 5/2 valve to instroke. Adjust the restrictor to change the delay time.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-09" title="Time delay"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 10: Automatic Circuits</h1>
+      <p class="notes-p">A <strong>fully automatic circuit</strong> operates continuously without human input. It uses <strong>roller limit switches</strong> to detect when the piston has fully outstroked (positive) or instroked (negative), and automatically switches the 5/2 valve to reverse the direction.</p>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> Fully automatic reciprocating circuit</div>
+          <a href="../../../../simulators/pneumatics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Press <strong>SIMULATE</strong> and watch the cylinder automatically reciprocate. The roller valves A- and A+ detect the piston position and switch the 5/2 valve automatically.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-10" title="Automatic reciprocating"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Assignment 6 &mdash; Automatic circuit</div></div>
+        <div class="assignment-body">
+          <div class="task-item"><div class="task-q">Run the automatic circuit simulation. What are the roles of the two roller valves?</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">How would you stop the circuit without turning off the main air supply?</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">Give a real-world application where this type of automatic reciprocating motion would be useful.</div><div class="task-space">Answer here&hellip;</div></div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 11: Forces in Pneumatic Cylinders</h1>
+
+      <h2 class="notes-h2">Single-acting cylinder force</h2>
+      <p class="notes-p">The force produced by a cylinder depends on two things: the <strong>air pressure</strong> and the <strong>surface area of the piston</strong>.</p>
+
+      <div class="formula-box">
+        <div class="formula">Force (N) = Pressure (N/mm&sup2;) &times; Area (mm&sup2;)</div>
+        <div class="formula-sub">Rearranging: Pressure = Force &divide; Area &nbsp;&nbsp;|&nbsp;&nbsp; Area = Force &divide; Pressure</div>
+      </div>
+
+      <p class="notes-p">The piston is circular, so its area is calculated using:</p>
+      <div class="formula-box">
+        <div class="formula">Area = &pi;r&sup2; = &pi;(d/2)&sup2;</div>
+        <div class="formula-sub">where r = radius and d = diameter of the piston</div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked example &mdash; SAC outstroke force</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">Air is supplied to a single-acting cylinder at a pressure of 4 N/mm&sup2;. The piston diameter is 25 mm. Calculate the outstroke force.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Write down the known values:</strong><br>Pressure = 4 N/mm&sup2;, Diameter = 25 mm</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Calculate the piston area:</strong><br>Area = &pi; &times; (25/2)&sup2; = &pi; &times; 12.5&sup2; = &pi; &times; 156.25 = 491 mm&sup2;</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate the force:</strong><br>Force = Pressure &times; Area = 4 &times; 491 = <strong>1964 N = 1.96 kN</strong></div></div>
+      </div>
+
+      <h2 class="notes-h2">Double-acting cylinder forces</h2>
+      <p class="notes-p">In a double-acting cylinder, the <strong>outstroke force is greater than the instroke force</strong>. This is because during the instroke, the piston rod occupies some of the piston area, reducing the effective area the air pushes against.</p>
+
+      <div class="formula-box">
+        <div class="formula">Effective area = Piston area &minus; Piston rod area</div>
+        <div class="formula-sub">Instroke force = Pressure &times; Effective area</div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked example &mdash; DAC outstroke and instroke forces</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A DAC has a piston diameter of 25 mm and piston rod diameter of 5 mm. Pressure = 4 N/mm&sup2;.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Known values:</strong> Pressure = 4 N/mm&sup2;, Piston &#x2300; = 25 mm, Rod &#x2300; = 5 mm</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Piston area:</strong> &pi; &times; 12.5&sup2; = 491 mm&sup2;</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Outstroke force:</strong> 4 &times; 491 = <strong>1964 N</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Rod area:</strong> &pi; &times; 2.5&sup2; = 19.6 mm&sup2;</div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-content"><strong>Effective area:</strong> 491 &minus; 19.6 = 471.4 mm&sup2;</div></div>
+        <div class="step"><div class="step-num">6</div><div class="step-content"><strong>Instroke force:</strong> 4 &times; 471.4 = <strong>1885.6 N</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Assignment 7 &mdash; Force calculations</div></div>
+        <div class="assignment-body">
+          <div class="task-item"><div class="task-q">1. Calculate the outstroke force produced by a 20 mm diameter SAC at a pressure of 0.8 N/mm&sup2;.</div><div class="task-space">Working here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">2. Calculate the outstroke force produced by a 40 mm diameter cylinder at 0.3 N/mm&sup2;.</div><div class="task-space">Working here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">3. A stamping machine exerts a force of 454 N with a piston diameter of 34 mm. Calculate the air pressure required.</div><div class="task-space">Working here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">4. A force of 540 N is needed to push a packing case. The SAC has a diameter of 60 mm. What pressure is needed?</div><div class="task-space">Working here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">5. A DAC has a piston diameter of 20 mm and piston rod diameter of 6 mm. Pressure = 0.3 N/mm&sup2;. Calculate the outstroke and instroke forces.</div><div class="task-space">Working here&hellip;</div></div>
+        </div>
+      </div>
+
+    </div>
     </div>
   </div>
 </div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
-<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script><script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script></body></html>
+
+<footer class="footer">
+  <span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span>
+  <a href="../../../../teacher/login.html">Teacher area</a>
+</footer>
+
+<script src="../../../../js/site.js"></script>
+<script src="../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
+
+<script>
+// Load circuits into their respective iframes
+const circuits = {
+  "sim-01": {"description": "Basic SAC \u2014 air supply, 3/2 button valve, single-acting cylinder", "components": [{"id": "s1", "type": "supply", "x": 200, "y": 300, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "v1", "type": "valve32", "x": 380, "y": 300, "rot": 90, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "c1", "type": "sac", "x": 600, "y": 220, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}], "pipes": [{"p1_comp": "s1", "p1_idx": 0, "p2_comp": "v1", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "v1", "p1_idx": 1, "p2_comp": "c1", "p2_idx": 0, "points": [], "dashed": false}], "version": "V2.4"},
+  "sim-11": {"description": "Basic DAC \u2014 5/2 pilot-spring valve controlling a double-acting cylinder", "components": [{"id": "s1", "type": "supply", "x": 180, "y": 320, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "v52", "type": "valve52spring", "x": 420, "y": 320, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false, "startPos": false}, {"id": "c1", "type": "dac", "x": 660, "y": 280, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}], "pipes": [{"p1_comp": "s1", "p1_idx": 0, "p2_comp": "v52", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "v52", "p1_idx": 2, "p2_comp": "c1", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "v52", "p1_idx": 1, "p2_comp": "c1", "p2_idx": 1, "points": [], "dashed": false}], "version": "V2.4"},
+  "sim-02": {"description": "Car park barrier \u2014 single-acting cylinder with button 3/2 valve", "components": [{"id": "s1", "type": "supply", "x": 180, "y": 320, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "v1", "type": "valve32", "x": 370, "y": 320, "rot": 90, "lbl": "A", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "c1", "type": "sac", "x": 580, "y": 240, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}], "pipes": [{"p1_comp": "s1", "p1_idx": 0, "p2_comp": "v1", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "v1", "p1_idx": 1, "p2_comp": "c1", "p2_idx": 0, "points": [], "dashed": false}], "version": "V2.4"},
+  "sim-03": {"description": "T-piece circuit \u2014 two single-acting cylinders operated simultaneously", "components": [{"id": "s1", "type": "supply", "x": 180, "y": 380, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "v1", "type": "valve32", "x": 360, "y": 380, "rot": 90, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "t1", "type": "tpiece", "x": 520, "y": 300, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "c1", "type": "sac", "x": 680, "y": 200, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "c2", "type": "sac", "x": 680, "y": 400, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}], "pipes": [{"p1_comp": "s1", "p1_idx": 0, "p2_comp": "v1", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "v1", "p1_idx": 1, "p2_comp": "t1", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "t1", "p1_idx": 1, "p2_comp": "c1", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "t1", "p1_idx": 2, "p2_comp": "c2", "p2_idx": 0, "points": [], "dashed": false}], "version": "V2.4"},
+  "sim-05": {"description": "Car park barrier \u2014 double-acting cylinder with 5/2 pilot-pilot valve", "components": [{"id": "s1", "type": "supply", "x": 140, "y": 380, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "t1", "type": "tpiece", "x": 260, "y": 320, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "vA", "type": "valve32", "x": 380, "y": 200, "rot": 90, "lbl": "A", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "vB", "type": "valve32", "x": 380, "y": 460, "rot": 90, "lbl": "B", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "v52", "type": "valve52", "x": 580, "y": 320, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false, "startPos": false}, {"id": "c1", "type": "dac", "x": 800, "y": 280, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}], "pipes": [{"p1_comp": "s1", "p1_idx": 0, "p2_comp": "t1", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "t1", "p1_idx": 1, "p2_comp": "vA", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "t1", "p1_idx": 2, "p2_comp": "vB", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "vA", "p1_idx": 1, "p2_comp": "v52", "p2_idx": 3, "points": [], "dashed": true}, {"p1_comp": "vB", "p1_idx": 1, "p2_comp": "v52", "p2_idx": 4, "points": [], "dashed": true}, {"p1_comp": "t1", "p1_idx": 2, "p2_comp": "v52", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "v52", "p1_idx": 1, "p2_comp": "c1", "p2_idx": 1, "points": [], "dashed": false}, {"p1_comp": "v52", "p1_idx": 2, "p2_comp": "c1", "p2_idx": 0, "points": [], "dashed": false}], "version": "V2.4"},
+  "sim-06": {"description": "AND control \u2014 two 3/2 valves in series, single-acting cylinder", "components": [{"id": "s1", "type": "supply", "x": 160, "y": 300, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "vA", "type": "valve32", "x": 340, "y": 300, "rot": 90, "lbl": "A", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "vB", "type": "valve32", "x": 520, "y": 300, "rot": 90, "lbl": "B", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "c1", "type": "sac", "x": 720, "y": 220, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}], "pipes": [{"p1_comp": "s1", "p1_idx": 0, "p2_comp": "vA", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "vA", "p1_idx": 1, "p2_comp": "vB", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "vB", "p1_idx": 1, "p2_comp": "c1", "p2_idx": 0, "points": [], "dashed": false}], "version": "V2.4"},
+  "sim-07": {"description": "OR control \u2014 shuttle valve with two 3/2 valves in parallel", "components": [{"id": "s1", "type": "supply", "x": 160, "y": 360, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "t1", "type": "tpiece", "x": 280, "y": 300, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "vA", "type": "valve32", "x": 400, "y": 200, "rot": 90, "lbl": "A", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "vB", "type": "valve32", "x": 400, "y": 420, "rot": 90, "lbl": "B", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "sh", "type": "shuttle", "x": 580, "y": 300, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "c1", "type": "sac", "x": 740, "y": 260, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}], "pipes": [{"p1_comp": "s1", "p1_idx": 0, "p2_comp": "t1", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "t1", "p1_idx": 1, "p2_comp": "vA", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "t1", "p1_idx": 2, "p2_comp": "vB", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "vA", "p1_idx": 1, "p2_comp": "sh", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "vB", "p1_idx": 1, "p2_comp": "sh", "p2_idx": 1, "points": [], "dashed": false}, {"p1_comp": "sh", "p1_idx": 2, "p2_comp": "c1", "p2_idx": 0, "points": [], "dashed": false}], "version": "V2.4"},
+  "sim-08": {"description": "SAC with unidirectional restrictor to control outstroke speed", "components": [{"id": "s1", "type": "supply", "x": 180, "y": 300, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "v1", "type": "valve32", "x": 360, "y": 300, "rot": 90, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "r1", "type": "unidir", "x": 540, "y": 230, "rot": 0, "lbl": "", "restrict": 0.6, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "c1", "type": "sac", "x": 700, "y": 220, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}], "pipes": [{"p1_comp": "s1", "p1_idx": 0, "p2_comp": "v1", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "v1", "p1_idx": 1, "p2_comp": "r1", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "r1", "p1_idx": 1, "p2_comp": "c1", "p2_idx": 0, "points": [], "dashed": false}], "version": "V2.4"},
+  "sim-09": {"description": "Time delay circuit \u2014 restrictor and reservoir before instroke", "components": [{"id": "s1", "type": "supply", "x": 160, "y": 360, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "t1", "type": "tpiece", "x": 280, "y": 300, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "vA", "type": "valve32", "x": 380, "y": 200, "rot": 90, "lbl": "A", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "v52", "type": "valve52", "x": 560, "y": 300, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false, "startPos": false}, {"id": "c1", "type": "dac", "x": 760, "y": 260, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "rB", "type": "valve32roller", "x": 540, "y": 480, "rot": 90, "lbl": "A+", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "r1", "type": "unidir", "x": 680, "y": 480, "rot": 0, "lbl": "", "restrict": 0.7, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "res", "type": "reservoir", "x": 800, "y": 440, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}], "pipes": [{"p1_comp": "s1", "p1_idx": 0, "p2_comp": "t1", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "t1", "p1_idx": 1, "p2_comp": "vA", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "t1", "p1_idx": 2, "p2_comp": "v52", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "vA", "p1_idx": 1, "p2_comp": "v52", "p2_idx": 3, "points": [], "dashed": true}, {"p1_comp": "v52", "p1_idx": 2, "p2_comp": "c1", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "v52", "p1_idx": 1, "p2_comp": "c1", "p2_idx": 1, "points": [], "dashed": false}, {"p1_comp": "c1", "p1_idx": 0, "p2_comp": "rB", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "rB", "p1_idx": 1, "p2_comp": "r1", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "r1", "p1_idx": 1, "p2_comp": "res", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "res", "p1_idx": 0, "p2_comp": "v52", "p2_idx": 4, "points": [], "dashed": true}], "version": "V2.4"},
+  "sim-10": {"description": "Fully automatic reciprocating circuit \u2014 roller limit switches on DAC", "components": [{"id": "s1", "type": "supply", "x": 160, "y": 340, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "t1", "type": "tpiece", "x": 280, "y": 280, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "t2", "type": "tpiece", "x": 280, "y": 440, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "v52", "type": "valve52", "x": 500, "y": 280, "rot": 0, "lbl": "", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false, "startPos": false}, {"id": "c1", "type": "dac", "x": 720, "y": 240, "rot": 0, "lbl": "A", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "rA", "type": "valve32roller", "x": 380, "y": 440, "rot": 90, "lbl": "A-", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}, {"id": "rB", "type": "valve32roller", "x": 560, "y": 440, "rot": 90, "lbl": "A+", "restrict": 0, "capped": false, "manual": false, "flipV": false, "flipH": false, "normallyOpen": false}], "pipes": [{"p1_comp": "s1", "p1_idx": 0, "p2_comp": "t1", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "t1", "p1_idx": 1, "p2_comp": "v52", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "t1", "p1_idx": 2, "p2_comp": "t2", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "t2", "p1_idx": 1, "p2_comp": "rA", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "t2", "p1_idx": 2, "p2_comp": "rB", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "v52", "p1_idx": 2, "p2_comp": "c1", "p2_idx": 0, "points": [], "dashed": false}, {"p1_comp": "v52", "p1_idx": 1, "p2_comp": "c1", "p2_idx": 1, "points": [], "dashed": false}, {"p1_comp": "rA", "p1_idx": 1, "p2_comp": "v52", "p2_idx": 4, "points": [], "dashed": true}, {"p1_comp": "rB", "p1_idx": 1, "p2_comp": "v52", "p2_idx": 3, "points": [], "dashed": true}], "version": "V2.4"},
+};
+
+function loadCircuit(iframeId, circuitData) {
+  const iframe = document.getElementById(iframeId);
+  if (!iframe) return;
+  
+  // Build the simulator URL with the circuit pre-loaded via postMessage
+  iframe.src = "../../../../simulators/pneumatics.html";
+  
+  iframe.addEventListener('load', function() {
+    // Post the circuit data to the iframe once loaded
+    try {
+      iframe.contentWindow.postMessage({
+        type: 'loadCircuit',
+        circuit: circuitData
+      }, '*');
+    } catch(e) {
+      console.log('Circuit load:', e);
+    }
+  });
+}
+
+// Load all circuits when page is ready
+document.addEventListener('DOMContentLoaded', function() {
+  // Use IntersectionObserver to load simulators lazily as they scroll into view
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const iframe = entry.target;
+        const id = iframe.id;
+        if (circuits[id] && !iframe.src) {
+          loadCircuit(id, circuits[id]);
+        }
+        observer.unobserve(iframe);
+      }
+    });
+  }, { rootMargin: '200px' });
+
+  document.querySelectorAll('.sim-iframe').forEach(iframe => {
+    observer.observe(iframe);
+  });
+});
+</script>
+
+</body>
+</html>
