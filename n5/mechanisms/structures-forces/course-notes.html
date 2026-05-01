@@ -1,48 +1,644 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Course notes — Structures and forces — Engineering Science Scotland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Structures and Forces &mdash; Course Notes &mdash; Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .resource-page{max-width:680px;margin:0 auto;padding:32px 32px 64px;}
-    .open-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px 24px;text-align:center;margin-bottom:16px;}
-    .open-card-icon{font-size:36px;margin-bottom:10px;}
-    .open-card-title{font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:-.4px;margin-bottom:6px;}
-    .open-card-sub{font-size:13px;color:var(--gray-600);margin-bottom:20px;line-height:1.5;}
-    .open-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-400);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .open-btn:hover{background:var(--teal-600);}
-    .back-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:20px;}
-    .back-link:hover{color:var(--teal-800);}
-    .info-note{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;margin-top:12px;}
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .back-link:hover { color:var(--teal-800); }
+
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:16px 0 8px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+    .warning { background:#FFF7ED; border-left:4px solid #F97316; border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#9A3412; }
+
+    /* Force type cards */
+    .force-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:12px; margin:16px 0 20px; }
+    .force-card { background:white; border:1px solid var(--gray-200); border-radius:10px; padding:14px 12px; text-align:center; }
+    .force-card-icon { font-size:28px; margin-bottom:6px; }
+    .force-card-name { font-size:13px; font-weight:700; color:var(--gray-900); margin-bottom:4px; }
+    .force-card-desc { font-size:11px; color:var(--gray-500); line-height:1.4; }
+
+    /* Formula boxes */
+    .formula-box { background:white; border:2px solid var(--teal-100); border-radius:10px; padding:16px 20px; margin:16px 0; text-align:center; }
+    .formula { font-size:18px; font-weight:600; color:var(--teal-800); font-family:monospace; letter-spacing:.02em; }
+    .formula-sub { font-size:12px; color:var(--gray-400); margin-top:6px; }
+
+    /* Worked examples */
+    .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:18px 20px; margin:16px 0; }
+    .worked-example-title { font-size:13px; font-weight:600; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+    .step { display:flex; gap:12px; margin-bottom:10px; }
+    .step-num { width:24px; height:24px; border-radius:50%; background:var(--teal-400); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .step-content { font-size:13px; color:var(--gray-600); line-height:1.6; flex:1; }
+    .step-content strong { color:var(--gray-900); }
+
+    /* Assignment boxes */
+    .assignment { background:white; border:2px solid var(--teal-400); border-radius:12px; margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:8px; font-weight:500; }
+    .task-q-sub { font-size:13px; color:var(--gray-700); margin:6px 0 6px 16px; }
+
+    /* Answer boxes */
+    .answer-box { background:#f8faff; border:2px solid #c7d7f5; border-radius:8px; padding:10px 12px; min-height:64px; font-size:14px; color:var(--gray-700); line-height:1.7; outline:none; transition:border-color 0.2s, box-shadow 0.2s; margin-top:6px; }
+    .answer-box:focus { border-color:var(--teal-400); box-shadow:0 0 0 3px rgba(45,212,191,0.12); }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-lg { min-height:100px; }
+    .answer-label { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
+    .saved-indicator { font-size:11px; color:#10b981; font-weight:600; opacity:0; transition:opacity .3s; text-transform:none; letter-spacing:0; }
+    .saved-indicator.show { opacity:1; }
+
+    /* Working space for calculations */
+    .calc-space { background:var(--gray-50); border:1px dashed var(--gray-300); border-radius:8px; min-height:80px; padding:10px; margin-top:6px; font-size:13px; color:var(--gray-400); font-style:italic; }
+
+    /* Tables */
+    .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .data-table tr:nth-child(even) td { background:var(--gray-50); }
+
+    /* Controls */
+    .controls-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:32px 0 8px; padding:12px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; }
+    .controls-label { font-size:12px; color:var(--gray-500); font-weight:600; flex:1; min-width:140px; }
+    .ctrl-btn { display:inline-flex; align-items:center; gap:5px; padding:7px 14px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:all .15s; }
+    .ctrl-btn-clear { background:#fef2f2; color:#ef4444; }
+    .ctrl-btn-clear:hover { background:#fee2e2; }
+    .ctrl-btn-print { background:var(--teal-50); color:var(--teal-800); }
+    .ctrl-btn-print:hover { background:var(--teal-100); }
+    .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
+
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+
+    @media print {
+      .topbar, .sidebar, .footer, .controls-bar, .storage-status { display:none !important; }
+      .layout { display:block !important; }
+      .main { margin:0 !important; padding:0 !important; }
+      .answer-box { border:1.5px solid #94a3b8 !important; background:white !important; }
+      .calc-space { border:1.5px solid #94a3b8 !important; background:white !important; }
+    }
   </style>
-</head><body>
-<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a><a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+</head>
+<body>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a>
+    <a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
+
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero">
-      <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Structures and forces</div>
-      <h1 class="hero-title">&#x1F4D6; Course notes</h1>
-      <p class="hero-sub">Structures and forces</p>
-      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../index.html">Mechanisms and Structures</a> &rsaquo; <a href="index.html">Structures and forces</a> &rsaquo; <span>Course notes</span></div>
-    </div>
-    <div class="content">
-      <div class="resource-page">
-        <a href="index.html" class="back-link">&larr; Back to Structures and forces</a>
-        <div class="open-card">
-          <div class="open-card-icon">&#x1F4D6;</div>
-          <div class="open-card-title">Course notes</div>
-          <div class="open-card-sub">Comprehensive course notes covering all key content for Structures and forces at National 5.</div>
-          <a href="https://drive.google.com/file/d/1vNiQ6irJZZ0NE7U4j3C0yTZu727y7gGl/view" target="_blank" class="open-btn">
-            <svg viewBox="0 0 16 16" fill="none"><path d="M6 2h4l4 4v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M6 2v4h4M8 8v5M6 11l2 2 2-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Open document
-          </a>
-        </div>
-        <div class="info-note"><strong>Note:</strong> Opens in a new tab. Use your browser back button to return.</div>
+      <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Structures and Forces</div>
+      <h1 class="hero-title">&#x1F3D7;&#xFE0F; Structures and Forces &mdash; Course Notes</h1>
+      <p class="hero-sub">Forces, levers, moments, beams, stress, strain and vectors</p>
+      <div class="breadcrumb">
+        <a href="../../../../index.html">Home</a> &rsaquo;
+        <a href="../index.html">Mechanisms and Structures</a> &rsaquo;
+        <a href="index.html">Structures and Forces</a> &rsaquo;
+        <span>Course notes</span>
       </div>
+    </div>
+
+    <div class="content">
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to Structures and Forces</a>
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 1: Types of Force</h1>
+
+      <p class="notes-p">Forces impact structures in a variety of different ways depending on how they are applied. Forces can move a structure slightly or cause damage by changing its shape. Sometimes the changes are almost impossible to see — for example, a bridge will sag slightly when a vehicle drives over it. Forces can also make an object move or change direction.</p>
+
+      <div class="key-point">Forces are measured in <strong>Newtons (N)</strong>.</div>
+
+      <p class="notes-p">There are five types of force you need to know:</p>
+
+      <div class="force-grid">
+        <div class="force-card">
+          <div class="force-card-icon">&#x1F4A5;</div>
+          <div class="force-card-name">Compression</div>
+          <div class="force-card-desc">Forces acting to squash or shorten a structure — pushing inwards from both ends</div>
+        </div>
+        <div class="force-card">
+          <div class="force-card-icon">&#x1F9F5;</div>
+          <div class="force-card-name">Tension</div>
+          <div class="force-card-desc">Forces acting to stretch or lengthen a structure — pulling outwards from both ends</div>
+        </div>
+        <div class="force-card">
+          <div class="force-card-icon">&#x1F4CF;</div>
+          <div class="force-card-name">Bending</div>
+          <div class="force-card-desc">Forces acting across the length of a structure causing it to bend or deflect</div>
+        </div>
+        <div class="force-card">
+          <div class="force-card-icon">&#x2702;&#xFE0F;</div>
+          <div class="force-card-name">Shear</div>
+          <div class="force-card-desc">Forces acting in opposite directions across a section — like cutting or tearing</div>
+        </div>
+        <div class="force-card">
+          <div class="force-card-icon">&#x1F300;</div>
+          <div class="force-card-name">Torsion</div>
+          <div class="force-card-desc">Forces that twist or turn a structure about its own axis</div>
+        </div>
+      </div>
+
+      <h2 class="notes-h2">Compression</h2>
+      <p class="notes-p">The supporting columns of the Queensferry Crossing experience a huge downward force from the cables. The ground exerts an upward reaction force on the bases of the columns. These two opposing forces try to squash or shorten the column — the column is said to be in <strong>compression</strong>. A weightlifter's body experiences compression in the same way: the weights push down, the ground pushes up.</p>
+
+      <h2 class="notes-h2">Tension</h2>
+      <p class="notes-p">Tension is the opposite of compression. A structure under tension is being <strong>pulled apart</strong>. In a tug of war, both teams pull the rope in opposite directions — the rope is in tension. Wire ropes, cables and chains are typically in tension.</p>
+
+      <h2 class="notes-h2">Bending</h2>
+      <p class="notes-p">Structures that carry loads across their length are subject to <strong>bending forces</strong>. A weightlifting bar bends due to the downward forces of the weights at each end. Beams in buildings and bridges experience bending.</p>
+
+      <h2 class="notes-h2">Shear</h2>
+      <p class="notes-p"><strong>Shear forces</strong> can be described as tearing or cutting forces. A pair of scissors cuts a ribbon using shear — the two blades push in opposite directions across the material. A lawn mower blade shears the grass.</p>
+
+      <h2 class="notes-h2">Torsion</h2>
+      <p class="notes-p"><strong>Torsion</strong> (also called torque) forces twist or turn a structure. A screwdriver being twisted to drive a screw applies torsion to the screw. A spanner turning a bolt applies torsion to the bolt.</p>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Types of force</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">For each of the five types of force, write down two real-life examples where that force is present.</div>
+            <div class="answer-label">Compression <span class="saved-indicator" id="ind-t1a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sf-t1a" data-placeholder="Two examples of compression&hellip;"></div>
+            <div class="answer-label" style="margin-top:10px;">Tension <span class="saved-indicator" id="ind-t1b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sf-t1b" data-placeholder="Two examples of tension&hellip;"></div>
+            <div class="answer-label" style="margin-top:10px;">Bending <span class="saved-indicator" id="ind-t1c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sf-t1c" data-placeholder="Two examples of bending&hellip;"></div>
+            <div class="answer-label" style="margin-top:10px;">Shear <span class="saved-indicator" id="ind-t1d">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sf-t1d" data-placeholder="Two examples of shear&hellip;"></div>
+            <div class="answer-label" style="margin-top:10px;">Torsion <span class="saved-indicator" id="ind-t1e">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sf-t1e" data-placeholder="Two examples of torsion&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 2: Levers</h1>
+
+      <p class="notes-p">A lever is a simple machine that can <strong>amplify force</strong>. By using a pivot point (called a <strong>fulcrum</strong>) and a rigid bar, a small effort force can move a large load. The further from the fulcrum the effort is applied, the easier it is to move the load.</p>
+
+      <p class="notes-p">A lever system changes an input force and input motion into an output force and output motion:</p>
+
+      <div class="key-point">
+        <strong>Effort</strong> = the input force applied to the lever<br>
+        <strong>Load</strong> = the output force (what you are trying to move)<br>
+        <strong>Fulcrum</strong> = the pivot point the lever rotates about
+      </div>
+
+      <p class="notes-p">When a counterbalance weight is attached to one side of a lever to assist the user, it is known as a <strong>counterbalance</strong>. Cranes and diggers use counterbalances to prevent them toppling over.</p>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 3: Moments</h1>
+
+      <p class="notes-p">When a force acts at a distance from a pivot, it creates a <strong>turning effect</strong> called a <strong>moment</strong>. Moments are measured in <strong>Newton-metres (Nm)</strong>.</p>
+
+      <div class="formula-box">
+        <div class="formula">Moment (Nm) = Force (N) &times; Distance (m)</div>
+        <div class="formula-sub">Distance is measured at right angles from the line of action of the force to the pivot</div>
+      </div>
+
+      <h2 class="notes-h2">Equilibrium and the Principle of Moments</h2>
+      <p class="notes-p">When a system is in a steady, balanced state it is said to be in <strong>equilibrium</strong>. For a lever to be in equilibrium, the clockwise moments must equal the anticlockwise moments.</p>
+
+      <p class="notes-p">The <strong>Principle of Moments</strong> states:</p>
+
+      <div class="formula-box">
+        <div class="formula">&#x2211;CWM = &#x2211;ACWM</div>
+        <div class="formula-sub">Sum of Clockwise Moments = Sum of Anticlockwise Moments<br>F<sub>1</sub> &times; d<sub>1</sub> = F<sub>2</sub> &times; d<sub>2</sub></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 1 &mdash; Is the lever in equilibrium?</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A lever has a load of 400 N at 1 m from the fulcrum on the right, and an effort of 200 N at 2 m from the fulcrum on the left. Is the lever in equilibrium?</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Calculate the clockwise moment:</strong> Load &times; distance = 400 N &times; 1 m = 400 Nm</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Calculate the anticlockwise moment:</strong> Effort &times; distance = 200 N &times; 2 m = 400 Nm</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Compare:</strong> 400 Nm = 400 Nm &nbsp;&rArr;&nbsp; &#x2211;CWM = &#x2211;ACWM &nbsp;&rArr;&nbsp; <strong>The lever is in equilibrium.</strong></div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 2 &mdash; Car footbrake (Class 2 lever)</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A car footbrake lever amplifies the driver's foot force. The driver applies 5000 N at 600 mm from the fulcrum. The braking system connects 100 mm from the fulcrum. Find the braking force.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Convert distances to metres:</strong> 600 mm = 0.6 m, 100 mm = 0.1 m</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Apply the Principle of Moments:</strong> F<sub>1</sub> &times; d<sub>1</sub> = F<sub>2</sub> &times; d<sub>2</sub></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content">5000 N &times; 0.6 m = braking force &times; 0.1 m</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content">Braking force = (5000 &times; 0.6) &divide; 0.1 = <strong>30 000 N = 30 kN</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Moments calculations</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Use the Principle of Moments to find the missing force or distance in each problem. Show all working.</p>
+
+          <div class="task-item">
+            <div class="task-q">1. A lever has an effort of 300 N applied 1.5 m from the fulcrum. A load is placed 0.5 m from the fulcrum on the other side. Calculate the load.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t2a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t2a" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A load of 600 N is placed 2 m from a fulcrum. Where must an effort of 400 N be applied to balance the lever?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t2b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t2b" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A lever has two loads: 200 N at 3 m and 400 N at 1.5 m on the right. An effort is applied 2 m to the left of the fulcrum. Calculate the effort needed for equilibrium.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t2c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t2c" data-placeholder="Show working here&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 4: Free-Body Diagrams</h1>
+
+      <p class="notes-p">A <strong>free-body diagram</strong> is a simplified diagram that shows all the forces acting on a structure or body. It isolates the structure from its surroundings and replaces real components with arrows representing the forces they exert.</p>
+
+      <p class="notes-p">To draw a free-body diagram:</p>
+      <ol class="notes-ol">
+        <li>Draw a simple outline of the structure (or just a line or box)</li>
+        <li>Replace all connections and supports with arrows showing the force they exert</li>
+        <li>Label each force with a letter or value</li>
+        <li>Show downward forces (loads, weight) acting through their point of application</li>
+        <li>Show upward reaction forces at support points</li>
+      </ol>
+
+      <div class="key-point">Free-body diagrams make it easier to see and calculate all the forces acting on a structure. Every force must be accounted for — including the weight of the structure itself if stated.</div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Free-body diagrams</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Draw a free-body diagram of a car resting on flat ground. Show the downward forces (weight acting through the centre of mass) and the reaction forces at each axle. Use suitable letter labels.</div>
+            <div class="answer-label">Sketch and labels <span class="saved-indicator" id="ind-t3a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t3a" data-placeholder="Describe or sketch your free-body diagram here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A bridge is supported at two ends. A bus sits on the bridge. Draw and label the free-body diagram showing all forces including the bridge's own weight.</div>
+            <div class="answer-label">Sketch and labels <span class="saved-indicator" id="ind-t3b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t3b" data-placeholder="Describe or sketch your free-body diagram here&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 5: Beams and Reactions</h1>
+
+      <p class="notes-p">A beam is a structural member that carries loads across its length. For a horizontal beam to be in <strong>equilibrium</strong>, two conditions must be satisfied simultaneously:</p>
+
+      <div class="formula-box">
+        <div class="formula">&#x2211; upward forces = &#x2211; downward forces</div>
+      </div>
+      <div class="formula-box">
+        <div class="formula">&#x2211; clockwise moments = &#x2211; anticlockwise moments</div>
+      </div>
+
+      <p class="notes-p">The upward forces at the support points are called <strong>reactions</strong> (R<sub>1</sub> and R<sub>2</sub>). To find both reactions, we use the Principle of Moments and the force balance equation together.</p>
+
+      <h2 class="notes-h2">Method for finding beam reactions</h2>
+      <ol class="notes-ol">
+        <li><strong>Take moments about one reaction</strong> (R<sub>1</sub>) — this eliminates R<sub>1</sub> from the equation, allowing you to solve for R<sub>2</sub></li>
+        <li><strong>Use the force balance</strong> (&#x2211; up = &#x2211; down) to find R<sub>1</sub></li>
+        <li><strong>Check:</strong> R<sub>1</sub> + R<sub>2</sub> should equal the sum of all downward forces</li>
+      </ol>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Simply supported beam with three loads</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A 5 m beam is supported at each end (R<sub>1</sub> at left, R<sub>2</sub> at right). Three downward loads are applied: 10 000 N at 2 m from R<sub>1</sub>, 500 N at 2.5 m, and 6 000 N at 4 m. Beam weight is ignored.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Take moments about R<sub>1</sub></strong> (so R<sub>1</sub> drops out):<br>&#x2211;CWM = &#x2211;ACWM<br>(10 000 &times; 2) + (500 &times; 2.5) + (6 000 &times; 4) = R<sub>2</sub> &times; 5</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">20 000 + 1 250 + 24 000 = R<sub>2</sub> &times; 5<br>45 250 = R<sub>2</sub> &times; 5<br><strong>R<sub>2</sub> = 9 050 N</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Use force balance:</strong><br>R<sub>1</sub> + R<sub>2</sub> = 10 000 + 500 + 6 000 = 16 500 N<br>R<sub>1</sub> = 16 500 &minus; 9 050 = <strong>7 450 N</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Check:</strong> 7 450 + 9 050 = 16 500 N &#x2713;</div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Beam reactions</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Show all working for each problem. Remember: take moments about one reaction first, then use the force balance to find the other.</p>
+
+          <div class="task-item">
+            <div class="task-q">1. A 4 m beam is simply supported at each end. A single load of 8 000 N acts 1 m from the left support. Determine both reactions.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t4a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t4a" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A 6 m beam is supported at each end. Loads of 4 000 N at 1.5 m and 7 000 N at 4 m from the left support act downwards. Determine both reactions.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t4b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t4b" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A 7 m horizontal beam is part of a bridge structure, simply supported at A (left) and D (right). Loads of 6 000 N at 2 m, 3 000 N at 3.5 m, and 9 000 N at 5.5 m from A act downward. Determine the reactions at A and D.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t4c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t4c" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A car has a total weight of 12 000 N. The front axle (R<sub>F</sub>) is 0.8 m from the front and the rear axle (R<sub>R</sub>) is 2.7 m from the front. The centre of mass acts 1.2 m from the front. Calculate both axle reactions.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t4d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t4d" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. A contestant in a weight-lifting competition performs a barrel lift. The barrel weighs 800 N and is positioned 1.2 m from the pivot. The contestant's lifting force F acts 0.4 m from the pivot on the other side. Calculate the lifting force F.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t4e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t4e" data-placeholder="Show working here&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 6: Stress</h1>
+
+      <p class="notes-p">When engineers design structures they need to ensure that the materials chosen are strong enough. When a force is applied to part of a structure it experiences <strong>stress</strong>. A high level of stress will cause the part to fail (break).</p>
+
+      <div class="formula-box">
+        <div class="formula">Stress (&sigma;) = Force (N) &divide; Area (mm&sup2;)</div>
+        <div class="formula-sub">Stress is measured in N/mm&sup2; (also written as Nmm<sup>&minus;2</sup> or MPa). The symbol is the Greek letter sigma (&sigma;).</div>
+      </div>
+
+      <p class="notes-p">The <strong>cross-sectional area</strong> is key — a smaller cross-section experiences greater stress for the same force. This is why structural members are designed with the appropriate cross-section for their load.</p>
+
+      <div class="key-point">Rearranging: &nbsp; Force = Stress &times; Area &nbsp;&nbsp;|&nbsp;&nbsp; Area = Force &divide; Stress</div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 1 &mdash; Stress in a bar</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A square bar of 20 mm &times; 20 mm cross-section is subjected to a tensile load of 500 N. Calculate the stress in the bar.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Calculate the cross-sectional area:</strong> A = 20 &times; 20 = 400 mm&sup2;</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Calculate stress:</strong> &sigma; = F &divide; A = 500 &divide; 400 = <strong>1.25 N/mm&sup2;</strong></div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 2 &mdash; Maximum load on a column</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A column of cross-section 0.25 m&sup2; has a maximum allowable stress of 50 N/mm&sup2;. Calculate the maximum compressive load.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Convert area:</strong> 0.25 m&sup2; = 0.25 &times; 10<sup>6</sup> mm&sup2; = 250 000 mm&sup2;</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Calculate force:</strong> F = &sigma; &times; A = 50 &times; 250 000 = <strong>12 500 000 N = 12.5 MN</strong></div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 3 &mdash; Minimum wire diameter</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A steel wire supports a load of 8 kN. The stress must not exceed 200 N/mm&sup2;. Find the minimum wire diameter required.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Convert load:</strong> 8 kN = 8 000 N</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Find minimum area:</strong> A = F &divide; &sigma; = 8 000 &divide; 200 = 40 mm&sup2;</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Find diameter from circular area:</strong> A = &pi;r&sup2; = &pi;(d/2)&sup2; = &pi;d&sup2;/4<br>d&sup2; = 4A &divide; &pi; = (4 &times; 40) &divide; &pi; = 50.93<br><strong>d = 7.14 mm</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Stress calculations</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Show all working. Remember to check units carefully — forces in N, areas in mm&sup2;, stress in N/mm&sup2;.</p>
+          <div class="task-item">
+            <div class="task-q">1. A bar of steel 500 mm long has a cross-sectional area of 250 mm&sup2; and is subjected to a force of 50 kN. Determine the stress in the bar.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t5a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t5a" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A wire 4 mm in diameter is subjected to a force of 300 N. Find the stress in the wire.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t5b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t5b" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. What diameter of round steel bar is required to carry a tensile force of 10 kN if the stress must not exceed 14.14 N/mm&sup2;?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t5c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t5c" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A piece of wire 6 m long and 0.75 mm diameter is subjected to a force of 120 N. Calculate the stress.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t5d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t5d" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. A mild steel tie-bar of circular cross-section has a diameter of 30 mm and is subjected to a tensile pull of 75 kN. Find the tensile stress in the bar.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t5e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t5e" data-placeholder="Show working here&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 7: Strain</h1>
+
+      <p class="notes-p">Every material changes shape when a force is applied to it. If a compressive load is applied, the member shortens. If a tensile load is applied, it lengthens. This change in length, as a proportion of the original length, is called <strong>strain</strong>.</p>
+
+      <div class="formula-box">
+        <div class="formula">Strain (&epsilon;) = Change in length (&Delta;L) &divide; Original length (L)</div>
+        <div class="formula-sub">Strain has no units (it is a ratio). The symbol is the Greek letter epsilon (&epsilon;). Both lengths must be in the same units.</div>
+      </div>
+
+      <div class="key-point">Strain is dimensionless — there are no units. It is simply a ratio describing the proportional change in length.</div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 1 &mdash; Strain in a wire</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A steel wire of length 5 m stretches 2.5 mm when a load is applied. Calculate the strain.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Convert to consistent units:</strong> Original length = 5 m = 5000 mm, Change in length = 2.5 mm</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Calculate strain:</strong> &epsilon; = &Delta;L &divide; L = 2.5 &divide; 5000 = <strong>0.0005</strong></div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 2 &mdash; Change in length from strain</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">The strain in a concrete column must not exceed 5 &times; 10<sup>&minus;4</sup>. The column is 3 m high. Find the maximum reduction in length.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Rearrange:</strong> &Delta;L = &epsilon; &times; L = 5 &times; 10<sup>&minus;4</sup> &times; 3000 mm</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">&#x2206;L = <strong>1.5 mm</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Strain calculations</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. A wire 10 m long stretches 5 mm when a force is applied. Find the strain.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t6a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t6a" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A tow bar 1.5 m long is compressed by 4.5 mm during braking. Find the strain.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t6b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t6b" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. The allowable strain on a bar is 0.0075 and its length is 2.5 m. Find the change in length.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t6c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t6c" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. During testing, a shaft was compressed by 0.06 mm and the resulting strain was 0.00012. What was the original length of the shaft?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t6d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t6d" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. A mild steel tie-bar, 5 m long with 30 mm diameter, lengthens by 1.5 mm under a pull of 75 kN. Find the strain. (Calculate stress too if you have done Task 5 Q5.)</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t6e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t6e" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">6. A mass of 2 500 kg is hung at the end of a vertical bar (cross-section 75 mm &times; 50 mm, original length 0.5 m). The bar changes length by 2.5 mm. Calculate the stress and strain in the bar. (Use g = 9.81 m/s&sup2;.)</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t6f">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t6f" data-placeholder="Show working here&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 8: Vectors and Equilibrium</h1>
+
+      <h2 class="notes-h2">Vectors</h2>
+      <p class="notes-p">Force is a <strong>vector quantity</strong> — it has both <strong>magnitude</strong> (size) and <strong>direction</strong>. Vectors can be represented as drawn lines where:</p>
+      <ul class="notes-ul">
+        <li>The <strong>length</strong> of the line (drawn to scale) represents the magnitude of the force</li>
+        <li>The <strong>direction</strong> and arrowhead show the direction of the force</li>
+      </ul>
+
+      <p class="notes-p">When multiple forces act along the same line, they can simply be added or subtracted. For example: a cyclist pedalling with 800 N, assisted by a tailwind of 400 N, but with 200 N road friction, has a net force of 800 + 400 &minus; 200 = <strong>1 000 N</strong>.</p>
+
+      <h2 class="notes-h2">Resultant of two angled forces</h2>
+      <p class="notes-p">When two forces act at an angle to each other, their combined effect is a single force called the <strong>resultant</strong>. The resultant can be found graphically using the <strong>parallelogram of forces</strong>:</p>
+      <ol class="notes-ol">
+        <li>Choose a suitable scale and draw both force vectors from a common point C</li>
+        <li>From the tip of each vector, draw a line parallel to the other vector</li>
+        <li>The point where these lines intersect (D) completes the parallelogram</li>
+        <li>Draw the line from C to D — this is the <strong>resultant</strong></li>
+        <li>Measure the length of C to D and convert using your scale to find the magnitude</li>
+        <li>Measure the angle to find the direction</li>
+      </ol>
+
+      <div class="key-point">The <strong>equilibrant</strong> is the single force that would exactly balance the resultant — it is equal in magnitude but opposite in direction to the resultant.</div>
+
+      <h2 class="notes-h2">Conditions for Equilibrium</h2>
+      <p class="notes-p">For a structure or body to be in <strong>equilibrium</strong> (a balanced, stable state), three conditions must all be satisfied:</p>
+
+      <table class="data-table">
+        <tr><th>Condition</th><th>Meaning</th></tr>
+        <tr><td><strong>&#x2211; upward forces = &#x2211; downward forces</strong></td><td>Vertical forces balance — no net vertical movement</td></tr>
+        <tr><td><strong>&#x2211; leftward forces = &#x2211; rightward forces</strong></td><td>Horizontal forces balance — no net horizontal movement</td></tr>
+        <tr><td><strong>&#x2211; CWM = &#x2211; ACWM</strong></td><td>Moments balance — no net rotation</td></tr>
+      </table>
+
+      <h2 class="notes-h2">Graphical solution for forces in members</h2>
+      <p class="notes-p">For a structure such as a crane or frame, the forces in individual members can be found graphically by drawing a <strong>triangle of forces</strong>:</p>
+      <ol class="notes-ol">
+        <li>Identify the joint where the known load acts</li>
+        <li>Draw the known force to scale</li>
+        <li>From each end of this line, draw lines parallel to the unknown force members</li>
+        <li>Where the lines intersect completes the triangle</li>
+        <li>Measure each side to find the forces (following arrowheads round the triangle indicates compression or tension)</li>
+      </ol>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Vectors and equilibrium</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. State whether each of the following is TRUE or FALSE and explain your reasoning:</div>
+            <div class="task-q-sub">a) A body that is accelerating is in a state of equilibrium.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sf-t7a" data-placeholder="True or False? Explain&hellip;"></div>
+            <div class="task-q-sub" style="margin-top:10px;">b) For a body to be in equilibrium it is necessary only for the vector sum of forces to be zero.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sf-t7b" data-placeholder="True or False? Explain&hellip;"></div>
+            <div class="task-q-sub" style="margin-top:10px;">c) A resultant force is a single force that can replace two or more forces.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sf-t7c" data-placeholder="True or False? Explain&hellip;"></div>
+            <div class="task-q-sub" style="margin-top:10px;">d) If two or more forces are replaced by a resultant force, the effect on the body is changed.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7d">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sf-t7d" data-placeholder="True or False? Explain&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Describe the three conditions necessary for a structure or body to be in equilibrium.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t7e" data-placeholder="Describe the three conditions&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A crane fixed to a wall supports a load of 1 000 N. Using a graphical method (triangle of forces), find the forces in the compression and tension members. Use a scale of 10 mm = 200 N and sketch your triangle.</div>
+            <div class="answer-label">Sketch and answer <span class="saved-indicator" id="ind-t7f">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t7f" data-placeholder="Describe your construction and results&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A small crane on a fishing trawler lifts cases of fish. The lift weighs 1 200 N. Using a scale of 10 mm = 200 N, determine the size and direction of the forces in each crane member.</div>
+            <div class="answer-label">Working and answer <span class="saved-indicator" id="ind-t7g">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t7g" data-placeholder="Show working and results&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. A weight of 2 000 N hangs from a rope attached to a roof hook. A second rope pulls horizontally until the first rope makes 30&deg; to the vertical. Determine the horizontal pull and the force on the hook.</div>
+            <div class="answer-label">Working and answer <span class="saved-indicator" id="ind-t7h">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t7h" data-placeholder="Show working and results&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
+        <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
+      </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
+
+    </div>
     </div>
   </div>
 </div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
-<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script><script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script></body></html>
+
+<footer class="footer">
+  <span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span>
+  <a href="../../../../teacher/login.html">Teacher area</a>
+</footer>
+
+<script src="../../../../js/site.js"></script>
+<script src="../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
+
+<script>
+const STORAGE_PREFIX = 'ess_answers_';
+function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
+function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
+function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
+function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.answer-box').forEach(function(box){
+    var key=box.dataset.key;if(!key)return;
+    var saved=loadValue(key);if(saved)box.innerHTML=saved;
+    var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
+    box.addEventListener('input',ds);
+    box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
+  });
+});
+</script>
+
+</body>
+</html>
