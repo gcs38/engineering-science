@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pneumatics — Answer Sheet — Engineering Science Scotland</title>
+  <link rel="stylesheet" href="../../../../css/style.css">
+  <style>
+    .answer-sheet { max-width: 740px; margin: 0 auto; padding: 28px 32px 80px; }
+
+    /* ── STUDENT DETAILS ── */
+    .student-details {
+      background: white;
+      border: 2px solid var(--teal-400);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 28px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .student-details-title {
+      grid-column: 1 / -1;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--teal-800);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+    .detail-field label {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--gray-500);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+    }
+    .detail-input {
+      width: 100%;
+      border: 2px solid var(--gray-200);
+      border-radius: 8px;
+      padding: 9px 12px;
+      font-size: 14px;
+      font-family: inherit;
+      color: var(--gray-900);
+      outline: none;
+      transition: border-color 0.2s;
+      box-sizing: border-box;
+    }
+    .detail-input:focus { border-color: var(--teal-400); }
+
+    /* ── SECTION HEADINGS ── */
+    .sheet-h1 {
+      font-family: "DM Serif Display", serif;
+      font-size: 20px;
+      color: var(--teal-800);
+      margin: 28px 0 8px;
+      padding-bottom: 6px;
+      border-bottom: 2px solid var(--teal-100);
+    }
+    .sheet-p {
+      font-size: 13px;
+      color: var(--gray-500);
+      margin-bottom: 12px;
+      font-style: italic;
+    }
+
+    /* ── ANSWER BOXES ── */
+    .answer-group { margin-bottom: 20px; }
+    .answer-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--teal-600);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .saved-indicator {
+      font-size: 11px;
+      color: #10b981;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.3s;
+      text-transform: none;
+      letter-spacing: 0;
+    }
+    .saved-indicator.show { opacity: 1; }
+    .answer-box {
+      background: #f8faff;
+      border: 2px solid #c7d7f5;
+      border-radius: 8px;
+      padding: 12px 14px;
+      min-height: 72px;
+      font-size: 14px;
+      color: var(--gray-700);
+      line-height: 1.7;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .answer-box:focus {
+      border-color: var(--teal-400);
+      box-shadow: 0 0 0 3px rgba(45,212,191,0.15);
+    }
+    .answer-box:empty:before {
+      content: attr(data-placeholder);
+      color: #94a3b8;
+      font-style: italic;
+      pointer-events: none;
+    }
+    .answer-box-sm { min-height: 44px; }
+    .answer-box-lg { min-height: 120px; }
+
+    /* ── DIVIDER ── */
+    .sheet-divider { height: 2px; background: linear-gradient(to right, var(--teal-100), transparent); margin: 28px 0; border: none; }
+
+    /* ── CONTROLS ── */
+    .controls-bar {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 32px 0 8px;
+      padding: 14px 16px;
+      background: var(--gray-50);
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+    }
+    .controls-label { font-size: 12px; color: var(--gray-500); font-weight: 600; flex: 1; min-width: 160px; }
+    .ctrl-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: all 0.15s;
+    }
+    .ctrl-btn-clear { background: #fef2f2; color: #ef4444; }
+    .ctrl-btn-clear:hover { background: #fee2e2; }
+    .ctrl-btn-print { background: var(--teal-50); color: var(--teal-800); }
+    .ctrl-btn-print:hover { background: var(--teal-100); }
+    .storage-status { font-size: 11px; color: var(--gray-400); margin-top: 5px; text-align: right; }
+
+    /* ── PRINT STYLES ── */
+    @media print {
+      .topbar, .sidebar, .footer, .controls-bar, .storage-status, .saved-indicator { display: none !important; }
+      .layout { display: block !important; }
+      .main { margin: 0 !important; padding: 0 !important; }
+      .hero { display: none !important; }
+      .answer-sheet { padding: 0 !important; max-width: 100% !important; }
+      .answer-box { border: 1.5px solid #94a3b8 !important; background: white !important; min-height: 60px !important; }
+      .answer-box-sm { min-height: 36px !important; }
+      .answer-box-lg { min-height: 100px !important; }
+      .print-header { display: block !important; }
+      .sheet-h1 { font-size: 16px !important; }
+      .student-details { border: 1.5px solid #334155 !important; }
+    }
+    .print-header {
+      display: none;
+      text-align: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #334155;
+    }
+    .print-header h1 { font-size: 18px; font-weight: 900; margin: 0 0 4px; }
+    .print-header p { font-size: 12px; color: #64748b; margin: 0; }
+  </style>
+</head>
+<body>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a>
+    <a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar"></nav>
+  <div class="main">
+    <div class="hero">
+      <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Pneumatics</div>
+      <h1 class="hero-title">&#x1F4DD; Pneumatics &mdash; Answer Sheet</h1>
+      <p class="hero-sub">Type your answers here as you work through the course notes. Your answers are saved automatically in this browser.</p>
+      <div class="breadcrumb">
+        <a href="../../../../index.html">Home</a> &rsaquo;
+        <a href="../index.html">Mechanisms and Structures</a> &rsaquo;
+        <a href="index.html">Pneumatics</a> &rsaquo;
+        <span>Answer sheet</span>
+      </div>
+    </div>
+
+    <div class="content">
+    <div class="answer-sheet">
+
+      <!-- Print header (hidden on screen, shown when printing) -->
+      <div class="print-header">
+        <h1>Pneumatics &mdash; Answer Sheet</h1>
+        <p>Engineering Science Scotland &mdash; National 5</p>
+      </div>
+
+      <!-- Student details -->
+      <div class="student-details">
+        <div class="student-details-title">&#x1F393; Student details</div>
+        <div class="detail-field">
+          <label for="student-name">Full name</label>
+          <input type="text" id="student-name" class="detail-input" placeholder="Your full name" autocomplete="name">
+        </div>
+        <div class="detail-field">
+          <label for="student-class">Class</label>
+          <input type="text" id="student-class" class="detail-input" placeholder="e.g. 4A1">
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════ -->
+      <h1 class="sheet-h1">Section 1 &mdash; Pneumatic Systems</h1>
+      <p class="sheet-p">Use alongside the Pneumatics course notes — Section 1</p>
+
+      <div class="answer-group">
+        <div class="answer-label">What is a pneumatic system? <span class="saved-indicator" id="ind-p1a">&#x2713; Saved</span></div>
+        <div class="answer-box" contenteditable="true" data-key="pneu-p1a" data-placeholder="Type your answer here&hellip;"></div>
+      </div>
+      <div class="answer-group">
+        <div class="answer-label">Name the main components of a pneumatic system <span class="saved-indicator" id="ind-p1b">&#x2713; Saved</span></div>
+        <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-p1b" data-placeholder="Type your answer here&hellip;"></div>
+      </div>
+      <div class="answer-group">
+        <div class="answer-label">State two advantages of pneumatics over hydraulics <span class="saved-indicator" id="ind-p1c">&#x2713; Saved</span></div>
+        <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-p1c" data-placeholder="Type your answer here&hellip;"></div>
+      </div>
+
+      <hr class="sheet-divider">
+
+      <!-- ═══════════════════════════════ -->
+      <h1 class="sheet-h1">Section 2 &mdash; Cylinders and Valves</h1>
+      <p class="sheet-p">Use alongside the Pneumatics course notes — Section 2</p>
+
+      <div class="answer-group">
+        <div class="answer-label">Describe the difference between a single-acting and double-acting cylinder <span class="saved-indicator" id="ind-p2a">&#x2713; Saved</span></div>
+        <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-p2a" data-placeholder="Type your answer here&hellip;"></div>
+      </div>
+      <div class="answer-group">
+        <div class="answer-label">Explain the function of a 3/2 valve <span class="saved-indicator" id="ind-p2b">&#x2713; Saved</span></div>
+        <div class="answer-box" contenteditable="true" data-key="pneu-p2b" data-placeholder="Type your answer here&hellip;"></div>
+      </div>
+      <div class="answer-group">
+        <div class="answer-label">Explain the function of a 5/2 valve <span class="saved-indicator" id="ind-p2c">&#x2713; Saved</span></div>
+        <div class="answer-box" contenteditable="true" data-key="pneu-p2c" data-placeholder="Type your answer here&hellip;"></div>
+      </div>
+      <div class="answer-group">
+        <div class="answer-label">What is the purpose of a flow restrictor? <span class="saved-indicator" id="ind-p2d">&#x2713; Saved</span></div>
+        <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-p2d" data-placeholder="Type your answer here&hellip;"></div>
+      </div>
+
+      <hr class="sheet-divider">
+
+      <!-- ═══════════════════════════════ -->
+      <h1 class="sheet-h1">Section 3 &mdash; Logic and Control</h1>
+      <p class="sheet-p">Use alongside the Pneumatics course notes — Section 3</p>
+
+      <div class="answer-group">
+        <div class="answer-label">Describe how a shuttle valve creates OR logic <span class="saved-indicator" id="ind-p3a">&#x2713; Saved</span></div>
+        <div class="answer-box" contenteditable="true" data-key="pneu-p3a" data-placeholder="Type your answer here&hellip;"></div>
+      </div>
+      <div class="answer-group">
+        <div class="answer-label">Describe how two valves in series create AND logic <span class="saved-indicator" id="ind-p3b">&#x2713; Saved</span></div>
+        <div class="answer-box" contenteditable="true" data-key="pneu-p3b" data-placeholder="Type your answer here&hellip;"></div>
+      </div>
+      <div class="answer-group">
+        <div class="answer-label">What is a pilot-operated valve and when would you use one? <span class="saved-indicator" id="ind-p3c">&#x2713; Saved</span></div>
+        <div class="answer-box" contenteditable="true" data-key="pneu-p3c" data-placeholder="Type your answer here&hellip;"></div>
+      </div>
+
+      <hr class="sheet-divider">
+
+      <!-- ═══════════════════════════════ -->
+      <h1 class="sheet-h1">Section 4 &mdash; Circuit Design</h1>
+      <p class="sheet-p">Use alongside the Pneumatics course notes — Section 4</p>
+
+      <div class="answer-group">
+        <div class="answer-label">Describe a real-world application of a pneumatic system <span class="saved-indicator" id="ind-p4a">&#x2713; Saved</span></div>
+        <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-p4a" data-placeholder="Type your answer here&hellip;"></div>
+      </div>
+      <div class="answer-group">
+        <div class="answer-label">Notes and calculations <span class="saved-indicator" id="ind-p4b">&#x2713; Saved</span></div>
+        <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-p4b" data-placeholder="Use this space for any additional notes or working&hellip;"></div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print / Save as PDF</button>
+        <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
+      </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
+
+    </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span>
+  <a href="../../../../teacher/login.html">Teacher area</a>
+</footer>
+
+<script src="../../../../js/site.js"></script>
+<script src="../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
+
+<script>
+const STORAGE_PREFIX = 'ess_answers_';
+
+function saveValue(key, value) {
+  try {
+    localStorage.setItem(STORAGE_PREFIX + key, value);
+    updateStatusBar();
+  } catch(e) { console.warn('localStorage unavailable:', e); }
+}
+
+function loadValue(key) {
+  try { return localStorage.getItem(STORAGE_PREFIX + key) || ''; }
+  catch(e) { return ''; }
+}
+
+function showSavedIndicator(key) {
+  const box = document.querySelector('[data-key="' + key + '"]');
+  if (!box) return;
+  const label = box.previousElementSibling;
+  if (!label) return;
+  const ind = label.querySelector('.saved-indicator');
+  if (!ind) return;
+  ind.classList.add('show');
+  setTimeout(function() { ind.classList.remove('show'); }, 2000);
+}
+
+function updateStatusBar() {
+  const el = document.getElementById('storage-status');
+  if (el) el.textContent = 'Last saved: ' + new Date().toLocaleTimeString();
+}
+
+function clearAllAnswers() {
+  if (!confirm('Clear all saved answers on this page? This cannot be undone.')) return;
+  document.querySelectorAll('.answer-box').forEach(function(box) {
+    const key = box.dataset.key;
+    if (key) { localStorage.removeItem(STORAGE_PREFIX + key); box.innerHTML = ''; }
+  });
+  ['student-name','student-class'].forEach(function(id) {
+    localStorage.removeItem(STORAGE_PREFIX + id);
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  const el = document.getElementById('storage-status');
+  if (el) el.textContent = 'Answers cleared.';
+}
+
+function debounce(fn, delay) {
+  var timer;
+  return function() {
+    clearTimeout(timer);
+    var args = arguments, ctx = this;
+    timer = setTimeout(function() { fn.apply(ctx, args); }, delay);
+  };
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+
+  // Restore and save answer boxes
+  document.querySelectorAll('.answer-box').forEach(function(box) {
+    const key = box.dataset.key;
+    if (!key) return;
+    const saved = loadValue(key);
+    if (saved) box.innerHTML = saved;
+    const debouncedSave = debounce(function() {
+      saveValue(key, box.innerHTML);
+      showSavedIndicator(key);
+    }, 800);
+    box.addEventListener('input', debouncedSave);
+    box.addEventListener('blur', function() {
+      saveValue(key, box.innerHTML);
+      showSavedIndicator(key);
+    });
+  });
+
+  // Restore and save name/class fields
+  ['student-name', 'student-class'].forEach(function(id) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const saved = loadValue(id);
+    if (saved) el.value = saved;
+    el.addEventListener('input', debounce(function() {
+      saveValue(id, el.value);
+    }, 500));
+  });
+
+});
+</script>
+
+</body>
+</html>
