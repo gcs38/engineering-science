@@ -5,18 +5,27 @@
   <title>Pneumatics — Answer Sheet — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .answer-sheet { max-width: 740px; margin: 0 auto; padding: 28px 32px 80px; }
+    .answer-sheet { max-width: 760px; margin: 0 auto; padding: 24px 32px 80px; }
 
-    /* ── STUDENT DETAILS ── */
+    .notice-box {
+      background: #fefce8;
+      border: 1.5px solid #fde047;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-bottom: 20px;
+      font-size: 13px;
+      color: #78350f;
+    }
+
     .student-details {
       background: white;
       border: 2px solid var(--teal-400);
-      border-radius: 12px;
-      padding: 20px 24px;
-      margin-bottom: 28px;
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 14px;
     }
     .student-details-title {
       grid-column: 1 / -1;
@@ -25,7 +34,7 @@
       color: var(--teal-800);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
     }
     .detail-field label {
       display: block;
@@ -39,8 +48,8 @@
     .detail-input {
       width: 100%;
       border: 2px solid var(--gray-200);
-      border-radius: 8px;
-      padding: 9px 12px;
+      border-radius: 7px;
+      padding: 8px 12px;
       font-size: 14px;
       font-family: inherit;
       color: var(--gray-900);
@@ -50,31 +59,13 @@
     }
     .detail-input:focus { border-color: var(--teal-400); }
 
-    /* ── SECTION HEADINGS ── */
-    .sheet-h1 {
-      font-family: "DM Serif Display", serif;
-      font-size: 20px;
-      color: var(--teal-800);
-      margin: 28px 0 8px;
-      padding-bottom: 6px;
-      border-bottom: 2px solid var(--teal-100);
-    }
-    .sheet-p {
-      font-size: 13px;
-      color: var(--gray-500);
-      margin-bottom: 12px;
-      font-style: italic;
-    }
-
-    /* ── ANSWER BOXES ── */
-    .answer-group { margin-bottom: 20px; }
-    .answer-label {
+    .answer-section-title {
       font-size: 12px;
       font-weight: 700;
       color: var(--teal-600);
       text-transform: uppercase;
       letter-spacing: 0.5px;
-      margin-bottom: 5px;
+      margin-bottom: 6px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -89,15 +80,16 @@
       letter-spacing: 0;
     }
     .saved-indicator.show { opacity: 1; }
+
     .answer-box {
       background: #f8faff;
       border: 2px solid #c7d7f5;
       border-radius: 8px;
-      padding: 12px 14px;
-      min-height: 72px;
+      padding: 14px 16px;
+      min-height: 480px;
       font-size: 14px;
       color: var(--gray-700);
-      line-height: 1.7;
+      line-height: 1.8;
       outline: none;
       transition: border-color 0.2s, box-shadow 0.2s;
       width: 100%;
@@ -105,7 +97,7 @@
     }
     .answer-box:focus {
       border-color: var(--teal-400);
-      box-shadow: 0 0 0 3px rgba(45,212,191,0.15);
+      box-shadow: 0 0 0 3px rgba(45,212,191,0.12);
     }
     .answer-box:empty:before {
       content: attr(data-placeholder);
@@ -113,31 +105,25 @@
       font-style: italic;
       pointer-events: none;
     }
-    .answer-box-sm { min-height: 44px; }
-    .answer-box-lg { min-height: 120px; }
 
-    /* ── DIVIDER ── */
-    .sheet-divider { height: 2px; background: linear-gradient(to right, var(--teal-100), transparent); margin: 28px 0; border: none; }
-
-    /* ── CONTROLS ── */
     .controls-bar {
       display: flex;
       gap: 10px;
       align-items: center;
       flex-wrap: wrap;
-      margin: 32px 0 8px;
-      padding: 14px 16px;
+      margin: 16px 0 6px;
+      padding: 12px 14px;
       background: var(--gray-50);
       border: 1px solid var(--gray-200);
-      border-radius: 10px;
+      border-radius: 8px;
     }
-    .controls-label { font-size: 12px; color: var(--gray-500); font-weight: 600; flex: 1; min-width: 160px; }
+    .controls-label { font-size: 12px; color: var(--gray-500); font-weight: 600; flex: 1; min-width: 140px; }
     .ctrl-btn {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 8px 16px;
-      border-radius: 8px;
+      gap: 5px;
+      padding: 7px 14px;
+      border-radius: 7px;
       font-size: 12px;
       font-weight: 600;
       cursor: pointer;
@@ -148,31 +134,26 @@
     .ctrl-btn-clear:hover { background: #fee2e2; }
     .ctrl-btn-print { background: var(--teal-50); color: var(--teal-800); }
     .ctrl-btn-print:hover { background: var(--teal-100); }
-    .storage-status { font-size: 11px; color: var(--gray-400); margin-top: 5px; text-align: right; }
+    .storage-status { font-size: 11px; color: var(--gray-400); text-align: right; }
 
-    /* ── PRINT STYLES ── */
     @media print {
-      .topbar, .sidebar, .footer, .controls-bar, .storage-status, .saved-indicator { display: none !important; }
+      .topbar, .sidebar, .footer, .controls-bar, .storage-status, .saved-indicator, .notice-box { display: none !important; }
       .layout { display: block !important; }
       .main { margin: 0 !important; padding: 0 !important; }
       .hero { display: none !important; }
       .answer-sheet { padding: 0 !important; max-width: 100% !important; }
-      .answer-box { border: 1.5px solid #94a3b8 !important; background: white !important; min-height: 60px !important; }
-      .answer-box-sm { min-height: 36px !important; }
-      .answer-box-lg { min-height: 100px !important; }
       .print-header { display: block !important; }
-      .sheet-h1 { font-size: 16px !important; }
-      .student-details { border: 1.5px solid #334155 !important; }
+      .student-details { border: 1.5px solid #334155 !important; padding: 10px 14px !important; margin-bottom: 14px !important; }
+      .answer-box { border: 1.5px solid #94a3b8 !important; background: white !important; min-height: 600px !important; }
     }
     .print-header {
       display: none;
-      text-align: center;
-      margin-bottom: 20px;
-      padding-bottom: 12px;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
       border-bottom: 2px solid #334155;
     }
-    .print-header h1 { font-size: 18px; font-weight: 900; margin: 0 0 4px; }
-    .print-header p { font-size: 12px; color: #64748b; margin: 0; }
+    .print-header h1 { font-size: 16px; font-weight: 900; margin: 0 0 2px; }
+    .print-header p { font-size: 11px; color: #64748b; margin: 0; }
   </style>
 </head>
 <body>
@@ -200,7 +181,7 @@
     <div class="hero">
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Pneumatics</div>
       <h1 class="hero-title">&#x1F4DD; Pneumatics &mdash; Answer Sheet</h1>
-      <p class="hero-sub">Type your answers here as you work through the course notes. Your answers are saved automatically in this browser.</p>
+      <p class="hero-sub">Your answers are saved automatically in this browser.</p>
       <div class="breadcrumb">
         <a href="../../../../index.html">Home</a> &rsaquo;
         <a href="../index.html">Mechanisms and Structures</a> &rsaquo;
@@ -212,13 +193,15 @@
     <div class="content">
     <div class="answer-sheet">
 
-      <!-- Print header (hidden on screen, shown when printing) -->
       <div class="print-header">
         <h1>Pneumatics &mdash; Answer Sheet</h1>
         <p>Engineering Science Scotland &mdash; National 5</p>
       </div>
 
-      <!-- Student details -->
+      <div class="notice-box">
+        &#x26A0;&#xFE0F; <strong>If you are completing set tasks, please clearly label / number your answers.</strong>
+      </div>
+
       <div class="student-details">
         <div class="student-details-title">&#x1F393; Student details</div>
         <div class="detail-field">
@@ -231,85 +214,22 @@
         </div>
       </div>
 
-      <!-- ═══════════════════════════════ -->
-      <h1 class="sheet-h1">Section 1 &mdash; Pneumatic Systems</h1>
-      <p class="sheet-p">Use alongside the Pneumatics course notes — Section 1</p>
+      <div class="answer-section-title">
+        Your answers
+        <span class="saved-indicator" id="ind-main">&#x2713; Saved</span>
+      </div>
+      <div class="answer-box"
+           contenteditable="true"
+           data-key="pneu-answers"
+           data-placeholder="Type your answers here. Label or number each answer clearly so it matches the question &mdash; e.g. Q1a, Q1b, Q2 etc."
+           role="textbox"
+           aria-multiline="true"
+           aria-label="Answer space"></div>
 
-      <div class="answer-group">
-        <div class="answer-label">What is a pneumatic system? <span class="saved-indicator" id="ind-p1a">&#x2713; Saved</span></div>
-        <div class="answer-box" contenteditable="true" data-key="pneu-p1a" data-placeholder="Type your answer here&hellip;"></div>
-      </div>
-      <div class="answer-group">
-        <div class="answer-label">Name the main components of a pneumatic system <span class="saved-indicator" id="ind-p1b">&#x2713; Saved</span></div>
-        <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-p1b" data-placeholder="Type your answer here&hellip;"></div>
-      </div>
-      <div class="answer-group">
-        <div class="answer-label">State two advantages of pneumatics over hydraulics <span class="saved-indicator" id="ind-p1c">&#x2713; Saved</span></div>
-        <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-p1c" data-placeholder="Type your answer here&hellip;"></div>
-      </div>
-
-      <hr class="sheet-divider">
-
-      <!-- ═══════════════════════════════ -->
-      <h1 class="sheet-h1">Section 2 &mdash; Cylinders and Valves</h1>
-      <p class="sheet-p">Use alongside the Pneumatics course notes — Section 2</p>
-
-      <div class="answer-group">
-        <div class="answer-label">Describe the difference between a single-acting and double-acting cylinder <span class="saved-indicator" id="ind-p2a">&#x2713; Saved</span></div>
-        <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-p2a" data-placeholder="Type your answer here&hellip;"></div>
-      </div>
-      <div class="answer-group">
-        <div class="answer-label">Explain the function of a 3/2 valve <span class="saved-indicator" id="ind-p2b">&#x2713; Saved</span></div>
-        <div class="answer-box" contenteditable="true" data-key="pneu-p2b" data-placeholder="Type your answer here&hellip;"></div>
-      </div>
-      <div class="answer-group">
-        <div class="answer-label">Explain the function of a 5/2 valve <span class="saved-indicator" id="ind-p2c">&#x2713; Saved</span></div>
-        <div class="answer-box" contenteditable="true" data-key="pneu-p2c" data-placeholder="Type your answer here&hellip;"></div>
-      </div>
-      <div class="answer-group">
-        <div class="answer-label">What is the purpose of a flow restrictor? <span class="saved-indicator" id="ind-p2d">&#x2713; Saved</span></div>
-        <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-p2d" data-placeholder="Type your answer here&hellip;"></div>
-      </div>
-
-      <hr class="sheet-divider">
-
-      <!-- ═══════════════════════════════ -->
-      <h1 class="sheet-h1">Section 3 &mdash; Logic and Control</h1>
-      <p class="sheet-p">Use alongside the Pneumatics course notes — Section 3</p>
-
-      <div class="answer-group">
-        <div class="answer-label">Describe how a shuttle valve creates OR logic <span class="saved-indicator" id="ind-p3a">&#x2713; Saved</span></div>
-        <div class="answer-box" contenteditable="true" data-key="pneu-p3a" data-placeholder="Type your answer here&hellip;"></div>
-      </div>
-      <div class="answer-group">
-        <div class="answer-label">Describe how two valves in series create AND logic <span class="saved-indicator" id="ind-p3b">&#x2713; Saved</span></div>
-        <div class="answer-box" contenteditable="true" data-key="pneu-p3b" data-placeholder="Type your answer here&hellip;"></div>
-      </div>
-      <div class="answer-group">
-        <div class="answer-label">What is a pilot-operated valve and when would you use one? <span class="saved-indicator" id="ind-p3c">&#x2713; Saved</span></div>
-        <div class="answer-box" contenteditable="true" data-key="pneu-p3c" data-placeholder="Type your answer here&hellip;"></div>
-      </div>
-
-      <hr class="sheet-divider">
-
-      <!-- ═══════════════════════════════ -->
-      <h1 class="sheet-h1">Section 4 &mdash; Circuit Design</h1>
-      <p class="sheet-p">Use alongside the Pneumatics course notes — Section 4</p>
-
-      <div class="answer-group">
-        <div class="answer-label">Describe a real-world application of a pneumatic system <span class="saved-indicator" id="ind-p4a">&#x2713; Saved</span></div>
-        <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-p4a" data-placeholder="Type your answer here&hellip;"></div>
-      </div>
-      <div class="answer-group">
-        <div class="answer-label">Notes and calculations <span class="saved-indicator" id="ind-p4b">&#x2713; Saved</span></div>
-        <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-p4b" data-placeholder="Use this space for any additional notes or working&hellip;"></div>
-      </div>
-
-      <!-- Controls -->
       <div class="controls-bar">
         <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
         <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print / Save as PDF</button>
-        <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
+        <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear answers</button>
       </div>
       <div class="storage-status" id="storage-status">Last saved: never</div>
 
@@ -331,10 +251,8 @@
 const STORAGE_PREFIX = 'ess_answers_';
 
 function saveValue(key, value) {
-  try {
-    localStorage.setItem(STORAGE_PREFIX + key, value);
-    updateStatusBar();
-  } catch(e) { console.warn('localStorage unavailable:', e); }
+  try { localStorage.setItem(STORAGE_PREFIX + key, value); updateStatusBar(); }
+  catch(e) { console.warn('localStorage unavailable:', e); }
 }
 
 function loadValue(key) {
@@ -342,34 +260,28 @@ function loadValue(key) {
   catch(e) { return ''; }
 }
 
-function showSavedIndicator(key) {
-  const box = document.querySelector('[data-key="' + key + '"]');
-  if (!box) return;
-  const label = box.previousElementSibling;
-  if (!label) return;
-  const ind = label.querySelector('.saved-indicator');
+function updateStatusBar() {
+  var el = document.getElementById('storage-status');
+  if (el) el.textContent = 'Last saved: ' + new Date().toLocaleTimeString();
+}
+
+function showSavedIndicator() {
+  var ind = document.getElementById('ind-main');
   if (!ind) return;
   ind.classList.add('show');
   setTimeout(function() { ind.classList.remove('show'); }, 2000);
 }
 
-function updateStatusBar() {
-  const el = document.getElementById('storage-status');
-  if (el) el.textContent = 'Last saved: ' + new Date().toLocaleTimeString();
-}
-
 function clearAllAnswers() {
   if (!confirm('Clear all saved answers on this page? This cannot be undone.')) return;
-  document.querySelectorAll('.answer-box').forEach(function(box) {
-    const key = box.dataset.key;
-    if (key) { localStorage.removeItem(STORAGE_PREFIX + key); box.innerHTML = ''; }
-  });
+  var box = document.querySelector('.answer-box');
+  if (box) { localStorage.removeItem(STORAGE_PREFIX + 'pneu-answers'); box.innerHTML = ''; }
   ['student-name','student-class'].forEach(function(id) {
     localStorage.removeItem(STORAGE_PREFIX + id);
-    const el = document.getElementById(id);
+    var el = document.getElementById(id);
     if (el) el.value = '';
   });
-  const el = document.getElementById('storage-status');
+  var el = document.getElementById('storage-status');
   if (el) el.textContent = 'Answers cleared.';
 }
 
@@ -383,35 +295,28 @@ function debounce(fn, delay) {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-
-  // Restore and save answer boxes
-  document.querySelectorAll('.answer-box').forEach(function(box) {
-    const key = box.dataset.key;
-    if (!key) return;
-    const saved = loadValue(key);
+  var box = document.querySelector('.answer-box');
+  if (box) {
+    var saved = loadValue('pneu-answers');
     if (saved) box.innerHTML = saved;
-    const debouncedSave = debounce(function() {
-      saveValue(key, box.innerHTML);
-      showSavedIndicator(key);
+    var debouncedSave = debounce(function() {
+      saveValue('pneu-answers', box.innerHTML);
+      showSavedIndicator();
     }, 800);
     box.addEventListener('input', debouncedSave);
     box.addEventListener('blur', function() {
-      saveValue(key, box.innerHTML);
-      showSavedIndicator(key);
+      saveValue('pneu-answers', box.innerHTML);
+      showSavedIndicator();
     });
-  });
+  }
 
-  // Restore and save name/class fields
   ['student-name', 'student-class'].forEach(function(id) {
-    const el = document.getElementById(id);
+    var el = document.getElementById(id);
     if (!el) return;
-    const saved = loadValue(id);
+    var saved = loadValue(id);
     if (saved) el.value = saved;
-    el.addEventListener('input', debounce(function() {
-      saveValue(id, el.value);
-    }, 500));
+    el.addEventListener('input', debounce(function() { saveValue(id, el.value); }, 500));
   });
-
 });
 </script>
 
