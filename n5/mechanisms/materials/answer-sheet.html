@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Materials &mdash; Answer Sheet &mdash; Engineering Science Scotland</title>
+  <link rel="stylesheet" href="../../../../css/style.css">
+  <style>
+    .answer-sheet { max-width: 760px; margin: 0 auto; padding: 24px 32px 80px; }
+    .notice-box { background: #fefce8; border: 1.5px solid #fde047; border-radius: 8px; padding: 10px 14px; margin-bottom: 20px; font-size: 13px; color: #78350f; }
+    .student-details { background: white; border: 2px solid var(--teal-400); border-radius: 10px; padding: 16px 20px; margin-bottom: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .student-details-title { grid-column: 1 / -1; font-size: 13px; font-weight: 700; color: var(--teal-800); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+    .detail-field label { display: block; font-size: 11px; font-weight: 700; color: var(--gray-500); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 5px; }
+    .detail-input { width: 100%; border: 2px solid var(--gray-200); border-radius: 7px; padding: 8px 12px; font-size: 14px; font-family: inherit; color: var(--gray-900); outline: none; transition: border-color 0.2s; box-sizing: border-box; }
+    .detail-input:focus { border-color: var(--teal-400); }
+    .answer-section-title { font-size: 12px; font-weight: 700; color: var(--teal-600); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+    .saved-indicator { font-size: 11px; color: #10b981; font-weight: 600; opacity: 0; transition: opacity 0.3s; text-transform: none; letter-spacing: 0; }
+    .saved-indicator.show { opacity: 1; }
+    .answer-box { background: #f8faff; border: 2px solid #c7d7f5; border-radius: 8px; padding: 14px 16px; min-height: 480px; font-size: 14px; color: var(--gray-700); line-height: 1.8; outline: none; transition: border-color 0.2s, box-shadow 0.2s; width: 100%; box-sizing: border-box; }
+    .answer-box:focus { border-color: var(--teal-400); box-shadow: 0 0 0 3px rgba(45,212,191,0.12); }
+    .answer-box:empty:before { content: attr(data-placeholder); color: #94a3b8; font-style: italic; pointer-events: none; }
+    .controls-bar { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 16px 0 6px; padding: 12px 14px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 8px; }
+    .controls-label { font-size: 12px; color: var(--gray-500); font-weight: 600; flex: 1; min-width: 140px; }
+    .ctrl-btn { display: inline-flex; align-items: center; gap: 5px; padding: 7px 14px; border-radius: 7px; font-size: 12px; font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; }
+    .ctrl-btn-clear { background: #fef2f2; color: #ef4444; }
+    .ctrl-btn-clear:hover { background: #fee2e2; }
+    .ctrl-btn-print { background: var(--teal-50); color: var(--teal-800); }
+    .ctrl-btn-print:hover { background: var(--teal-100); }
+    .storage-status { font-size: 11px; color: var(--gray-400); text-align: right; }
+    @media print {
+      .topbar, .sidebar, .footer, .controls-bar, .storage-status, .saved-indicator, .notice-box { display: none !important; }
+      .layout { display: block !important; }
+      .main { margin: 0 !important; padding: 0 !important; }
+      .hero { display: none !important; }
+      .answer-sheet { padding: 0 !important; max-width: 100% !important; }
+      .print-header { display: block !important; }
+      .student-details { border: 1.5px solid #334155 !important; padding: 10px 14px !important; margin-bottom: 14px !important; }
+      .answer-box { border: 1.5px solid #94a3b8 !important; background: white !important; min-height: 600px !important; }
+    }
+    .print-header { display: none; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #334155; }
+    .print-header h1 { font-size: 16px; font-weight: 900; margin: 0 0 2px; }
+    .print-header p { font-size: 11px; color: #64748b; margin: 0; }
+  </style>
+</head>
+<body>
+<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a><a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+<div class="layout">
+  <nav class="sidebar" id="sidebar"></nav>
+  <div class="main">
+    <div class="hero">
+      <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Materials</div>
+      <h1 class="hero-title">&#x1F4DD; Materials &mdash; Answer Sheet</h1>
+      <p class="hero-sub">Your answers are saved automatically in this browser.</p>
+      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../index.html">Mechanisms and Structures</a> &rsaquo; <a href="index.html">Materials</a> &rsaquo; <span>Answer sheet</span></div>
+    </div>
+    <div class="content">
+    <div class="answer-sheet">
+      <div class="print-header"><h1>Materials &mdash; Answer Sheet</h1><p>Engineering Science Scotland &mdash; National 5</p></div>
+      <div class="notice-box">&#x26A0;&#xFE0F; <strong>If you are completing set tasks, please clearly label / number your answers.</strong></div>
+      <div class="student-details">
+        <div class="student-details-title">&#x1F393; Student details</div>
+        <div class="detail-field"><label for="student-name">Full name</label><input type="text" id="student-name" class="detail-input" placeholder="Your full name" autocomplete="name"></div>
+        <div class="detail-field"><label for="student-class">Class</label><input type="text" id="student-class" class="detail-input" placeholder="e.g. 4A1"></div>
+      </div>
+      <div class="answer-section-title">Your answers <span class="saved-indicator" id="ind-main">&#x2713; Saved</span></div>
+      <div class="answer-box" contenteditable="true" data-key="materials-answers" data-placeholder="Type your answers here. Label or number each answer clearly so it matches the question &mdash; e.g. Q1a, Q1b, Q2 etc." role="textbox" aria-multiline="true" aria-label="Answer space"></div>
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print / Save as PDF</button>
+        <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear answers</button>
+      </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
+    </div>
+    </div>
+  </div>
+</div>
+<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
+<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
+<script>
+const STORAGE_PREFIX='ess_answers_';
+function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
+function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
+function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
+function showSavedIndicator(){var i=document.getElementById('ind-main');if(!i)return;i.classList.add('show');setTimeout(function(){i.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;var b=document.querySelector('.answer-box');if(b){localStorage.removeItem(STORAGE_PREFIX+'materials-answers');b.innerHTML='';}['student-name','student-class'].forEach(function(id){localStorage.removeItem(STORAGE_PREFIX+id);var el=document.getElementById(id);if(el)el.value='';});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);}}
+document.addEventListener('DOMContentLoaded',function(){
+  var box=document.querySelector('.answer-box');
+  if(box){var s=loadValue('materials-answers');if(s)box.innerHTML=s;var ds=debounce(function(){saveValue('materials-answers',box.innerHTML);showSavedIndicator();},800);box.addEventListener('input',ds);box.addEventListener('blur',function(){saveValue('materials-answers',box.innerHTML);showSavedIndicator();});}
+  ['student-name','student-class'].forEach(function(id){var el=document.getElementById(id);if(!el)return;var s=loadValue(id);if(s)el.value=s;el.addEventListener('input',debounce(function(){saveValue(id,el.value);},500));});
+});
+</script>
+</body>
+</html>
