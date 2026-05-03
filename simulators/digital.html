@@ -1,0 +1,2016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoNANDSenseSim V1.3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #fdf2f8; font-family: 'Roboto', sans-serif; user-select: none; }
+        canvas { display: block; background-color: #ffffff; cursor: crosshair; touch-action: none; border-radius: 24px; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        
+        .submenu { max-height: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; transform: translateY(-10px); }
+        .submenu.open { max-height: 1000px; opacity: 1; transform: translateY(0); margin-top: 0.5rem; margin-bottom: 0.5rem; } 
+        .rotate-icon { transition: transform 0.3s ease; }
+        .rotate-icon.open { transform: rotate(180deg); }
+
+        .comp-card { display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 8px; background: white; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 1px 3px rgba(0,0,0,.06); cursor: grab; transition: all .2s; height: 80px; user-select: none; position: relative; overflow: hidden; }
+        .comp-card:hover { border-color: #f472b6; box-shadow: 0 4px 12px rgba(244,114,182,.2); background: #fdf2f8; }
+        .comp-card:active { cursor: grabbing; box-shadow: 0 0 0 2px #db2777; }
+        .card-label { font-size: 11px; font-weight: 700; color: #475569; text-align: center; line-height: 1.3; margin-top: 4px; }
+        .card-icon { width: 100%; flex: 1; display: flex; align-items: center; justify-content: center; margin-bottom: 4px; pointer-events: none; }
+        
+        .preview-box { width: 100%; flex: 1; border: 2px solid #334155; background: #f8fafc; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 900; color: #334155; border-radius: 8px; margin-bottom: 4px; pointer-events: none; }
+
+        .tool-btn { padding: 10px; border-radius: 50%; color: #64748b; background: transparent; border: none; cursor: pointer; transition: all .15s; display: flex; align-items: center; justify-content: center; }
+        .tool-btn:hover { background: #f1f5f9; color: #1e293b; }
+        .tool-btn:disabled { opacity: .35; cursor: not-allowed; hover:bg-transparent; }
+
+        .acc-btn { width: 100%; padding: 12px 20px; display: flex; justify-content: space-between; align-items: center; font-size: 14px; font-weight: 800; color: #1e293b; background: white; border-radius: 50px; border: 1px solid transparent; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,.06); transition: all .2s; }
+        .acc-btn:hover { background: #fdf2f8; color: #be185d; border-color: #fbcfe8; }
+        .acc-btn[aria-expanded="true"] { background: #fce7f3; color: #9d174d; }
+
+        .truth-cell-0 { background:#fef2f2; color:#dc2626; font-weight:700; }
+        .truth-cell-1 { background:#f0fdf4; color:#16a34a; font-weight:700; }
+
+        /* === PRINT REPORT STYLES === */
+        @media print {
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+            html, body { display: block !important; height: auto !important; width: 100% !important; overflow: visible !important; background: white !important; }
+            body > :not(#printArea) { display: none !important; }
+            #printArea { display: block !important; width: 100% !important; background: white !important; padding: 0; margin: 0; }
+            @page { margin: 10mm; size: A4 portrait; }
+            .print-section { page-break-inside: avoid; margin-bottom: 20px; display: block !important; width: 100%; }
+            .print-img { width: 100%; max-height: 350px; object-fit: contain; display: block; margin: 0 auto; border-radius: 8px; border: 1px solid #e2e8f0; }
+        }
+    </style>
+</head>
+<body class="flex h-screen flex-col text-slate-800 bg-[#fdf2f8]">
+
+    <div class="h-16 bg-[#fdf2f8] z-20 flex items-center justify-between px-6 border-b border-pink-100/50 shrink-0">
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-gradient-to-br from-rose-600 via-pink-500 to-fuchsia-500 text-white rounded-xl shadow-lg hover:scale-105 transition-transform flex items-center justify-center border border-white/20 select-none">
+                    <svg class="w-8 h-8 drop-shadow-sm" viewBox="0 0 50 30" fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M10 5 L24 5 Q35 5 35 15 Q35 25 24 25 L10 25 Z" fill="none"/>
+                        <circle cx="39" cy="15" r="4" fill="none"/>
+                        <line x1="2" y1="10" x2="10" y2="10"/>
+                        <line x1="2" y1="20" x2="10" y2="20"/>
+                        <line x1="43" y1="15" x2="49" y2="15"/>
+                    </svg>
+                </div>
+                <h1 class="text-xl font-bold text-slate-700 tracking-tight whitespace-nowrap">NoNANDSense<span class="text-pink-600">Sim</span> <span class="text-xs text-slate-400 font-mono ml-1">V1.3</span></h1>
+            </div>
+            
+            <div class="h-8 w-px bg-slate-300 mx-2 rounded-full"></div>
+
+            <div class="flex items-center gap-2 bg-white/60 p-1.5 rounded-full shadow-sm border border-white">
+                <button id="btnSave" class="tool-btn" title="Save Circuit">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V7l-4-4zm-5 16v-4a2 2 0 012-2h0a2 2 0 012 2v4M9 3v4a2 2 0 002 2h4a2 2 h4a2 2 0 002-2V3"/></svg>
+                </button>
+                <label class="tool-btn cursor-pointer" title="Load Circuit">
+                    <input type="file" id="fileLoad" accept=".json" class="hidden">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                </label>
+                <button id="btnExport" class="tool-btn" title="Export Image (I)">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                </button>
+                <div class="h-5 w-px bg-slate-300 mx-1"></div>
+                <button id="btnReport" class="tool-btn text-pink-600 hover:text-pink-800" title="Generate Report" onclick="generateReport()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                </button>
+            </div>
+            
+            <div class="flex items-center gap-1 bg-white p-1 rounded-full shadow-sm border border-slate-200 ml-4">
+                <button id="btnEditMode" onclick="setSimMode(false)" class="px-4 py-1.5 rounded-full text-[11px] font-black tracking-wider transition-all bg-slate-500 text-white shadow-md">EDIT</button>
+                <button id="btnSimMode" onclick="setSimMode(true)" class="px-4 py-1.5 rounded-full text-[11px] font-black tracking-wider transition-all text-slate-500 hover:bg-slate-100">SIMULATE</button>
+            </div>
+            
+            <div id="simLiveIndicator" class="hidden items-center gap-2 px-3 py-1.5 bg-white/60 rounded-full shadow-sm border border-white text-xs font-bold text-pink-600 tracking-wider ml-2" style="display: none;">
+                <span class="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></span> LIVE SIMULATION
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 bg-white/60 p-1.5 rounded-full shadow-sm border border-white">
+                <button id="btnUndo" class="tool-btn" title="Undo (Ctrl+Z)" disabled><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg></button>
+                <button id="btnRedo" class="tool-btn" title="Redo (Ctrl+Y)" disabled><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6"/></svg></button>
+                <div class="h-5 w-px bg-slate-300 mx-1"></div>
+                <button id="btnZoomIn" type="button" class="tool-btn" title="Zoom In"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></button>
+                <button id="btnZoomOut" type="button" class="tool-btn" title="Zoom Out"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg></button>
+                <button id="btnHome" type="button" class="tool-btn" title="Fit to Screen"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg></button>
+                
+                <div class="h-5 w-px bg-slate-300 mx-1"></div>
+                <button id="btnDelete" type="button" class="tool-btn text-rose-500 hover:bg-rose-100" title="Delete (Del)">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                    </svg>
+                </button>
+                <button id="btnClear" type="button" class="tool-btn text-slate-400 hover:text-slate-600" title="Clear All">✕</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-1 overflow-hidden p-4 gap-4 relative">
+        <div id="sidebarContainer" class="relative flex-shrink-0 z-20 transition-[width] duration-300 ease-in-out" style="width: 18rem;">
+            <div id="sidebarContent" class="w-72 h-full flex flex-col overflow-y-auto pr-2 space-y-3 transition-opacity duration-300 pb-6">
+                
+                <div class="sticky top-0 bg-[#fdf2f8] z-20 pb-1 pt-1">
+                    <div class="relative group">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-slate-400 group-focus-within:text-pink-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                        </div>
+                        <input type="text" id="compSearch" class="block w-full p-3 pl-10 text-sm text-slate-900 border border-transparent rounded-full bg-white shadow-sm focus:ring-2 focus:ring-pink-200 focus:border-pink-500 focus:outline-none placeholder-slate-400 transition-all hover:bg-white/80 hover:shadow-md" placeholder="Search components...">
+                    </div>
+                </div>
+
+                <div class="sidebar-group">
+                    <button class="acc-btn" onclick="toggleMenu('menu-gates', this)" aria-expanded="true"><span>Logic Gates</span><span class="rotate-icon open text-slate-400 text-[10px]">▼</span></button>
+                    <div id="menu-gates" class="submenu open grid grid-cols-2 gap-2">
+                        <div class="comp-card" data-type="AND"><div class="card-icon"><svg viewBox="0 0 50 30" class="w-11 h-7"><path d="M8 4 L24 4 Q38 4 38 15 Q38 26 24 26 L8 26 Z" fill="white" stroke="#334155" stroke-width="2"/><line x1="0" y1="10" x2="8" y2="10" stroke="#334155" stroke-width="2"/><line x1="0" y1="20" x2="8" y2="20" stroke="#334155" stroke-width="2"/><line x1="38" y1="15" x2="50" y2="15" stroke="#334155" stroke-width="2"/><text x="18" y="19" font-size="8" font-family="Roboto" font-weight="900" fill="#334155" text-anchor="middle">AND</text></svg></div><span class="card-label">AND Gate</span></div>
+                        <div class="comp-card" data-type="OR"><div class="card-icon"><svg viewBox="0 0 50 30" class="w-11 h-7"><path d="M6 4 Q14 4 24 4 Q40 4 40 15 Q40 26 24 26 Q14 26 6 26 Q12 15 6 4 Z" fill="white" stroke="#334155" stroke-width="2"/><line x1="0" y1="10" x2="9" y2="10" stroke="#334155" stroke-width="2"/><line x1="0" y1="20" x2="9" y2="20" stroke="#334155" stroke-width="2"/><line x1="40" y1="15" x2="50" y2="15" stroke="#334155" stroke-width="2"/><text x="22" y="19" font-size="8" font-family="Roboto" font-weight="900" fill="#334155" text-anchor="middle">OR</text></svg></div><span class="card-label">OR Gate</span></div>
+                        <div class="comp-card" data-type="NOT"><div class="card-icon"><svg viewBox="0 0 50 30" class="w-11 h-7"><polygon points="8,4 34,15 8,26" fill="white" stroke="#334155" stroke-width="2"/><circle cx="37" cy="15" r="3" fill="white" stroke="#334155" stroke-width="2"/><line x1="0" y1="15" x2="8" y2="15" stroke="#334155" stroke-width="2"/><line x1="40" y1="15" x2="50" y2="15" stroke="#334155" stroke-width="2"/><text x="18" y="19" font-size="8" font-family="Roboto" font-weight="900" fill="#334155" text-anchor="middle">NOT</text></svg></div><span class="card-label">NOT Gate</span></div>
+                        <div class="comp-card" data-type="NAND"><div class="card-icon"><svg viewBox="0 0 50 30" class="w-11 h-7"><path d="M8 4 L22 4 Q35 4 35 15 Q35 26 22 26 L8 26 Z" fill="white" stroke="#334155" stroke-width="2"/><circle cx="38" cy="15" r="3" fill="white" stroke="#334155" stroke-width="2"/><line x1="0" y1="10" x2="8" y2="10" stroke="#334155" stroke-width="2"/><line x1="0" y1="20" x2="8" y2="20" stroke="#334155" stroke-width="2"/><line x1="41" y1="15" x2="50" y2="15" stroke="#334155" stroke-width="2"/><text x="18" y="19" font-size="7" font-family="Roboto" font-weight="900" fill="#334155" text-anchor="middle">NAND</text></svg></div><span class="card-label">NAND Gate</span></div>
+                        <div class="comp-card" data-type="NOR"><div class="card-icon"><svg viewBox="0 0 50 30" class="w-11 h-7"><path d="M6 4 Q14 4 22 4 Q36 4 36 15 Q36 26 22 26 Q14 26 6 26 Q12 15 6 4 Z" fill="white" stroke="#334155" stroke-width="2"/><circle cx="39" cy="15" r="3" fill="white" stroke="#334155" stroke-width="2"/><line x1="0" y1="10" x2="9" y2="10" stroke="#334155" stroke-width="2"/><line x1="0" y1="20" x2="9" y2="20" stroke="#334155" stroke-width="2"/><line x1="42" y1="15" x2="50" y2="15" stroke="#334155" stroke-width="2"/><text x="20" y="19" font-size="7" font-family="Roboto" font-weight="900" fill="#334155" text-anchor="middle">NOR</text></svg></div><span class="card-label">NOR Gate</span></div>
+                        <div class="comp-card" data-type="XOR"><div class="card-icon"><svg viewBox="0 0 50 30" class="w-11 h-7"><path d="M8 4 Q16 4 26 4 Q42 4 42 15 Q42 26 26 26 Q16 26 8 26 Q14 15 8 4 Z" fill="white" stroke="#334155" stroke-width="2"/><path d="M4 4 Q10 15 4 26" fill="none" stroke="#334155" stroke-width="2"/><line x1="0" y1="10" x2="10" y2="10" stroke="#334155" stroke-width="2"/><line x1="0" y1="20" x2="10" y2="20" stroke="#334155" stroke-width="2"/><line x1="42" y1="15" x2="50" y2="15" stroke="#334155" stroke-width="2"/><text x="23" y="19" font-size="8" font-family="Roboto" font-weight="900" fill="#334155" text-anchor="middle">XOR</text></svg></div><span class="card-label">XOR Gate</span></div>
+                        <div class="comp-card" data-type="XNOR"><div class="card-icon"><svg viewBox="0 0 50 30" class="w-11 h-7"><path d="M8 4 Q16 4 24 4 Q38 4 38 15 Q38 26 24 26 Q16 26 8 26 Q14 15 8 4 Z" fill="white" stroke="#334155" stroke-width="2"/><path d="M4 4 Q10 15 4 26" fill="none" stroke="#334155" stroke-width="2"/><circle cx="41" cy="15" r="3" fill="white" stroke="#334155" stroke-width="2"/><line x1="0" y1="10" x2="10" y2="10" stroke="#334155" stroke-width="2"/><line x1="0" y1="20" x2="10" y2="20" stroke="#334155" stroke-width="2"/><line x1="44" y1="15" x2="50" y2="15" stroke="#334155" stroke-width="2"/><text x="22" y="19" font-size="6" font-family="Roboto" font-weight="900" fill="#334155" text-anchor="middle">XNOR</text></svg></div><span class="card-label">XNOR Gate</span></div>
+                    </div>
+                </div>
+
+                <div class="sidebar-group">
+                    <button class="acc-btn" onclick="toggleMenu('menu-inp', this)" aria-expanded="true"><span>Inputs</span><span class="rotate-icon open text-slate-400 text-[10px]">▼</span></button>
+                    <div id="menu-inp" class="submenu open grid grid-cols-2 gap-2">
+                        <div class="comp-card" data-type="switch">
+                            <div class="card-icon"><svg viewBox="0 0 44 24" class="w-10 h-6"><rect x="2" y="6" width="40" height="12" rx="6" fill="#e2e8f0" stroke="#64748b" stroke-width="1.5"/><circle cx="14" cy="12" r="7" fill="#94a3b8" stroke="#64748b" stroke-width="1"/><text x="22" y="16" text-anchor="middle" font-size="7" font-family="Roboto" font-weight="700" fill="#475569">OFF</text></svg></div>
+                            <span class="card-label">Toggle Switch</span>
+                        </div>
+                        <div class="comp-card" data-type="clock">
+                            <div class="card-icon"><svg viewBox="0 0 44 24" class="w-10 h-6"><rect x="2" y="4" width="40" height="16" rx="4" fill="#fce7f3" stroke="#db2777" stroke-width="1.5"/><polyline points="8,16 8,8 16,8 16,16 24,16 24,8 32,8 32,16 38,16" stroke="#db2777" stroke-width="1.5" fill="none" stroke-linecap="square"/></svg></div>
+                            <span class="card-label">Clock Pulse</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-group">
+                    <button class="acc-btn" onclick="toggleMenu('menu-out', this)" aria-expanded="true"><span>Outputs</span><span class="rotate-icon open text-slate-400 text-[10px]">▼</span></button>
+                    <div id="menu-out" class="submenu open grid grid-cols-2 gap-2">
+                        <div class="comp-card" data-type="LED">
+                            <div class="card-icon">
+                                <svg viewBox="0 0 30 30" class="w-7 h-7">
+                                    <circle cx="15" cy="15" r="12" fill="#fce7f3" stroke="#db2777" stroke-width="2"/>
+                                    <text x="15" y="19" font-family="Roboto" font-weight="900" font-size="12" fill="#be185d" text-anchor="middle">1</text>
+                                    <line x1="3" y1="15" x2="0" y2="15" stroke="#db2777" stroke-width="2"/>
+                                </svg>
+                            </div>
+                            <span class="card-label">Logic Indicator</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-group">
+                    <button class="acc-btn" onclick="toggleMenu('menu-note', this)" aria-expanded="true"><span>Annotations</span><span class="rotate-icon open text-slate-400 text-[10px]">▼</span></button>
+                    <div id="menu-note" class="submenu open grid grid-cols-2 gap-2">
+                        <div class="comp-card" data-type="text"><div class="preview-box pointer-events-none">Aa</div><span class="card-label">Text Note</span></div>
+                    </div>
+                </div>
+
+                <!-- Analysis Moved to Bottom -->
+                <div class="sidebar-group">
+                    <button class="acc-btn bg-pink-50/50" onclick="toggleMenu('menu-analysis', this)" aria-expanded="true">
+                        <span>Circuit Analysis</span><span class="rotate-icon open text-slate-400 text-[10px]">▼</span>
+                    </button>
+                    <div id="menu-analysis" class="submenu open grid grid-cols-1 gap-2">
+                        <button class="comp-card !h-auto !flex-row justify-start p-3 hover:bg-pink-50 transition-colors w-full cursor-pointer" onclick="showTruthTable()">
+                            <div class="text-left flex-1">
+                                <div class="text-[11px] font-black text-slate-700 tracking-wide uppercase">Global Truth Table</div>
+                                <div class="text-[9px] font-medium text-slate-500 mt-0.5">Generate exhaustive logic map & equations</div>
+                            </div>
+                        </button>
+                        <button class="comp-card !h-auto !flex-row justify-start p-3 hover:bg-pink-50 transition-colors w-full cursor-pointer" onclick="showICWiring()">
+                            <div class="text-left flex-1">
+                                <div class="text-[11px] font-black text-slate-700 tracking-wide uppercase">7400 Series Circuit</div>
+                                <div class="text-[9px] font-medium text-slate-500 mt-0.5">Generate physical schematic diagrams</div>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-white rounded-2xl p-4 shadow-sm border border-pink-100 text-[11px] text-slate-500 space-y-1.5 leading-relaxed">
+                    <p class="font-bold text-slate-600 text-xs uppercase tracking-wide mb-2">How to Wire</p>
+                    <p>🖱 <b>Click</b> a port to start wiring.</p>
+                    <p>📍 <b>Click canvas</b> to add corners.</p>
+                    <p>🔗 <b>Click target port</b> to complete bridging. Input-to-Input bridging is supported natively!</p>
+                </div>
+            </div>
+            
+            <button onclick="toggleSidebar()" class="absolute top-1/2 -right-4 w-8 h-8 bg-white border border-pink-200 rounded-full shadow-md flex items-center justify-center text-slate-500 hover:text-pink-600 hover:scale-110 z-50 transform -translate-y-1/2 transition-all">
+                <svg id="sidebarIcon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+        </div>
+
+        <div class="flex-1 relative bg-white rounded-3xl shadow-sm border border-white overflow-hidden flex flex-col" id="canvasContainer">
+            <div class="flex-1 relative overflow-hidden">
+                <canvas id="simCanvas" class="absolute inset-0 w-full h-full"></canvas>
+
+                <!-- Inspector Panel (Now draggable) -->
+                <div id="inspector" class="hidden absolute bg-white/95 p-4 rounded-2xl shadow-xl border border-pink-100/50 w-72 backdrop-blur-md transition-all z-20 flex flex-col max-h-[90vh]" style="top: 24px; right: 24px; min-height: 45px;">
+                    <div id="insp-header" class="cursor-move flex justify-between items-center pb-2 border-b border-slate-100 shrink-0 select-none">
+                        <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider">Properties</h3>
+                        <div class="flex gap-2 items-center">
+                            <button onclick="const w=document.getElementById('insp-wrapper'); w.classList.toggle('hidden'); this.querySelector('svg').style.transform=w.classList.contains('hidden')?'rotate(180deg)':'rotate(0deg)';" class="text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer" title="Minimise">
+                                <svg class="w-4 h-4 transition-transform" style="transform:rotate(0deg);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div id="insp-wrapper" class="flex flex-col flex-1 overflow-hidden mt-3">
+                        <div class="overflow-y-auto pr-2 space-y-3 flex-1">
+                            <div id="insp-props" class="hidden pt-2">
+                                 <label class="text-[10px] font-bold text-slate-500 uppercase">Label</label>
+                                 <div class="flex gap-2 mt-1"><input type="text" id="propLabel" class="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-bold text-slate-700 uppercase focus:ring-2 focus:ring-pink-500 outline-none" placeholder="ID"><button id="btnSetProp" type="button" class="bg-pink-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-pink-700 shadow-md shadow-pink-200">SET</button></div>
+                            </div>
+                            
+                            <div id="insp-inputs" class="hidden pt-2 border-t border-slate-100 mt-2">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Number of Inputs</label>
+                                <select id="propInputs" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-1.5 text-xs outline-none focus:ring-2 focus:ring-pink-500 cursor-pointer">
+                                    <option value="2">2 Inputs</option>
+                                    <option value="3">3 Inputs</option>
+                                    <option value="4">4 Inputs</option>
+                                </select>
+                            </div>
+
+                            <div id="insp-switch" class="hidden pt-2 border-t border-slate-100 mt-2">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase">Switch State</label>
+                                <div id="switchState" class="mt-1 px-3 py-1.5 rounded-lg text-xs font-bold text-center bg-slate-100 text-slate-600">OFF (0)</div>
+                            </div>
+
+                            <div id="insp-clock" class="hidden pt-2 border-t border-slate-100 mt-2">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase">Clock Period</label>
+                                <div class="flex items-center gap-2 mt-1">
+                                    <input type="range" id="clockSpeed" min="200" max="3000" step="100" value="1000" class="flex-1 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-pink-600">
+                                    <span id="clockSpeedVal" class="text-xs font-mono text-pink-600 font-bold w-14">1000ms</span>
+                                </div>
+                            </div>
+
+                            <div id="insp-text" class="hidden pt-2 border-t border-slate-100 mt-2">
+                                 <label class="text-[10px] font-bold text-slate-500 uppercase">Content</label>
+                                 <textarea id="propText" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-sm text-slate-700 outline-none mt-1 h-16 resize-none"></textarea>
+                                 <label class="text-[10px] font-bold text-slate-500 uppercase mt-2 block">Size</label>
+                                 <input type="range" id="propSize" min="8" max="48" step="1" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-pink-600">
+                            </div>
+
+                            <div id="insp-truth" class="hidden pt-3 border-t border-slate-100 mt-3">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Gate Truth Table</label>
+                                <div id="truthTableContent" class="text-xs font-mono w-full"></div>
+                            </div>
+
+                            <div id="insp-wire" class="hidden pt-3 border-t border-slate-100 mt-3">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase mb-2 block">Wire Colour</label>
+                                <div class="flex gap-2 flex-wrap justify-center bg-slate-50 p-2 rounded-xl">
+                                    <button type="button" class="w-6 h-6 rounded-full bg-slate-400 hover:scale-110 shadow-sm border border-white transition-transform" onclick="setWireColor('#94a3b8')"></button>
+                                    <button type="button" class="w-6 h-6 rounded-full bg-pink-500 hover:scale-110 shadow-sm border border-white transition-transform" onclick="setWireColor('#ec4899')"></button>
+                                    <button type="button" class="w-6 h-6 rounded-full bg-blue-500 hover:scale-110 shadow-sm border border-white transition-transform" onclick="setWireColor('#3b82f6')"></button>
+                                    <button type="button" class="w-6 h-6 rounded-full bg-emerald-500 hover:scale-110 shadow-sm border border-white transition-transform" onclick="setWireColor('#10b981')"></button>
+                                    <button type="button" class="w-6 h-6 rounded-full bg-amber-500 hover:scale-110 shadow-sm border border-white transition-transform" onclick="setWireColor('#f59e0b')"></button>
+                                </div>
+                            </div>
+                            
+                            <div id="insp-led" class="hidden pt-3 border-t border-slate-100 mt-3">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase mb-2 block">Indicator Colour</label>
+                                <div class="flex gap-2 flex-wrap justify-center bg-slate-50 p-2 rounded-xl">
+                                    <button type="button" class="w-6 h-6 rounded-full bg-pink-500 hover:scale-110 shadow-sm border border-white transition-transform" onclick="setLEDColor('#ec4899')"></button>
+                                    <button type="button" class="w-6 h-6 rounded-full bg-blue-500 hover:scale-110 shadow-sm border border-white transition-transform" onclick="setLEDColor('#3b82f6')"></button>
+                                    <button type="button" class="w-6 h-6 rounded-full bg-emerald-500 hover:scale-110 shadow-sm border border-white transition-transform" onclick="setLEDColor('#10b981')"></button>
+                                    <button type="button" class="w-6 h-6 rounded-full bg-amber-500 hover:scale-110 shadow-sm border border-white transition-transform" onclick="setLEDColor('#f59e0b')"></button>
+                                    <button type="button" class="w-6 h-6 rounded-full bg-purple-500 hover:scale-110 shadow-sm border border-white transition-transform" onclick="setLEDColor('#a855f7')"></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 pt-3 border-t border-slate-100 shrink-0">
+                            <button type="button" class="w-full py-2 bg-rose-50 text-rose-600 text-xs font-bold rounded-xl hover:bg-rose-100 transition-colors" onclick="deleteSelected()" id="btnDeleteInsp">Delete Selected</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals (Now absolutely positioned & draggable) -->
+    <div id="appModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden z-50 opacity-0 transition-opacity duration-300">
+        <div class="absolute bg-white rounded-3xl shadow-2xl border border-pink-100 max-w-5xl w-[calc(100%-2rem)] max-h-[90vh] flex flex-col" id="appModalContent" style="left: 50%; top: 50%; transform: translate(-50%, -50%) scale(0.95);">
+            <div class="flex justify-between items-center p-5 border-b border-slate-100 cursor-move bg-white rounded-t-3xl select-none" id="appModalHeader">
+                <h2 class="text-lg font-black text-slate-800 tracking-tight uppercase" id="appModalTitle">Modal Title</h2>
+                <button onclick="closeModal()" class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-colors shrink-0">✕</button>
+            </div>
+            <div class="p-0 overflow-y-auto bg-slate-50/50 rounded-b-3xl relative flex-1" id="appModalBody">
+            </div>
+        </div>
+    </div>
+
+    <!-- NEW: Report Generation Modal -->
+    <div id="reportModal" class="hidden fixed inset-0 z-[110] flex items-center justify-center p-4" style="background:rgba(15,23,42,.7);backdrop-filter:blur(4px);">
+        <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden border border-slate-100 transform transition-all">
+            <div class="bg-pink-50 px-6 py-4 border-b border-pink-100 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-pink-900 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    Generate Report
+                </h3>
+                <button onclick="closeReportModal()" class="text-pink-700 hover:text-pink-900 font-bold">✕</button>
+            </div>
+            <div class="p-6 space-y-4">
+                <p class="text-xs text-slate-500 mb-2">Enter your details to generate an official printout of this circuit.</p>
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Student Name</label>
+                    <input type="text" id="inp_report_name" placeholder="Enter your full name" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-pink-500">
+                </div>
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">SCN <span class="text-slate-400 font-normal normal-case">(Optional)</span></label>
+                    <input type="text" id="inp_report_scn" placeholder="e.g. 123456789" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-pink-500">
+                </div>
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Task Number <span class="text-slate-400 font-normal normal-case">(Optional)</span></label>
+                    <input type="text" id="inp_report_task" placeholder="e.g. Task 1A" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-pink-500">
+                </div>
+                
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+                    <label class="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1 border-b border-slate-200 pb-1">Include in Report:</label>
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="chk_report_boolean" checked class="w-4 h-4 text-pink-600 bg-white border-slate-300 rounded focus:ring-pink-500">
+                        <label for="chk_report_boolean" class="text-sm font-bold text-slate-700 cursor-pointer">Boolean Expressions</label>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="chk_report_truth" checked class="w-4 h-4 text-pink-600 bg-white border-slate-300 rounded focus:ring-pink-500">
+                        <label for="chk_report_truth" class="text-sm font-bold text-slate-700 cursor-pointer">Global Truth Table</label>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <input type="checkbox" id="chk_report_ic" checked class="w-4 h-4 text-pink-600 bg-white border-slate-300 rounded focus:ring-pink-500">
+                        <label for="chk_report_ic" class="text-sm font-bold text-slate-700 cursor-pointer">7400 Series IC Wiring Diagram</label>
+                    </div>
+                </div>
+            </div>
+            <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-2">
+                <button onclick="closeReportModal()" class="px-4 py-2 rounded-xl text-slate-500 hover:bg-slate-200 font-bold text-sm transition-colors">Cancel</button>
+                <button onclick="executeReportGeneration()" class="px-6 py-2 rounded-xl bg-pink-700 text-white hover:bg-pink-800 font-bold text-sm shadow-md shadow-slate-300 transition-colors">Generate PDF / Print</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================================================
+        // 1. CONFIGURATION & CONSTANTS
+        // ============================================================================
+
+        const CFG = { 
+            grid: 10, 
+            hitR: 14, 
+            col: { off: '#cbd5e1', on: '#ec4899', sel: '#f472b6', txt: '#334155' } 
+        };
+
+        const PINOUT_MAP = {
+            'QUAD2': { 1:{g:0,p:'in1'}, 2:{g:0,p:'in2'}, 3:{g:0,p:'out'}, 4:{g:1,p:'in1'}, 5:{g:1,p:'in2'}, 6:{g:1,p:'out'}, 7:'GND', 8:{g:2,p:'out'}, 9:{g:2,p:'in1'}, 10:{g:2,p:'in2'}, 11:{g:3,p:'out'}, 12:{g:3,p:'in1'}, 13:{g:3,p:'in2'}, 14:'VCC' },
+            'QUAD2_NOR': { 1:{g:0,p:'out'}, 2:{g:0,p:'in1'}, 3:{g:0,p:'in2'}, 4:{g:1,p:'out'}, 5:{g:1,p:'in1'}, 6:{g:1,p:'in2'}, 7:'GND', 8:{g:2,p:'in1'}, 9:{g:2,p:'in2'}, 10:{g:2,p:'out'}, 11:{g:3,p:'in1'}, 12:{g:3,p:'in2'}, 13:{g:3,p:'out'}, 14:'VCC' },
+            'HEX1': { 1:{g:0,p:'in1'}, 2:{g:0,p:'out'}, 3:{g:1,p:'in1'}, 4:{g:1,p:'out'}, 5:{g:2,p:'in1'}, 6:{g:2,p:'out'}, 7:'GND', 8:{g:3,p:'out'}, 9:{g:3,p:'in1'}, 10:{g:4,p:'out'}, 11:{g:4,p:'in1'}, 12:{g:5,p:'out'}, 13:{g:5,p:'in1'}, 14:'VCC' },
+            'TRIPLE3': { 1:{g:0,p:'in1'}, 2:{g:0,p:'in2'}, 13:{g:0,p:'in3'}, 12:{g:0,p:'out'}, 3:{g:1,p:'in1'}, 4:{g:1,p:'in2'}, 5:{g:1,p:'in3'}, 6:{g:1,p:'out'}, 7:'GND', 8:{g:2,p:'out'}, 9:{g:2,p:'in1'}, 10:{g:2,p:'in2'}, 11:{g:2,p:'in3'}, 14:'VCC' },
+            'DUAL4': { 1:{g:0,p:'in1'}, 2:{g:0,p:'in2'}, 3:'NC', 4:{g:0,p:'in3'}, 5:{g:0,p:'in4'}, 6:{g:0,p:'out'}, 7:'GND', 8:{g:1,p:'out'}, 9:{g:1,p:'in1'}, 10:{g:1,p:'in2'}, 11:'NC', 12:{g:1,p:'in3'}, 13:{g:1,p:'in4'}, 14:'VCC' }
+        };
+
+        const IC_DATA = {
+            'AND_2':  { chip: '7408', type: 'Quad 2-Input AND', pinout: PINOUT_MAP.QUAD2, gatesPerChip: 4 },
+            'AND_3':  { chip: '7411', type: 'Triple 3-Input AND', pinout: PINOUT_MAP.TRIPLE3, gatesPerChip: 3 },
+            'AND_4':  { chip: '7421', type: 'Dual 4-Input AND', pinout: PINOUT_MAP.DUAL4, gatesPerChip: 2 },
+            'OR_2':   { chip: '7432', type: 'Quad 2-Input OR', pinout: PINOUT_MAP.QUAD2, gatesPerChip: 4 },
+            'OR_3':   { chip: '4075', type: 'Triple 3-Input OR', pinout: PINOUT_MAP.TRIPLE3, gatesPerChip: 3 },
+            'OR_4':   { chip: '4072', type: 'Dual 4-Input OR', pinout: PINOUT_MAP.DUAL4, gatesPerChip: 2 },
+            'NOT_1':  { chip: '7404', type: 'Hex Inverter (NOT)', pinout: PINOUT_MAP.HEX1, gatesPerChip: 6 },
+            'NAND_2': { chip: '7400', type: 'Quad 2-Input NAND', pinout: PINOUT_MAP.QUAD2, gatesPerChip: 4 },
+            'NAND_3': { chip: '7410', type: 'Triple 3-Input NAND', pinout: PINOUT_MAP.TRIPLE3, gatesPerChip: 3 },
+            'NAND_4': { chip: '7420', type: 'Dual 4-Input NAND', pinout: PINOUT_MAP.DUAL4, gatesPerChip: 2 },
+            'NOR_2':  { chip: '7402', type: 'Quad 2-Input NOR', pinout: PINOUT_MAP.QUAD2_NOR, gatesPerChip: 4 },
+            'NOR_3':  { chip: '7427', type: 'Triple 3-Input NOR', pinout: PINOUT_MAP.TRIPLE3, gatesPerChip: 3 },
+            'NOR_4':  { chip: '7425', type: 'Dual 4-Input NOR', pinout: PINOUT_MAP.DUAL4, gatesPerChip: 2 },
+            'XOR_2':  { chip: '7486', type: 'Quad 2-Input XOR', pinout: PINOUT_MAP.QUAD2, gatesPerChip: 4 },
+            'XOR_3':  { chip: 'Gen-3XOR', type: 'Triple 3-Input XOR', pinout: PINOUT_MAP.TRIPLE3, gatesPerChip: 3 },
+            'XOR_4':  { chip: 'Gen-4XOR', type: 'Dual 4-Input XOR', pinout: PINOUT_MAP.DUAL4, gatesPerChip: 2 },
+            'XNOR_2': { chip: '74266', type: 'Quad 2-Input XNOR', pinout: PINOUT_MAP.QUAD2, gatesPerChip: 4 },
+            'XNOR_3': { chip: 'Gen-3XNOR', type: 'Triple 3-Input XNOR', pinout: PINOUT_MAP.TRIPLE3, gatesPerChip: 3 },
+            'XNOR_4': { chip: 'Gen-4XNOR', type: 'Dual 4-Input XNOR', pinout: PINOUT_MAP.DUAL4, gatesPerChip: 2 }
+        };
+
+        // ============================================================================
+        // 2. STATE & UTILITIES
+        // ============================================================================
+        
+        let isSimulating = false;
+        let sidebarOpen = true;
+        let isPanning = false;
+        let startPan = {x: 0, y: 0};
+        let initialPinchDist = 0;
+        const view = { x: 0, y: 0, scale: 1 };
+        let state = { comps: [], wires: [], t: Date.now(), sel: null, drag: { act: false }, wire: { act: false, pts: [] }, ms: { x: 0, y: 0 }, dragGhost: null };
+        
+        let clipboard = null; 
+        let historyStack = [];
+        let historyIndex = -1; 
+        const MAX_HISTORY = 50;
+
+        const cvs = document.getElementById('simCanvas'); 
+        const ctx = cvs.getContext('2d');
+
+        function snap(v) { return Math.round(v / CFG.grid) * CFG.grid; }
+        function dist(a, b) { return Math.hypot(a.x - b.x, a.y - b.y); }
+        function distSeg(p, a, b) { 
+            const l2 = (b.x - a.x) ** 2 + (b.y - a.y) ** 2; 
+            if(l2 == 0) return dist(p, a); 
+            let t = ((p.x - a.x) * (b.x - a.x) + (p.y - a.y) * (b.y - a.y)) / l2; 
+            t = Math.max(0, Math.min(1, t)); 
+            return dist(p, { x: a.x + t * (b.x - a.x), y: a.y + t * (b.y - a.y) }); 
+        }
+        function getPos(e) { 
+            const r = cvs.getBoundingClientRect(); 
+            return { x: (e.clientX - r.left - view.x) / view.scale, y: (e.clientY - r.top - view.y) / view.scale }; 
+        }
+
+        // ============================================================================
+        // 3. COMPONENT CLASSES
+        // ============================================================================
+
+        class Component {
+            constructor(type, x, y) { this.id = Math.random().toString(36).substr(2, 9); this.type = type; this.x = Number(x) || 0; this.y = Number(y) || 0; this.rot = 0; this.ports = []; this.lbl = ""; }
+            addP(id, x, y, typ) { this.ports.push({ id, x, y, typ, val: 0, parent: this }); }
+            absP(p) { return { x: this.x + p.x, y: this.y + p.y }; }
+            hit(x, y) { return Math.abs(x - this.x) < 42 && Math.abs(y - this.y) < 32; }
+            getP(x, y) { return this.ports.find(p => dist({ x, y }, this.absP(p)) < CFG.hitR / view.scale); }
+            update() {}
+            draw(ctx) {}
+        }
+
+        class Junction extends Component {
+            constructor(x, y) { super('junction', x, y); this.addP('p', 0, 0, 'any'); }
+            hit(x, y) { return Math.abs(x - this.x) < 24 && Math.abs(y - this.y) < 24; }
+            draw(ctx) {
+                const on = this.ports[0].val === 1;
+                ctx.beginPath(); ctx.arc(0, 0, 6, 0, Math.PI * 2);
+                ctx.fillStyle = on ? CFG.col.on : '#334155'; ctx.fill();
+                if (this.lbl) { ctx.font = 'bold 12px Roboto'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#64748b'; ctx.fillText(this.lbl, 0, -18); }
+            }
+        }
+
+        class TextNote extends Component {
+            constructor(x, y) { super('text', x, y); this.text = "Text Note"; this.fontSize = 14; this.w = 100; this.h = 20; }
+            draw(ctx) {
+                ctx.font = `bold ${this.fontSize}px Roboto`; ctx.textAlign = "center"; ctx.textBaseline = "middle"; ctx.fillStyle = (state.sel?.obj === this) ? "#f472b6" : "#334155";
+                const metrics = ctx.measureText(this.text); this.w = metrics.width + 20; this.h = this.fontSize + 10;
+                ctx.fillText(this.text, 0, 0);
+                if (state.sel?.obj === this) { ctx.strokeStyle = "#f472b6"; ctx.lineWidth = 1; ctx.setLineDash([3, 3]); ctx.strokeRect(-this.w / 2, -this.h / 2, this.w, this.h); ctx.setLineDash([]); }
+            }
+            hit(x, y) { return Math.abs(x - this.x) < this.w / 2 && Math.abs(y - this.y) < this.h / 2; }
+        }
+
+        class Switch extends Component {
+            constructor(x, y) { super('switch', x, y); this.addP('out', 40, 0, 'out'); this.state = 0; }
+            update() { this.ports[0].val = this.state; }
+            draw(ctx) {
+                const on = this.state === 1;
+                const bw = 70, bh = 32, r = 16;
+                ctx.beginPath(); ctx.roundRect(-bw / 2, -bh / 2, bw, bh, r);
+                ctx.fillStyle = on ? '#fce7f3' : '#f1f5f9'; ctx.strokeStyle = on ? '#db2777' : '#94a3b8'; ctx.lineWidth = 2; ctx.fill(); ctx.stroke();
+                const tx = on ? bw / 2 - r : -bw / 2 + r;
+                ctx.beginPath(); ctx.arc(tx, 0, r - 4, 0, Math.PI * 2);
+                ctx.fillStyle = on ? '#db2777' : '#94a3b8'; ctx.fill();
+                ctx.font = 'bold 11px Roboto'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillStyle = on ? '#be185d' : '#64748b'; ctx.fillText(on ? '1' : '0', on ? -12 : 12, 0);
+                ctx.beginPath(); ctx.moveTo(bw / 2, 0); ctx.lineTo(40, 0); ctx.strokeStyle = on ? CFG.col.on : '#94a3b8'; ctx.lineWidth = 2; ctx.stroke();
+                if (this.lbl) { ctx.font = 'bold 14px Roboto'; ctx.fillStyle = '#475569'; ctx.fillText(this.lbl, 0, 32); }
+            }
+        }
+
+        class Clock extends Component {
+            constructor(x, y) { super('clock', x, y); this.addP('out', 40, 0, 'out'); this.period = 1000; this.lastT = Date.now(); this.state = 0; }
+            update() { 
+                if (!isSimulating) return;
+                const now = Date.now(); 
+                if (now - this.lastT >= this.period) { this.state ^= 1; this.lastT = now; }
+                this.ports[0].val = this.state; 
+            }
+            draw(ctx) {
+                const on = this.state === 1;
+                const bw = 78, bh = 30;
+                ctx.beginPath(); ctx.roundRect(-bw / 2, -bh / 2, bw, bh, 10);
+                ctx.fillStyle = on ? '#fdf2f8' : '#f8fafc'; ctx.strokeStyle = on ? '#db2777' : '#94a3b8'; ctx.lineWidth = 2; ctx.fill(); ctx.stroke();
+                ctx.beginPath(); ctx.lineWidth = 1.5; ctx.strokeStyle = '#db2777';
+                const x0 = -30, y0 = 8, h = 14;
+                ctx.moveTo(x0, y0); ctx.lineTo(x0, y0 - h); ctx.lineTo(x0 + 10, y0 - h); ctx.lineTo(x0 + 10, y0);
+                ctx.lineTo(x0 + 20, y0); ctx.lineTo(x0 + 20, y0 - h); ctx.lineTo(x0 + 30, y0 - h); ctx.lineTo(x0 + 30, y0); ctx.stroke();
+                ctx.font = 'bold 10px Roboto'; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom'; ctx.fillStyle = '#db2777'; ctx.fillText('CLK', 0, -12);
+                ctx.beginPath(); ctx.moveTo(bw / 2, 0); ctx.lineTo(40, 0); ctx.strokeStyle = on ? '#db2777' : '#94a3b8'; ctx.lineWidth = 2; ctx.stroke();
+                if (this.lbl) { ctx.font = 'bold 12px Roboto'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#64748b'; ctx.fillText(this.lbl, 0, 32); }
+            }
+        }
+
+        class LogicGate extends Component {
+            constructor(type, x, y) {
+                super(type, x, y);
+                this.numInputs = 2; // Default
+                if (type === 'NOT') { 
+                    this.addP('in1', -40, 0, 'in'); 
+                    this.numInputs = 1;
+                } else { 
+                    this.setInputs(2);
+                }
+                this.addP('out', 40, 0, 'out');
+            }
+            
+            setInputs(n) {
+                if (this.type === 'NOT') return;
+                this.numInputs = n;
+                
+                const oldInPorts = this.ports.filter(p => p.typ === 'in');
+                const otherPorts = this.ports.filter(p => p.typ !== 'in');
+                this.ports = otherPorts;
+                
+                let positions = [];
+                if (n === 2) positions = [-10, 10];
+                else if (n === 3) positions = [-15, 0, 15];
+                else if (n === 4) positions = [-15, -5, 5, 15];
+                
+                positions.forEach((y, i) => {
+                    const id = 'in' + (i+1);
+                    this.addP(id, -40, y, 'in');
+                    if (oldInPorts[i]) {
+                        const oldP = oldInPorts[i];
+                        const newP = this.ports[this.ports.length - 1];
+                        state.wires.forEach(w => {
+                            if (w.p1 === oldP) w.p1 = newP;
+                            if (w.p2 === oldP) w.p2 = newP;
+                        });
+                    }
+                });
+                
+                for(let i = n; i < oldInPorts.length; i++) {
+                    const oldP = oldInPorts[i];
+                    state.wires = state.wires.filter(w => w.p1 !== oldP && w.p2 !== oldP);
+                }
+            }
+
+            update() {
+                const ins = this.ports.filter(p => p.typ === 'in').map(p => p.val);
+                let out = 0;
+                switch(this.type) {
+                    case 'AND': out = ins.every(v => v === 1) ? 1 : 0; break;
+                    case 'OR': out = ins.some(v => v === 1) ? 1 : 0; break;
+                    case 'NOT': out = ins[0] === 1 ? 0 : 1; break;
+                    case 'NAND': out = ins.every(v => v === 1) ? 0 : 1; break;
+                    case 'NOR': out = ins.some(v => v === 1) ? 0 : 1; break;
+                    case 'XOR': out = ins.filter(v => v === 1).length % 2 !== 0 ? 1 : 0; break;
+                    case 'XNOR': out = ins.filter(v => v === 1).length % 2 === 0 ? 1 : 0; break;
+                }
+                this.ports.find(p => p.typ === 'out').val = out;
+            }
+            
+            draw(ctx) {
+                const t = this.type;
+                ctx.strokeStyle = '#334155'; ctx.fillStyle = '#ffffff'; ctx.lineWidth = 2;
+                
+                // Input lines
+                this.ports.filter(p => p.typ === 'in').forEach(p => {
+                    ctx.beginPath();
+                    ctx.moveTo(-40, p.y);
+                    let endX = -26;
+                    if (t === 'OR' || t === 'NOR') endX = (-4/121)*(p.y*p.y) - 8;
+                    if (t === 'XOR' || t === 'XNOR') endX = (-4/121)*(p.y*p.y) - 12;
+                    if (t === 'AND' || t === 'NAND') endX = -28;
+                    if (t === 'NOT') endX = -28;
+                    ctx.lineTo(endX, p.y);
+                    ctx.stroke();
+                });
+
+                // Output line
+                ctx.beginPath();
+                const outX = (t === 'NAND' || t === 'NOR' || t === 'XNOR') ? 36 : 32;
+                ctx.moveTo(outX - 4, 0); ctx.lineTo(40, 0); ctx.stroke();
+
+                // Gate body
+                if (t === 'AND' || t === 'NAND') {
+                    ctx.beginPath(); ctx.moveTo(-28, -22); ctx.lineTo(4, -22); ctx.arc(4, 0, 22, -Math.PI/2, Math.PI/2); ctx.lineTo(-28, 22); ctx.closePath(); ctx.fill(); ctx.stroke();
+                    if (t === 'NAND') this.drawBubble(ctx, 30, 0);
+                } else if (t === 'OR' || t === 'NOR') {
+                    ctx.beginPath(); ctx.moveTo(-24, -22); ctx.quadraticCurveTo(-8, 0, -24, 22); ctx.quadraticCurveTo(4, 22, 22, 0); ctx.quadraticCurveTo(4, -22, -24, -22); ctx.fill(); ctx.stroke();
+                    if (t === 'NOR') this.drawBubble(ctx, 28, 0);
+                } else if (t === 'XOR' || t === 'XNOR') {
+                    ctx.beginPath(); ctx.moveTo(-20, -22); ctx.quadraticCurveTo(-4, 0, -20, 22); ctx.quadraticCurveTo(6, 22, 24, 0); ctx.quadraticCurveTo(6, -22, -20, -22); ctx.fill(); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(-28, -22); ctx.quadraticCurveTo(-12, 0, -28, 22); ctx.stroke();
+                    if (t === 'XNOR') this.drawBubble(ctx, 30, 0);
+                } else if (t === 'NOT') {
+                    ctx.beginPath(); ctx.moveTo(-28, -20); ctx.lineTo(22, 0); ctx.lineTo(-28, 20); ctx.closePath(); ctx.fill(); ctx.stroke();
+                    this.drawBubble(ctx, 28, 0);
+                }
+
+                ctx.font = 'bold 11px Roboto'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillStyle = '#475569';
+                ctx.fillText(t, t === 'NOT' ? -4 : 0, 0);
+
+                if (this.lbl) { ctx.font = 'bold 12px Roboto'; ctx.fillText(this.lbl, 0, 36); }
+            }
+            
+            drawBubble(ctx, x, y) { ctx.beginPath(); ctx.arc(x, y, 4, 0, Math.PI * 2); ctx.fillStyle = '#ffffff'; ctx.fill(); ctx.stroke(); }
+        }
+
+        class LED extends Component {
+            constructor(x, y) { super('LED', x, y); this.addP('in', -30, 0, 'in'); this.color = '#ec4899'; }
+            draw(ctx) {
+                const on = this.ports[0].val === 1;
+                const cHex = this.color || '#ec4899';
+                let r = parseInt(cHex.slice(1, 3), 16), g = parseInt(cHex.slice(3, 5), 16), b = parseInt(cHex.slice(5, 7), 16);
+                
+                ctx.beginPath(); ctx.moveTo(-30, 0); ctx.lineTo(-16, 0); 
+                ctx.strokeStyle = on ? cHex : '#94a3b8'; ctx.lineWidth = 2.5; ctx.stroke();
+                
+                if (on) { ctx.beginPath(); ctx.arc(0, 0, 22, 0, Math.PI * 2); ctx.fillStyle = `rgba(${r},${g},${b},0.2)`; ctx.fill(); }
+                
+                ctx.beginPath(); ctx.arc(0, 0, 16, 0, Math.PI * 2);
+                ctx.fillStyle = on ? `rgba(${r},${g},${b},0.15)` : '#f1f5f9'; ctx.strokeStyle = on ? cHex : '#94a3b8'; ctx.lineWidth = 2.5; ctx.fill(); ctx.stroke();
+                
+                ctx.font = '900 16px Roboto'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillStyle = on ? cHex : '#94a3b8'; ctx.fillText(on ? '1' : '0', 0, 1);
+                
+                if (this.lbl) { ctx.fillStyle = '#475569'; ctx.font = 'bold 14px Roboto'; ctx.fillText(this.lbl, 0, 36); }
+            }
+        }
+
+        function createComponent(type, x, y, isGhost = false) {
+            let c = null;
+            switch(type) {
+                case 'switch': c = new Switch(x,y); break;
+                case 'clock': c = new Clock(x,y); break;
+                case 'LED': c = new LED(x,y); break;
+                case 'text': c = new TextNote(x,y); break;
+                case 'junction': c = new Junction(x,y); break;
+                case 'AND': case 'OR': case 'NOT': case 'NAND': case 'NOR': case 'XOR': case 'XNOR': 
+                    c = new LogicGate(type, x, y); 
+                    if (type !== 'NOT') c.setInputs(2);
+                    break;
+            }
+            
+            // Auto-assign default labels for Switches and LEDs, but NOT for the drag ghost!
+            if (c && !isGhost) {
+                if (type === 'switch') {
+                    const count = state.comps.filter(x => x.type === 'switch').length;
+                    c.lbl = String.fromCharCode(65 + count);
+                }
+                if (type === 'LED') {
+                    const count = state.comps.filter(x => x.type === 'LED').length;
+                    c.lbl = `Q${count + 1}`;
+                }
+            }
+            return c;
+        }
+
+        // ============================================================================
+        // 4. SIMULATION LOGIC
+        // ============================================================================
+
+        function getCircuitNets() {
+            let nets = [];
+            let portToNet = new Map();
+            state.comps.forEach(c => c.ports.forEach(p => {
+                let net = new Set([p]);
+                nets.push(net);
+                portToNet.set(p, net);
+            }));
+            state.wires.forEach(w => {
+                let net1 = portToNet.get(w.p1);
+                let net2 = portToNet.get(w.p2);
+                if (net1 && net2 && net1 !== net2) {
+                    net2.forEach(p => { net1.add(p); portToNet.set(p, net1); });
+                    nets = nets.filter(n => n !== net2);
+                }
+            });
+            return portToNet;
+        }
+
+        function solveLogic() {
+            state.comps.forEach(c => {
+                if (c.type === 'switch') c.update();
+                if (c.type === 'clock') c.update(); 
+            });
+
+            // Memory elements/Latches fix: We no longer reset inputs to 0 on every tick.
+            // This allows the feedback loop to retain state across frames.
+
+            for (let pass = 0; pass < 6; pass++) {
+                state.comps.forEach(c => {
+                    if (c.type !== 'switch' && c.type !== 'clock') c.update();
+                });
+                
+                const portToNet = getCircuitNets();
+                const uniqueNets = new Set(portToNet.values());
+
+                uniqueNets.forEach(net => {
+                    let val = 0;
+                    net.forEach(p => { if (p.typ === 'out' && p.val === 1) val = 1; });
+                    net.forEach(p => { if (p.typ === 'in' || p.typ === 'any') p.val = val; });
+                    net.val = val; 
+                });
+
+                state.wires.forEach(w => {
+                    w.val = portToNet.get(w.p1)?.val || 0;
+                });
+            }
+        }
+
+        // ============================================================================
+        // 5. RENDERING ENGINE
+        // ============================================================================
+
+        function draw(rc = ctx, clear = true) {
+            rc.setTransform(1, 0, 0, 1, 0, 0); 
+            if (!Number.isFinite(view.x) || !Number.isFinite(view.y) || !Number.isFinite(view.scale)) { view.x = 0; view.y = 0; view.scale = 1; }
+            if (clear) rc.clearRect(0, 0, rc.canvas.width, rc.canvas.height);
+            
+            rc.translate(view.x, view.y); rc.scale(view.scale, view.scale);
+
+            // Wires
+            state.wires.forEach(l => {
+                if (!l.p1.parent || !l.p2.parent) return;
+                const s = l.p1.parent.absP(l.p1); const e = l.p2.parent.absP(l.p2);
+                rc.beginPath(); rc.moveTo(s.x, s.y); l.points.forEach(pt => rc.lineTo(pt.x, pt.y)); rc.lineTo(e.x, e.y);
+                rc.lineWidth = (state.sel?.obj === l) ? 5 : 3.5;
+                let col = l.color || '#94a3b8';
+                if(l.val === 1 && !l.color) col = CFG.col.on; 
+                rc.strokeStyle = (state.sel?.obj === l) ? CFG.col.sel : col; rc.stroke();
+                
+                if(state.sel?.obj === l) { rc.fillStyle = CFG.col.sel; l.points.forEach(pt => { rc.beginPath(); rc.arc(pt.x, pt.y, 5, 0, Math.PI*2); rc.fill(); rc.stroke(); }); }
+            });
+
+            // Active wiring drag
+            if(state.wire.act) {
+                const s = state.wire.start.parent.absP(state.wire.start);
+                rc.beginPath(); rc.moveTo(s.x, s.y); state.wire.points.forEach(pt => rc.lineTo(pt.x, pt.y)); rc.lineTo(state.ms.x, state.ms.y);
+                rc.strokeStyle = "#94a3b8"; rc.setLineDash([5, 5]); rc.lineWidth = 2.5; rc.stroke(); rc.setLineDash([]);
+            }
+
+            // Components
+            state.comps.forEach(c => {
+                rc.save(); rc.translate(c.x, c.y);
+                if(state.sel?.obj === c) { rc.shadowColor = CFG.col.sel; rc.shadowBlur = 12; }
+                c.draw(rc); rc.restore();
+                
+                c.ports.forEach(p => { 
+                    const pos = c.absP(p); 
+                    rc.beginPath(); rc.arc(pos.x, pos.y, 4, 0, Math.PI*2); 
+                    rc.fillStyle = p.val ? CFG.col.on : '#ffffff'; rc.strokeStyle = p.val ? CFG.col.on : '#64748b'; rc.lineWidth = 2; rc.fill(); rc.stroke();
+
+                    if(state.wire.act && state.wire.start === p) { rc.beginPath(); rc.arc(pos.x, pos.y, 6, 0, Math.PI*2); rc.strokeStyle = '#db2777'; rc.stroke(); }
+                });
+            });
+
+            // Draw the component drag ghost
+            if (state.dragGhost) {
+                rc.save();
+                rc.globalAlpha = 0.5;
+                let tempC = createComponent(state.dragGhost.type, state.dragGhost.x, state.dragGhost.y, true); // true = isGhost
+                if (tempC) {
+                    rc.translate(tempC.x, tempC.y);
+                    tempC.draw(rc);
+                }
+                rc.restore();
+            }
+        }
+
+        // ============================================================================
+        // 6. UI & MODALS (ANALYSIS TOOLS)
+        // ============================================================================
+
+        function toggleSidebar() {
+            sidebarOpen = !sidebarOpen;
+            const container = document.getElementById('sidebarContainer');
+            const content = document.getElementById('sidebarContent');
+            const icon = document.getElementById('sidebarIcon');
+            if(sidebarOpen) {
+                container.style.width = '18rem';
+                content.style.opacity = '1';
+                content.style.pointerEvents = 'auto';
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                container.style.width = '0px';
+                content.style.opacity = '0';
+                content.style.pointerEvents = 'none';
+                icon.style.transform = 'rotate(180deg)';
+            }
+            setTimeout(resize, 300); // trigger resize for canvas
+        }
+
+        function toggleMenu(id, btn) { 
+            const m = document.getElementById(id); const i = btn.querySelector('.rotate-icon'); 
+            const isOpen = m.classList.contains('open'); btn.setAttribute('aria-expanded', !isOpen);
+            m.classList.toggle('open'); if(i) i.classList.toggle('open'); 
+        }
+
+        function setSimMode(mode) {
+            isSimulating = mode;
+            const btnEdit = document.getElementById('btnEditMode');
+            const btnSim = document.getElementById('btnSimMode');
+            const indicator = document.getElementById('simLiveIndicator');
+            
+            if(isSimulating) {
+                btnSim.className = "px-4 py-1.5 rounded-full text-[11px] font-black tracking-wider transition-all bg-pink-500 text-white shadow-md";
+                btnEdit.className = "px-4 py-1.5 rounded-full text-[11px] font-black tracking-wider transition-all text-slate-500 hover:bg-slate-100";
+                if(indicator) {
+                    indicator.classList.remove('hidden');
+                    indicator.style.display = 'flex';
+                }
+                state.sel = null; updInsp(); // Deselect elements when entering sim mode
+            } else {
+                btnEdit.className = "px-4 py-1.5 rounded-full text-[11px] font-black tracking-wider transition-all bg-slate-500 text-white shadow-md";
+                btnSim.className = "px-4 py-1.5 rounded-full text-[11px] font-black tracking-wider transition-all text-slate-500 hover:bg-slate-100";
+                if(indicator) {
+                    indicator.classList.add('hidden');
+                    indicator.style.display = 'none';
+                }
+            }
+        }
+        
+        function showModal(title, html) {
+            const modal = document.getElementById('appModal');
+            const content = document.getElementById('appModalContent');
+            document.getElementById('appModalTitle').textContent = title;
+            document.getElementById('appModalBody').innerHTML = html;
+            
+            // Reset position to center before showing
+            content.style.transition = 'none';
+            content.style.left = '50%';
+            content.style.top = '50%';
+            content.style.margin = '0';
+            content.style.transform = 'translate(-50%, -50%) scale(0.95)';
+            content.style.right = 'auto';
+            content.style.bottom = 'auto';
+
+            modal.classList.remove('hidden'); 
+            modal.classList.add('flex');
+            
+            setTimeout(() => { 
+                content.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                modal.classList.remove('opacity-0'); 
+                content.style.transform = 'translate(-50%, -50%) scale(1)'; 
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('appModal');
+            const content = document.getElementById('appModalContent');
+            modal.classList.add('opacity-0'); 
+            
+            if(content.style.transform.includes('translate')) {
+                content.style.transform = 'translate(-50%, -50%) scale(0.95)';
+            } else {
+                content.style.transform = 'scale(0.95)';
+            }
+            
+            setTimeout(() => { 
+                modal.classList.add('hidden'); 
+                modal.classList.remove('flex'); 
+                document.getElementById('appModalBody').innerHTML = ''; // Prevent conflicts
+            }, 300);
+        }
+
+        function findSourcePort(targetPort) {
+            if (targetPort.typ === 'out') return targetPort;
+            const netResolver = getCircuitNets();
+            const net = netResolver.get(targetPort);
+            if (!net) return null;
+            for (let p of net) { if (p.typ === 'out') return p; }
+            return null;
+        }
+
+        function getExpression(port, depth=0) {
+            if(depth > 20) return "...";
+            const srcPort = findSourcePort(port);
+            if(!srcPort) return "0"; 
+            const srcComp = srcPort.parent;
+
+            if(srcComp.type === 'switch') return srcComp.tempLbl || "SW";
+            if(srcComp.type === 'clock') return "CLK";
+            
+            const overline = (str) => `<span style="text-decoration: overline; text-decoration-thickness: 1.5px;">${str}</span>`;
+
+            if(srcComp.type === 'NOT') return overline(getExpression(srcComp.ports.find(p=>p.typ==='in'), depth+1));
+            
+            const inPorts = srcComp.ports.filter(p => p.typ === 'in');
+            const exprs = inPorts.map(p => getExpression(p, depth+1));
+            
+            const srcPorts = inPorts.map(p => findSourcePort(p));
+            const inputsTied = srcPorts.length > 1 && srcPorts.every(sp => sp && sp === srcPorts[0]);
+            
+            let innerExpr = "";
+            if (inputsTied) {
+                innerExpr = exprs[0];
+            }
+            
+            switch(srcComp.type) {
+                case 'AND': return inputsTied ? innerExpr : `(${exprs.join(' &middot; ')})`;
+                case 'OR': return inputsTied ? innerExpr : `(${exprs.join(' + ')})`;
+                case 'NAND': return inputsTied ? overline(innerExpr) : overline(`(${exprs.join(' &middot; ')})`);
+                case 'NOR': return inputsTied ? overline(innerExpr) : overline(`(${exprs.join(' + ')})`);
+                case 'XOR': return inputsTied ? "0" : `(${exprs.join(' &oplus; ')})`;
+                case 'XNOR': return inputsTied ? "1" : overline(`(${exprs.join(' &oplus; ')})`);
+                default: return "?";
+            }
+        }
+
+        function showInspectorTruthTable(comp) {
+            const content = document.getElementById('truthTableContent');
+            if (!content) return;
+            const type = comp.type;
+            const numIns = type === 'NOT' ? 1 : (comp.numInputs || 2);
+            
+            let html = '<table class="w-full border-collapse text-center">';
+            html += '<tr>';
+            for(let i=0; i<numIns; i++) {
+                html += `<th class="px-3 py-1 bg-slate-100 border border-slate-200 text-slate-600">${String.fromCharCode(65+i)}</th>`;
+            }
+            html += `<th class="px-3 py-1 bg-slate-100 border border-slate-200 text-slate-600">Q (${type})</th></tr>`;
+            
+            const rows = 1 << numIns;
+            for(let i=0; i<rows; i++) {
+                let ins = [];
+                for(let bit=0; bit<numIns; bit++) {
+                    ins.push((i >> (numIns - 1 - bit)) & 1);
+                }
+                
+                let out = 0;
+                switch(type) {
+                    case 'AND': out = ins.every(v => v === 1) ? 1 : 0; break;
+                    case 'OR': out = ins.some(v => v === 1) ? 1 : 0; break;
+                    case 'NOT': out = ins[0] === 1 ? 0 : 1; break;
+                    case 'NAND': out = ins.every(v => v === 1) ? 0 : 1; break;
+                    case 'NOR': out = ins.some(v => v === 1) ? 0 : 1; break;
+                    case 'XOR': out = ins.filter(v => v === 1).length % 2 !== 0 ? 1 : 0; break;
+                    case 'XNOR': out = ins.filter(v => v === 1).length % 2 === 0 ? 1 : 0; break;
+                }
+                
+                html += '<tr>';
+                ins.forEach(v => {
+                    const cls = v ? 'truth-cell-1' : 'truth-cell-0';
+                    html += `<td class="px-3 py-1 border border-slate-200 ${cls}">${v}</td>`;
+                });
+                const cls = out ? 'truth-cell-1' : 'truth-cell-0';
+                html += `<td class="px-3 py-1 border border-slate-200 ${cls}">${out}</td></tr>`;
+            }
+            html += '</table>';
+            content.innerHTML = html;
+        }
+
+        function showTruthTable() {
+            const inputs = state.comps.filter(c => c.type === 'switch');
+            const outputs = state.comps.filter(c => c.type === 'LED');
+            
+            if (inputs.length === 0 || outputs.length === 0) {
+                showModal('Global Truth Table', '<div class="p-6"><p class="text-slate-500 font-medium">Please add at least one <b class="text-slate-700">Toggle Switch</b> (Input) and one <b class="text-slate-700">Logic Indicator</b> (Output) to your circuit.</p></div>');
+                return;
+            }
+            if (inputs.length > 8) {
+                showModal('Global Truth Table', '<div class="p-6"><div class="p-4 bg-rose-50 rounded-xl border border-rose-200"><p class="text-rose-600 font-bold">Too many inputs!</p><p class="text-rose-500 text-sm mt-1">A maximum of 8 inputs is supported to prevent browser freezing.</p></div></div>');
+                return;
+            }
+
+            inputs.forEach((sw, i) => { sw.tempLbl = sw.lbl || String.fromCharCode(65 + i); });
+            outputs.forEach((o, i) => { o.tempLbl = o.lbl || `Q${i+1}`; });
+
+            let html = '<div class="p-6">';
+            html += '<div class="mb-6 p-4 bg-slate-100 rounded-xl border border-slate-200 shadow-inner">';
+            html += '<p class="text-[10px] font-bold text-slate-500 uppercase tracking-wide mb-2">Boolean Expressions</p>';
+            outputs.forEach(o => {
+                const expr = getExpression(o.ports.find(p=>p.typ==='in'));
+                html += `<div class="font-mono text-sm text-pink-700 font-black tracking-wide">${o.tempLbl} = <span class="text-slate-700">${expr}</span></div>`;
+            });
+            html += '</div>';
+
+            const orig = inputs.map(sw => sw.state);
+            let table = [];
+            const rows = 1 << inputs.length;
+            
+            for (let i = 0; i < rows; i++) {
+                // Reset circuit state so latches don't pollute subsequent truth table combinations
+                state.comps.forEach(c => c.ports.forEach(p => p.val = 0));
+                
+                inputs.forEach((sw, idx) => { sw.state = (i >> (inputs.length - 1 - idx)) & 1; });
+                solveLogic();
+                table.push({ in: inputs.map(sw => sw.state), out: outputs.map(o => o.ports[0].val) });
+            }
+            
+            // Clean up state before restoring user inputs
+            state.comps.forEach(c => c.ports.forEach(p => p.val = 0));
+            inputs.forEach((sw, idx) => sw.state = orig[idx]);
+            solveLogic();
+
+            html += '<div class="overflow-x-auto rounded-xl border border-slate-200 shadow-sm bg-white"><table class="w-full border-collapse text-center text-sm">';
+            html += '<thead><tr class="bg-slate-100">';
+            inputs.forEach(sw => html += `<th class="px-3 py-3 border-b border-slate-200 text-slate-700 font-bold uppercase text-[10px] tracking-wider">${sw.tempLbl}</th>`);
+            html += `<th class="px-0 py-0 border-b border-slate-200 bg-slate-200 w-[2px]"></th>`;
+            outputs.forEach(o => html += `<th class="px-3 py-3 border-b border-slate-200 text-pink-700 font-bold uppercase text-[10px] tracking-wider">${o.tempLbl}</th>`);
+            html += '</tr></thead><tbody>';
+            
+            table.forEach((row, rowIndex) => {
+                html += `<tr class="${rowIndex % 2 === 0 ? 'bg-white' : 'bg-slate-50/50'} hover:bg-pink-50/30 transition-colors">`;
+                row.in.forEach(v => html += `<td class="px-3 py-2 border-r border-slate-100 font-mono ${v?'text-emerald-600 font-bold':'text-slate-400'}">${v}</td>`);
+                html += `<td class="px-0 py-0 bg-slate-100"></td>`;
+                row.out.forEach(v => html += `<td class="px-3 py-2 border-l border-slate-100 font-mono ${v?'text-pink-600 font-black':'text-slate-300'}">${v}</td>`);
+                html += '</tr>';
+            });
+            html += '</tbody></table></div></div>';
+            
+            showModal('Circuit Analysis', html);
+        }
+
+        function renderICCanvas(chips, width, cvsOverride = null) {
+            const cvs = cvsOverride || document.getElementById('icWiringCanvas');
+            if (!cvs) return;
+            const ctx = cvs.getContext('2d');
+            const portToNet = getCircuitNets();
+
+            const inputs = state.comps.filter(c => c.type === 'switch' || c.type === 'clock');
+            const outputs = state.comps.filter(c => c.type === 'LED');
+            
+            const reqHeight = Math.max(inputs.length * 80, outputs.length * 80, chips.length * 350) + 120;
+            cvs.width = width;
+            cvs.height = reqHeight;
+
+            ctx.fillStyle = '#f8fafc'; ctx.fillRect(0, 0, cvs.width, cvs.height);
+
+            // Power Rails (+5V and 0V)
+            ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 4;
+            ctx.beginPath(); ctx.moveTo(40, 40); ctx.lineTo(cvs.width - 40, 40); ctx.stroke();
+            ctx.fillStyle = '#ef4444'; ctx.font = 'bold 16px Roboto'; ctx.textAlign = 'left'; ctx.fillText('+5V VCC', 40, 25);
+            
+            ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 4;
+            ctx.beginPath(); ctx.moveTo(40, cvs.height - 40); ctx.lineTo(cvs.width - 40, cvs.height - 40); ctx.stroke();
+            ctx.fillStyle = '#3b82f6'; ctx.fillText('0V GND', 40, cvs.height - 50);
+
+            let netMap = new Map();
+            function addNode(x, y, port) {
+                if(!port) return;
+                let net = portToNet.get(port);
+                if(!net) return;
+                let n = { x, y };
+                if(!netMap.has(net)) netMap.set(net, []);
+                netMap.get(net).push(n);
+            }
+
+            // Draw Inputs 
+            inputs.forEach((c, i) => {
+                let x = 150, y = 120 + i * 80;
+                ctx.fillStyle = '#ffffff'; ctx.strokeStyle = '#94a3b8'; ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.roundRect(x - 50, y - 20, 100, 40, 6); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#334155'; ctx.font = 'bold 12px Roboto'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillText(c.lbl || c.type.toUpperCase(), x, y);
+                ctx.beginPath(); ctx.moveTo(x + 50, y); ctx.lineTo(x + 70, y); ctx.stroke();
+                addNode(x + 70, y, c.ports.find(p=>p.typ==='out'));
+            });
+
+            // Draw Outputs
+            outputs.forEach((c, i) => {
+                let x = cvs.width - 150, y = 120 + i * 80;
+                ctx.fillStyle = '#ffffff'; ctx.strokeStyle = '#db2777'; ctx.lineWidth = 2;
+                ctx.beginPath(); ctx.roundRect(x - 50, y - 20, 100, 40, 6); ctx.fill(); ctx.stroke();
+                ctx.fillStyle = '#be185d'; ctx.font = 'bold 12px Roboto'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillText(c.lbl || 'OUT', x, y);
+                ctx.beginPath(); ctx.moveTo(x - 50, y); ctx.lineTo(x - 70, y); ctx.stroke();
+                addNode(x - 70, y, c.ports.find(p=>p.typ==='in'));
+            });
+
+            // Draw IC Chips
+            chips.forEach((chip, i) => {
+                let cx = cvs.width / 2, cy = 200 + i * 340;
+                let cw = 140, ch = 250; 
+                
+                ctx.fillStyle = '#1e293b'; ctx.beginPath(); ctx.roundRect(cx - cw/2, cy - ch/2, cw, ch, 10); ctx.fill();
+                ctx.fillStyle = '#0f172a'; ctx.beginPath(); ctx.arc(cx, cy - ch/2, 14, 0, Math.PI); ctx.fill(); 
+                
+                ctx.save(); ctx.translate(cx, cy); ctx.rotate(-Math.PI/2);
+                ctx.fillStyle = '#94a3b8'; ctx.font = 'bold 24px monospace'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                ctx.fillText(`IC${chip.icNum} - ${chip.def.chip}`, 0, 0); ctx.restore();
+
+                for(let p=1; p<=14; p++) {
+                    let isLeft = p <= 7;
+                    let px = isLeft ? cx - cw/2 : cx + cw/2;
+                    let py = isLeft ? cy - ch/2 + 28 + (p-1)*32 : cy + ch/2 - 28 - (p-8)*32;
+                    
+                    ctx.fillStyle = '#cbd5e1';
+                    if(isLeft) { ctx.fillRect(px - 25, py - 5, 25, 10); } else { ctx.fillRect(px, py - 5, 25, 10); }
+                    
+                    ctx.fillStyle = '#ffffff'; ctx.font = 'bold 11px monospace'; ctx.textAlign = isLeft ? 'left' : 'right'; ctx.textBaseline = 'middle';
+                    ctx.fillText(p, isLeft ? px + 8 : px - 8, py);
+                    
+                    let map = chip.def.pinout[p];
+                    if(typeof map === 'string') {
+                        if(map === 'NC') {
+                            ctx.fillStyle = '#64748b'; ctx.font = 'bold 10px Roboto'; ctx.textAlign = isLeft ? 'right' : 'left';
+                            ctx.fillText('NC', isLeft ? px - 35 : px + 35, py);
+                        } else {
+                            ctx.fillStyle = map === 'VCC' ? '#ef4444' : '#3b82f6'; ctx.font = 'bold 12px Roboto'; ctx.textAlign = isLeft ? 'right' : 'left';
+                            ctx.fillText(map, isLeft ? px - 35 : px + 35, py);
+                            
+                            ctx.strokeStyle = ctx.fillStyle; ctx.lineWidth = 2.5; ctx.beginPath();
+                            ctx.moveTo(isLeft ? px - 25 : px + 25, py);
+                            ctx.lineTo(isLeft ? px - 45 : px + 45, py);
+                            ctx.lineTo(isLeft ? px - 45 : px + 45, map === 'VCC' ? 40 : cvs.height - 40); 
+                            ctx.stroke();
+                        }
+                    } else if(map) {
+                        let label = `${map.p.toUpperCase()} (G${map.g+1})`;
+                        ctx.fillStyle = '#475569'; ctx.font = 'bold 11px Roboto'; ctx.textAlign = isLeft ? 'left' : 'right';
+                        ctx.fillText(label, isLeft ? px + 30 : px - 30, py);
+
+                        if(chip.gates[map.g]) {
+                            let port = chip.gates[map.g].ports.find(pt => pt.id === map.p);
+                            if(port) {
+                                addNode(isLeft ? px - 25 : px + 25, py, port);
+                                ctx.fillStyle = '#10b981'; ctx.beginPath(); ctx.arc(isLeft ? px - 15 : px + 15, py, 3, 0, Math.PI*2); ctx.fill();
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Render physical connection lines
+            const colors = ['#ec4899', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#06b6d4'];
+            let colorIdx = 0;
+            
+            ctx.lineWidth = 3.5;
+            for(let [net, nodes] of netMap.entries()) {
+                if(nodes.length < 2) continue; 
+                
+                ctx.strokeStyle = colors[colorIdx % colors.length]; colorIdx++;
+                nodes.sort((a,b) => a.x - b.x); // Natural horizontal spanning
+                
+                ctx.beginPath();
+                for(let k=0; k<nodes.length-1; k++) {
+                    let n1 = nodes[k]; let n2 = nodes[k+1];
+                    ctx.moveTo(n1.x, n1.y);
+                    let spread = Math.max(60, Math.abs(n2.x - n1.x) / 1.5);
+                    ctx.bezierCurveTo(n1.x + spread, n1.y, n2.x - spread, n2.y, n2.x, n2.y);
+                }
+                ctx.stroke();
+                
+                ctx.fillStyle = ctx.strokeStyle;
+                nodes.forEach(n => { ctx.beginPath(); ctx.arc(n.x, n.y, 5, 0, Math.PI*2); ctx.fill(); });
+            }
+        }
+
+        function showICWiring() {
+            const counts = {};
+            state.comps.forEach(c => { 
+                const isLogicGate = ['AND', 'OR', 'NOT', 'NAND', 'NOR', 'XOR', 'XNOR'].includes(c.type);
+                if(isLogicGate) {
+                    const key = `${c.type}_${c.numInputs || (c.type==='NOT'?1:2)}`;
+                    if(IC_DATA[key]) {
+                        if(!counts[key]) counts[key] = [];
+                        counts[key].push(c);
+                    }
+                }
+            });
+            
+            if(Object.keys(counts).length === 0) {
+                showModal('7400 Series Circuit Diagram', '<div class="p-6"><p class="text-slate-500 font-medium">No 7400-series compatible logic gates found in the current circuit.</p></div>');
+                return;
+            }
+
+            let chips = [];
+            let icNum = 1;
+            for(let [key, gates] of Object.entries(counts)) {
+                const icDef = IC_DATA[key];
+                const chipsNeeded = Math.ceil(gates.length / icDef.gatesPerChip);
+                
+                for(let i=0; i<chipsNeeded; i++) {
+                    chips.push({
+                        icNum: icNum++,
+                        def: icDef,
+                        gates: gates.slice(i*icDef.gatesPerChip, (i+1)*icDef.gatesPerChip)
+                    });
+                }
+            }
+
+            const html = `
+                <div class="flex flex-col h-[75vh]">
+                    <div class="p-4 border-b border-slate-100 shrink-0">
+                        <p class="text-xs text-slate-500 mb-2">This generated schematic shows the physical routing needed to build your logic using standard 74xx series DIP integrated circuits. VCC (+5V) and GND (0V) must be connected to the indicated power pins.</p>
+                    </div>
+                    <div class="flex-1 overflow-auto bg-slate-50 relative" id="icCanvasContainer">
+                        <canvas id="icWiringCanvas" class="block"></canvas>
+                    </div>
+                </div>
+            `;
+            showModal('7400 Series Physical Circuit Diagram', html);
+
+            setTimeout(() => {
+                const container = document.getElementById('icCanvasContainer');
+                if (container) {
+                    const canvasWidth = Math.max(1000, container.clientWidth);
+                    requestAnimationFrame(() => renderICCanvas(chips, canvasWidth));
+                }
+            }, 150);
+        }
+
+        function updInsp() {
+            const el = document.getElementById('inspector');
+            if(!state.sel || isSimulating) return el.classList.add('hidden');
+            el.classList.remove('hidden'); 
+            const obj = state.sel.obj, isC = state.sel.type === 'c', show = (id, cond) => document.getElementById(id).classList.toggle('hidden', !cond);
+            
+            show('insp-props', isC && obj.type !== 'text');
+            if(isC && document.getElementById('propLabel')) document.getElementById('propLabel').value = obj.lbl || '';
+            
+            const isLogicGate = ['AND', 'OR', 'NAND', 'NOR', 'XOR', 'XNOR'].includes(obj.type);
+            show('insp-inputs', isC && isLogicGate);
+            if(isC && isLogicGate) {
+                document.getElementById('propInputs').value = obj.numInputs || 2;
+            }
+
+            show('insp-switch', isC && obj.type === 'switch');
+            if(isC && obj.type === 'switch') { 
+                const st = document.getElementById('switchState');
+                st.textContent = obj.state ? 'ON (1)' : 'OFF (0)';
+                st.className = `mt-1 px-3 py-1.5 rounded-lg text-xs font-bold text-center ${obj.state ? 'bg-pink-50 text-pink-700' : 'bg-slate-100 text-slate-600'}`;
+            }
+
+            show('insp-clock', isC && obj.type === 'clock');
+            if(isC && obj.type === 'clock') { document.getElementById('clockSpeed').value = obj.period; document.getElementById('clockSpeedVal').textContent = obj.period + 'ms'; }
+            
+            show('insp-text', isC && obj.type === 'text');
+            if(isC && obj.type === 'text') { document.getElementById('propText').value = obj.text; document.getElementById('propSize').value = obj.fontSize; }
+
+            show('insp-truth', isC && (isLogicGate || obj.type === 'NOT'));
+            if(isC && (isLogicGate || obj.type === 'NOT')) showInspectorTruthTable(obj);
+            
+            show('insp-wire', !isC);
+            show('insp-led', isC && obj.type === 'LED');
+        }
+
+        // Generic Drag functionality for Inspector & Modals (Updated for Touch!)
+        function makeDraggable(element, handle, isModal = false) {
+            let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+            if(!handle) return;
+
+            const startDrag = (e, isTouch) => {
+                if(e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const raw = isTouch ? e.touches[0] : e;
+                pos3 = raw.clientX;
+                pos4 = raw.clientY;
+                
+                element.style.transition = 'none'; // Ensure drag is snappy
+                
+                if (isModal) {
+                    if (element.style.transform.includes('translate')) {
+                        const rect = element.getBoundingClientRect();
+                        element.style.transform = 'none';
+                        element.style.left = rect.left + 'px';
+                        element.style.top = rect.top + 'px';
+                        element.style.margin = '0';
+                        element.style.right = 'auto';
+                        element.style.bottom = 'auto';
+                    }
+                } else {
+                    // Fix the "fly off" bug by using relative offset instead of viewport rect
+                    const currentLeft = element.offsetLeft;
+                    const currentTop = element.offsetTop;
+                    element.style.right = 'auto';
+                    element.style.bottom = 'auto';
+                    element.style.left = currentLeft + 'px';
+                    element.style.top = currentTop + 'px';
+                }
+
+                const elementDrag = (mv) => {
+                    mv.preventDefault();
+                    const rawMv = isTouch ? mv.touches[0] : mv;
+                    pos1 = pos3 - rawMv.clientX;
+                    pos2 = pos4 - rawMv.clientY;
+                    pos3 = rawMv.clientX;
+                    pos4 = rawMv.clientY;
+                    element.style.top = (element.offsetTop - pos2) + "px";
+                    element.style.left = (element.offsetLeft - pos1) + "px";
+                };
+
+                const closeDragElement = () => {
+                    document.removeEventListener(isTouch ? 'touchmove' : 'mousemove', elementDrag);
+                    document.removeEventListener(isTouch ? 'touchend' : 'mouseup', closeDragElement);
+                    if(isTouch) document.removeEventListener('touchcancel', closeDragElement);
+                    if(isModal) element.style.transition = 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                };
+
+                document.addEventListener(isTouch ? 'touchmove' : 'mousemove', elementDrag, {passive: false});
+                document.addEventListener(isTouch ? 'touchend' : 'mouseup', closeDragElement);
+                if(isTouch) document.addEventListener('touchcancel', closeDragElement);
+            };
+
+            handle.addEventListener('mousedown', e => startDrag(e, false));
+            handle.addEventListener('touchstart', e => startDrag(e, true), {passive: false});
+        }
+
+        // ============================================================================
+        // 7. EVENT LISTENERS & TOUCH INTEGRATION
+        // ============================================================================
+
+        const safeBind = (id, evt, fn) => { const el = document.getElementById(id); if(el) el[evt] = fn; };
+        function deleteSelected() { if(!state.sel || isSimulating) return; const obj = state.sel.obj; if(state.sel.type==='c') { state.wires = state.wires.filter(l => l.p1.parent!==obj && l.p2.parent!==obj); state.comps = state.comps.filter(c => c!==obj); } else { state.wires = state.wires.filter(l => l!==obj); } state.sel=null; updInsp(); recordState(); }
+        
+        function fitToScreen() {
+            if (state.comps.length === 0) { view.x = cvs.width/2; view.y = cvs.height/2; view.scale = 1; return; }
+            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+            const addPt = (x, y) => { if (Number.isFinite(x) && Number.isFinite(y)) { minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y); } };
+            state.comps.forEach(c => { addPt(c.x - 60, c.y - 40); addPt(c.x + 60, c.y + 40); });
+            state.wires.forEach(l => { if (l.p1 && l.p1.parent) { const p = l.p1.parent.absP(l.p1); addPt(p.x, p.y); } if (l.p2 && l.p2.parent) { const p = l.p2.parent.absP(l.p2); addPt(p.x, p.y); } if (l.points) l.points.forEach(pt => addPt(pt.x, pt.y)); });
+            if(minX === Infinity) { view.x = cvs.width/2; view.y = cvs.height/2; view.scale = 1; return; }
+            const margin = 80; minX -= margin; maxX += margin; minY -= margin; maxY += margin;
+            const w = maxX - minX, h = maxY - minY; if (w <= 0 || h <= 0) return;
+            const cw = cvs.width || 800; const ch = cvs.height || 600; 
+            let newScale = Math.min(cw / w, ch / h); newScale = Math.min(Math.max(newScale, 0.15), 1.5);
+            view.scale = newScale; view.x = (cw / 2) - ((minX + w / 2) * newScale); view.y = (ch / 2) - ((minY + h / 2) * newScale); 
+        }
+
+        function getStateJSON() {
+            return JSON.stringify({
+                components: state.comps.map(c => ({ id: c.id, type: c.type, x: c.x, y: c.y, lbl: c.lbl || "", text: c.text, fontSize: c.fontSize, period: c.period, state: c.state, color: c.color, numInputs: c.numInputs })),
+                wires: state.wires.map(p => ({ p1_comp: p.p1.parent.id, p1_idx: p.p1.parent.ports.indexOf(p.p1), p2_comp: p.p2.parent.id, p2_idx: p.p2.parent.ports.indexOf(p.p2), points: p.points, color: p.color }))
+            });
+        }
+
+        function loadStateJSON(jsonStr) {
+            try {
+                const data = JSON.parse(jsonStr); if(!data.components || !data.wires) return;
+                state.comps = []; state.wires = []; state.sel = null;
+                data.components.forEach(d => {
+                    let c = createComponent(d.type, Number(d.x)||0, Number(d.y)||0);
+                    if(c) { 
+                        c.id = d.id || c.id; c.lbl = d.lbl || c.lbl; // Uses auto-label if d.lbl is missing, but d.lbl overrides
+                        c.text = d.text !== undefined ? d.text : c.text; c.fontSize = d.fontSize !== undefined ? d.fontSize : c.fontSize; 
+                        c.period = d.period !== undefined ? d.period : c.period; c.state = d.state !== undefined ? d.state : c.state;
+                        c.color = d.color !== undefined ? d.color : c.color;
+                        c.numInputs = d.numInputs !== undefined ? d.numInputs : c.numInputs;
+                        if (c.setInputs && c.type !== 'NOT') c.setInputs(c.numInputs || 2);
+                        state.comps.push(c); 
+                    }
+                });
+                data.wires.forEach(p => {
+                    const c1 = state.comps.find(x => x.id === p.p1_comp); const c2 = state.comps.find(x => x.id === p.p2_comp);
+                    if(c1 && c2 && c1.ports[p.p1_idx] && c2.ports[p.p2_idx]) { state.wires.push({ p1: c1.ports[p.p1_idx], p2: c2.ports[p.p2_idx], points: p.points || [], val: 0, color: p.color }); }
+                });
+                updInsp(); fitToScreen(); 
+            } catch(e) { console.error("Load error", e); }
+        }
+
+        function recordState() {
+            if(historyIndex < historyStack.length - 1) historyStack = historyStack.slice(0, historyIndex + 1); 
+            const currentState = getStateJSON();
+            if(historyStack.length > 0 && historyStack[historyStack.length-1] === currentState) return;
+            historyStack.push(currentState); historyIndex++;
+            if(historyStack.length > MAX_HISTORY) { historyStack.shift(); historyIndex--; }
+            updateHistoryButtons();
+        }
+
+        function undo() { if(historyIndex <= 0) return; historyIndex--; loadStateJSON(historyStack[historyIndex]); updateHistoryButtons(); }
+        function redo() { if(historyIndex >= historyStack.length - 1) return; historyIndex++; loadStateJSON(historyStack[historyIndex]); updateHistoryButtons(); }
+        function updateHistoryButtons() {
+            document.getElementById('btnUndo').disabled = (historyIndex <= 0); document.getElementById('btnRedo').disabled = (historyIndex >= historyStack.length - 1);
+            document.getElementById('btnUndo').style.opacity = (historyIndex <= 0) ? 0.3 : 1; document.getElementById('btnRedo').style.opacity = (historyIndex >= historyStack.length - 1) ? 0.3 : 1;
+        }
+
+        window.addEventListener('keydown', e => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if(e.key === 'Delete' || e.key === 'Backspace') deleteSelected();
+            if(e.key === 'Escape') { state.wire.act = false; state.sel = null; updInsp(); closeModal(); }
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'z' || e.key === 'Z')) { e.preventDefault(); undo(); }
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || e.key === 'Y')) { e.preventDefault(); redo(); }
+            if (e.key === 'i' || e.key === 'I') { document.getElementById('btnExport').click(); }
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C')) {
+                if (state.sel && state.sel.type === 'c') {
+                    const c = state.sel.obj; clipboard = { type: c.type, lbl: c.lbl, text: c.text, fontSize: c.fontSize, period: c.period, numInputs: c.numInputs };
+                }
+            }
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V')) {
+                if (clipboard) {
+                    const x = snap(state.ms.x); const y = snap(state.ms.y); let newC = createComponent(clipboard.type, x, y);
+                    if(newC) {
+                        newC.lbl = clipboard.lbl; if(clipboard.text !== undefined) newC.text = clipboard.text; if(clipboard.fontSize !== undefined) newC.fontSize = clipboard.fontSize; if(clipboard.period !== undefined) newC.period = clipboard.period;
+                        if(clipboard.numInputs !== undefined && newC.setInputs && newC.type !== 'NOT') newC.setInputs(clipboard.numInputs);
+                        state.comps.push(newC); state.sel = {type: 'c', obj: newC}; recordState(); updInsp();
+                    }
+                }
+            }
+        });
+
+        // Main touch/mouse interaction handling for canvas
+        const onDown = e => {
+            if(e.touches && e.touches.length === 2) {
+                e.preventDefault();
+                if(state.wire.act) { state.wire.act = false; draw(); }
+                isPanning = true;
+                let t1 = e.touches[0], t2 = e.touches[1];
+                initialPinchDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+                startPan = { x: (t1.clientX + t2.clientX)/2, y: (t1.clientY + t2.clientY)/2 };
+                cvs.style.cursor = 'grabbing';
+                return;
+            }
+
+            if(e.type === 'touchstart') {
+                if (e.target === cvs) e.preventDefault(); // Stop scrolling when touching canvas
+            }
+
+            const raw = e.touches ? e.touches[0] : e;
+            const p = getPos(raw); state.ms = p; 
+
+            if (raw.button === 1 || raw.button === 2 || e.ctrlKey || e.metaKey) { 
+                isPanning = true; startPan = {x:raw.clientX, y:raw.clientY}; cvs.style.cursor='grabbing'; return; 
+            }
+
+            for(const c of state.comps) {
+                const port = c.getP(p.x, p.y);
+                if(port) {
+                    if(state.wires.some(l => (l.p1 === port && l.p2 === state.wire.start) || (l.p2 === port && l.p1 === state.wire.start))) return; 
+                    
+                    if(state.wire.act && port !== state.wire.start) { 
+                        const lastPt = state.wire.points.length > 0 ? state.wire.points[state.wire.points.length-1] : state.wire.start.parent.absP(state.wire.start);
+                        const endPt = port.parent.absP(port);
+                        
+                        if (lastPt.x !== endPt.x && lastPt.y !== endPt.y) {
+                            if (Math.abs(endPt.x - lastPt.x) > Math.abs(endPt.y - lastPt.y)) {
+                                state.wire.points.push({x: snap(endPt.x), y: snap(lastPt.y)});
+                            } else {
+                                state.wire.points.push({x: snap(lastPt.x), y: snap(endPt.y)});
+                            }
+                        }
+
+                        state.wires.push({p1:state.wire.start, p2:port, points:[...state.wire.points], val:0}); 
+                        recordState();
+                        state.wire.act = false; 
+                    } else { 
+                        state.wire = {act:true, start:port, points:[]}; 
+                    }
+                    return;
+                }
+            }
+            
+            if(state.wire.act) { 
+                let snapX = p.x, snapY = p.y;
+                const lastPt = state.wire.points.length > 0 ? state.wire.points[state.wire.points.length-1] : state.wire.start.parent.absP(state.wire.start);
+                
+                if (Math.abs(p.x - lastPt.x) > Math.abs(p.y - lastPt.y)) { snapY = lastPt.y; } else { snapX = lastPt.x; }
+                state.wire.points.push({x:snap(snapX), y:snap(snapY)}); 
+                return; 
+            }
+            
+            for(const l of state.wires) {
+                 if (!l.p1.parent || !l.p2.parent) continue;
+                 for(let i=0; i<l.points.length; i++) { 
+                     if(dist(p, l.points[i]) < 10) { state.sel = {type: 'l', obj: l}; state.drag = {act: true, type: 'node', wire: l, index: i, moved: false}; updInsp(); return; } 
+                 }
+            }
+            
+            for(let i=state.comps.length-1; i>=0; i--) { 
+                const c = state.comps[i]; 
+                if(c.hit(p.x, p.y)) { 
+                    if (isSimulating) {
+                        if (c.type === 'switch') c.state ^= 1; 
+                        return; 
+                    }
+                    state.sel = {type:'c', obj:c}; state.drag = {act:true, sx:c.x, sy:c.y, ox: p.x - c.x, oy: p.y - c.y, moved: false}; updInsp(); return; 
+                } 
+            }
+            
+            for(const l of state.wires) { 
+                if (!l.p1.parent || !l.p2.parent) continue;
+                const s = l.p1.parent.absP(l.p1); const e = l.p2.parent.absP(l.p2); const points = [s, ...l.points, e]; let isHit = false;
+                for(let i=0; i<points.length-1; i++){ if(distSeg(p, points[i], points[i+1]) < 15) { isHit = true; break; } }
+                if(isHit) { state.sel={type:'l', obj:l}; updInsp(); return; } 
+            }
+            
+            isPanning = true; startPan = {x:raw.clientX, y:raw.clientY}; cvs.style.cursor='grabbing'; state.sel = null; updInsp();
+        };
+
+        const onMove = e => {
+            if(e.touches && e.touches.length === 2 && isPanning) {
+                e.preventDefault();
+                let t1 = e.touches[0], t2 = e.touches[1];
+                let currentDist = Math.hypot(t2.clientX - t1.clientX, t2.clientY - t1.clientY);
+                let midX = (t1.clientX + t2.clientX)/2, midY = (t1.clientY + t2.clientY)/2;
+                
+                if(initialPinchDist > 0) {
+                    let zs = currentDist / initialPinchDist; 
+                    let ns = Math.min(Math.max(view.scale * zs, 0.1), 5.0);
+                    const r = cvs.getBoundingClientRect();
+                    const mx = midX - r.left, my = midY - r.top;
+                    view.x = mx - (mx - view.x) / view.scale * ns;
+                    view.y = my - (my - view.y) / view.scale * ns;
+                    view.scale = ns;
+                    initialPinchDist = currentDist;
+                }
+                view.x += midX - startPan.x; view.y += midY - startPan.y;
+                startPan = { x: midX, y: midY };
+                draw(); return;
+            }
+
+            if (isPanning && (!e.touches || e.touches.length < 2)) {
+                const raw = e.touches ? e.touches[0] : e;
+                view.x += raw.clientX - startPan.x;
+                view.y += raw.clientY - startPan.y;
+                startPan = { x: raw.clientX, y: raw.clientY };
+                draw(); return;
+            }
+
+            const isCanvasInteraction = e.target === cvs || isPanning || state.drag.act || state.wire.act;
+            if (!isCanvasInteraction && e.type === 'touchmove') return;
+            if(e.cancelable && isCanvasInteraction) e.preventDefault();
+
+            const raw = e.touches ? e.touches[0] : e;
+            const r = cvs.getBoundingClientRect(); 
+            const mx = (raw.clientX - r.left - view.x) / view.scale;
+            const my = (raw.clientY - r.top - view.y) / view.scale;
+
+            if(state.drag.act && state.drag.type === 'node') { state.drag.wire.points[state.drag.index] = {x: snap(mx), y: snap(my)}; state.drag.moved = true; return; }
+            if(state.drag.act && state.sel && state.sel.type === 'c') { const nx = snap(mx - state.drag.ox); const ny = snap(my - state.drag.oy); if(nx !== state.sel.obj.x || ny !== state.sel.obj.y) { state.sel.obj.x = nx; state.sel.obj.y = ny; state.drag.moved = true; } }
+            if(state.wire.act) { 
+                let rawX = mx;
+                let rawY = my;
+                const lastPt = state.wire.points.length > 0 ? state.wire.points[state.wire.points.length-1] : state.wire.start.parent.absP(state.wire.start);
+                
+                if (Math.abs(rawX - lastPt.x) > Math.abs(rawY - lastPt.y)) {
+                    rawY = lastPt.y;
+                } else {
+                    rawX = lastPt.x;
+                }
+                
+                state.ms = { x: snap(rawX), y: snap(rawY) }; 
+            }
+        };
+
+        const onUp = e => { 
+            if(e.touches && e.touches.length < 2 && isPanning) {
+                isPanning = false; initialPinchDist = 0;
+            }
+            if (state.drag.act && state.drag.moved) recordState(); 
+            isPanning = false; cvs.style.cursor='crosshair'; state.drag.act = false; state.drag.type = null; 
+        };
+        
+        cvs.addEventListener('mousedown', onDown);
+        cvs.addEventListener('touchstart', onDown, {passive: false});
+        window.addEventListener('mousemove', onMove, {passive: false});
+        window.addEventListener('touchmove', onMove, {passive: false});
+        window.addEventListener('mouseup', onUp);
+        window.addEventListener('touchend', onUp);
+        window.addEventListener('touchcancel', onUp);
+        
+        cvs.addEventListener('wheel', e => {
+            e.preventDefault();
+            const zs = e.deltaY > 0 ? 0.9 : 1.1;
+            const r = cvs.getBoundingClientRect();
+            const mx = e.clientX - r.left; const my = e.clientY - r.top;
+            const wx = (mx - view.x) / view.scale; const wy = (my - view.y) / view.scale;
+            let newScale = view.scale * zs; newScale = Math.min(Math.max(newScale, 0.1), 5.0);
+            if (Number.isFinite(wx) && Number.isFinite(wy)) { view.x = mx - (wx * newScale); view.y = my - (wy * newScale); view.scale = newScale; }
+        }, {passive: false});
+        
+        safeBind('btnClear', 'onclick', ()=>{ state.comps=[]; state.wires=[]; recordState(); });
+        safeBind('btnDelete', 'onclick', deleteSelected); safeBind('btnUndo', 'onclick', undo); safeBind('btnRedo', 'onclick', redo);
+        safeBind('btnZoomIn', 'onclick', ()=>{ view.scale*=1.1; }); safeBind('btnZoomOut', 'onclick', ()=>{ view.scale*=0.9; });
+        safeBind('btnHome', 'onclick', fitToScreen);
+        safeBind('btnSetProp', 'onclick', ()=>{ if(state.sel?.type==='c') { state.sel.obj.lbl=document.getElementById('propLabel').value.toUpperCase(); recordState(); }});
+        safeBind('clockSpeed', 'oninput', (e) => { if(state.sel?.type==='c' && state.sel.obj.type === 'clock') { state.sel.obj.period = parseInt(e.target.value); document.getElementById('clockSpeedVal').textContent = state.sel.obj.period + 'ms'; } });
+        safeBind('clockSpeed', 'onchange', () => { recordState(); });
+        safeBind('propText', 'oninput', (e) => { if(state.sel?.type==='c' && state.sel.obj.type === 'text') { state.sel.obj.text = e.target.value; } });
+        safeBind('propText', 'onchange', () => { recordState(); }); 
+        safeBind('propSize', 'oninput', (e) => { if(state.sel?.type==='c' && state.sel.obj.type === 'text') { state.sel.obj.fontSize = parseInt(e.target.value); } });
+        safeBind('propSize', 'onchange', () => { recordState(); });
+
+        safeBind('propInputs', 'onchange', (e) => { 
+            if(state.sel?.type==='c' && ['AND', 'OR', 'NAND', 'NOR', 'XOR', 'XNOR'].includes(state.sel.obj.type)) { 
+                state.sel.obj.setInputs(parseInt(e.target.value)); 
+                recordState(); 
+                updInsp(); 
+                draw(); 
+            } 
+        });
+
+        // --- Custom touch-enabled drag/drop for sidebar components ---
+        document.querySelectorAll('.comp-card').forEach(el => {
+            el.removeAttribute('draggable'); 
+            
+            const startDrag = (e, isTouch) => {
+                if(isSimulating) return;
+                
+                const type = el.dataset.type;
+                const r = cvs.getBoundingClientRect();
+                const sidebarContent = document.getElementById('sidebarContent');
+                
+                const onDragMove = mv => {
+                    const mvX = isTouch ? mv.touches[0].clientX : mv.clientX;
+                    const mvY = isTouch ? mv.touches[0].clientY : mv.clientY;
+                    
+                    // If touching and still inside the sidebar, let the browser natively scroll
+                    if (isTouch && sidebarContent) {
+                        const sideRect = sidebarContent.getBoundingClientRect();
+                        if (mvX < sideRect.right) {
+                            state.dragGhost = null;
+                            draw();
+                            return; 
+                        }
+                    }
+
+                    // Once pulled into the canvas area, hijack the touch to move the ghost
+                    if(mv.cancelable) mv.preventDefault(); 
+                    
+                    if(mvX >= r.left && mvX <= r.right && mvY >= r.top && mvY <= r.bottom) {
+                        const p = {x: (mvX - r.left - view.x) / view.scale, y: (mvY - r.top - view.y) / view.scale};
+                        state.dragGhost = { type: type, x: snap(p.x), y: snap(p.y) };
+                    } else {
+                        state.dragGhost = null; 
+                    }
+                    draw();
+                };
+
+                const onDragUp = () => {
+                    if(state.dragGhost) {
+                        const c = createComponent(state.dragGhost.type, state.dragGhost.x, state.dragGhost.y);
+                        if(c){
+                            state.comps.push(c);
+                            state.sel = {type: 'c', obj: c};
+                            updInsp();
+                            recordState();
+                        }
+                    }
+                    state.dragGhost = null; 
+                    draw();
+                    
+                    document.removeEventListener(isTouch ? 'touchmove' : 'mousemove', onDragMove);
+                    document.removeEventListener(isTouch ? 'touchend' : 'mouseup', onDragUp);
+                    if(isTouch) document.removeEventListener('touchcancel', onDragUp);
+                };
+                
+                document.addEventListener(isTouch ? 'touchmove' : 'mousemove', onDragMove, {passive: false});
+                document.addEventListener(isTouch ? 'touchend' : 'mouseup', onDragUp);
+                if(isTouch) document.addEventListener('touchcancel', onDragUp);
+            };
+
+            el.addEventListener('mousedown', e => startDrag(e, false));
+            el.addEventListener('touchstart', e => startDrag(e, true), {passive: false});
+        });
+        
+        function setWireColor(c) { if(state.sel?.type==='l') { state.sel.obj.color=c; recordState(); } }
+        function setLEDColor(c) { if(state.sel?.type==='c' && state.sel.obj.type==='LED') { state.sel.obj.color=c; recordState(); } }
+        
+        document.getElementById('btnSave').onclick = () => {
+            const jsonStr = getStateJSON(); const data = JSON.parse(jsonStr); data.version = "V1.3";
+            const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"}); const url = URL.createObjectURL(blob); 
+            const a = document.createElement('a'); a.href = url; const d = new Date(); a.download = `logic_circuit_${d.getHours()}-${d.getMinutes()}.json`; 
+            a.click(); URL.revokeObjectURL(url);
+        };
+
+        // Export Bounding Box Fix
+        document.getElementById('btnExport').onclick = () => {
+            const currentSel = state.sel; state.sel = null; 
+            
+            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+            const addPt = (x, y) => { if (Number.isFinite(x) && Number.isFinite(y)) { minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y); } };
+            state.comps.forEach(c => { addPt(c.x - 60, c.y - 40); addPt(c.x + 60, c.y + 40); });
+            state.wires.forEach(l => { if (l.p1 && l.p1.parent) { const p = l.p1.parent.absP(l.p1); addPt(p.x, p.y); } if (l.p2 && l.p2.parent) { const p = l.p2.parent.absP(l.p2); addPt(p.x, p.y); } if (l.points) l.points.forEach(pt => addPt(pt.x, pt.y)); });
+            
+            if(minX === Infinity) { minX = 0; minY = 0; maxX = cvs.width; maxY = cvs.height; }
+            
+            const margin = 60; 
+            minX -= margin; maxX += margin; minY -= margin; maxY += margin;
+            const w = maxX - minX; const h = maxY - minY;
+
+            const scaleFactor = 3; 
+            const tempCvs = document.createElement('canvas'); 
+            tempCvs.width = w * scaleFactor; 
+            tempCvs.height = h * scaleFactor;
+            const tCtx = tempCvs.getContext('2d'); 
+            tCtx.fillStyle = '#ffffff'; 
+            tCtx.fillRect(0, 0, tempCvs.width, tempCvs.height);
+            
+            const origView = { x: view.x, y: view.y, scale: view.scale };
+            view.scale = scaleFactor;
+            view.x = -minX * scaleFactor;
+            view.y = -minY * scaleFactor;
+            
+            draw(tCtx, false); 
+            
+            const url = tempCvs.toDataURL('image/png'); 
+            const a = document.createElement('a'); a.href = url; a.download = 'logic_snapshot_highres.png'; a.click();
+            
+            view.x = origView.x; view.y = origView.y; view.scale = origView.scale;
+            state.sel = currentSel; 
+            draw();
+        };
+
+        // --- PRINT REPORT GENERATION LOGIC ---
+        function generateReport() {
+            if (state.comps.length === 0) {
+                alert("Please build a circuit first before generating a report.");
+                return;
+            }
+            
+            document.getElementById('inp_report_name').value = '';
+            document.getElementById('inp_report_scn').value = '';
+            document.getElementById('inp_report_task').value = '';
+            
+            // Check if there's any logic to analyze
+            const inputs = state.comps.filter(c => c.type === 'switch');
+            const outputs = state.comps.filter(c => c.type === 'LED');
+            const hasLogic = inputs.length > 0 && outputs.length > 0;
+
+            const chkBoolean = document.getElementById('chk_report_boolean');
+            const chkTruth = document.getElementById('chk_report_truth');
+            if (chkBoolean) {
+                chkBoolean.disabled = !hasLogic;
+                chkBoolean.checked = hasLogic;
+            }
+            if (chkTruth) {
+                chkTruth.disabled = !hasLogic;
+                chkTruth.checked = hasLogic;
+            }
+
+            // Check if there are 7400 series ICs to layout
+            const counts = {};
+            state.comps.forEach(c => { 
+                const isLogicGate = ['AND', 'OR', 'NOT', 'NAND', 'NOR', 'XOR', 'XNOR'].includes(c.type);
+                if(isLogicGate) {
+                    const key = `${c.type}_${c.numInputs || (c.type==='NOT'?1:2)}`;
+                    if(IC_DATA[key]) counts[key] = true;
+                }
+            });
+            const hasICs = Object.keys(counts).length > 0;
+            const chkIC = document.getElementById('chk_report_ic');
+            if (chkIC) {
+                chkIC.disabled = !hasICs;
+                chkIC.checked = hasICs;
+            }
+            
+            document.getElementById('reportModal').classList.remove('hidden');
+        }
+
+        function closeReportModal() {
+            document.getElementById('reportModal').classList.add('hidden');
+        }
+
+        function executeReportGeneration() {
+            const stuName = document.getElementById('inp_report_name').value || 'Student';
+            const stuSCN = document.getElementById('inp_report_scn').value;
+            const stuTask = document.getElementById('inp_report_task').value;
+            
+            const incBoolean = document.getElementById('chk_report_boolean')?.checked || false;
+            const incTruthTable = document.getElementById('chk_report_truth')?.checked || false;
+            const incIC = document.getElementById('chk_report_ic')?.checked || false;
+
+            closeReportModal();
+
+            // --- 1. CAPTURE CIRCUIT (High-Res & Cropped) ---
+            const curSel = state.sel; state.sel = null; 
+            let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+            const addPt = (x, y) => { if (Number.isFinite(x) && Number.isFinite(y)) { minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y); } };
+            state.comps.forEach(c => { addPt(c.x - 60, c.y - 40); addPt(c.x + 60, c.y + 40); });
+            state.wires.forEach(l => { if (l.p1 && l.p1.parent) { const p = l.p1.parent.absP(l.p1); addPt(p.x, p.y); } if (l.p2 && l.p2.parent) { const p = l.p2.parent.absP(l.p2); addPt(p.x, p.y); } if (l.points) l.points.forEach(pt => addPt(pt.x, pt.y)); });
+            
+            if(minX === Infinity) { minX = 0; minY = 0; maxX = cvs.width; maxY = cvs.height; }
+            
+            const margin = 60; minX -= margin; maxX += margin; minY -= margin; maxY += margin;
+            const w = maxX - minX; const h = maxY - minY;
+
+            const scaleFactor = 3; 
+            const tempCvs = document.createElement('canvas'); 
+            tempCvs.width = w * scaleFactor; tempCvs.height = h * scaleFactor;
+            const tCtx = tempCvs.getContext('2d'); 
+            tCtx.fillStyle = '#ffffff'; tCtx.fillRect(0, 0, tempCvs.width, tempCvs.height);
+            
+            const origView = { x: view.x, y: view.y, scale: view.scale };
+            view.scale = scaleFactor; view.x = -minX * scaleFactor; view.y = -minY * scaleFactor;
+            
+            draw(tCtx, false); 
+            const circuitDataUrl = tempCvs.toDataURL('image/png');
+            
+            view.x = origView.x; view.y = origView.y; view.scale = origView.scale;
+            state.sel = curSel; // Fix for the curSel / currentSel crash
+            draw();
+
+            // --- 2. CAPTURE IC WIRING DIAGRAM (If Requested) ---
+            let icDataUrl = '';
+            if (incIC) {
+                const counts = {};
+                state.comps.forEach(c => { 
+                    const isLogicGate = ['AND', 'OR', 'NOT', 'NAND', 'NOR', 'XOR', 'XNOR'].includes(c.type);
+                    if(isLogicGate) {
+                        const key = `${c.type}_${c.numInputs || (c.type==='NOT'?1:2)}`;
+                        if(IC_DATA[key]) {
+                            if(!counts[key]) counts[key] = [];
+                            counts[key].push(c);
+                        }
+                    }
+                });
+                
+                let chips = [];
+                let icNum = 1;
+                for(let [key, gates] of Object.entries(counts)) {
+                    const icDef = IC_DATA[key];
+                    const chipsNeeded = Math.ceil(gates.length / icDef.gatesPerChip);
+                    for(let i=0; i<chipsNeeded; i++) {
+                        chips.push({
+                            icNum: icNum++,
+                            def: icDef,
+                            gates: gates.slice(i*icDef.gatesPerChip, (i+1)*icDef.gatesPerChip)
+                        });
+                    }
+                }
+                
+                if (chips.length > 0) {
+                    const icCvs = document.createElement('canvas');
+                    // We must calculate the height dynamically before rendering
+                    const inputs = state.comps.filter(c => c.type === 'switch' || c.type === 'clock');
+                    const outputs = state.comps.filter(c => c.type === 'LED');
+                    icCvs.height = Math.max(inputs.length * 80, outputs.length * 80, chips.length * 350) + 120;
+                    icCvs.width = 1000;
+                    
+                    renderICCanvas(chips, 1000, icCvs);
+                    icDataUrl = icCvs.toDataURL('image/png');
+                }
+            }
+
+            // --- 3. COMPILE TRUTH TABLE / BOOLEAN HTML ---
+            let analysisHtml = '';
+            if (incBoolean || incTruthTable) {
+                const inputs = state.comps.filter(c => c.type === 'switch');
+                const outputs = state.comps.filter(c => c.type === 'LED');
+                
+                if (inputs.length > 0 && outputs.length > 0 && inputs.length <= 8) {
+                    inputs.forEach((sw, i) => { sw.tempLbl = sw.lbl || String.fromCharCode(65 + i); });
+                    outputs.forEach((o, i) => { o.tempLbl = o.lbl || `Q${i+1}`; });
+                    
+                    analysisHtml += `<div class="section" style="display: flex; gap: 20px; align-items: flex-start; justify-content: space-between;">`;
+
+                    if (incBoolean) {
+                        analysisHtml += `<div style="flex: 1; min-width: 0;"><div class="section-title">Boolean Expressions</div><div class="card" style="display:block;">`;
+                        outputs.forEach(o => {
+                            const expr = getExpression(o.ports.find(p=>p.typ==='in'));
+                            analysisHtml += `<div style="font-family: monospace; font-size: 14px; font-weight: bold; margin-bottom: 6px; color: #db2777;">${o.tempLbl} = <span style="color: #334155;">${expr}</span></div>`;
+                        });
+                        analysisHtml += `</div></div>`;
+                    }
+                    
+                    if (incTruthTable) {
+                        const orig = inputs.map(sw => sw.state);
+                        let table = [];
+                        const rows = 1 << inputs.length;
+                        for (let i = 0; i < rows; i++) {
+                            // Reset circuit state so latches don't pollute subsequent truth table combinations
+                            state.comps.forEach(c => c.ports.forEach(p => p.val = 0));
+                            
+                            inputs.forEach((sw, idx) => { sw.state = (i >> (inputs.length - 1 - idx)) & 1; });
+                            solveLogic();
+                            table.push({ in: inputs.map(sw => sw.state), out: outputs.map(o => o.ports[0].val) });
+                        }
+                        
+                        // Clean up state before restoring user inputs
+                        state.comps.forEach(c => c.ports.forEach(p => p.val = 0));
+                        inputs.forEach((sw, idx) => sw.state = orig[idx]);
+                        solveLogic();
+                        
+                        analysisHtml += `<div style="flex: 1; min-width: 0;"><div class="section-title">Truth Table</div>`;
+                        analysisHtml += `<table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 11px; border: 1px solid #e2e8f0;">`;
+                        analysisHtml += `<thead><tr style="background: #f1f5f9;">`;
+                        inputs.forEach(sw => analysisHtml += `<th style="padding: 4px; border: 1px solid #cbd5e1; color: #475569;">${sw.tempLbl}</th>`);
+                        analysisHtml += `<th style="width: 2px; padding: 0; background: #cbd5e1;"></th>`;
+                        outputs.forEach(o => analysisHtml += `<th style="padding: 4px; border: 1px solid #cbd5e1; color: #db2777;">${o.tempLbl}</th>`);
+                        analysisHtml += `</tr></thead><tbody>`;
+                        
+                        table.forEach((row, rowIndex) => {
+                            const bg = rowIndex % 2 === 0 ? '#ffffff' : '#fdf2f8';
+                            analysisHtml += `<tr style="background: ${bg};">`;
+                            row.in.forEach(v => analysisHtml += `<td style="padding: 3px; border: 1px solid #e2e8f0; font-family: monospace; ${v?'color:#16a34a;font-weight:bold;':'color:#94a3b8;'}">${v}</td>`);
+                            analysisHtml += `<td style="width: 2px; padding: 0; background: #cbd5e1;"></td>`;
+                            row.out.forEach(v => analysisHtml += `<td style="padding: 3px; border: 1px solid #e2e8f0; font-family: monospace; ${v?'color:#db2777;font-weight:bold;':'color:#cbd5e1;'}">${v}</td>`);
+                            analysisHtml += `</tr>`;
+                        });
+                        analysisHtml += `</tbody></table></div>`;
+                    }
+                    analysisHtml += `</div>`;
+                } else if (inputs.length > 8) {
+                    analysisHtml += `<div class="section"><p style="color: #ef4444; font-weight: bold;">Truth table omitted: Maximum 8 inputs supported for analysis.</p></div>`;
+                } else {
+                    analysisHtml += `<div class="section"><p style="color: #94a3b8; font-style: italic;">Truth table omitted: Requires at least one Toggle Switch (Input) and one Logic Indicator (Output).</p></div>`;
+                }
+            }
+
+            // --- 4. INJECT INTO HIDDEN IFRAME & PRINT ---
+            const htmlStr = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <style>
+                        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #1e293b; line-height: 1.3; margin: 0; padding: 20px; background: white; }
+                        h1 { font-size: 20px; margin: 0 0 2px 0; color: #0f172a; font-weight: 900; }
+                        h2 { font-size: 12px; margin: 0 0 15px 0; color: #64748b; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
+                        .header-line { border-bottom: 2px solid #db2777; margin-bottom: 15px; padding-bottom: 5px; }
+                        .section { margin-bottom: 15px; page-break-inside: avoid; }
+                        .section-title { font-size: 12px; font-weight: bold; border-bottom: 1px solid #e2e8f0; padding-bottom: 3px; margin-bottom: 10px; text-transform: uppercase; color: #334155; }
+                        img { max-width: 100%; max-height: 250px; object-fit: contain; border: 1px solid #e2e8f0; border-radius: 8px; display: block; margin: 0 auto; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+                        .card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px 15px; border-radius: 8px; }
+                        .footer { margin-top: 30px; border-top: 1px solid #cbd5e1; padding-top: 10px; font-size: 10px; display: flex; justify-content: space-between; color: #64748b; page-break-inside: avoid; }
+                        .footer-col p { margin: 2px 0; }
+                        .footer-col strong { color: #1e293b; }
+                        @page { margin: 10mm; size: A4 portrait; }
+                    </style>
+                </head>
+                <body>
+                    <div class="header-line">
+                        <h1>NoNANDSense<span style="color:#db2777">Sim V1.3</span></h1>
+                        <h2>Circuit & Logic Report</h2>
+                    </div>
+                    
+                    <div class="section">
+                        <div class="section-title">Circuit Schematic</div>
+                        <img src="${circuitDataUrl}" />
+                    </div>
+
+                    ${analysisHtml}
+                    
+                    ${incIC && icDataUrl ? `
+                    <div class="section">
+                        <div class="section-title">7400 Series IC Wiring Diagram</div>
+                        <img src="${icDataUrl}" style="max-height: 240px; width: 100%;" />
+                    </div>
+                    ` : ''}
+
+                    <div class="footer">
+                        <div class="footer-col">
+                            <p><strong>Student Name:</strong> ${stuName}</p>
+                            ${stuSCN ? `<p><strong>SCN:</strong> ${stuSCN}</p>` : ''}
+                            ${stuTask ? `<p><strong>Task:</strong> ${stuTask}</p>` : ''}
+                        </div>
+                        <div class="footer-col" style="text-align: right;">
+                            <p>Generated: ${new Date().toLocaleString('en-GB')}</p>
+                        </div>
+                    </div>
+                </body>
+                </html>
+            `;
+
+            const iframe = document.createElement('iframe');
+            iframe.style.position = 'absolute';
+            iframe.style.width = '0px';
+            iframe.style.height = '0px';
+            iframe.style.border = 'none';
+            document.body.appendChild(iframe);
+            
+            const doc = iframe.contentWindow.document;
+            doc.open();
+            doc.write(htmlStr);
+            doc.close();
+
+            // Wait for base64 images to fully decode, then print the iframe
+            setTimeout(() => {
+                iframe.contentWindow.focus();
+                iframe.contentWindow.print();
+                setTimeout(() => document.body.removeChild(iframe), 2000); 
+            }, 500);
+        }
+
+        document.getElementById('fileLoad').onchange = (e) => {
+            const file = e.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (evt) => { try { loadStateJSON(evt.target.result); recordState(); } catch(err) { console.error(err); } finally { e.target.value = ''; } };
+            reader.readAsText(file);
+        };
+
+        document.getElementById('appModal').addEventListener('click', (e) => { if (e.target === document.getElementById('appModal')) closeModal(); });
+
+        // Initialize drag functionality for Inspector & Modals
+        makeDraggable(document.getElementById('inspector'), document.getElementById('insp-header'), false);
+        makeDraggable(document.getElementById('appModalContent'), document.getElementById('appModalHeader'), true);
+
+        // Bootstrap Simulation Loop
+        function resize() { cvs.width = cvs.parentElement.clientWidth; cvs.height = cvs.parentElement.clientHeight; draw(); }
+        window.addEventListener('resize', resize);
+        
+        // === PASTE YOUR JSON STRING INSIDE THE QUOTES BELOW TO AUTO-LOAD ===
+        const preloadedLesson = ``;
+
+        setTimeout(() => {
+            resize();
+            if (preloadedLesson.trim().length > 10) {
+                loadStateJSON(preloadedLesson);
+                if (sidebarOpen) toggleSidebar(); 
+                setTimeout(() => { setSimMode(true); }, 250); 
+            }
+            recordState();
+            requestAnimationFrame(loop);
+        }, 50);
+
+        function loop() { solveLogic(); draw(); requestAnimationFrame(loop); }
+
+    </script>
+</body>
+</html>

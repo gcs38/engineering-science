@@ -1,50 +1,870 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Course notes — Digital electronics — Engineering Science Scotland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Digital Electronics — Course Notes — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .resource-page{max-width:680px;margin:0 auto;padding:32px 32px 64px;}
-    .open-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px 24px;text-align:center;margin-bottom:16px;}
-    .open-card-icon{font-size:36px;margin-bottom:10px;}
-    .open-card-title{font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:-.4px;margin-bottom:6px;}
-    .open-card-sub{font-size:13px;color:var(--gray-600);margin-bottom:20px;line-height:1.5;}
-    .open-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-400);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .open-btn:hover{background:var(--teal-600);}
-    .sim-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-800);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .sim-btn:hover{background:var(--teal-600);}
-    .back-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:20px;}
-    .back-link:hover{color:var(--teal-800);}
-    .info-note{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;margin-top:12px;}
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .back-link:hover { color:var(--teal-800); }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:14px 0 6px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+
+    /* Gate reference cards */
+    .gate-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; margin:16px 0 20px; }
+    .gate-card { background:white; border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; }
+    .gate-card-header { padding:10px 14px; font-size:13px; font-weight:700; color:white; display:flex; align-items:center; gap:8px; }
+    .gate-card-body { padding:12px 14px; }
+    .gate-card-body p { font-size:13px; color:var(--gray-600); line-height:1.5; margin-bottom:8px; }
+    .gate-card-body .bool { font-size:14px; font-weight:700; color:var(--teal-800); font-family:monospace; }
+
+    /* Truth tables */
+    .truth-table { border-collapse:collapse; font-size:13px; margin:12px 0; }
+    .truth-table th { background:var(--teal-800); color:white; padding:6px 14px; text-align:center; }
+    .truth-table td { padding:6px 14px; border:1px solid var(--gray-200); text-align:center; color:var(--gray-700); }
+    .truth-table td.hi { color:#15803d; font-weight:700; }
+    .truth-table td.lo { color:var(--gray-400); }
+    .truth-table tr:nth-child(even) td { background:var(--gray-50); }
+
+    /* Diagram placeholders — images replace these */
+    .diagram-placeholder { background:#f0f9ff; border:2px dashed #7dd3fc; border-radius:10px; padding:18px 20px; margin:16px 0; text-align:center; }
+    .diagram-placeholder-icon { font-size:28px; margin-bottom:6px; }
+    .diagram-placeholder-text { font-size:13px; color:#0369a1; font-weight:600; }
+    .diagram-placeholder-sub { font-size:11px; color:#7dd3fc; margin-top:4px; font-style:italic; }
+
+    /* Worked examples */
+    .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:18px 20px; margin:16px 0; }
+    .worked-example-title { font-size:13px; font-weight:600; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+    .step { display:flex; gap:12px; margin-bottom:10px; }
+    .step-num { width:24px; height:24px; border-radius:50%; background:var(--teal-400); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .step-content { font-size:13px; color:var(--gray-600); line-height:1.6; flex:1; }
+    .step-content strong { color:var(--gray-900); }
+
+    /* Boolean expression display */
+    .bool-box { background:white; border:2px solid var(--teal-100); border-radius:10px; padding:14px 20px; margin:14px 0; text-align:center; }
+    .bool-expr { font-size:18px; font-weight:700; color:var(--teal-800); font-family:monospace; }
+    .bool-note { font-size:12px; color:var(--gray-400); margin-top:6px; }
+
+    /* Applications cards */
+    .app-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0; }
+    .app-card { background:white; border:1px solid var(--gray-200); border-radius:8px; padding:12px 14px; }
+    .app-card-title { font-size:13px; font-weight:700; color:var(--teal-800); margin-bottom:4px; }
+    .app-card-desc { font-size:12px; color:var(--gray-500); line-height:1.5; }
+
+    /* Data table for IC reference */
+    .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .data-table tr:nth-child(even) td { background:var(--gray-50); }
+
+    /* Simulator embed */
+    .sim-embed-section { margin:24px 0; }
+    .sim-embed-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+    .sim-embed-title { font-size:14px; font-weight:500; color:var(--gray-900); display:flex; align-items:center; gap:8px; }
+    .sim-embed-title span { font-size:18px; }
+    .sim-fullscreen-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 14px; background:var(--teal-800); color:white; border-radius:var(--radius-md); font-size:12px; font-weight:500; text-decoration:none; transition:all var(--transition); }
+    .sim-fullscreen-btn:hover { background:var(--teal-600); }
+    .sim-wrap { border-radius:10px; overflow:hidden; border:2px solid var(--teal-100); }
+    .sim-iframe { width:100%; height:560px; border:none; display:block; }
+    .sim-credit { font-size:11px; color:var(--gray-400); margin-top:5px; text-align:right; }
+    .sim-instruction { background:var(--teal-50); border:1px solid var(--teal-100); border-radius:8px; padding:10px 14px; margin-bottom:10px; font-size:13px; color:var(--teal-800); }
+
+    /* Tasks */
+    .assignment { background:white; border:2px solid var(--teal-400); border-radius:12px; margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:6px; font-weight:500; }
+    .task-q-sub { font-size:13px; color:var(--gray-700); margin:5px 0 5px 16px; }
+
+    /* Answer boxes */
+    .answer-label { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin:8px 0 3px; display:flex; align-items:center; gap:6px; }
+    .saved-indicator { font-size:11px; color:#10b981; font-weight:600; opacity:0; transition:opacity .3s; text-transform:none; letter-spacing:0; }
+    .saved-indicator.show { opacity:1; }
+    .answer-box { background:#f8faff; border:2px solid #c7d7f5; border-radius:8px; padding:10px 12px; min-height:68px; font-size:14px; color:var(--gray-700); line-height:1.7; outline:none; transition:border-color .2s, box-shadow .2s; display:block; width:100%; box-sizing:border-box; }
+    .answer-box:focus { border-color:var(--teal-400); box-shadow:0 0 0 3px rgba(45,212,191,0.12); }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-sm { min-height:44px; }
+    .answer-box-lg { min-height:110px; }
+
+    /* Truth table answer grids */
+    .tt-answer { border-collapse:collapse; font-size:13px; margin:10px 0; }
+    .tt-answer th { background:var(--teal-800); color:white; padding:6px 20px; text-align:center; }
+    .tt-answer td { padding:0; border:1px solid var(--gray-200); text-align:center; }
+    .tt-answer td.input { padding:6px 20px; color:var(--gray-700); }
+    .tt-answer td.blank { width:60px; height:36px; background:#f8faff; border:1px solid #c7d7f5; }
+
+    .controls-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:32px 0 8px; padding:12px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; }
+    .controls-label { font-size:12px; color:var(--gray-500); font-weight:600; flex:1; min-width:140px; }
+    .ctrl-btn { display:inline-flex; align-items:center; gap:5px; padding:7px 14px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:all .15s; }
+    .ctrl-btn-clear { background:#fef2f2; color:#ef4444; }
+    .ctrl-btn-clear:hover { background:#fee2e2; }
+    .ctrl-btn-print { background:var(--teal-50); color:var(--teal-800); }
+    .ctrl-btn-print:hover { background:var(--teal-100); }
+    .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+    @media print {
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.sim-embed-section { display:none!important; }
+      .layout { display:block!important; }
+      .main { margin:0!important; padding:0!important; }
+      .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
+      .tt-answer td.blank { border:1px solid #94a3b8!important; background:white!important; }
+      .diagram-placeholder { border:1.5px dashed #7dd3fc!important; }
+    }
   </style>
-</head><body>
-<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a><a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+</head>
+<body>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a>
+    <a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
+
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero">
-      <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Digital electronics</div>
-      <h1 class="hero-title">📄 Course notes</h1>
-      <p class="hero-sub">Digital electronics</p>
-      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../index.html">Electronics and Control</a> &rsaquo; <a href="index.html">Digital electronics</a> &rsaquo; <span>Course notes</span></div>
-    </div>
-    <div class="content">
-      <div class="resource-page">
-        <a href="index.html" class="back-link">&larr; Back to Digital electronics</a>
-      <!-- EDIT BELOW: replace REPLACE_WITH_DRIVE_ID with your Google Drive file ID -->
-      <script>
-        var driveFileId = "REPLACE_WITH_DRIVE_ID";
-        if (driveFileId === "REPLACE_WITH_DRIVE_ID") {
-          document.write('<div class="open-card" style="background:var(--gray-50);border:1px dashed var(--gray-200);"><div class="open-card-icon" style="font-size:32px;">📂</div><div class="open-card-title" style="color:var(--gray-600);">Material coming soon</div><div class="open-card-sub">This resource is being prepared and will be available here shortly.</div></div>');
-        } else {
-          var url = "https://drive.google.com/file/d/" + driveFileId + "/view";
-          document.write('<div class="open-card"><div class="open-card-icon">📄</div><div class="open-card-title">Course notes</div><div class="open-card-sub">Notes, explanations and worked examples aligned to the SQA specification.</div><a href="' + url + '" target="_blank" class="open-btn"><svg viewBox="0 0 16 16" fill="none"><path d="M6 2h4l4 4v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M6 2v4h4M8 8v5M6 11l2 2 2-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Open document</a></div><div class="info-note"><strong>Note:</strong> Opens in a new tab. Use your browser back button to return.</div>');
-        }
-      </script>
+      <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Digital Electronics</div>
+      <h1 class="hero-title">&#x1F9E0; Digital Electronics &mdash; Course Notes</h1>
+      <p class="hero-sub">Logic gates, truth tables, Boolean algebra, combinational circuits and real-world applications</p>
+      <div class="breadcrumb">
+        <a href="../../../../index.html">Home</a> &rsaquo;
+        <a href="../index.html">Electronics and Control</a> &rsaquo;
+        <a href="index.html">Digital Electronics</a> &rsaquo;
+        <span>Course notes</span>
       </div>
+    </div>
+
+    <div class="content">
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to Digital Electronics</a>
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 1: Analogue and Digital Signals</h1>
+
+      <p class="notes-p">Electronic circuits process <strong>electrical signals</strong>. A signal is a voltage that carries information — it tells the circuit when to switch on or off, or what value something is. There are two fundamentally different types of signal:</p>
+
+      <h2 class="notes-h2">Analogue signals</h2>
+      <p class="notes-p">An <strong>analogue signal</strong> can be <em>any</em> voltage value between a minimum and maximum. It changes smoothly and continuously, like a dimmer switch or a volume control. A good example is the light level outside — it gradually gets brighter from dawn, reaches a peak at midday, and slowly fades to dark.</p>
+
+      <h2 class="notes-h2">Digital signals</h2>
+      <p class="notes-p">A <strong>digital signal</strong> can only be one of two values — <strong>ON</strong> or <strong>OFF</strong>. In electronics, these are represented as:</p>
+
+      <div class="key-point" style="text-align:center; font-size:16px; letter-spacing:0.05em;">
+        <strong>Logic 1</strong> = ON = HIGH = approximately +5V &nbsp;&nbsp;&nbsp; <strong>Logic 0</strong> = OFF = LOW = 0V
+      </div>
+
+      <p class="notes-p">A simple switch is a digital input — it is either open (0) or closed (1). There is no in-between. All computers, smartphones and digital systems work entirely with 1s and 0s.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/digital-analogue-signals.png" alt="Analogue vs digital signal graphs" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Analogue or digital?</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">For each of the following, state whether the signal is analogue or digital and explain your reasoning.</div>
+            <div class="task-q-sub">a) The output of a thermistor (temperature sensor) as room temperature gradually rises</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t1a" data-placeholder="Analogue or digital? Explain..."></div>
+            <div class="task-q-sub">b) The output of a push-button switch</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t1b" data-placeholder="Analogue or digital? Explain..."></div>
+            <div class="task-q-sub">c) The output of a microphone picking up speech</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t1c" data-placeholder="Analogue or digital? Explain..."></div>
+            <div class="task-q-sub">d) The value stored in a computer's memory</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t1d" data-placeholder="Analogue or digital? Explain..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 2: Logic Gates</h1>
+
+      <p class="notes-p">A <strong>logic gate</strong> is an electronic component that takes one or more digital inputs and produces a single digital output. The output depends entirely on the combination of inputs — and that relationship is described precisely using a <strong>truth table</strong> and a <strong>Boolean expression</strong>.</p>
+
+      <p class="notes-p">Logic gates are the building blocks of all digital systems — from simple alarm circuits to the billions of transistors inside a modern CPU.</p>
+
+      <div class="key-point">For N5 Engineering Science you must know: NOT, AND and OR gates — their symbols, truth tables and Boolean expressions. You should also be familiar with NAND and NOR as combinations of these.</div>
+
+      <h2 class="notes-h2">The NOT gate (Inverter)</h2>
+      <p class="notes-p">The NOT gate has <strong>one input</strong> and <strong>one output</strong>. It simply <strong>inverts</strong> the input — if the input is 1, the output is 0, and vice versa. The small circle (bubble) on the output of the symbol represents inversion.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/gate-not-symbol.png" alt="NOT gate symbol" style="width:100%;max-width:400px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;margin:14px 0;">
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--teal-600);margin-bottom:6px;">TRUTH TABLE</p>
+          <table class="truth-table">
+            <tr><th>Input A</th><th>Output Z</th></tr>
+            <tr><td class="lo">0</td><td class="hi">1</td></tr>
+            <tr><td class="hi">1</td><td class="lo">0</td></tr>
+          </table>
+        </div>
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--teal-600);margin-bottom:6px;">BOOLEAN EXPRESSION</p>
+          <div class="bool-box" style="margin:0;">
+            <div class="bool-expr">Z = <span style="text-decoration:overline;">A</span></div>
+            <div class="bool-note">"Z equals NOT A" — the bar above A means NOT</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="notes-p"><strong>Real-world example:</strong> A NOT gate is used in a burglar alarm where a pressure pad is normally pressed (logic 1 = safe). When someone steps off the pad it goes to 0, and the NOT gate inverts this to switch the alarm ON (logic 1).</p>
+
+      <hr class="divider">
+
+      <h2 class="notes-h2">The AND gate</h2>
+      <p class="notes-p">The AND gate has <strong>two (or more) inputs</strong> and one output. The output is only logic 1 when <strong>ALL inputs are logic 1</strong> simultaneously. If any input is 0, the output is 0.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/gate-and-symbol.png" alt="AND gate symbol" style="width:100%;max-width:400px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;margin:14px 0;">
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--teal-600);margin-bottom:6px;">TRUTH TABLE</p>
+          <table class="truth-table">
+            <tr><th>Input A</th><th>Input B</th><th>Output Z</th></tr>
+            <tr><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td></tr>
+            <tr><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td></tr>
+            <tr><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td></tr>
+            <tr><td class="hi">1</td><td class="hi">1</td><td class="hi">1</td></tr>
+          </table>
+        </div>
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--teal-600);margin-bottom:6px;">BOOLEAN EXPRESSION</p>
+          <div class="bool-box" style="margin:0;">
+            <div class="bool-expr">Z = A.B</div>
+            <div class="bool-note">"Z equals A AND B" — the dot means AND</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="notes-p"><strong>Real-world example:</strong> A safety press on a machine — both the operator's left hand button (A) AND right hand button (B) must be pressed before the machine operates. This prevents the operator from accidentally putting a hand under the press.</p>
+
+      <hr class="divider">
+
+      <h2 class="notes-h2">The OR gate</h2>
+      <p class="notes-p">The OR gate has <strong>two (or more) inputs</strong> and one output. The output is logic 1 when <strong>ANY input is logic 1</strong>. The output is only 0 when all inputs are 0.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/gate-or-symbol.png" alt="OR gate symbol" style="width:100%;max-width:400px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;margin:14px 0;">
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--teal-600);margin-bottom:6px;">TRUTH TABLE</p>
+          <table class="truth-table">
+            <tr><th>Input A</th><th>Input B</th><th>Output Z</th></tr>
+            <tr><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td></tr>
+            <tr><td class="lo">0</td><td class="hi">1</td><td class="hi">1</td></tr>
+            <tr><td class="hi">1</td><td class="lo">0</td><td class="hi">1</td></tr>
+            <tr><td class="hi">1</td><td class="hi">1</td><td class="hi">1</td></tr>
+          </table>
+        </div>
+        <div>
+          <p style="font-size:12px;font-weight:700;color:var(--teal-600);margin-bottom:6px;">BOOLEAN EXPRESSION</p>
+          <div class="bool-box" style="margin:0;">
+            <div class="bool-expr">Z = A+B</div>
+            <div class="bool-note">"Z equals A OR B" — the + means OR</div>
+          </div>
+        </div>
+      </div>
+
+      <p class="notes-p"><strong>Real-world example:</strong> A doorbell that can be triggered by the front door button (A) OR the back door button (B) — pressing either one rings the bell.</p>
+
+      <hr class="divider">
+
+      <h2 class="notes-h2">NAND and NOR gates</h2>
+      <p class="notes-p">NAND and NOR gates are simply AND and OR gates with a NOT (inverter) on the output. The bubble on the output symbol indicates inversion.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/gate-nand-nor-symbols.png" alt="NAND and NOR gate symbols" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin:14px 0;">
+        <div>
+          <p style="font-size:13px;font-weight:700;color:var(--teal-600);margin-bottom:6px;">NAND truth table</p>
+          <table class="truth-table">
+            <tr><th>A</th><th>B</th><th>Z</th></tr>
+            <tr><td class="lo">0</td><td class="lo">0</td><td class="hi">1</td></tr>
+            <tr><td class="lo">0</td><td class="hi">1</td><td class="hi">1</td></tr>
+            <tr><td class="hi">1</td><td class="lo">0</td><td class="hi">1</td></tr>
+            <tr><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td></tr>
+          </table>
+          <div class="bool-box" style="margin-top:8px;">
+            <div class="bool-expr" style="font-size:14px;">Z = <span style="text-decoration:overline;">A.B</span></div>
+          </div>
+        </div>
+        <div>
+          <p style="font-size:13px;font-weight:700;color:var(--teal-600);margin-bottom:6px;">NOR truth table</p>
+          <table class="truth-table">
+            <tr><th>A</th><th>B</th><th>Z</th></tr>
+            <tr><td class="lo">0</td><td class="lo">0</td><td class="hi">1</td></tr>
+            <tr><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td></tr>
+            <tr><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td></tr>
+            <tr><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td></tr>
+          </table>
+          <div class="bool-box" style="margin-top:8px;">
+            <div class="bool-expr" style="font-size:14px;">Z = <span style="text-decoration:overline;">A+B</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="key-point">NAND = NOT AND (output is opposite of AND). &nbsp; NOR = NOT OR (output is opposite of OR). A NAND gate with both inputs tied together acts as a NOT gate.</div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Logic gates</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Draw the symbol and complete the truth table for each gate. Then write the Boolean expression.</div>
+            <div class="task-q-sub">a) A 3-input AND gate (A, B, C). There are 8 rows in the truth table.</div>
+            <div class="answer-label">Truth table and Boolean expression <span class="saved-indicator" id="ind-t2a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t2a" data-placeholder="Draw the 3-input AND truth table (8 rows) and write Z = ..."></div>
+            <div class="task-q-sub">b) A 3-input OR gate (A, B, C).</div>
+            <div class="answer-label">Truth table and Boolean expression <span class="saved-indicator" id="ind-t2b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t2b" data-placeholder="Draw the 3-input OR truth table (8 rows) and write Z = ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. For each situation below, name the most appropriate gate and explain why.</div>
+            <div class="task-q-sub">a) A car alarm sounds if the door is opened OR the window is broken.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t2c" data-placeholder="Gate type and explanation..."></div>
+            <div class="task-q-sub">b) A machine will only start if the guard is in place AND the start button is pressed.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t2d" data-placeholder="Gate type and explanation..."></div>
+            <div class="task-q-sub">c) A heating system turns on when the temperature is NOT high.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t2e" data-placeholder="Gate type and explanation..."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulator: individual gates -->
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F9E0;</span> NoNANDSense Simulator &mdash; explore logic gates</div>
+          <a href="../../../../simulators/digital.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Click <strong>EDIT</strong> to build. Drag gates from the left panel onto the canvas. Drag <strong>Toggle Switch</strong> inputs and a <strong>Logic Indicator</strong> (LED) output. Click ports (red dots) to wire them up. Switch to <strong>SIMULATE</strong> and click the switches to test all input combinations. Use <strong>Truth Table</strong> in the sidebar to auto-generate the full truth table.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/digital.html" title="NoNANDSense logic gate simulator" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoNANDSenseSim V2.3 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 3: Boolean Algebra</h1>
+
+      <p class="notes-p"><strong>Boolean algebra</strong> was developed by the British mathematician George Boole in the 1850s. It gives us a precise mathematical language to describe the behaviour of logic circuits. Today it is used by every electronic engineer, computer scientist and software developer.</p>
+
+      <h2 class="notes-h2">Boolean notation summary</h2>
+
+      <table class="data-table">
+        <tr><th>Symbol</th><th>Meaning</th><th>Example</th><th>English equivalent</th></tr>
+        <tr><td><span style="text-decoration:overline;">A</span></td><td>NOT A</td><td>Z = <span style="text-decoration:overline;">A</span></td><td>Z is ON when A is OFF</td></tr>
+        <tr><td><strong>.</strong></td><td>AND</td><td>Z = A.B</td><td>Z is ON when A AND B are ON</td></tr>
+        <tr><td><strong>+</strong></td><td>OR</td><td>Z = A+B</td><td>Z is ON when A OR B (or both) are ON</td></tr>
+        <tr><td><span style="text-decoration:overline;">A.B</span></td><td>NAND</td><td>Z = <span style="text-decoration:overline;">A.B</span></td><td>Z is ON unless both A AND B are ON</td></tr>
+        <tr><td><span style="text-decoration:overline;">A+B</span></td><td>NOR</td><td>Z = <span style="text-decoration:overline;">A+B</span></td><td>Z is ON only when both A and B are OFF</td></tr>
+      </table>
+
+      <h2 class="notes-h2">Writing a Boolean expression from a circuit</h2>
+      <p class="notes-p">Work through the circuit left to right, writing an expression after each gate. Bracket sub-expressions where needed.</p>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Boolean expression from circuit</div>
+        <!-- DIAGRAM PLACEHOLDER -->
+        <img src="images/boolean-circuit-example.png" alt="Circuit with AND gate feeding into OR gate example" style="width:100%;max-width:600px;display:block;margin:12px auto;border-radius:8px;">
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Label the output of the OR gate (B,C):</strong> B+C</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>The AND gate takes A and (B+C) as inputs:</strong> Z = A.(B+C)</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Complete expression:</strong> Z = A.(B+C) — "Z is ON when A is ON AND at least one of B or C is ON"</div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Boolean expressions from circuits</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Write the Boolean expression for each circuit. The circuit diagrams are shown in your images folder.</p>
+          <div class="task-item">
+            <div class="task-q">a) Circuit: A and B feed an OR gate (output D). D and C feed an AND gate (output Z).</div>
+            <div class="answer-label">Boolean expression <span class="saved-indicator" id="ind-t3a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t3a" data-placeholder="Z = ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Circuit: A feeds a NOT gate (output D). D and B feed an AND gate (output Z).</div>
+            <div class="answer-label">Boolean expression <span class="saved-indicator" id="ind-t3b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t3b" data-placeholder="Z = ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) Circuit: A feeds a NOT gate (output D). B feeds a NOT gate (output E). D and E feed an OR gate. The OR output and C feed an AND gate (output Z).</div>
+            <div class="answer-label">Boolean expression <span class="saved-indicator" id="ind-t3c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t3c" data-placeholder="Z = ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) Circuit: A and B feed an AND gate (output D). B and C feed an OR gate (output E). D and E feed an OR gate (output Z).</div>
+            <div class="answer-label">Boolean expression <span class="saved-indicator" id="ind-t3d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t3d" data-placeholder="Z = ..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 4: Combinational Logic Circuits</h1>
+
+      <p class="notes-p">When two or more logic gates are connected together to perform a specific task, the result is called a <strong>combinational logic circuit</strong>. The output depends on the <em>combination</em> of all current inputs.</p>
+
+      <h2 class="notes-h2">How many rows in a truth table?</h2>
+      <p class="notes-p">The number of rows in a truth table doubles with each additional input:</p>
+
+      <table class="data-table" style="max-width:360px;">
+        <tr><th>Number of inputs</th><th>Number of rows</th></tr>
+        <tr><td>1</td><td>2</td></tr>
+        <tr><td>2</td><td>4</td></tr>
+        <tr><td>3</td><td>8</td></tr>
+        <tr><td>4</td><td>16</td></tr>
+      </table>
+
+      <div class="key-point">The inputs are always listed in binary counting order — start from all 0s and count up in binary to all 1s. This ensures every combination is covered exactly once.</div>
+
+      <h2 class="notes-h2">Method for completing a truth table from a circuit</h2>
+      <p class="notes-p">Label the output of each intermediate gate with a letter (D, E, F etc.). Then fill in one column at a time, working left to right through the circuit.</p>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Completing a truth table step by step</div>
+
+        <!-- DIAGRAM PLACEHOLDER -->
+        <img src="images/combinational-worked-example.png" alt="Three-input combinational circuit worked example showing OR gate (A,B) to D, NOT gate (C) to E, AND gate (D,E) to Z" style="width:100%;max-width:620px;display:block;margin:12px auto;border-radius:8px;">
+
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">Circuit: A and B feed an OR gate (output D). C feeds a NOT gate (output E). D and E feed an AND gate (output Z).</p>
+
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Column D</strong> (OR gate, inputs A and B): D = 1 whenever A OR B = 1.</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Column E</strong> (NOT gate, input C): E is the inverse of C.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Column Z</strong> (AND gate, inputs D and E): Z = 1 only when D AND E are both 1.</div></div>
+
+        <table class="truth-table" style="margin-top:12px;">
+          <tr><th>A</th><th>B</th><th>C</th><th>D (A OR B)</th><th>E (NOT C)</th><th>Z (D AND E)</th></tr>
+          <tr><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td></tr>
+          <tr><td class="lo">0</td><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td></tr>
+          <tr><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td><td class="hi">1</td><td class="hi">1</td><td class="hi">1</td></tr>
+          <tr><td class="lo">0</td><td class="hi">1</td><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td></tr>
+          <tr><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td><td class="hi">1</td><td class="hi">1</td><td class="hi">1</td></tr>
+          <tr><td class="hi">1</td><td class="lo">0</td><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td></tr>
+          <tr><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td><td class="hi">1</td><td class="hi">1</td><td class="hi">1</td></tr>
+          <tr><td class="hi">1</td><td class="hi">1</td><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td></tr>
+        </table>
+        <p style="font-size:13px;color:var(--gray-600);margin-top:8px;">Boolean expression: <strong>Z = (A+B).<span style="text-decoration:overline;">C</span></strong></p>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Complete the truth tables</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">For each circuit, copy and complete the truth table, adding intermediate columns for each gate output. Check your answers using the NoNANDSense simulator.</p>
+
+          <div class="task-item">
+            <!-- DIAGRAM PLACEHOLDER -->
+            <img src="images/task4a-circuit.png" alt="Circuit (a): A,B,C feed AND gate (D). D and NOT-C feed AND gate (Z)" style="width:100%;max-width:540px;display:block;margin:8px 0 12px;border-radius:8px;">
+            <div class="task-q">a) A and B feed an AND gate (output D). C feeds a NOT gate (output E). D and E feed an AND gate (output Z).</div>
+            <div class="answer-label">Truth table (add D and E columns) <span class="saved-indicator" id="ind-t4a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t4a" data-placeholder="Draw and complete the 8-row truth table here. Add columns D and E."></div>
+          </div>
+
+          <div class="task-item">
+            <!-- DIAGRAM PLACEHOLDER -->
+            <img src="images/task4b-circuit.png" alt="Circuit (b): NOT-A feeds D. B and C feed OR gate (E). D and E feed AND gate (Z)" style="width:100%;max-width:540px;display:block;margin:8px 0 12px;border-radius:8px;">
+            <div class="task-q">b) A feeds a NOT gate (output D). B and C feed an OR gate (output E). D and E feed an AND gate (output Z).</div>
+            <div class="answer-label">Truth table <span class="saved-indicator" id="ind-t4b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t4b" data-placeholder="Draw and complete the 8-row truth table here."></div>
+          </div>
+
+          <div class="task-item">
+            <!-- DIAGRAM PLACEHOLDER -->
+            <img src="images/task4c-circuit.png" alt="Circuit (c): A and B feed AND gate (D). C feeds NOT gate (E). D and E feed OR gate (Z)" style="width:100%;max-width:540px;display:block;margin:8px 0 12px;border-radius:8px;">
+            <div class="task-q">c) A and B feed an AND gate (output D). C feeds a NOT gate (output E). D and E feed an OR gate (output Z).</div>
+            <div class="answer-label">Truth table <span class="saved-indicator" id="ind-t4c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t4c" data-placeholder="Draw and complete the 8-row truth table here."></div>
+          </div>
+
+          <div class="task-item">
+            <!-- DIAGRAM PLACEHOLDER -->
+            <img src="images/task4d-circuit.png" alt="Circuit (d): A,B feed OR gate (D). D and NOT-C feed AND then NOT gate (Z)" style="width:100%;max-width:540px;display:block;margin:8px 0 12px;border-radius:8px;">
+            <div class="task-q">d) A and B feed an OR gate (output D). C feeds a NOT gate (output E). D and E feed an AND gate. The AND output feeds a NOT gate (output Z).</div>
+            <div class="answer-label">Truth table <span class="saved-indicator" id="ind-t4d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t4d" data-placeholder="Draw and complete the 8-row truth table here."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulator: combinational circuits -->
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F9E0;</span> NoNANDSense Simulator &mdash; combinational circuits</div>
+          <a href="../../../../simulators/digital.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Build each circuit from Task 4. Add gates, inputs (Toggle Switches) and an output (Logic Indicator). Wire them up in EDIT mode. Switch to SIMULATE and click <strong>Truth Table</strong> in the sidebar — the simulator will automatically generate the full truth table and Boolean expression for your circuit.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/digital.html" title="NoNANDSense combinational circuit simulator" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoNANDSenseSim V2.3 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 5: Boolean Expressions from Truth Tables</h1>
+
+      <p class="notes-p">Sometimes you will be given a truth table and asked to write the Boolean expression and draw the circuit. The method is straightforward — focus only on the rows where the output is <strong>logic 1</strong>.</p>
+
+      <h2 class="notes-h2">Method</h2>
+      <ol class="notes-ol">
+        <li>Look at the truth table and highlight every row where <strong>Z = 1</strong></li>
+        <li>For each highlighted row, write an AND expression for that combination of inputs. If an input is 0, write its complement (with a bar): e.g. <span style="text-decoration:overline;">A</span>. If it is 1, write it normally: A.</li>
+        <li>Connect all the row expressions with OR (+) to get the full Boolean expression</li>
+        <li>Draw the logic circuit from the expression</li>
+      </ol>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Boolean expression from truth table</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px;">Truth table with 3 inputs A, B, C and output Z:</p>
+        <table class="truth-table" style="margin-bottom:12px;">
+          <tr><th>A</th><th>B</th><th>C</th><th>Z</th></tr>
+          <tr><td>0</td><td>0</td><td>0</td><td class="lo">0</td></tr>
+          <tr><td>0</td><td>0</td><td>1</td><td class="lo">0</td></tr>
+          <tr style="background:#f0fdf4;"><td>0</td><td>1</td><td>0</td><td class="hi">1</td></tr>
+          <tr><td>0</td><td>1</td><td>1</td><td class="lo">0</td></tr>
+          <tr style="background:#f0fdf4;"><td>1</td><td>0</td><td>0</td><td class="hi">1</td></tr>
+          <tr><td>1</td><td>0</td><td>1</td><td class="lo">0</td></tr>
+          <tr style="background:#f0fdf4;"><td>1</td><td>1</td><td>0</td><td class="hi">1</td></tr>
+          <tr><td>1</td><td>1</td><td>1</td><td class="lo">0</td></tr>
+        </table>
+        <div class="step"><div class="step-num">1</div><div class="step-content">Row 3 (Z=1): A=0, B=1, C=0 &rarr; <strong><span style="text-decoration:overline;">A</span>.B.<span style="text-decoration:overline;">C</span></strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">Row 5 (Z=1): A=1, B=0, C=0 &rarr; <strong>A.<span style="text-decoration:overline;">B</span>.<span style="text-decoration:overline;">C</span></strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content">Row 7 (Z=1): A=1, B=1, C=0 &rarr; <strong>A.B.<span style="text-decoration:overline;">C</span></strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Z = (<span style="text-decoration:overline;">A</span>.B.<span style="text-decoration:overline;">C</span>) + (A.<span style="text-decoration:overline;">B</span>.<span style="text-decoration:overline;">C</span>) + (A.B.<span style="text-decoration:overline;">C</span>)</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Boolean expressions from truth tables</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">For each truth table, write the Boolean expression for Z. Then build and verify the circuit using NoNANDSense.</p>
+
+          <div class="task-item">
+            <div class="task-q">a) Two inputs A and B:</div>
+            <table class="truth-table" style="margin-bottom:8px;">
+              <tr><th>A</th><th>B</th><th>Z</th></tr>
+              <tr><td>0</td><td>0</td><td>0</td></tr>
+              <tr><td>0</td><td>1</td><td class="hi">1</td></tr>
+              <tr><td>1</td><td>0</td><td>0</td></tr>
+              <tr><td>1</td><td>1</td><td>0</td></tr>
+            </table>
+            <div class="answer-label">Boolean expression and circuit sketch <span class="saved-indicator" id="ind-t5a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="de-t5a" data-placeholder="Z = ..."></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">b) Two inputs A and B:</div>
+            <table class="truth-table" style="margin-bottom:8px;">
+              <tr><th>A</th><th>B</th><th>Z</th></tr>
+              <tr><td>0</td><td>0</td><td class="hi">1</td></tr>
+              <tr><td>0</td><td>1</td><td>0</td></tr>
+              <tr><td>1</td><td>0</td><td class="hi">1</td></tr>
+              <tr><td>1</td><td>1</td><td>0</td></tr>
+            </table>
+            <div class="answer-label">Boolean expression and circuit sketch <span class="saved-indicator" id="ind-t5b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="de-t5b" data-placeholder="Z = ..."></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">c) Three inputs A, B, C:</div>
+            <table class="truth-table" style="margin-bottom:8px;">
+              <tr><th>A</th><th>B</th><th>C</th><th>Z</th></tr>
+              <tr><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+              <tr><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+              <tr><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+              <tr><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+              <tr><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+              <tr><td>1</td><td>0</td><td>1</td><td class="hi">1</td></tr>
+              <tr><td>1</td><td>1</td><td>0</td><td>0</td></tr>
+              <tr><td>1</td><td>1</td><td>1</td><td class="hi">1</td></tr>
+            </table>
+            <div class="answer-label">Boolean expression and circuit sketch <span class="saved-indicator" id="ind-t5c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="de-t5c" data-placeholder="Z = ..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 6: Designing Circuits from a Specification</h1>
+
+      <p class="notes-p">The most common engineering application of digital logic is designing a circuit to meet a given <strong>written specification</strong>. Read the specification carefully — the key words AND, OR and NOT tell you which gates are needed.</p>
+
+      <h2 class="notes-h2">Method</h2>
+      <ol class="notes-ol">
+        <li>Identify all the <strong>inputs</strong> from the specification — name them A, B, C etc.</li>
+        <li>Identify the <strong>output</strong> — name it Z</li>
+        <li>Read the specification and identify the logic: look for AND, OR, NOT</li>
+        <li>Write the <strong>Boolean expression</strong></li>
+        <li>Draw the <strong>logic circuit</strong></li>
+        <li>Draw up the <strong>truth table</strong> (all input combinations)</li>
+        <li><strong>Verify</strong> using the simulator</li>
+      </ol>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Museum burglar alarm</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;font-style:italic;">"A burglar alarm should sound if the master switch is on AND either a light beam is broken OR a pressure pad is triggered."</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Inputs:</strong> Master switch (M), Light sensor (L), Pressure pad (P). <strong>Output:</strong> Alarm bell (B)</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Logic:</strong> The light sensor triggers when the beam is <em>broken</em> — so it goes to 0 when a burglar passes. We need NOT L. The pressure pad goes to 1 when stood on.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Boolean:</strong> B = M.(<span style="text-decoration:overline;">L</span> + P)</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Circuit:</strong> L feeds a NOT gate. NOT-L and P feed an OR gate. The OR output and M feed an AND gate. The AND output is B.</div></div>
+      </div>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/burglar-alarm-circuit.png" alt="Burglar alarm logic circuit showing M, NOT-L, P inputs with OR and AND gates" style="width:100%;max-width:620px;display:block;margin:16px auto;border-radius:8px;">
+
+      <table class="truth-table" style="margin-bottom:16px;">
+        <tr><th>M</th><th>L</th><th>P</th><th><span style="text-decoration:overline;">L</span></th><th><span style="text-decoration:overline;">L</span>+P</th><th>B (alarm)</th></tr>
+        <tr><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td class="lo">0</td></tr>
+        <tr><td>0</td><td>0</td><td>1</td><td>1</td><td>1</td><td class="lo">0</td></tr>
+        <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td class="lo">0</td></tr>
+        <tr><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td class="lo">0</td></tr>
+        <tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td><td class="hi">1</td></tr>
+        <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>1</td><td class="hi">1</td></tr>
+        <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td><td class="lo">0</td></tr>
+        <tr><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td class="hi">1</td></tr>
+      </table>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Design from specification</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">For each specification: identify inputs and outputs, write the Boolean expression, draw the circuit diagram and complete the truth table. Verify using NoNANDSense.</p>
+
+          <div class="task-item">
+            <div class="task-q">1. A video game can only be played when the game is switched on AND money has been inserted.</div>
+            <div class="answer-label">Boolean expression, circuit and truth table <span class="saved-indicator" id="ind-t6a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t6a" data-placeholder="Inputs: ... Output: ... Boolean: Z = ... Truth table: ..."></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">2. A central heating system will heat the radiators if the mains switch is ON AND the timing control switch is closed AND the override button is NOT selected.</div>
+            <div class="answer-label">Boolean expression, circuit and truth table <span class="saved-indicator" id="ind-t6b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t6b" data-placeholder="Inputs: ... Output: ... Boolean: Z = ... Truth table: ..."></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">3. A garage door opens automatically if the car headlights shine on a sensor (A) AND a sensor in the drive detects the car is present (B) — OR if a manual override switch (C) is pressed.</div>
+            <div class="answer-label">Boolean expression, circuit and truth table <span class="saved-indicator" id="ind-t6c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t6c" data-placeholder="Inputs: ... Output: ... Boolean: Z = ... Truth table: ..."></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">4. A jewellery cabinet alarm sounds (Z) if the cabinet is opened (sensor A goes low = 0 when opened) WITHOUT the sales assistant pressing a button (B = 1 when pressed).</div>
+            <div class="answer-label">Boolean expression, circuit and truth table <span class="saved-indicator" id="ind-t6d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t6d" data-placeholder="Inputs: ... Output: ... Boolean: Z = ... Truth table: ..."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulator: design task -->
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F9E0;</span> NoNANDSense Simulator &mdash; design your circuits</div>
+          <a href="../../../../simulators/digital.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Build your circuits from Task 6 here. Once built, use the <strong>Truth Table</strong> tool to auto-generate and verify your truth table. Use <strong>Export Image</strong> to save a screenshot of your circuit for your notes.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/digital.html" title="NoNANDSense circuit design simulator" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoNANDSenseSim V2.3 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 7: Logic Gate Integrated Circuits (ICs)</h1>
+
+      <p class="notes-p">In practice, logic gates are not individual components — they are built into <strong>integrated circuits (ICs)</strong>, also called chips. Each IC contains several logic gates in a single small package.</p>
+
+      <p class="notes-p">The chips used in school are <strong>TTL (Transistor-Transistor Logic)</strong> chips, which require a stable <strong>+5V supply</strong>. The chip number always starts with <strong>74</strong>:</p>
+
+      <table class="data-table">
+        <tr><th>IC number</th><th>Contents</th><th>Description</th></tr>
+        <tr><td><strong>7404</strong></td><td>6 × NOT gates</td><td>Hex inverter — six independent NOT gates</td></tr>
+        <tr><td><strong>7408</strong></td><td>4 × 2-input AND gates</td><td>Quad 2-input AND</td></tr>
+        <tr><td><strong>7432</strong></td><td>4 × 2-input OR gates</td><td>Quad 2-input OR</td></tr>
+        <tr><td><strong>7400</strong></td><td>4 × 2-input NAND gates</td><td>Quad 2-input NAND</td></tr>
+        <tr><td><strong>7402</strong></td><td>4 × 2-input NOR gates</td><td>Quad 2-input NOR</td></tr>
+        <tr><td><strong>7486</strong></td><td>4 × 2-input XOR gates</td><td>Quad 2-input Exclusive OR</td></tr>
+      </table>
+
+      <div class="key-point">Pin 14 connects to +5V (Vcc). Pin 7 connects to 0V (GND). These power connections must always be made or the IC will not work.</div>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/ic-pinout-7408.png" alt="7408 quad 2-input AND IC pinout diagram showing all 14 pins and four internal AND gates" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;">
+
+      <h2 class="notes-h2">The NoNANDSense IC diagram feature</h2>
+      <p class="notes-p">The NoNANDSense simulator includes a <strong>7400 Series Circuit Diagram</strong> tool. After building your logic circuit, this tool automatically selects the correct IC chips, groups gates into ICs, and draws the physical wiring diagram — ready for building on a breadboard.</p>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Integrated circuits</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. A logic circuit uses two AND gates and one OR gate. Which ICs would you need? How many gates would be unused on each IC?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="de-t7a" data-placeholder="ICs needed: ... Unused gates: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Using NoNANDSense, build the burglar alarm circuit from Section 6. Then open the <strong>7400 Series Circuit Diagram</strong> tool and describe the ICs it selects and how the pins are connected.</div>
+            <div class="answer-label">IC diagram description <span class="saved-indicator" id="ind-t7b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t7b" data-placeholder="ICs selected: ... Pin connections: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Why must pin 14 be connected to +5V and pin 7 to 0V on every TTL IC?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t7c" data-placeholder="Explain..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 8: Real-World Applications of Logic Gates</h1>
+
+      <p class="notes-p">Logic gates are found in almost every electronic system. Understanding how they work allows engineers to design control systems, safety systems, automation and more.</p>
+
+      <div class="app-grid">
+        <div class="app-card">
+          <div class="app-card-title">🔒 Security systems</div>
+          <div class="app-card-desc">AND gates ensure multiple conditions must be met (e.g. correct PIN entered AND correct card present) before access is granted.</div>
+        </div>
+        <div class="app-card">
+          <div class="app-card-title">🏭 Industrial safety</div>
+          <div class="app-card-desc">Two-hand control presses require AND logic — both buttons must be pressed simultaneously before the press activates, keeping hands safe.</div>
+        </div>
+        <div class="app-card">
+          <div class="app-card-title">🚗 Car systems</div>
+          <div class="app-card-desc">Airbags deploy using complex combinational logic — multiple sensors (crash severity, speed, seatbelt status) feed AND/OR combinations.</div>
+        </div>
+        <div class="app-card">
+          <div class="app-card-title">🌡️ Environmental control</div>
+          <div class="app-card-desc">NOT gates invert thermistor signals so heating switches on when temperature is LOW (not high), using NOT logic for active-low sensors.</div>
+        </div>
+        <div class="app-card">
+          <div class="app-card-title">💊 Medical equipment</div>
+          <div class="app-card-desc">Ventilators use logic gates to decide when to deliver a breath — combinations of patient effort sensors and timing signals feed AND/OR gates.</div>
+        </div>
+        <div class="app-card">
+          <div class="app-card-title">🤖 Robotics</div>
+          <div class="app-card-desc">Obstacle avoidance — OR gate triggers braking if left sensor OR right sensor detects an obstacle. AND gates confirm both sensors clear before resuming.</div>
+        </div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; Real-world design challenge</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">A fish and chip shop needs a warning light (Z) for their fryer. The warning light should come on if the oil is too hot (temperature sensor A = 1 when too hot) OR if the oil level has dropped below the minimum level (level sensor B = 0 when oil is low).</div>
+            <div class="task-q-sub">a) Identify the gate(s) needed and explain your choice.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="de-t8a" data-placeholder="Gates needed and reasoning..."></div>
+            <div class="task-q-sub">b) Write the Boolean expression for Z.</div>
+            <div class="answer-label">Boolean expression <span class="saved-indicator" id="ind-t8b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t8b" data-placeholder="Z = ..."></div>
+            <div class="task-q-sub">c) Draw the circuit diagram and complete the truth table. Verify using NoNANDSense.</div>
+            <div class="answer-label">Circuit and truth table <span class="saved-indicator" id="ind-t8c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t8c" data-placeholder="Describe or sketch your circuit and truth table here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">A large hall has three temperature sensors A, B and C. The heating system (Z) should switch on if any TWO OR MORE of the three sensors fall below a preset level (logic 0 = too cold). Design and build the complete logic system.</div>
+            <div class="answer-label">Boolean expression, circuit and truth table <span class="saved-indicator" id="ind-t8d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t8d" data-placeholder="Work through this step by step: inputs, Boolean expression, circuit, truth table..."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Final simulator embed -->
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F9E0;</span> NoNANDSense Simulator &mdash; open workspace</div>
+          <a href="../../../../simulators/digital.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Use this simulator to build and test any of the circuits from these notes. Remember: <strong>EDIT</strong> mode to build, <strong>SIMULATE</strong> mode to test. The <strong>Truth Table</strong> and <strong>7400 Series Diagram</strong> tools are in the left sidebar under Circuit Analysis.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/digital.html" title="NoNANDSense open workspace" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoNANDSenseSim V2.3 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
+        <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
+      </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
+
+    </div>
     </div>
   </div>
 </div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
-<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script><script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script></body></html>
+
+<footer class="footer">
+  <span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span>
+  <a href="../../../../teacher/login.html">Teacher area</a>
+</footer>
+
+<script src="../../../../js/site.js"></script>
+<script src="../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
+
+<script>
+const STORAGE_PREFIX='ess_answers_';
+function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
+function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
+function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
+function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.answer-box').forEach(function(box){
+    var key=box.dataset.key;if(!key)return;
+    var saved=loadValue(key);if(saved)box.innerHTML=saved;
+    var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
+    box.addEventListener('input',ds);
+    box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
+  });
+});
+</script>
+
+</body>
+</html>
