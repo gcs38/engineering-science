@@ -1,81 +1,619 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Course notes — Energy &amp; sustainability — Engineering Science Scotland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Energy and Efficiency — Course Notes — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .resource-page {max-width:680px;margin:0 auto;padding:32px 32px 64px;}
-    .open-card {background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:40px 36px;text-align:center;margin-bottom:20px;}
-    .open-card-icon {font-size:48px;margin-bottom:16px;}
-    .open-card-title {font-family:"DM Serif Display",serif;font-size:24px;letter-spacing:-.4px;margin-bottom:8px;}
-    .open-card-sub {font-size:14px;color:var(--gray-600);margin-bottom:28px;line-height:1.6;}
-    .open-btn {display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:var(--teal-400);color:var(--white);border-radius:var(--radius-md);font-size:15px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .open-btn:hover {background:var(--teal-600);}
-    .open-btn svg {width:16px;height:16px;}
-    .back-link {display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:20px;}
-    .back-link:hover {color:var(--teal-800);}
-    .info-note {background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:14px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;}
-    .info-note strong {color:var(--gray-900);}
-    .placeholder-notice {background:var(--teal-50);border:1px solid var(--teal-100);border-radius:var(--radius-md);padding:14px 16px;font-size:12px;color:var(--teal-800);line-height:1.6;margin-bottom:16px;}
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .back-link:hover { color:var(--teal-800); }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:16px 0 8px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+    .warning { background:#FFF7ED; border-left:4px solid #F97316; border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#9A3412; }
+    .diagram-placeholder { background:#f0f9ff; border:2px dashed #7dd3fc; border-radius:10px; padding:18px 20px; margin:16px 0; text-align:center; }
+    .diagram-placeholder-icon { font-size:28px; margin-bottom:6px; }
+    .diagram-placeholder-text { font-size:13px; color:#0369a1; font-weight:600; }
+    .diagram-placeholder-sub { font-size:11px; color:#7dd3fc; margin-top:4px; font-style:italic; }
+    .formula-box { background:white; border:2px solid var(--teal-100); border-radius:10px; padding:16px 20px; margin:16px 0; text-align:center; }
+    .formula { font-size:18px; font-weight:600; color:var(--teal-800); font-family:monospace; }
+    .formula-sub { font-size:12px; color:var(--gray-400); margin-top:6px; }
+    .formula-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0; }
+    .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:18px 20px; margin:16px 0; }
+    .worked-example-title { font-size:13px; font-weight:600; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+    .step { display:flex; gap:12px; margin-bottom:10px; }
+    .step-num { width:24px; height:24px; border-radius:50%; background:var(--teal-400); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .step-content { font-size:13px; color:var(--gray-600); line-height:1.6; flex:1; }
+    .step-content strong { color:var(--gray-900); }
+    .energy-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:10px; margin:16px 0 20px; }
+    .energy-card { background:white; border:1px solid var(--gray-200); border-radius:8px; padding:10px; text-align:center; }
+    .energy-card-icon { font-size:22px; margin-bottom:4px; }
+    .energy-card-name { font-size:12px; font-weight:700; color:var(--gray-900); }
+    .energy-card-eg { font-size:11px; color:var(--gray-400); margin-top:2px; }
+    .assignment { background:white; border:2px solid var(--teal-400); border-radius:12px; margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:6px; font-weight:500; }
+    .task-q-sub { font-size:13px; color:var(--gray-700); margin:5px 0 5px 16px; }
+    .answer-label { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin:8px 0 3px; display:flex; align-items:center; gap:6px; }
+    .saved-indicator { font-size:11px; color:#10b981; font-weight:600; opacity:0; transition:opacity .3s; text-transform:none; letter-spacing:0; }
+    .saved-indicator.show { opacity:1; }
+    .answer-box { background:#f8faff; border:2px solid #c7d7f5; border-radius:8px; padding:10px 12px; min-height:68px; font-size:14px; color:var(--gray-700); line-height:1.7; outline:none; transition:border-color .2s, box-shadow .2s; display:block; width:100%; box-sizing:border-box; }
+    .answer-box:focus { border-color:var(--teal-400); box-shadow:0 0 0 3px rgba(45,212,191,0.12); }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-sm { min-height:44px; }
+    .answer-box-lg { min-height:110px; }
+    .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .data-table tr:nth-child(even) td { background:var(--gray-50); }
+    .controls-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:32px 0 8px; padding:12px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; }
+    .controls-label { font-size:12px; color:var(--gray-500); font-weight:600; flex:1; min-width:140px; }
+    .ctrl-btn { display:inline-flex; align-items:center; gap:5px; padding:7px 14px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:all .15s; }
+    .ctrl-btn-clear { background:#fef2f2; color:#ef4444; }
+    .ctrl-btn-clear:hover { background:#fee2e2; }
+    .ctrl-btn-print { background:var(--teal-50); color:var(--teal-800); }
+    .ctrl-btn-print:hover { background:var(--teal-100); }
+    .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+    @media print { .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator{display:none!important;} .layout{display:block!important;} .main{margin:0!important;padding:0!important;} .answer-box{border:1.5px solid #94a3b8!important;background:white!important;} }
   </style>
-</head><body>
-<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Scotland</span></div></a><div class="level-tabs"><a href="../../../../n5/mechanisms/index.html" class="level-tab active">National 5</a><a href="../../../../higher/mechanisms/index.html" class="level-tab">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+</head>
+<body>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a>
+    <a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero">
-      <div class="hero-label">National 5 · Engineering Contexts &rsaquo; Energy &amp; sustainability</div>
-      <h1 class="hero-title">📄 Course notes</h1>
-      <p class="hero-sub">Energy &amp; sustainability</p>
-      <div class="breadcrumb">
-        <a href="../../../../index.html">Home</a> &rsaquo;
-        <a href="../index.html">Engineering Contexts</a> &rsaquo;
-        <a href="index.html">Energy &amp; sustainability</a> &rsaquo;
-        <span>Course notes</span>
-      </div>
+      <div class="hero-label">National 5 &middot; Engineering Contexts &rsaquo; Energy and Efficiency</div>
+      <h1 class="hero-title">&#x26A1; Energy and Efficiency &mdash; Course Notes</h1>
+      <p class="hero-sub">Forms of energy, energy calculations, efficiency, energy audits and power</p>
+      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../index.html">Engineering Contexts</a> &rsaquo; <a href="index.html">Energy and Efficiency</a> &rsaquo; <span>Course notes</span></div>
     </div>
     <div class="content">
-      <div class="resource-page">
-        <a href="index.html" class="back-link">&larr; Back</a>
-      <!-- ============================================================
-        HOW TO ADD YOUR DOCUMENT:
-        1. Upload your PDF to Google Drive
-        2. Share it: right-click > Share > Anyone with the link can view
-        3. Open the file, copy the ID from the URL (the part between /d/ and /view)
-        4. Replace the word REPLACE_WITH_DRIVE_ID below with that ID
-        5. Save this file and push via GitHub Desktop
-        If REPLACE_WITH_DRIVE_ID is left unchanged, the page shows "Material coming soon"
-      ============================================================ -->
-      <script>
-        var driveFileId = "REPLACE_WITH_DRIVE_ID";
-        var icon = "📄";
-        var title = "Course notes";
-        var desc = "Notes, explanations and worked examples aligned to the SQA National 5 specification.";
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to Energy and Efficiency</a>
 
-        if (driveFileId === "REPLACE_WITH_DRIVE_ID") {
-          document.write('<div class="open-card" style="background:var(--gray-50);border:1px dashed var(--gray-200);">' +
-            '<div class="open-card-icon" style="font-size:32px;">📂</div>' +
-            '<div class="open-card-title" style="color:var(--gray-600);">Material coming soon</div>' +
-            '<div class="open-card-sub">This resource is being prepared and will be available here shortly.</div>' +
-          '</div>');
-        } else {
-          var url = "https://drive.google.com/file/d/" + driveFileId + "/view";
-          document.write('<div class="open-card">' +
-            '<div class="open-card-icon">' + icon + '</div>' +
-            '<div class="open-card-title">' + title + '</div>' +
-            '<div class="open-card-sub">' + desc + '</div>' +
-            '<a href="' + url + '" target="_blank" class="open-btn">' +
-            '<svg viewBox="0 0 16 16" fill="none"><path d="M6 2h4l4 4v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M6 2v4h4M8 8v5M6 11l2 2 2-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-            'Open document</a>' +
-          '</div>' +
-          '<div class="info-note"><strong>Note:</strong> The document opens in a new tab. Use your browser back button to return to this page.</div>');
-        }
-      </script>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 1: Introduction to Energy</h1>
+
+      <p class="notes-p"><strong>Energy</strong> is the ability to do work — it is the capacity to make something happen or change. Energy is measured in <strong>Joules (J)</strong>. It cannot be created or destroyed, only transferred or transformed from one form to another. This is the <strong>Law of Conservation of Energy</strong>.</p>
+
+      <div class="key-point">Energy cannot be created or destroyed — it can only be converted from one form to another.</div>
+
+      <h2 class="notes-h2">Forms of energy</h2>
+
+      <div class="energy-grid">
+        <div class="energy-card"><div class="energy-card-icon">&#x26A1;</div><div class="energy-card-name">Electrical</div><div class="energy-card-eg">Flowing current</div></div>
+        <div class="energy-card"><div class="energy-card-icon">&#x1F3C3;</div><div class="energy-card-name">Kinetic</div><div class="energy-card-eg">Moving objects</div></div>
+        <div class="energy-card"><div class="energy-card-icon">&#x1F4CF;</div><div class="energy-card-name">Potential</div><div class="energy-card-eg">Raised objects</div></div>
+        <div class="energy-card"><div class="energy-card-icon">&#x1F525;</div><div class="energy-card-name">Thermal (heat)</div><div class="energy-card-eg">Hot objects</div></div>
+        <div class="energy-card"><div class="energy-card-icon">&#x1F9EA;</div><div class="energy-card-name">Chemical</div><div class="energy-card-eg">Fuel, batteries</div></div>
+        <div class="energy-card"><div class="energy-card-icon">&#x1F31E;</div><div class="energy-card-name">Light</div><div class="energy-card-eg">Lamps, sun</div></div>
+        <div class="energy-card"><div class="energy-card-icon">&#x1F508;</div><div class="energy-card-name">Sound</div><div class="energy-card-eg">Vibrations</div></div>
+        <div class="energy-card"><div class="energy-card-icon">&#x269B;&#xFE0F;</div><div class="energy-card-name">Nuclear</div><div class="energy-card-eg">Uranium fission</div></div>
+        <div class="energy-card"><div class="energy-card-icon">&#x1F300;</div><div class="energy-card-name">Strain</div><div class="energy-card-eg">Stretched spring</div></div>
       </div>
+
+      <h2 class="notes-h2">Where does energy come from?</h2>
+      <p class="notes-p">Virtually all energy on Earth originally comes from the Sun. There are three main sources:</p>
+      <ul class="notes-ul">
+        <li><strong>Fossil fuels</strong> (coal, oil, gas, peat) — formed from ancient living matter that stored solar energy through photosynthesis. Non-renewable.</li>
+        <li><strong>Renewable sources</strong> (wind, wave, solar, tidal, hydro, geothermal) — replenished naturally. Scotland is a world leader in wind and hydro power.</li>
+        <li><strong>Nuclear fuels</strong> (uranium) — energy from splitting atoms (fission). Very high energy density but produces radioactive waste.</li>
+      </ul>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Identifying forms of energy</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. For each device, state the main input energy and the main output energy (and any unwanted energy output).</div>
+            <div class="task-q-sub">a) Hair straighteners</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-e1a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e1a" data-placeholder="Input energy → Output energy (+ unwanted)..."></div>
+            <div class="task-q-sub">b) Stretched elastic band</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-e1b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e1b" data-placeholder="Input energy → Output energy..."></div>
+            <div class="task-q-sub">c) Wind turbine</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-e1c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e1c" data-placeholder="Input energy → Output energy..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. An Olympic diver stands on a board 10 m above the pool.</div>
+            <div class="task-q-sub">a) What type of energy does the diver possess while standing still?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-e1d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e1d" data-placeholder="Type of energy..."></div>
+            <div class="task-q-sub">b) As the diver rises into the air, what form of energy do they have?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-e1e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e1e" data-placeholder="Type of energy..."></div>
+            <div class="task-q-sub">c) At the highest point of the dive, why does the diver have no kinetic energy?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-e1f">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e1f" data-placeholder="Explain..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A hydroelectric power station has water in a reservoir (A), water flowing through a penstock (B), a turbine (C) and a generator (D). Name the form of energy at each point.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-e1g">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="en-e1g" data-placeholder="A = ... B = ... C = ... D = ..."></div>
+          </div>
         </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 2: Work Done (E<sub>w</sub>)</h1>
+
+      <p class="notes-p">Work is done when a force moves an object. The amount of work depends on the size of the force and the distance moved. Work is measured in <strong>Joules (J)</strong>.</p>
+
+      <div class="formula-box">
+        <div class="formula">E<sub>w</sub> = F &times; d</div>
+        <div class="formula-sub">E<sub>w</sub> = work done (J) &nbsp;&nbsp; F = force (N) &nbsp;&nbsp; d = distance (m)</div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Work done</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A force of 6 kN is used to push a car a distance of 25 m. Calculate the work done.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Known values:</strong> F = 6000 N, d = 25 m</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Formula:</strong> E<sub>w</sub> = F &times; d</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Solve:</strong> E<sub>w</sub> = 6000 &times; 25 = <strong>150 000 J = 150 kJ</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Work done calculations</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Calculate the work done when a force of 150 N pulls a bag of sand 20 m.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e2a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e2a" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A mechanic uses a block and tackle with a force of 500 N to pull a rope 4 m to lift an engine. Calculate the work done.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e2b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e2b" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A forklift truck lifts a pallet of bricks 2 m using a force of 7.2 kN. Calculate the work done.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e2c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e2c" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. During a test on Edinburgh's tram network, 29 kJ of work is done to move the tram along a 150 m stretch of track. What force does the tram motor exert?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e2d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e2d" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. An offshore drilling rig exerts a constant force of 63 kN. After a period of drilling, 192 kJ of energy has been consumed. How far has the drill travelled?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e2e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e2e" data-placeholder="Show working here..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 3: Potential Energy (E<sub>p</sub>)</h1>
+
+      <p class="notes-p"><strong>Potential energy</strong> is the energy stored in an object due to its height above the ground. When work is done to lift an object, that energy is stored as potential energy.</p>
+
+      <div class="formula-box">
+        <div class="formula">E<sub>p</sub> = m &times; g &times; h</div>
+        <div class="formula-sub">E<sub>p</sub> = potential energy (J) &nbsp;&nbsp; m = mass (kg) &nbsp;&nbsp; g = 9.8 m/s&sup2; &nbsp;&nbsp; h = height (m)</div>
+      </div>
+
+      <div class="key-point">Note: E<sub>p</sub> = mgh gives the same answer as calculating weight (w = mg) then work done (E<sub>w</sub> = F &times; d). Use whichever method you find easier.</div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Potential energy</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A winch raises a lift of mass 100 kg to a height of 20 m. Calculate the potential energy stored.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content">E<sub>p</sub> = m &times; g &times; h = 100 &times; 9.8 &times; 20 = <strong>19 600 J</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Potential energy calculations</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Baggage handlers at an airport lift a 20 kg suitcase 3.5 m up a conveyor belt. Calculate the potential energy stored.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e3a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e3a" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A drum of mass 100 kg has 4 kJ of potential energy. At what height above the ground is it suspended?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e3b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e3b" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A reservoir holds 1800 litres of water at a height of 260 m. Calculate the potential energy stored. (1 litre of water has a mass of 1 kg.)</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e3c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e3c" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A fairground rollercoaster reaches a highest point 50 m above ground and a lowest point 5 m above ground. Calculate the potential energy for an 80 kg person at the highest and lowest points, and the change in potential energy between them.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e3d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="en-e3d" data-placeholder="Show working here..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 4: Kinetic Energy (E<sub>k</sub>)</h1>
+
+      <p class="notes-p"><strong>Kinetic energy</strong> is the energy of movement. Any moving object has kinetic energy. It depends on two factors: the mass of the object and its velocity.</p>
+
+      <div class="formula-box">
+        <div class="formula">E<sub>k</sub> = &frac12; m v&sup2;</div>
+        <div class="formula-sub">E<sub>k</sub> = kinetic energy (J) &nbsp;&nbsp; m = mass (kg) &nbsp;&nbsp; v = velocity (m/s)</div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Kinetic energy</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A go-kart with a mass of 90 kg travels at 40 m/s. Calculate its kinetic energy.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content">E<sub>k</sub> = &frac12; &times; m &times; v&sup2; = &frac12; &times; 90 &times; 40&sup2;</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">= &frac12; &times; 90 &times; 1600 = <strong>72 000 J = 72 kJ</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Kinetic energy calculations</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. During a sheet-making process, 50 kg ingots of metal travel along rollers at 0.5 m/s. Calculate the kinetic energy of each ingot.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e4a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e4a" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A racing car travels at 50 m/s and has a kinetic energy of 500 kJ. What is the mass of the car?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e4b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e4b" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A girl of mass 50 kg rides her bicycle and has a kinetic energy of 2.5 kJ. At what speed is she travelling?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e4c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e4c" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. An escalator carries six people with a total mass of 900 kg at a speed of 0.5 m/s. What is the average kinetic energy of each person?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e4d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e4d" data-placeholder="Show working here..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 5: Electrical Energy (E<sub>e</sub>)</h1>
+
+      <p class="notes-p"><strong>Electrical energy</strong> is one of the most useful forms of energy because it can be transported easily along cables and converted into almost any other form. Most electrical energy is generated in power stations by converting another form of energy (chemical, kinetic, nuclear) into electrical energy via a generator.</p>
+
+      <div class="formula-box">
+        <div class="formula">E<sub>e</sub> = V &times; I &times; t</div>
+        <div class="formula-sub">E<sub>e</sub> = electrical energy (J) &nbsp;&nbsp; V = voltage (V) &nbsp;&nbsp; I = current (A) &nbsp;&nbsp; t = time (s)</div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Electrical energy</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">An electric cooking ring operates at 230 V with a current of 5 A. Calculate how much electrical energy is used in 5 minutes to heat soup.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Convert time:</strong> 5 minutes = 5 &times; 60 = 300 s</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">E<sub>e</sub> = V &times; I &times; t = 230 &times; 5 &times; 300 = <strong>345 000 J = 345 kJ</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Electrical energy calculations</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. A hot-air hand drier operates from 230 V and draws 12 A for 30 seconds. Calculate the electrical energy used.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e5a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e5a" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A 12 V car battery has a capacity of 35 amp-hours. Calculate the total electrical energy it can supply.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e5b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e5b" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A portable generator delivers 6 kJ per second at 110 V. Calculate the current it can supply.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e5c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e5c" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A 110 V, 30 A motor uses 1.98 MJ of electrical energy. For how long has the motor been operating?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e5d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e5d" data-placeholder="Show working here..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 6: Heat Energy (E<sub>h</sub>)</h1>
+
+      <p class="notes-p"><strong>Heat energy</strong> (thermal energy) is the energy transferred to a body that results in a change in temperature. The amount of heat energy needed depends on the mass of the material, the temperature rise required, and the <strong>specific heat capacity</strong> of the material — a fixed property of each material.</p>
+
+      <div class="formula-box">
+        <div class="formula">E<sub>h</sub> = m &times; c &times; &Delta;T</div>
+        <div class="formula-sub">E<sub>h</sub> = heat energy (J) &nbsp;&nbsp; m = mass (kg) &nbsp;&nbsp; c = specific heat capacity (J/kg&middot;K) &nbsp;&nbsp; &Delta;T = temperature change (&deg;C)</div>
+      </div>
+
+      <div class="key-point">The specific heat capacity of water is 4190 J/kg&middot;K. This value will be given to you in the SQA Data Booklet.</div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Heat energy</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A hot water tank contains 200 litres of water at 18&deg;C. How much energy is needed to heat it to 50&deg;C? (c = 4190 J/kg&middot;K)</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Convert:</strong> 200 litres = 200 kg, &Delta;T = 50 &minus; 18 = 32&deg;C</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">E<sub>h</sub> = m &times; c &times; &Delta;T = 200 &times; 4190 &times; 32 = <strong>26 816 000 J = 26.8 MJ</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Heat energy calculations</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Calculate the heat energy required to heat 2 kg of water from 20&deg;C until it begins to boil (100&deg;C). (c<sub>water</sub> = 4190 J/kg&middot;K)</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e6a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e6a" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A hall measures 8 m &times; 30 m &times; 10 m. Calculate the heat energy required to raise the air temperature from 10&deg;C to 20&deg;C. (Density of air = 1.3 kg/m&sup3;, c<sub>air</sub> = 850 J/kg&middot;K)</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e6b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="en-e6b" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. 57 kJ of thermal energy is supplied to 1.7 kg of oil (c = 2.7 kJ/kg&middot;K). If the initial temperature is 3&deg;C, what will be its final temperature?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e6c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e6c" data-placeholder="Show working here..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 7: Energy Transfers and Energy Audits</h1>
+
+      <p class="notes-p">At every stage in a system, energy is transferred from one form to another. In an ideal system, all energy would be converted to the useful output form — but in practice, some is always <strong>lost</strong>, usually as heat.</p>
+
+      <p class="notes-p">An <strong>energy audit</strong> is a sub-systems diagram that shows how much energy enters and leaves each sub-system, including energy losses.</p>
+
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Energy audit comparison — (Left) Ideal filament bulb: all electrical energy → light. (Right) Real filament bulb: electrical energy → light (small portion) + heat (large portion). Show as block diagrams with energy values labelled.</div>
+        <div class="diagram-placeholder-sub">Filename: energy-audit-bulb.png</div>
+      </div>
+
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Energy audit of a hydroelectric power station showing: Reservoir (500 kJ potential) → Turbine (energy lost 20 kJ) → Generator (energy lost 44 kJ) → Output electrical energy. Show kinetic energy values at each stage.</div>
+        <div class="diagram-placeholder-sub">Filename: energy-audit-hydro.png</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Energy transfers and audits</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. For each system, complete a systems diagram showing the energy conversions taking place.</div>
+            <div class="task-q-sub">a) Stretched elastic band</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-e7a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e7a" data-placeholder="Input energy → ELASTIC BAND → Output energy..."></div>
+            <div class="task-q-sub">b) Electric kettle</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-e7b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e7b" data-placeholder="Input energy → KETTLE → Output energy..."></div>
+            <div class="task-q-sub">c) Wind-up toy car</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-e7c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e7c" data-placeholder="Input energy → TOY CAR → Output energy..."></div>
+            <div class="task-q-sub">d) Water passing over a waterfall</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-e7d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e7d" data-placeholder="Input energy → WATERFALL → Output energy..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. In your own words, explain why the efficiency of a system is always less than 100%.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-e7e">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="en-e7e" data-placeholder="Explain why efficiency is always less than 100%..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A hydroelectric power station energy audit shows: reservoir has 500 kJ of potential energy; 20 kJ is lost to friction in the penstock; 18 kJ is lost in the turbine bearings; 44 kJ is lost in the generator. Calculate: (a) the kinetic energy entering the turbine; (b) the kinetic energy entering the generator; (c) the electrical energy output; (d) the overall efficiency.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e7f">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="en-e7f" data-placeholder="Show working for each part..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 8: Efficiency</h1>
+
+      <p class="notes-p">Efficiency is a measure of how much of the input energy is converted to <strong>useful</strong> output energy. It is always less than 100% because some energy is always lost (usually as heat). Efficiency can be calculated using energy values or power values.</p>
+
+      <div class="formula-box">
+        <div class="formula">&eta; = (E<sub>out</sub> &divide; E<sub>in</sub>) &times; 100%</div>
+        <div class="formula-sub">Also valid: &eta; = (P<sub>out</sub> &divide; P<sub>in</sub>) &times; 100% &nbsp;&nbsp;&nbsp; &eta; = efficiency (%) &nbsp;&nbsp; E = energy (J) &nbsp;&nbsp; P = power (W)</div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Efficiency</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A motor receives 500 J of electrical energy and produces 375 J of mechanical energy. Calculate its efficiency.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content">&eta; = (E<sub>out</sub> &divide; E<sub>in</sub>) &times; 100 = (375 &divide; 500) &times; 100 = <strong>75%</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">The remaining 25% (125 J) is lost as heat due to friction and resistance in the motor.</div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; Efficiency calculations</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. A pump receives 2000 J of electrical energy and raises water giving it 1400 J of potential energy. Calculate the efficiency of the pump.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e8a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e8a" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A lamp has a power input of 60 W and a light output of 15 W. Calculate the efficiency. State in what form the remaining energy is lost.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e8b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e8b" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A deep fat fryer uses 2 kJ of electrical energy every second and takes 6 minutes to complete a cooking cycle. If 480 kJ of heat energy is transferred to the oil, how efficient is the fryer?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e8c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="en-e8c" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A new petrol engine is 64% efficient and produces 520 J of output. How much energy does the fuel supply to the engine?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e8d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e8d" data-placeholder="Show working here..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 9: Power</h1>
+
+      <p class="notes-p"><strong>Power</strong> is the rate at which energy is transferred — how quickly energy is used or produced. It is measured in <strong>Watts (W)</strong>, named after the Scottish engineer James Watt. 1 W = 1 J per second.</p>
+
+      <div class="formula-box">
+        <div class="formula">P = E &divide; t</div>
+        <div class="formula-sub">P = power (W) &nbsp;&nbsp; E = energy (J) &nbsp;&nbsp; t = time (s)</div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Power</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">An electric light bulb uses 60 kJ of energy in 10 minutes. What is its power rating?</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Convert:</strong> E = 60 000 J, t = 10 &times; 60 = 600 s</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">P = E &divide; t = 60 000 &divide; 600 = <strong>100 W</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 9 &mdash; Power calculations</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. An electric motor consumes 18 kJ in 1 minute. What is the power developed by the motor?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e9a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e9a" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A car stereo consumes 72 kJ from the battery during a 10 minute journey. What is its power rating?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e9b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e9b" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A winch lifts a 500 kg pallet of bricks to a height of 10 m in 15 seconds. Calculate the minimum output power from the winch.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e9c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="en-e9c" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. An electric heater is rated at 3 kW. How much heat energy can it provide in one hour?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e9d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e9d" data-placeholder="Show working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. A hydroelectric station reservoir contains 60 MJ of potential energy. The generator is 65% efficient. How much electrical energy will be generated? Suggest where the remaining energy may be lost.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-e9e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="en-e9e" data-placeholder="Show working here..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 10: Renewable and Non-Renewable Energy</h1>
+
+      <p class="notes-p">In the context of engineering, understanding <strong>where energy comes from</strong> is important for designing sustainable systems.</p>
+
+      <h2 class="notes-h2">Non-renewable sources</h2>
+      <p class="notes-p">Fossil fuels (coal, oil, gas) cannot be replaced on human timescales. Burning them releases CO&sub2; and other greenhouse gases, contributing to climate change. They will eventually run out.</p>
+
+      <h2 class="notes-h2">Renewable sources</h2>
+      <p class="notes-p">Renewable energy sources are naturally replenished. They produce little or no carbon emissions and will not run out.</p>
+
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Grid or icons showing six renewable energy sources — Wind (turbine), Solar (panels), Hydro (dam), Wave (buoy), Tidal (turbine), Geothermal (steam). Each with a brief label and simple icon.</div>
+        <div class="diagram-placeholder-sub">Filename: energy-renewables-grid.png</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 10 &mdash; Renewable energy sources</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Complete the table to show renewable energy sources, how they work and their limitations.</div>
+            <table class="data-table">
+              <tr><th>Renewable source</th><th>How it works</th><th>Limitations</th></tr>
+              <tr><td>Hydropower</td><td contenteditable="true" style="min-width:180px;padding:8px;"></td><td contenteditable="true" style="min-width:180px;padding:8px;"></td></tr>
+              <tr><td>Wind</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Solar</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Tidal</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Wave</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Geothermal</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
+            </table>
+          </div>
+          <div class="task-item">
+            <div class="task-q">Explain why a single renewable energy source may not be enough to supply an entire country with electricity. Why do we need a mix of renewable sources?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-e10a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="en-e10a" data-placeholder="Explain here..."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
+        <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
+      </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
+
+    </div>
     </div>
   </div>
 </div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
-<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script><script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script></body></html>
+<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
+<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
+<script>
+const STORAGE_PREFIX='ess_answers_';
+function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
+function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
+function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
+function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.answer-box').forEach(function(box){
+    var key=box.dataset.key;if(!key)return;
+    var saved=loadValue(key);if(saved)box.innerHTML=saved;
+    var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
+    box.addEventListener('input',ds);
+    box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
+  });
+});
+</script>
+</body>
+</html>

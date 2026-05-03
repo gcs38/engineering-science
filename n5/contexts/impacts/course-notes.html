@@ -1,50 +1,448 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Course notes — Impacts of engineering — Engineering Science Scotland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Impacts of Engineering — Course Notes — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .resource-page{max-width:680px;margin:0 auto;padding:32px 32px 64px;}
-    .open-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px 24px;text-align:center;margin-bottom:16px;}
-    .open-card-icon{font-size:36px;margin-bottom:10px;}
-    .open-card-title{font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:-.4px;margin-bottom:6px;}
-    .open-card-sub{font-size:13px;color:var(--gray-600);margin-bottom:20px;line-height:1.5;}
-    .open-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-400);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .open-btn:hover{background:var(--teal-600);}
-    .sim-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-800);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .sim-btn:hover{background:var(--teal-600);}
-    .back-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:20px;}
-    .back-link:hover{color:var(--teal-800);}
-    .info-note{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;margin-top:12px;}
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .back-link:hover { color:var(--teal-800); }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:16px 0 8px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+    .warning { background:#FFF7ED; border-left:4px solid #F97316; border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#9A3412; }
+    .diagram-placeholder { background:#f0f9ff; border:2px dashed #7dd3fc; border-radius:10px; padding:18px 20px; margin:16px 0; text-align:center; }
+    .diagram-placeholder-icon { font-size:28px; margin-bottom:6px; }
+    .diagram-placeholder-text { font-size:13px; color:#0369a1; font-weight:600; }
+    .diagram-placeholder-sub { font-size:11px; color:#7dd3fc; margin-top:4px; font-style:italic; }
+    .impact-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0; }
+    .impact-card { background:white; border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; }
+    .impact-card-header { padding:10px 14px; font-size:13px; font-weight:700; color:white; }
+    .impact-card-body { padding:12px 14px; }
+    .impact-item { display:flex; gap:8px; margin-bottom:8px; font-size:13px; }
+    .impact-badge { flex-shrink:0; font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; margin-top:2px; }
+    .badge-pos { background:#dcfce7; color:#15803d; }
+    .badge-neg { background:#fef2f2; color:#b91c1c; }
+    .tech-card { background:white; border:1px solid var(--gray-200); border-radius:10px; padding:14px; margin:12px 0; }
+    .tech-card-title { font-size:14px; font-weight:700; color:var(--teal-800); margin-bottom:6px; }
+    .tech-card-body { font-size:13px; color:var(--gray-600); line-height:1.6; }
+    .assignment { background:white; border:2px solid var(--teal-400); border-radius:12px; margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:6px; font-weight:500; }
+    .task-q-sub { font-size:13px; color:var(--gray-700); margin:5px 0 5px 16px; }
+    .answer-label { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin:8px 0 3px; display:flex; align-items:center; gap:6px; }
+    .saved-indicator { font-size:11px; color:#10b981; font-weight:600; opacity:0; transition:opacity .3s; text-transform:none; letter-spacing:0; }
+    .saved-indicator.show { opacity:1; }
+    .answer-box { background:#f8faff; border:2px solid #c7d7f5; border-radius:8px; padding:10px 12px; min-height:68px; font-size:14px; color:var(--gray-700); line-height:1.7; outline:none; transition:border-color .2s, box-shadow .2s; display:block; width:100%; box-sizing:border-box; }
+    .answer-box:focus { border-color:var(--teal-400); box-shadow:0 0 0 3px rgba(45,212,191,0.12); }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-sm { min-height:44px; }
+    .answer-box-lg { min-height:110px; }
+    .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
+    .data-table tr:nth-child(even) td { background:var(--gray-50); }
+    .controls-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:32px 0 8px; padding:12px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; }
+    .controls-label { font-size:12px; color:var(--gray-500); font-weight:600; flex:1; min-width:140px; }
+    .ctrl-btn { display:inline-flex; align-items:center; gap:5px; padding:7px 14px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:all .15s; }
+    .ctrl-btn-clear { background:#fef2f2; color:#ef4444; }
+    .ctrl-btn-clear:hover { background:#fee2e2; }
+    .ctrl-btn-print { background:var(--teal-50); color:var(--teal-800); }
+    .ctrl-btn-print:hover { background:var(--teal-100); }
+    .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+    @media print { .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator{display:none!important;} .layout{display:block!important;} .main{margin:0!important;padding:0!important;} .answer-box{border:1.5px solid #94a3b8!important;background:white!important;} }
   </style>
-</head><body>
-<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a><a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+</head>
+<body>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a>
+    <a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero">
-      <div class="hero-label">National 5 &middot; Engineering Contexts &rsaquo; Impacts of engineering</div>
-      <h1 class="hero-title">📄 Course notes</h1>
-      <p class="hero-sub">Impacts of engineering</p>
-      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../index.html">Engineering Contexts</a> &rsaquo; <a href="index.html">Impacts of engineering</a> &rsaquo; <span>Course notes</span></div>
+      <div class="hero-label">National 5 &middot; Engineering Contexts &rsaquo; Impacts of Engineering</div>
+      <h1 class="hero-title">&#x1F30D; Impacts of Engineering &mdash; Course Notes</h1>
+      <p class="hero-sub">Social, economic and environmental impacts, climate change and emerging technologies</p>
+      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../index.html">Engineering Contexts</a> &rsaquo; <a href="index.html">Impacts of Engineering</a> &rsaquo; <span>Course notes</span></div>
     </div>
     <div class="content">
-      <div class="resource-page">
-        <a href="index.html" class="back-link">&larr; Back to Impacts of engineering</a>
-      <!-- EDIT BELOW: replace REPLACE_WITH_DRIVE_ID with your Google Drive file ID -->
-      <script>
-        var driveFileId = "REPLACE_WITH_DRIVE_ID";
-        if (driveFileId === "REPLACE_WITH_DRIVE_ID") {
-          document.write('<div class="open-card" style="background:var(--gray-50);border:1px dashed var(--gray-200);"><div class="open-card-icon" style="font-size:32px;">📂</div><div class="open-card-title" style="color:var(--gray-600);">Material coming soon</div><div class="open-card-sub">This resource is being prepared and will be available here shortly.</div></div>');
-        } else {
-          var url = "https://drive.google.com/file/d/" + driveFileId + "/view";
-          document.write('<div class="open-card"><div class="open-card-icon">📄</div><div class="open-card-title">Course notes</div><div class="open-card-sub">Notes, explanations and worked examples aligned to the SQA specification.</div><a href="' + url + '" target="_blank" class="open-btn"><svg viewBox="0 0 16 16" fill="none"><path d="M6 2h4l4 4v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M6 2v4h4M8 8v5M6 11l2 2 2-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Open document</a></div><div class="info-note"><strong>Note:</strong> Opens in a new tab. Use your browser back button to return.</div>');
-        }
-      </script>
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to Impacts of Engineering</a>
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 1: The Wider Impact of Engineering</h1>
+
+      <p class="notes-p">Every engineering project — from a new road to a smartphone — has an impact far beyond its immediate purpose. Engineers must consider the effects their work has on <strong>society, the economy and the environment</strong>. These impacts can be positive or negative, short-term or long-term, local or global.</p>
+
+      <div class="key-point">The SQA specification requires you to be able to give examples of social, economic AND environmental impacts — both positive AND negative — for engineering projects.</div>
+
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Three overlapping circles (Venn diagram) labelled Social, Economic, Environmental. Centre overlap labelled "Sustainable Engineering". Each circle has 2-3 bullet point examples of impacts. Use green/blue/orange colour scheme.</div>
+        <div class="diagram-placeholder-sub">Filename: impacts-three-circles.png</div>
       </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 2: Social Impacts</h1>
+
+      <p class="notes-p"><strong>Social impacts</strong> are the effects an engineering project has on people and communities — their lives, lifestyles, wellbeing and culture.</p>
+
+      <p class="notes-p">When assessing social impact, consider: the facilities the project provides, how lifestyles may change, whether jobs are created or lost, effects on tourism, and how communities or cultures may be affected.</p>
+
+      <div class="impact-grid">
+        <div class="impact-card">
+          <div class="impact-card-header" style="background:#15803d;">&#x2705; Positive social impacts</div>
+          <div class="impact-card-body">
+            <div class="impact-item"><span class="impact-badge badge-pos">+</span><span>New hospitals and medical technology improve health outcomes and life expectancy</span></div>
+            <div class="impact-item"><span class="impact-badge badge-pos">+</span><span>New roads and bridges improve connectivity, reducing journey times and isolation</span></div>
+            <div class="impact-item"><span class="impact-badge badge-pos">+</span><span>Clean water engineering prevents disease and improves quality of life</span></div>
+            <div class="impact-item"><span class="impact-badge badge-pos">+</span><span>Renewable energy provides affordable electricity to more communities</span></div>
+            <div class="impact-item"><span class="impact-badge badge-pos">+</span><span>Communications engineering connects people globally, enabling education and commerce</span></div>
+          </div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-card-header" style="background:#b91c1c;">&#x274C; Negative social impacts</div>
+          <div class="impact-card-body">
+            <div class="impact-item"><span class="impact-badge badge-neg">&minus;</span><span>Construction projects can cause noise, dust and disruption to local residents</span></div>
+            <div class="impact-item"><span class="impact-badge badge-neg">&minus;</span><span>Large infrastructure projects may displace communities from their homes</span></div>
+            <div class="impact-item"><span class="impact-badge badge-neg">&minus;</span><span>Automation reduces the need for human workers, leading to unemployment</span></div>
+            <div class="impact-item"><span class="impact-badge badge-neg">&minus;</span><span>Industrial facilities can reduce property values and quality of life nearby</span></div>
+            <div class="impact-item"><span class="impact-badge badge-neg">&minus;</span><span>Over-reliance on technology can lead to loss of traditional skills</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Social impacts</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Using your project from the Engineering Roles notes (or choose a new project), describe at least two positive and two negative social impacts.</div>
+            <div class="task-q-sub">Project:</div>
+            <div class="answer-label">Positive social impacts <span class="saved-indicator" id="ind-i1a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i1a" data-placeholder="Describe at least two positive social impacts of your project..."></div>
+            <div class="answer-label" style="margin-top:10px;">Negative social impacts <span class="saved-indicator" id="ind-i1b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i1b" data-placeholder="Describe at least two negative social impacts..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A new wind farm is built on a hillside near a rural community. Give one positive and one negative social impact this could have on the local people.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-i1c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i1c" data-placeholder="Positive: ... Negative: ..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 3: Economic Impacts</h1>
+
+      <p class="notes-p"><strong>Economic impacts</strong> are the effects an engineering project has on money, trade and the economy — locally, nationally and internationally.</p>
+
+      <p class="notes-p">When assessing economic impact, consider: where funding came from, whether jobs are created, effects on local businesses, running costs, profits and economic growth.</p>
+
+      <div class="impact-grid">
+        <div class="impact-card">
+          <div class="impact-card-header" style="background:#15803d;">&#x2705; Positive economic impacts</div>
+          <div class="impact-card-body">
+            <div class="impact-item"><span class="impact-badge badge-pos">+</span><span>Construction creates thousands of direct and indirect jobs in the local economy</span></div>
+            <div class="impact-item"><span class="impact-badge badge-pos">+</span><span>New roads and bridges reduce transport costs for businesses, improving productivity</span></div>
+            <div class="impact-item"><span class="impact-badge badge-pos">+</span><span>Tourism increases when landmark structures attract visitors (e.g. the Forth bridges)</span></div>
+            <div class="impact-item"><span class="impact-badge badge-pos">+</span><span>Renewable energy projects reduce fuel import costs and improve energy security</span></div>
+            <div class="impact-item"><span class="impact-badge badge-pos">+</span><span>Engineering exports earn income for a country (e.g. Scottish wind turbine expertise)</span></div>
+          </div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-card-header" style="background:#b91c1c;">&#x274C; Negative economic impacts</div>
+          <div class="impact-card-body">
+            <div class="impact-item"><span class="impact-badge badge-neg">&minus;</span><span>Large projects are very expensive and may require public funding (taxpayers' money)</span></div>
+            <div class="impact-item"><span class="impact-badge badge-neg">&minus;</span><span>Automation reduces employment, particularly in manufacturing and routine tasks</span></div>
+            <div class="impact-item"><span class="impact-badge badge-neg">&minus;</span><span>High maintenance costs continue long after construction is complete</span></div>
+            <div class="impact-item"><span class="impact-badge badge-neg">&minus;</span><span>Cost overruns are common in large engineering projects, diverting funds from other needs</span></div>
+            <div class="impact-item"><span class="impact-badge badge-neg">&minus;</span><span>New technology can make existing industries obsolete (e.g. renewable energy displacing coal)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Economic impacts</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Using your project, describe at least two positive and two negative economic impacts.</div>
+            <div class="answer-label">Positive economic impacts <span class="saved-indicator" id="ind-i2a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i2a" data-placeholder="Describe at least two positive economic impacts..."></div>
+            <div class="answer-label" style="margin-top:10px;">Negative economic impacts <span class="saved-indicator" id="ind-i2b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i2b" data-placeholder="Describe at least two negative economic impacts..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 4: Environmental Impacts</h1>
+
+      <p class="notes-p"><strong>Environmental impacts</strong> are the effects an engineering project has on the natural world — air, water, land, wildlife and the climate.</p>
+
+      <p class="notes-p">When assessing environmental impact, consider: location and habitat disruption, pollution (air, water, noise, light), use of materials and resources, sustainability and recyclability, and long-term versus short-term effects.</p>
+
+      <div class="impact-grid">
+        <div class="impact-card">
+          <div class="impact-card-header" style="background:#15803d;">&#x2705; Positive environmental impacts</div>
+          <div class="impact-card-body">
+            <div class="impact-item"><span class="impact-badge badge-pos">+</span><span>Renewable energy engineering reduces carbon emissions compared to fossil fuels</span></div>
+            <div class="impact-item"><span class="impact-badge badge-pos">+</span><span>Water treatment engineering prevents pollution of rivers and seas</span></div>
+            <div class="impact-item"><span class="impact-badge badge-pos">+</span><span>Electric vehicles reduce air pollution in cities</span></div>
+            <div class="impact-item"><span class="impact-badge badge-pos">+</span><span>Modern building insulation engineering reduces energy consumption</span></div>
+            <div class="impact-item"><span class="impact-badge badge-pos">+</span><span>Biodegradable and recycled materials engineering reduces landfill waste</span></div>
+          </div>
+        </div>
+        <div class="impact-card">
+          <div class="impact-card-header" style="background:#b91c1c;">&#x274C; Negative environmental impacts</div>
+          <div class="impact-card-body">
+            <div class="impact-item"><span class="impact-badge badge-neg">&minus;</span><span>Construction causes habitat destruction, noise and dust pollution</span></div>
+            <div class="impact-item"><span class="impact-badge badge-neg">&minus;</span><span>Fossil fuel power stations release CO&sub2; and other greenhouse gases</span></div>
+            <div class="impact-item"><span class="impact-badge badge-neg">&minus;</span><span>Mining for materials (copper, lithium, rare earths) damages landscapes</span></div>
+            <div class="impact-item"><span class="impact-badge badge-neg">&minus;</span><span>Industrial waste and chemical runoff can pollute water sources</span></div>
+            <div class="impact-item"><span class="impact-badge badge-neg">&minus;</span><span>Wind turbines can affect bird and bat populations and visual landscape</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Environmental impacts</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Using your project, describe at least two positive and two negative environmental impacts.</div>
+            <div class="answer-label">Positive environmental impacts <span class="saved-indicator" id="ind-i3a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i3a" data-placeholder="Describe at least two positive environmental impacts..."></div>
+            <div class="answer-label" style="margin-top:10px;">Negative environmental impacts <span class="saved-indicator" id="ind-i3b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i3b" data-placeholder="Describe at least two negative environmental impacts..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">Sustainable engineering means meeting current needs without preventing future generations from meeting theirs. Give two examples of engineering decisions that demonstrate sustainable thinking.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-i3c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i3c" data-placeholder="1. ... 2. ..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 5: Engineering and Climate Change</h1>
+
+      <p class="notes-p"><strong>Climate change</strong> is one of the most important engineering challenges of our time. The burning of fossil fuels releases CO&sub2; and other greenhouse gases, which trap heat in the atmosphere and cause global temperatures to rise. Engineers are at the forefront of developing solutions.</p>
+
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Climate change impact visual — show rising global temperatures graph, melting ice caps, extreme weather events, sea level rise. Label "Engineering challenges" with arrows pointing to: renewable energy, carbon capture, flood defences, sustainable materials.</div>
+        <div class="diagram-placeholder-sub">Filename: impacts-climate-change.png</div>
+      </div>
+
+      <h2 class="notes-h2">Engineering solutions to climate change</h2>
+
+      <div class="tech-card">
+        <div class="tech-card-title">&#x1F4A8; Carbon Capture and Storage (CCS)</div>
+        <div class="tech-card-body">CO&sub2; produced at power stations is captured before it enters the atmosphere, compressed and stored underground in depleted oil and gas fields. Chemical engineers design the capture processes; civil engineers design the storage infrastructure. This allows fossil fuels to be used with reduced carbon emissions while renewable alternatives are developed.</div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-card-title">&#x1F6E1;&#xFE0F; Coastal Flood Defences</div>
+        <div class="tech-card-body">Rising sea levels (caused by melting ice caps) threaten coastal cities. Civil and structural engineers design flood barriers, sea walls and tidal barriers (such as the Thames Barrier) to protect communities. These are expensive but essential responses to climate change impacts.</div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-card-title">&#x1F50B; Grid-Scale Energy Storage</div>
+        <div class="tech-card-body">Renewable energy (wind and solar) is intermittent — it only generates when the wind blows or the sun shines. Electrical and chemical engineers are developing large-scale battery storage systems, pumped hydro storage and hydrogen production to store excess renewable energy for use when generation is low.</div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-card-title">&#x1F68C; Zero-Emission Transport</div>
+        <div class="tech-card-body">Mechanical and electrical engineers are developing electric vehicles, hydrogen fuel cell buses and electric aircraft to reduce transport emissions — currently one of the largest sources of greenhouse gases. Scotland aims to phase out petrol and diesel cars by 2030.</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Climate change engineering</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Describe what climate change is and list three ways it is affecting the planet.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-i4a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i4a" data-placeholder="Define climate change and describe three impacts..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Describe three engineering solutions to climate change. For each, explain how it works and what effect it has on the environment.</div>
+            <div class="task-q-sub">Solution 1:</div>
+            <div class="answer-label">Description and environmental effect <span class="saved-indicator" id="ind-i4b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i4b" data-placeholder="Name and describe solution 1, and its environmental effect..."></div>
+            <div class="task-q-sub">Solution 2:</div>
+            <div class="answer-label">Description and environmental effect <span class="saved-indicator" id="ind-i4c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i4c" data-placeholder="Name and describe solution 2, and its environmental effect..."></div>
+            <div class="task-q-sub">Solution 3:</div>
+            <div class="answer-label">Description and environmental effect <span class="saved-indicator" id="ind-i4d">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i4d" data-placeholder="Name and describe solution 3, and its environmental effect..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Research: find a method by which CO&sub2; could be captured or used. Describe how it works.</div>
+            <div class="answer-label">Research notes <span class="saved-indicator" id="ind-i4e">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i4e" data-placeholder="Describe your researched method here..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 6: Emerging Technologies</h1>
+
+      <p class="notes-p">Engineering is constantly evolving — making things smaller, lighter, faster, more efficient and more sustainable. <strong>Emerging technologies</strong> are new developments that are currently being developed or have recently become available.</p>
+
+      <h2 class="notes-h2">Examples of emerging technologies</h2>
+
+      <div class="tech-card">
+        <div class="tech-card-title">&#x1F4F1; Mobile and Smart Communications</div>
+        <div class="tech-card-body">Mobile phones have evolved from large, heavy devices in the 1980s to powerful computers in our pockets. 5G networks now enable ultra-fast data transfer supporting autonomous vehicles, remote surgery and smart cities. Future 6G technology will enable real-time holographic communication.</div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-card-title">&#x1F916; Artificial Intelligence and Automation</div>
+        <div class="tech-card-body">AI and robotics are transforming manufacturing, medicine, transport and agriculture. Robotic assembly lines improve speed, consistency and safety. AI systems can diagnose diseases from scans more accurately than doctors in some cases. Self-driving vehicles use AI to make real-time decisions from sensor data.</div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-card-title">&#x1F9EC; Bio-Engineering and Bio-Plastics</div>
+        <div class="tech-card-body">Traditional plastics come from oil and do not biodegrade. Bio-plastics (such as PLA — polylactic acid) are made from plant materials (e.g. corn) and break down naturally. Bio-engineers are also developing 3D-printed human tissue for transplants and prosthetics that interface directly with the nervous system.</div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-card-title">&#x1F5A8;&#xFE0F; 3D Printing (Additive Manufacturing)</div>
+        <div class="tech-card-body">3D printing builds objects layer by layer from digital files. It is revolutionising manufacturing by allowing custom components to be produced quickly and cheaply — from spare parts to food to human tissue. Using bio-plastics makes 3D printing environmentally friendly. Future applications include printing entire buildings.</div>
+      </div>
+
+      <div class="tech-card">
+        <div class="tech-card-title">&#x1F50B; Solid-State Batteries</div>
+        <div class="tech-card-body">Current lithium-ion batteries in electric vehicles are limited in range, charge time and lifespan. Solid-state batteries replace the liquid electrolyte with a solid material, offering greater energy density, faster charging and improved safety. This technology could make electric aviation viable and extend EV range beyond 600 miles.</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Emerging technologies</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Research two emerging technologies that interest you. For each, describe the problem it solves, how the technology works, and what effect it may have on society or the environment. Your examples must be recent — either still in development or released within the last few years.</div>
+            <div class="task-q-sub">Emerging Technology 1:</div>
+            <div class="answer-label">Problem it solves <span class="saved-indicator" id="ind-i5a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="im-i5a" data-placeholder="What problem does this technology address?"></div>
+            <div class="answer-label" style="margin-top:8px;">How it works <span class="saved-indicator" id="ind-i5b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i5b" data-placeholder="Describe how this technology works..."></div>
+            <div class="answer-label" style="margin-top:8px;">Potential impact <span class="saved-indicator" id="ind-i5c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="im-i5c" data-placeholder="What social, economic or environmental impact could this have?"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q"></div>
+            <div class="task-q-sub">Emerging Technology 2:</div>
+            <div class="answer-label">Problem it solves <span class="saved-indicator" id="ind-i5d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="im-i5d" data-placeholder="What problem does this technology address?"></div>
+            <div class="answer-label" style="margin-top:8px;">How it works <span class="saved-indicator" id="ind-i5e">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i5e" data-placeholder="Describe how this technology works..."></div>
+            <div class="answer-label" style="margin-top:8px;">Potential impact <span class="saved-indicator" id="ind-i5f">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="im-i5f" data-placeholder="What social, economic or environmental impact could this have?"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 7: Putting It All Together &mdash; Case Study</h1>
+
+      <p class="notes-p">Use this section to bring together all three types of impact for a major engineering project of your choice. This mirrors the style of SQA exam questions and the Engineering Contexts assignment.</p>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x1F4CB; Task 6 &mdash; Full impact case study</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Choose a major engineering project (your own choice — bridge, hospital, wind farm, electric vehicle programme, space mission, water treatment plant etc.).</div>
+            <div class="answer-label">Project name and brief description <span class="saved-indicator" id="ind-i6a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="im-i6a" data-placeholder="Project name: ... Description: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">Social impacts — describe at least two positive AND two negative social impacts of your project. Consider: community facilities, lifestyle changes, job creation/loss, tourism, cultural effects.</div>
+            <div class="answer-label">Social impacts <span class="saved-indicator" id="ind-i6b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="im-i6b" data-placeholder="Positive social impacts: ... Negative social impacts: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">Economic impacts — describe at least two positive AND two negative economic impacts. Consider: funding sources, jobs, trade, running costs, profits.</div>
+            <div class="answer-label">Economic impacts <span class="saved-indicator" id="ind-i6c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="im-i6c" data-placeholder="Positive economic impacts: ... Negative economic impacts: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">Environmental impacts — describe at least two positive AND two negative environmental impacts. Consider: location, pollution, sustainability, short and long-term effects.</div>
+            <div class="answer-label">Environmental impacts <span class="saved-indicator" id="ind-i6d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="im-i6d" data-placeholder="Positive environmental impacts: ... Negative environmental impacts: ..."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
+        <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
+      </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
+
+    </div>
     </div>
   </div>
 </div>
 <footer class="footer"><span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
-<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script><script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script></body></html>
+<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
+<script>
+const STORAGE_PREFIX='ess_answers_';
+function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
+function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
+function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
+function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.answer-box').forEach(function(box){
+    var key=box.dataset.key;if(!key)return;
+    var saved=loadValue(key);if(saved)box.innerHTML=saved;
+    var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
+    box.addEventListener('input',ds);
+    box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
+  });
+});
+</script>
+</body>
+</html>

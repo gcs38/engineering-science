@@ -1,81 +1,443 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Course notes — Engineering systems — Engineering Science Scotland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>The Systems Approach — Course Notes — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .resource-page {max-width:680px;margin:0 auto;padding:32px 32px 64px;}
-    .open-card {background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:40px 36px;text-align:center;margin-bottom:20px;}
-    .open-card-icon {font-size:48px;margin-bottom:16px;}
-    .open-card-title {font-family:"DM Serif Display",serif;font-size:24px;letter-spacing:-.4px;margin-bottom:8px;}
-    .open-card-sub {font-size:14px;color:var(--gray-600);margin-bottom:28px;line-height:1.6;}
-    .open-btn {display:inline-flex;align-items:center;gap:8px;padding:13px 28px;background:var(--teal-400);color:var(--white);border-radius:var(--radius-md);font-size:15px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .open-btn:hover {background:var(--teal-600);}
-    .open-btn svg {width:16px;height:16px;}
-    .back-link {display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:20px;}
-    .back-link:hover {color:var(--teal-800);}
-    .info-note {background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:14px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;}
-    .info-note strong {color:var(--gray-900);}
-    .placeholder-notice {background:var(--teal-50);border:1px solid var(--teal-100);border-radius:var(--radius-md);padding:14px 16px;font-size:12px;color:var(--teal-800);line-height:1.6;margin-bottom:16px;}
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .back-link:hover { color:var(--teal-800); }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:16px 0 8px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+    .warning { background:#FFF7ED; border-left:4px solid #F97316; border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#9A3412; }
+    .diagram-placeholder { background:#f0f9ff; border:2px dashed #7dd3fc; border-radius:10px; padding:18px 20px; margin:16px 0; text-align:center; }
+    .diagram-placeholder-icon { font-size:28px; margin-bottom:6px; }
+    .diagram-placeholder-text { font-size:13px; color:#0369a1; font-weight:600; }
+    .diagram-placeholder-sub { font-size:11px; color:#7dd3fc; margin-top:4px; font-style:italic; }
+    .compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0; }
+    .compare-card { background:white; border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; }
+    .compare-card-header { padding:10px 14px; font-size:13px; font-weight:700; color:white; }
+    .compare-card-body { padding:12px 14px; font-size:13px; color:var(--gray-600); line-height:1.6; }
+    .example-box { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:16px 20px; margin:14px 0; }
+    .example-box-title { font-size:12px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
+    .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:18px 20px; margin:16px 0; }
+    .worked-example-title { font-size:13px; font-weight:600; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+    .step { display:flex; gap:12px; margin-bottom:10px; }
+    .step-num { width:24px; height:24px; border-radius:50%; background:var(--teal-400); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .step-content { font-size:13px; color:var(--gray-600); line-height:1.6; flex:1; }
+    .step-content strong { color:var(--gray-900); }
+    .assignment { background:white; border:2px solid var(--teal-400); border-radius:12px; margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:6px; font-weight:500; }
+    .task-q-sub { font-size:13px; color:var(--gray-700); margin:5px 0 5px 16px; }
+    .answer-label { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin:8px 0 3px; display:flex; align-items:center; gap:6px; }
+    .saved-indicator { font-size:11px; color:#10b981; font-weight:600; opacity:0; transition:opacity .3s; text-transform:none; letter-spacing:0; }
+    .saved-indicator.show { opacity:1; }
+    .answer-box { background:#f8faff; border:2px solid #c7d7f5; border-radius:8px; padding:10px 12px; min-height:68px; font-size:14px; color:var(--gray-700); line-height:1.7; outline:none; transition:border-color .2s, box-shadow .2s; display:block; width:100%; box-sizing:border-box; }
+    .answer-box:focus { border-color:var(--teal-400); box-shadow:0 0 0 3px rgba(45,212,191,0.12); }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-sm { min-height:44px; }
+    .answer-box-lg { min-height:110px; }
+    .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .data-table tr:nth-child(even) td { background:var(--gray-50); }
+    .controls-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:32px 0 8px; padding:12px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; }
+    .controls-label { font-size:12px; color:var(--gray-500); font-weight:600; flex:1; min-width:140px; }
+    .ctrl-btn { display:inline-flex; align-items:center; gap:5px; padding:7px 14px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:all .15s; }
+    .ctrl-btn-clear { background:#fef2f2; color:#ef4444; }
+    .ctrl-btn-clear:hover { background:#fee2e2; }
+    .ctrl-btn-print { background:var(--teal-50); color:var(--teal-800); }
+    .ctrl-btn-print:hover { background:var(--teal-100); }
+    .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+    @media print { .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator{display:none!important;} .layout{display:block!important;} .main{margin:0!important;padding:0!important;} .answer-box{border:1.5px solid #94a3b8!important;background:white!important;} }
   </style>
-</head><body>
-<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Scotland</span></div></a><div class="level-tabs"><a href="../../../../n5/mechanisms/index.html" class="level-tab active">National 5</a><a href="../../../../higher/mechanisms/index.html" class="level-tab">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+</head>
+<body>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a>
+    <a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero">
-      <div class="hero-label">National 5 · Engineering Contexts &rsaquo; Engineering systems</div>
-      <h1 class="hero-title">📄 Course notes</h1>
-      <p class="hero-sub">Engineering systems</p>
-      <div class="breadcrumb">
-        <a href="../../../../index.html">Home</a> &rsaquo;
-        <a href="../index.html">Engineering Contexts</a> &rsaquo;
-        <a href="index.html">Engineering systems</a> &rsaquo;
-        <span>Course notes</span>
-      </div>
+      <div class="hero-label">National 5 &middot; Engineering Contexts &rsaquo; The Systems Approach</div>
+      <h1 class="hero-title">&#x1F4CA; The Systems Approach &mdash; Course Notes</h1>
+      <p class="hero-sub">Systems diagrams, sub-systems, open and closed-loop control, feedback</p>
+      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../index.html">Engineering Contexts</a> &rsaquo; <a href="index.html">The Systems Approach</a> &rsaquo; <span>Course notes</span></div>
     </div>
     <div class="content">
-      <div class="resource-page">
-        <a href="index.html" class="back-link">&larr; Back</a>
-      <!-- ============================================================
-        HOW TO ADD YOUR DOCUMENT:
-        1. Upload your PDF to Google Drive
-        2. Share it: right-click > Share > Anyone with the link can view
-        3. Open the file, copy the ID from the URL (the part between /d/ and /view)
-        4. Replace the word REPLACE_WITH_DRIVE_ID below with that ID
-        5. Save this file and push via GitHub Desktop
-        If REPLACE_WITH_DRIVE_ID is left unchanged, the page shows "Material coming soon"
-      ============================================================ -->
-      <script>
-        var driveFileId = "REPLACE_WITH_DRIVE_ID";
-        var icon = "📄";
-        var title = "Course notes";
-        var desc = "Notes, explanations and worked examples aligned to the SQA National 5 specification.";
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to The Systems Approach</a>
 
-        if (driveFileId === "REPLACE_WITH_DRIVE_ID") {
-          document.write('<div class="open-card" style="background:var(--gray-50);border:1px dashed var(--gray-200);">' +
-            '<div class="open-card-icon" style="font-size:32px;">📂</div>' +
-            '<div class="open-card-title" style="color:var(--gray-600);">Material coming soon</div>' +
-            '<div class="open-card-sub">This resource is being prepared and will be available here shortly.</div>' +
-          '</div>');
-        } else {
-          var url = "https://drive.google.com/file/d/" + driveFileId + "/view";
-          document.write('<div class="open-card">' +
-            '<div class="open-card-icon">' + icon + '</div>' +
-            '<div class="open-card-title">' + title + '</div>' +
-            '<div class="open-card-sub">' + desc + '</div>' +
-            '<a href="' + url + '" target="_blank" class="open-btn">' +
-            '<svg viewBox="0 0 16 16" fill="none"><path d="M6 2h4l4 4v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M6 2v4h4M8 8v5M6 11l2 2 2-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
-            'Open document</a>' +
-          '</div>' +
-          '<div class="info-note"><strong>Note:</strong> The document opens in a new tab. Use your browser back button to return to this page.</div>');
-        }
-      </script>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 1: What is a System?</h1>
+
+      <p class="notes-p">Engineers and designers are in the business of <strong>solving problems</strong>. Whether designing a new bridge, a home electronic device, or a satellite communications system, engineers use a common way of thinking called the <strong>systems approach</strong>.</p>
+
+      <p class="notes-p">A <strong>system</strong> is a collection of components that work together to perform a function. All systems — no matter how simple or complex — can be described using the same basic structure:</p>
+
+      <div class="key-point" style="text-align:center; font-size:16px; letter-spacing:0.05em;">
+        INPUT &nbsp;&rarr;&nbsp; PROCESS &nbsp;&rarr;&nbsp; OUTPUT
       </div>
+
+      <p class="notes-p">This is called the <strong>universal system diagram</strong>. The word "universal" means it can be used for any situation at all.</p>
+
+      <ul class="notes-ul">
+        <li><strong>Input</strong> — what goes into the system to make it work (e.g. electricity, a signal, a physical force)</li>
+        <li><strong>Process</strong> — what the system does to the input</li>
+        <li><strong>Output</strong> — what comes out of the system (desired outputs and unwanted outputs)</li>
+      </ul>
+
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Universal system diagram for a television — inputs: electricity, signal, switch on, select channel → PROCESS: Television → outputs: picture, sound, heat (unwanted)</div>
+        <div class="diagram-placeholder-sub">Filename: systems-universal-tv.png</div>
+      </div>
+
+      <div class="warning">&#x26A0;&#xFE0F; Do <strong>not</strong> include electricity as an input in systems diagrams — electricity is part of the system, not a real-world input. Instead write the real-world input that triggers the system (e.g. "light", "heat", "signal").</div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Universal systems diagrams</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Complete a systems diagram showing all inputs and outputs (including unwanted outputs) for each of the following devices.</div>
+            <div class="task-q-sub">a) Kettle</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-s1a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1a" data-placeholder="Input(s) → KETTLE → Output(s)..."></div>
+            <div class="task-q-sub">b) Toaster</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-s1b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1b" data-placeholder="Input(s) → TOASTER → Output(s)..."></div>
+            <div class="task-q-sub">c) Radio</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-s1c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1c" data-placeholder="Input(s) → RADIO → Output(s)..."></div>
+            <div class="task-q-sub">d) Washing machine</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-s1d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1d" data-placeholder="Input(s) → WASHING MACHINE → Output(s)..."></div>
+            <div class="task-q-sub">e) 3D printer</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-s1e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1e" data-placeholder="Input(s) → 3D PRINTER → Output(s)..."></div>
+            <div class="task-q-sub">f) Fire alarm</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-s1f">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1f" data-placeholder="Input(s) → FIRE ALARM → Output(s)..."></div>
+          </div>
         </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 2: Sub-Systems Diagrams</h1>
+
+      <p class="notes-p">The universal system diagram tells us what goes in and what comes out — but not how it works inside. The next step is to <strong>explode the process box</strong> into its sub-systems, showing how each part of the system interacts.</p>
+
+      <div class="key-point">A <strong>sub-systems diagram</strong> shows all the individual components inside the system boundary, each in its own box, with arrows showing how signals or energy flows between them.</div>
+
+      <h2 class="notes-h2">Key terms</h2>
+      <ul class="notes-ul">
+        <li><strong>System boundary</strong> — a dashed line enclosing all the sub-systems. Real-world inputs and outputs are outside the boundary.</li>
+        <li><strong>Transducer</strong> — a device that converts one form of energy to another. Input transducers convert real-world inputs into electrical signals; output transducers convert electrical signals into real-world outputs.</li>
+        <li><strong>Input transducer (sensor)</strong> — e.g. thermistor, LDR, microphone, switch</li>
+        <li><strong>Output transducer (actuator)</strong> — e.g. motor, loudspeaker, LED, heater</li>
+        <li><strong>Transducer driver</strong> — boosts the signal from the process to operate an output device. Every output needs a driver (e.g. transistor, relay, op-amp)</li>
+      </ul>
+
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Sub-systems diagram showing system boundary (dashed box), real-world inputs outside boundary, input transducers, process block, transducer driver, output transducers, real-world outputs outside boundary. Include labelled arrows showing signal flow.</div>
+        <div class="diagram-placeholder-sub">Filename: systems-subsystem-general.png</div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Sub-systems diagram for a television</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">The television has three real-world inputs: a signal (aerial), an operator selecting a channel, and an operator switching it on. The outputs are picture and sound.</p>
+        <div class="diagram-placeholder">
+          <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+          <div class="diagram-placeholder-text">Diagram: TV sub-systems diagram — Aerial → Signal decoder → Screen driver → Screen (picture); Remote control → Sensor → Control unit → Speaker driver → Speaker (sound); On/Off switch → Control unit. System boundary shown as dashed box.</div>
+          <div class="diagram-placeholder-sub">Filename: systems-subsystem-tv.png</div>
+        </div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Sub-systems diagrams</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Draw a sub-systems diagram for a <strong>mobile phone</strong>. Include: screen, touch pad, control unit, on/off switch, aerial, battery, speaker, microphone, headphone jack, output driver. Show the system boundary and label all connections.</div>
+            <div class="answer-label">Sketch or describe your diagram <span class="saved-indicator" id="ind-s2a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s2a" data-placeholder="Describe or sketch your sub-systems diagram here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Draw a sub-systems diagram for an <strong>electric oven</strong>. Include: output driver, heating element, on/off switch, temperature selector switch, fan selector switch, oven light.</div>
+            <div class="answer-label">Sketch or describe your diagram <span class="saved-indicator" id="ind-s2b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s2b" data-placeholder="Describe or sketch your sub-systems diagram here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. For each system below, describe how it works by explaining the function of each sub-system in order.</div>
+            <div class="task-q-sub">a) Light sensor → Output driver → Buzzer</div>
+            <div class="answer-label">Description <span class="saved-indicator" id="ind-s2c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sys-s2c" data-placeholder="Describe how this system works..."></div>
+            <div class="task-q-sub">b) Microphone → Output driver → Speaker</div>
+            <div class="answer-label">Description <span class="saved-indicator" id="ind-s2d">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sys-s2d" data-placeholder="Describe how this system works..."></div>
+            <div class="task-q-sub">c) Temperature sensor + Switch → Output driver → Solenoid</div>
+            <div class="answer-label">Description <span class="saved-indicator" id="ind-s2e">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sys-s2e" data-placeholder="Describe how this system works..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 3: Open-Loop and Closed-Loop Control</h1>
+
+      <p class="notes-p">Any system must have some way to <strong>control its operation</strong>. Control can be manual (humans provide the control) or automatic (the system operates without human interaction). Systems can also be described as <strong>open-loop</strong> or <strong>closed-loop</strong>.</p>
+
+      <h2 class="notes-h2">Open-loop control</h2>
+      <p class="notes-p">In an open-loop system, the output simply switches on or off when a certain input happens. There is <strong>no feedback</strong> — the system does not monitor its output. Once activated, it stays on until manually switched off.</p>
+
+      <div class="key-point">Open-loop example: a toaster heats for a fixed time regardless of how brown the toast actually is. There is nothing to check the output and adjust the process.</div>
+
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Open-loop control diagram — Press (input) → Switch → Driver → Heater → Heat (output). System boundary shown as dashed box. No feedback arrow.</div>
+        <div class="diagram-placeholder-sub">Filename: systems-open-loop.png</div>
+      </div>
+
+      <h2 class="notes-h2">Closed-loop control</h2>
+      <p class="notes-p">In a closed-loop system, the output is continually <strong>monitored</strong> and fed back to adjust the process. This makes the system far more accurate. The feedback signal is compared to the desired value — any difference (called the <strong>error signal</strong>) causes the system to correct itself.</p>
+
+      <div class="key-point">Error signal = Set point &minus; Measured output. The controller acts to reduce the error towards zero.</div>
+
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Closed-loop control diagram — Desired temperature → Error detector (X symbol) → Driver → Heater → Heat output → Temperature sensor → feeds back to error detector. System boundary shown. Label: feedback loop, error detector.</div>
+        <div class="diagram-placeholder-sub">Filename: systems-closed-loop.png</div>
+      </div>
+
+      <div class="compare-grid">
+        <div class="compare-card">
+          <div class="compare-card-header" style="background:var(--teal-800);">Open-loop systems</div>
+          <div class="compare-card-body">
+            <ul style="padding-left:16px;margin:0;">
+              <li>Simple to design and cheap to build</li>
+              <li>No feedback — cannot correct errors</li>
+              <li>Output may drift from desired value</li>
+              <li>Examples: toaster, street lamp timer, microwave oven</li>
+            </ul>
+          </div>
+        </div>
+        <div class="compare-card">
+          <div class="compare-card-header" style="background:var(--teal-600);">Closed-loop systems</div>
+          <div class="compare-card-body">
+            <ul style="padding-left:16px;margin:0;">
+              <li>More complex and expensive</li>
+              <li>Feedback allows automatic correction</li>
+              <li>Output is maintained at the desired value</li>
+              <li>Examples: thermostat, cruise control, GHD straighteners</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="notes-h2">The four types of control</h2>
+      <table class="data-table">
+        <tr><th>Type</th><th>Manual or Automatic?</th><th>Feedback?</th><th>Example</th></tr>
+        <tr><td><strong>Manual open-loop</strong></td><td>Manual</td><td>No</td><td>Pressing a switch to turn on a heater</td></tr>
+        <tr><td><strong>Manual closed-loop</strong></td><td>Manual</td><td>Yes (human monitors)</td><td>Adjusting a shower temperature by feel</td></tr>
+        <tr><td><strong>Automatic open-loop</strong></td><td>Automatic</td><td>No</td><td>A sensor-activated security light (no dimming)</td></tr>
+        <tr><td><strong>Automatic closed-loop</strong></td><td>Automatic</td><td>Yes (sensor monitors)</td><td>Car cruise control, central heating thermostat</td></tr>
+      </table>
+
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Automatic closed-loop control diagram for a car cruise control system — Desired speed → Error detector → Output driver → Engine → Vehicle speed → Tachogenerator (speed sensor) → feeds back to error detector. System boundary shown.</div>
+        <div class="diagram-placeholder-sub">Filename: systems-cruise-control.png</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Open and closed-loop control</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Explain the main difference between open-loop and closed-loop control systems.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-s3a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sys-s3a" data-placeholder="Explain the key difference..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Classify each of the following as open-loop or closed-loop, and explain your reasoning.</div>
+            <div class="task-q-sub">a) Electric kettle (modern kettle that switches off when water boils)</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-s3b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s3b" data-placeholder="Open or closed-loop? Explain..."></div>
+            <div class="task-q-sub">b) Car cruise control</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-s3c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s3c" data-placeholder="Open or closed-loop? Explain..."></div>
+            <div class="task-q-sub">c) Timer-controlled oven</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-s3d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s3d" data-placeholder="Open or closed-loop? Explain..."></div>
+            <div class="task-q-sub">d) GHD hair straighteners (with automatic temperature control)</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-s3e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s3e" data-placeholder="Open or closed-loop? Explain..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Draw a control diagram for a car cruise control system to keep a vehicle at a constant speed. Include: tachogenerator (speed sensor), system boundary, error detector, output driver, engine.</div>
+            <div class="answer-label">Control diagram sketch <span class="saved-indicator" id="ind-s3f">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s3f" data-placeholder="Sketch or describe your control diagram here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A surround sound bar uses closed-loop control to automatically set the correct sound level from each speaker. A microphone detects the volume of the speaker output and automatically adjusts it to a predetermined set value. Describe how this closed-loop system works, identifying each sub-system and the role of feedback.</div>
+            <div class="answer-label">Description <span class="saved-indicator" id="ind-s3g">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s3g" data-placeholder="Describe how the system works..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 4: Case Study &mdash; Domestic Appliances</h1>
+
+      <p class="notes-p">Many everyday appliances use systems principles. The toaster and washing machine are good examples of systems with different levels of control complexity.</p>
+
+      <h2 class="notes-h2">Toaster</h2>
+      <p class="notes-p">A toaster is a relatively <strong>open-loop</strong> system. The user sets a timer and the element heats for a fixed period. There is no sensor to check how brown the toast is — it simply heats and pops up after a set time.</p>
+
+      <h2 class="notes-h2">Washing machine</h2>
+      <p class="notes-p">A washing machine is a more complex system. It uses a <strong>closed-loop</strong> control for its water heating — a temperature sensor monitors the water temperature and feeds back to the control unit, which switches the heater on or off to maintain the correct washing temperature.</p>
+
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Sub-systems diagram for a washing machine showing: on/off switch, programme selector, temperature selector (inputs) → control unit → motor driver + heater driver → drum motor + heating element → water temperature sensor feeding back to control unit. System boundary shown.</div>
+        <div class="diagram-placeholder-sub">Filename: systems-washing-machine.png</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Domestic appliances</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1a. Sketch a sub-systems diagram for a <strong>toaster</strong>. Include a control unit, output driver and at least one output device. Show the system boundary.</div>
+            <div class="answer-label">Sub-systems diagram <span class="saved-indicator" id="ind-s4a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s4a" data-placeholder="Sketch or describe your diagram..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">1b. Describe, with reference to your diagram, how the toaster works.</div>
+            <div class="answer-label">Description <span class="saved-indicator" id="ind-s4b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sys-s4b" data-placeholder="Describe how the toaster system works..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">1c. Sketch a sub-systems diagram for a <strong>washing machine</strong> that includes the closed-loop water heating system.</div>
+            <div class="answer-label">Sub-systems diagram <span class="saved-indicator" id="ind-s4c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s4c" data-placeholder="Sketch or describe your diagram..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2a. State the name of the sub-system in the washing machine that provides feedback for temperature control.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-s4d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s4d" data-placeholder="Name of the feedback sub-system..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2c. Describe, with reference to the sub-system diagram, how the water heating system in the washing machine operates. Mention how each sub-system interacts, and the role of feedback.</div>
+            <div class="answer-label">Description <span class="saved-indicator" id="ind-s4e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s4e" data-placeholder="Describe how the closed-loop heating system works..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 5: Case Study &mdash; The Furby Electronic Toy</h1>
+
+      <p class="notes-p">The Furby is a good example of a <strong>mechatronic system</strong> — one that uses an electronic circuit to control a number of mechanisms. It contains several sensors so it can react to changes in its environment (e.g. being placed in a dark room or turned upside down).</p>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Furby case study</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Briefly describe how the Furby works as a system.</div>
+            <div class="answer-label">Description <span class="saved-indicator" id="ind-s5a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sys-s5a" data-placeholder="Describe how the Furby system works..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. List the input transducers for the Furby and state the function of each. (Hints: push switches on front and back, switch in mouth, light sensor, tilt sensor)</div>
+            <div class="answer-label">Input transducers <span class="saved-indicator" id="ind-s5b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s5b" data-placeholder="List each input transducer and its function..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. List the output transducers for the Furby. (Hints: speaker, motor for moving parts, infrared LED)</div>
+            <div class="answer-label">Output transducers <span class="saved-indicator" id="ind-s5c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sys-s5c" data-placeholder="List each output transducer..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. Draw a sub-systems diagram for the Furby. Show the system boundary and make clear the difference between real-world inputs/outputs and system sub-systems.</div>
+            <div class="answer-label">Sub-systems diagram <span class="saved-indicator" id="ind-s5d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s5d" data-placeholder="Sketch or describe your sub-systems diagram..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. Describe how the system works, referring to all sub-systems and how they interact to perform each function.</div>
+            <div class="answer-label">Description <span class="saved-indicator" id="ind-s5e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s5e" data-placeholder="Describe how each sub-system interacts..."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
+        <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
+      </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
+
+    </div>
     </div>
   </div>
 </div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
-<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script><script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script></body></html>
+<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
+<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
+<script>
+const STORAGE_PREFIX='ess_answers_';
+function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
+function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
+function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
+function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.answer-box').forEach(function(box){
+    var key=box.dataset.key;if(!key)return;
+    var saved=loadValue(key);if(saved)box.innerHTML=saved;
+    var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
+    box.addEventListener('input',ds);
+    box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
+  });
+});
+</script>
+</body>
+</html>

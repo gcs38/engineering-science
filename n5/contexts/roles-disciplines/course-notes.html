@@ -1,37 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>LOCAL STORAGE DEMO — Engineering Science Scotland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Engineering Roles and Disciplines — Course Notes — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
     .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
-    .test-banner { background: #fef08a; border: 3px dashed #ca8a04; border-radius: 12px; padding: 18px 24px; margin-bottom: 32px; display: flex; align-items: center; gap: 16px; }
-    .test-banner-icon { font-size: 36px; flex-shrink: 0; }
-    .test-banner-text h2 { font-size: 16px; font-weight: 900; color: #78350f; margin: 0 0 4px; }
-    .test-banner-text p { font-size: 13px; color: #92400e; margin: 0; line-height: 1.5; }
-    .notes-h1 { font-family:"DM Serif Display",serif; font-size:24px; color:var(--teal-800); margin:28px 0 10px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .back-link:hover { color:var(--teal-800); }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:16px 0 8px; }
     .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
     .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
-    .answer-box { background:#f8faff; border:2px solid #c7d7f5; border-radius:8px; padding:12px 14px; margin:8px 0 16px; min-height:80px; font-size:14px; color:var(--gray-700); line-height:1.7; outline:none; transition:border-color 0.2s, box-shadow 0.2s; }
-    .answer-box:focus { border-color:var(--teal-400); box-shadow:0 0 0 3px rgba(45,212,191,0.15); }
-    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
-    .answer-label { font-size:12px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px; display:flex; align-items:center; gap:6px; }
-    .saved-indicator { font-size:11px; color:#10b981; font-weight:600; opacity:0; transition:opacity 0.3s; }
-    .saved-indicator.show { opacity:1; }
+    .diagram-placeholder { background:#f0f9ff; border:2px dashed #7dd3fc; border-radius:10px; padding:18px 20px; margin:16px 0; text-align:center; }
+    .diagram-placeholder-icon { font-size:28px; margin-bottom:6px; }
+    .diagram-placeholder-text { font-size:13px; color:#0369a1; font-weight:600; }
+    .diagram-placeholder-sub { font-size:11px; color:#7dd3fc; margin-top:4px; font-style:italic; }
+    .discipline-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0 20px; }
+    .discipline-card { background:white; border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; }
+    .discipline-card-header { padding:10px 14px; font-size:13px; font-weight:700; color:white; display:flex; align-items:center; gap:8px; }
+    .discipline-card-body { padding:12px 14px; font-size:13px; color:var(--gray-600); line-height:1.6; }
     .assignment { background:white; border:2px solid var(--teal-400); border-radius:12px; margin:24px 0; overflow:hidden; }
     .assignment-header { background:var(--teal-400); padding:12px 18px; }
     .assignment-title { font-size:14px; font-weight:700; color:white; }
     .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
     .task-q { font-size:13px; color:var(--gray-900); margin-bottom:6px; font-weight:500; }
-    .controls-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:24px 0; padding:14px 16px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; }
-    .controls-label { font-size:12px; color:var(--gray-500); font-weight:600; flex:1; }
-    .ctrl-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; border-radius:8px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:all 0.15s; }
+    .task-q-sub { font-size:13px; color:var(--gray-700); margin:5px 0 5px 16px; }
+    .answer-label { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin:8px 0 3px; display:flex; align-items:center; gap:6px; }
+    .saved-indicator { font-size:11px; color:#10b981; font-weight:600; opacity:0; transition:opacity .3s; text-transform:none; letter-spacing:0; }
+    .saved-indicator.show { opacity:1; }
+    .answer-box { background:#f8faff; border:2px solid #c7d7f5; border-radius:8px; padding:10px 12px; min-height:68px; font-size:14px; color:var(--gray-700); line-height:1.7; outline:none; transition:border-color .2s, box-shadow .2s; display:block; width:100%; box-sizing:border-box; }
+    .answer-box:focus { border-color:var(--teal-400); box-shadow:0 0 0 3px rgba(45,212,191,0.12); }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-sm { min-height:44px; }
+    .answer-box-lg { min-height:110px; }
+    .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
+    .data-table tr:nth-child(even) td { background:var(--gray-50); }
+    .roles-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:12px; }
+    .roles-table th { background:var(--teal-800); color:white; padding:8px 10px; text-align:center; }
+    .roles-table td { padding:8px 10px; border:1px solid var(--gray-200); color:var(--gray-600); text-align:center; vertical-align:top; }
+    .roles-table td:first-child { font-weight:700; color:var(--gray-900); text-align:left; background:var(--teal-50); }
+    .controls-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:32px 0 8px; padding:12px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; }
+    .controls-label { font-size:12px; color:var(--gray-500); font-weight:600; flex:1; min-width:140px; }
+    .ctrl-btn { display:inline-flex; align-items:center; gap:5px; padding:7px 14px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:all .15s; }
     .ctrl-btn-clear { background:#fef2f2; color:#ef4444; }
     .ctrl-btn-clear:hover { background:#fee2e2; }
     .ctrl-btn-print { background:var(--teal-50); color:var(--teal-800); }
     .ctrl-btn-print:hover { background:var(--teal-100); }
-    .storage-status { font-size:11px; color:var(--gray-400); margin-top:6px; text-align:right; }
+    .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+    @media print { .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator{display:none!important;} .layout{display:block!important;} .main{margin:0!important;padding:0!important;} .answer-box{border:1.5px solid #94a3b8!important;background:white!important;} }
   </style>
 </head>
 <body>
@@ -52,68 +79,271 @@
     </a>
   </div>
 </nav>
-
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero">
-      <div class="hero-label">&#x26A0;&#xFE0F; THIS IS A TEST PAGE &mdash; NOT FOR STUDENT USE</div>
-      <h1 class="hero-title">&#x1F9EA; Local Storage Demo</h1>
-      <p class="hero-sub">Testing whether answers typed into course notes are saved automatically in the browser</p>
+      <div class="hero-label">National 5 &middot; Engineering Contexts &rsaquo; Engineering Roles and Disciplines</div>
+      <h1 class="hero-title">&#x1F477; Engineering Roles and Disciplines &mdash; Course Notes</h1>
+      <p class="hero-sub">Branches of engineering, roles of engineers and how disciplines work together</p>
+      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../index.html">Engineering Contexts</a> &rsaquo; <a href="index.html">Engineering Roles and Disciplines</a> &rsaquo; <span>Course notes</span></div>
     </div>
-
     <div class="content">
     <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to Engineering Roles and Disciplines</a>
 
-      <div class="test-banner">
-        <div class="test-banner-icon">&#x1F9EA;</div>
-        <div class="test-banner-text">
-          <h2>THIS IS A TEST PAGE &mdash; NOT FOR STUDENT USE</h2>
-          <p>This page is testing a feature where students type answers directly into their course notes and have them saved automatically in the browser. Type something in the boxes below, close this tab, then reopen the page &mdash; your answers should still be there. Use the controls at the bottom to clear all answers or print the page.</p>
-        </div>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 1: What is Engineering?</h1>
+
+      <p class="notes-p">Engineering is the application of <strong>science, mathematics and technology</strong> to design and build solutions to real-world problems. Engineers improve the world around us — from the bridges we cross, to the phones in our pockets, to the medicines that keep us healthy.</p>
+
+      <p class="notes-p">The work of engineers is everywhere. Without engineering there would be no clean water supply, no electricity grid, no roads, no internet and no modern medicine. Engineering shapes civilisation.</p>
+
+      <div class="key-point">Engineers design, build, test and maintain systems and structures that improve people's lives.</div>
+
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Branches of engineering tree — central node "Engineering" branching to Civil, Mechanical, Electrical, Chemical, Electronic, Environmental, Structural. Each with 3-4 sub-branches showing specialisms (e.g. Civil → Transport, Geotechnical, Water). Use colour coding per branch.</div>
+        <div class="diagram-placeholder-sub">Filename: roles-branches-tree.png</div>
       </div>
 
-      <h1 class="notes-h1">Sample Section &mdash; How Pneumatics Works</h1>
+      <hr class="divider">
 
-      <p class="notes-p">A pneumatic system uses <strong>compressed air</strong> to transmit force and create movement. Air is compressed by a compressor and stored in a reservoir before being directed through valves to actuators such as cylinders.</p>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 2: The Seven Main Branches of Engineering</h1>
 
-      <div class="key-point">Pneumatic systems are used where clean, safe operation is important &mdash; such as food processing, dentistry and automated manufacturing.</div>
+      <p class="notes-p">The SQA specification requires you to know seven main branches. Each branch has a different focus, but they frequently <strong>work together</strong> on the same project.</p>
 
-      <p class="notes-p">The main components of a pneumatic system are the compressor, reservoir, valves, cylinders and connecting pipework. Each plays a specific role in converting electrical energy into mechanical movement via compressed air.</p>
+      <div class="discipline-grid">
+        <div class="discipline-card">
+          <div class="discipline-card-header" style="background:#0D7490;">&#x1F3D7;&#xFE0F; Civil Engineering</div>
+          <div class="discipline-card-body">
+            <strong>Definition:</strong> Planning, designing, building and maintaining the infrastructure of society.<br><br>
+            <strong>Examples of work:</strong> Roads, bridges, tunnels, dams, airports, water treatment plants, sewage systems, railway lines.<br><br>
+            <strong>Real project example:</strong> The Queensferry Crossing — civil engineers designed the approach roads, foundations and pylons.
+          </div>
+        </div>
+        <div class="discipline-card">
+          <div class="discipline-card-header" style="background:#0369a1;">&#x1F3D8;&#xFE0F; Structural Engineering</div>
+          <div class="discipline-card-body">
+            <strong>Definition:</strong> Designing structures so they can safely support loads and resist forces without failing.<br><br>
+            <strong>Examples of work:</strong> Load-bearing frames of buildings, bridges, towers, offshore platforms.<br><br>
+            <strong>Real project example:</strong> Queensferry Crossing — structural engineers calculated the forces in the cables and towers to ensure the bridge would not collapse.
+          </div>
+        </div>
+        <div class="discipline-card">
+          <div class="discipline-card-header" style="background:#6b21a8;">&#x2699;&#xFE0F; Mechanical Engineering</div>
+          <div class="discipline-card-body">
+            <strong>Definition:</strong> Designing systems involving motion, force and energy — essentially anything that moves or has moving parts.<br><br>
+            <strong>Examples of work:</strong> Engines, turbines, manufacturing machinery, robots, HVAC systems, prosthetic limbs.<br><br>
+            <strong>Real project example:</strong> The mechanisms that open and close the Millennium Dome's roof panels.
+          </div>
+        </div>
+        <div class="discipline-card">
+          <div class="discipline-card-header" style="background:#b45309;">&#x26A1; Electrical Engineering</div>
+          <div class="discipline-card-body">
+            <strong>Definition:</strong> Generating, distributing and using electrical power; designing electrical systems and devices.<br><br>
+            <strong>Examples of work:</strong> Power stations, national grid, electric motors, transformers, lighting systems, wind turbines.<br><br>
+            <strong>Real project example:</strong> Designing the electrical systems and power distribution for the Queensferry Crossing.
+          </div>
+        </div>
+        <div class="discipline-card">
+          <div class="discipline-card-header" style="background:#0f766e;">&#x1F4BB; Electronic Engineering</div>
+          <div class="discipline-card-body">
+            <strong>Definition:</strong> Designing circuits, devices and systems that process electrical signals for control and communication.<br><br>
+            <strong>Examples of work:</strong> Smartphones, computers, control systems, telecommunications, medical imaging equipment, sensors.<br><br>
+            <strong>Real project example:</strong> The traffic management and bridge monitoring sensor systems on the Queensferry Crossing.
+          </div>
+        </div>
+        <div class="discipline-card">
+          <div class="discipline-card-header" style="background:#b91c1c;">&#x1F9EA; Chemical Engineering</div>
+          <div class="discipline-card-body">
+            <strong>Definition:</strong> Designing industrial processes that use chemical, biological or physical transformations of raw materials.<br><br>
+            <strong>Examples of work:</strong> Oil refining, pharmaceuticals, food processing, plastics, fertilisers, water treatment chemicals.<br><br>
+            <strong>Real project example:</strong> Developing the anti-corrosion coatings applied to the Queensferry Crossing cables.
+          </div>
+        </div>
+        <div class="discipline-card">
+          <div class="discipline-card-header" style="background:#15803d;">&#x1F331; Environmental Engineering</div>
+          <div class="discipline-card-body">
+            <strong>Definition:</strong> Protecting the environment from the negative effects of human activity, and designing systems to restore and improve it.<br><br>
+            <strong>Examples of work:</strong> Pollution control, waste management, air quality systems, ecological impact assessments, renewable energy planning.<br><br>
+            <strong>Real project example:</strong> Assessing and minimising the environmental impact of the Queensferry Crossing construction on the Firth of Forth ecosystem.
+          </div>
+        </div>
+      </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks &mdash; type your answers in the boxes below</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Branches of engineering</div></div>
         <div class="assignment-body">
-
-          <div style="margin-bottom:20px;">
-            <div class="task-q">1. Name three advantages of using a pneumatic system over an electric motor.</div>
-            <div class="answer-label">Your answer <span class="saved-indicator" id="ind-q1">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="demo-q1" data-placeholder="Type your answer here &mdash; it will be saved automatically as you type&hellip;"></div>
+          <div class="task-item">
+            <div class="task-q">1. Complete the table below by writing a brief definition and two real-world examples of work for each branch of engineering.</div>
+            <table class="data-table">
+              <tr><th>Branch</th><th>Definition (in your own words)</th><th>Two examples of projects or work</th></tr>
+              <tr><td>Civil</td><td contenteditable="true" style="min-height:40px;padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Structural</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Mechanical</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Electrical</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Electronic</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Chemical</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Environmental</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
+            </table>
           </div>
-
-          <div style="margin-bottom:20px;">
-            <div class="task-q">2. Describe the function of a reservoir in a pneumatic system.</div>
-            <div class="answer-label">Your answer <span class="saved-indicator" id="ind-q2">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="demo-q2" data-placeholder="Type your answer here&hellip;"></div>
+          <div class="task-item">
+            <div class="task-q">2. Name three types of engineering and give one specific example of work each performs.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-r1a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ro-r1a" data-placeholder="1. ... / 2. ... / 3. ..."></div>
           </div>
-
-          <div style="margin-bottom:20px;">
-            <div class="task-q">3. A double-acting cylinder extends when valve A is open and retracts when valve B is open. Explain why two valves are needed rather than one.</div>
-            <div class="answer-label">Your answer <span class="saved-indicator" id="ind-q3">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="demo-q3" data-placeholder="Type your answer here&hellip;"></div>
-          </div>
-
-          <div>
-            <div class="task-q">4. Give one example of a real-world application of a pneumatic system and explain why pneumatics was chosen over hydraulics for that application.</div>
-            <div class="answer-label">Your answer <span class="saved-indicator" id="ind-q4">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="demo-q4" data-placeholder="Type your answer here&hellip;"></div>
-          </div>
-
         </div>
       </div>
 
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 3: How Engineering Disciplines Work Together</h1>
+
+      <p class="notes-p">In the real world, major engineering projects are never the work of just one discipline. They require <strong>multiple branches of engineering working together</strong> at every stage. This is called <strong>interdisciplinary engineering</strong>.</p>
+
+      <p class="notes-p">Consider building a new offshore wind farm. It needs:</p>
+      <ul class="notes-ul">
+        <li><strong>Civil engineers</strong> to design the sea bed foundations and access roads</li>
+        <li><strong>Structural engineers</strong> to design the turbine towers and support structures</li>
+        <li><strong>Mechanical engineers</strong> to design the turbine mechanisms, gearboxes and blade pitch systems</li>
+        <li><strong>Electrical engineers</strong> to design the generators and power cables to shore</li>
+        <li><strong>Electronic engineers</strong> to design the control and monitoring systems</li>
+        <li><strong>Chemical engineers</strong> to develop anti-corrosion coatings for the marine environment</li>
+        <li><strong>Environmental engineers</strong> to assess and minimise the impact on marine ecosystems</li>
+      </ul>
+
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Offshore wind farm showing the contribution of each engineering discipline — label civil (foundations), structural (tower), mechanical (turbine/gearbox), electrical (generator/cables), electronic (control system), chemical (coatings), environmental (marine impact assessment). Use colour-coded callout labels.</div>
+        <div class="diagram-placeholder-sub">Filename: roles-wind-farm-interdisciplinary.png</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Integrated engineering project</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Choose an engineering project (e.g. a new bridge, sports stadium, hospital, electric vehicle, or a project of your choice). For each branch of engineering, describe how it contributed to the project.</div>
+            <div class="task-q-sub">My project is:</div>
+            <div class="answer-label">Project name and description <span class="saved-indicator" id="ind-r2a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ro-r2a" data-placeholder="Name your project and briefly describe what it is..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">Complete the table to show how each engineering branch contributed to your chosen project.</div>
+            <table class="data-table">
+              <tr><th>Branch</th><th>Contribution to the project</th></tr>
+              <tr><td>Civil</td><td contenteditable="true" style="padding:8px;min-height:36px;"></td></tr>
+              <tr><td>Structural</td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Mechanical</td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Electrical</td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Electronic</td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Chemical</td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Environmental</td><td contenteditable="true" style="padding:8px;"></td></tr>
+            </table>
+          </div>
+          <div class="task-item">
+            <div class="task-q">Write a short paragraph explaining how the different branches of engineering worked together to ensure the success of your project.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-r2b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="ro-r2b" data-placeholder="Explain how the disciplines worked together..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 4: Roles of Engineers</h1>
+
+      <p class="notes-p">Within any engineering project, engineers take on different <strong>roles</strong> at different stages. The SQA specification requires you to know four key stages and what engineers do at each.</p>
+
+      <table class="roles-table">
+        <tr>
+          <th>Stage</th>
+          <th>What engineers do</th>
+          <th>Examples</th>
+        </tr>
+        <tr>
+          <td>&#x1F4D0; Designing</td>
+          <td>Calculate, simulate, select materials, research, survey, produce drawings and specifications</td>
+          <td>Calculating the load on a bridge beam; simulating airflow over a wind turbine blade; selecting the correct steel grade for a structure</td>
+        </tr>
+        <tr>
+          <td>&#x1F3D7;&#xFE0F; Implementing</td>
+          <td>Organise teams, monitor progress, troubleshoot problems, liaise with other engineers and contractors</td>
+          <td>Managing construction workers; solving unexpected ground conditions; coordinating with electrical and civil teams on a wind farm</td>
+        </tr>
+        <tr>
+          <td>&#x1F52C; Testing</td>
+          <td>Monitor sensors, analyse test results, adapt original designs based on findings</td>
+          <td>Load testing a bridge; checking electrical systems under full power; stress testing a new aircraft component</td>
+        </tr>
+        <tr>
+          <td>&#x1F39B;&#xFE0F; Controlling</td>
+          <td>Monitor ongoing performance, maintain systems, respond to faults, ensure safe operation</td>
+          <td>Monitoring the National Grid frequency; controlling traffic signals; managing the automated monitoring systems on the Queensferry Crossing</td>
+        </tr>
+      </table>
+
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Engineering design process — circular flow showing: 1. Identify problem → 2. Research → 3. Generate solutions → 4. Evaluate and select → 5. Build / simulate prototype → 6. Test → 7. Evaluate and refine → 8. Communicate solution → back to 1 if needed. Show as a cycle with arrows.</div>
+        <div class="diagram-placeholder-sub">Filename: roles-design-process.png</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Roles of engineers</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Using your chosen project from Task 2, describe in detail what each engineering discipline did at each stage of the project.</div>
+            <table class="roles-table">
+              <tr><th></th><th>Civil</th><th>Structural</th><th>Mechanical</th><th>Electrical</th><th>Electronic</th><th>Chemical</th><th>Environmental</th></tr>
+              <tr><td>Designing</td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td></tr>
+              <tr><td>Implementing</td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td></tr>
+              <tr><td>Testing</td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td></tr>
+              <tr><td>Controlling</td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td></tr>
+            </table>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Explain why must engineers follow a professional code of conduct. Name one professional engineering body and one rule from its code of conduct.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-r3a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ro-r3a" data-placeholder="Explain why a code of conduct is important..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 5: Career Paths in Engineering</h1>
+
+      <p class="notes-p">Engineering offers a wide range of career options at different qualification levels:</p>
+
+      <ul class="notes-ul">
+        <li><strong>Technician</strong> — practical hands-on work, often HNC/HND qualified</li>
+        <li><strong>Incorporated Engineer (IEng)</strong> — degree-qualified, applies established techniques</li>
+        <li><strong>Chartered Engineer (CEng)</strong> — highest professional status, leads innovation and complex projects</li>
+      </ul>
+
+      <p class="notes-p">The pathway from school to Chartered Engineer typically involves: National 5 → Higher → Advanced Higher → Degree (BEng or MEng) → Graduate experience → Chartership via professional body (e.g. IET for electrical/electronic, IMechE for mechanical, ICE for civil).</p>
+
+      <div class="key-point">Engineering is one of the best-paid and most in-demand careers in Scotland and the UK. Scotland has a particularly strong demand for engineers in renewable energy, civil infrastructure, oil and gas, and advanced manufacturing.</div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Research task</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Research a branch of engineering that interests you. Find out: what engineers in this field do, a specific real-world project they have worked on, the qualifications needed, and one engineering challenge currently facing this discipline.</div>
+            <div class="answer-label">Research notes <span class="saved-indicator" id="ind-r4a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="ro-r4a" data-placeholder="Branch: ... What they do: ... Real project: ... Qualifications: ... Current challenge: ..."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
       <div class="controls-bar">
-        <span class="controls-label">&#x1F4BE; Answers are saved automatically in this browser on this device only.</span>
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
         <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
         <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
       </div>
@@ -123,105 +353,26 @@
     </div>
   </div>
 </div>
-
-<footer class="footer">
-  <span>Engineering Science Scotland &mdash; TEST PAGE, not for student use</span>
-  <a href="../../../../teacher/login.html">Teacher area</a>
-</footer>
-
-<script src="../../../../js/site.js"></script>
-<script src="../../../../js/nav.js"></script>
+<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
+<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script>
 <script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
-
 <script>
-const STORAGE_PREFIX = 'ess_answers_';
-
-function saveAnswer(key, value) {
-  try {
-    localStorage.setItem(STORAGE_PREFIX + key, value);
-    updateStatusBar();
-  } catch(e) {
-    console.warn('Could not save to localStorage:', e);
-  }
-}
-
-function loadAnswer(key) {
-  try {
-    return localStorage.getItem(STORAGE_PREFIX + key) || '';
-  } catch(e) {
-    return '';
-  }
-}
-
-function showSavedIndicator(key) {
-  const box = document.querySelector('[data-key="' + key + '"]');
-  if (!box) return;
-  const label = box.previousElementSibling;
-  if (!label) return;
-  const indicator = label.querySelector('.saved-indicator');
-  if (!indicator) return;
-  indicator.classList.add('show');
-  setTimeout(function() { indicator.classList.remove('show'); }, 2000);
-}
-
-function updateStatusBar() {
-  const el = document.getElementById('storage-status');
-  if (el) {
-    const now = new Date();
-    el.textContent = 'Last saved: ' + now.toLocaleTimeString();
-  }
-}
-
-function clearAllAnswers() {
-  if (!confirm('Clear all your saved answers on this page? This cannot be undone.')) return;
-  document.querySelectorAll('.answer-box').forEach(function(box) {
-    const key = box.dataset.key;
-    if (key) {
-      localStorage.removeItem(STORAGE_PREFIX + key);
-      box.innerHTML = '';
-    }
-  });
-  const el = document.getElementById('storage-status');
-  if (el) el.textContent = 'Answers cleared.';
-}
-
-function debounce(fn, delay) {
-  var timer;
-  return function() {
-    clearTimeout(timer);
-    var args = arguments;
-    var ctx = this;
-    timer = setTimeout(function() { fn.apply(ctx, args); }, delay);
-  };
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('.answer-box').forEach(function(box) {
-    const key = box.dataset.key;
-    if (!key) return;
-
-    // Restore saved answer
-    const saved = loadAnswer(key);
-    if (saved) {
-      box.innerHTML = saved;
-    }
-
-    // Save on input (debounced 800ms after user stops typing)
-    const debouncedSave = debounce(function() {
-      saveAnswer(key, box.innerHTML);
-      showSavedIndicator(key);
-    }, 800);
-
-    box.addEventListener('input', debouncedSave);
-
-    // Also save immediately when focus leaves the box
-    box.addEventListener('blur', function() {
-      saveAnswer(key, box.innerHTML);
-      showSavedIndicator(key);
-    });
+const STORAGE_PREFIX='ess_answers_';
+function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
+function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
+function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
+function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.answer-box').forEach(function(box){
+    var key=box.dataset.key;if(!key)return;
+    var saved=loadValue(key);if(saved)box.innerHTML=saved;
+    var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
+    box.addEventListener('input',ds);
+    box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
   });
 });
 </script>
-
 </body>
 </html>
