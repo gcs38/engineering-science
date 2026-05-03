@@ -53,6 +53,21 @@
     .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
     .task-q { font-size:13px; color:var(--gray-900); margin-bottom:8px; font-weight:500; }
     .task-space { background:var(--gray-50); border:1px dashed var(--gray-200); border-radius:var(--radius-sm); min-height:60px; padding:10px; margin-top:6px; font-size:11px; color:var(--gray-400); }
+    .answer-box { background:#f8faff; border:2px solid #c7d7f5; border-radius:8px; padding:10px 12px; min-height:70px; font-size:14px; color:var(--gray-700); line-height:1.7; outline:none; transition:border-color 0.2s, box-shadow 0.2s; margin-top:6px; display:block; width:100%; box-sizing:border-box; }
+    .answer-box:focus { border-color:var(--teal-400); box-shadow:0 0 0 3px rgba(45,212,191,0.12); }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-label { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin:8px 0 3px; display:flex; align-items:center; gap:6px; }
+    .saved-indicator { font-size:11px; color:#10b981; font-weight:600; opacity:0; transition:opacity .3s; text-transform:none; letter-spacing:0; }
+    .saved-indicator.show { opacity:1; }
+    .controls-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:32px 0 8px; padding:12px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; }
+    .controls-label { font-size:12px; color:var(--gray-500); font-weight:600; flex:1; min-width:140px; }
+    .ctrl-btn { display:inline-flex; align-items:center; gap:5px; padding:7px 14px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:all .15px; }
+    .ctrl-btn-clear { background:#fef2f2; color:#ef4444; }
+    .ctrl-btn-clear:hover { background:#fee2e2; }
+    .ctrl-btn-print { background:var(--teal-50); color:var(--teal-800); }
+    .ctrl-btn-print:hover { background:var(--teal-100); }
+    .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
+    @media print { .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator{display:none!important;} .layout{display:block!important;} .main{margin:0!important;padding:0!important;} .answer-box{border:1.5px solid #94a3b8!important;background:white!important;} }
     .truth-table { width:auto; border-collapse:collapse; margin:10px 0; font-size:13px; }
     .truth-table th { background:var(--teal-800); color:white; padding:6px 16px; text-align:center; }
     .truth-table td { border:1px solid var(--gray-200); padding:6px 16px; text-align:center; min-width:80px; min-height:30px; }
@@ -146,9 +161,9 @@
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Assignment 1</div></div>
         <div class="assignment-body">
-          <div class="task-item"><div class="task-q">1. Give three examples of the everyday use of pneumatics.</div><div class="task-space">Answer here&hellip;</div></div>
-          <div class="task-item"><div class="task-q">2. What is compressed air?</div><div class="task-space">Answer here&hellip;</div></div>
-          <div class="task-item"><div class="task-q">3. Give two reasons why pneumatic systems are used in industry rather than other types of system.</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">1. Give three examples of the everyday use of pneumatics.</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a01">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a01" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
+          <div class="task-item"><div class="task-q">2. What is compressed air?</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a02">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a02" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
+          <div class="task-item"><div class="task-q">3. Give two reasons why pneumatic systems are used in industry rather than other types of system.</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a03">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a03" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
         </div>
       </div>
 
@@ -254,10 +269,10 @@
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Assignment 2 &mdash; Car park barrier (SAC)</div></div>
         <div class="assignment-body">
-          <div class="task-item"><div class="task-q">1. Build or simulate the car park barrier circuit above. Press the button and keep it pressed. What happens?</div><div class="task-space">Answer here&hellip;</div></div>
-          <div class="task-item"><div class="task-q">2. Release the button. What happens and why?</div><div class="task-space">Answer here&hellip;</div></div>
-          <div class="task-item"><div class="task-q">3. Using correct terminology, explain how the circuit operates to raise and lower the barrier.</div><div class="task-space">Answer here&hellip;</div></div>
-          <div class="task-item"><div class="task-q">4. The attendant needs to hold the barrier up while directing traffic. What actuator could replace the push button? How would this change the operation?</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">1. Build or simulate the car park barrier circuit above. Press the button and keep it pressed. What happens?</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a04">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a04" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
+          <div class="task-item"><div class="task-q">2. Release the button. What happens and why?</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a05">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a05" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
+          <div class="task-item"><div class="task-q">3. Using correct terminology, explain how the circuit operates to raise and lower the barrier.</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a06">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a06" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
+          <div class="task-item"><div class="task-q">4. The attendant needs to hold the barrier up while directing traffic. What actuator could replace the push button? How would this change the operation?</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a07">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a07" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
         </div>
       </div>
 
@@ -294,10 +309,10 @@
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Assignment 3 &mdash; 5/2 valve circuit</div></div>
         <div class="assignment-body">
-          <div class="task-item"><div class="task-q">1. Build or simulate the circuit above. Press valve A to outstroke the cylinder. Does it instroke when you release the button?</div><div class="task-space">Answer here&hellip;</div></div>
-          <div class="task-item"><div class="task-q">2. Now press valve B. What happens?</div><div class="task-space">Answer here&hellip;</div></div>
-          <div class="task-item"><div class="task-q">3. Try pushing against the piston during simulation. Compare this to the two 3/2 valve circuit. What is the difference?</div><div class="task-space">Answer here&hellip;</div></div>
-          <div class="task-item"><div class="task-q">4. Explain why the 5/2 valve is better for controlling a double-acting cylinder.</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">1. Build or simulate the circuit above. Press valve A to outstroke the cylinder. Does it instroke when you release the button?</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a08">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a08" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
+          <div class="task-item"><div class="task-q">2. Now press valve B. What happens?</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a09">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a09" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
+          <div class="task-item"><div class="task-q">3. Try pushing against the piston during simulation. Compare this to the two 3/2 valve circuit. What is the difference?</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a10">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a10" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
+          <div class="task-item"><div class="task-q">4. Explain why the 5/2 valve is better for controlling a double-acting cylinder.</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a11">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a11" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
         </div>
       </div>
 
@@ -356,7 +371,7 @@
               <tr><td>1</td><td>1</td><td></td></tr>
             </table>
           </div>
-          <div class="task-item"><div class="task-q">Explain how this circuit could be used as a safety feature on a machine.</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">Explain how this circuit could be used as a safety feature on a machine.</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a12">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a12" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
         </div>
       </div>
 
@@ -393,8 +408,8 @@
               <tr><td>1</td><td>1</td><td></td></tr>
             </table>
           </div>
-          <div class="task-item"><div class="task-q">Explain why a T-piece cannot be used instead of a shuttle valve in an OR circuit. Simulate it to confirm your answer.</div><div class="task-space">Answer here&hellip;</div></div>
-          <div class="task-item"><div class="task-q">Give a real-world example where OR control would be useful.</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">Explain why a T-piece cannot be used instead of a shuttle valve in an OR circuit. Simulate it to confirm your answer.</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a13">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a13" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
+          <div class="task-item"><div class="task-q">Give a real-world example where OR control would be useful.</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a14">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a14" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
         </div>
       </div>
 
@@ -433,9 +448,9 @@
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Assignment 6 &mdash; Automatic circuit</div></div>
         <div class="assignment-body">
-          <div class="task-item"><div class="task-q">Run the automatic circuit simulation. What are the roles of the two roller valves?</div><div class="task-space">Answer here&hellip;</div></div>
-          <div class="task-item"><div class="task-q">How would you stop the circuit without turning off the main air supply?</div><div class="task-space">Answer here&hellip;</div></div>
-          <div class="task-item"><div class="task-q">Give a real-world application where this type of automatic reciprocating motion would be useful.</div><div class="task-space">Answer here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">Run the automatic circuit simulation. What are the roles of the two roller valves?</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a15">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a15" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
+          <div class="task-item"><div class="task-q">How would you stop the circuit without turning off the main air supply?</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a16">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a16" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
+          <div class="task-item"><div class="task-q">Give a real-world application where this type of automatic reciprocating motion would be useful.</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a17">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a17" data-placeholder="Answer here…" role="textbox" aria-multiline="true"></div></div>
         </div>
       </div>
 
@@ -488,13 +503,20 @@
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Assignment 7 &mdash; Force calculations</div></div>
         <div class="assignment-body">
-          <div class="task-item"><div class="task-q">1. Calculate the outstroke force produced by a 20 mm diameter SAC at a pressure of 0.8 N/mm&sup2;.</div><div class="task-space">Working here&hellip;</div></div>
-          <div class="task-item"><div class="task-q">2. Calculate the outstroke force produced by a 40 mm diameter cylinder at 0.3 N/mm&sup2;.</div><div class="task-space">Working here&hellip;</div></div>
-          <div class="task-item"><div class="task-q">3. A stamping machine exerts a force of 454 N with a piston diameter of 34 mm. Calculate the air pressure required.</div><div class="task-space">Working here&hellip;</div></div>
-          <div class="task-item"><div class="task-q">4. A force of 540 N is needed to push a packing case. The SAC has a diameter of 60 mm. What pressure is needed?</div><div class="task-space">Working here&hellip;</div></div>
-          <div class="task-item"><div class="task-q">5. A DAC has a piston diameter of 20 mm and piston rod diameter of 6 mm. Pressure = 0.3 N/mm&sup2;. Calculate the outstroke and instroke forces.</div><div class="task-space">Working here&hellip;</div></div>
+          <div class="task-item"><div class="task-q">1. Calculate the outstroke force produced by a 20 mm diameter SAC at a pressure of 0.8 N/mm&sup2;.</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a18">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a18" data-placeholder="Working here…" role="textbox" aria-multiline="true"></div></div>
+          <div class="task-item"><div class="task-q">2. Calculate the outstroke force produced by a 40 mm diameter cylinder at 0.3 N/mm&sup2;.</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a19">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a19" data-placeholder="Working here…" role="textbox" aria-multiline="true"></div></div>
+          <div class="task-item"><div class="task-q">3. A stamping machine exerts a force of 454 N with a piston diameter of 34 mm. Calculate the air pressure required.</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a20">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a20" data-placeholder="Working here…" role="textbox" aria-multiline="true"></div></div>
+          <div class="task-item"><div class="task-q">4. A force of 540 N is needed to push a packing case. The SAC has a diameter of 60 mm. What pressure is needed?</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a21">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a21" data-placeholder="Working here…" role="textbox" aria-multiline="true"></div></div>
+          <div class="task-item"><div class="task-q">5. A DAC has a piston diameter of 20 mm and piston rod diameter of 6 mm. Pressure = 0.3 N/mm&sup2;. Calculate the outstroke and instroke forces.</div><div class="answer-label">Your answer <span class="saved-indicator" id="ind-a22">✓ Saved</span></div><div class="answer-box" contenteditable="true" data-key="pneu-a22" data-placeholder="Working here…" role="textbox" aria-multiline="true"></div></div>
         </div>
       </div>
+
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
+        <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
+      </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
 
     </div>
     </div>
@@ -563,6 +585,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
   document.querySelectorAll('.sim-iframe').forEach(iframe => {
     observer.observe(iframe);
+  });
+});
+</script>
+
+<script>
+const STORAGE_PREFIX='ess_answers_';
+function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
+function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
+function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
+function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.answer-box').forEach(function(box){
+    var key=box.dataset.key;if(!key)return;
+    var saved=loadValue(key);if(saved)box.innerHTML=saved;
+    var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
+    box.addEventListener('input',ds);
+    box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
   });
 });
 </script>
