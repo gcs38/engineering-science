@@ -1,0 +1,2597 @@
+<!DOCTYPE html>
+<!-- 
+    NOGRIND SIMULATOR V1.2
+    ---------------------------------------------------
+    This is intended for educational use only and is not to be sold for profit
+    developed by Peter Strain with Gemini.
+    
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoGrind Sim V1.2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Three.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- OrbitControls -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #f0f4f9; font-family: 'Roboto', sans-serif; user-select: none; touch-action: none; }
+        canvas { display: block; outline: none; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        
+        .panel { @apply bg-white/95 backdrop-blur-md border border-slate-200 shadow-xl rounded-2xl p-4 transition-all; }
+        .btn-gradient { @apply bg-gradient-to-r from-blue-500 to-pink-500 text-white font-bold rounded-xl shadow-md hover:from-blue-600 hover:to-pink-600 active:scale-95 transition-all text-sm py-2 px-4 flex justify-center items-center gap-2; }
+        .btn-chain { @apply bg-gradient-to-r from-slate-600 to-slate-800 text-white font-bold rounded-xl shadow-md hover:from-slate-700 hover:to-slate-900 active:scale-95 transition-all text-sm py-2 px-4 flex justify-center items-center gap-2; }
+        .btn-cassette { @apply bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold rounded-xl shadow-md hover:from-emerald-700 hover:to-teal-800 active:scale-95 transition-all text-sm py-2 px-4 flex justify-center items-center gap-2; }
+        .btn-belt { @apply bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-xl shadow-md hover:from-cyan-600 hover:to-blue-700 active:scale-95 transition-all text-sm py-2 px-4 flex justify-center items-center gap-2; }
+        .btn-worm { @apply bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold rounded-xl shadow-md hover:from-purple-600 hover:to-indigo-700 active:scale-95 transition-all text-sm py-2 px-4 flex justify-center items-center gap-2; }
+        .btn-nut { @apply bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl shadow-md hover:from-amber-600 hover:to-orange-600 active:scale-95 transition-all text-sm py-2 px-4 flex justify-center items-center gap-2; }
+        .btn-motor { @apply bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold rounded-xl shadow-md hover:from-emerald-600 hover:to-teal-600 active:scale-95 transition-all text-sm py-2 px-4 flex justify-center items-center gap-2; }
+        .btn-rack { @apply bg-gradient-to-r from-rose-500 to-red-500 text-white font-bold rounded-xl shadow-md hover:from-rose-600 hover:to-red-600 active:scale-95 transition-all text-sm py-2 px-4 flex justify-center items-center gap-2; }
+        
+        .tool-btn { @apply p-2.5 rounded-full text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-pink-200; }
+        .tool-btn:disabled { @apply opacity-50 cursor-not-allowed hover:bg-transparent text-slate-300; }
+        
+        .submenu { max-height: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; transform: translateY(-10px); }
+        .submenu.open { max-height: 1000px; opacity: 1; transform: translateY(0); margin-top: 0.5rem; margin-bottom: 0.5rem; } 
+        .rotate-icon { transition: transform 0.3s ease; }
+        .rotate-icon.open { transform: rotate(180deg); }
+
+        .acc-btn { @apply w-full px-5 py-3.5 flex justify-between items-center text-sm font-extrabold text-slate-800 bg-white rounded-xl hover:bg-slate-50 transition-all shadow-sm border border-transparent hover:border-slate-200; }
+        .acc-btn[aria-expanded="true"] { @apply bg-slate-100 shadow-none border-slate-200; }
+
+        /* Drawer Transitions */
+        #sidebarList { width: 18rem; transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 40; }
+        #canvasWrapper { position: absolute; top: 0; bottom: 0; right: 0; transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        
+        .drawer-open #sidebarList { transform: translateX(0); }
+        .drawer-closed #sidebarList { transform: translateX(-100%); }
+        .drawer-open #canvasWrapper { left: 18rem; }
+        .drawer-closed #canvasWrapper { left: 0; }   
+        
+        .menu-shadow { box-shadow: 10px 0 25px -5px rgba(0, 0, 0, 0.1); }
+        .drawer-closed #sidebarToggleIcon { transform: rotate(180deg) translateX(-2px); }
+
+        /* SVG & Labels */
+        .gear-label {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.98);
+            border: 2px solid #3b82f6;
+            padding: 6px 14px;
+            border-radius: 12px;
+            font-family: 'Nunito', sans-serif;
+            color: #1e293b;
+            pointer-events: auto; 
+            cursor: grab;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            transform: translate(-50%, -50%); 
+            display: none; 
+            z-index: 30;
+            text-align: center;
+            min-width: 80px;
+        }
+        .gear-label:active { cursor: grabbing; }
+        .label-title {
+            font-size: 11px;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 2px;
+            font-weight: 800;
+        }
+        .label-desc {
+            font-size: 10px;
+            color: #94a3b8;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+        .label-rpm {
+            font-size: 15px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: #0f172a;
+        }
+        .dir-tag {
+            display: block;
+            font-size: 12px;
+            color: #ec4899;
+            margin-top: 3px;
+            font-weight: 800;
+        }
+    </style>
+</head>
+<body class="flex h-screen flex-col text-slate-800 bg-[#f0f4f9]">
+
+    <!-- Fixed Top Toolbar -->
+    <div class="h-16 bg-white z-50 flex items-center justify-between px-6 shadow-sm border-b border-slate-200 shrink-0">
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-pink-500 text-white rounded-xl flex items-center justify-center shadow-lg">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1-1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </div>
+                <h1 class="text-xl font-bold text-slate-700 tracking-tight leading-none">NoGrind <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500">Sim V1.2</span></h1>
+            </div>
+            
+            <div class="h-8 w-px bg-slate-200 mx-2 rounded-full"></div>
+
+            <!-- Save/Load/Export Pill -->
+            <div class="flex items-center gap-2 bg-slate-50 p-1 rounded-full shadow-inner border border-slate-200">
+                <button id="btnSave" class="tool-btn" title="Save File"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" style="display:none"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V7l-4-4zm-5 16v-4a2 2 0 012-2h0a2 2 0 012 2v4M9 3v4a2 2 0 002 2h4a2 2 0 002-2V3"/></svg></button>
+                <label class="tool-btn cursor-pointer" title="Load File">
+                    <input type="file" id="fileLoad" accept=".json" class="hidden">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                </label>
+                <button id="btnExport" class="tool-btn" title="Export Image"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg></button>
+            </div>
+
+            <!-- Run / Stop -->
+            <button id="btnSim" type="button" class="px-6 py-2 bg-gradient-to-r from-blue-500 to-pink-500 text-white rounded-full hover:from-blue-600 hover:to-pink-600 font-bold text-xs shadow-md shadow-slate-300 transition-all flex items-center gap-2 active:scale-95 ml-2"><span>▶</span> RUN SIM</button>
+            <button id="btnStop" type="button" class="hidden px-6 py-2 bg-slate-800 text-white rounded-full hover:bg-slate-900 font-bold text-xs shadow-md shadow-slate-300 transition-all flex items-center gap-2 active:scale-95 ml-2"><span>■</span> STOP</button>
+        </div>
+
+        <div class="flex items-center gap-2">
+            <button id="btnUndo" class="tool-btn" title="Undo (Ctrl+Z)" disabled><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg></button>
+            <button id="btnRedo" class="tool-btn" title="Redo (Ctrl+Y)" disabled><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6"/></svg></button>
+            <div class="h-5 w-px bg-slate-300 mx-1"></div>
+            <!-- Auto Center Button -->
+            <button id="btnHome" type="button" class="tool-btn" title="Center & Fit Design"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg></button>
+            <div class="h-5 w-px bg-slate-300 mx-1"></div>
+            <button id="btnClear" type="button" class="tool-btn text-rose-500 hover:bg-rose-50 hover:text-rose-600" title="Clear All"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full font-bold shadow-lg opacity-0 transition-all duration-300 pointer-events-none z-50 transform scale-95 text-center"></div>
+
+    <!-- Worm Drive Attachment Modal -->
+    <div id="wormModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl p-6 shadow-2xl max-w-sm w-full transform scale-95 transition-transform duration-300" id="wormModalCard">
+            <h3 class="font-black text-xl text-slate-800 mb-2">Configure Worm Drive</h3>
+            <p class="text-sm text-slate-500 mb-6 font-medium">How would you like to attach this drive to your axle?</p>
+            <div class="space-y-3">
+                <button id="btnWormAttachWorm" class="w-full btn-worm py-3.5 text-sm uppercase tracking-wide">
+                    Attach via WORM <br><span class="text-[10px] text-purple-200 font-normal normal-case block leading-tight mt-0.5">Massive speed reduction</span>
+                </button>
+                <button id="btnWormAttachWheel" class="w-full btn-gradient py-3.5 text-sm uppercase tracking-wide">
+                    Attach via WHEEL <br><span class="text-[10px] text-pink-200 font-normal normal-case block leading-tight mt-0.5">Massive speed multiplication</span>
+                </button>
+                <button id="btnWormCancel" class="w-full bg-slate-100 text-slate-600 font-bold rounded-xl py-3 mt-2 hover:bg-slate-200 transition-colors uppercase tracking-wide text-xs">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main App Container -->
+    <div id="appContainer" class="flex flex-1 overflow-hidden relative drawer-open">
+        
+        <!-- Left Sidebar: Solid White Menu Drawer -->
+        <div id="sidebarList" class="absolute inset-y-0 left-0 bg-white border-r border-slate-200 flex flex-col menu-shadow !overflow-visible z-40">
+            
+            <!-- Toggle Button attached to edge -->
+            <button id="sidebarToggle" onclick="toggleSidebar()" class="absolute top-1/2 -right-6 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-pink-500 text-white shadow-lg hover:shadow-slate-300 hover:scale-110 active:scale-95 transition-all duration-300 focus:outline-none group">
+                <svg id="sidebarToggleIcon" class="w-6 h-6 stroke-[3px] transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+            </button>
+
+            <!-- Scrollable Content -->
+            <div class="flex-1 overflow-y-auto px-4 pb-4 pt-4 space-y-4">
+                <h2 class="text-xs font-black text-slate-400 uppercase tracking-widest px-2 mb-1">Components</h2>
+                
+                <!-- Building Tools -->
+                <div id="builderToolsPanel" class="space-y-4">
+                    <!-- Gears -->
+                    <div class="sidebar-group">
+                        <button class="acc-btn" onclick="toggleMenu('menu-gears', this)" aria-expanded="true">
+                            <span>Gears</span> 
+                            <span class="rotate-icon open text-slate-400 text-[10px]">▼</span>
+                        </button>
+                        <div id="menu-gears" class="submenu open flex flex-col gap-3 mt-2">
+                            <button id="btnAddGear" class="w-full btn-gradient py-3 text-sm">
+                                + Add Gear
+                            </button>
+                            <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 text-[11px] text-blue-800 font-medium leading-relaxed shadow-inner">
+                                <strong>How to build:</strong><br>
+                                1. Click "Add" on a component.<br>
+                                2. Hover near roots to snap.<br>
+                                3. Click to place.<br>
+                                4. Press <strong>Escape</strong> to cancel.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chain Drive -->
+                    <div class="sidebar-group">
+                        <button class="acc-btn" onclick="toggleMenu('menu-chain', this)" aria-expanded="false">
+                            <span>Chain Drives</span> 
+                            <span class="rotate-icon text-slate-400 text-[10px]">▼</span>
+                        </button>
+                        <div id="menu-chain" class="submenu flex flex-col gap-2 mt-2">
+                             <button id="btnAddChain" class="w-full btn-chain py-3 text-sm">
+                                + Standard Sprocket
+                            </button>
+                            <button id="btnAddCassette" class="w-full btn-cassette py-3 text-sm">
+                                + 8-Speed Cassette
+                            </button>
+                            <div class="bg-slate-100 p-3 rounded-lg border border-slate-200 text-[10px] text-slate-600 font-medium leading-relaxed shadow-inner mt-1">
+                                Sprockets do not mesh directly. They snap to existing axles.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Belt Drive -->
+                    <div class="sidebar-group">
+                        <button class="acc-btn" onclick="toggleMenu('menu-belt', this)" aria-expanded="false">
+                            <span>Belt Drive</span> 
+                            <span class="rotate-icon text-slate-400 text-[10px]">▼</span>
+                        </button>
+                        <div id="menu-belt" class="submenu flex flex-col gap-2 mt-2">
+                             <button id="btnAddBelt" class="w-full btn-belt py-3 text-sm">
+                                + Add Belt Drive
+                            </button>
+                            <div class="bg-slate-100 p-3 rounded-lg border border-slate-200 text-[10px] text-slate-600 font-medium leading-relaxed shadow-inner mt-1">
+                                Pulleys snap to existing axles. Adjust diameter to change VR.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Worm and Wheel -->
+                    <div class="sidebar-group">
+                        <button class="acc-btn" onclick="toggleMenu('menu-worm', this)" aria-expanded="false">
+                            <span>Worm Drive</span> 
+                            <span class="rotate-icon text-slate-400 text-[10px]">▼</span>
+                        </button>
+                        <div id="menu-worm" class="submenu flex flex-col gap-2 mt-2">
+                             <button id="btnAddWorm" class="w-full btn-worm py-3 text-sm">
+                                + Add Worm & Wheel
+                            </button>
+                            <div class="bg-slate-100 p-3 rounded-lg border border-slate-200 text-[10px] text-slate-600 font-medium leading-relaxed shadow-inner mt-1">
+                                High reduction! The worm acts as a 1-tooth gear. Snaps to an axle to drive a perpendicular wheel.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Worm and Nut -->
+                    <div class="sidebar-group">
+                        <button class="acc-btn" onclick="toggleMenu('menu-nut', this)" aria-expanded="false">
+                            <span>Worm & Nut</span> 
+                            <span class="rotate-icon text-slate-400 text-[10px]">▼</span>
+                        </button>
+                        <div id="menu-nut" class="submenu flex flex-col gap-2 mt-2">
+                             <button id="btnAddWormNut" class="w-full btn-nut py-3 text-sm">
+                                + Add Lead Screw
+                            </button>
+                            <div class="bg-slate-100 p-3 rounded-lg border border-slate-200 text-[10px] text-slate-600 font-medium leading-relaxed shadow-inner mt-1">
+                                Converts rotation to linear motion using a lead screw. Snaps to an existing axle. Has physical limits.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rack and Pinion -->
+                    <div class="sidebar-group">
+                        <button class="acc-btn" onclick="toggleMenu('menu-rack', this)" aria-expanded="false">
+                            <span>Rack and Pinion</span> 
+                            <span class="rotate-icon text-slate-400 text-[10px]">▼</span>
+                        </button>
+                        <div id="menu-rack" class="submenu flex flex-col gap-2 mt-2">
+                             <button id="btnAddRack" class="w-full btn-rack py-3 text-sm">
+                                + Add Rack & Pinion
+                            </button>
+                            <div class="bg-slate-100 p-3 rounded-lg border border-slate-200 text-[10px] text-slate-600 font-medium leading-relaxed shadow-inner mt-1">
+                                Converts rotation to linear motion. Snaps to an existing axle or meshes with a gear. Has physical limits.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3D Canvas Area -->
+        <div id="canvasWrapper" class="absolute p-4 h-full z-0">
+            <div id="canvasContainer" class="w-full h-full relative bg-gradient-to-br from-slate-50 to-slate-200 rounded-3xl shadow-sm border border-white overflow-hidden flex flex-col">
+                
+                <div id="three-container" class="absolute inset-0 w-full h-full"></div>
+                <svg id="svg-overlay" class="absolute inset-0 w-full h-full pointer-events-none z-10"></svg>
+                <div id="labels-container" class="absolute inset-0 pointer-events-none z-20 overflow-hidden"></div>
+                
+                <!-- Controls overlay -->
+                <div class="absolute bottom-4 left-4 z-20 flex gap-2">
+                    <button id="btnPanToggle" class="w-12 h-12 bg-white border border-slate-200 shadow-md rounded-full flex items-center justify-center text-slate-500 hover:text-blue-500 hover:bg-slate-50 transition-colors focus:outline-none group" title="Toggle Pan Mode (Hand)">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" /></svg>
+                    </button>
+                    <div class="bg-white/80 backdrop-blur border border-slate-200 shadow-sm rounded-full px-4 flex items-center text-[10px] font-bold text-slate-500 tracking-wide uppercase">
+                        Left Click: Orbit &nbsp;|&nbsp; Right Click: Pan &nbsp;|&nbsp; Scroll: Zoom
+                    </div>
+                </div>
+
+                <!-- Floating Inspector (Top Right) -->
+                <div id="panel-inspect" class="absolute top-4 right-4 w-64 panel pointer-events-auto hidden z-30 flex flex-col max-h-[90vh]">
+                    
+                    <div id="panel-inspect-header" class="cursor-move flex items-center justify-between mb-3 pb-2 border-b border-slate-100 shrink-0 select-none">
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-xs font-black text-slate-800 uppercase tracking-widest">Properties</h2>
+                            <span id="badgeType" class="text-[9px] font-bold px-2 py-1 bg-pink-100 text-pink-600 rounded-md uppercase">GEAR</span>
+                        </div>
+                        <button onclick="const w=document.getElementById('panel-inspect-wrapper'); w.classList.toggle('hidden'); this.querySelector('svg').style.transform=w.classList.contains('hidden')?'rotate(180deg)':'rotate(0deg)';" class="text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer" title="Minimise">
+                            <svg class="w-4 h-4 transition-transform" style="transform:rotate(0deg);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
+                    </div>
+
+                    <div id="panel-inspect-wrapper" class="flex flex-col gap-3 overflow-y-auto pr-1">
+                        <!-- Motor Settings -->
+                    <div id="motorControls" class="space-y-3 hidden bg-slate-50 p-3 rounded-xl border border-slate-100 shadow-inner">
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 uppercase">Label</label>
+                            <input type="text" id="motorLabel" class="w-full mt-1 bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. Input">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 uppercase">Input Speed (rev min⁻¹)</label>
+                            <input type="number" id="motorRPM" min="1" max="1000" step="1" value="60" class="w-full mt-1 bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-bold text-blue-600 outline-none focus:ring-2 focus:ring-blue-500">
+                        </div>
+                        <div>
+                            <label class="text-[10px] font-bold text-slate-500 uppercase mb-1 block">Direction</label>
+                                <div class="flex gap-2">
+                                    <button id="btnDirCW" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-colors bg-blue-500 text-white shadow-md border border-blue-600">Clockwise ↻</button>
+                                    <button id="btnDirACW" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-colors bg-white text-slate-500 border border-slate-200 hover:bg-slate-100 hover:text-slate-800">Anti-Clockwise ↺</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Generic Component Settings -->
+                        <div id="gearControls" class="space-y-3 hidden bg-slate-50 p-3 rounded-xl border border-slate-100 shadow-inner">
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500 uppercase">Label</label>
+                                <input type="text" id="gearLabel" class="w-full mt-1 bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-pink-500" placeholder="e.g. A">
+                            </div>
+                            
+                            <!-- Standard Teeth / Length Input -->
+                            <div id="gearTeethContainer">
+                                <label id="lblTeethOrDia" class="text-[10px] font-bold text-slate-500 uppercase">Number of Teeth (Max 300)</label>
+                                <input type="number" id="gearTeeth" min="8" max="1000" step="1" value="20" class="w-full mt-1 bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-bold text-pink-600 outline-none focus:ring-2 focus:ring-pink-500">
+                            </div>
+
+                            <!-- Cassette Shifting Controls -->
+                            <div id="cassetteControls" class="hidden mt-2">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase mb-1 block">Gear Selection</label>
+                                <div class="flex justify-between items-center bg-white p-1.5 rounded-lg border border-slate-200 shadow-sm">
+                                    <button id="btnShiftDown" class="tool-btn bg-slate-100 hover:bg-slate-200 w-10 h-8 flex items-center justify-center rounded-lg text-slate-800 font-black text-lg transition-all active:scale-95 shadow-sm">▼</button>
+                                    <div class="text-center flex-1">
+                                        <div id="cassetteGearLbl" class="text-sm font-black text-slate-800 leading-tight">Gear 1</div>
+                                        <div id="cassetteTeethLbl" class="text-[10px] font-bold text-emerald-600 uppercase tracking-wide">34 Teeth</div>
+                                    </div>
+                                    <button id="btnShiftUp" class="tool-btn bg-slate-100 hover:bg-slate-200 w-10 h-8 flex items-center justify-center rounded-lg text-slate-800 font-black text-lg transition-all active:scale-95 shadow-sm">▲</button>
+                                </div>
+                            </div>
+                            
+                            <button id="btnDelete" class="w-full mt-1 bg-white text-rose-500 font-bold text-xs py-2 rounded-lg hover:bg-rose-50 transition-colors uppercase border border-rose-200 shadow-sm">
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 3D Environment Script -->
+    <script>
+        // --- UI MENU & TOAST LOGIC ---
+        let sidebarOpen = true;
+        function toggleSidebar() {
+            sidebarOpen = !sidebarOpen;
+            const app = document.getElementById('appContainer');
+            if(sidebarOpen) {
+                app.classList.remove('drawer-closed'); app.classList.add('drawer-open');
+            } else {
+                app.classList.remove('drawer-open'); app.classList.add('drawer-closed');
+            }
+            setTimeout(resize, 450); 
+        }
+
+        function toggleMenu(id, btn) { 
+            const m = document.getElementById(id);
+            const i = btn.querySelector('.rotate-icon'); 
+            const isOpen = m.classList.contains('open');
+            btn.setAttribute('aria-expanded', !isOpen);
+            m.classList.toggle('open'); 
+            if(i) i.classList.toggle('open'); 
+        }
+
+        let toastTimeout;
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            t.innerHTML = msg;
+            t.style.opacity = '1';
+            t.style.transform = 'translate(-50%, 0) scale(1)';
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                t.style.opacity = '0';
+                t.style.transform = 'translate(-50%, 0) scale(0.95)';
+            }, 3000);
+        }
+
+        const wormModal = document.getElementById('wormModal');
+        const wormModalCard = document.getElementById('wormModalCard');
+
+        function openWormModal() {
+            if(isSimulating) return;
+            wormModal.classList.remove('hidden');
+            setTimeout(() => {
+                wormModal.classList.remove('opacity-0');
+                wormModalCard.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeWormModal() {
+            wormModal.classList.add('opacity-0');
+            wormModalCard.classList.add('scale-95');
+            setTimeout(() => {
+                wormModal.classList.add('hidden');
+            }, 300);
+        }
+
+        const btnWormCancel = document.getElementById('btnWormCancel');
+        if (btnWormCancel) {
+            btnWormCancel.onclick = closeWormModal;
+        }
+
+        // Add makeDraggable helper function
+        function makeDraggable(el,handle,isModal=false){
+            if(!handle)return;
+            handle.onmousedown=e=>{
+                if(e.target.tagName==='BUTTON'||e.target.closest('button')||e.target.tagName==='INPUT'||e.target.tagName==='SELECT')return;
+                e.preventDefault();
+                e.stopPropagation();
+                let p3=e.clientX,p4=e.clientY;
+                
+                if(isModal&&el.style.transform?.includes('translate')){
+                    const rect=el.getBoundingClientRect();
+                    el.style.transform='none';
+                    el.style.left=rect.left+'px';
+                    el.style.top=rect.top+'px';
+                }else if(!isModal){
+                    const rect=el.getBoundingClientRect();
+                    const parentRect=el.offsetParent?el.offsetParent.getBoundingClientRect():{left:0,top:0};
+                    el.style.right='auto';
+                    el.style.bottom='auto';
+                    el.style.left=(rect.left-parentRect.left)+'px';
+                    el.style.top=(rect.top-parentRect.top)+'px';
+                }
+                
+                const onMove=e=>{
+                    const dx=p3-e.clientX,dy=p4-e.clientY;
+                    p3=e.clientX;p4=e.clientY;
+                    let newTop=el.offsetTop-dy,newLeft=el.offsetLeft-dx;
+                    const maxX=Math.max(0,window.innerWidth-el.offsetWidth),maxY=Math.max(0,window.innerHeight-el.offsetHeight);
+                    newLeft=Math.max(0,Math.min(newLeft,maxX));
+                    newTop=Math.max(0,Math.min(newTop,maxY));
+                    el.style.top=newTop+'px';
+                    el.style.left=newLeft+'px';
+                };
+                
+                const onUp=()=>{
+                    document.removeEventListener('mousemove',onMove);
+                    document.removeEventListener('mouseup',onUp);
+                };
+                
+                document.addEventListener('mousemove',onMove);
+                document.addEventListener('mouseup',onUp);
+            };
+        }
+
+        // --- 3D SETUP & ENGINE ---
+        const container = document.getElementById('three-container');
+        const labelsContainer = document.getElementById('labels-container');
+        const svgOverlay = document.getElementById('svg-overlay');
+        
+        const scene = new THREE.Scene();
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 3000);
+        camera.position.set(0, 60, 160);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.shadowMap.enabled = true;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxDistance = 1000;
+        controls.minDistance = 20;
+        controls.screenSpacePanning = true;
+
+        let isPanMode = false;
+        document.getElementById('btnPanToggle').onclick = () => {
+            isPanMode = !isPanMode;
+            const btn = document.getElementById('btnPanToggle');
+            if (isPanMode) {
+                btn.classList.add('bg-blue-50', 'text-blue-600', 'border-blue-200');
+                btn.classList.remove('bg-white', 'text-slate-500');
+                controls.mouseButtons.LEFT = THREE.MOUSE.PAN;
+                container.style.cursor = 'grab';
+            } else {
+                btn.classList.remove('bg-blue-50', 'text-blue-600', 'border-blue-200');
+                btn.classList.add('bg-white', 'text-slate-500');
+                controls.mouseButtons.LEFT = THREE.MOUSE.ROTATE;
+                container.style.cursor = 'crosshair';
+            }
+        };
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+        scene.add(ambientLight);
+
+        const dirLight = new THREE.DirectionalLight(0xffffff, 0.7); 
+        dirLight.position.set(50, 100, 50);
+        dirLight.castShadow = true;
+        scene.add(dirLight);
+
+        const fillLight = new THREE.DirectionalLight(0xec4899, 0.4); 
+        fillLight.position.set(-50, -20, -50);
+        scene.add(fillLight);
+
+        const blueLight = new THREE.DirectionalLight(0x3b82f6, 0.4);
+        blueLight.position.set(50, -20, 50);
+        scene.add(blueLight);
+
+        const gridHelper = new THREE.GridHelper(1000, 100, 0x94a3b8, 0xe2e8f0);
+        gridHelper.position.y = -30;
+        let targetGridY = -30;
+        scene.add(gridHelper);
+
+        function resize() {
+            if(!container) return;
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+            svgOverlay.setAttribute('viewBox', `0 0 ${width} ${height}`);
+        }
+        window.addEventListener('resize', resize);
+        setTimeout(resize, 100);
+
+        function centerCamera() {
+            if (nodes.length === 0) {
+                controls.target.set(0, 0, 0);
+                camera.position.set(0, 60, 160);
+                controls.update();
+                return;
+            }
+            const box = new THREE.Box3();
+            nodes.forEach(n => box.union(new THREE.Box3().setFromObject(n.meshGroup)));
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const fov = camera.fov * (Math.PI / 180);
+            let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+            cameraZ = Math.max(cameraZ * 1.5, 100);
+            controls.target.copy(center);
+            camera.position.set(center.x, center.y + cameraZ * 0.3, center.z + cameraZ);
+            controls.update();
+        }
+
+        // --- SAFE GEOMETRY GENERATORS ---
+        const geoCache = {};
+
+        function getRadius(teeth) { return teeth * 0.5; }
+
+        function addLighteningHoles(shape, radius) {
+            if (radius > 8) {
+                const numHoles = Math.max(3, Math.min(16, Math.floor(radius / 4.0)));
+                const holeCenterDist = (radius + 2) / 2; 
+                const maxHoleR_byBounds = (radius - 2.5) - holeCenterDist; 
+                const maxHoleR_byNeighbour = (Math.PI * holeCenterDist / numHoles) - 0.5;
+                const holeR = Math.min(maxHoleR_byBounds, maxHoleR_byNeighbour);
+
+                if (holeR > 1.2) {
+                    for (let i = 0; i < numHoles; i++) {
+                        const a = i * (Math.PI * 2) / numHoles;
+                        const cx = Math.cos(a) * holeCenterDist;
+                        const cy = Math.sin(a) * holeCenterDist;
+                        const circle = new THREE.Path();
+                        circle.absarc(cx, cy, holeR, 0, Math.PI * 2, true); 
+                        shape.holes.push(circle);
+                    }
+                }
+            }
+        }
+
+        function getGearShape(teeth) {
+            const radius = getRadius(teeth);
+            const shape = new THREE.Shape();
+            const steps = teeth * 4;
+            
+            for(let i=0; i<=steps; i++) {
+                const angle = (i / steps) * Math.PI * 2;
+                const phase = i % 4;
+                let r = radius;
+                let a = angle;
+                
+                const taper = 0.15 / Math.max(1, radius);
+                if(phase === 1) { a += taper; r += 1.2; }
+                if(phase === 2) { a -= taper; r += 1.2; }
+                if(phase === 0) { a -= taper; r -= 0.5; }
+                if(phase === 3) { a += taper; r -= 0.5; }
+                
+                if(i===0) shape.moveTo(Math.cos(a)*r, Math.sin(a)*r);
+                else shape.lineTo(Math.cos(a)*r, Math.sin(a)*r);
+            }
+            
+            const centerHole = new THREE.Path(); 
+            centerHole.absarc(0, 0, 1.5, 0, Math.PI * 2, true); 
+            shape.holes.push(centerHole);
+            
+            addLighteningHoles(shape, radius);
+            return shape;
+        }
+
+        function createGearGeometry(teeth) {
+            const cacheKey = 'gear_' + teeth;
+            if(geoCache[cacheKey]) return geoCache[cacheKey];
+
+            const shape = getGearShape(teeth);
+            const geometry = new THREE.ExtrudeGeometry(shape, { 
+                depth: 3, bevelEnabled: true, bevelSegments: 2, 
+                steps: 1, bevelSize: 0.3, bevelThickness: 0.3 
+            });
+            geometry.center();
+            
+            geoCache[cacheKey] = geometry;
+            return geometry;
+        }
+
+        function createWormWheelGeometry(teeth) {
+            const cacheKey = 'wormwheel_' + teeth;
+            if(geoCache[cacheKey]) return geoCache[cacheKey];
+
+            const shape = getGearShape(teeth);
+            const geometry = new THREE.ExtrudeGeometry(shape, { 
+                depth: 6, bevelEnabled: true, bevelSegments: 2, 
+                steps: 1, bevelSize: 0.3, bevelThickness: 0.3 
+            });
+            geometry.center(); 
+            
+            geoCache[cacheKey] = geometry;
+            return geometry;
+        }
+
+        function createSprocketGeometry(teeth) {
+            const cacheKey = 'sprocket_' + teeth;
+            if(geoCache[cacheKey]) return geoCache[cacheKey];
+
+            const radius = getRadius(teeth);
+            const shape = new THREE.Shape();
+            const steps = teeth * 2; 
+            
+            for(let i=0; i<=steps; i++) {
+                const angle = (i / steps) * Math.PI * 2;
+                let r = (i % 2 === 0) ? radius + 1 : radius - 1.5; 
+                if(i===0) shape.moveTo(Math.cos(angle)*r, Math.sin(angle)*r);
+                else shape.lineTo(Math.cos(angle)*r, Math.sin(angle)*r);
+            }
+            
+            const centerHole = new THREE.Path(); 
+            centerHole.absarc(0, 0, 1.5, 0, Math.PI * 2, true); 
+            shape.holes.push(centerHole);
+            
+            addLighteningHoles(shape, radius);
+
+            const geometry = new THREE.ExtrudeGeometry(shape, { 
+                depth: 1.5, bevelEnabled: true, bevelSegments: 1, 
+                steps: 1, bevelSize: 0.2, bevelThickness: 0.2 
+            });
+            geometry.center();
+            
+            geoCache[cacheKey] = geometry;
+            return geometry;
+        }
+
+        function createPulleyGeometry(diameter) {
+            const cacheKey = 'pulley_' + diameter;
+            if(geoCache[cacheKey]) return geoCache[cacheKey];
+
+            const r = Math.max(5, diameter * 0.5);
+            const points = [];
+            
+            if (r > 6) {
+                points.push(new THREE.Vector2(1.5, -4));
+                points.push(new THREE.Vector2(3.5, -4));
+                points.push(new THREE.Vector2(3.5, -1.5));
+                points.push(new THREE.Vector2(r - 2.5, -1.5));
+                points.push(new THREE.Vector2(r - 2.5, -4));
+                points.push(new THREE.Vector2(r, -4));
+                points.push(new THREE.Vector2(r, -2));
+                points.push(new THREE.Vector2(r - 2.5, 0)); // Deep V groove
+                points.push(new THREE.Vector2(r, 2));
+                points.push(new THREE.Vector2(r, 4));
+                points.push(new THREE.Vector2(r - 2.5, 4));
+                points.push(new THREE.Vector2(r - 2.5, 1.5));
+                points.push(new THREE.Vector2(3.5, 1.5));
+                points.push(new THREE.Vector2(3.5, 4));
+                points.push(new THREE.Vector2(1.5, 4));
+            } else {
+                points.push(new THREE.Vector2(1.5, -4));
+                points.push(new THREE.Vector2(r, -4));
+                points.push(new THREE.Vector2(r, -2));
+                points.push(new THREE.Vector2(r - 1.5, 0)); 
+                points.push(new THREE.Vector2(r, 2));
+                points.push(new THREE.Vector2(r, 4));
+                points.push(new THREE.Vector2(1.5, 4));
+            }
+
+            const geo = new THREE.LatheGeometry(points, 32);
+            geo.rotateX(Math.PI / 2);
+            geo.computeVertexNormals();
+            
+            geoCache[cacheKey] = geo;
+            return geo;
+        }
+
+        function createRackGeometry(length) {
+            const cacheKey = 'rack_' + length;
+            if(geoCache[cacheKey]) return geoCache[cacheKey];
+
+            const shape = new THREE.Shape();
+            const numTeeth = Math.max(2, Math.floor(length / Math.PI));
+            const halfLen = (numTeeth * Math.PI) / 2;
+
+            shape.moveTo(-halfLen, -4);
+            shape.lineTo(halfLen, -4);
+            shape.lineTo(halfLen, -1.2);
+
+            for (let i = Math.floor(numTeeth/2); i >= -Math.ceil(numTeeth/2); i--) {
+                let cx = i * Math.PI;
+                if(cx + 0.8 > halfLen + 0.1 || cx - 0.8 < -halfLen - 0.1) continue;
+                shape.lineTo(cx + 0.8, -1.2);
+                shape.lineTo(cx + 0.4, 0.5);
+                shape.lineTo(cx - 0.4, 0.5);
+                shape.lineTo(cx - 0.8, -1.2);
+            }
+            
+            shape.lineTo(-halfLen, -1.2);
+            shape.closePath();
+
+            const geometry = new THREE.ExtrudeGeometry(shape, { 
+                depth: 3, bevelEnabled: true, bevelSegments: 1, 
+                steps: 1, bevelSize: 0.2, bevelThickness: 0.2 
+            });
+            geometry.translate(0, 0, -1.5);
+            
+            geoCache[cacheKey] = geometry;
+            return geometry;
+        }
+
+        function createLeadScrewVisual(length) {
+            const group = new THREE.Group();
+            const coreR = 4;
+            const peakR = 8;
+            const pitch = 12; 
+            
+            const segmentsZ = Math.min(400, Math.floor(length));
+            const geo = new THREE.CylinderGeometry(peakR, peakR, length, 32, segmentsZ);
+            geo.rotateX(Math.PI/2); 
+
+            const pos = geo.attributes.position;
+            for(let i=0; i<pos.count; i++) {
+                let x = pos.getX(i);
+                let y = pos.getY(i);
+                let z = pos.getZ(i);
+                let len = Math.hypot(x, y);
+                if (len < 0.1) continue;
+                
+                let angle = Math.atan2(y, x);
+                // Corrected handedness of the thread to match visual nut rotation
+                let phase = angle + (z * 2 * Math.PI / pitch);
+                phase = (phase % (Math.PI * 2));
+                if (phase > Math.PI) phase -= Math.PI * 2;
+                if (phase < -Math.PI) phase += Math.PI * 2;
+                
+                let absPhase = Math.abs(phase);
+                let t = absPhase / Math.PI;
+                
+                let r = coreR;
+                if (t < 0.1) r = peakR;
+                else if (t < 0.4) r = peakR - (peakR - coreR) * ((t - 0.1) / 0.3);
+                else r = coreR;
+
+                let endDist = Math.abs(z);
+                if (endDist > length/2 - 2) {
+                    let endT = (endDist - (length/2 - 2)) / 2;
+                    r -= endT * (r - coreR);
+                }
+
+                pos.setX(i, (x / len) * r);
+                pos.setY(i, (y / len) * r);
+            }
+            geo.computeVertexNormals();
+            geo.translate(0, 0, length / 2); // Shift geometry to start exactly at origin and extend forward
+            
+            const mat = new THREE.MeshStandardMaterial({ color: 0xcbd5e1, metalness: 0.9, roughness: 0.2 });
+            group.add(new THREE.Mesh(geo, mat));
+            return group;
+        }
+
+        function createNutVisual() {
+            const shape = new THREE.Shape();
+            const s = 12; 
+            shape.moveTo(-s, -s);
+            shape.lineTo(s, -s);
+            shape.lineTo(s, s);
+            shape.lineTo(-s, s);
+            shape.closePath();
+
+            const hole = new THREE.Path();
+            hole.absarc(0, 0, 8.2, 0, Math.PI * 2, true); 
+            shape.holes.push(hole);
+
+            const geo = new THREE.ExtrudeGeometry(shape, { depth: 16, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.5, bevelThickness: 0.5 });
+            geo.center(); 
+            
+            const mat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.7, roughness: 0.5 });
+            return new THREE.Mesh(geo, mat);
+        }
+
+        // --- VISUAL LINK GENERATORS ---
+
+        function getDriveShapeData(pr1, pr2, dist, outerW, innerHW) {
+            let diff = (pr2 - pr1) / dist;
+            diff = Math.max(-0.999, Math.min(0.999, diff));
+            const t = Math.asin(diff);
+            
+            const shape = new THREE.Shape();
+            shape.absarc(0, 0, pr1 + outerW, Math.PI/2 + t, 3*Math.PI/2 - t, false);
+            shape.absarc(dist, 0, pr2 + outerW, 3*Math.PI/2 - t, Math.PI/2 + t, false);
+            shape.closePath();
+            
+            const hole = new THREE.Path();
+            hole.absarc(0, 0, pr1 - innerHW, 3*Math.PI/2 - t, Math.PI/2 + t, true);
+            hole.absarc(dist, 0, pr2 - innerHW, Math.PI/2 + t, 3*Math.PI/2 - t, true);
+            hole.closePath();
+            shape.holes.push(hole);
+
+            const p = new THREE.Path();
+            const startX = pr1 * Math.cos(Math.PI/2 + t);
+            const startY = pr1 * Math.sin(Math.PI/2 + t);
+            const bot2X = dist + pr2 * Math.cos(3*Math.PI/2 - t);
+            const bot2Y = pr2 * Math.sin(3*Math.PI/2 - t);
+            p.absarc(0, 0, pr1, Math.PI/2 + t, 3*Math.PI/2 - t, false);
+            p.lineTo(bot2X, bot2Y);
+            p.absarc(dist, 0, pr2, 3*Math.PI/2 - t, Math.PI/2 + t, false);
+            p.lineTo(startX, startY);
+
+            return { shape, p, t };
+        }
+
+        function createChainVisual(r1, r2, dist) {
+            const group = new THREE.Group();
+            const data = getDriveShapeData(r1 - 0.5, r2 - 0.5, dist, 1.5, -0.2);
+            
+            const geo = new THREE.ExtrudeGeometry(data.shape, { depth: 0.4, bevelEnabled: false });
+            geo.translate(0, 0, -0.2); 
+            const plateMat = new THREE.MeshStandardMaterial({ color: 0xcbd5e1, metalness: 0.8, roughness: 0.3 });
+            
+            const frontPlate = new THREE.Mesh(geo, plateMat);
+            frontPlate.position.z = 1.0;
+            group.add(frontPlate);
+            const backPlate = new THREE.Mesh(geo, plateMat);
+            backPlate.position.z = -1.0;
+            group.add(backPlate);
+
+            const pathLength = data.p.getLength();
+            const pitch = 3.5;
+            const numPins = Math.max(4, Math.floor(pathLength / pitch));
+            const pinGeo = new THREE.CylinderGeometry(0.5, 0.5, 2.6, 8);
+            pinGeo.rotateX(Math.PI/2);
+            const pinMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, metalness: 1.0, roughness: 0.2 }); 
+            const instMesh = new THREE.InstancedMesh(pinGeo, pinMat, numPins);
+            group.add(instMesh);
+            group.userData = { path: data.p, length: pathLength, numPins: numPins, instMesh: instMesh, offset: 0 };
+            return group;
+        }
+
+        function createBeltVisual(r1, r2, dist) {
+            const group = new THREE.Group();
+            const data = getDriveShapeData(r1 - 1.5, r2 - 1.5, dist, 1.0, 0.0);
+            
+            const geo = new THREE.ExtrudeGeometry(data.shape, { depth: 2.5, bevelEnabled: false });
+            geo.translate(0, 0, -1.25); 
+            const beltMat = new THREE.MeshStandardMaterial({ color: 0x1f2937, roughness: 0.9, metalness: 0.1 });
+            const beltMesh = new THREE.Mesh(geo, beltMat);
+            group.add(beltMesh);
+            return group;
+        }
+
+        function createWormVisual() {
+            const group = new THREE.Group();
+            const length = 30;
+            const coreR = 3.5;
+            const peakR = 6.5; 
+            const geo = new THREE.CylinderGeometry(peakR, peakR, length, 64, 120);
+            geo.rotateX(Math.PI/2); 
+            const pos = geo.attributes.position;
+            for(let i=0; i<pos.count; i++) {
+                let x = pos.getX(i);
+                let y = pos.getY(i);
+                let z = pos.getZ(i);
+                let len = Math.hypot(x, y);
+                if (len < 0.1) continue; 
+                let angle = Math.atan2(y, x);
+                let phase = angle - (z * 2); 
+                phase = (phase % (Math.PI * 2));
+                if (phase > Math.PI) phase -= Math.PI * 2;
+                if (phase < -Math.PI) phase += Math.PI * 2;
+                let absPhase = Math.abs(phase);
+                let t = absPhase / Math.PI; 
+                let r = coreR;
+                if (t < 0.08) r = peakR; 
+                else if (t < 0.35) r = peakR - (peakR - coreR) * ((t - 0.08) / 0.27); 
+                else r = coreR; 
+                let endDist = Math.abs(z);
+                if (endDist > length/2 - 2) {
+                    let endT = (endDist - (length/2 - 2)) / 2;
+                    r -= endT * (r - coreR); 
+                }
+                pos.setX(i, (x / len) * r);
+                pos.setY(i, (y / len) * r);
+            }
+            geo.computeVertexNormals();
+            geo.translate(0, 0, length / 2); // Shift geometry to start exactly at origin and extend forward
+            
+            const mat = new THREE.MeshStandardMaterial({ color: 0xcbd5e1, metalness: 0.9, roughness: 0.2 });
+            const worm = new THREE.Mesh(geo, mat);
+            group.add(worm);
+            return group;
+        }
+
+        function updateChainPins(visualGroup) {
+            if(!visualGroup || !visualGroup.userData.instMesh) return;
+            const data = visualGroup.userData;
+            const dummy = new THREE.Object3D();
+            
+            let normOffset = (data.offset % data.length) / data.length;
+            if (normOffset < 0) normOffset += 1;
+            
+            for(let i=0; i<data.numPins; i++) {
+                let u = (i / data.numPins) + normOffset;
+                if (u > 1) u -= 1;
+                const pt = data.path.getPointAt(u);
+                dummy.position.set(pt.x, pt.y, 0);
+                const tangent = data.path.getTangentAt(u);
+                dummy.rotation.z = Math.atan2(tangent.y, tangent.x);
+                dummy.updateMatrix();
+                data.instMesh.setMatrixAt(i, dummy.matrix);
+            }
+            data.instMesh.instanceMatrix.needsUpdate = true;
+        }
+
+        // --- GRAPH & NODE SYSTEM ---
+        let nodes = [];
+        let selectedNode = null;
+        let motorInputSpeed = 60;
+        let motorInputDirection = 1;
+        let isSimulating = false;
+        let isMotorCutoff = false; 
+        
+        let historyStack = [];
+        let historyIndex = -1;
+        const MAX_HISTORY = 50;
+
+        const colors = [0x3b82f6, 0x8b5cf6, 0xd946ef, 0xec4899, 0x0ea5e9];
+        let colorIdx = 0;
+
+        // Matte black/dark metal materials for the redesigned motor
+        const motorMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.8, metalness: 0.2 });
+        const motorAccentMat = new THREE.MeshStandardMaterial({ color: 0x27272a, roughness: 0.6, metalness: 0.4 });
+        
+        const axleMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.9, roughness: 0.2 });
+        const ghostMat = new THREE.MeshStandardMaterial({ color: 0x22c55e, transparent: true, opacity: 0.5, emissive: 0x22c55e, emissiveIntensity: 0.2 });
+
+        let draggedLabelNode = null;
+        let labelDragStartX = 0;
+        let labelDragStartY = 0;
+        let labelStartOffsetX = 0;
+        let labelStartOffsetY = 0;
+
+        class Node {
+            constructor(type, param = 20) {
+                this.id = Math.random().toString(36).substr(2,9);
+                this.type = type; 
+                this.length = (type === 'rack' || type === 'leadscrew') ? param : 0;
+                
+                if (type === 'cassette') {
+                    this.gearSizes = [34, 28, 24, 21, 18, 15, 13, 11]; // Standard 8-speed MTB setup
+                    this.activeGearIdx = 0; // Starts at 34T (lowest gear)
+                    this.teeth = this.gearSizes[this.activeGearIdx];
+                } else {
+                    this.teeth = (type === 'rack' || type === 'leadscrew') ? 0 : param; 
+                }
+                
+                if (type === 'motor') this.radius = 14;
+                else if (type === 'worm') this.radius = 10;
+                else if (type === 'rack') this.radius = 0;
+                else if (type === 'leadscrew') this.radius = 8;
+                else if (type === 'nut') this.radius = 12;
+                else this.radius = getRadius(this.teeth);
+
+                this.label = type === 'motor' ? 'Input' : '';
+                this.axis = 'z'; 
+                
+                this.parent = null;
+                this.linkType = null; 
+                this.linkDir = null; 
+                this.children = [];
+                
+                this.speed = 0;
+                this.dir = 1;
+                this.angle = 0;
+                this.linearPosition = type === 'nut' ? 8 : 0;
+                this.basePosition = new THREE.Vector3();
+
+                this.meshGroup = new THREE.Group();
+                this.rotGroup = new THREE.Group();
+                this.meshGroup.add(this.rotGroup);
+                scene.add(this.meshGroup);
+
+                this.buildVisuals();
+                
+                this.labelOffset = { x: 0, y: -60 };
+                this.labelEl = document.createElement('div');
+                this.labelEl.className = 'gear-label';
+                
+                this.labelEl.addEventListener('mousedown', (e) => {
+                    if (!isSimulating) return;
+                    e.stopPropagation();
+                    draggedLabelNode = this;
+                    labelDragStartX = e.clientX;
+                    labelDragStartY = e.clientY;
+                    labelStartOffsetX = this.labelOffset.x;
+                    labelStartOffsetY = this.labelOffset.y;
+                });
+
+                labelsContainer.appendChild(this.labelEl);
+                
+                this.lineEl = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+                this.lineEl.setAttribute('stroke', '#3b82f6');
+                this.lineEl.setAttribute('stroke-width', '2');
+                this.lineEl.style.display = 'none';
+                svgOverlay.appendChild(this.lineEl);
+            }
+
+            buildVisuals() {
+                for(let i = this.meshGroup.children.length - 1; i >= 0; i--) {
+                    if(this.meshGroup.children[i] !== this.rotGroup) {
+                        this.meshGroup.remove(this.meshGroup.children[i]);
+                    }
+                }
+                while(this.rotGroup.children.length > 0) {
+                    this.rotGroup.remove(this.rotGroup.children[0]);
+                }
+
+                if (this.type !== 'rack' && this.type !== 'leadscrew' && this.type !== 'nut' && this.type !== 'cassette') {
+                    this.radius = this.type === 'motor' ? 14 : (this.type === 'worm' ? 10 : getRadius(this.teeth));
+                }
+
+                let geo, mat;
+                if(this.type === 'motor') {
+                    const motorLength = 35;
+                    // Main black motor casing
+                    geo = new THREE.CylinderGeometry(this.radius, this.radius, motorLength, 32);
+                    geo.rotateX(Math.PI/2);
+                    geo.translate(0, 0, -motorLength/2 - 2); 
+                    this.coreMesh = new THREE.Mesh(geo, motorMat);
+                    
+                    // Thicker, distinct static front faceplate
+                    const flangeGeo = new THREE.CylinderGeometry(this.radius + 2, this.radius + 2, 4, 32);
+                    flangeGeo.rotateX(Math.PI/2);
+                    flangeGeo.translate(0, 0, -2); // Face perfectly flat at Z=0, extends backwards
+                    const flange = new THREE.Mesh(flangeGeo, motorAccentMat);
+                    this.coreMesh.add(flange);
+
+                    // Rear cap
+                    const capGeo = new THREE.CylinderGeometry(this.radius - 1, this.radius - 1, 6, 32);
+                    capGeo.rotateX(Math.PI/2);
+                    capGeo.translate(0, 0, -motorLength - 5);
+                    const cap = new THREE.Mesh(capGeo, motorAccentMat);
+                    this.coreMesh.add(cap);
+
+                    this.meshGroup.add(this.coreMesh);
+                } else if (this.type === 'sprocket') {
+                    geo = createSprocketGeometry(this.teeth);
+                    mat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.3, metalness: 0.9 }); 
+                    this.coreMesh = new THREE.Mesh(geo, mat);
+                    this.rotGroup.add(this.coreMesh); 
+                } else if (this.type === 'pulley') {
+                    geo = createPulleyGeometry(this.teeth);
+                    mat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.4, metalness: 0.7 }); 
+                    this.coreMesh = new THREE.Mesh(geo, mat);
+                    this.rotGroup.add(this.coreMesh); 
+                } else if (this.type === 'worm_wheel') {
+                    geo = createWormWheelGeometry(this.teeth);
+                    if(!this.color) this.color = colors[colorIdx++ % colors.length];
+                    mat = new THREE.MeshStandardMaterial({ color: this.color, roughness: 0.3, metalness: 0.6 });
+                    this.coreMesh = new THREE.Mesh(geo, mat);
+                    this.rotGroup.add(this.coreMesh);
+                } else if (this.type === 'worm') {
+                    this.coreMesh = createWormVisual();
+                    this.rotGroup.add(this.coreMesh);
+                } else if (this.type === 'rack') {
+                    geo = createRackGeometry(this.length);
+                    mat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.5, metalness: 0.8 }); 
+                    this.coreMesh = new THREE.Mesh(geo, mat);
+                    this.meshGroup.add(this.coreMesh); 
+                } else if (this.type === 'leadscrew') {
+                    this.coreMesh = createLeadScrewVisual(this.length);
+                    this.rotGroup.add(this.coreMesh);
+                } else if (this.type === 'nut') {
+                    this.coreMesh = createNutVisual();
+                    this.meshGroup.add(this.coreMesh); 
+                } else if (this.type === 'cassette') {
+                    this.coreMesh = new THREE.Group();
+                    mat = new THREE.MeshStandardMaterial({ color: 0x64748b, roughness: 0.5, metalness: 0.8 }); 
+                    this.gearSizes.forEach((t, i) => {
+                        let cGeo = createSprocketGeometry(t);
+                        let mesh = new THREE.Mesh(cGeo, mat);
+                        mesh.position.z = i * 2.5;
+                        mesh.castShadow = true;
+                        mesh.receiveShadow = true;
+                        mesh.userData = { node: this };
+                        this.coreMesh.add(mesh);
+                    });
+                    // Shift the entire cassette so the *active* gear is precisely at z=0 
+                    // This perfectly aligns it with the planar chain without angling the chain geometry
+                    this.coreMesh.position.z = -this.activeGearIdx * 2.5; 
+                    this.rotGroup.add(this.coreMesh);
+                } else {
+                    geo = createGearGeometry(this.teeth);
+                    if(!this.color) this.color = colors[colorIdx++ % colors.length];
+                    mat = new THREE.MeshStandardMaterial({ color: this.color, roughness: 0.3, metalness: 0.6 });
+                    this.coreMesh = new THREE.Mesh(geo, mat);
+                    this.rotGroup.add(this.coreMesh); 
+                }
+
+                if (this.coreMesh.isMesh) {
+                    this.coreMesh.castShadow = true;
+                    this.coreMesh.receiveShadow = true;
+                    this.coreMesh.userData = { node: this }; 
+                } else if (this.coreMesh.isGroup) {
+                    this.coreMesh.traverse(c => { 
+                        if(c.isMesh) {
+                            c.castShadow = true; c.receiveShadow = true; c.userData = { node: this };
+                        }
+                    });
+                }
+
+                if (this.type !== 'rack' && this.type !== 'leadscrew' && this.type !== 'nut') {
+                    let axleLength = this.type === 'pulley' ? 16 : (this.type === 'worm_wheel' ? 16 : 12); 
+                    if (this.type === 'motor') axleLength = 25; 
+                    if (this.type === 'worm') axleLength = 40; 
+                    if (this.type === 'cassette') axleLength = 45; 
+                    
+                    const axleGeo = new THREE.CylinderGeometry(2.5, 2.5, axleLength, 16);
+                    const axle = new THREE.Mesh(axleGeo, axleMat);
+                    axle.rotation.x = Math.PI / 2;
+                    if (this.type === 'motor') axle.position.z = 6; 
+                    if (this.type === 'cassette') axle.position.z = (7 * 2.5) / 2 - (this.activeGearIdx * 2.5); // Shift axle alongside cassette body
+                    axle.userData = { node: this };
+                    this.rotGroup.add(axle);
+
+                    if (this.type === 'motor') {
+                        // Create a physical rotating steel hub so the white line makes logical sense and prevents glitches
+                        const collarGeo = new THREE.CylinderGeometry(this.radius - 3, this.radius - 3, 1.5, 32);
+                        collarGeo.rotateX(Math.PI / 2);
+                        const collar = new THREE.Mesh(collarGeo, new THREE.MeshStandardMaterial({ color: 0x3f3f46, metalness: 0.5, roughness: 0.6 }));
+                        collar.position.z = 0.75; // Sits physically outside the static faceplate
+                        this.rotGroup.add(collar);
+
+                        // The thick white indicator line embedded seamlessly in the rotating hub
+                        const markerGeo = new THREE.BoxGeometry(this.radius - 2, 1.5, 1.6);
+                        const marker = new THREE.Mesh(markerGeo, new THREE.MeshBasicMaterial({color: 0xffffff}));
+                        marker.position.x = (this.radius - 2) / 2 - 1; 
+                        marker.position.z = 0.75; 
+                        this.rotGroup.add(marker);
+                    } else if (this.type !== 'worm' && this.type !== 'cassette') {
+                        const markerGeo = new THREE.BoxGeometry(this.radius, 1.5, (this.type === 'pulley' || this.type === 'worm_wheel' ? 6 : 4.2));
+                        const marker = new THREE.Mesh(markerGeo, new THREE.MeshBasicMaterial({color: 0xffffff}));
+                        marker.position.x = this.radius/2;
+                        marker.userData = { node: this };
+                        this.rotGroup.add(marker);
+                    }
+                }
+            }
+
+            shift(direction) {
+                if (this.type !== 'cassette') return;
+                let newIdx = this.activeGearIdx + direction;
+                if (newIdx < 0 || newIdx >= this.gearSizes.length) return;
+                
+                this.activeGearIdx = newIdx;
+                this.teeth = this.gearSizes[this.activeGearIdx];
+                this.radius = getRadius(this.teeth);
+                this.buildVisuals(); // Geometrically shifts cassette back into exact alignment
+                
+                if(selectedNode === this) {
+                    this.setHighlight(true);
+                    selectNode(this); 
+                }
+                
+                updateTreePositions(); 
+                if (isSimulating) calculateKinematics(); 
+                recordState();
+            }
+
+            setTeeth(newTeeth) {
+                if(this.type === 'motor' || this.type === 'worm' || this.type === 'nut' || this.type === 'cassette') return;
+                
+                if (this.type === 'rack' || this.type === 'leadscrew') {
+                    this.length = newTeeth;
+                } else {
+                    this.teeth = newTeeth;
+                }
+                
+                this.buildVisuals();
+                if(selectedNode === this) this.setHighlight(true);
+                updateTreePositions();
+            }
+
+            setHighlight(state) {
+                const hex = state ? 
+                    (this.type === 'motor' ? 0x475569 : 
+                    this.type === 'sprocket' ? 0xf59e0b : 
+                    this.type === 'pulley' ? 0x0ea5e9 : 
+                    this.type === 'worm' ? 0x8b5cf6 :
+                    this.type === 'leadscrew' ? 0xf97316 :
+                    this.type === 'nut' ? 0xf59e0b :
+                    this.type === 'rack' ? 0x64748b :
+                    this.type === 'cassette' ? 0x0ea5e9 : // Blue highlight
+                    this.type === 'worm_wheel' ? 0x8b5cf6 : 0xec4899) : 0x000000;
+                    
+                const intensity = state ? (this.type === 'motor' ? 1.0 : 0.4) : 0.0;
+
+                if (this.coreMesh.isMesh) {
+                    this.coreMesh.material.emissive.setHex(hex);
+                    this.coreMesh.material.emissiveIntensity = intensity;
+                } else if (this.coreMesh.isGroup) {
+                    this.coreMesh.traverse(c => {
+                        if(c.isMesh && c.material) {
+                            c.material.emissive.setHex(hex);
+                            c.material.emissiveIntensity = intensity;
+                        }
+                    });
+                }
+            }
+
+            destroy() {
+                scene.remove(this.meshGroup);
+                this.labelEl.remove();
+                this.lineEl.remove();
+                
+                if(this.linkVisual) scene.remove(this.linkVisual);
+
+                if(this.parent) {
+                    this.parent.children = this.parent.children.filter(c => c !== this);
+                }
+                [...this.children].forEach(c => c.destroy());
+                nodes = nodes.filter(n => n !== this);
+            }
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            if (draggedLabelNode && isSimulating) {
+                const dx = e.clientX - labelDragStartX;
+                const dy = e.clientY - labelDragStartY;
+                draggedLabelNode.labelOffset.x = labelStartOffsetX + dx;
+                draggedLabelNode.labelOffset.y = labelStartOffsetY + dy;
+                updateLabels();
+            }
+        });
+        window.addEventListener('mouseup', () => {
+            if (draggedLabelNode) {
+                draggedLabelNode = null;
+                recordState(); 
+            }
+        });
+
+        // --- TREE & POSITIONING LOGIC ---
+        function updateTreePositions() {
+            if(nodes.length === 0) return;
+
+            const root = nodes[0];
+            root.meshGroup.position.set(0,0,0);
+            root.meshGroup.rotation.y = 0; 
+            root.axis = 'z';
+            
+            nodes.forEach(n => {
+                if(n.linkVisual) { scene.remove(n.linkVisual); n.linkVisual = null; }
+            });
+
+            function layout(node) {
+                node.children.forEach(child => {
+                    let nx = node.meshGroup.position.x;
+                    let ny = node.meshGroup.position.y;
+                    let nz = node.meshGroup.position.z;
+
+                    if(child.linkType === 'axle') {
+                        child.axis = node.axis;
+                        let offsetF = 12;
+                        let offsetB = -12;
+                        if (node.type === 'worm') { offsetF = 30; offsetB = 0; } 
+                        if (child.type === 'leadscrew') { offsetF = 12; offsetB = -12; } 
+                        
+                        const localOffset = child.linkDir === 'f' ? offsetF : offsetB;
+                        
+                        let delta = new THREE.Vector3(0, 0, localOffset).applyEuler(node.meshGroup.rotation);
+                        nx += delta.x;
+                        ny += delta.y;
+                        nz += delta.z;
+                        
+                        let baseRotY = child.axis === 'x' ? Math.PI / 2 : 0;
+                        if (child.linkDir === 'b' && (child.type === 'leadscrew' || child.type === 'worm')) {
+                            baseRotY += Math.PI;
+                        }
+                        child.meshGroup.rotation.y = baseRotY;
+                    } 
+                    else if (child.linkType === 'mesh' || child.linkType === 'chain' || child.linkType === 'belt' || child.linkType === 'worm_mesh' || child.linkType === 'rack_mesh') {
+                        
+                        let dist = node.radius + child.radius + 0.2;
+                        
+                        if (child.linkType === 'chain' || child.linkType === 'belt') {
+                            dist = Math.max(60, node.radius + child.radius + 20);
+                            child.axis = node.axis;
+                        } 
+                        else if (child.linkType === 'worm_mesh') {
+                            dist = 6.5 + child.radius; 
+                            child.axis = node.axis === 'z' ? 'x' : 'z'; 
+                            // Shift wheel to center of worm
+                            let shift = new THREE.Vector3(0, 0, 15).applyEuler(node.meshGroup.rotation);
+                            nx += shift.x; ny += shift.y; nz += shift.z;
+                        }
+                        else if (child.linkType === 'rack_mesh') {
+                            dist = node.radius; 
+                            child.axis = node.axis;
+                        }
+                        else {
+                            child.axis = node.axis; 
+                        }
+
+                        if (node.axis === 'z') {
+                            if(child.linkDir === 'r') nx += dist;
+                            if(child.linkDir === 'l') nx -= dist;
+                            if(child.linkDir === 'u') ny += dist;
+                            if(child.linkDir === 'd') ny -= dist;
+                        } else { 
+                            if(child.linkDir === 'r') nz += dist; 
+                            if(child.linkDir === 'l') nz -= dist; 
+                            if(child.linkDir === 'u') ny += dist;
+                            if(child.linkDir === 'd') ny -= dist;
+                        }
+
+                        child.meshGroup.rotation.y = child.axis === 'x' ? Math.PI / 2 : 0;
+
+                        if (child.linkType === 'chain' || child.linkType === 'belt') {
+                            let cv;
+                            if (child.linkType === 'belt') cv = createBeltVisual(node.radius, child.radius, dist);
+                            else {
+                                cv = createChainVisual(node.radius, child.radius, dist);
+                                updateChainPins(cv);
+                            }
+                            cv.position.set(node.meshGroup.position.x, node.meshGroup.position.y, node.meshGroup.position.z);
+                            if (node.axis === 'x') cv.rotation.y = Math.PI / 2; 
+                            scene.add(cv);
+                            child.linkVisual = cv;
+                        }
+                    }
+                    else if (child.linkType === 'nut_thread') {
+                        child.axis = node.axis;
+                        child.meshGroup.rotation.copy(node.meshGroup.rotation);
+                    }
+                    
+                    child.basePosition = new THREE.Vector3(nx, ny, nz);
+                    child.meshGroup.position.copy(child.basePosition);
+                    
+                    if (child.type === 'rack') {
+                        child.meshGroup.translateX(child.linearPosition || 0);
+                    }
+                    if (child.type === 'nut') {
+                        child.meshGroup.translateZ(child.linearPosition || 0); 
+                    }
+                    
+                    layout(child); 
+                });
+            }
+            
+            root.basePosition = new THREE.Vector3(0,0,0);
+            layout(root);
+
+            let lowestY = 0;
+            nodes.forEach(n => {
+                let r = n.radius;
+                if (n.type === 'rack') r = 4;
+                if (n.type === 'nut') r = 16;
+                const bottom = n.meshGroup.position.y - r - 10;
+                if(bottom < lowestY) lowestY = bottom;
+            });
+            targetGridY = Math.min(-30, lowestY - 20);
+
+            if(isSimulating) calculateKinematics();
+        }
+
+        function initScene() {
+            if (nodes.length > 0) return;
+            const motor = new Node('motor', 20);
+            motor.label = 'Input Motor';
+            motor.axis = 'z';
+            nodes.push(motor);
+            selectNode(motor);
+            updateTreePositions();
+        }
+
+        // --- KINEMATICS ---
+        function calculateKinematics() {
+            if(nodes.length === 0) return;
+            nodes.forEach(n => { n.speed = 0; n.dir = 1; });
+            const root = nodes[0];
+            root.speed = motorInputSpeed;
+            root.dir = motorInputDirection;
+
+            let queue = [root];
+            while(queue.length > 0) {
+                let curr = queue.shift();
+                curr.children.forEach(child => {
+                    if(child.linkType === 'axle') {
+                        child.speed = curr.speed;
+                        child.dir = curr.dir;
+                    } else if (child.linkType === 'nut_thread') {
+                        child.speed = curr.speed; 
+                        child.dir = curr.dir;
+                        child.angle = 0; 
+                    } else if (child.linkType === 'mesh' || child.linkType === 'chain' || child.linkType === 'belt' || child.linkType === 'worm_mesh' || child.linkType === 'rack_mesh') {
+                        
+                        let vr = child.teeth / curr.teeth; 
+                        if (child.linkType === 'worm_mesh') vr = child.teeth / 1.0; 
+                        if (child.linkType === 'rack_mesh') vr = 1.0; 
+                        
+                        child.speed = curr.speed / vr;
+                        
+                        if (child.linkType === 'chain' || child.linkType === 'belt' || child.linkType === 'worm_mesh' || child.linkType === 'rack_mesh') {
+                            child.dir = curr.dir; 
+                            if (child.linkType === 'worm_mesh') {
+                                child.angle = curr.angle / vr; 
+                            } else if (child.linkType !== 'rack_mesh') {
+                                child.angle = curr.angle * (curr.teeth / child.teeth);
+                            }
+                        } else {
+                            child.dir = curr.dir * -1; 
+                            child.angle = curr.angle * -(curr.teeth / child.teeth);
+                            if(child.linkDir === 'u' || child.linkDir === 'd') child.angle += Math.PI / child.teeth;
+                        }
+                    }
+                    queue.push(child);
+                });
+            }
+        }
+
+        // --- DRAG & SNAP BUILDING SYSTEM ---
+        let dragMode = null; 
+        let ghostNode = null;
+        let activeSnap = null; 
+
+        function createGhost(type, param) {
+            if(ghostNode) scene.remove(ghostNode);
+            if(type === 'pulley') {
+                ghostNode = new THREE.Mesh(createPulleyGeometry(param), ghostMat);
+            } else if (type === 'worm_wheel') {
+                ghostNode = new THREE.Mesh(createWormWheelGeometry(param), ghostMat);
+            } else if (type === 'cassette') {
+                ghostNode = new THREE.Group();
+                const sizes = [34, 28, 24, 21, 18, 15, 13, 11];
+                sizes.forEach((t, i) => {
+                    let m = new THREE.Mesh(createSprocketGeometry(t), ghostMat);
+                    m.position.z = i * 2.5;
+                    ghostNode.add(m);
+                });
+            } else {
+                ghostNode = new THREE.Mesh(createGearGeometry(param), ghostMat);
+            }
+            scene.add(ghostNode);
+        }
+
+        function createDriveGhost(type, param) {
+            if(ghostNode) scene.remove(ghostNode);
+            ghostNode = new THREE.Group();
+            
+            if (type === 'worm_drive_worm') {
+                const w1 = createWormVisual();
+                const w2 = new THREE.Mesh(createWormWheelGeometry(param), ghostMat);
+                ghostNode.add(w1);
+                
+                const w2Group = new THREE.Group();
+                w2Group.position.y = 6.5 + getRadius(param); 
+                w2Group.rotation.y = Math.PI / 2;
+                w2Group.position.z = 15; 
+                w2Group.add(w2);
+                ghostNode.add(w2Group);
+                
+                ghostNode.traverse(c => { if(c.isMesh) c.material = ghostMat; });
+            } 
+            else if (type === 'rack_pinion') {
+                const pin = new THREE.Mesh(createGearGeometry(param), ghostMat);
+                const rack = new THREE.Mesh(createRackGeometry(200), ghostMat);
+                rack.position.y = -getRadius(param);
+                ghostNode.add(pin);
+                ghostNode.add(rack);
+            }
+            else if (type === 'worm_nut') {
+                const ls = createLeadScrewVisual(200);
+                const nut = createNutVisual();
+                nut.position.z = 8; 
+                ghostNode.add(ls);
+                ghostNode.add(nut);
+                ghostNode.traverse(c => { if(c.isMesh) c.material = ghostMat; });
+            }
+            else if (type === 'cassette_drive') {
+                const dynamicDist = Math.max(60, getRadius(34) + getRadius(34) + 20);
+                let n1 = new THREE.Mesh(createSprocketGeometry(34), ghostMat);
+                
+                let n2 = new THREE.Group();
+                const sizes = [34, 28, 24, 21, 18, 15, 13, 11];
+                sizes.forEach((t, i) => {
+                    let m = new THREE.Mesh(createSprocketGeometry(t), ghostMat);
+                    m.position.z = i * 2.5;
+                    n2.add(m);
+                });
+
+                let link = createChainVisual(getRadius(34), getRadius(sizes[0]), dynamicDist);
+                updateChainPins(link);
+                
+                ghostNode.add(n1);
+                n2.position.x = dynamicDist;
+                ghostNode.add(n2);
+                link.children.forEach(c => c.material = ghostMat); 
+                ghostNode.add(link);
+            }
+            else {
+                const dynamicDist = Math.max(60, getRadius(param) * 2 + 20);
+                let n1, n2, link;
+                
+                if (type === 'belt') {
+                    n1 = new THREE.Mesh(createPulleyGeometry(param), ghostMat);
+                    n2 = new THREE.Mesh(createPulleyGeometry(param), ghostMat);
+                    link = createBeltVisual(getRadius(param), getRadius(param), dynamicDist);
+                } else {
+                    n1 = new THREE.Mesh(createSprocketGeometry(param), ghostMat);
+                    n2 = new THREE.Mesh(createSprocketGeometry(param), ghostMat);
+                    link = createChainVisual(getRadius(param), getRadius(param), dynamicDist);
+                    updateChainPins(link);
+                }
+                
+                ghostNode.add(n1);
+                n2.position.x = dynamicDist;
+                ghostNode.add(n2);
+                link.children.forEach(c => c.material = ghostMat); 
+                ghostNode.add(link);
+            }
+            
+            scene.add(ghostNode);
+        }
+
+        const raycaster2 = new THREE.Raycaster();
+        const mouse2 = new THREE.Vector2();
+        const dragPlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0); 
+
+        function addMeshSnapPoints(node, dist) {
+            let pts = [];
+            const p = node.meshGroup.position;
+            if (node.axis === 'z') {
+                pts.push({ parent: node, type: 'mesh', dir: 'r', pos: new THREE.Vector3(p.x + dist, p.y, p.z) });
+                pts.push({ parent: node, type: 'mesh', dir: 'l', pos: new THREE.Vector3(p.x - dist, p.y, p.z) });
+                pts.push({ parent: node, type: 'mesh', dir: 'u', pos: new THREE.Vector3(p.x, p.y + dist, p.z) });
+                pts.push({ parent: node, type: 'mesh', dir: 'd', pos: new THREE.Vector3(p.x, p.y - dist, p.z) });
+            } else { 
+                pts.push({ parent: node, type: 'mesh', dir: 'r', pos: new THREE.Vector3(p.x, p.y, p.z + dist) });
+                pts.push({ parent: node, type: 'mesh', dir: 'l', pos: new THREE.Vector3(p.x, p.y, p.z - dist) });
+                pts.push({ parent: node, type: 'mesh', dir: 'u', pos: new THREE.Vector3(p.x, p.y + dist, p.z) });
+                pts.push({ parent: node, type: 'mesh', dir: 'd', pos: new THREE.Vector3(p.x, p.y - dist, p.z) });
+            }
+            return pts;
+        }
+
+        function getSnapPoints(mode, newRadius) {
+            let points = [];
+            nodes.forEach(node => {
+                if (node.type === 'rack' || node.type === 'nut' || node.type === 'leadscrew') return;
+                const p = node.meshGroup.position;
+                
+                let offsetF = 12;
+                let offsetB = -12;
+                if (node.type === 'worm') {
+                    offsetF = 30;
+                    offsetB = 0;
+                }
+                if (node.type === 'cassette') {
+                    offsetF = 12 + (7 * 2.5); 
+                }
+                
+                let dirF = new THREE.Vector3(0, 0, offsetF).applyEuler(node.meshGroup.rotation);
+                let dirB = new THREE.Vector3(0, 0, offsetB).applyEuler(node.meshGroup.rotation);
+                
+                points.push({ parent: node, type: 'axle', dir: 'f', pos: p.clone().add(dirF) });
+                if(node.type !== 'motor') points.push({ parent: node, type: 'axle', dir: 'b', pos: p.clone().add(dirB) });
+                
+                if ((mode === 'gear' || mode === 'rack_pinion') && (node.type === 'gear' || node.type === 'worm_wheel')) {
+                    const dist = node.radius + newRadius + 0.2;
+                    points.push(...addMeshSnapPoints(node, dist));
+                }
+            });
+            
+            return points.filter(pt => {
+                if ((mode.startsWith('worm_drive') || mode === 'worm_nut' || mode === 'cassette_drive') && pt.type === 'mesh') return false; 
+                return !nodes.some(n => n.meshGroup.position.distanceTo(pt.pos) < 1.0);
+            });
+        }
+
+        document.getElementById('btnAddGear').onclick = () => {
+            if(isSimulating) return;
+            dragMode = 'gear';
+            createGhost('gear', 20); 
+            container.style.cursor = 'grab';
+            selectNode(null); 
+            showToast("Move mouse into canvas to place gear.");
+        };
+
+        document.getElementById('btnAddRack').onclick = () => {
+            if(isSimulating) return;
+            dragMode = 'rack_pinion';
+            createDriveGhost('rack_pinion', 20); 
+            container.style.cursor = 'grab';
+            selectNode(null); 
+            showToast("Move mouse into canvas to place rack & pinion.");
+        };
+
+        document.getElementById('btnAddChain').onclick = () => {
+            if(isSimulating) return;
+            dragMode = 'chain';
+            createDriveGhost('chain', 20); 
+            container.style.cursor = 'grab';
+            selectNode(null); 
+            showToast("Move mouse into canvas to place standard chain drive.");
+        };
+
+        document.getElementById('btnAddCassette').onclick = () => {
+            if(isSimulating) return;
+            dragMode = 'cassette_drive';
+            createDriveGhost('cassette_drive', 34); 
+            container.style.cursor = 'grab';
+            selectNode(null); 
+            showToast("Move mouse into canvas to place 8-Speed Cassette.");
+        };
+        
+        document.getElementById('btnAddBelt').onclick = () => {
+            if(isSimulating) return;
+            dragMode = 'belt';
+            createDriveGhost('belt', 40); 
+            container.style.cursor = 'grab';
+            selectNode(null); 
+            showToast("Move mouse into canvas to place belt drive.");
+        };
+        
+        document.getElementById('btnAddWorm').onclick = () => {
+            if(isSimulating) return;
+            dragMode = 'worm_drive_worm';
+            createDriveGhost('worm_drive_worm', 40);
+            container.style.cursor = 'grab';
+            selectNode(null);
+            showToast("Move mouse into canvas to snap WORM to an axle.");
+        };
+
+        document.getElementById('btnAddWormNut').onclick = () => {
+            if(isSimulating) return;
+            dragMode = 'worm_nut';
+            createDriveGhost('worm_nut', 200); 
+            container.style.cursor = 'grab';
+            selectNode(null); 
+            showToast("Move mouse into canvas to snap Lead Screw to an axle.");
+        };
+
+        window.addEventListener('pointermove', (e) => {
+            if(!container || draggedLabelNode) return;
+            const r = container.getBoundingClientRect();
+            if(e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) {
+                if (ghostNode) ghostNode.visible = false;
+                return;
+            } else {
+                if (ghostNode) ghostNode.visible = true;
+            }
+
+            mouse2.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+            mouse2.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+
+            if(dragMode && ghostNode) {
+                let param = 20;
+                if (dragMode === 'belt' || dragMode.startsWith('worm_drive')) param = 40;
+                if (dragMode === 'cassette_drive') param = 34;
+
+                const snaps = getSnapPoints(dragMode, getRadius(param)); 
+                activeSnap = null;
+                let minDist = 0.15; 
+                
+                snaps.forEach(snap => {
+                    const screenPos = snap.pos.clone().project(camera);
+                    const d = screenPos.distanceTo(new THREE.Vector3(mouse2.x, mouse2.y, screenPos.z));
+                    if(d < minDist) {
+                        minDist = d;
+                        activeSnap = snap;
+                    }
+                });
+
+                if(activeSnap) {
+                    ghostNode.position.copy(activeSnap.pos);
+                    let baseRotY = activeSnap.parent.axis === 'x' ? Math.PI / 2 : 0;
+                    if (activeSnap.dir === 'b' && (dragMode === 'worm_nut' || dragMode === 'worm_drive_worm')) {
+                        baseRotY += Math.PI;
+                    }
+                    ghostNode.rotation.y = baseRotY;
+                    
+                    ghostNode.traverse(c => {
+                        if((c.isMesh || c.isInstancedMesh) && c.material) c.material.emissive.setHex(0x22c55e);
+                    });
+                } else {
+                    raycaster2.setFromCamera(mouse2, camera);
+                    const intersectPoint = new THREE.Vector3();
+                    raycaster2.ray.intersectPlane(dragPlane, intersectPoint);
+                    if(intersectPoint) ghostNode.position.copy(intersectPoint);
+                    ghostNode.rotation.y = 0;
+                    
+                    ghostNode.traverse(c => {
+                        if((c.isMesh || c.isInstancedMesh) && c.material) c.material.emissive.setHex(0xef4444);
+                    });
+                }
+            }
+        });
+
+        window.addEventListener('pointerdown', (e) => {
+            if(e.target.closest('.panel') || e.target.closest('.gear-label') || e.target.closest('.tool-btn') || e.target.closest('#wormModal')) return;
+
+            if(dragMode && ghostNode) {
+                if(activeSnap) {
+                    if (dragMode === 'gear') {
+                        const newGear = new Node('gear', 20);
+                        newGear.parent = activeSnap.parent;
+                        newGear.linkType = activeSnap.type;
+                        newGear.linkDir = activeSnap.dir;
+                        activeSnap.parent.children.push(newGear);
+                        nodes.push(newGear);
+                        selectNode(newGear);
+                    } 
+                    else if (dragMode === 'rack_pinion') {
+                        const pin = new Node('gear', 20);
+                        pin.parent = activeSnap.parent;
+                        pin.linkType = activeSnap.type;
+                        pin.linkDir = activeSnap.dir;
+                        
+                        const rack = new Node('rack', 200); 
+                        rack.parent = pin;
+                        rack.linkType = 'rack_mesh';
+                        rack.linkDir = 'd';
+                        
+                        activeSnap.parent.children.push(pin);
+                        pin.children.push(rack);
+                        nodes.push(pin, rack);
+                        selectNode(rack);
+                    }
+                    else if (dragMode === 'chain' || dragMode === 'belt') {
+                        const type = dragMode === 'chain' ? 'sprocket' : 'pulley';
+                        const param = dragMode === 'chain' ? 20 : 40;
+                        
+                        const d1 = new Node(type, param);
+                        d1.parent = activeSnap.parent;
+                        d1.linkType = activeSnap.type; 
+                        d1.linkDir = activeSnap.dir;
+                        
+                        const d2 = new Node(type, param);
+                        d2.parent = d1;
+                        d2.linkType = dragMode; 
+                        d2.linkDir = 'r'; 
+                        
+                        activeSnap.parent.children.push(d1);
+                        d1.children.push(d2);
+                        nodes.push(d1, d2);
+                        selectNode(d2); 
+                    }
+                    else if (dragMode === 'cassette_drive') {
+                        const d1 = new Node('sprocket', 34); // Standard front ring
+                        d1.parent = activeSnap.parent;
+                        d1.linkType = activeSnap.type;
+                        d1.linkDir = activeSnap.dir;
+
+                        const d2 = new Node('cassette', 34);
+                        d2.parent = d1;
+                        d2.linkType = 'chain';
+                        d2.linkDir = 'r';
+
+                        activeSnap.parent.children.push(d1);
+                        d1.children.push(d2);
+                        nodes.push(d1, d2);
+                        selectNode(d2);
+                    }
+                    else if (dragMode === 'worm_drive_worm') {
+                        const w1 = new Node('worm', 20); 
+                        w1.parent = activeSnap.parent;
+                        w1.linkType = activeSnap.type;
+                        w1.linkDir = activeSnap.dir;
+                        
+                        const w2 = new Node('worm_wheel', 40);
+                        w2.parent = w1;
+                        w2.linkType = 'worm_mesh';
+                        w2.linkDir = 'u';
+                        
+                        activeSnap.parent.children.push(w1);
+                        w1.children.push(w2);
+                        nodes.push(w1, w2);
+                        selectNode(w2);
+                    }
+                    else if (dragMode === 'worm_nut') {
+                        const ls = new Node('leadscrew', 200);
+                        ls.parent = activeSnap.parent;
+                        ls.linkType = activeSnap.type;
+                        ls.linkDir = activeSnap.dir;
+
+                        const nut = new Node('nut', 0);
+                        nut.parent = ls;
+                        nut.linkType = 'nut_thread';
+                        nut.linkDir = 'f';
+
+                        activeSnap.parent.children.push(ls);
+                        ls.children.push(nut);
+                        nodes.push(ls, nut);
+                        selectNode(ls);
+                    }
+                    
+                    updateTreePositions();
+                    recordState(); 
+                    
+                    dragMode = null;
+                    scene.remove(ghostNode);
+                    ghostNode = null;
+                    container.style.cursor = isPanMode ? 'grab' : 'crosshair';
+                } else {
+                    showToast("Must snap to an existing green point!");
+                }
+                return;
+            }
+
+            raycaster2.setFromCamera(mouse2, camera);
+            const intersects = raycaster2.intersectObjects(scene.children, true);
+            
+            let clickedNode = null;
+            for(let i=0; i<intersects.length; i++) {
+                let obj = intersects[i].object;
+                while(obj && !obj.userData.node) obj = obj.parent;
+                if(obj && obj.userData.node) { clickedNode = obj.userData.node; break; }
+            }
+
+            if (clickedNode && clickedNode.type === 'motor') {
+                motorInputDirection *= -1;
+                isMotorCutoff = false; 
+                updateDirButtons();
+                if (isSimulating) calculateKinematics();
+            }
+
+            selectNode(clickedNode);
+        });
+
+        // UI Updates
+        function updateDirButtons() {
+            const cw = document.getElementById('btnDirCW');
+            const acw = document.getElementById('btnDirACW');
+            if (motorInputDirection === 1) {
+                cw.className = "flex-1 py-1.5 rounded-lg text-xs font-bold transition-colors bg-blue-500 text-white shadow-md border border-blue-600";
+                acw.className = "flex-1 py-1.5 rounded-lg text-xs font-bold transition-colors bg-white text-slate-500 border border-slate-200 hover:bg-slate-100 hover:text-slate-800";
+            } else {
+                acw.className = "flex-1 py-1.5 rounded-lg text-xs font-bold transition-colors bg-blue-500 text-white shadow-md border border-blue-600";
+                cw.className = "flex-1 py-1.5 rounded-lg text-xs font-bold transition-colors bg-white text-slate-500 border border-slate-200 hover:bg-slate-100 hover:text-slate-800";
+            }
+        }
+
+        const NODE_UI_CONFIG = {
+            'rack': { badge: 'LINEAR RACK', bgClass: 'bg-slate-100 text-slate-700', label: 'Length mm (Max 1000)', valProp: 'length', max: 1000, disabled: false },
+            'leadscrew': { badge: 'LEAD SCREW', bgClass: 'bg-orange-100 text-orange-700', label: 'Length mm (Max 1000)', valProp: 'length', max: 1000, disabled: false },
+            'nut': { badge: 'NUT', bgClass: 'bg-amber-100 text-amber-700', label: 'Fixed Block', valProp: null, val: 0, max: 0, disabled: true },
+            'sprocket': { badge: 'SPROCKET', bgClass: 'bg-amber-100 text-amber-600', label: 'Number of Teeth (Max 300)', valProp: 'teeth', max: 300, disabled: false },
+            'pulley': { badge: 'PULLEY', bgClass: 'bg-cyan-100 text-cyan-700', label: 'Diameter mm (Max 300)', valProp: 'teeth', max: 300, disabled: false },
+            'worm_wheel': { badge: 'WORM WHEEL', bgClass: 'bg-purple-100 text-purple-700', label: 'Number of Teeth (Max 300)', valProp: 'teeth', max: 300, disabled: false },
+            'worm': { badge: 'WORM SHAFT', bgClass: 'bg-indigo-100 text-indigo-700', label: 'Fixed Gear Equivalent', valProp: null, val: 1, max: 1, disabled: true },
+            'cassette': { badge: 'CASSETTE', bgClass: 'bg-emerald-100 text-emerald-700', label: '', valProp: null, disabled: true },
+            'gear': { badge: 'GEAR', bgClass: 'bg-pink-100 text-pink-600', label: 'Number of Teeth (Max 300)', valProp: 'teeth', max: 300, disabled: false }
+        };
+
+        function selectNode(node) {
+            if(selectedNode) selectedNode.setHighlight(false);
+            selectedNode = node;
+            
+            const panel = document.getElementById('panel-inspect');
+            const motorUI = document.getElementById('motorControls');
+            const gearUI = document.getElementById('gearControls');
+            const gearTeethInput = document.getElementById('gearTeeth');
+            const lblType = document.getElementById('lblTeethOrDia');
+            const badgeType = document.getElementById('badgeType');
+            
+            if(selectedNode) {
+                selectedNode.setHighlight(true);
+                panel.classList.remove('hidden');
+                
+                if (gearTeethInput) {
+                    gearTeethInput.disabled = false;
+                    gearTeethInput.classList.remove('opacity-50', 'bg-slate-100');
+                }
+
+                if(selectedNode.type === 'motor') {
+                    badgeType.innerText = 'MOTOR';
+                    badgeType.className = 'text-[9px] font-bold px-2 py-1 bg-slate-200 text-slate-700 rounded-md uppercase';
+                    motorUI.classList.remove('hidden');
+                    gearUI.classList.add('hidden');
+                    document.getElementById('motorLabel').value = selectedNode.label;
+                    document.getElementById('motorRPM').value = motorInputSpeed;
+                    updateDirButtons();
+                } else {
+                    motorUI.classList.add('hidden');
+                    gearUI.classList.remove('hidden');
+                    document.getElementById('gearLabel').value = selectedNode.label;
+                    
+                    const conf = NODE_UI_CONFIG[selectedNode.type];
+                    if (conf) {
+                        badgeType.innerText = conf.badge;
+                        badgeType.className = `text-[9px] font-bold px-2 py-1 rounded-md uppercase ${conf.bgClass}`;
+                        
+                        if (selectedNode.type === 'cassette') {
+                            document.getElementById('gearTeethContainer').classList.add('hidden');
+                            document.getElementById('cassetteControls').classList.remove('hidden');
+                            document.getElementById('cassetteGearLbl').innerText = `Gear ${selectedNode.activeGearIdx + 1}`;
+                            document.getElementById('cassetteTeethLbl').innerText = `${selectedNode.teeth} TEETH`;
+                        } else {
+                            document.getElementById('gearTeethContainer').classList.remove('hidden');
+                            document.getElementById('cassetteControls').classList.add('hidden');
+                            lblType.innerText = conf.label;
+                            
+                            if (gearTeethInput) {
+                                gearTeethInput.max = conf.max;
+                                gearTeethInput.value = conf.valProp ? selectedNode[conf.valProp] : conf.val;
+                                if (conf.disabled) {
+                                    gearTeethInput.disabled = true;
+                                    gearTeethInput.classList.add('opacity-50', 'bg-slate-100');
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                panel.classList.add('hidden');
+            }
+        }
+
+        // UI Event Listeners
+        document.getElementById('motorLabel').addEventListener('input', e => {
+            if(selectedNode && selectedNode.type === 'motor') {
+                selectedNode.label = e.target.value;
+                if(isSimulating) updateLabels();
+            }
+        });
+        document.getElementById('motorLabel').addEventListener('change', () => recordState());
+
+        document.getElementById('gearLabel').addEventListener('input', e => {
+            if(selectedNode && selectedNode.type !== 'motor') {
+                selectedNode.label = e.target.value;
+                if(isSimulating) updateLabels();
+            }
+        });
+        document.getElementById('gearLabel').addEventListener('change', () => recordState());
+
+        document.getElementById('motorRPM').addEventListener('input', e => {
+            let val = parseInt(e.target.value);
+            if(isNaN(val) || val < 0) return;
+            motorInputSpeed = val;
+            if(isSimulating) calculateKinematics();
+        });
+        document.getElementById('motorRPM').addEventListener('change', e => {
+            let val = parseInt(e.target.value);
+            if(isNaN(val) || val < 1) val = 1;
+            e.target.value = val;
+            motorInputSpeed = val;
+            recordState();
+        });
+
+        document.getElementById('btnDirCW').onclick = () => {
+            motorInputDirection = 1;
+            isMotorCutoff = false; 
+            updateDirButtons();
+            if (isSimulating) calculateKinematics();
+            recordState();
+        };
+
+        document.getElementById('btnDirACW').onclick = () => {
+            motorInputDirection = -1;
+            isMotorCutoff = false; 
+            updateDirButtons();
+            if (isSimulating) calculateKinematics();
+            recordState();
+        };
+
+        document.getElementById('btnShiftUp').onclick = () => {
+            if(selectedNode && selectedNode.type === 'cassette') {
+                selectedNode.shift(1); // Smaller gear
+            }
+        };
+
+        document.getElementById('btnShiftDown').onclick = () => {
+            if(selectedNode && selectedNode.type === 'cassette') {
+                selectedNode.shift(-1); // Larger gear
+            }
+        };
+
+        document.getElementById('gearTeeth').addEventListener('input', e => {
+            if(selectedNode && (selectedNode.type === 'worm' || selectedNode.type === 'nut' || selectedNode.type === 'cassette')) return;
+            let val = parseInt(e.target.value);
+            if(isNaN(val)) return;
+            
+            let maxVal = (selectedNode.type === 'rack' || selectedNode.type === 'leadscrew') ? 1000 : 300;
+            if(val > maxVal) {
+                showToast(`Oversized component! Maximum size is ${maxVal}.`);
+                e.target.value = (selectedNode.type === 'rack' || selectedNode.type === 'leadscrew') ? selectedNode.length : selectedNode.teeth; 
+                return;
+            }
+            if(val >= 8 && selectedNode && selectedNode.type !== 'motor') {
+                selectedNode.setTeeth(val);
+            }
+        });
+        document.getElementById('gearTeeth').addEventListener('change', e => {
+            if(selectedNode && (selectedNode.type === 'worm' || selectedNode.type === 'nut' || selectedNode.type === 'cassette')) return;
+            let val = parseInt(e.target.value);
+            let maxVal = (selectedNode.type === 'rack' || selectedNode.type === 'leadscrew') ? 1000 : 300;
+            if(isNaN(val) || val < 8) val = 8;
+            
+            if(val > maxVal) {
+                showToast(`Oversized component! Maximum size is ${maxVal}.`);
+                val = (selectedNode.type === 'rack' || selectedNode.type === 'leadscrew') ? selectedNode.length : selectedNode.teeth;
+            }
+            e.target.value = val;
+            if(selectedNode && selectedNode.type !== 'motor') {
+                selectedNode.setTeeth(val);
+                recordState();
+            }
+        });
+
+        document.getElementById('btnDelete').onclick = () => {
+            if(selectedNode && selectedNode.type !== 'motor') {
+                selectedNode.destroy();
+                selectNode(null);
+                updateTreePositions();
+                recordState();
+            }
+        };
+
+        document.getElementById('btnClear').onclick = () => {
+            [...nodes].forEach(c => c.destroy());
+            nodes = [];
+            selectNode(null);
+            initScene();
+            centerCamera();
+            recordState();
+        };
+
+        document.getElementById('btnHome').onclick = centerCamera;
+
+        // --- SAVE/LOAD/UNDO/REDO & EXPORT ---
+        function getStateJSON() {
+            const data = nodes.map(n => ({
+                id: n.id,
+                type: n.type,
+                param: (n.type === 'rack' || n.type === 'leadscrew') ? n.length : n.teeth,
+                label: n.label,
+                axis: n.axis,
+                labelOffset: n.labelOffset,
+                linearPosition: n.linearPosition,
+                activeGearIdx: n.activeGearIdx,
+                parentId: n.parent ? n.parent.id : null,
+                linkType: n.linkType,
+                linkDir: n.linkDir
+            }));
+            return JSON.stringify({ nodes: data, motorSpeed: motorInputSpeed, motorDir: motorInputDirection });
+        }
+
+        function loadStateJSON(jsonStr) {
+            try {
+                const parsed = JSON.parse(jsonStr);
+                nodes.forEach(n => { scene.remove(n.meshGroup); n.labelEl.remove(); n.lineEl.remove(); if(n.linkVisual) scene.remove(n.linkVisual); });
+                nodes = [];
+                selectNode(null);
+
+                motorInputSpeed = parsed.motorSpeed || 60;
+                motorInputDirection = parsed.motorDir || 1;
+                
+                const mEl = document.getElementById('motorRPM');
+                if(mEl) mEl.value = motorInputSpeed;
+                updateDirButtons();
+
+                const nodeMap = {};
+                parsed.nodes.forEach(d => {
+                    const n = new Node(d.type, d.param);
+                    n.id = d.id;
+                    if (d.axis) n.axis = d.axis;
+                    if (d.label !== undefined) n.label = d.label;
+                    if (d.labelOffset) n.labelOffset = d.labelOffset;
+                    if (d.linearPosition) n.linearPosition = d.linearPosition;
+                    if (d.type === 'cassette' && d.activeGearIdx !== undefined) {
+                        n.activeGearIdx = d.activeGearIdx;
+                        n.teeth = n.gearSizes[n.activeGearIdx];
+                        n.radius = getRadius(n.teeth);
+                        n.buildVisuals();
+                    }
+                    nodeMap[n.id] = n;
+                    nodes.push(n);
+                });
+
+                parsed.nodes.forEach(d => {
+                    if (d.parentId && nodeMap[d.parentId]) {
+                        const child = nodeMap[d.id];
+                        child.parent = nodeMap[d.parentId];
+                        child.linkType = d.linkType;
+                        child.linkDir = d.linkDir;
+                        child.parent.children.push(child);
+                    }
+                });
+
+                if (nodes.length === 0) {
+                    initScene();
+                }
+
+                updateTreePositions();
+                centerCamera(); 
+            } catch(e) { console.error("Error loading state", e); }
+        }
+
+        function recordState() {
+            if(isSimulating) return;
+            if(historyIndex < historyStack.length - 1) historyStack = historyStack.slice(0, historyIndex + 1);
+            const currentState = getStateJSON();
+            if(historyStack.length > 0 && historyStack[historyStack.length-1] === currentState) return;
+            historyStack.push(currentState);
+            historyIndex++;
+            if(historyStack.length > MAX_HISTORY) { historyStack.shift(); historyIndex--; }
+            updateHistoryButtons();
+        }
+
+        function undo() {
+            if(isSimulating || historyIndex <= 0) return;
+            historyIndex--;
+            loadStateJSON(historyStack[historyIndex]);
+            updateHistoryButtons();
+        }
+
+        function redo() {
+            if(isSimulating || historyIndex >= historyStack.length - 1) return;
+            historyIndex++;
+            loadStateJSON(historyStack[historyIndex]);
+            updateHistoryButtons();
+        }
+
+        function updateHistoryButtons() {
+            const btnU = document.getElementById('btnUndo');
+            const btnR = document.getElementById('btnRedo');
+            if(btnU) btnU.disabled = (historyIndex <= 0);
+            if(btnR) btnR.disabled = (historyIndex >= historyStack.length - 1);
+        }
+
+        window.addEventListener('keydown', e => {
+            if (e.target.tagName === 'INPUT') return;
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'z' || e.key === 'Z')) { e.preventDefault(); undo(); }
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || e.key === 'Y')) { e.preventDefault(); redo(); }
+            if (e.key === 'Escape') {
+                if (dragMode) {
+                    dragMode = null;
+                    if(ghostNode) scene.remove(ghostNode);
+                    ghostNode = null;
+                    container.style.cursor = isPanMode ? 'grab' : 'crosshair';
+                    showToast("Placement cancelled.");
+                } else {
+                    selectNode(null);
+                }
+            }
+            if (e.key === 'Delete' || e.key === 'Backspace') {
+                if(selectedNode && selectedNode.type !== 'motor') document.getElementById('btnDelete').click();
+            }
+        });
+
+        document.getElementById('btnUndo').onclick = undo;
+        document.getElementById('btnRedo').onclick = redo;
+
+        document.getElementById('btnSave').onclick = () => {
+            const blob = new Blob([JSON.stringify(JSON.parse(getStateJSON()), null, 2)], {type: "application/json"});
+            const url = URL.createObjectURL(blob); 
+            const a = document.createElement('a'); 
+            a.href = url;
+            a.download = `nogrind_system.json`; 
+            a.click(); 
+            URL.revokeObjectURL(url);
+        };
+
+        document.getElementById('fileLoad').onchange = (e) => {
+            const file = e.target.files[0]; if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (evt) => { loadStateJSON(evt.target.result); recordState(); e.target.value=''; };
+            reader.readAsText(file);
+        };
+
+        const TYPE_DESC_CONFIG = {
+            'pulley': (n) => `Ø ${n.teeth} mm`,
+            'rack': (n) => `L ${n.length} mm`,
+            'leadscrew': (n) => `L ${n.length} mm`,
+            'nut': () => `Square Nut`,
+            'worm': () => `1-Tooth Eq.`,
+            'cassette': (n) => `8-Speed: ${n.teeth}T`,
+            'motor': () => null,
+            'default': (n) => `${n.teeth} Teeth`
+        };
+
+        document.getElementById('btnExport').onclick = () => {
+            const currentSel = selectedNode; 
+            selectNode(null); 
+            
+            renderer.render(scene, camera); 
+            
+            const scaleFactor = 2; 
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            
+            const tempCvs = document.createElement('canvas');
+            tempCvs.width = width * scaleFactor;
+            tempCvs.height = height * scaleFactor;
+            const tCtx = tempCvs.getContext('2d');
+            
+            const drawRoundRect = (ctx, x, y, w, h, r) => {
+                ctx.beginPath();
+                ctx.moveTo(x + r, y);
+                ctx.lineTo(x + w - r, y);
+                ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+                ctx.lineTo(x + w, y + h - r);
+                ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+                ctx.lineTo(x + r, y + h);
+                ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+                ctx.lineTo(x, y + r);
+                ctx.quadraticCurveTo(x, y, x + r, y);
+                ctx.closePath();
+            };
+
+            const grad = tCtx.createLinearGradient(0, 0, tempCvs.width, tempCvs.height);
+            grad.addColorStop(0, '#f8fafc'); 
+            grad.addColorStop(1, '#e2e8f0'); 
+            tCtx.fillStyle = grad;
+            tCtx.fillRect(0, 0, tempCvs.width, tempCvs.height);
+            
+            tCtx.drawImage(renderer.domElement, 0, 0, tempCvs.width, tempCvs.height);
+            
+            if (isSimulating) {
+                nodes.forEach(n => {
+                    if (n.labelEl.style.display === 'none') return;
+                    
+                    const pos = n.meshGroup.position.clone();
+                    
+                    pos.project(camera);
+                    const px = (pos.x * .5 + .5) * width;
+                    const py = (pos.y * -.5 + .5) * height;
+                    const lx = px + n.labelOffset.x;
+                    const ly = py + n.labelOffset.y;
+                    
+                    const spx = px * scaleFactor;
+                    const spy = py * scaleFactor;
+                    const slx = lx * scaleFactor;
+                    const sly = ly * scaleFactor;
+                    
+                    tCtx.beginPath();
+                    tCtx.moveTo(spx, spy);
+                    tCtx.lineTo(slx, sly);
+                    tCtx.strokeStyle = '#3b82f6';
+                    tCtx.lineWidth = 2 * scaleFactor;
+                    tCtx.stroke();
+                    
+                    let rpmStr, d;
+                    
+                    if (n.type === 'rack') {
+                        const v = Math.abs(Math.round((n.parent.speed / 60) * Math.PI * 2 * n.parent.radius * 10) / 10);
+                        const rackDir = -1 * n.parent.dir * Math.sign(n.parent.speed);
+                        d = rackDir > 0 ? "RIGHT ➔" : "LEFT ⬅";
+                        rpmStr = `${v} mm s⁻¹`;
+                    } else if (n.type === 'nut') {
+                        const v = Math.abs(Math.round((n.parent.speed / 60) * 12 * 10) / 10); 
+                        const nutDir = -1 * n.parent.dir * Math.sign(n.parent.speed);
+                        d = nutDir > 0 ? "OUT ➔" : "IN ⬅";
+                        rpmStr = `${v} mm s⁻¹`;
+                    } else {
+                        const r = Math.abs(Math.round(n.speed * 100) / 100);
+                        d = n.dir > 0 ? "Clockwise ↻" : "Anti-Clockwise ↺";
+                        rpmStr = `${r} rev min⁻¹`;
+                    }
+
+                    let typeDesc = (TYPE_DESC_CONFIG[n.type] || TYPE_DESC_CONFIG['default'])(n) || "";
+                    const titleStr = (n.label && n.label.trim() !== '') ? n.label.toUpperCase() : null;
+                    
+                    tCtx.font = `900 ${16 * scaleFactor}px Nunito, sans-serif`;
+                    const rpmWidth = tCtx.measureText(rpmStr).width;
+                    
+                    tCtx.font = `800 ${11 * scaleFactor}px Nunito, sans-serif`;
+                    const titleWidth = titleStr ? tCtx.measureText(titleStr).width : 0;
+                    
+                    tCtx.font = `800 ${10 * scaleFactor}px Nunito, sans-serif`;
+                    const descWidth = typeDesc ? tCtx.measureText(typeDesc).width : 0;
+
+                    tCtx.font = `800 ${12 * scaleFactor}px Nunito, sans-serif`;
+                    const dirWidth = tCtx.measureText(d).width;
+                    
+                    const contentWidth = Math.max(rpmWidth, titleWidth, descWidth, dirWidth, 60 * scaleFactor);
+                    const paddingX = 14 * scaleFactor;
+                    const paddingY = 8 * scaleFactor;
+                    
+                    const boxW = contentWidth + paddingX * 2;
+                    let boxH = 40 * scaleFactor; 
+                    if (titleStr) boxH += 13 * scaleFactor;
+                    if (typeDesc) boxH += 14 * scaleFactor;
+                    
+                    const boxX = slx - boxW / 2;
+                    const boxY = sly - boxH / 2;
+                    
+                    tCtx.shadowColor = 'rgba(0,0,0,0.15)';
+                    tCtx.shadowBlur = 16 * scaleFactor;
+                    tCtx.shadowOffsetY = 8 * scaleFactor;
+                    
+                    tCtx.fillStyle = 'rgba(255, 255, 255, 0.98)';
+                    drawRoundRect(tCtx, boxX, boxY, boxW, boxH, 12 * scaleFactor);
+                    tCtx.fill();
+                    
+                    tCtx.shadowColor = 'transparent';
+                    tCtx.strokeStyle = '#3b82f6';
+                    tCtx.lineWidth = 3 * scaleFactor;
+                    tCtx.stroke();
+                    
+                    tCtx.textAlign = 'center';
+                    tCtx.textBaseline = 'top';
+                    let currentY = boxY + paddingY;
+                    
+                    if (titleStr) {
+                        tCtx.fillStyle = '#64748b';
+                        tCtx.font = `800 ${11 * scaleFactor}px Nunito, sans-serif`;
+                        tCtx.fillText(titleStr, slx, currentY);
+                        currentY += 13 * scaleFactor;
+                    }
+                    
+                    if (typeDesc) {
+                        tCtx.fillStyle = '#94a3b8';
+                        tCtx.font = `800 ${10 * scaleFactor}px Nunito, sans-serif`;
+                        tCtx.fillText(typeDesc, slx, currentY);
+                        currentY += 14 * scaleFactor;
+                    }
+
+                    tCtx.fillStyle = '#0f172a';
+                    tCtx.font = `900 ${16 * scaleFactor}px Nunito, sans-serif`;
+                    tCtx.fillText(rpmStr, slx, currentY);
+                    currentY += 19 * scaleFactor;
+                    
+                    tCtx.fillStyle = '#ec4899';
+                    tCtx.font = `800 ${12 * scaleFactor}px Nunito, sans-serif`;
+                    tCtx.fillText(d, slx, currentY);
+                });
+            }
+
+            const url = tempCvs.toDataURL('image/png');
+            const a = document.createElement('a'); 
+            a.href = url; 
+            a.download = 'nogrind_snapshot.png'; 
+            a.click();
+            
+            selectNode(currentSel); 
+        };
+
+        // --- SIMULATION & ANIMATION ---
+        document.getElementById('btnSim').onclick = () => {
+            isSimulating = true;
+            isMotorCutoff = false;
+            selectNode(null); 
+            document.getElementById('btnSim').classList.add('hidden');
+            document.getElementById('btnStop').classList.remove('hidden');
+            // centerCamera(); <-- Removed per request so viewport stays as is!
+            calculateKinematics();
+            nodes.forEach(n => { 
+                n.labelEl.style.display = 'block'; 
+                n.lineEl.style.display = 'block';
+            });
+        };
+
+        document.getElementById('btnStop').onclick = () => {
+            isSimulating = false;
+            isMotorCutoff = false;
+            document.getElementById('btnSim').classList.remove('hidden');
+            document.getElementById('btnStop').classList.add('hidden');
+            nodes.forEach(n => { 
+                n.labelEl.style.display = 'none'; 
+                n.lineEl.style.display = 'none'; 
+            });
+        };
+
+        const clock = new THREE.Clock();
+
+        function updateLabels() {
+            if(!isSimulating) return;
+            nodes.forEach(n => {
+                if(n.labelEl.style.display === 'none') return;
+                
+                let html = "";
+                if(n.label && n.label.trim() !== '') {
+                    html += `<div class="label-title">${n.label}</div>`;
+                }
+
+                let typeDesc = (TYPE_DESC_CONFIG[n.type] || TYPE_DESC_CONFIG['default'])(n) || "";
+
+                if (typeDesc) {
+                    html += `<div class="label-desc">${typeDesc}</div>`;
+                }
+                
+                if (n.type === 'rack') {
+                    const v = Math.abs(Math.round((n.parent.speed / 60) * Math.PI * 2 * n.parent.radius * 10) / 10);
+                    const rackDir = -1 * n.parent.dir * Math.sign(n.parent.speed);
+                    const d = rackDir > 0 ? "RIGHT ➔" : "LEFT ⬅";
+                    html += `<div class="label-rpm">${v} mm s⁻¹</div><span class="dir-tag">${d}</span>`;
+                } else if (n.type === 'nut') {
+                    const v = Math.abs(Math.round((n.parent.speed / 60) * 12 * 10) / 10); 
+                    const nutDir = -1 * n.parent.dir * Math.sign(n.parent.speed);
+                    const d = nutDir > 0 ? "OUT ➔" : "IN ⬅";
+                    html += `<div class="label-rpm">${v} mm s⁻¹</div><span class="dir-tag">${d}</span>`;
+                } else {
+                    const r = Math.abs(Math.round(n.speed * 100) / 100);
+                    const d = n.dir > 0 ? "Clockwise ↻" : "Anti-Clockwise ↺";
+                    html += `<div class="label-rpm">${r} rev min⁻¹</div><span class="dir-tag">${d}</span>`;
+                }
+                
+                n.labelEl.innerHTML = html;
+                
+                const pos = n.meshGroup.position.clone();
+                
+                pos.project(camera);
+                
+                const px = (pos.x * .5 + .5) * container.clientWidth;
+                const py = (pos.y * -.5 + .5) * container.clientHeight;
+                
+                const lx = px + n.labelOffset.x;
+                const ly = py + n.labelOffset.y;
+                
+                n.labelEl.style.left = `${lx}px`;
+                n.labelEl.style.top = `${ly}px`;
+
+                n.lineEl.setAttribute('x1', px);
+                n.lineEl.setAttribute('y1', py);
+                n.lineEl.setAttribute('x2', lx);
+                n.lineEl.setAttribute('y2', ly);
+            });
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const dt = clock.getDelta();
+            
+            // Smoothly animate ground plane
+            gridHelper.position.y += (targetGridY - gridHelper.position.y) * 0.1;
+            
+            controls.update();
+            
+            if(isSimulating) {
+                const moveDt = isMotorCutoff ? 0 : dt;
+                
+                nodes.forEach(n => {
+                    const rps = n.speed / 60;
+                    n.angle -= (rps * Math.PI * 2 * n.dir * moveDt); 
+                    
+                    if(n.rotGroup) n.rotGroup.rotation.z = n.angle;
+                    
+                    if (n.type === 'rack' && n.parent) {
+                        const parentRps = n.parent.speed / 60;
+                        const linearSpeed = Math.abs(parentRps) * Math.PI * 2 * n.parent.radius; 
+                        n.linearPosition += (-1 * n.parent.dir * Math.sign(n.parent.speed)) * linearSpeed * moveDt;
+                        
+                        const maxTravel = (n.length / 2) - n.parent.radius - 10; 
+                        if (Math.abs(n.linearPosition) > maxTravel) {
+                            n.linearPosition = Math.sign(n.linearPosition) * maxTravel;
+                            if (!isMotorCutoff) {
+                                isMotorCutoff = true;
+                                showToast("Rack limit reached! Reverse Motor direction to continue.");
+                            }
+                        }
+                        
+                        n.meshGroup.position.copy(n.basePosition);
+                        let moveVector = new THREE.Vector3(n.linearPosition, 0, 0).applyEuler(n.meshGroup.rotation);
+                        n.meshGroup.position.add(moveVector);
+                    }
+                    
+                    if (n.type === 'nut' && n.parent) {
+                        const parentRps = n.parent.speed / 60;
+                        const linearSpeed = Math.abs(parentRps) * 12; 
+                        
+                        n.linearPosition += (-1 * n.parent.dir * Math.sign(n.parent.speed)) * linearSpeed * moveDt;
+                        
+                        const minTravel = 8;
+                        const maxTravel = n.parent.length - 8; 
+                        
+                        if (n.linearPosition < minTravel) {
+                            n.linearPosition = minTravel;
+                            if (!isMotorCutoff && Math.abs(n.parent.speed) > 0) {
+                                isMotorCutoff = true;
+                                showToast("Nut limit reached! Reverse Motor direction to continue.");
+                            }
+                        } else if (n.linearPosition > maxTravel) {
+                            n.linearPosition = maxTravel;
+                            if (!isMotorCutoff && Math.abs(n.parent.speed) > 0) {
+                                isMotorCutoff = true;
+                                showToast("Nut limit reached! Reverse Motor direction to continue.");
+                            }
+                        }
+                        
+                        n.meshGroup.position.copy(n.basePosition);
+                        let moveVector = new THREE.Vector3(0, 0, n.linearPosition).applyEuler(n.meshGroup.rotation);
+                        n.meshGroup.position.add(moveVector);
+                    }
+
+                    if (n.linkVisual && n.parent) {
+                        if (n.linkType === 'chain') {
+                            const parentRps = n.parent.speed / 60;
+                            const linearSpeed = Math.abs(parentRps) * Math.PI * 2 * n.parent.radius; 
+                            n.linkVisual.userData.offset += (n.parent.dir > 0 ? -1 : 1) * linearSpeed * moveDt;
+                            updateChainPins(n.linkVisual);
+                        }
+                    }
+                });
+                updateLabels();
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // Initialize state view & JSON auto-load initialisation
+        window.onload = () => {
+            // Apply draggable panel logic to the inspector
+            makeDraggable(document.getElementById('panel-inspect'), document.getElementById('panel-inspect-header'), false);
+
+            // === 1. PASTE YOUR SAVED JSON STRING INSIDE THE BACKTICKS BELOW ===
+            const preloadedLesson = ``; 
+
+            // === 2. AUTO-LOAD LOGIC ===
+            if (preloadedLesson.trim().length > 10) {
+                // If a lesson is pasted above, load it immediately!
+                loadStateJSON(preloadedLesson);
+                
+                // Automatically close the left sidebar for a cleaner "presentation" view
+                if (sidebarOpen) toggleSidebar(); 
+                
+                // Automatically adjust view and start the simulation!
+                setTimeout(() => {
+                    resize();
+                    centerCamera();
+                    document.getElementById('btnSim').click();
+                }, 350); // Wait 350ms for the sidebar to finish animating
+                
+            } else {
+                // If no lesson is pasted, just do the normal empty startup
+                initScene();
+            }
+
+            recordState();
+            setTimeout(resize, 50);
+            animate();
+        };
+    </script>
+</body>
+</html>
