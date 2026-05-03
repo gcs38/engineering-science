@@ -1,50 +1,929 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Course notes — Drive systems — Engineering Science Scotland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Drive Systems &mdash; Course Notes &mdash; Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .resource-page{max-width:680px;margin:0 auto;padding:32px 32px 64px;}
-    .open-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px 24px;text-align:center;margin-bottom:16px;}
-    .open-card-icon{font-size:36px;margin-bottom:10px;}
-    .open-card-title{font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:-.4px;margin-bottom:6px;}
-    .open-card-sub{font-size:13px;color:var(--gray-600);margin-bottom:20px;line-height:1.5;}
-    .open-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-400);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .open-btn:hover{background:var(--teal-600);}
-    .sim-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-800);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .sim-btn:hover{background:var(--teal-600);}
-    .back-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:20px;}
-    .back-link:hover{color:var(--teal-800);}
-    .info-note{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;margin-top:12px;}
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .back-link:hover { color:var(--teal-800); }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:16px 0 8px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+    .warning { background:#FFF7ED; border-left:4px solid #F97316; border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#9A3412; }
+
+    /* Diagram placeholder */
+    .diagram-placeholder { background:#f0f9ff; border:2px dashed #7dd3fc; border-radius:10px; padding:18px 20px; margin:16px 0; text-align:center; }
+    .diagram-placeholder-icon { font-size:28px; margin-bottom:6px; }
+    .diagram-placeholder-text { font-size:13px; color:#0369a1; font-weight:600; }
+    .diagram-placeholder-sub { font-size:11px; color:#7dd3fc; margin-top:4px; font-style:italic; }
+
+    /* Motion type cards */
+    .motion-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(185px,1fr)); gap:12px; margin:16px 0 20px; }
+    .motion-card { background:white; border:1px solid var(--gray-200); border-radius:10px; padding:14px 12px; }
+    .motion-card-icon { font-size:26px; margin-bottom:6px; }
+    .motion-card-name { font-size:13px; font-weight:700; color:var(--gray-900); margin-bottom:4px; }
+    .motion-card-desc { font-size:12px; color:var(--gray-500); line-height:1.4; }
+    .motion-card-eg { font-size:11px; color:var(--teal-600); margin-top:4px; font-style:italic; }
+
+    /* Formula boxes */
+    .formula-box { background:white; border:2px solid var(--teal-100); border-radius:10px; padding:16px 20px; margin:16px 0; text-align:center; }
+    .formula { font-size:17px; font-weight:600; color:var(--teal-800); font-family:monospace; letter-spacing:.02em; }
+    .formula-sub { font-size:12px; color:var(--gray-400); margin-top:6px; }
+
+    /* Worked examples */
+    .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:18px 20px; margin:16px 0; }
+    .worked-example-title { font-size:13px; font-weight:600; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+    .step { display:flex; gap:12px; margin-bottom:10px; }
+    .step-num { width:24px; height:24px; border-radius:50%; background:var(--teal-400); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .step-content { font-size:13px; color:var(--gray-600); line-height:1.6; flex:1; }
+    .step-content strong { color:var(--gray-900); }
+
+    /* Tables */
+    .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .data-table tr:nth-child(even) td { background:var(--gray-50); }
+    .motion-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .motion-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:center; }
+    .motion-table td { padding:10px 12px; border:1px solid var(--gray-200); color:var(--gray-600); text-align:center; }
+    .motion-table td:first-child { text-align:left; font-weight:500; color:var(--gray-900); }
+
+    /* Assignment boxes */
+    .assignment { background:white; border:2px solid var(--teal-400); border-radius:12px; margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:6px; font-weight:500; }
+    .task-q-sub { font-size:13px; color:var(--gray-700); margin:5px 0 5px 16px; }
+
+    /* Answer boxes */
+    .answer-label { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin:8px 0 3px; display:flex; align-items:center; gap:6px; }
+    .saved-indicator { font-size:11px; color:#10b981; font-weight:600; opacity:0; transition:opacity .3s; text-transform:none; letter-spacing:0; }
+    .saved-indicator.show { opacity:1; }
+    .answer-box { background:#f8faff; border:2px solid #c7d7f5; border-radius:8px; padding:10px 12px; min-height:68px; font-size:14px; color:var(--gray-700); line-height:1.7; outline:none; transition:border-color .2s, box-shadow .2s; display:block; width:100%; box-sizing:border-box; }
+    .answer-box:focus { border-color:var(--teal-400); box-shadow:0 0 0 3px rgba(45,212,191,0.12); }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-sm { min-height:44px; }
+    .answer-box-lg { min-height:100px; }
+
+    /* Simulator embed */
+    .sim-embed-section { margin:24px 0; }
+    .sim-embed-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+    .sim-embed-title { font-size:14px; font-weight:500; color:var(--gray-900); display:flex; align-items:center; gap:8px; }
+    .sim-embed-title span { font-size:18px; }
+    .sim-fullscreen-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 14px; background:var(--teal-800); color:white; border-radius:var(--radius-md); font-size:12px; font-weight:500; text-decoration:none; transition:all var(--transition); border:none; cursor:pointer; }
+    .sim-fullscreen-btn:hover { background:var(--teal-600); }
+    .sim-wrap { border-radius:10px; overflow:hidden; border:2px solid var(--teal-100); }
+    .sim-iframe { width:100%; height:540px; border:none; display:block; }
+    .sim-credit { font-size:11px; color:var(--gray-400); margin-top:5px; text-align:right; }
+    .sim-instruction { background:var(--teal-50); border:1px solid var(--teal-100); border-radius:8px; padding:10px 14px; margin-bottom:10px; font-size:13px; color:var(--teal-800); }
+
+    /* Comparison cards */
+    .compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0; }
+    .compare-card { background:white; border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; }
+    .compare-card-header { padding:10px 14px; font-size:13px; font-weight:700; color:white; }
+    .compare-card-body { padding:12px 14px; font-size:12px; color:var(--gray-600); line-height:1.6; }
+    .compare-card-body li { margin-bottom:4px; }
+
+    /* Controls */
+    .controls-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:32px 0 8px; padding:12px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; }
+    .controls-label { font-size:12px; color:var(--gray-500); font-weight:600; flex:1; min-width:140px; }
+    .ctrl-btn { display:inline-flex; align-items:center; gap:5px; padding:7px 14px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:all .15s; }
+    .ctrl-btn-clear { background:#fef2f2; color:#ef4444; }
+    .ctrl-btn-clear:hover { background:#fee2e2; }
+    .ctrl-btn-print { background:var(--teal-50); color:var(--teal-800); }
+    .ctrl-btn-print:hover { background:var(--teal-100); }
+    .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
+
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+
+    @media print {
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.sim-embed-section { display:none!important; }
+      .layout { display:block!important; }
+      .main { margin:0!important; padding:0!important; }
+      .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
+      .diagram-placeholder { border:1.5px solid #7dd3fc!important; }
+    }
   </style>
-</head><body>
-<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a><a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+</head>
+<body>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a>
+    <a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
+
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero">
-      <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Drive systems</div>
-      <h1 class="hero-title">📄 Course notes</h1>
-      <p class="hero-sub">Drive systems</p>
-      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../index.html">Mechanisms and Structures</a> &rsaquo; <a href="index.html">Drive systems</a> &rsaquo; <span>Course notes</span></div>
-    </div>
-    <div class="content">
-      <div class="resource-page">
-        <a href="index.html" class="back-link">&larr; Back to Drive systems</a>
-      <!-- EDIT BELOW: replace 1sB69torW6B-4kWBTVfy3hiNFRj9fozVh with your Google Drive file ID -->
-      <script>
-        var driveFileId = 1sB69torW6B-4kWBTVfy3hiNFRj9fozVh;
-        if (driveFileId === 1sB69torW6B-4kWBTVfy3hiNFRj9fozVh) {
-          document.write('<div class="open-card" style="background:var(--gray-50);border:1px dashed var(--gray-200);"><div class="open-card-icon" style="font-size:32px;">📂</div><div class="open-card-title" style="color:var(--gray-600);">Material coming soon</div><div class="open-card-sub">This resource is being prepared and will be available here shortly.</div></div>');
-        } else {
-          var url = "https://drive.google.com/file/d/" + driveFileId + "/view";
-          document.write('<div class="open-card"><div class="open-card-icon">📄</div><div class="open-card-title">Course notes</div><div class="open-card-sub">Notes, explanations and worked examples aligned to the SQA specification.</div><a href="' + url + '" target="_blank" class="open-btn"><svg viewBox="0 0 16 16" fill="none"><path d="M6 2h4l4 4v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M6 2v4h4M8 8v5M6 11l2 2 2-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Open document</a></div><div class="info-note"><strong>Note:</strong> Opens in a new tab. Use your browser back button to return.</div>');
-        }
-      </script>
+      <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Drive Systems</div>
+      <h1 class="hero-title">&#x2699;&#xFE0F; Drive Systems &mdash; Course Notes</h1>
+      <p class="hero-sub">Gear trains, belt drives, chain drives, velocity ratio and motion conversion</p>
+      <div class="breadcrumb">
+        <a href="../../../../index.html">Home</a> &rsaquo;
+        <a href="../index.html">Mechanisms and Structures</a> &rsaquo;
+        <a href="index.html">Drive Systems</a> &rsaquo;
+        <span>Course notes</span>
       </div>
+    </div>
+
+    <div class="content">
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to Drive Systems</a>
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 1: Introduction to Mechanisms</h1>
+
+      <p class="notes-p">Mechanisms are devices that <strong>convert one motion or force into another</strong>. They can be simple — like door handles, scissors and light switches — or complex, as used in industrial robots, cars and bikes.</p>
+
+      <p class="notes-p">Mechanisms play a vital role in industry. Most industrial processes have electronic control systems but rely on the movement of mechanisms to do work: pressing large steel sheets, lifting components and cutting material. Moving parts of a machine are potential <strong>trap hazards</strong> and so guards or covers are used to keep people safe.</p>
+
+      <div class="key-point">
+        All mechanisms: involve motion &bull; involve force &bull; should make a job easier &bull; need an input to work &bull; produce an output.
+      </div>
+
+      <h2 class="notes-h2">Types of motion</h2>
+      <p class="notes-p">There are four basic kinds of motion:</p>
+
+      <div class="motion-grid">
+        <div class="motion-card">
+          <div class="motion-card-icon">&#x1F504;</div>
+          <div class="motion-card-name">Rotary</div>
+          <div class="motion-card-desc">Turning in a circle.</div>
+          <div class="motion-card-eg">e.g. wheels, clock hands, gears</div>
+        </div>
+        <div class="motion-card">
+          <div class="motion-card-icon">&#x27A1;&#xFE0F;</div>
+          <div class="motion-card-name">Linear</div>
+          <div class="motion-card-desc">Movement in a straight line.</div>
+          <div class="motion-card-eg">e.g. paper trimmer, lift moving between floors</div>
+        </div>
+        <div class="motion-card">
+          <div class="motion-card-icon">&#x21C4;</div>
+          <div class="motion-card-name">Reciprocating</div>
+          <div class="motion-card-desc">Backwards and forwards in a straight line.</div>
+          <div class="motion-card-eg">e.g. sewing machine needle, car engine piston</div>
+        </div>
+        <div class="motion-card">
+          <div class="motion-card-icon">&#x1F3CB;&#xFE0F;</div>
+          <div class="motion-card-name">Oscillating</div>
+          <div class="motion-card-desc">Swinging backwards and forwards in an arc.</div>
+          <div class="motion-card-eg">e.g. clock pendulum, playground swing</div>
+        </div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Types of motion</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Complete the table by ticking the correct type(s) of motion for each activity.</div>
+            <table class="motion-table">
+              <tr><th>Activity</th><th>Rotary</th><th>Linear</th><th>Reciprocating</th><th>Oscillating</th></tr>
+              <tr><td>Playground swing</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>100m sprint</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>Golf shot</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>Bungee jump</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>Playground see-saw</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>Curling stone</td><td></td><td></td><td></td><td></td></tr>
+            </table>
+          </div>
+          <div class="task-item">
+            <div class="task-q">List as many machines or tools from your school's practical rooms as you can for each type of motion.</div>
+            <div class="task-q-sub">Rotary:</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t1a" data-placeholder="e.g. pillar drill, lathe, bench grinder..."></div>
+            <div class="task-q-sub">Linear:</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t1b" data-placeholder="e.g. pillar drill bit moving down, band saw blade..."></div>
+            <div class="task-q-sub">Reciprocating:</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t1c" data-placeholder="e.g. scroll saw, jigsaw..."></div>
+            <div class="task-q-sub">Oscillating:</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t1d" data-placeholder="e.g. ..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 2: Gears</h1>
+
+      <p class="notes-p">Gears are <strong>toothed wheels</strong> designed to transmit rotary motion and power from one part of a mechanism to another. They are used to increase or decrease output speed, and can also change the direction of rotation. Gears are fitted to shafts using keys or splines so they rotate together. The most common type is the <strong>spur gear</strong>.</p>
+
+      <h2 class="notes-h2">Simple gear trains</h2>
+      <p class="notes-p">When two or more gears mesh together they form a <strong>gear train</strong>. The input gear is called the <strong>driver</strong>; the output gear is called the <strong>driven</strong>. The teeth on the driver effectively push the teeth on the driven gear.</p>
+
+      <div class="key-point">Meshing gears <strong>rotate in opposite directions</strong>. If the driver is clockwise, the driven is anticlockwise.</div>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Simple gear train — driver gear A (large) meshing with driven gear B (small), showing contact point C and direction arrows</div>
+        <div class="diagram-placeholder-sub">Filename: gear-simple-train.png</div>
+      </div>
+
+      <p class="notes-p">If gear A (driver) has 24 teeth and makes one full revolution, its 24 teeth pass the contact point. This pushes gear B around — and because gear B only has 12 teeth, it makes <strong>two</strong> complete revolutions for every one of gear A.</p>
+
+      <h2 class="notes-h2">The gear equation</h2>
+
+      <div class="formula-box">
+        <div class="formula">Teeth<sub>In</sub> &times; Turns<sub>In</sub> = Teeth<sub>Out</sub> &times; Turns<sub>Out</sub></div>
+        <div class="formula-sub">Turns can be revolutions per second (rev s<sup>&minus;1</sup>) or per minute (rev min<sup>&minus;1</sup>)</div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 1 &mdash; Find the output speed</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A driver gear has 48 teeth and rotates at 10 rev s<sup>&minus;1</sup>. The driven gear has 20 teeth. Find its speed.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Write the equation:</strong> Teeth<sub>In</sub> &times; Turns<sub>In</sub> = Teeth<sub>Out</sub> &times; Turns<sub>Out</sub></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Substitute:</strong> 48 &times; 10 = 20 &times; T<sub>Out</sub></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Solve:</strong> T<sub>Out</sub> = (48 &times; 10) &divide; 20 = <strong>24 rev s<sup>&minus;1</sup></strong></div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 2 &mdash; Find the number of teeth</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A motor gear has 36 teeth and rotates at 380 rev s<sup>&minus;1</sup> clockwise. The driven gear rotates at 152 rev s<sup>&minus;1</sup>. How many teeth does the driven gear have?</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content">36 &times; 380 = T<sub>Out</sub> &times; 152</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">T<sub>Out</sub> = (36 &times; 380) &divide; 152 = <strong>90 teeth</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Simple gear train calculations</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Calculate the missing quantity in each gear train. Build them in NoGrind to check your answers.</p>
+          <div class="task-item">
+            <div class="task-q">a) Driver: 45 teeth, 20 rev s<sup>&minus;1</sup>. Driven: 15 teeth. Find the output speed.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t2a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t2a" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Driver: 12 teeth, 30 rev min<sup>&minus;1</sup>. Driven: 20 rev min<sup>&minus;1</sup>. Find the number of teeth on the driven gear.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t2b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t2b" data-placeholder="Show working here&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 3: Velocity Ratio in Gears</h1>
+
+      <p class="notes-p">The <strong>velocity ratio (VR)</strong> describes how much the speed changes between the driver and driven gear. It is calculated using the number of teeth:</p>
+
+      <div class="formula-box">
+        <div class="formula">VR = Teeth<sub>Out</sub> &divide; Teeth<sub>In</sub> = Speed<sub>In</sub> &divide; Speed<sub>Out</sub></div>
+        <div class="formula-sub">Remember: the teeth equation is the opposite way up to the speed equation.<br>Think: <em>Driven (passenger's teeth) &divide; Driver (bus driver's teeth)</em></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 1 &mdash; Speed increase (VR &lt; 1)</div>
+        <!-- DIAGRAM PLACEHOLDER -->
+        <div class="diagram-placeholder">
+          <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+          <div class="diagram-placeholder-text">Diagram: Gear A (24 teeth, driver) meshing with Gear B (12 teeth, driven) — speed increase</div>
+          <div class="diagram-placeholder-sub">Filename: gear-vr-increase.png</div>
+        </div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px;">Gear A: 24 teeth (driver). Gear B: 12 teeth (driven).</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content">VR = Teeth<sub>Out</sub> &divide; Teeth<sub>In</sub> = 12 &divide; 24 = <strong>0.5 (or 1:2)</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">If gear A rotates at 90 rev min<sup>&minus;1</sup> CW, gear B rotates at 180 rev min<sup>&minus;1</sup> <strong>ACW</strong>.</div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 2 &mdash; Speed decrease (VR &gt; 1)</div>
+        <!-- DIAGRAM PLACEHOLDER -->
+        <div class="diagram-placeholder">
+          <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+          <div class="diagram-placeholder-text">Diagram: Gear A (8 teeth, driver) meshing with Gear B (24 teeth, driven) — speed decrease</div>
+          <div class="diagram-placeholder-sub">Filename: gear-vr-decrease.png</div>
+        </div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px;">Gear A: 8 teeth (driver). Gear B: 24 teeth (driven).</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content">VR = 24 &divide; 8 = <strong>3 (or 3:1)</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">If gear A rotates at 90 rev min<sup>&minus;1</sup> CW, gear B rotates at 30 rev min<sup>&minus;1</sup> <strong>ACW</strong>.</div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Velocity ratio calculations</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">For each gear train, find the missing value and the velocity ratio.</p>
+          <div class="task-item">
+            <div class="task-q">a) Driver: 28 teeth, 1000 rev min<sup>&minus;1</sup>. Driven: 54 teeth. Find the output speed and VR.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t3a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-t3a" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Driver: 112 teeth, 12 rev s<sup>&minus;1</sup>. Driven: 96 rev s<sup>&minus;1</sup>. Find the number of teeth and VR.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t3b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-t3b" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) Driver: 32 teeth, speed unknown. Driven: 74 teeth, 240 rev min<sup>&minus;1</sup>. Find the driver speed and VR.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t3c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-t3c" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) Driver: 75 rev s<sup>&minus;1</sup>, teeth unknown. Driven: 280 rev s<sup>&minus;1</sup>, 60 teeth. Find the number of driver teeth and VR.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t3d">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-t3d" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">e) It is sometimes necessary to get a change in speed without changing the direction of the driven gear. How do you think this can be done?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t3e">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-t3e" data-placeholder="Answer here&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NoGrind simulator embed -->
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x2699;&#xFE0F;</span> NoGrind Simulator &mdash; simple gear trains</div>
+          <a href="../../../../simulators/drive-systems.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Click <strong>▶ RUN SIM</strong> to start. Use the Components panel to add gears. Mesh a small gear with a large gear to see a speed increase. Swap them to see a speed decrease. The floating labels show RPM and direction (CW/CCW) for each gear.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-gears-simple" src="../../../../simulators/drive-systems.html" title="NoGrind gear train simulator" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoGrind Sim V1.2 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation &mdash; Simple gear train challenge</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Using the NoGrind simulator with gears of approximately 8, 16, 24 and 40 teeth:</p>
+          <div class="task-item">
+            <div class="task-q">1. Build a simple gear train that <strong>increases</strong> the speed of the driven gear. Record the gear sizes you used and calculate the VR.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-inv1a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-inv1a" data-placeholder="Gear sizes used, calculated VR&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Build a simple gear train that <strong>decreases</strong> the speed. Record the gear sizes and VR.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-inv1b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-inv1b" data-placeholder="Gear sizes used, calculated VR&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Note the direction of the driver and driven gears. What do you notice? How does adding more gears affect direction?</div>
+            <div class="answer-label">Observation <span class="saved-indicator" id="ind-inv1c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-inv1c" data-placeholder="Observation here&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 4: Idler Gears</h1>
+
+      <p class="notes-p">To make the driven gear rotate in the <strong>same direction</strong> as the driver, a third gear — called an <strong>idler gear</strong> — is inserted between them.</p>
+
+      <div class="key-point">The idler gear has <strong>no effect on the velocity ratio</strong> of the system. It only changes the direction of the output. The size of the idler does not matter.</div>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Three-gear train — Gear A (driver, 24 teeth) → Gear B (idler, small) → Gear C (driven, 12 teeth), showing all three rotating CW</div>
+        <div class="diagram-placeholder-sub">Filename: gear-idler.png</div>
+      </div>
+
+      <p class="notes-p">In the diagram above, gears A and C rotate in the <strong>same direction</strong>. The VR is still calculated from driver A to driven C only — the idler is ignored: VR = 12 &divide; 24 = 0.5.</p>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Idler gear calculations</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) Gear A: 28 teeth, 1000 rev min<sup>&minus;1</sup>. Gear B (idler): 10 teeth. Gear C: 54 teeth. Calculate the VR and the speed of C.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t4a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-t4a" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Gear A: 120 teeth, 30 rev s<sup>&minus;1</sup>. Gear B (idler): 24 teeth. Gear C: 40 teeth. Calculate the VR and speed of C.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t4b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-t4b" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) Four-gear train: A (68 teeth, 10 rev min<sup>&minus;1</sup>) &rarr; B (idler, 14 teeth) &rarr; C (32 teeth) &rarr; D (idler, 14 teeth). Calculate the VR and speed of D. State the direction of D relative to A.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t4c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="ds-t4c" data-placeholder="Show working here&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 5: Compound Gear Trains</h1>
+
+      <p class="notes-p">Simple gear trains are limited in the velocity ratio they can produce — very large or very small speed changes require impractically large gears. A <strong>compound gear train</strong> solves this by mounting pairs of gears on the same shaft (the <strong>intermediate shaft</strong>), multiplying the gearing effect in a much smaller space.</p>
+
+      <div class="key-point">In a compound gear train, two gears on the same intermediate shaft rotate together at the same speed. The total VR is found by <strong>multiplying the individual VRs</strong>.</div>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Plan view of compound gear train — Input gear (20 teeth) meshes with large gear (80 teeth) on intermediate shaft; small gear (10 teeth) on same shaft meshes with output gear (60 teeth)</div>
+        <div class="diagram-placeholder-sub">Filename: gear-compound-plan.png</div>
+      </div>
+
+      <h2 class="notes-h2">Calculating compound gear VR</h2>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Compound gear train</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">Input gear: 20 teeth. Large gear on intermediate shaft: 80 teeth. Small gear on intermediate shaft: 10 teeth. Output gear: 60 teeth. Input speed: 240 rev s<sup>&minus;1</sup>.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>VR of first pair:</strong> VR<sub>1</sub> = 80 &divide; 20 = 4</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>VR of second pair:</strong> VR<sub>2</sub> = 60 &divide; 10 = 6</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Total VR:</strong> VR<sub>total</sub> = VR<sub>1</sub> &times; VR<sub>2</sub> = 4 &times; 6 = <strong>24</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Output speed:</strong> Speed<sub>Out</sub> = Speed<sub>In</sub> &divide; VR = 240 &divide; 24 = <strong>10 rev s<sup>&minus;1</sup></strong></div></div>
+      </div>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x2699;&#xFE0F;</span> NoGrind Simulator &mdash; compound gear train</div>
+          <a href="../../../../simulators/drive-systems.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Build the compound gear train from the worked example: add a 20-tooth gear to the motor, then snap an 80-tooth gear to it. On the same axle as the 80-tooth gear, add a 10-tooth gear, then snap a 60-tooth gear to that. Run the simulation and check that the output speed matches your calculation.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-compound" src="../../../../simulators/drive-systems.html" title="NoGrind compound gear simulator" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoGrind Sim V1.2 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Compound gear calculations</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">A compound gear train is driven by a motor at 1000 rev/min. Gear A = 20 teeth, Gear B = 60 teeth (on intermediate shaft with A), Gear C = 40 teeth, Gear D = 50 teeth (output).</div>
+            <div class="task-q-sub">a) Calculate the total velocity ratio.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t5a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-t5a" data-placeholder="Show working here&hellip;"></div>
+            <div class="task-q-sub">b) Calculate the output speed.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t5b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t5b" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">Using the NoGrind simulator, build a compound gear train using gears of 8, 16, 24 and 40 teeth that produces the greatest possible speed increase. Calculate the VR of your system.</div>
+            <div class="answer-label">Design and VR <span class="saved-indicator" id="ind-t5c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-t5c" data-placeholder="Describe gear arrangement and calculated VR&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 6: Worm and Wheel</h1>
+
+      <p class="notes-p">A <strong>worm gear</strong> is another way to achieve large speed reductions. The worm looks like a screw thread and is fixed to the driver shaft. It meshes with a <strong>worm wheel</strong> fixed to the driven shaft, which runs at <strong>90&deg;</strong> to the driver shaft.</p>
+
+      <div class="key-point">For calculation purposes, treat the worm as a <strong>single-tooth gear</strong>. One full rotation of the worm advances the worm wheel by exactly one tooth.</div>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Worm gear meshing with a 30-tooth worm wheel, showing 90° change in shaft direction</div>
+        <div class="diagram-placeholder-sub">Filename: gear-worm-wheel.png</div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Worm and wheel</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A worm meshes with a 30-tooth worm wheel. The motor rotates at 100 rev s<sup>&minus;1</sup>. Find the output speed.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>VR:</strong> Teeth<sub>Out</sub> &divide; Teeth<sub>In</sub> = 30 &divide; 1 = <strong>30:1</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Output speed:</strong> 100 &divide; 30 = <strong>3.33 rev s<sup>&minus;1</sup></strong></div></div>
+      </div>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x2699;&#xFE0F;</span> NoGrind Simulator &mdash; worm and wheel</div>
+          <a href="../../../../simulators/drive-systems.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          In the Components panel, open the <strong>Worm Drive</strong> section and click Add Worm &amp; Wheel. Choose to attach via the <strong>Worm</strong> for speed reduction. Run the simulation and observe the 90&deg; change in direction and the large speed reduction shown on the labels.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-worm" src="../../../../simulators/drive-systems.html" title="NoGrind worm gear simulator" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoGrind Sim V1.2 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 7: Belt Drives</h1>
+
+      <p class="notes-p">Belt drives transmit rotary motion between shafts that may be far apart. A <strong>belt</strong> wraps around two or more <strong>pulleys</strong> — thin metal discs with a groove cut into the rim. The belt is tensioned by pulling one pulley out and locking it in place.</p>
+
+      <div class="key-point">Unlike meshing gears, belt drives do <strong>not reverse the direction of rotation</strong>. To reverse direction, the belt must be crossed between the pulleys.</div>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Two pulleys connected by an open belt (same direction) and a crossed belt (reversed direction), showing driver and driven pulleys with diameter labels</div>
+        <div class="diagram-placeholder-sub">Filename: belt-open-crossed.png</div>
+      </div>
+
+      <h2 class="notes-h2">Belt drive equation</h2>
+
+      <div class="formula-box">
+        <div class="formula">Diameter<sub>Driver</sub> &times; Turns<sub>Driver</sub> = Diameter<sub>Driven</sub> &times; Turns<sub>Driven</sub></div>
+      </div>
+
+      <h2 class="notes-h2">Velocity ratio for belt drives</h2>
+
+      <div class="formula-box">
+        <div class="formula">VR = Diameter<sub>Driven</sub> &divide; Diameter<sub>Driver</sub></div>
+        <div class="formula-sub">Output speed = Input speed &divide; VR</div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Belt drive VR and output speed</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">Driver pulley diameter: 120 mm. Driven pulley diameter: 40 mm. Input speed: 1200 rev/min.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>VR:</strong> 40 &divide; 120 = 1/3 (or 1:3)</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Output speed:</strong> 1200 &divide; (1/3) = <strong>3600 rev/min</strong> (speed increase because driven pulley is smaller)</div></div>
+      </div>
+
+      <h2 class="notes-h2">Types of belt</h2>
+
+      <div class="compare-grid">
+        <div class="compare-card">
+          <div class="compare-card-header" style="background:var(--teal-800);">Flat / V-belt</div>
+          <div class="compare-card-body">
+            <ul>
+              <li>Made from rubber and string composite</li>
+              <li>Inexpensive and easy to replace</li>
+              <li>No lubrication needed</li>
+              <li>Absorbs shock loads by slipping</li>
+              <li>Can slip if over-tensioned or worn</li>
+            </ul>
+          </div>
+        </div>
+        <div class="compare-card">
+          <div class="compare-card-header" style="background:var(--teal-600);">Toothed belt</div>
+          <div class="compare-card-body">
+            <ul>
+              <li>Interlocking teeth prevent slipping</li>
+              <li>Used where slippage would cause damage</li>
+              <li>e.g. car timing belt — prevents pistons colliding with valves</li>
+              <li>Quiet, low maintenance</li>
+              <li>More expensive than flat belts</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <h2 class="notes-h2">Jockey pulley</h2>
+      <p class="notes-p">A <strong>jockey (tensioner) pulley</strong> is a spring-loaded pulley used to keep the belt correctly tensioned. Too slack and the belt slips; too tight and the bearings wear out.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Belt drive system with spring-loaded jockey pulley showing tensioning arrangement</div>
+        <div class="diagram-placeholder-sub">Filename: belt-jockey-pulley.png</div>
+      </div>
+
+      <h2 class="notes-h2">Stepped-cone pulleys</h2>
+      <p class="notes-p">A variety of output speeds can be achieved without changing pulleys by using <strong>stepped-cone pulleys</strong> — a series of pulleys of different diameters fixed to the same shaft. Moving the belt to a different step changes the speed ratio.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Stepped-cone pulley system showing belt at different positions for different speed ratios</div>
+        <div class="diagram-placeholder-sub">Filename: belt-stepped-cone.png</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Belt drive calculations</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Calculate the missing quantities. In each case the left pulley is the driver.</div>
+            <div class="task-q-sub">a) Driver diameter: 40 mm, 1200 rev/min. Driven diameter: 80 mm. Find the output speed and VR.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t6a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t6a" data-placeholder="Show working here&hellip;"></div>
+            <div class="task-q-sub">b) Driver diameter: 60 mm, 900 rev/min. Output speed: 300 rev/min. Find the driven diameter and VR.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t6b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t6b" data-placeholder="Show working here&hellip;"></div>
+            <div class="task-q-sub">c) Driven diameter: 120 mm, 500 rev/min. VR = 3. Find the driver diameter and input speed.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t6c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t6c" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">Research: Name three real-world machines or systems that use belt and pulley drives.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t6d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t6d" data-placeholder="1. &hellip; 2. &hellip; 3. &hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">Sketch or describe a belt drive system that produces a <strong>decrease</strong> in speed with a <strong>change in direction</strong> of the driven pulley.</div>
+            <div class="answer-label">Design sketch / description <span class="saved-indicator" id="ind-t6e">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-t6e" data-placeholder="Describe your design here&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x2699;&#xFE0F;</span> NoGrind Simulator &mdash; belt drives</div>
+          <a href="../../../../simulators/drive-systems.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          In the Components panel, open <strong>Chain Drive &amp; Belt Drive</strong> and click <strong>Add Belt Drive</strong>. The belt snaps to an existing axle and generates a second pulley automatically. Select each pulley and adjust its diameter in the Properties panel. Run the simulation to see the speed and direction labels.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-belt" src="../../../../simulators/drive-systems.html" title="NoGrind belt drive simulator" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoGrind Sim V1.2 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 8: Chain Drives</h1>
+
+      <p class="notes-p">Where large forces must be transmitted with <strong>no slippage</strong>, a <strong>chain drive</strong> is used. Instead of a pulley, a toothed wheel called a <strong>sprocket</strong> drives a chain, which in turn drives another sprocket. Chain drives do not slip.</p>
+
+      <div class="compare-grid">
+        <div class="compare-card">
+          <div class="compare-card-header" style="background:var(--teal-800);">Advantages of chain drives</div>
+          <div class="compare-card-body">
+            <ul>
+              <li>Very strong — will not slip under normal conditions</li>
+              <li>Transmits large forces reliably</li>
+              <li>Positive drive — no loss of motion</li>
+            </ul>
+          </div>
+        </div>
+        <div class="compare-card">
+          <div class="compare-card-header" style="background:#e11d48;">Disadvantages of chain drives</div>
+          <div class="compare-card-body">
+            <ul>
+              <li>Must be oiled regularly</li>
+              <li>Chain and sprockets prone to wear</li>
+              <li>More expensive than belt drives</li>
+              <li>Noisier than belt drives</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Bicycle chain drive — pedal sprocket (large, driver) connected by chain to rear wheel sprocket (small, driven), with direction arrows</div>
+        <div class="diagram-placeholder-sub">Filename: chain-bicycle.png</div>
+      </div>
+
+      <h2 class="notes-h2">Chain drive equation</h2>
+
+      <div class="formula-box">
+        <div class="formula">Teeth<sub>Driver</sub> &times; Turns<sub>Driver</sub> = Teeth<sub>Driven</sub> &times; Turns<sub>Driven</sub></div>
+      </div>
+
+      <div class="formula-box">
+        <div class="formula">VR = Teeth<sub>Driven</sub> &divide; Teeth<sub>Driver</sub></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Bicycle chain drive VR</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A bicycle has 60 teeth on the pedal sprocket (driver) and 10 teeth on the rear wheel sprocket (driven). Find the VR.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content">VR = Teeth<sub>Driven</sub> &divide; Teeth<sub>Driver</sub> = 10 &divide; 60 = <strong>1/6 (or 1:6)</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">For every 1 revolution of the pedals, the wheel turns 6 times &mdash; a speed increase.</div></div>
+      </div>
+
+      <h2 class="notes-h2">Derailleur gears</h2>
+      <p class="notes-p">Racing bikes and mountain bikes use <strong>Derailleur gears</strong> — a spring-loaded jockey wheel that keeps the chain tensioned while allowing it to be moved between different sprockets on a cassette (rear hub) and different chainrings (front). This gives a wide range of gear ratios for different terrains.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Derailleur gear system showing rear cassette sprockets, chain, and spring-loaded jockey wheel tensioner</div>
+        <div class="diagram-placeholder-sub">Filename: chain-derailleur.png</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Chain drive calculations</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) Driver sprocket: 48 teeth, 60 rev/min. Driven sprocket: 16 teeth. Find the output speed and VR.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t7a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t7a" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Driver: 24 teeth, 200 rev/min. Output speed: 50 rev/min. Find the number of teeth on the driven sprocket and the VR.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t7b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t7b" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">A cyclist wants to go faster suddenly and puts extra force into the pedals. Explain why the chain must not slip for this to work, and what would happen if it did.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-t7c" data-placeholder="Answer here&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x2699;&#xFE0F;</span> NoGrind Simulator &mdash; chain drives</div>
+          <a href="../../../../simulators/drive-systems.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          In the Components panel, open <strong>Chain Drive &amp; Belt Drive</strong> and click <strong>Add Chain Drive</strong>. Adjust the number of teeth on each sprocket in the Properties panel. Run the simulation and compare the speed labels for different sprocket sizes.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-chain" src="../../../../simulators/drive-systems.html" title="NoGrind chain drive simulator" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoGrind Sim V1.2 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 9: Converting Motion</h1>
+
+      <p class="notes-p">Many mechanisms involve changing one type of motion into another. For example, the <strong>rotary</strong> motion of a pillar-drill handle is changed to the <strong>linear</strong> motion of the drill bit moving down.</p>
+
+      <h2 class="notes-h2">Cams</h2>
+      <p class="notes-p">A <strong>cam</strong> is a specially shaped piece of metal or plastic that converts input <strong>rotary</strong> motion into output <strong>oscillating</strong> or <strong>reciprocating</strong> motion. The cam works by guiding a <strong>follower</strong> held against it by its own weight or a spring.</p>
+
+      <p class="notes-p">There are two main types of cam:</p>
+      <ul class="notes-ul">
+        <li><strong>Circular (eccentric) cam</strong> — produces a smooth, continuous rise and fall of the follower</li>
+        <li><strong>Pear-shaped cam</strong> — has a <strong>dwell period</strong> (the follower is stationary for about half a revolution) followed by a rapid rise and fall. Used on motor-car camshafts to operate engine valves.</li>
+      </ul>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Side-by-side comparison of circular/eccentric cam and pear-shaped cam with follower, showing crown (highest point), heel (lowest point) and dwell period</div>
+        <div class="diagram-placeholder-sub">Filename: cam-types-comparison.png</div>
+      </div>
+
+      <h2 class="notes-h2">Cam terminology</h2>
+      <ul class="notes-ul">
+        <li><strong>Crown</strong> — the highest point of the cam profile (follower at maximum height, valve fully open)</li>
+        <li><strong>Heel</strong> — the lowest point of the cam profile (follower at rest, valve closed)</li>
+        <li><strong>Dwell period</strong> — the part of the cam rotation where the follower is stationary</li>
+        <li><strong>Stroke</strong> — the distance between the crown and heel (= the distance the valve opens)</li>
+      </ul>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; Cams</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">A pear-shaped cam and follower forms a simple locking mechanism. Name the cam (A) and the follower (B). How much of a turn does the wheel make to push the lock-bolt closed? Describe why the spring is needed.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="ds-t8a" data-placeholder="Answer here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">A cam on a car engine valve mechanism turns half a revolution from the position shown below (follower at heel). What distance does the valve move? (The stroke of the cam is 8 mm.)</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t8b" data-placeholder="Distance = &hellip; mm. Explain your reasoning."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 10: Crank and Slider</h1>
+
+      <p class="notes-p">A <strong>crank-and-slider</strong> mechanism converts between <strong>rotary</strong> and <strong>reciprocating</strong> motion. The crank rotates while the slider (piston) reciprocates in a straight line. The longer the crank, the further the slider moves.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Crank-and-slider showing (left) reciprocating-to-rotary motion as in a car engine piston/crankshaft; (right) rotary-to-reciprocating as in a power hacksaw with labelled crank, connecting rod and slider</div>
+        <div class="diagram-placeholder-sub">Filename: crank-slider-both.png</div>
+      </div>
+
+      <p class="notes-p">The crank-and-slider is used in two main ways:</p>
+      <ul class="notes-ul">
+        <li><strong>Reciprocating &rarr; Rotary:</strong> Car engines — pistons connected to a crankshaft by connecting rods. As pistons move down in sequence they keep the crankshaft turning.</li>
+        <li><strong>Rotary &rarr; Reciprocating:</strong> Power hacksaw — a motor drives a crank connected to a saw frame that slides back and forth on an arm.</li>
+      </ul>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 9 &mdash; Crank and slider</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">A crank-and-slider mechanism is used in a fabric-testing machine. The crank is 30 mm long. A wire brush is attached to the slider.</div>
+            <div class="task-q-sub">a) What is the distance from A (one end of slider travel) to B (the other end)?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t9a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t9a" data-placeholder="Distance A to B = &hellip; mm"></div>
+            <div class="task-q-sub">b) What effect does the wire brush have on the fabric?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t9b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t9b" data-placeholder="Answer here&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 11: Rack and Pinion</h1>
+
+      <p class="notes-p">A <strong>rack and pinion</strong> mechanism converts <strong>rotary</strong> motion to <strong>linear</strong> motion (or vice versa). A round spur gear (the <strong>pinion</strong>) meshes with a flat toothed bar (the <strong>rack</strong>).</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <div class="diagram-placeholder">
+        <div class="diagram-placeholder-icon">&#x1F4CC;</div>
+        <div class="diagram-placeholder-text">Diagram: Rack and pinion — showing pinion gear rotating on fixed centre causing rack to move linearly, with arrows indicating direction of motion</div>
+        <div class="diagram-placeholder-sub">Filename: rack-pinion.png</div>
+      </div>
+
+      <p class="notes-p">There are three ways a rack and pinion can be used:</p>
+      <ol class="notes-ol">
+        <li>Rack moves linearly &rarr; pinion rotates (e.g. gripper mechanism)</li>
+        <li>Pinion rotates on fixed centre &rarr; rack moves linearly (e.g. camera tripod, pillar drill)</li>
+        <li>Rack is fixed, pinion rotates &rarr; pinion's centre moves linearly (e.g. lathe carriage)</li>
+      </ol>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x2699;&#xFE0F;</span> NoGrind Simulator &mdash; rack and pinion</div>
+          <a href="../../../../simulators/drive-systems.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          In the Components panel, open <strong>Rack and Pinion</strong> and click <strong>Add Rack &amp; Pinion</strong>. The rack snaps to an existing axle. Run the simulation — the rack physically moves left and right. Note that a <strong>Safety Cutoff</strong> triggers when the rack reaches its limit; reverse the motor to continue.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-rack" src="../../../../simulators/drive-systems.html" title="NoGrind rack and pinion simulator" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoGrind Sim V1.2 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 10 &mdash; Rack and pinion</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">A rack is 200 mm long with a pitch (tooth spacing) of 2 mm. It meshes with a pinion that has 20 teeth.</div>
+            <div class="task-q-sub">a) If the pinion rotates one full revolution, how far does the rack move? (Hint: distance = number of teeth &times; pitch)</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t10a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t10a" data-placeholder="Show working here&hellip;"></div>
+            <div class="task-q-sub">b) How many complete revolutions of the pinion are needed to move the rack from one end to the other?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t10b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t10b" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">Draw the symbols for the following mechanisms: simple gear train, belt drive, chain drive, rack and pinion.</div>
+            <div class="answer-label">Sketches <span class="saved-indicator" id="ind-t10c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="ds-t10c" data-placeholder="Sketch or describe each symbol here&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls bar -->
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
+        <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
+      </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
+
+    </div>
     </div>
   </div>
 </div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
-<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script><script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script></body></html>
+
+<footer class="footer">
+  <span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span>
+  <a href="../../../../teacher/login.html">Teacher area</a>
+</footer>
+
+<script src="../../../../js/site.js"></script>
+<script src="../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
+
+<script>
+const STORAGE_PREFIX='ess_answers_';
+function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
+function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
+function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
+function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.answer-box').forEach(function(box){
+    var key=box.dataset.key;if(!key)return;
+    var saved=loadValue(key);if(saved)box.innerHTML=saved;
+    var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
+    box.addEventListener('input',ds);
+    box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
+  });
+});
+</script>
+
+</body>
+</html>
