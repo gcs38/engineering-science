@@ -87,9 +87,6 @@ document.addEventListener('DOMContentLoaded', setActiveNav);
       'color:#5c3d00',
       'font-family:inherit',
       'text-align:center',
-      'position:sticky',
-      'top:0',
-      'z-index:999',
       'width:100%',
       'box-sizing:border-box'
     ].join(';');
@@ -107,12 +104,10 @@ document.addEventListener('DOMContentLoaded', setActiveNav);
       '<span>&#x1F6A7; This site is under active development &mdash; some resources are not yet available.</span>' +
       '<a href="mailto:' + FEEDBACK_EMAIL + '?subject=ESS%20Website%20Feedback" style="' + linkStyle + '">Spotted an issue? Let us know.</a>';
 
-    // Insert after the topbar (first child of body), or at top of body if no topbar found
-    var topbar = document.querySelector('.topbar');
-    if (topbar && topbar.parentNode) {
-      topbar.parentNode.insertBefore(banner, topbar.nextSibling);
-    } else {
-      document.body.insertBefore(banner, document.body.firstChild);
+    // Insert as first child of .main so it sits in normal flow below the fixed topbar
+    var main = document.querySelector('.main');
+    if (main) {
+      main.insertBefore(banner, main.firstChild);
     }
   }
 
