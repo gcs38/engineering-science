@@ -57,3 +57,114 @@ function teacherLogout() {
 }
 
 document.addEventListener('DOMContentLoaded', setActiveNav);
+
+/* ============================================================
+   DEVELOPMENT BANNER + FEEDBACK BUTTON
+   Paste this block at the bottom of js/site.js
+   ============================================================ */
+
+(function () {
+
+  /* ----------------------------------------------------------
+     1. SITEWIDE DEVELOPMENT BANNER
+     Appears below the topbar on every page.
+     Remove or set SHOW_BANNER = false when site is complete.
+  ---------------------------------------------------------- */
+
+  var SHOW_BANNER = true;
+  var FEEDBACK_EMAIL = 'g.sanderson@gwc.org.uk'; // ← replace with your actual email address
+
+  if (SHOW_BANNER) {
+    var bannerStyle = [
+      'display:flex',
+      'align-items:center',
+      'justify-content:center',
+      'gap:12px',
+      'flex-wrap:wrap',
+      'background:#fefce8',
+      'border-bottom:1px solid #fde68a',
+      'padding:8px 20px',
+      'font-size:13px',
+      'color:#92400e',
+      'font-family:inherit',
+      'text-align:center',
+      'position:relative',
+      'z-index:100'
+    ].join(';');
+
+    var linkStyle = [
+      'color:#b45309',
+      'font-weight:600',
+      'text-decoration:underline',
+      'cursor:pointer'
+    ].join(';');
+
+    var banner = document.createElement('div');
+    banner.setAttribute('style', bannerStyle);
+    banner.innerHTML =
+      '<span>&#x1F6A7; This site is under active development &mdash; some resources are not yet available.</span>' +
+      '<a href="mailto:' + FEEDBACK_EMAIL + '?subject=ESS%20Website%20Feedback" style="' + linkStyle + '">Spotted an issue? Let us know.</a>';
+
+    // Insert after the topbar (first child of body), or at top of body if no topbar found
+    var topbar = document.querySelector('.topbar');
+    if (topbar && topbar.parentNode) {
+      topbar.parentNode.insertBefore(banner, topbar.nextSibling);
+    } else {
+      document.body.insertBefore(banner, document.body.firstChild);
+    }
+  }
+
+
+  /* ----------------------------------------------------------
+     2. FLOATING FEEDBACK BUTTON
+     Fixed in the bottom-right corner of every page.
+     Opens a mailto link with a pre-filled subject line.
+  ---------------------------------------------------------- */
+
+  var btnStyle = [
+    'position:fixed',
+    'bottom:24px',
+    'right:24px',
+    'z-index:9999',
+    'display:inline-flex',
+    'align-items:center',
+    'gap:7px',
+    'background:#0f766e',
+    'color:white',
+    'font-size:13px',
+    'font-weight:600',
+    'font-family:inherit',
+    'padding:10px 16px',
+    'border-radius:999px',
+    'box-shadow:0 4px 14px rgba(0,0,0,0.18)',
+    'text-decoration:none',
+    'transition:background 0.2s, transform 0.15s',
+    'cursor:pointer',
+    'border:none'
+  ].join(';');
+
+  var feedbackBtn = document.createElement('a');
+  feedbackBtn.href = 'mailto:' + FEEDBACK_EMAIL + '?subject=ESS%20Website%20Feedback';
+  feedbackBtn.setAttribute('style', btnStyle);
+  feedbackBtn.innerHTML = '&#x2709;&#xFE0F; Feedback';
+  feedbackBtn.title = 'Report an issue or send feedback about this site';
+
+  feedbackBtn.addEventListener('mouseover', function () {
+    this.style.background = '#0d9488';
+    this.style.transform = 'translateY(-2px)';
+  });
+  feedbackBtn.addEventListener('mouseout', function () {
+    this.style.background = '#0f766e';
+    this.style.transform = 'translateY(0)';
+  });
+
+  // Add to page once DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function () {
+      document.body.appendChild(feedbackBtn);
+    });
+  } else {
+    document.body.appendChild(feedbackBtn);
+  }
+
+})();
