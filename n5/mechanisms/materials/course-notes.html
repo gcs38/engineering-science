@@ -1,50 +1,512 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Course notes — Materials — Engineering Science Scotland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Materials — Course Notes — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .resource-page{max-width:680px;margin:0 auto;padding:32px 32px 64px;}
-    .open-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px 24px;text-align:center;margin-bottom:16px;}
-    .open-card-icon{font-size:36px;margin-bottom:10px;}
-    .open-card-title{font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:-.4px;margin-bottom:6px;}
-    .open-card-sub{font-size:13px;color:var(--gray-600);margin-bottom:20px;line-height:1.5;}
-    .open-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-400);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .open-btn:hover{background:var(--teal-600);}
-    .sim-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-800);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .sim-btn:hover{background:var(--teal-600);}
-    .back-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:20px;}
-    .back-link:hover{color:var(--teal-800);}
-    .info-note{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;margin-top:12px;}
+    .notes-wrap { max-width:860px; margin:0 auto; padding:28px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .back-link:hover { color:var(--teal-800); }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:16px 0 8px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+    .warning { background:#FFF7ED; border-left:4px solid #F97316; border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#9A3412; }
+
+    /* Material category cards */
+    .mat-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px; margin:16px 0 20px; }
+    .mat-card { background:white; border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; }
+    .mat-card-header { padding:10px 14px; font-size:13px; font-weight:700; color:white; }
+    .mat-card-body { padding:12px 14px; font-size:13px; color:var(--gray-600); line-height:1.6; }
+    .mat-card-body li { margin-bottom:3px; }
+
+    /* Properties table */
+    .mat-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .mat-table th { background:var(--teal-800); color:white; padding:9px 12px; text-align:left; font-weight:600; }
+    .mat-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
+    .mat-table tr:nth-child(even) td { background:var(--gray-50); }
+    .mat-table td:first-child { font-weight:600; color:var(--gray-900); }
+
+    /* Formula boxes */
+    .formula-box { background:white; border:2px solid var(--teal-100); border-radius:10px; padding:16px 20px; margin:16px 0; text-align:center; }
+    .formula { font-size:18px; font-weight:600; color:var(--teal-800); font-family:monospace; letter-spacing:.02em; }
+    .formula-sub { font-size:12px; color:var(--gray-400); margin-top:6px; }
+
+    /* Worked examples */
+    .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:18px 20px; margin:16px 0; }
+    .worked-example-title { font-size:13px; font-weight:600; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+    .step { display:flex; gap:12px; margin-bottom:10px; }
+    .step-num { width:24px; height:24px; border-radius:50%; background:var(--teal-400); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .step-content { font-size:13px; color:var(--gray-600); line-height:1.6; flex:1; }
+    .step-content strong { color:var(--gray-900); }
+
+    /* Selection box */
+    .selection-box { background:#f0fdf4; border:2px solid #86efac; border-radius:8px; padding:14px 16px; margin:14px 0; }
+    .selection-box-title { font-size:12px; font-weight:700; color:#15803d; text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
+    .selection-box p { font-size:13px; color:#166534; line-height:1.7; margin:0; }
+
+    /* Assignments */
+    .assignment { background:white; border:2px solid var(--teal-400); border-radius:12px; margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:6px; font-weight:500; }
+    .task-q-sub { font-size:13px; color:var(--gray-700); margin:5px 0 5px 16px; }
+
+    /* Answer boxes */
+    .answer-label { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin:8px 0 3px; display:flex; align-items:center; gap:6px; }
+    .saved-indicator { font-size:11px; color:#10b981; font-weight:600; opacity:0; transition:opacity .3s; text-transform:none; letter-spacing:0; }
+    .saved-indicator.show { opacity:1; }
+    .answer-box { background:#f8faff; border:2px solid #c7d7f5; border-radius:8px; padding:10px 12px; min-height:68px; font-size:14px; color:var(--gray-700); line-height:1.7; outline:none; transition:border-color .2s, box-shadow .2s; display:block; width:100%; box-sizing:border-box; }
+    .answer-box:focus { border-color:var(--teal-400); box-shadow:0 0 0 3px rgba(45,212,191,0.12); }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-sm { min-height:44px; }
+    .answer-box-lg { min-height:110px; }
+
+    .controls-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:32px 0 8px; padding:12px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; }
+    .controls-label { font-size:12px; color:var(--gray-500); font-weight:600; flex:1; min-width:140px; }
+    .ctrl-btn { display:inline-flex; align-items:center; gap:5px; padding:7px 14px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:all .15s; }
+    .ctrl-btn-clear { background:#fef2f2; color:#ef4444; }
+    .ctrl-btn-clear:hover { background:#fee2e2; }
+    .ctrl-btn-print { background:var(--teal-50); color:var(--teal-800); }
+    .ctrl-btn-print:hover { background:var(--teal-100); }
+    .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+
+    @media print {
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator { display:none!important; }
+      .layout { display:block!important; }
+      .main { margin:0!important; padding:0!important; }
+      .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
+    }
   </style>
-</head><body>
-<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a><a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+</head>
+<body>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a>
+    <a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
+
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero">
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Materials</div>
-      <h1 class="hero-title">📄 Course notes</h1>
-      <p class="hero-sub">Materials</p>
-      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../index.html">Mechanisms and Structures</a> &rsaquo; <a href="index.html">Materials</a> &rsaquo; <span>Course notes</span></div>
-    </div>
-    <div class="content">
-      <div class="resource-page">
-        <a href="index.html" class="back-link">&larr; Back to Materials</a>
-      <!-- EDIT BELOW: replace REPLACE_WITH_DRIVE_ID with your Google Drive file ID -->
-      <script>
-        var driveFileId = "REPLACE_WITH_DRIVE_ID";
-        if (driveFileId === "REPLACE_WITH_DRIVE_ID") {
-          document.write('<div class="open-card" style="background:var(--gray-50);border:1px dashed var(--gray-200);"><div class="open-card-icon" style="font-size:32px;">📂</div><div class="open-card-title" style="color:var(--gray-600);">Material coming soon</div><div class="open-card-sub">This resource is being prepared and will be available here shortly.</div></div>');
-        } else {
-          var url = "https://drive.google.com/file/d/" + driveFileId + "/view";
-          document.write('<div class="open-card"><div class="open-card-icon">📄</div><div class="open-card-title">Course notes</div><div class="open-card-sub">Notes, explanations and worked examples aligned to the SQA specification.</div><a href="' + url + '" target="_blank" class="open-btn"><svg viewBox="0 0 16 16" fill="none"><path d="M6 2h4l4 4v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M6 2v4h4M8 8v5M6 11l2 2 2-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Open document</a></div><div class="info-note"><strong>Note:</strong> Opens in a new tab. Use your browser back button to return.</div>');
-        }
-      </script>
+      <h1 class="hero-title">&#x1F9F1; Materials &mdash; Course Notes</h1>
+      <p class="hero-sub">Material properties, selection and justification, stress and strain calculations</p>
+      <div class="breadcrumb">
+        <a href="../../../../index.html">Home</a> &rsaquo;
+        <a href="../index.html">Mechanisms and Structures</a> &rsaquo;
+        <a href="index.html">Materials</a> &rsaquo;
+        <span>Course notes</span>
       </div>
+    </div>
+
+    <div class="content">
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to Materials</a>
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 1: Material Categories</h1>
+
+      <p class="notes-p">Engineers must choose the most appropriate material for every part of a design. The choice depends on what the part needs to do, what forces it will experience, and the environment it will operate in. Materials are grouped into four main categories:</p>
+
+      <div class="mat-grid">
+        <div class="mat-card">
+          <div class="mat-card-header" style="background:#0369a1;">&#x26CF;&#xFE0F; Metals</div>
+          <div class="mat-card-body">
+            <ul>
+              <li><strong>Steel</strong> — structural beams, car bodies, tools</li>
+              <li><strong>Aluminium</strong> — aircraft, packaging, bike frames</li>
+              <li><strong>Copper</strong> — electrical wiring, plumbing</li>
+              <li><strong>Titanium</strong> — aerospace, medical implants</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mat-card">
+          <div class="mat-card-header" style="background:#15803d;">&#x1F333; Polymers (plastics)</div>
+          <div class="mat-card-body">
+            <ul>
+              <li><strong>Polyethylene (PE)</strong> — plastic bags, bottles</li>
+              <li><strong>Polypropylene (PP)</strong> — food containers, rope</li>
+              <li><strong>Nylon</strong> — gears, bearings, textiles</li>
+              <li><strong>Acrylic</strong> — signs, windows, displays</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mat-card">
+          <div class="mat-card-header" style="background:#92400e;">&#x1F9F1; Ceramics</div>
+          <div class="mat-card-body">
+            <ul>
+              <li><strong>Glass</strong> — windows, lenses, optical fibre</li>
+              <li><strong>Concrete</strong> — foundations, roads, bridges</li>
+              <li><strong>Porcelain</strong> — electrical insulators, tiles</li>
+              <li><strong>Silicon carbide</strong> — cutting tools, brake discs</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mat-card">
+          <div class="mat-card-header" style="background:#6d28d9;">&#x2728; Composites</div>
+          <div class="mat-card-body">
+            <ul>
+              <li><strong>Carbon fibre reinforced polymer (CFRP)</strong> — aircraft, F1 cars, bikes</li>
+              <li><strong>Glass fibre (GRP/fibreglass)</strong> — boat hulls, helmets</li>
+              <li><strong>Reinforced concrete</strong> — buildings, bridges</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 2: Material Properties</h1>
+
+      <p class="notes-p">To choose the right material, engineers consider a range of <strong>mechanical, physical and other properties</strong>. Understanding these properties allows you to justify a material choice in the exam.</p>
+
+      <table class="mat-table">
+        <tr><th>Property</th><th>Definition</th><th>Example where important</th></tr>
+        <tr><td>Strength</td><td>Ability to withstand a force without breaking</td><td>Structural beams, lifting cables</td></tr>
+        <tr><td>Hardness</td><td>Resistance to scratching or indentation</td><td>Cutting tools, drill bits, gear teeth</td></tr>
+        <tr><td>Toughness</td><td>Ability to absorb impact energy without fracturing</td><td>Helmets, crash barriers, tool handles</td></tr>
+        <tr><td>Ductility</td><td>Ability to be drawn into wires or bent without breaking</td><td>Electrical wiring, bent brackets</td></tr>
+        <tr><td>Malleability</td><td>Ability to be hammered or pressed into shape</td><td>Aluminium car body panels, coins</td></tr>
+        <tr><td>Stiffness (rigidity)</td><td>Resistance to bending or deformation under load</td><td>Machine frames, structural columns</td></tr>
+        <tr><td>Elasticity</td><td>Ability to return to original shape after a force is removed</td><td>Springs, rubber seals</td></tr>
+        <tr><td>Density</td><td>Mass per unit volume — how heavy the material is</td><td>Aircraft components — low density preferred</td></tr>
+        <tr><td>Thermal conductivity</td><td>How well the material conducts heat</td><td>Heat sinks, cooking pans, insulators</td></tr>
+        <tr><td>Electrical conductivity</td><td>How well the material conducts electricity</td><td>Wiring (conductors), casings (insulators)</td></tr>
+        <tr><td>Corrosion resistance</td><td>Resistance to chemical attack or rusting</td><td>Outdoor structures, marine applications</td></tr>
+        <tr><td>Cost</td><td>Material and processing cost per unit</td><td>Always a factor in real engineering decisions</td></tr>
+      </table>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Material categories and properties</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. State which category (metal, polymer, ceramic or composite) each of the following belongs to: (a) copper, (b) nylon, (c) concrete, (d) carbon fibre reinforced polymer, (e) glass.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="mat-t1a" data-placeholder="(a) copper: ... (b) nylon: ... (c) concrete: ... (d) CFRP: ... (e) glass: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Explain the difference between strength and toughness. Give an example of a material that is strong but brittle (not tough).</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t1b" data-placeholder="Strength means... Toughness means... Example of strong but brittle: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. State two properties that are important when selecting a material for electrical wiring. For each property, explain why it matters.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t1c" data-placeholder="Property 1: ... Why: ... Property 2: ... Why: ..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 3: Selecting a Material</h1>
+
+      <p class="notes-p">In the SQA exam you will be given a scenario and asked to select a suitable material and <strong>justify your choice</strong>. A good justification always links the properties of the material directly to the demands of the application.</p>
+
+      <div class="key-point">A complete material selection answer always has two parts: <strong>(1) name the material</strong> and <strong>(2) state the specific property or properties that make it suitable</strong>, linked clearly to the application.</div>
+
+      <h2 class="notes-h2">How to approach a material selection question</h2>
+      <ol class="notes-ol">
+        <li>Read the scenario carefully — identify what forces or conditions the part must withstand</li>
+        <li>List the key requirements (e.g. must be lightweight, must conduct electricity, must resist corrosion)</li>
+        <li>Match a material to those requirements</li>
+        <li>Justify each property you mention — say <em>why</em> it matters for this specific application</li>
+      </ol>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 1 &mdash; Bicycle frame</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px;"><strong>Question:</strong> A bicycle frame must be lightweight and strong. Select a suitable material and justify your choice.</p>
+        <div class="selection-box">
+          <div class="selection-box-title">&#x2705; Good answer</div>
+          <p><strong>Aluminium alloy</strong> would be a suitable material. It has a <strong>high strength-to-weight ratio</strong>, meaning the frame can withstand the forces from the rider without being unnecessarily heavy. Aluminium also has good <strong>corrosion resistance</strong>, which is important as bicycle frames are used outdoors in wet conditions. Its <strong>ductility</strong> allows it to be formed into the required tube shapes during manufacture.</p>
+        </div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 2 &mdash; Electrical cable insulation</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px;"><strong>Question:</strong> Select a suitable material for the plastic insulation surrounding electrical cables and justify your choice.</p>
+        <div class="selection-box">
+          <div class="selection-box-title">&#x2705; Good answer</div>
+          <p><strong>PVC (polyvinyl chloride)</strong> is commonly used. It is an <strong>electrical insulator</strong>, which prevents the user from receiving an electric shock by stopping current flowing through the outer casing. It is also <strong>flexible</strong>, so the cable can be bent without cracking, and it is <strong>low cost</strong> making it economical to produce in large quantities.</p>
+        </div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 3 &mdash; Bridge support cable</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px;"><strong>Question:</strong> A suspension bridge cable must carry very large tensile forces and operate outdoors for many years. Select a suitable material and justify your choice.</p>
+        <div class="selection-box">
+          <div class="selection-box-title">&#x2705; Good answer</div>
+          <p><strong>High-tensile steel wire</strong> is used. Steel has very high <strong>tensile strength</strong>, meaning it can carry the enormous pulling forces in the cables without breaking. It is also <strong>stiff</strong>, which limits the amount of sag in the bridge. Galvanised or stainless steel variants are used to provide <strong>corrosion resistance</strong> for long outdoor service life.</p>
+        </div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Material selection and justification</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. A cutting tool is used to machine hard metals in a factory. Select a suitable material for the cutting tool and justify your choice by referring to at least two properties.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t2a" data-placeholder="Material: ... Justification: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A designer is choosing a material for the body panels of a sports car. The panels must be lightweight, strong and able to be formed into curved shapes. Suggest a suitable material and justify your answer.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t2b" data-placeholder="Material: ... Justification: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A food packaging company needs a material for a disposable drinks bottle. The material must be lightweight, transparent, cheap to produce and safe for food contact. Select a suitable material and justify your choice.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t2c" data-placeholder="Material: ... Justification: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. An engineer is designing a cooking pan. The base must conduct heat efficiently and be strong enough to survive being dropped. The handle must not conduct heat. Identify suitable materials for (a) the pan base and (b) the handle. Justify both choices.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t2d" data-placeholder="(a) Pan base — Material: ... Justification: ... (b) Handle — Material: ... Justification: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. A wind turbine blade must be very stiff, lightweight and able to withstand continuous cyclic loading over many years. Suggest a suitable material and justify your choice.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t2e" data-placeholder="Material: ... Justification: ..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 4: Stress</h1>
+
+      <p class="notes-p">When a force is applied to a structural member, the material inside it is being <strong>squeezed or stretched</strong>. The intensity of this internal force — the force per unit area — is called <strong>stress</strong>. Stress is what determines whether a material will fail: if the stress in a member exceeds the material's strength, it will break.</p>
+
+      <div class="formula-box">
+        <div class="formula">Stress (&sigma;) = Force (N) &divide; Area (mm&sup2;)</div>
+        <div class="formula-sub">Stress is measured in N/mm&sup2; (also written as MPa). The symbol is the Greek letter sigma (&sigma;).<br>Rearrangements: &nbsp; Force = Stress &times; Area &nbsp;&nbsp;|&nbsp;&nbsp; Area = Force &divide; Stress</div>
+      </div>
+
+      <p class="notes-p">The <strong>cross-sectional area</strong> is the area of the cut face of the member — perpendicular to the direction of the force. A smaller cross-section experiences <strong>greater stress</strong> for the same force. This is why load-bearing columns and cables are sized carefully.</p>
+
+      <div class="key-point">Stress tells us how hard the material is being pushed or pulled internally. A high stress value means the material is close to its limit — choose a stronger material, or increase the cross-sectional area.</div>
+
+      <h2 class="notes-h2">Calculating cross-sectional areas</h2>
+      <p class="notes-p">The cross-section shape determines how you calculate the area:</p>
+      <ul class="notes-ul">
+        <li><strong>Rectangle:</strong> A = width &times; height &nbsp;(mm &times; mm = mm&sup2;)</li>
+        <li><strong>Circle:</strong> A = &pi;r&sup2; = &pi;(d/2)&sup2; &nbsp;&mdash;&nbsp; where d is the diameter in mm</li>
+        <li><strong>Square:</strong> A = side &times; side</li>
+      </ul>
+
+      <!-- IMAGE SLOT -->
+      <img src="images/stress-cross-sections.png" alt="Diagrams showing rectangular, circular and square cross-sections with area formulae labelled" style="width:100%;max-width:600px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 1 &mdash; Stress in a square bar</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A square bar of 20 mm &times; 20 mm cross-section is subjected to a tensile load of 500 N. Calculate the stress in the bar.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Write the formula:</strong> &sigma; = F &divide; A</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Calculate area:</strong> A = 20 &times; 20 = 400 mm&sup2;</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate stress:</strong> &sigma; = 500 &divide; 400 = <strong>1.25 N/mm&sup2;</strong></div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 2 &mdash; Maximum load on a column</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A column of cross-section 0.25 m&sup2; has a maximum allowable stress of 50 N/mm&sup2;. Calculate the maximum compressive load.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Convert area to mm&sup2;:</strong> 0.25 m&sup2; = 0.25 &times; 10<sup>6</sup> mm&sup2; = 250 000 mm&sup2;</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Rearrange:</strong> F = &sigma; &times; A = 50 &times; 250 000 = <strong>12 500 000 N = 12.5 MN</strong></div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 3 &mdash; Minimum wire diameter</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A steel wire supports a load of 8 kN. The stress must not exceed 200 N/mm&sup2;. Find the minimum wire diameter required.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Convert load:</strong> 8 kN = 8 000 N</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Find minimum area:</strong> A = F &divide; &sigma; = 8 000 &divide; 200 = 40 mm&sup2;</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Find diameter from circular area formula:</strong> A = &pi;d&sup2;/4<br>d&sup2; = 4A &divide; &pi; = (4 &times; 40) &divide; &pi; = 50.93<br><strong>d = &radic;50.93 = 7.14 mm</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Stress calculations</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Show all working. Check units carefully — forces in N, areas in mm&sup2;, stress in N/mm&sup2;.</p>
+          <div class="task-item">
+            <div class="task-q">1. A rectangular steel bar has a cross-sectional area of 250 mm&sup2; and is subjected to a force of 50 kN. Determine the stress in the bar.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t3a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t3a" data-placeholder="Show working here…"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A wire 4 mm in diameter is subjected to a force of 300 N. Find the stress in the wire.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t3b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t3b" data-placeholder="Show working here…"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. What diameter of round steel bar is required to carry a tensile force of 10 kN if the stress must not exceed 14.14 N/mm&sup2;?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t3c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t3c" data-placeholder="Show working here…"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A piece of wire 0.75 mm in diameter is subjected to a force of 120 N. Calculate the stress.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t3d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t3d" data-placeholder="Show working here…"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. A mild steel tie-bar of circular cross-section has a diameter of 30 mm and is subjected to a tensile pull of 75 kN. Find the tensile stress in the bar.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t3e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t3e" data-placeholder="Show working here…"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">6. A concrete column has a square cross-section of 200 mm &times; 200 mm and supports a compressive load of 500 kN. Calculate the compressive stress. Would a material with an allowable stress of 12 N/mm&sup2; be suitable? Justify your answer.</div>
+            <div class="answer-label">Working and justification <span class="saved-indicator" id="ind-t3f">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t3f" data-placeholder="Calculate stress, then compare to allowable stress and justify…"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 5: Strain</h1>
+
+      <p class="notes-p">Every material deforms slightly when a force is applied to it — it stretches under tension or shortens under compression. This change in length, expressed as a <strong>proportion of the original length</strong>, is called <strong>strain</strong>. Strain tells us how much a material has deformed relative to its size.</p>
+
+      <div class="formula-box">
+        <div class="formula">Strain (&epsilon;) = Change in length (&Delta;L) &divide; Original length (L)</div>
+        <div class="formula-sub">Strain has <strong>no units</strong> — it is a dimensionless ratio. The symbol is the Greek letter epsilon (&epsilon;).<br>Both &Delta;L and L must be in the same units before dividing.<br>Rearrangements: &nbsp; &Delta;L = &epsilon; &times; L &nbsp;&nbsp;|&nbsp;&nbsp; L = &Delta;L &divide; &epsilon;</div>
+      </div>
+
+      <div class="key-point">Strain is always a very small number — often expressed in scientific notation (e.g. 5 &times; 10<sup>&minus;4</sup>). It has no units because it is a ratio of two lengths.</div>
+
+      <h2 class="notes-h2">Tensile and compressive strain</h2>
+      <p class="notes-p">If a member is under <strong>tension</strong> (being stretched), &Delta;L is an <strong>increase</strong> in length — the strain is positive. If a member is under <strong>compression</strong> (being shortened), &Delta;L is a <strong>decrease</strong> in length — the strain is sometimes described as compressive.</p>
+
+      <!-- IMAGE SLOT -->
+      <img src="images/strain-diagram.png" alt="Diagram showing a bar under tension with original length L and extension delta L labelled, alongside the strain formula" style="width:100%;max-width:600px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 1 &mdash; Strain in a wire</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A steel wire of length 5 m stretches 2.5 mm when a load is applied. Calculate the strain.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Write the formula:</strong> &epsilon; = &Delta;L &divide; L</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Convert to consistent units:</strong> L = 5 m = 5 000 mm, &Delta;L = 2.5 mm</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate strain:</strong> &epsilon; = 2.5 &divide; 5 000 = <strong>0.0005 (= 5 &times; 10<sup>&minus;4</sup>)</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>State units:</strong> Strain has no units.</div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 2 &mdash; Finding change in length</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">The allowable strain on a concrete column must not exceed 5 &times; 10<sup>&minus;4</sup>. The column is 3 m tall. Find the maximum reduction in height.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Rearrange:</strong> &Delta;L = &epsilon; &times; L</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Convert L:</strong> 3 m = 3 000 mm</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content">&Delta;L = 5 &times; 10<sup>&minus;4</sup> &times; 3 000 = <strong>1.5 mm</strong></div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example 3 &mdash; Combined stress and strain</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A mass of 2 500 kg is hung from a vertical steel bar. The bar has a rectangular cross-section of 75 mm &times; 50 mm and an original length of 0.5 m. The bar stretches by 2.5 mm. Calculate both the stress and the strain. (Use g = 9.81 m/s&sup2;.)</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Find the force:</strong> F = mg = 2 500 &times; 9.81 = 24 525 N</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Find the area:</strong> A = 75 &times; 50 = 3 750 mm&sup2;</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate stress:</strong> &sigma; = F &divide; A = 24 525 &divide; 3 750 = <strong>6.54 N/mm&sup2;</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Calculate strain:</strong> L = 0.5 m = 500 mm, &Delta;L = 2.5 mm<br>&epsilon; = 2.5 &divide; 500 = <strong>0.005</strong></div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Strain calculations</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Show all working. Remember to convert both lengths to the same unit before dividing. State clearly that strain has no units.</p>
+          <div class="task-item">
+            <div class="task-q">1. A wire 10 m long stretches 5 mm when a force is applied. Find the strain.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t4a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t4a" data-placeholder="Show working here…"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A tow bar 1.5 m long is compressed by 4.5 mm during braking. Find the strain.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t4b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t4b" data-placeholder="Show working here…"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. The allowable strain on a bar is 0.0075 and its length is 2.5 m. Find the maximum change in length.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t4c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t4c" data-placeholder="Show working here…"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. During testing, a shaft was compressed by 0.06 mm and the resulting strain was 0.00012. What was the original length of the shaft?</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t4d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t4d" data-placeholder="Show working here…"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. A mild steel tie-bar, 5 m long with a 30 mm diameter, lengthens by 1.5 mm under a tensile pull of 75 kN. Calculate both the stress and the strain in the bar.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t4e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t4e" data-placeholder="Stress: ... Strain: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">6. An aluminium alloy rod (cross-section 40 mm &times; 20 mm, length 800 mm) is subjected to a compressive force of 64 kN and compresses by 0.4 mm. Calculate the stress and strain. Would a material with an allowable stress of 80 N/mm&sup2; be suitable? Justify your answer.</div>
+            <div class="answer-label">Working and justification <span class="saved-indicator" id="ind-t4f">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-t4f" data-placeholder="Stress: ... Strain: ... Suitable? Justify…"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
+        <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
+      </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
+
+    </div>
     </div>
   </div>
 </div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
-<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script><script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script></body></html>
+
+<footer class="footer">
+  <span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span>
+  <a href="../../../../teacher/login.html">Teacher area</a>
+</footer>
+
+<script src="../../../../js/site.js"></script>
+<script src="../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
+
+<script>
+const STORAGE_PREFIX='ess_answers_';
+function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
+function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
+function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
+function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.answer-box').forEach(function(box){
+    var key=box.dataset.key;if(!key)return;
+    var saved=loadValue(key);if(saved)box.innerHTML=saved;
+    var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
+    box.addEventListener('input',ds);
+    box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
+  });
+});
+</script>
+
+</body>
+</html>
