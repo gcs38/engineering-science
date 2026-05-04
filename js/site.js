@@ -57,7 +57,6 @@ function teacherLogout() {
 }
 
 document.addEventListener('DOMContentLoaded', setActiveNav);
-
 /* ============================================================
    DEVELOPMENT BANNER + FEEDBACK BUTTON
    Paste this block at the bottom of js/site.js
@@ -81,20 +80,23 @@ document.addEventListener('DOMContentLoaded', setActiveNav);
       'justify-content:center',
       'gap:12px',
       'flex-wrap:wrap',
-      'background:#fefce8',
-      'border-bottom:1px solid #fde68a',
-      'padding:8px 20px',
-      'font-size:13px',
-      'color:#92400e',
+      'background:#ffd000',
+      'border-bottom:1px solid #e6bb00',
+      'padding:5px 20px',
+      'font-size:12px',
+      'color:#5c3d00',
       'font-family:inherit',
       'text-align:center',
-      'position:relative',
-      'z-index:100'
+      'position:sticky',
+      'top:0',
+      'z-index:999',
+      'width:100%',
+      'box-sizing:border-box'
     ].join(';');
 
     var linkStyle = [
-      'color:#b45309',
-      'font-weight:600',
+      'color:#5c3d00',
+      'font-weight:normal',
       'text-decoration:underline',
       'cursor:pointer'
     ].join(';');
