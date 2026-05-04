@@ -1,0 +1,2763 @@
+<!DOCTYPE html>
+<!-- 
+    NOSYNTAX SIMULATOR V2.0
+    ---------------------------------------------------
+    Developed for Engineering Science (National 5 & Higher).
+    Adheres to SQA Data Booklet flowchart standards.
+    Features: Dual PICAXE/Arduino Compiler, DIP IC Hardware Panel, SVG Wiring, Grid Snapping, Box-Select, Junction Splitting
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoSyntaxSim V2.0</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style type="text/tailwindcss">
+        body { margin: 0; overflow: hidden; background-color: #f4fdf8; font-family: 'Roboto', sans-serif; user-select: none; touch-action: none; }
+        canvas { display: block; background-color: transparent; cursor: crosshair; touch-action: none; border-radius: 24px; outline: none; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #94a3b8; border-radius: 3px; }
+        
+        .submenu { max-height: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; transform: translateY(-10px); }
+        .submenu.open { max-height: 1000px; opacity: 1; transform: translateY(0); margin-top: 0.5rem; margin-bottom: 0.5rem; } 
+        .rotate-icon { transition: transform 0.3s ease; }
+        .rotate-icon.open { transform: rotate(180deg); }
+
+        .comp-card { @apply flex flex-col items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm cursor-grab transition-all duration-200 select-none relative overflow-hidden h-[88px]; }
+        .comp-card:hover { @apply bg-white border-emerald-300 shadow-md -translate-y-1; }
+        .comp-card:active { @apply ring-2 ring-emerald-200 border-emerald-500 cursor-grabbing bg-emerald-50; }
+        
+        .card-label { @apply text-[10px] font-bold text-slate-500 tracking-tight text-center leading-none mt-1; }
+        .tool-btn { @apply p-2.5 rounded-full text-slate-500 hover:bg-emerald-100 hover:text-emerald-800 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-200; }
+        .tool-btn:disabled { @apply opacity-50 cursor-not-allowed hover:bg-transparent text-slate-300; }
+
+        .acc-btn { @apply w-full px-5 py-3.5 flex justify-between items-center text-sm font-extrabold text-slate-800 bg-white rounded-full hover:bg-emerald-50 hover:text-emerald-700 transition-all shadow-sm border border-transparent hover:border-emerald-200; }
+        .acc-btn[aria-expanded="true"] { @apply bg-emerald-100 text-emerald-900 shadow-none; }
+
+        /* Sidebar Collapse Logic */
+        #leftSidebar { transition: margin 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        #leftSidebar.collapsed { margin-left: -17rem; } 
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        #leftSidebar.collapsed #sidebarToggleIcon { transform: rotate(180deg); }
+
+        /* Pure CSS Flowchart Symbols */
+        .sym-pill { width: 44px; height: 22px; border: 2.5px solid #334155; background-color: white; border-radius: 9999px; margin-top: 4px; box-sizing: border-box; }
+        .sym-rect { width: 44px; height: 22px; border: 2.5px solid #334155; background-color: white; margin-top: 4px; box-sizing: border-box; }
+        .sym-sub { width: 44px; height: 22px; border: 2.5px solid #334155; background-color: white; margin-top: 4px; position: relative; box-sizing: border-box; }
+        .sym-sub::before, .sym-sub::after { content: ''; position: absolute; top: 0; bottom: 0; width: 2.5px; background-color: #334155; }
+        .sym-sub::before { left: 4px; } .sym-sub::after { right: 4px; }
+        .sym-sub-pill { width: 44px; height: 22px; border: 2.5px solid #334155; background-color: white; border-radius: 9999px; margin-top: 4px; position: relative; box-sizing: border-box; overflow: hidden; }
+        .sym-sub-pill::before, .sym-sub-pill::after { content: ''; position: absolute; top: 0; bottom: 0; width: 2.5px; background-color: #334155; }
+        .sym-sub-pill::before { left: 6px; } .sym-sub-pill::after { right: 6px; }
+        .sym-para { width: 40px; height: 22px; border: 2.5px solid #334155; background-color: white; margin-top: 4px; transform: skew(-15deg); box-sizing: border-box; }
+        .sym-diamond { width: 22px; height: 22px; border: 2.5px solid #334155; background-color: white; margin-top: 6px; transform: rotate(45deg); box-sizing: border-box; }
+
+        /* Highly Tactile Drag Ghost */
+        .drag-ghost { position: fixed; z-index: 9999; pointer-events: none !important; transform: translate(-50%, -50%) scale(1.25) rotate(-3deg) !important; filter: drop-shadow(0 15px 15px rgba(16, 185, 129, 0.4)); transition: none; }
+
+        /* Hardware Slots */
+        .hw-slot { @apply w-12 h-12 border-2 border-dashed border-slate-300 rounded-xl flex items-center justify-center transition-all relative z-20 bg-white cursor-pointer hover:border-emerald-400 hover:bg-emerald-50 hover:scale-105 shadow-sm mx-auto; }
+        .hw-slot.populated { @apply border-solid border-slate-300 bg-slate-50 shadow-md p-0 rounded-xl hover:border-slate-300 cursor-default hover:scale-100; }
+        
+        /* HARDWARE COMPONENTS */
+        .hw-btn { width: 40px; height: 40px; border-radius: 9999px; background-color: var(--comp-color, #ef4444); box-shadow: 0 4px 0 rgba(0,0,0,0.3); transition: all 0.1s; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid rgba(0,0,0,0.2); z-index: 20; position: relative; }
+        .hw-btn:active { box-shadow: 0 0px 0 rgba(0,0,0,0.3); transform: translateY(4px); }
+        
+        .hw-switch { width: 40px; height: 20px; background-color: #cbd5e1; border-radius: 9999px; position: relative; cursor: pointer; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); border: 1px solid #94a3b8; transition: background-color 0.2s; z-index: 20; }
+        .hw-switch.on { background-color: #10b981; border-color: #059669; }
+        .hw-switch-knob { width: 24px; height: 24px; background-color: white; border-radius: 9999px; position: absolute; top: -3px; left: -2px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); transition: transform 0.2s; border: 1px solid #e2e8f0; }
+        .hw-switch.on .hw-switch-knob { transform: translateX(20px); }
+        
+        .hw-slider { width: 140px; height: 16px; background-color: #cbd5e1; border-radius: 8px; appearance: none; cursor: pointer; accent-color: #10b981; transform-origin: center; transform: rotate(-90deg); outline: none; transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); z-index: 20; position: relative; }
+        .hw-slider:active, .hw-slider:focus { transform: rotate(-90deg) scale(1.05); z-index: 40; box-shadow: 0 0 15px rgba(16,185,129,0.3); }
+        
+        .hw-led { width: 32px; height: 32px; border-radius: 9999px; background-color: #e2e8f0; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); border: 2px solid #cbd5e1; transition: all 0.1s; position: relative; z-index: 20; }
+        .hw-led::after { content: ''; position: absolute; inset: 0; border-radius: 9999px; opacity: 0; transition: opacity 0.1s; box-shadow: 0 0 15px 5px var(--comp-color, #ef4444); background-color: var(--comp-color, #ef4444); }
+        .hw-led.on { border-color: rgba(0,0,0,0.3); }
+        .hw-led.on::after { opacity: var(--led-intensity, 1); }
+        
+        .hw-buzzer { width: 40px; height: 40px; border-radius: 9999px; background-color: #1e293b; border: 4px solid #475569; display: flex; align-items: center; justify-content: center; position: relative; z-index: 20; }
+        .hw-buzzer-inner { width: 12px; height: 12px; border-radius: 9999px; background-color: #0f172a; border: 1px solid #334155; }
+        @keyframes buzz { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-2px) rotate(-3deg); } 75% { transform: translateX(2px) rotate(3deg); } }
+        .hw-buzzer.active { animation: buzz 0.1s linear infinite; }
+        .hw-buzzer.active::before, .hw-buzzer.active::after { content: ''; position: absolute; border: 2px solid #94a3b8; border-radius: 50%; opacity: 0; animation: soundwave 0.6s ease-out infinite; }
+        .hw-buzzer.active::before { width: 100%; height: 100%; } .hw-buzzer.active::after { width: 100%; height: 100%; animation-delay: 0.3s; }
+        @keyframes soundwave { 0% { transform: scale(1); opacity: 0.8; } 100% { transform: scale(1.6); opacity: 0; } }
+        
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .hw-motor { width: 40px; height: 40px; border-radius: 50%; background-color: #e2e8f0; border: 3px solid #64748b; display: flex; align-items: center; justify-content: center; position: relative; box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); z-index: 20; }
+        .hw-motor::after { content: 'M'; font-weight: 900; font-size: 18px; color: #334155; position: absolute; z-index: 25; }
+        .hw-motor-spindle { width: 34px; height: 34px; border-radius: 50%; border: 3px dashed #94a3b8; position: absolute; transition: transform 0.1s; }
+        
+        .hw-delete-comp-btn { position: absolute; top: -8px; right: -8px; width: 20px; height: 20px; background-color: #f43f5e; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; cursor: pointer; opacity: 0; transition: all 0.2s; z-index: 50; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .hw-slot:hover .hw-delete-comp-btn { opacity: 1; transform: scale(1.1); }
+
+        /* Dynamic SVG Wires */
+        .hw-svg-wire { stroke: #cbd5e1; stroke-width: 4; fill: none; stroke-linecap: round; stroke-linejoin: round; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .hw-svg-wire.active { stroke: #10b981; stroke-width: 6; filter: drop-shadow(0 0 6px rgba(16,185,129,0.5)); }
+        .hw-svg-wire-inner { stroke: white; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 8 8; opacity: 0; transition: opacity 0.2s; }
+        .hw-svg-wire-inner.active { opacity: 1; }
+        
+        @keyframes wire-flow-in { to { stroke-dashoffset: -16; } }
+        @keyframes wire-flow-out { to { stroke-dashoffset: 16; } }
+        
+        .hw-svg-wire-inner.active.input-wire { animation: wire-flow-in 0.4s linear infinite; }
+        .hw-svg-wire-inner.active.output-wire { animation: wire-flow-out 0.4s linear infinite; }
+
+        /* Custom Colour Palette */
+        .colour-swatch { @apply w-4 h-4 rounded-full cursor-pointer border border-slate-300 hover:scale-125 transition-transform shadow-sm; }
+
+        .modal-overlay.hidden { opacity: 0; pointer-events: none; }
+        .modal-overlay { opacity: 1; pointer-events: auto; transition: opacity 0.2s ease; }
+        #toast { transform: translate(-50%, 20px); opacity: 0; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        #toast.show { transform: translate(-50%, -20px); opacity: 1; }
+        #codeEditor { font-family: 'JetBrains Mono', monospace; font-size: 13px; line-height: 1.5; white-space: pre; overflow-x: auto; }
+    </style>
+</head>
+<body class="flex flex-col text-slate-800 bg-[#f4fdf8] h-screen w-screen overflow-hidden">
+
+    <!-- Top Toolbar -->
+    <div class="h-16 bg-white z-20 flex items-center justify-between px-6 border-b border-emerald-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] shrink-0">
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-yellow-400 text-white rounded-xl shadow-lg hover:scale-105 transition-transform flex items-center justify-center border border-white/20 select-none">
+                    <svg class="w-7 h-7 drop-shadow-sm" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" /></svg>
+                </div>
+                <h1 class="text-xl font-bold text-slate-700 tracking-tight whitespace-nowrap">NoSyntax <span class="text-emerald-600">Sim</span> <span class="text-xs text-slate-400 font-mono ml-1">V2.0</span></h1>
+            </div>
+            
+            <div class="h-8 w-px bg-slate-300 mx-2 rounded-full"></div>
+
+            <div class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-full shadow-inner border border-slate-200">
+                <button id="btnSave" class="tool-btn" title="Save Flowchart"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" style="display:none"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V7l-4-4zm-5 16v-4a2 2 0 012-2h0a2 2 0 012 2v4M9 3v4a2 2 0 002 2h4a2 2 0 002-2V3"/></svg></button>
+                <label class="tool-btn cursor-pointer" title="Load Flowchart">
+                    <input type="file" id="fileLoad" accept=".json" class="hidden">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                </label>
+                <button id="btnExport" class="tool-btn" title="Export Image"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg></button>
+            </div>
+
+            <button id="btnSim" type="button" class="px-6 py-2 bg-gradient-to-r from-emerald-500 to-lime-500 text-white rounded-full hover:from-emerald-600 hover:to-lime-600 font-bold text-xs shadow-md shadow-emerald-900/20 transition-all flex items-center gap-2 active:scale-95 ml-2"><span>▶</span> RUN PROGRAMME</button>
+            <button id="btnStop" type="button" class="hidden px-6 py-2 bg-slate-800 text-white rounded-full hover:bg-slate-900 font-bold text-xs shadow-md shadow-slate-900/20 transition-all flex items-center gap-2 active:scale-95 ml-2"><span>■</span> STOP PROGRAMME</button>
+        </div>
+
+        <div class="flex items-center gap-2 bg-slate-50 p-1.5 rounded-full shadow-inner border border-slate-200">
+            <button id="btnUndo" class="tool-btn" title="Undo (Ctrl+Z)" disabled><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg></button>
+            <button id="btnRedo" class="tool-btn" title="Redo (Ctrl+Y)" disabled><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6"/></svg></button>
+            <div class="h-5 w-px bg-slate-300 mx-1"></div>
+            <button id="btnCopy" class="tool-btn" title="Copy Node (Ctrl+C)"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg></button>
+            <button id="btnPaste" class="tool-btn" title="Paste Node (Ctrl+V)"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/></svg></button>
+            <div class="h-5 w-px bg-slate-300 mx-1"></div>
+            <button id="btnZoomIn" type="button" class="tool-btn" title="Zoom In"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></button>
+            <button id="btnZoomOut" type="button" class="tool-btn" title="Zoom Out"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg></button>
+            <button id="btnHome" type="button" class="tool-btn" title="Fit to Screen"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg></button>
+            <div class="h-5 w-px bg-slate-300 mx-1"></div>
+            <button id="btnDelete" type="button" class="tool-btn text-rose-500 hover:bg-rose-100" title="Delete Selection (Del)">🗑</button>
+            <button id="btnClear" type="button" class="tool-btn text-slate-400 hover:text-slate-600" title="Clear All">✕</button>
+        </div>
+    </div>
+
+    <!-- Main Workspace -->
+    <div class="flex flex-1 overflow-hidden p-4 gap-4 relative">
+        
+        <!-- Left Sidebar: Flowchart Library -->
+        <div id="leftSidebar" class="w-64 flex-shrink-0 bg-white/90 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-slate-100 flex flex-col relative z-30 transition-all duration-300 ease-in-out">
+            <div class="flex-1 overflow-y-auto p-4 flex flex-col hide-scrollbar" id="sidebarList">
+
+                <div class="flex-1">
+                    <h3 class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-3 text-center">Flowchart Nodes</h3>
+                    <div id="menu-flow" class="grid grid-cols-2 gap-2">
+                        <div class="comp-card" data-type="terminal"><div class="sym-pill"></div><span class="card-label">Terminal</span></div>
+                        <div class="comp-card" data-type="process"><div class="sym-rect"></div><span class="card-label">Process</span></div>
+                        
+                        <!-- Macro Component -->
+                        <div class="comp-card" data-type="loop_macro" title="Creates a standard 3-block loop">
+                            <div class="flex flex-col items-center gap-1 mt-1">
+                                <div class="sym-rect" style="width:24px;height:10px;margin:0;border-width:2px;"></div>
+                                <div class="sym-rect" style="width:24px;height:10px;margin:0;border-width:2px;"></div>
+                                <div class="sym-diamond" style="width:14px;height:14px;margin:0;border-width:2px;"></div>
+                            </div>
+                            <span class="card-label mt-1">For Loop</span>
+                        </div>
+
+                        <div class="comp-card" data-type="decision"><div class="sym-diamond"></div><span class="card-label">Decision</span></div>
+                        <div class="comp-card" data-type="io"><div class="sym-para"></div><span class="card-label">In / Out</span></div>
+                        <div class="comp-card" data-type="sub_start"><div class="sym-sub"></div><span class="card-label">Sub Start</span></div>
+                        <div class="comp-card" data-type="sub"><div class="sym-sub"></div><span class="card-label">Call Sub</span></div>
+                        <div class="comp-card" data-type="return"><div class="sym-sub"></div><span class="card-label">Return</span></div>
+                    </div>
+                </div>
+                
+                <div class="text-[10px] text-slate-400 p-4 text-center bg-slate-50/80 rounded-2xl border border-slate-200 border-dashed mt-4 shrink-0">
+                    <strong>Drag</strong> to place symbols.<br><strong>Click to bend</strong> to draw neat lines.<br>
+                    <strong>Drop on a line</strong> to automatically split and create a junction.
+                </div>
+            </div>
+
+            <!-- Gradient Circular Collapse Toggle Button -->
+            <button id="sidebarToggle" class="absolute -right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-gradient-to-br from-emerald-500 to-yellow-400 rounded-full shadow-[0_8px_25px_rgba(16,185,129,0.4)] flex items-center justify-center cursor-pointer hover:scale-105 z-10 text-white transition-transform duration-300 border border-white/20" title="Toggle Sidebar">
+                <svg id="sidebarToggleIcon" class="w-6 h-6 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" /></svg>
+            </button>
+        </div>
+
+        <!-- Center Workspace: Flowchart Canvas -->
+        <div class="flex-1 relative bg-white rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-emerald-50 overflow-hidden flex flex-col" id="canvasContainer">
+            <canvas id="flowCanvas" class="absolute inset-0 w-full h-full" tabindex="0"></canvas>
+            
+            <!-- Dynamic Inspector Panel -->
+            <div id="inspector" class="hidden absolute top-4 right-4 bg-white/95 p-4 rounded-2xl shadow-xl border border-emerald-100 w-72 backdrop-blur-md transition-all z-20 max-h-[80vh] overflow-y-auto hide-scrollbar">
+                <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-100 sticky top-0 bg-white/95 backdrop-blur-md z-10 pt-1">
+                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest" id="inspTitle">Properties</h3>
+                    <span id="badgeType" class="text-[9px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-md uppercase tracking-wider">NODE</span>
+                </div>
+                <div id="propContainer" class="space-y-3"></div>
+            </div>
+        </div>
+
+        <!-- Right Sidebar: Hardware Controller Panel -->
+        <div class="w-[380px] flex-shrink-0 bg-white rounded-3xl shadow-[0_8px_30px_rgba(16,185,129,0.15)] border border-slate-100 flex flex-col p-4 relative z-10 overflow-hidden">
+            
+            <!-- Header area with Title and Code button -->
+            <div class="flex justify-between items-center mb-2 px-1">
+                <div>
+                    <h2 class="text-sm font-black text-slate-800 uppercase tracking-widest leading-tight">Hardware Interface</h2>
+                    <p class="text-[9px] text-slate-400">Add, rename, and assign components</p>
+                </div>
+                <button id="btnGenerateCode" onclick="CodeGenerator.generate()" class="px-4 py-1.5 bg-emerald-100 text-emerald-700 hover:bg-emerald-600 hover:text-white rounded-full font-bold text-[10px] shadow-sm transition-colors border border-emerald-200 uppercase tracking-wider">
+                    &lt; Code &gt;
+                </button>
+            </div>
+            
+            <!-- Completely Revised Hardware Panel for SVG Wire Layering -->
+            <div class="flex-1 w-full relative h-full flex flex-col min-h-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-inner">
+                <div class="absolute inset-0 overflow-y-auto hide-scrollbar p-2" id="hardwarePanel">
+                    
+                    <svg id="hwWireCanvas" class="absolute top-0 left-0 w-full min-h-full pointer-events-none z-10"></svg>
+                    
+                    <div class="flex justify-between min-h-full relative">
+                        <!-- Left Column (Inputs) -->
+                        <div class="w-[90px] flex flex-col gap-3 py-4 z-20" id="hwInputsContainer">
+                            <!-- Populated dynamically -->
+                        </div>
+
+                        <!-- Center Controller Block (DIP IC style) -->
+                        <div class="flex-1 flex justify-center items-center pointer-events-none z-30 px-2 py-4 relative">
+                            <div id="centralController" class="w-[90px] bg-[#0f172a] rounded-lg shadow-2xl border-2 border-slate-700 flex flex-col items-center justify-center relative sticky top-[calc(50%-120px)] h-[240px] pointer-events-auto">
+                                <!-- IC Notch -->
+                                <div class="absolute top-0 left-1/2 -translate-x-1/2 w-6 h-3 bg-slate-50 border-b border-l border-r border-slate-700 rounded-b-full"></div>
+                                
+                                <span class="text-slate-500/50 font-mono tracking-[0.2em] font-black text-[12px] transform -rotate-90 select-none uppercase">Microcontroller</span>
+                            </div>
+                        </div>
+
+                        <!-- Right Column (Outputs) -->
+                        <div class="w-[90px] flex flex-col gap-3 py-4 z-20" id="hwOutputsContainer">
+                            <!-- Populated dynamically -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="mt-4 bg-slate-50 border border-slate-200 rounded-xl p-3 shrink-0">
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Execution Speed</span>
+                    <span id="speedVal" class="text-xs font-mono font-bold text-emerald-600 bg-emerald-100 px-2 py-0.5 rounded-md">1.0x</span>
+                </div>
+                <input type="range" id="simSpeed" min="0.1" max="10" step="0.1" value="1.0" class="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-emerald-500 mt-3">
+            </div>
+        </div>
+    </div>
+
+    <!-- HW Picker Modal -->
+    <div id="hwPicker" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-2xl border border-emerald-100 w-[340px] overflow-hidden transform transition-all scale-95" id="hwPickerModalContent">
+            <div class="px-4 py-3 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <h3 class="text-sm font-bold text-slate-700" id="hwPickerTitle">Select Component</h3>
+                <button class="text-slate-400 hover:text-rose-500 text-lg leading-none" id="btnCloseHwPicker">✕</button>
+            </div>
+            <div class="p-4 grid grid-cols-2 gap-3" id="hwPickerGrid"></div>
+        </div>
+    </div>
+
+    <!-- Colour Picker Modal -->
+    <div id="colourPickerModal" class="modal-overlay hidden fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/50 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-2xl border border-emerald-100 w-[240px] overflow-hidden transform transition-all scale-95" id="colourPickerContent">
+            <div class="px-4 py-3 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+                <h3 class="text-sm font-bold text-slate-700">Select Colour</h3>
+                <button class="text-slate-400 hover:text-rose-500 text-lg leading-none" onclick="HardwareManager.closeColourPicker()">✕</button>
+            </div>
+            <div class="p-4 grid grid-cols-4 gap-3" id="colourPickerGrid"></div>
+        </div>
+    </div>
+
+    <!-- Code Generation Modal -->
+    <div id="codeModal" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-2xl border border-emerald-100 w-[640px] max-w-[95vw] h-[80vh] flex flex-col overflow-hidden transform transition-all scale-95" id="codeModalContent">
+            <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-slate-800 rounded-lg flex items-center justify-center text-white"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg></div>
+                    <h3 class="text-base font-bold text-slate-800">Generated Code</h3>
+                </div>
+                <button class="text-slate-400 hover:text-rose-500 text-2xl leading-none" id="btnCloseCodeModal">✕</button>
+            </div>
+            <div class="p-0 flex-1 overflow-hidden relative bg-slate-900">
+                <textarea id="codeEditor" readonly class="w-full h-full bg-slate-900 text-emerald-400 p-6 outline-none resize-none font-mono" spellcheck="false"></textarea>
+            </div>
+            <div class="px-6 py-4 border-t border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
+                <div class="flex items-center gap-2">
+                    <span class="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Language:</span>
+                    <select id="codeLangSelect" onchange="CodeGenerator.generate()" class="bg-white border border-slate-300 rounded-md px-2 py-1.5 text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-emerald-500">
+                        <option value="arduino">Arduino C++</option>
+                        <option value="picaxe">PICAXE BASIC</option>
+                    </select>
+                </div>
+                <button id="btnCopyCode" class="px-6 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg font-bold text-sm shadow transition-colors">Copy Code</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full font-bold shadow-2xl z-[100] pointer-events-none flex items-center gap-2">
+        <span id="toastMsg"></span>
+    </div>
+
+    <script>
+        /**
+         * NoSyntaxSim V2.0 Core Logic
+         * FACTORISED AND OPTIMISED ENGINE
+         */
+
+        // --- CONSTANTS & CONFIG ---
+        const CFG = {
+            grid: 20, 
+            colours: {
+                bg: '#ffffff', line: '#64748b', lineActive: '#10b981',
+                nodeBorder: '#334155', nodeFill: '#ffffff', nodeActive: '#d1fae5',
+                text: '#0f172a', anchor: '#94a3b8', anchorHover: '#10b981', selection: '#facc15'
+            }
+        };
+
+        // --- GLOBAL APP STATE ---
+        const state = {
+            nodes: [], 
+            links: [],
+            pins: [
+                { id: 'in2', type: 'input', pinNum: 2, name: 'IN_2', component: null, colour: '#ef4444' },
+                { id: 'in3', type: 'input', pinNum: 3, name: 'IN_3', component: null, colour: '#ef4444' },
+                { id: 'in4', type: 'input', pinNum: 4, name: 'IN_4', component: null, colour: '#ef4444' },
+                { id: 'in5', type: 'input', pinNum: 5, name: 'IN_5', component: null, colour: '#ef4444' },
+                { id: 'out6', type: 'output', pinNum: 6, name: 'OUT_6', component: null, colour: '#ef4444' },
+                { id: 'out7', type: 'output', pinNum: 7, name: 'OUT_7', component: null, colour: '#ef4444' },
+                { id: 'out8', type: 'output', pinNum: 8, name: 'OUT_8', component: null, colour: '#ef4444' },
+                { id: 'out9', type: 'output', pinNum: 9, name: 'OUT_9', component: null, colour: '#ef4444' }
+            ],
+            simRunning: false, 
+            activeNodeId: null, 
+            callStack: []
+        };
+        
+        let simVars = {};
+        let clipboard = null;
+        let hwMemory = {}; 
+        
+        const interact = { 
+            selNode: null, selLink: null, dragNode: null, resizeData: null, 
+            pan: false, linkStart: null, msX: 0, msY: 0, dynX: 0, dynY: 0, 
+            dragWaypoint: null, isDraggingCanvas: false, isResizing: false,
+            multiSel: [], boxSel: null, dragStartNodes: []
+        };
+
+        const view = { x: 0, y: 0, scale: 1 };
+        
+        // --- DOM REFERENCES ---
+        const cvs = document.getElementById('flowCanvas'); 
+        const ctx = cvs.getContext('2d');
+        const container = document.getElementById('canvasContainer');
+
+        function resize() {
+            if (!cvs || !container) return;
+            cvs.width = container.clientWidth;
+            cvs.height = container.clientHeight;
+            if (Renderer && Renderer.draw) Renderer.draw();
+        }
+        window.addEventListener('resize', () => {
+            resize();
+            if(HardwareManager && HardwareManager.drawWires) HardwareManager.drawWires();
+        });
+
+        // --- CORE UTILITIES ---
+        const Utils = {
+            snap: (v) => Math.round(v / CFG.grid) * CFG.grid,
+            dist: (x1, y1, x2, y2) => Math.hypot(x2 - x1, y2 - y1),
+            getMousePos: (evt) => { 
+                const r = cvs.getBoundingClientRect(); 
+                return { x: evt.clientX - r.left, y: evt.clientY - r.top }; 
+            },
+            getTransformedPos: (mx, my) => ({ 
+                x: (mx - view.x) / view.scale, 
+                y: (my - view.y) / view.scale 
+            }),
+            distToSegment: (px, py, x1, y1, x2, y2) => {
+                let l2 = Utils.dist(x1, y1, x2, y2); 
+                l2 = l2 * l2;
+                if (l2 === 0) return Utils.dist(px, py, x1, y1);
+                let t = ((px - x1) * (x2 - x1) + (py - y1) * (y2 - y1)) / l2;
+                t = Math.max(0, Math.min(1, t));
+                return Utils.dist(px, py, x1 + t * (x2 - x1), y1 + t * (y2 - y1));
+            },
+            getBestAnchor: (node, prevPt) => {
+                let bestDist = Infinity; let bestA = node.getAnchors()[0];
+                node.getAnchors().forEach(a => { 
+                    let d = Utils.dist(prevPt.x, prevPt.y, a.x, a.y); 
+                    if(d < bestDist) { bestDist = d; bestA = a; } 
+                });
+                return bestA;
+            },
+            getPinName: (pinId) => {
+                if (!pinId) return "None";
+                let p = state.pins.find(x => x.id === pinId);
+                return p ? p.name : "None";
+            }
+        };
+
+        // --- HISTORY MANAGER ---
+        const HistoryManager = {
+            stack: [],
+            index: -1,
+            max: 50,
+            getStateJSON() { 
+                return JSON.stringify({ nodes: state.nodes, links: state.links, pins: state.pins, version: "2.0" }); 
+            },
+            loadStateJSON(jsonStr) {
+                try {
+                    // Prevent canvas freezes by clearing all ghost interaction states on load
+                    interact.selNode = null;
+                    interact.selLink = null;
+                    interact.dragNode = null;
+                    interact.linkStart = null;
+                    interact.pan = false;
+                    interact.isDraggingCanvas = false;
+                    interact.isResizing = false;
+                    interact.multiSel = [];
+                    interact.boxSel = null;
+                    if (document.getElementById('inspector')) {
+                        document.getElementById('inspector').classList.add('hidden');
+                    }
+
+                    const data = JSON.parse(jsonStr); 
+                    state.nodes = data.nodes.map(n => Object.assign(new FNode(n.type, n.x, n.y), n)); 
+                    state.links = data.links || [];
+                    
+                    if (data.hwSetup && !data.pins) {
+                        state.pins = [];
+                        for(let i=2; i<=5; i++) { state.pins.push({id: 'in'+i, type: 'input', pinNum: i, name: 'IN_'+i, component: data.hwSetup['in'+i] || null, colour: '#ef4444'}); }
+                        for(let i=6; i<=9; i++) { state.pins.push({id: 'out'+i, type: 'output', pinNum: i, name: 'OUT_'+i, component: data.hwSetup['out'+i] || null, colour: '#ef4444'}); }
+                    } else if (data.pins) {
+                        state.pins = data.pins.map(p => { if (!p.colour) p.colour = '#ef4444'; return p; });
+                    }
+                    
+                    HardwareManager.renderPanel(); Renderer.draw(); UIManager.fitToScreen();
+                } catch(e) { UIManager.showToast("Error loading file.", true); }
+            },
+            record() {
+                if(state.simRunning) return; 
+                const current = this.getStateJSON(); 
+                if(this.index >= 0 && this.stack[this.index] === current) return;
+                this.stack = this.stack.slice(0, this.index + 1); 
+                this.stack.push(current); 
+                this.index++;
+                if(this.stack.length > this.max) { this.stack.shift(); this.index--; } 
+                this.updateButtons();
+            },
+            undo() { 
+                if(state.simRunning || this.index <= 0) return; 
+                this.index--; this.loadStateJSON(this.stack[this.index]); this.updateButtons(); 
+            },
+            redo() { 
+                if(state.simRunning || this.index >= this.stack.length - 1) return; 
+                this.index++; this.loadStateJSON(this.stack[this.index]); this.updateButtons(); 
+            },
+            updateButtons() { 
+                document.getElementById('btnUndo').disabled = (this.index <= 0); 
+                document.getElementById('btnRedo').disabled = (this.index >= this.stack.length - 1); 
+                document.getElementById('btnUndo').style.opacity = (this.index <= 0) ? 0.3 : 1; 
+                document.getElementById('btnRedo').style.opacity = (this.index >= this.stack.length - 1) ? 0.3 : 1; 
+            }
+        };
+
+        // --- DYNAMIC INSPECTOR BUILDER ---
+        const InspectorBuilder = {
+            build(n) {
+                let html = '';
+                document.getElementById('badgeType').innerText = n.type.toUpperCase();
+                
+                switch(n.type) {
+                    case 'terminal': html = this.getTerminalHTML(n); break;
+                    case 'sub_start': html = this.getSubStartHTML(n); break;
+                    case 'process': html = this.getProcessHTML(n); break;
+                    case 'sub': html = this.getCallSubHTML(n); break;
+                    case 'return': html = this.getReturnHTML(n); break;
+                    case 'io': html = this.getIOHTML(n); break;
+                    case 'decision': html = this.getDecisionHTML(n); break;
+                    case 'junction': html = `<p class="text-xs text-slate-500">Flowchart junction node. Cannot be configured.</p>`; break;
+                }
+                return html;
+            },
+            getTerminalHTML(n) {
+                document.getElementById('inspTitle').innerText = "Terminal";
+                return `<label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">State</label>
+                        <select class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" onchange="UIManager.updateNodeProp('subType', this.value, true)">
+                            <option value="START" ${n.subType==='START'?'selected':''}>MAIN START</option>
+                            <option value="STOP" ${n.subType==='STOP'?'selected':''}>STOP</option>
+                        </select>`;
+            },
+            getSubStartHTML(n) {
+                document.getElementById('inspTitle').innerText = "Sub-procedure Start";
+                return `<label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Sub-procedure Name</label>
+                        <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" value="${n.subName}" oninput="UIManager.updateNodeProp('subName', this.value, false)" onchange="HistoryManager.record()">`;
+            },
+            getProcessHTML(n) {
+                document.getElementById('inspTitle').innerText = "Process";
+                let html = `<label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Process Type</label>
+                            <select class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none mb-2" onchange="UIManager.updateNodeProp('pType', this.value, true)">
+                            <option value="delay" ${n.pType==='delay'?'selected':''}>Time Delay</option>
+                            <option value="var_set" ${n.pType==='var_set'?'selected':''}>Set Variable</option>
+                            <option value="var_math" ${n.pType==='var_math'?'selected':''}>Math Operation</option>
+                            </select>`;
+                         
+                if(n.pType === 'delay') {
+                    html += `<label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Delay Setting</label>
+                             <select class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none mb-2" onchange="UIManager.updateNodeProp('delayType', this.value, true)">
+                                 <option value="constant" ${n.delayType==='constant'?'selected':''}>Constant Time (ms)</option>
+                                 <option value="variable" ${n.delayType==='variable'?'selected':''}>Variable</option>
+                             </select>`;
+                    if (n.delayType === 'variable') {
+                        html += `<label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Variable Name (ms)</label>
+                                 <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" value="${n.varName || 'delayTime'}" oninput="UIManager.updateNodeProp('varName', this.value, false)" onchange="HistoryManager.record()">`;
+                    } else {
+                        html += `<label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Delay Time (ms)</label>
+                                 <input type="number" min="0" step="100" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" value="${n.delayMs}" oninput="UIManager.updateNodeProp('delayMs', parseInt(this.value) || 0, false)" onchange="HistoryManager.record()">`;
+                    }
+                } else if (n.pType === 'var_set') {
+                    html += `<div class="grid grid-cols-2 gap-2">
+                                <div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Variable Name</label>
+                                <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm" value="${n.varName}" oninput="UIManager.updateNodeProp('varName', this.value, false)" onchange="HistoryManager.record()"></div>
+                                <div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Value</label>
+                                <input type="number" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm" value="${n.varVal}" oninput="UIManager.updateNodeProp('varVal', parseInt(this.value) || 0, false)" onchange="HistoryManager.record()"></div>
+                             </div>`;
+                } else if (n.pType === 'var_math') {
+                    html += `<label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Variable Name</label>
+                             <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm mb-2" value="${n.varName}" oninput="UIManager.updateNodeProp('varName', this.value, false)" onchange="HistoryManager.record()">
+                             <div class="grid grid-cols-2 gap-2">
+                                <div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Operator</label>
+                                <select class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm" onchange="UIManager.updateNodeProp('mathOp', this.value, true)">
+                                    <option value="+" ${n.mathOp==='+'?'selected':''}>Add (+)</option><option value="-" ${n.mathOp==='-'?'selected':''}>Subtract (-)</option>
+                                    <option value="*" ${n.mathOp==='*'?'selected':''}>Multiply (*)</option><option value="/" ${n.mathOp==='/'?'selected':''}>Divide (/)</option>
+                                </select></div>
+                                <div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Value</label>
+                                <input type="number" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm" value="${n.mathVal}" oninput="UIManager.updateNodeProp('mathVal', parseInt(this.value) || 0, false)" onchange="HistoryManager.record()"></div>
+                             </div>`;
+                }
+                return html;
+            },
+            getCallSubHTML(n) {
+                document.getElementById('inspTitle').innerText = "Call Sub-procedure";
+                return `<label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Name</label>
+                        <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none" value="${n.subName}" oninput="UIManager.updateNodeProp('subName', this.value, false)" onchange="HistoryManager.record()">`;
+            },
+            getReturnHTML(n) {
+                document.getElementById('inspTitle').innerText = "Return";
+                return `<span class="text-xs text-slate-500">Terminates a sub-procedure and returns to main flow.</span>`;
+            },
+            getIOHTML(n) {
+                document.getElementById('inspTitle').innerText = "Hardware I/O";
+                let html = `<label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">I/O Type</label>
+                            <select class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm mb-2 focus:ring-2 focus:ring-emerald-500 outline-none" onchange="UIManager.updateNodeProp('ioType', this.value, true)">
+                                <option value="out" ${n.ioType!=='in'?'selected':''}>Output</option>
+                                <option value="in" ${n.ioType==='in'?'selected':''}>Input (Read)</option>
+                            </select>`;
+                         
+                if(n.ioType === 'in') {
+                    let inOpts = state.pins.filter(p => p.type === 'input').map(p => `<option value="${p.id}" ${n.pin===p.id?'selected':''}>${p.name}</option>`).join('');
+                    if(inOpts === '') inOpts = `<option value="">No Inputs Available</option>`;
+
+                    html += `<label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Input Pin</label>
+                             <select class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm mb-2" onchange="UIManager.updateNodeProp('pin', this.value, true)">
+                                ${inOpts}
+                             </select>
+                             <label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Save to Variable</label>
+                             <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm" value="${n.varName || 'sensorVal'}" oninput="UIManager.updateNodeProp('varName', this.value, false)" onchange="HistoryManager.record()">`;
+                } else {
+                    let outCheckboxes = state.pins.filter(p => p.type === 'output').map(p => {
+                        let isChecked = (n.outPins || (n.pin ? [n.pin] : [])).includes(p.id) ? 'checked' : '';
+                        return `<label class="flex items-center space-x-1 cursor-pointer w-[48%] mb-1">
+                                    <input type="checkbox" value="${p.id}" ${isChecked} class="out-pin-cb text-emerald-500 rounded border-slate-300 w-3 h-3" onchange="UIManager.updateMultiPins()">
+                                    <span class="text-[10px] text-slate-600">${p.name}</span>
+                                </label>`;
+                    }).join('');
+
+                    html += `<label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Select Output Pins</label>
+                             <div class="flex flex-wrap bg-slate-50 border border-slate-200 rounded-lg p-2 mb-2">
+                                ${outCheckboxes || '<span class="text-xs text-slate-400">No Outputs Available</span>'}
+                             </div>
+                             <label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Action</label>
+                             <select class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm mb-2" onchange="UIManager.updateNodeProp('action', this.value, true)">
+                                 <option value="ON" ${n.action==='ON'?'selected':''}>ON (HIGH)</option><option value="OFF" ${n.action==='OFF'?'selected':''}>OFF (LOW)</option>
+                                 <option value="PWM" ${n.action==='PWM'?'selected':''}>Set PWM</option>
+                             </select>`;
+                             
+                    if(n.action === 'PWM') { html += `<label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Value (0-255)</label><input type="number" min="0" max="255" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm" value="${n.pwmVal}" oninput="UIManager.updateNodeProp('pwmVal', parseInt(this.value) || 0, false)" onchange="HistoryManager.record()">`; }
+                }
+                return html;
+            },
+            getDecisionHTML(n) {
+                document.getElementById('inspTitle').innerText = "Decision Logic";
+                let html = `<label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Check Type</label>
+                         <select class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm mb-2 focus:ring-2 focus:ring-emerald-500" onchange="UIManager.updateNodeProp('decType', this.value, true)">
+                            <option value="pin" ${n.decType==='pin'?'selected':''}>Hardware Pin</option>
+                            <option value="var" ${n.decType==='var'?'selected':''}>Integer Variable</option>
+                         </select>`;
+                         
+                if(n.decType === 'pin') {
+                    let inOpts = state.pins.filter(p => p.type === 'input').map(p => `<option value="${p.id}" ${n.pin===p.id?'selected':''}>${p.name}</option>`).join('');
+                    if(inOpts === '') inOpts = `<option value="">No Inputs Available</option>`;
+
+                    html += `<label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Input Pin</label>
+                             <select class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm mb-2" onchange="UIManager.updateNodeProp('pin', this.value, true)">
+                                ${inOpts}
+                             </select>`;
+                } else {
+                    html += `<label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Variable Name</label>
+                             <input type="text" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm mb-2" value="${n.varName}" oninput="UIManager.updateNodeProp('varName', this.value, false)" onchange="HistoryManager.record()">`;
+                }
+
+                html += `<div class="grid grid-cols-2 gap-2 mb-2"><div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Condition</label>
+                                <select class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm" onchange="UIManager.updateNodeProp('cond', this.value, true)">
+                                    <option value="==" ${n.cond==='=='?'selected':''}>Is =</option>
+                                    <option value=">" ${n.cond==='>'?'selected':''}>Is &gt;</option>
+                                    <option value="<" ${n.cond==='<'?'selected':''}>Is &lt;</option>
+                                    <option value=">=" ${n.cond==='>='?'selected':''}>Is &gt;=</option>
+                                    <option value="<=" ${n.cond==='<='?'selected':''}>Is &lt;=</option>
+                                </select></div><div><label class="text-[10px] font-bold text-slate-500 uppercase block mb-1">Value (0-255)</label>
+                                <input type="number" class="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-sm" value="${n.val}" oninput="UIManager.updateNodeProp('val', parseInt(this.value) || 0, false)" onchange="HistoryManager.record()"></div></div>`;
+                
+                // Add 2nd condition block
+                html += `<div class="p-2 bg-slate-100 rounded-lg border border-slate-200 mb-2">
+                            <label class="flex items-center space-x-2 cursor-pointer ${n.hasCond2 ? 'mb-2' : ''}">
+                                <input type="checkbox" class="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500 border-slate-300" ${n.hasCond2 ? 'checked' : ''} onchange="UIManager.updateNodeProp('hasCond2', this.checked, true)">
+                                <span class="text-[10px] font-bold text-slate-600 uppercase">Add 2nd Condition</span>
+                            </label>
+                            ${n.hasCond2 ? `
+                                <div class="grid grid-cols-3 gap-2 pt-2 border-t border-slate-200">
+                                    <div>
+                                        <label class="text-[9px] font-bold text-slate-500 uppercase block mb-1">Logic</label>
+                                        <select class="w-full bg-white border border-slate-200 rounded-md p-1.5 text-xs" onchange="UIManager.updateNodeProp('logicOp', this.value, true)">
+                                            <option value="AND" ${n.logicOp==='AND'?'selected':''}>AND</option>
+                                            <option value="OR" ${n.logicOp==='OR'?'selected':''}>OR</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="text-[9px] font-bold text-slate-500 uppercase block mb-1">Cond 2</label>
+                                        <select class="w-full bg-white border border-slate-200 rounded-md p-1.5 text-xs" onchange="UIManager.updateNodeProp('cond2', this.value, true)">
+                                            <option value="==" ${n.cond2==='=='?'selected':''}>Is =</option>
+                                            <option value=">" ${n.cond2==='>'?'selected':''}>Is &gt;</option>
+                                            <option value="<" ${n.cond2==='<'?'selected':''}>Is &lt;</option>
+                                            <option value=">=" ${n.cond2==='>='?'selected':''}>Is &gt;=</option>
+                                            <option value="<=" ${n.cond2==='<='?'selected':''}>Is &lt;=</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="text-[9px] font-bold text-slate-500 uppercase block mb-1">Val 2</label>
+                                        <input type="number" class="w-full bg-white border border-slate-200 rounded-md p-1.5 text-xs" value="${n.val2}" oninput="UIManager.updateNodeProp('val2', parseInt(this.value) || 0, false)" onchange="HistoryManager.record()">
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>`;
+
+                html += `<div class="p-2 bg-slate-100 rounded-lg border border-slate-200">
+                            <div class="flex flex-col space-y-2">
+                                <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500 border-slate-300" ${n.swapBranches ? 'checked' : ''} onchange="UIManager.updateNodeProp('swapBranches', this.checked, true)">
+                                    <span class="text-[10px] font-bold text-slate-600 uppercase">Swap Y/N branches</span>
+                                 </label>
+                                 <label class="flex items-center space-x-2 cursor-pointer">
+                                    <input type="checkbox" class="w-4 h-4 rounded text-emerald-500 focus:ring-emerald-500 border-slate-300" ${n.branchOut === 'left' ? 'checked' : ''} onchange="UIManager.updateNodeProp('branchOut', this.checked ? 'left' : 'right', true)">
+                                    <span class="text-[10px] font-bold text-slate-600 uppercase">Branch Left</span>
+                                 </label>
+                             </div>
+                         </div>`;
+                return html;
+            }
+        };
+
+        // --- UI MANAGER ---
+        const UIManager = {
+            toastTimer: null,
+            init() {
+                document.getElementById('btnZoomIn').onclick = () => { view.scale *= 1.1; Renderer.draw(); };
+                document.getElementById('btnZoomOut').onclick = () => { view.scale *= 0.9; Renderer.draw(); };
+                document.getElementById('btnHome').onclick = this.fitToScreen;
+                document.getElementById('btnDelete').onclick = this.deleteSelected;
+                document.getElementById('btnClear').onclick = this.clearAll;
+                document.getElementById('btnCopy').onclick = this.copyNode;
+                document.getElementById('btnPaste').onclick = this.pasteNode;
+                
+                document.getElementById('btnSave').onclick = this.saveFile;
+                document.getElementById('fileLoad').onchange = this.loadFile;
+                document.getElementById('btnExport').onclick = this.exportImage;
+
+                document.getElementById('btnSim').onclick = () => SimEngine.start();
+                document.getElementById('btnStop').onclick = () => SimEngine.stop();
+                
+                document.getElementById('simSpeed').value = "1.0";
+                document.getElementById('speedVal').innerText = "1.0x";
+                
+                document.getElementById('simSpeed').oninput = (e) => { 
+                    let val = parseFloat(e.target.value);
+                    document.getElementById('speedVal').innerText = val.toFixed(1) + 'x'; 
+                };
+
+                document.getElementById('btnCloseHwPicker').onclick = HardwareManager.closePicker;
+                document.getElementById('btnCloseCodeModal').onclick = CodeGenerator.closeModal;
+                document.getElementById('btnCopyCode').onclick = CodeGenerator.copyCode;
+                document.getElementById('btnGenerateCode').onclick = () => CodeGenerator.generate();
+
+                document.getElementById('sidebarToggle').onclick = () => {
+                    document.getElementById('leftSidebar').classList.toggle('collapsed');
+                    setTimeout(resize, 400); 
+                };
+                
+                document.getElementById('hardwarePanel').addEventListener('scroll', () => {
+                    HardwareManager.drawWires();
+                });
+            },
+            showToast(msg, isError = false) {
+                const t = document.getElementById('toast');
+                document.getElementById('toastMsg').innerText = msg;
+                t.style.backgroundColor = isError ? '#e11d48' : '#1e293b'; 
+                t.classList.add('show');
+                clearTimeout(this.toastTimer);
+                this.toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+            },
+            fitToScreen() {
+                if (state.nodes.length === 0) { view.x = cvs.width/2; view.y = cvs.height/2; view.scale = 1; Renderer.draw(); return; }
+                let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+                state.nodes.forEach(c => { minX = Math.min(minX, c.x - 80); maxX = Math.max(maxX, c.x + 80); minY = Math.min(minY, c.y - 40); maxY = Math.max(maxY, c.y + 40); });
+                const margin = 50; minX -= margin; maxX += margin; minY -= margin; maxY += margin;
+                const w = maxX - minX, h = maxY - minY; if (w <= 0 || h <= 0) return;
+                let newScale = Math.min(cvs.width / w, cvs.height / h); newScale = Math.min(Math.max(newScale, 0.2), 1.2);
+                view.scale = newScale; view.x = (cvs.width / 2) - ((minX + w / 2) * newScale); view.y = (cvs.height / 2) - ((minY + h / 2) * newScale); Renderer.draw();
+            },
+            clearAll() {
+                if(state.simRunning) return; state.nodes = []; state.links = [];
+                state.pins.forEach(p => { p.component = null; p.name = (p.type==='input'?'IN_':'OUT_') + p.pinNum; p.colour = '#ef4444'; });
+                hwMemory = {}; HardwareManager.renderPanel(); HistoryManager.record(); Renderer.draw();
+            },
+            deleteSelected() {
+                if(state.simRunning) return;
+                if(interact.multiSel && interact.multiSel.length > 0) {
+                    const ids = interact.multiSel.map(n => n.id);
+                    state.links = state.links.filter(l => !ids.includes(l.from) && !ids.includes(l.to));
+                    state.nodes = state.nodes.filter(n => !ids.includes(n.id));
+                    if(interact.linkStart && ids.includes(interact.linkStart.node.id)) interact.linkStart = null;
+                    interact.multiSel = []; this.selectNode(null);
+                }
+                else if(interact.selNode) { 
+                    state.links = state.links.filter(l => l.from !== interact.selNode.id && l.to !== interact.selNode.id); 
+                    state.nodes = state.nodes.filter(n => n.id !== interact.selNode.id); 
+                    this.selectNode(null); 
+                } 
+                else if (interact.selLink) { 
+                    state.links = state.links.filter(l => l !== interact.selLink); 
+                    interact.selLink = null; 
+                }
+                HistoryManager.record(); Renderer.draw();
+            },
+            copyNode() {
+                if (interact.multiSel && interact.multiSel.length > 0) { 
+                    clipboard = JSON.parse(JSON.stringify(interact.multiSel)); 
+                    this.showToast("Nodes Copied"); 
+                } else if (interact.selNode && interact.selNode.type !== 'junction') { 
+                    clipboard = [JSON.parse(JSON.stringify(interact.selNode))]; 
+                    this.showToast("Node Copied"); 
+                }
+            },
+            pasteNode() {
+                if (clipboard && clipboard.length > 0 && !state.simRunning) {
+                    interact.multiSel = [];
+                    clipboard.forEach(clip => {
+                        let newNode = new FNode(clip.type, clip.x + 20, clip.y + 20);
+                        Object.keys(clip).forEach(k => { if(k !== 'id' && k !== 'x' && k !== 'y' && k !== 'type') newNode[k] = clip[k]; });
+                        state.nodes.push(newNode); 
+                        interact.multiSel.push(newNode);
+                    });
+                    this.selectNode(interact.multiSel[0]); 
+                    HistoryManager.record(); Renderer.draw();
+                }
+            },
+            saveFile() { const blob = new Blob([HistoryManager.getStateJSON()], {type: "application/json"}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; const d = new Date(); a.download = `nosyntax_${d.getHours()}-${d.getMinutes()}.json`; a.click(); URL.revokeObjectURL(url); },
+            exportImage() {
+                const tmpSel = interact.selNode; this.selectNode(null); interact.selLink = null; Renderer.draw();
+                
+                let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+                if (state.nodes.length > 0) {
+                    state.nodes.forEach(c => { 
+                        minX = Math.min(minX, c.x - 150); maxX = Math.max(maxX, c.x + 150); 
+                        minY = Math.min(minY, c.y - 100); maxY = Math.max(maxY, c.y + 100); 
+                    });
+                    state.links.forEach(l => {
+                        if(l.waypoints) l.waypoints.forEach(wp => {
+                            minX = Math.min(minX, wp.x - 50); maxX = Math.max(maxX, wp.x + 50);
+                            minY = Math.min(minY, wp.y - 50); maxY = Math.max(maxY, wp.y + 50);
+                        });
+                    });
+                } else {
+                    minX = 0; maxX = 800; minY = 0; maxY = 600;
+                }
+                
+                const flowWidth = maxX - minX;
+                const flowHeight = maxY - minY;
+                
+                const hwWidth = 380;
+                let maxHwPins = Math.max(state.pins.filter(p=>p.type==='input').length, state.pins.filter(p=>p.type==='output').length);
+                const hwHeight = Math.max(flowHeight, maxHwPins * 80 + 200);
+                
+                const exportWidth = flowWidth + hwWidth;
+                const exportHeight = Math.max(flowHeight, hwHeight);
+
+                const scaleFactor = 2; 
+                const tempCvs = document.createElement('canvas'); 
+                tempCvs.width = exportWidth * scaleFactor; 
+                tempCvs.height = exportHeight * scaleFactor;
+                const tCtx = tempCvs.getContext('2d'); 
+                
+                tCtx.fillStyle = '#ffffff'; 
+                tCtx.fillRect(0, 0, tempCvs.width, tempCvs.height);
+                
+                tCtx.save(); 
+                tCtx.scale(scaleFactor, scaleFactor); 
+                tCtx.translate(-minX, -minY); 
+                
+                const originalView = { x: view.x, y: view.y, scale: view.scale };
+                view.x = 0; view.y = 0; view.scale = 1; 
+                Renderer.drawContext(tCtx, false); 
+                view.x = originalView.x; view.y = originalView.y; view.scale = originalView.scale;
+                tCtx.restore();
+
+                tCtx.save();
+                tCtx.scale(scaleFactor, scaleFactor);
+                tCtx.translate(flowWidth, 0);
+                
+                tCtx.fillStyle = '#f8fafc';
+                tCtx.fillRect(0, 0, hwWidth, exportHeight);
+                tCtx.strokeStyle = '#e2e8f0';
+                tCtx.lineWidth = 2;
+                tCtx.beginPath(); tCtx.moveTo(0,0); tCtx.lineTo(0, exportHeight); tCtx.stroke();
+
+                tCtx.fillStyle = '#1e293b';
+                tCtx.font = "900 20px 'Roboto', sans-serif";
+                tCtx.textAlign = "center";
+                tCtx.fillText("HARDWARE INTERFACE", hwWidth/2, 50);
+
+                const ctrlW = 100;
+                const ctrlH = Math.max(250, maxHwPins * 80);
+                const ctrlX = (hwWidth - ctrlW) / 2;
+                const ctrlY = (exportHeight - ctrlH) / 2;
+
+                tCtx.fillStyle = '#111827';
+                tCtx.beginPath();
+                tCtx.roundRect(ctrlX, ctrlY, ctrlW, ctrlH, 6);
+                tCtx.fill();
+                
+                tCtx.fillStyle = '#f8fafc';
+                tCtx.beginPath();
+                tCtx.arc(ctrlX + ctrlW/2, ctrlY, 12, 0, Math.PI, false);
+                tCtx.fill();
+                
+                tCtx.fillStyle = 'rgba(148, 163, 184, 0.5)';
+                tCtx.font = "bold 14px 'Roboto', monospace";
+                tCtx.save();
+                tCtx.translate(ctrlX + ctrlW/2, ctrlY + ctrlH/2);
+                tCtx.rotate(-Math.PI/2);
+                tCtx.fillText("MICROCONTROLLER", 0, 0);
+                tCtx.restore();
+
+                tCtx.font = "bold 14px 'Roboto', sans-serif";
+                
+                const inPins = state.pins.filter(p => p.type === 'input');
+                let inY = 120;
+                inPins.forEach((p, idx) => {
+                    let percent = inPins.length > 1 ? (idx / (inPins.length - 1)) : 0.5;
+                    let endY = ctrlY + 20 + ((ctrlH - 40) * percent);
+                    
+                    tCtx.strokeStyle = '#94a3b8'; tCtx.lineWidth = 4;
+                    tCtx.beginPath(); 
+                    tCtx.moveTo(ctrlX - 60, inY); 
+                    tCtx.lineTo(ctrlX - 30, inY); 
+                    tCtx.lineTo(ctrlX - 30, endY); 
+                    tCtx.lineTo(ctrlX, endY); 
+                    tCtx.stroke();
+                    
+                    tCtx.fillStyle = '#94a3b8';
+                    tCtx.fillRect(ctrlX - 4, endY - 3, 4, 6);
+
+                    tCtx.fillStyle = '#334155'; tCtx.textAlign = 'right';
+                    tCtx.fillText(`${p.name} (Pin ${p.pinNum})`, ctrlX - 70, inY + 5);
+                    
+                    if(p.component) {
+                        tCtx.fillStyle = '#10b981';
+                        tCtx.font = "bold 12px 'Roboto', sans-serif";
+                        tCtx.fillText(`[${p.component.toUpperCase()}]`, ctrlX - 70, inY + 22);
+                        tCtx.font = "bold 14px 'Roboto', sans-serif";
+                    }
+                    inY += 80;
+                });
+
+                const outPins = state.pins.filter(p => p.type === 'output');
+                let outY = 120;
+                outPins.forEach((p, idx) => {
+                    let percent = outPins.length > 1 ? (idx / (outPins.length - 1)) : 0.5;
+                    let endY = ctrlY + 20 + ((ctrlH - 40) * percent);
+                    
+                    tCtx.strokeStyle = '#94a3b8'; tCtx.lineWidth = 4;
+                    tCtx.beginPath(); 
+                    tCtx.moveTo(ctrlX + ctrlW, endY); 
+                    tCtx.lineTo(ctrlX + ctrlW + 30, endY); 
+                    tCtx.lineTo(ctrlX + ctrlW + 30, outY); 
+                    tCtx.lineTo(ctrlX + ctrlW + 60, outY); 
+                    tCtx.stroke();
+                    
+                    tCtx.fillStyle = '#94a3b8';
+                    tCtx.fillRect(ctrlX + ctrlW, endY - 3, 4, 6);
+
+                    tCtx.fillStyle = '#334155'; tCtx.textAlign = 'left';
+                    tCtx.fillText(`(Pin ${p.pinNum}) ${p.name}`, ctrlX + ctrlW + 70, outY + 5);
+                    
+                    if(p.component) {
+                        tCtx.fillStyle = '#10b981';
+                        tCtx.font = "bold 12px 'Roboto', sans-serif";
+                        tCtx.fillText(`[${p.component.toUpperCase()}]`, ctrlX + ctrlW + 40, outY + 22);
+                        tCtx.font = "bold 14px 'Roboto', sans-serif";
+                    }
+                    outY += 80;
+                });
+
+                tCtx.restore();
+                
+                const url = tempCvs.toDataURL('image/png'); 
+                const a = document.createElement('a'); 
+                a.href = url; 
+                a.download = 'flowchart_snapshot.png'; 
+                a.click(); 
+                this.selectNode(tmpSel); 
+                Renderer.draw();
+            },
+            loadFile(e) {
+                const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = (evt) => { HistoryManager.loadStateJSON(evt.target.result); HistoryManager.record(); e.target.value=''; if(document.activeElement) document.activeElement.blur(); }; reader.readAsText(file);
+            },
+            selectNode(n) { 
+                if (document.activeElement && ['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                    document.activeElement.blur();
+                }
+                interact.selNode = n; 
+                if (n) interact.selLink = null; 
+                this.updateInspector(); 
+            },
+            updateMultiPins() {
+                let cbs = document.querySelectorAll('.out-pin-cb:checked');
+                let vals = Array.from(cbs).map(cb => cb.value);
+                this.updateNodeProp('outPins', vals, true);
+            },
+            updateInspector() {
+                const insp = document.getElementById('inspector'); 
+                const cont = document.getElementById('propContainer');
+                if(!interact.selNode) { insp.classList.add('hidden'); return; }
+                insp.classList.remove('hidden'); 
+                cont.innerHTML = InspectorBuilder.build(interact.selNode);
+            },
+            refreshNodeText(n) {
+                if(n.type === 'terminal') n.text = n.subType;
+                else if(n.type === 'sub_start') n.text = n.subName || 'Sub 1';
+                else if(n.type === 'process') {
+                    if(n.pType === 'delay') {
+                        n.text = n.delayType === 'variable' ? `Wait [${n.varName || 'delayTime'}] ms` : `Wait ${n.delayMs}ms`;
+                    }
+                    else if(n.pType === 'var_set') n.text = `${n.varName} = ${n.varVal}`;
+                    else if(n.pType === 'var_math') n.text = `${n.varName} = ${n.varName} ${n.mathOp} ${n.mathVal}`;
+                } 
+                else if(n.type === 'sub') n.text = n.subName;
+                else if(n.type === 'io') { 
+                    if(n.ioType === 'in') {
+                        n.text = `${n.varName || 'sensorVal'} = Read ${Utils.getPinName(n.pin)}`;
+                    } else {
+                        let pinsArr = n.outPins && n.outPins.length > 0 ? n.outPins : (n.pin ? [n.pin] : []);
+                        let pinNames = pinsArr.map(id => Utils.getPinName(id)).join(', ');
+                        
+                        if (pinsArr.length === 0) n.text = `No Pin = ${n.action}`;
+                        else n.text = n.action === 'PWM' ? `${pinNames} = ${n.pwmVal}` : `${pinNames} = ${n.action}`; 
+                    }
+                }
+                else if(n.type === 'decision') {
+                    let displayVal1 = n.val;
+                    if(n.decType === 'pin') {
+                        if (n.val == 255) displayVal1 = 'ON';
+                        else if (n.val == 0) displayVal1 = 'OFF';
+                    }
+                    
+                    let prefix = n.decType === 'pin' ? Utils.getPinName(n.pin) : n.varName;
+                    
+                    let displayCond1 = n.cond === '==' ? '=' : n.cond;
+                    let t1 = `${displayCond1} ${displayVal1}`;
+                    
+                    if (n.hasCond2) {
+                        let displayVal2 = n.val2;
+                        if(n.decType === 'pin') {
+                             if (n.val2 == 255) displayVal2 = 'ON';
+                             else if (n.val2 == 0) displayVal2 = 'OFF';
+                        }
+                        let displayCond2 = n.cond2 === '==' ? '=' : n.cond2;
+                        n.text = `${prefix} ${t1}\n${n.logicOp} ${displayCond2} ${displayVal2}?`;
+                    } else {
+                        n.text = `${prefix} ${t1}?`;
+                    }
+                }
+            },
+            updateNodeProp(prop, val, rebuild = false) {
+                if(!interact.selNode) return; const n = interact.selNode; 
+                
+                if (n.type === 'io' && prop === 'ioType' && n.ioType !== val) {
+                    if (val === 'in') {
+                        let firstIn = state.pins.find(p=>p.type==='input');
+                        n.pin = firstIn ? firstIn.id : '';
+                        n.varName = n.varName || 'sensorVal';
+                    } else {
+                        let firstOut = state.pins.find(p=>p.type==='output');
+                        n.pin = firstOut ? firstOut.id : '';
+                    }
+                }
+                
+                n[prop] = val;
+                this.refreshNodeText(n);
+                
+                if(rebuild) { 
+                    interact.selNode = null; 
+                    this.selectNode(n); 
+                    HistoryManager.record(); 
+                }
+                Renderer.draw();
+            }
+        };
+
+        // --- HARDWARE MANAGER ---
+        const HardwareManager = {
+            options: {
+                inputs: [
+                    { id: 'button', name: 'Push Button', html: '<div style="width:32px;height:32px;border-radius:50%;background:#ef4444;border-bottom:4px solid rgba(0,0,0,0.3);"></div>' },
+                    { id: 'switch', name: 'Toggle Switch', html: '<div style="width:40px;height:20px;background:#cbd5e1;border-radius:20px;position:relative;"><div style="width:20px;height:20px;background:white;border-radius:50%;position:absolute;left:0;top:-1px;box-shadow:0 1px 3px rgba(0,0,0,0.2);"></div></div>' },
+                    { id: 'slider', name: 'Analogue Sensor', html: '<div style="width:40px;height:8px;background:#cbd5e1;border-radius:4px;position:relative;"><div style="width:12px;height:20px;background:#10b981;border-radius:2px;position:absolute;left:8px;top:-6px;box-shadow:0 1px 2px rgba(0,0,0,0.2);"></div></div>' }
+                ],
+                outputs: [
+                    { id: 'led', name: 'LED', html: '<div style="width:32px;height:32px;border-radius:50%;background:#e2e8f0;border:3px solid #cbd5e1;"></div>' },
+                    { id: 'buzzer', name: 'Buzzer', html: '<div style="width:32px;height:32px;border-radius:50%;background:#1e293b;border:3px solid #475569;display:flex;align-items:center;justify-content:center;"><div style="width:12px;height:12px;background:#0f172a;border-radius:50%;"></div></div>' },
+                    { id: 'motor', name: 'Motor', html: '<div style="width:32px;height:32px;border-radius:50%;background:#e2e8f0;border:3px solid #64748b;display:flex;align-items:center;justify-content:center;position:relative;font-weight:900;font-size:14px;color:#334155;">M</div>' }
+                ]
+            },
+            currentPickerSlot: null,
+            openPicker(slotId) {
+                if(state.simRunning) return; 
+                this.currentPickerSlot = slotId; 
+                let p = state.pins.find(x => x.id === slotId);
+                if(!p) return;
+
+                const opts = p.type === 'input' ? this.options.inputs : this.options.outputs;
+                
+                document.getElementById('hwPickerTitle').innerText = p.type === 'input' ? 'Select Input Device' : 'Select Output Device';
+                document.getElementById('hwPickerGrid').innerHTML = opts.map(opt => `<div class="flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-slate-200 shadow-sm cursor-pointer hover:border-emerald-400 hover:shadow-md hover:bg-emerald-50 transition-all" onclick="HardwareManager.selectHw('${opt.id}')">${opt.html}<span class="text-[11px] font-bold text-slate-600 mt-3 text-center">${opt.name}</span></div>`).join('');
+                document.getElementById('hwPicker').classList.remove('hidden'); 
+                setTimeout(() => document.getElementById('hwPickerModalContent').classList.remove('scale-95'), 10);
+            },
+            closePicker() {
+                document.getElementById('hwPickerModalContent').classList.add('scale-95'); 
+                setTimeout(() => document.getElementById('hwPicker').classList.add('hidden'), 150); 
+                HardwareManager.currentPickerSlot = null;
+            },
+            selectHw(hwId) {
+                if (this.currentPickerSlot) {
+                    let p = state.pins.find(x => x.id === this.currentPickerSlot);
+                    if(p) { p.component = hwId; hwMemory[p.id] = 0; }
+                    HistoryManager.record(); this.renderPanel();
+                }
+                this.closePicker();
+            },
+            removeComponent(slotId, e) {
+                if (e) e.stopPropagation();
+                let p = state.pins.find(x => x.id === slotId);
+                if(p) { p.component = null; hwMemory[p.id] = 0; }
+                HistoryManager.record(); this.renderPanel();
+            },
+            setMem(slotId, val) { 
+                hwMemory[slotId] = parseInt(val); this.updateState(); 
+            },
+            toggleSwitch(slotId) { 
+                hwMemory[slotId] = hwMemory[slotId] === 0 ? 255 : 0; this.updateState(); 
+            },
+            addPin(type) {
+                if(state.simRunning) return;
+                let usedNums = state.pins.map(p => p.pinNum);
+                let nextNum = 2;
+                while(usedNums.includes(nextNum)) nextNum++;
+                if(nextNum > 13) { UIManager.showToast("Maximum Arduino pins reached.", true); return; }
+                
+                let pId = 'pin_' + Math.random().toString(36).substr(2,5);
+                state.pins.push({
+                    id: pId, type: type, pinNum: nextNum, name: (type === 'input' ? 'IN_' : 'OUT_') + nextNum, component: null, colour: '#ef4444'
+                });
+                HistoryManager.record();
+                this.renderPanel();
+            },
+            removePin(pinId) {
+                if(state.simRunning) return;
+                
+                let conflictNodes = state.nodes.filter(n => 
+                    ((n.type === 'io' || n.type === 'decision') && n.decType !== 'var' && n.pin === pinId) ||
+                    (n.type === 'io' && n.outPins && n.outPins.includes(pinId))
+                );
+
+                if (conflictNodes.length > 0) {
+                    if (!confirm(`Warning: ${conflictNodes.length} flowchart node(s) are currently using this pin. Deleting it will disconnect them. Continue?`)) {
+                        return; // Abort deletion
+                    }
+                }
+
+                state.pins = state.pins.filter(p => p.id !== pinId);
+                delete hwMemory[pinId];
+
+                // Automatically repair broken flowchart references
+                if (conflictNodes.length > 0) {
+                    conflictNodes.forEach(n => {
+                        if (n.pin === pinId) {
+                            let fallback = state.pins.find(p => p.type === (n.ioType === 'in' ? 'input' : 'output'));
+                            n.pin = fallback ? fallback.id : '';
+                        }
+                        if (n.outPins && n.outPins.includes(pinId)) {
+                            n.outPins = n.outPins.filter(id => id !== pinId);
+                            if (n.outPins.length === 0 && n.pin) n.outPins = [n.pin]; 
+                        }
+                        UIManager.refreshNodeText(n);
+                    });
+                }
+
+                HistoryManager.record();
+                this.renderPanel();
+                UIManager.updateInspector();
+                Renderer.draw();
+            },
+            renamePin(pinId, newName) {
+                let p = state.pins.find(x => x.id === pinId);
+                if(p) {
+                    p.name = newName.toUpperCase().replace(/\s+/g, '_'); 
+                    HistoryManager.record();
+                    state.nodes.forEach(n => {
+                        if((n.type === 'io' || n.type === 'decision') && (n.pin === pinId || (n.outPins && n.outPins.includes(pinId)))) {
+                            UIManager.refreshNodeText(n);
+                        }
+                    });
+                    UIManager.updateInspector();
+                    Renderer.draw();
+                }
+            },
+            openColourPicker(slotId, e) {
+                if(state.simRunning) return;
+                if(e) e.stopPropagation();
+                this.currentPickerSlot = slotId;
+                const colours = ['#ef4444', '#f97316', '#f59e0b', '#eab308', '#84cc16', '#22c55e', '#10b981', '#14b8a6', '#06b6d4', '#0ea5e9', '#3b82f6', '#6366f1', '#8b5cf6', '#d946ef', '#ec4899', '#f43f5e'];
+                document.getElementById('colourPickerGrid').innerHTML = colours.map(c => `<div class="w-10 h-10 rounded-full cursor-pointer border-2 border-transparent hover:border-slate-800 hover:scale-110 transition-all shadow-sm mx-auto" style="background-color: ${c};" onclick="HardwareManager.selectColour('${c}')"></div>`).join('');
+                document.getElementById('colourPickerModal').classList.remove('hidden');
+                setTimeout(() => document.getElementById('colourPickerContent').classList.remove('scale-95'), 10);
+            },
+            closeColourPicker() {
+                document.getElementById('colourPickerContent').classList.add('scale-95');
+                setTimeout(() => document.getElementById('colourPickerModal').classList.add('hidden'), 150);
+                this.currentPickerSlot = null;
+            },
+            selectColour(colour) {
+                if (this.currentPickerSlot) {
+                    let p = state.pins.find(x => x.id === this.currentPickerSlot);
+                    if(p) { p.colour = colour; }
+                    HistoryManager.record(); this.renderPanel();
+                }
+                this.closeColourPicker();
+            },
+            drawWires() {
+                const canvas = document.getElementById('hwWireCanvas');
+                const panel = document.getElementById('hardwarePanel');
+                const controller = document.getElementById('centralController');
+                
+                if (!canvas || !panel || !controller) return;
+
+                canvas.style.height = Math.max(panel.scrollHeight, panel.clientHeight) + 'px';
+
+                const pRect = panel.getBoundingClientRect();
+                const cRect = controller.getBoundingClientRect();
+
+                const getRelCoords = (rect) => ({
+                    top: rect.top - pRect.top + panel.scrollTop,
+                    bottom: rect.bottom - pRect.top + panel.scrollTop,
+                    left: rect.left - pRect.left,
+                    right: rect.right - pRect.left,
+                    centerY: rect.top - pRect.top + panel.scrollTop + rect.height / 2
+                });
+
+                const ctrlCoords = getRelCoords(cRect);
+                let pathsHtml = '';
+                
+                const inPins = state.pins.filter(p => p.type === 'input');
+                const outPins = state.pins.filter(p => p.type === 'output');
+
+                state.pins.forEach(p => {
+                    const slotEl = document.querySelector(`.hw-slot[data-slot="${p.id}"]`);
+                    if(!slotEl || !p.component) return;
+                    
+                    const sRect = slotEl.getBoundingClientRect();
+                    const slotCoords = getRelCoords(sRect);
+
+                    let val = hwMemory[p.id] || 0;
+                    let isActive = val > 0;
+                    let activeClass = isActive ? 'active' : '';
+                    let typeClass = p.type === 'input' ? 'input-wire' : 'output-wire';
+                    
+                    let startX, startY = slotCoords.centerY;
+                    let endX, endY;
+
+                    if (p.type === 'input') {
+                        startX = slotCoords.right;
+                        endX = ctrlCoords.left;
+                        let percent = inPins.length > 1 ? (inPins.indexOf(p) / (inPins.length - 1)) : 0.5;
+                        endY = ctrlCoords.top + 20 + ((ctrlCoords.bottom - ctrlCoords.top - 40) * percent);
+                    } else {
+                        startX = slotCoords.left;
+                        endX = ctrlCoords.right;
+                        let percent = outPins.length > 1 ? (outPins.indexOf(p) / (outPins.length - 1)) : 0.5;
+                        endY = ctrlCoords.top + 20 + ((ctrlCoords.bottom - ctrlCoords.top - 40) * percent);
+                    }
+
+                    let midX = (startX + endX) / 2;
+                    let d = `M ${startX} ${startY} L ${midX} ${startY} L ${midX} ${endY} L ${endX} ${endY}`;
+                    
+                    pathsHtml += `
+                        <path d="${d}" class="hw-svg-wire ${activeClass} ${typeClass}" id="wire-base-${p.id}" />
+                        <path d="${d}" class="hw-svg-wire-inner ${activeClass} ${typeClass}" id="wire-inner-${p.id}" />
+                    `;
+
+                    // Draw the little physical silver legs sticking out from the IC
+                    let legX = p.type === 'input' ? ctrlCoords.left - 4 : ctrlCoords.right;
+                    pathsHtml += `<rect x="${legX}" y="${endY - 3}" width="4" height="6" fill="#94a3b8" />`;
+                });
+
+                canvas.innerHTML = pathsHtml;
+            },
+            renderPanel() {
+                const inCol = document.getElementById('hwInputsContainer');
+                const outCol = document.getElementById('hwOutputsContainer');
+
+                let inHTML = `<div class="text-[10px] font-black text-slate-400 text-center uppercase tracking-widest mb-1 w-full">Inputs</div>`;
+                state.pins.filter(p => p.type === 'input').forEach(p => inHTML += this.buildPinSlotHTML(p));
+                if(!state.simRunning) inHTML += `<button class="mt-2 w-full py-1 border border-dashed border-slate-300 rounded-lg text-[10px] font-bold text-slate-400 hover:border-emerald-400 hover:text-emerald-600 hover:bg-emerald-50 transition-colors" onclick="HardwareManager.addPin('input')">+ ADD</button>`;
+                inCol.innerHTML = inHTML;
+
+                let outHTML = `<div class="text-[10px] font-black text-slate-400 text-center uppercase tracking-widest mb-1 w-full">Outputs</div>`;
+                state.pins.filter(p => p.type === 'output').forEach(p => outHTML += this.buildPinSlotHTML(p));
+                if(!state.simRunning) outHTML += `<button class="mt-2 w-full py-1 border border-dashed border-slate-300 rounded-lg text-[10px] font-bold text-slate-400 hover:border-emerald-400 hover:text-emerald-600 hover:bg-emerald-50 transition-colors" onclick="HardwareManager.addPin('output')">+ ADD</button>`;
+                outCol.innerHTML = outHTML;
+
+                this.updateState();
+                setTimeout(() => this.drawWires(), 0);
+            },
+            buildPinSlotHTML(p) {
+                let compHtml = `<span class="text-2xl text-slate-300 font-light pointer-events-none">+</span>`;
+                let isPopulated = false;
+                let styleAttr = '';
+                let colourVal = p.colour || '#ef4444';
+                
+                let colourPickerHtml = '';
+                let delBtnHtml = '';
+
+                if (p.component) {
+                    isPopulated = true;
+                    
+                    if (!state.simRunning) {
+                        delBtnHtml = `<div class="hw-delete-comp-btn" onclick="HardwareManager.removeComponent('${p.id}', event)">✕</div>`;
+                    }
+                    
+                    if (!state.simRunning && (p.component === 'button' || p.component === 'led')) {
+                        colourPickerHtml = `
+                            <div class="absolute -top-2 -left-2 w-5 h-5 rounded-full border border-slate-300 shadow-md cursor-pointer hover:scale-110 transition-all z-40 hidden group-hover:flex items-center justify-center bg-white" onclick="HardwareManager.openColourPicker('${p.id}', event)" title="Change Colour">
+                                <div class="w-3 h-3 rounded-full" style="background-color: ${colourVal};"></div>
+                            </div>
+                        `;
+                    }
+
+                    if (p.component === 'button') { compHtml += `<div class="hw-btn" onmousedown="HardwareManager.setMem('${p.id}', 255)" onmouseup="HardwareManager.setMem('${p.id}', 0)" onmouseleave="HardwareManager.setMem('${p.id}', 0)" ontouchstart="HardwareManager.setMem('${p.id}', 255)" ontouchend="HardwareManager.setMem('${p.id}', 0)"></div>`; } 
+                    else if (p.component === 'switch') { compHtml += `<div class="hw-switch" onclick="HardwareManager.toggleSwitch('${p.id}')"><div class="hw-switch-knob"></div></div>`; } 
+                    else if (p.component === 'slider') { 
+                        styleAttr = 'height: 160px;';
+                        let cV = hwMemory[p.id] || 0;
+                        compHtml += `<input type="range" class="hw-slider" min="0" max="255" value="${cV}" oninput="HardwareManager.setMem('${p.id}', this.value); this.nextElementSibling.innerText=this.value;">
+                        <span class="slider-val absolute bottom-0.5 right-0.5 text-[9px] font-bold text-emerald-700 bg-white/90 backdrop-blur rounded px-1 shadow-sm z-50 pointer-events-none">${cV}</span>`; 
+                    } 
+                    else if (p.component === 'led') { compHtml += `<div class="hw-led"></div>`; } 
+                    else if (p.component === 'buzzer') { compHtml += `<div class="hw-buzzer"><div class="hw-buzzer-inner"></div></div>`; } 
+                    else if (p.component === 'motor') { compHtml += `<div class="hw-motor"><div class="hw-motor-spindle"></div></div>`; } 
+                }
+
+                let slotClass = `hw-slot ${isPopulated ? 'populated' : ''} ${p.type === 'input' ? 'input-slot' : 'output-slot'}`;
+                let inputReadonly = state.simRunning ? 'readonly' : '';
+                
+                let bottomBarHtml = `
+                    <div class="flex items-center gap-1 mt-1 z-20 relative">
+                        <div class="text-[9px] font-mono font-bold text-slate-400 bg-slate-200 px-1.5 py-0.5 rounded shadow-inner">D${p.pinNum}</div>
+                        ${!state.simRunning ? `<button class="w-4 h-4 text-slate-300 hover:text-rose-500 hover:bg-rose-100 rounded flex items-center justify-center transition-colors" onclick="HardwareManager.removePin('${p.id}')" title="Delete Pin"><svg class="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg></button>` : ''}
+                    </div>
+                `;
+
+                return `
+                <div class="flex flex-col items-center relative group w-full">
+                    <input type="text" value="${p.name}" ${inputReadonly} onchange="HardwareManager.renamePin('${p.id}', this.value)" class="text-[9px] font-bold text-slate-500 uppercase tracking-wider w-full text-center bg-transparent border-b border-transparent hover:border-slate-300 focus:border-emerald-500 focus:outline-none mb-1 transition-colors z-20 relative">
+                    
+                    <div class="relative w-full flex justify-center">
+                        ${colourPickerHtml}
+                        <div class="${slotClass}" data-slot="${p.id}" style="${styleAttr} --comp-color: ${colourVal};" onclick="${isPopulated ? '' : `HardwareManager.openPicker('${p.id}')`}">
+                            ${delBtnHtml}
+                            ${compHtml}
+                        </div>
+                    </div>
+
+                    ${bottomBarHtml}
+                </div>`;
+            },
+            updateState() {
+                state.pins.forEach(p => {
+                    const hwType = p.component; if(!hwType) return;
+                    const slotEl = document.querySelector(`.hw-slot[data-slot="${p.id}"]`); if(!slotEl) return;
+                    
+                    let val = hwMemory[p.id] || 0;
+                    let isActive = val > 0;
+                    
+                    let baseWire = document.getElementById(`wire-base-${p.id}`);
+                    let innerWire = document.getElementById(`wire-inner-${p.id}`);
+                    
+                    if (baseWire && innerWire) {
+                        if (isActive) {
+                            baseWire.classList.add('active');
+                            innerWire.classList.add('active');
+                        } else {
+                            baseWire.classList.remove('active');
+                            innerWire.classList.remove('active');
+                        }
+                    }
+
+                    if (hwType === 'switch') {
+                        const sw = slotEl.querySelector('.hw-switch');
+                        if(sw) { if(isActive) sw.classList.add('on'); else sw.classList.remove('on'); }
+                    } else if (hwType === 'slider') {
+                        const slider = slotEl.querySelector('.hw-slider');
+                        const valLabel = slotEl.querySelector('.slider-val');
+                        let cV = hwMemory[p.id] || 0;
+                        if(slider && document.activeElement !== slider) { slider.value = cV; }
+                        if(valLabel) { valLabel.innerText = cV; }
+                    } else if (hwType === 'led') {
+                        const led = slotEl.querySelector('.hw-led');
+                        if(led) {
+                            if(isActive) {
+                                led.style.setProperty('--led-intensity', val / 255);
+                                led.classList.add('on');
+                            } else {
+                                led.classList.remove('on');
+                            }
+                        }
+                    } else if (hwType === 'buzzer') {
+                        const buz = slotEl.querySelector('.hw-buzzer');
+                        if(buz) { if(isActive) buz.classList.add('active'); else buz.classList.remove('active'); }
+                    } else if (hwType === 'motor') {
+                        const spindle = slotEl.querySelector('.hw-motor-spindle');
+                        if(spindle) { const speed = isActive ? Math.max(20, 300 - val) : 0; spindle.style.animation = isActive ? `spin ${speed}ms linear infinite` : 'none'; }
+                    }
+                });
+            }
+        };
+
+        // --- FLOWCHART NODES ---
+        class FNode {
+            constructor(type, x, y) {
+                this.id = 'n_' + Math.random().toString(36).substr(2,9); 
+                this.type = type; this.x = x; this.y = y; 
+                this.w = 160; this.h = 40; 
+                
+                if(type === 'terminal') { this.subType = 'START'; this.text = "START"; this.subName = "Sub 1"; } 
+                else if(type === 'sub_start') { this.subName = "Sub 1"; this.text = "Sub 1"; } 
+                else if(type === 'process') { 
+                    this.pType = 'delay'; 
+                    this.delayType = 'constant';
+                    this.delayMs = 1000; 
+                    this.varName = 'count'; 
+                    this.varVal = 0; 
+                    this.mathOp = '+'; 
+                    this.mathVal = 1; 
+                    this.text = "Wait 1000ms"; 
+                } 
+                else if(type === 'sub') { this.subName = "Sub 1"; this.text = "Sub 1"; } 
+                else if(type === 'return') { this.text = "RETURN"; }
+                else if(type === 'io') { 
+                    this.ioType = 'out';
+                    let firstOut = state.pins.find(p=>p.type==='output');
+                    this.pin = firstOut ? firstOut.id : ''; 
+                    this.outPins = this.pin ? [this.pin] : [];
+                    this.action = 'ON'; this.pwmVal = 255; this.varName = 'sensorVal';
+                    this.text = `${Utils.getPinName(this.pin)} = ON`; 
+                } 
+                else if(type === 'decision') { 
+                    this.h = 80; this.decType = 'pin'; 
+                    let firstIn = state.pins.find(p=>p.type==='input');
+                    this.pin = firstIn ? firstIn.id : ''; 
+                    this.varName = 'count'; this.cond = '=='; this.val = 255; 
+                    this.hasCond2 = false; this.logicOp = 'AND'; this.cond2 = '>'; this.val2 = 100;
+                    this.swapBranches = false;
+                    this.branchOut = 'right';
+                    this.text = `${Utils.getPinName(this.pin)} = ON?`; 
+                }
+                else if(type === 'junction') {
+                    this.w = 14; this.h = 14; this.text = "";
+                }
+            }
+            getAnchors() {
+                const anchors = [];
+                if((this.type !== 'terminal' || this.subType === 'STOP') && this.type !== 'sub_start' && this.type !== 'junction') anchors.push({ id: 'top', x: this.x, y: this.y - this.h/2 });
+                if((this.type === 'terminal' && this.subType !== 'STOP') || this.type === 'sub_start' || this.type === 'process' || this.type === 'sub' || this.type === 'io' || this.type === 'decision') anchors.push({ id: 'bottom', x: this.x, y: this.y + this.h/2 });
+                
+                if(this.type === 'decision') {
+                    let side = this.branchOut === 'left' ? 'left' : 'right';
+                    let sx = this.branchOut === 'left' ? this.x - this.w/2 : this.x + this.w/2;
+                    anchors.push({ id: side, x: sx, y: this.y });
+                }
+                
+                if(this.type === 'junction') {
+                    anchors.push({ id: 'top', x: this.x, y: this.y - 7 });
+                    anchors.push({ id: 'bottom', x: this.x, y: this.y + 7 });
+                    anchors.push({ id: 'left', x: this.x - 7, y: this.y });
+                    anchors.push({ id: 'right', x: this.x + 7, y: this.y });
+                }
+                
+                return anchors;
+            }
+            hit(mx, my) { 
+                if(this.type === 'junction') return Math.abs(mx-this.x)<=15 && Math.abs(my-this.y)<=15;
+                return Math.abs(mx - this.x) <= this.w/2 && Math.abs(my - this.y) <= this.h/2; 
+            }
+            draw(ctx) {
+                ctx.save(); ctx.translate(this.x, this.y);
+                ctx.lineWidth = 2.5; ctx.strokeStyle = (interact.selNode === this || interact.multiSel.includes(this)) ? CFG.colours.selection : CFG.colours.nodeBorder;
+                ctx.fillStyle = (state.activeNodeId === this.id) ? CFG.colours.nodeActive : CFG.colours.nodeFill;
+                
+                if (this.type === 'junction') {
+                    ctx.fillStyle = (interact.selNode === this || interact.multiSel.includes(this)) ? CFG.colours.selection : CFG.colours.nodeBorder;
+                    ctx.beginPath();
+                    ctx.arc(0, 0, 5, 0, Math.PI*2);
+                    ctx.fill();
+                    ctx.restore();
+                    
+                    if(!state.simRunning) {
+                        this.getAnchors().forEach(a => {
+                            ctx.beginPath(); ctx.arc(a.x, a.y, 4, 0, Math.PI*2);
+                            const isStart = interact.linkStart && interact.linkStart.node === this && interact.linkStart.anchor.id === a.id;
+                            ctx.fillStyle = isStart ? CFG.colours.anchorHover : 'transparent'; 
+                            ctx.strokeStyle = isStart ? CFG.colours.anchorHover : 'transparent'; 
+                            ctx.lineWidth = 2; ctx.fill(); ctx.stroke();
+                        });
+                    }
+                    return;
+                }
+
+                ctx.shadowColor = 'rgba(0,0,0,0.15)'; ctx.shadowBlur = 12; ctx.shadowOffsetY = 6;
+                const hw = this.w/2, hh = this.h/2; 
+                
+                ctx.beginPath();
+                if(this.type === 'terminal') { ctx.roundRect(-hw, -hh, this.w, this.h, hh); } 
+                else if (this.type === 'process') { ctx.rect(-hw, -hh, this.w, this.h); } 
+                else if (this.type === 'sub' || this.type === 'sub_start' || this.type === 'return') { 
+                    ctx.rect(-hw, -hh, this.w, this.h); 
+                    ctx.moveTo(-hw + 12, -hh); ctx.lineTo(-hw + 12, hh); 
+                    ctx.moveTo(hw - 12, -hh); ctx.lineTo(hw - 12, hh); 
+                } 
+                else if (this.type === 'io') { 
+                    const skew = 20; 
+                    ctx.moveTo(-hw + skew, -hh); 
+                    ctx.lineTo(hw, -hh); 
+                    ctx.lineTo(hw - skew, hh); 
+                    ctx.lineTo(-hw, hh); 
+                    ctx.closePath(); 
+                } 
+                else if (this.type === 'decision') { ctx.moveTo(0, -hh); ctx.lineTo(hw, 0); ctx.lineTo(0, hh); ctx.lineTo(-hw, 0); ctx.closePath(); }
+                
+                ctx.fill(); ctx.stroke(); 
+                
+                ctx.shadowColor = 'transparent';
+                ctx.fillStyle = CFG.colours.text; ctx.font = "bold 13px 'JetBrains Mono', monospace"; ctx.textAlign = "center"; ctx.textBaseline = "middle"; 
+                
+                let rawLines = (this.text || "").split('\n');
+                let lines = [];
+                let safeWidth = this.w - 20;
+                if (this.type === 'io') safeWidth = this.w - 40;
+                if (this.type === 'decision') safeWidth = this.w - 60;
+                if (this.type === 'terminal' || this.type === 'sub_start' || this.type === 'return') safeWidth = this.w - 30;
+                
+                rawLines.forEach(rLine => {
+                    if (rLine === '') { lines.push(''); return; }
+                    let words = rLine.split(' ');
+                    let currentLine = words[0];
+                    for (let i = 1; i < words.length; i++) {
+                        let word = words[i];
+                        let width = ctx.measureText(currentLine + " " + word).width;
+                        if (width < safeWidth) {
+                            currentLine += " " + word;
+                        } else {
+                            lines.push(currentLine);
+                            currentLine = word;
+                        }
+                    }
+                    if(currentLine) lines.push(currentLine);
+                });
+                
+                let lineHeight = 16;
+                let totalHeight = lines.length * lineHeight;
+                let startY = -(totalHeight / 2) + (lineHeight / 2);
+                
+                lines.forEach((line, idx) => {
+                    ctx.fillText(line, 0, startY + (idx * lineHeight));
+                });
+
+                if (this.type === 'decision') {
+                    ctx.font = "bold 11px Roboto";
+                    ctx.fillStyle = CFG.colours.nodeBorder;
+                    ctx.textBaseline = "bottom";
+                    
+                    let bTextX = this.branchOut === 'left' ? -hw - 6 : hw + 6;
+                    ctx.textAlign = this.branchOut === 'left' ? "right" : "left";
+                    
+                    let sideText = this.swapBranches ? "Y" : "N";
+                    let bottomText = this.swapBranches ? "N" : "Y";
+                    
+                    ctx.textAlign = "left";
+                    ctx.fillText(bottomText, 8, hh + 20); 
+                    
+                    ctx.textAlign = this.branchOut === 'left' ? "right" : "left";
+                    ctx.fillText(sideText, bTextX, -6); 
+                }
+                
+                ctx.restore();
+                if(!state.simRunning) {
+                    this.getAnchors().forEach(a => {
+                        ctx.beginPath(); ctx.arc(a.x, a.y, 6, 0, Math.PI*2);
+                        const isStart = interact.linkStart && interact.linkStart.node === this && interact.linkStart.anchor.id === a.id;
+                        ctx.fillStyle = isStart ? CFG.colours.anchorHover : CFG.colours.nodeFill; ctx.strokeStyle = isStart ? CFG.colours.anchorHover : CFG.colours.anchor; ctx.lineWidth = 2; ctx.fill(); ctx.stroke();
+                    });
+
+                    if (interact.selNode === this || interact.multiSel.includes(this)) {
+                        ctx.save();
+                        ctx.translate(this.x + this.w/2, this.y + this.h/2);
+                        ctx.beginPath();
+                        ctx.arc(0, 0, 7, 0, Math.PI*2);
+                        ctx.fillStyle = CFG.colours.selection;
+                        ctx.fill();
+                        ctx.strokeStyle = '#ffffff';
+                        ctx.lineWidth = 2.5;
+                        ctx.stroke();
+                        ctx.restore();
+                    }
+                }
+            }
+        }
+
+        // --- RENDERER ---
+        const Renderer = {
+            drawPath(context, pts) {
+                if(pts.length < 2) return;
+                
+                context.beginPath(); 
+                context.moveTo(pts[0].x, pts[0].y);
+                for(let i=1; i<pts.length; i++) { context.lineTo(pts[i].x, pts[i].y); }
+                context.stroke();
+                
+                let p1 = pts[pts.length-2];
+                let p2 = pts[pts.length-1];
+                
+                if (Utils.dist(p1.x, p1.y, p2.x, p2.y) > 2) {
+                    let angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+                    context.beginPath(); 
+                    context.moveTo(p2.x, p2.y); 
+                    context.lineTo(p2.x - 12 * Math.cos(angle - Math.PI/7), p2.y - 12 * Math.sin(angle - Math.PI/7)); 
+                    context.lineTo(p2.x - 12 * Math.cos(angle + Math.PI/7), p2.y - 12 * Math.sin(angle + Math.PI/7)); 
+                    context.closePath(); context.fill();
+                }
+            },
+
+            drawContext(context, clear = true) {
+                if (clear) { context.clearRect(0, 0, cvs.width, cvs.height); }
+                context.save(); context.translate(view.x, view.y); context.scale(view.scale, view.scale);
+                
+                // Draw Grid Background
+                context.strokeStyle = '#f1f5f9';
+                context.lineWidth = 1 / view.scale;
+                const gs = CFG.grid;
+                const sX = Math.floor(-view.x / view.scale / gs) * gs;
+                const sY = Math.floor(-view.y / view.scale / gs) * gs;
+                const eX = sX + (cvs.width / view.scale) + gs;
+                const eY = sY + (cvs.height / view.scale) + gs;
+                
+                context.beginPath();
+                for (let x = sX; x <= eX; x += gs) { context.moveTo(x, sY); context.lineTo(x, eY); }
+                for (let y = sY; y <= eY; y += gs) { context.moveTo(sX, y); context.lineTo(eX, y); }
+                context.stroke();
+                
+                state.links.forEach(l => {
+                    const n1 = state.nodes.find(n => n.id === l.from); const n2 = state.nodes.find(n => n.id === l.to);
+                    if(!n1 || !n2) return; 
+                    const a1 = n1.getAnchors().find(a => a.id === l.fromAnchor);
+                    let prevPt = l.waypoints && l.waypoints.length > 0 ? l.waypoints[l.waypoints.length-1] : a1;
+                    const a2 = prevPt ? Utils.getBestAnchor(n2, prevPt) : n2.getAnchors()[0];
+                    if(!a1 || !a2) return;
+                    
+                    context.strokeStyle = CFG.colours.line; 
+                    context.fillStyle = context.strokeStyle;
+                    
+                    let isSelected = (interact.selLink === l);
+                    context.lineWidth = isSelected ? 4 : 2.5; 
+                    if(isSelected) { context.strokeStyle = CFG.colours.selection; context.fillStyle = CFG.colours.selection; }
+                    
+                    let pts = [a1]; if(l.waypoints) pts = pts.concat(l.waypoints); pts.push(a2);
+                    this.drawPath(context, pts);
+
+                    if (isSelected && !state.simRunning) {
+                        context.fillStyle = '#ffffff'; context.strokeStyle = CFG.colours.selection; context.lineWidth = 2;
+                        if(l.waypoints) {
+                            l.waypoints.forEach(wp => {
+                                context.beginPath(); context.arc(wp.x, wp.y, 5, 0, Math.PI*2); context.fill(); context.stroke();
+                            });
+                        }
+                    }
+                });
+
+                if(interact.boxSel && interact.boxSel.act){
+                    context.fillStyle='rgba(250,204,21,0.1)'; context.strokeStyle='rgba(202,138,4,0.8)';
+                    context.lineWidth=1/view.scale; context.setLineDash([5/view.scale, 5/view.scale]);
+                    const w = interact.boxSel.end.x - interact.boxSel.start.x;
+                    const h = interact.boxSel.end.y - interact.boxSel.start.y;
+                    context.fillRect(interact.boxSel.start.x, interact.boxSel.start.y, w, h);
+                    context.strokeRect(interact.boxSel.start.x, interact.boxSel.start.y, w, h);
+                    context.setLineDash([]);
+                }
+
+                if(interact.linkStart && !state.simRunning) {
+                    context.strokeStyle = CFG.colours.anchorHover; 
+                    context.fillStyle = CFG.colours.anchorHover; 
+                    context.lineWidth = 2.5; 
+                    
+                    const a1 = interact.linkStart.anchor; 
+                    const p = { x: interact.dynX, y: interact.dynY };
+                    
+                    context.beginPath();
+                    context.moveTo(a1.x, a1.y);
+                    
+                    if(interact.linkStart.waypoints && interact.linkStart.waypoints.length > 0) {
+                        interact.linkStart.waypoints.forEach(wp => {
+                            context.lineTo(wp.x, wp.y);
+                        });
+                    }
+                    
+                    context.lineTo(p.x, p.y);
+                    context.stroke();
+
+                    context.beginPath();
+                    context.arc(p.x, p.y, 4, 0, Math.PI*2);
+                    context.fill();
+                }
+                state.nodes.forEach(n => n.draw(context)); context.restore();
+            },
+            draw() { this.drawContext(ctx); }
+        };
+
+        // --- INTERACTION MANAGER ---
+        const InputManager = {
+            init() {
+                window.addEventListener('keydown', (e) => this.handleKeyDown(e));
+                cvs.addEventListener('pointerdown', (e) => this.onPointerDown(e));
+                window.addEventListener('pointermove', (e) => this.onPointerMove(e));
+                window.addEventListener('pointerup', (e) => this.onPointerUp(e));
+                window.addEventListener('pointercancel', (e) => this.onPointerUp(e)); 
+                cvs.addEventListener('dblclick', (e) => this.onDoubleClick(e));
+                cvs.addEventListener('wheel', (e) => this.onWheel(e), {passive: false});
+                cvs.addEventListener('contextmenu', (e) => { if(e.target === cvs) e.preventDefault(); });
+                this.initDragAndDrop();
+            },
+            initDragAndDrop() {
+                document.querySelectorAll('.comp-card').forEach(el => {
+                    const startDrag = (e) => {
+                        if(state.simRunning) return; 
+                        e.preventDefault(); 
+                        dragData = { type: 'node', val: el.dataset.type };
+                        dragGhost = document.createElement('div'); 
+                        dragGhost.className = 'drag-ghost flex items-center justify-center';
+                        let visualNode = el.querySelector('div').cloneNode(true); 
+                        visualNode.style.margin = '0';
+                        dragGhost.appendChild(visualNode); 
+                        dragGhost.style.left = e.clientX + 'px'; 
+                        dragGhost.style.top = e.clientY + 'px';
+                        document.body.appendChild(dragGhost);
+                    };
+                    el.addEventListener('pointerdown', startDrag);
+                });
+            },
+            onWheel(e) {
+                if (e.target !== cvs) return;
+                e.preventDefault();
+                const m = Utils.getMousePos(e);
+                const tpBefore = Utils.getTransformedPos(m.x, m.y);
+                
+                if (e.deltaY < 0) view.scale *= 1.1; else view.scale *= 0.9;
+                view.scale = Math.max(0.2, Math.min(view.scale, 3.0));
+                
+                const tpAfter = Utils.getTransformedPos(m.x, m.y);
+                view.x += (tpAfter.x - tpBefore.x) * view.scale;
+                view.y += (tpAfter.y - tpBefore.y) * view.scale;
+                Renderer.draw();
+            },
+            onPointerDown(e) {
+                if (e.target !== cvs) return;
+
+                if (document.activeElement && ['INPUT', 'SELECT', 'TEXTAREA'].includes(document.activeElement.tagName)) {
+                    document.activeElement.blur();
+                }
+
+                if (e.button === 1 || e.button === 2 || (e.touches && e.touches.length === 2)) {
+                    this.startPanning(e);
+                    return;
+                }
+
+                e.preventDefault(); cvs.focus(); cvs.setPointerCapture(e.pointerId); 
+                const raw = e.touches ? e.touches[0] : e;
+                const m = Utils.getMousePos(raw); 
+                
+                if(state.simRunning) {
+                    this.startPanning(e);
+                    return; 
+                }
+
+                const tp = Utils.getTransformedPos(m.x, m.y);
+                interact.isDraggingCanvas = true; interact.msX = m.x; interact.msY = m.y;
+
+                // 1. Check Resize Handle First
+                if (interact.selNode && (interact.multiSel||[]).length <= 1) {
+                    const sn = interact.selNode;
+                    if (sn.type !== 'junction' && Utils.dist(tp.x, tp.y, sn.x + sn.w/2, sn.y + sn.h/2) < 20) {
+                        interact.isResizing = true;
+                        interact.resizeData = { node: sn, startW: sn.w, startH: sn.h, mx: tp.x, my: tp.y };
+                        return;
+                    }
+                }
+                
+                // 2. Check Junction Center-click
+                if (!interact.linkStart) {
+                    for(let i=state.nodes.length-1; i>=0; i--) {
+                        const n = state.nodes[i];
+                        if (n.type === 'junction' && Utils.dist(n.x, n.y, tp.x, tp.y) < 10) {
+                            if (!e.shiftKey && !(interact.multiSel||[]).includes(n)) interact.multiSel = [n];
+                            else if (e.shiftKey && !(interact.multiSel||[]).includes(n)) interact.multiSel.push(n);
+                            UIManager.selectNode(n); interact.dragNode = n;
+                            interact.dragStartNodes = interact.multiSel.map(sn => ({node: sn, ox: sn.x, oy: sn.y}));
+                            interact.linkStart = null; Renderer.draw(); return;
+                        }
+                    }
+                }
+
+                // 3. Check Anchors (Start or finish a link)
+                for(let i=state.nodes.length-1; i>=0; i--) {
+                    const n = state.nodes[i]; const anchors = n.getAnchors();
+                    for(let a of anchors) { 
+                        if(Utils.dist(tp.x, tp.y, a.x, a.y) < 16) { 
+                            if (interact.linkStart) {
+                                if (interact.linkStart.node !== n || interact.linkStart.anchor.id !== a.id) {
+                                    state.links = state.links.filter(l => !(l.from === interact.linkStart.node.id && l.fromAnchor === interact.linkStart.anchor.id && l.to === n.id));
+                                    state.links.push({ from: interact.linkStart.node.id, fromAnchor: interact.linkStart.anchor.id, to: n.id, waypoints: interact.linkStart.waypoints ? [...interact.linkStart.waypoints] : [] }); 
+                                    HistoryManager.record();
+                                }
+                                interact.linkStart = null;
+                            } else {
+                                if (a.id !== 'top' || n.type === 'junction') {
+                            interact.linkStart = { node: n, anchor: a, waypoints: [] };
+                            interact.dynX = tp.x; 
+                            interact.dynY = tp.y;
+                        }
+                            }
+                            Renderer.draw(); return; 
+                        } 
+                    }
+                }
+                
+                // 4. Handle Link Creation (Waypoints and Junction Splitting)
+                if (interact.linkStart) {
+                    let hitLink = null; let hitWaypoint = null; let hitWpIndex = -1;
+                    for(let l of state.links) {
+                        const n1 = state.nodes.find(n => n.id === l.from); const n2 = state.nodes.find(n => n.id === l.to);
+                        if(n1 && n2) { 
+                            const a1 = n1.getAnchors().find(a => a.id === l.fromAnchor);
+                            let prevPt = l.waypoints && l.waypoints.length > 0 ? l.waypoints[l.waypoints.length-1] : a1;
+                            const a2 = prevPt ? Utils.getBestAnchor(n2, prevPt) : n2.getAnchors()[0];
+                            if(a1 && a2) { 
+                                let pts = [a1]; if(l.waypoints) pts = pts.concat(l.waypoints); pts.push(a2);
+                                let closestD = Infinity;
+                                for(let i=0; i<pts.length-1; i++) {
+                                    let d = Utils.distToSegment(tp.x, tp.y, pts[i].x, pts[i].y, pts[i+1].x, pts[i+1].y);
+                                    if (d < 15 && d < closestD) { 
+                                        closestD = d; hitLink = l; hitWpIndex = i; 
+                                        
+                                        // Calculate exact projection onto the segment
+                                        let aPt = pts[i], bPt = pts[i+1];
+                                        let l2 = Utils.dist(aPt.x, aPt.y, bPt.x, bPt.y)**2;
+                                        let t = l2 === 0 ? 0 : ((tp.x - aPt.x)*(bPt.x - aPt.x) + (tp.y - aPt.y)*(bPt.y - aPt.y)) / l2;
+                                        t = Math.max(0, Math.min(1, t));
+                                        hitWaypoint = { x: Utils.snap(aPt.x + t*(bPt.x - aPt.x)), y: Utils.snap(aPt.y + t*(bPt.y - aPt.y)) };
+                                    }
+                                }
+                            } 
+                        }
+                        if (hitLink) break;
+                    }
+
+                    if (hitLink) {
+                        const jNode = new FNode('junction', hitWaypoint.x, hitWaypoint.y);
+                        state.nodes.push(jNode);
+                        
+                        let newWaypoints = interact.linkStart.waypoints ? [...interact.linkStart.waypoints] : [];
+                        state.links.push({ from: interact.linkStart.node.id, fromAnchor: interact.linkStart.anchor.id, to: jNode.id, waypoints: newWaypoints }); 
+                        
+                        let w1Pts = hitLink.waypoints ? hitLink.waypoints.slice(0, hitWpIndex) : [];
+                        let w2Pts = hitLink.waypoints ? hitLink.waypoints.slice(hitWpIndex) : [];
+                        
+                        let origTo = hitLink.to;
+                        hitLink.to = jNode.id;
+                        hitLink.waypoints = w1Pts;
+                        
+                        state.links.push({ from: jNode.id, fromAnchor: 'bottom', to: origTo, waypoints: w2Pts });
+                        HistoryManager.record(); interact.linkStart = null; Renderer.draw(); return;
+                    }
+                    
+                    const newWp = { x: Utils.snap(tp.x), y: Utils.snap(tp.y) };
+                    interact.linkStart.waypoints.push(newWp);
+                    Renderer.draw(); return;
+                }
+
+                // 5. Select & Drag Waypoints
+                if (interact.selLink && interact.selLink.waypoints) {
+                    for (let i=0; i<interact.selLink.waypoints.length; i++) {
+                        let wp = interact.selLink.waypoints[i];
+                        if (Utils.dist(tp.x, tp.y, wp.x, wp.y) < 15) { 
+                            interact.dragWaypoint = { link: interact.selLink, index: i }; 
+                            interact.multiSel = []; UIManager.selectNode(null); 
+                            Renderer.draw(); return; 
+                        }
+                    }
+                }
+
+                // 6. Select & Drag Nodes (Multi-Select capable)
+                for(let i=state.nodes.length-1; i>=0; i--) {
+                    const n = state.nodes[i]; 
+                    if(n.hit(tp.x, tp.y)) { 
+                        if(e.shiftKey) {
+                            if((interact.multiSel||[]).includes(n)) interact.multiSel = interact.multiSel.filter(x => x !== n);
+                            else interact.multiSel.push(n);
+                        } else {
+                            if(!(interact.multiSel||[]).includes(n)) interact.multiSel = [n];
+                        }
+                        UIManager.selectNode(n); interact.dragNode = n; 
+                        interact.dragStartNodes = interact.multiSel.map(sn => ({node: sn, ox: sn.x, oy: sn.y}));
+                        interact.dragOff = {x: tp.x - n.x, y: tp.y - n.y};
+                        Renderer.draw(); return; 
+                    }
+                }
+                
+                // 7. Select Link
+                interact.selLink = null; UIManager.selectNode(null); interact.multiSel = [];
+                for(let l of state.links) {
+                    const n1 = state.nodes.find(n => n.id === l.from); const n2 = state.nodes.find(n => n.id === l.to);
+                    if(n1 && n2) { 
+                        const a1 = n1.getAnchors().find(a => a.id === l.fromAnchor);
+                        let prevPt = l.waypoints && l.waypoints.length > 0 ? l.waypoints[l.waypoints.length-1] : a1;
+                        const a2 = prevPt ? Utils.getBestAnchor(n2, prevPt) : n2.getAnchors()[0];
+                        if(a1 && a2) { 
+                            let pts = [a1]; if(l.waypoints) pts = pts.concat(l.waypoints); pts.push(a2);
+                            let hit = false;
+                            for(let i=0; i<pts.length-1; i++) {
+                                if(Utils.distToSegment(tp.x, tp.y, pts[i].x, pts[i].y, pts[i+1].x, pts[i+1].y) < 15) { hit = true; break; }
+                            }
+                            if (hit) { interact.selLink = l; Renderer.draw(); return; }
+                        } 
+                    }
+                }
+
+                // 8. Start Box Selection
+                if(!e.shiftKey) interact.multiSel=[];
+                interact.boxSel = { act: true, start: {x: tp.x, y: tp.y}, end: {x: tp.x, y: tp.y} };
+                Renderer.draw();
+            },
+            startPanning(e) {
+                e.preventDefault(); 
+                interact.pan = true; 
+                cvs.style.cursor = 'grabbing';
+                const raw = e.touches ? e.touches[0] : e;
+                if(e.touches && e.touches.length === 2) {
+                    startPan = { x: (e.touches[0].clientX + e.touches[1].clientX)/2, y: (e.touches[0].clientY + e.touches[1].clientY)/2 };
+                } else {
+                    startPan = { x: raw.clientX, y: raw.clientY };
+                }
+                interact.isDraggingCanvas = true; 
+                if (e.pointerId) cvs.setPointerCapture(e.pointerId);
+            },
+            onPointerMove(e) {
+                if(dragGhost) { dragGhost.style.left = e.clientX + 'px'; dragGhost.style.top = e.clientY + 'px'; return; }
+                const raw = e.touches ? e.touches[0] : e;
+                const m = Utils.getMousePos(raw); const tp = Utils.getTransformedPos(m.x, m.y);
+
+                if(!interact.isDraggingCanvas && e.target === cvs) {
+                    let cursor = 'crosshair';
+                    if (interact.selNode && !state.simRunning) {
+                        if (Utils.dist(tp.x, tp.y, interact.selNode.x + interact.selNode.w/2, interact.selNode.y + interact.selNode.h/2) < 20) { cursor = 'nwse-resize'; }
+                    }
+                    if (cursor === 'crosshair' && !state.simRunning) {
+                        let overAnchor = false;
+                        for(let i=state.nodes.length-1; i>=0; i--) {
+                            const n = state.nodes[i];
+                            for(let a of n.getAnchors()) {
+                                if(Utils.dist(tp.x, tp.y, a.x, a.y) < 16 && a.id !== 'top') { cursor = 'crosshair'; overAnchor = true; break; }
+                            }
+                            if (overAnchor) break;
+                            if (n.hit(tp.x, tp.y)) { cursor = 'grab'; break; }
+                        }
+                    }
+                    if (cvs.style.cursor !== cursor && !interact.pan) cvs.style.cursor = cursor;
+                }
+
+                // NEW LOCATION: Update dynamic wire position even when not holding left-click
+                if(interact.linkStart && !state.simRunning) {
+                    interact.dynX = Utils.snap(tp.x);
+                    interact.dynY = Utils.snap(tp.y);
+                    Renderer.draw(); return;
+                }
+
+                if(!interact.isDraggingCanvas) return;
+                if (interact.dragNode || interact.pan || interact.dragWaypoint) { cvs.style.cursor = 'grabbing'; }
+
+                if(interact.pan) { 
+                    let midX = raw.clientX, midY = raw.clientY;
+                    if(e.touches && e.touches.length === 2) {
+                        midX = (e.touches[0].clientX + e.touches[1].clientX)/2;
+                        midY = (e.touches[0].clientY + e.touches[1].clientY)/2;
+                    }
+                    view.x += midX - startPan.x; 
+                    view.y += midY - startPan.y; 
+                    startPan = { x: midX, y: midY };
+                    Renderer.draw(); return; 
+                } 
+                
+                if(interact.isResizing && !state.simRunning) {
+                    const rd = interact.resizeData;
+                    rd.node.w = Math.max(120, Math.min(400, Utils.snap(rd.startW + (tp.x - rd.mx) * 2)));
+                    rd.node.h = Math.max(40, Math.min(300, Utils.snap(rd.startH + (tp.y - rd.my) * 2)));
+                    Renderer.draw(); return;
+                }
+                
+                if(interact.dragNode && !state.simRunning) {
+                    const primaryStart = (interact.dragStartNodes||[]).find(sn => sn.node === interact.dragNode);
+                    if (primaryStart) {
+                        const targetX = Utils.snap(tp.x - (interact.dragOff?.x||0));
+                        const targetY = Utils.snap(tp.y - (interact.dragOff?.y||0));
+                        const dx = targetX - primaryStart.ox;
+                        const dy = targetY - primaryStart.oy;
+                        
+                        (interact.dragStartNodes||[]).forEach(sn => {
+                            sn.node.x = sn.ox + dx;
+                            sn.node.y = sn.oy + dy;
+                        });
+                    }
+                    Renderer.draw(); return;
+                } 
+                
+                if(interact.dragWaypoint && !state.simRunning) {
+                    interact.dragWaypoint.link.waypoints[interact.dragWaypoint.index] = { x: Utils.snap(tp.x), y: Utils.snap(tp.y) };
+                    Renderer.draw(); return;
+                }
+                
+                if (interact.boxSel && interact.boxSel.act) {
+                    interact.boxSel.end = { x: tp.x, y: tp.y };
+                    Renderer.draw(); return;
+                }
+
+                
+            },
+            onPointerUp(e) {
+                if (e.target === cvs && e.pointerId !== undefined) {
+                    try { cvs.releasePointerCapture(e.pointerId); } catch(err) {}
+                }
+
+                if(dragGhost) {
+                    document.body.removeChild(dragGhost); 
+                    const r = cvs.getBoundingClientRect();
+                    const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
+                    const clientY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
+                    
+                    if(clientX >= r.left-20 && clientX <= r.right+20 && clientY >= r.top-20 && clientY <= r.bottom+20) {
+                        const p = Utils.getTransformedPos(clientX - r.left, clientY - r.top);
+                        
+                        if (dragData.val === 'loop_macro') {
+                            const n1 = new FNode('process', Utils.snap(p.x), Utils.snap(p.y - 120));
+                            n1.pType = 'var_set'; n1.varName = 'count'; n1.varVal = 0; n1.text = 'count = 0';
+                            
+                            const n2 = new FNode('process', Utils.snap(p.x), Utils.snap(p.y - 20));
+                            n2.pType = 'var_math'; n2.varName = 'count'; n2.mathOp = '+'; n2.mathVal = 1; n2.text = 'count = count + 1';
+                            
+                            const n3 = new FNode('decision', Utils.snap(p.x), Utils.snap(p.y + 100));
+                            n3.decType = 'var'; n3.varName = 'count'; n3.cond = '=='; n3.val = 5; n3.text = 'count = 5?';
+                            
+                            state.nodes.push(n1, n2, n3);
+                            state.links.push({ from: n1.id, fromAnchor: 'bottom', to: n2.id, waypoints: [] });
+                            state.links.push({ from: n2.id, fromAnchor: 'bottom', to: n3.id, waypoints: [] });
+                            
+                            let wpX = Utils.snap(p.x + 140);
+                            let wpY_bottom = Utils.snap(p.y + 100);
+                            let wpY_top = Utils.snap(p.y - 60); 
+                            
+                            state.links.push({ 
+                                from: n3.id, 
+                                fromAnchor: 'right', 
+                                to: n2.id, 
+                                waypoints: [
+                                    {x: wpX, y: wpY_bottom},
+                                    {x: wpX, y: wpY_top},
+                                    {x: Utils.snap(p.x), y: wpY_top}
+                                ] 
+                            });
+                            
+                            interact.multiSel = [n1, n2, n3];
+                            UIManager.selectNode(n1);
+                        } else {
+                            const node = new FNode(dragData.val, Utils.snap(p.x), Utils.snap(p.y));
+                            state.nodes.push(node); 
+                            interact.multiSel = [node];
+                            UIManager.selectNode(node); 
+                        }
+                        
+                        HistoryManager.record(); Renderer.draw();
+                    }
+                    dragGhost = null; dragData = null;
+                }
+                
+                if (interact.boxSel && interact.boxSel.act) {
+                    const x1 = Math.min(interact.boxSel.start.x, interact.boxSel.end.x);
+                    const x2 = Math.max(interact.boxSel.start.x, interact.boxSel.end.x);
+                    const y1 = Math.min(interact.boxSel.start.y, interact.boxSel.end.y);
+                    const y2 = Math.max(interact.boxSel.start.y, interact.boxSel.end.y);
+                    
+                    if (x2 - x1 > 5 || y2 - y1 > 5) {
+                        interact.multiSel = interact.multiSel || [];
+                        state.nodes.forEach(n => {
+                            if (n.x >= x1 && n.x <= x2 && n.y >= y1 && n.y <= y2 && !interact.multiSel.includes(n)) interact.multiSel.push(n);
+                        });
+                        if (interact.multiSel.length === 1) UIManager.selectNode(interact.multiSel[0]);
+                    }
+                    interact.boxSel = null;
+                }
+
+                interact.isDraggingCanvas = false;
+                if(interact.pan) { interact.pan = false; cvs.style.cursor = 'crosshair'; }
+                if(interact.isResizing) { interact.isResizing = false; interact.resizeData = null; HistoryManager.record(); }
+                
+                if(interact.dragNode) { HistoryManager.record(); interact.dragNode = null; cvs.style.cursor = 'crosshair'; }
+                if(interact.dragWaypoint) { HistoryManager.record(); interact.dragWaypoint = null; cvs.style.cursor = 'crosshair'; }
+                
+                Renderer.draw();
+            },
+            onDoubleClick(e) {
+                if(state.simRunning || !interact.selLink) return;
+                const m = Utils.getMousePos(e); const tp = Utils.getTransformedPos(m.x, m.y);
+                
+                if (interact.selLink.waypoints) {
+                    for (let i=0; i<interact.selLink.waypoints.length; i++) {
+                        let wp = interact.selLink.waypoints[i];
+                        if (Utils.dist(tp.x, tp.y, wp.x, wp.y) < 15) { interact.selLink.waypoints.splice(i, 1); HistoryManager.record(); Renderer.draw(); return; }
+                    }
+                }
+                
+                const n1 = state.nodes.find(n => n.id === interact.selLink.from); const n2 = state.nodes.find(n => n.id === interact.selLink.to);
+                if(n1 && n2) {
+                    const a1 = n1.getAnchors().find(a => a.id === interact.selLink.fromAnchor);
+                    let prevPt = interact.selLink.waypoints && interact.selLink.waypoints.length > 0 ? interact.selLink.waypoints[interact.selLink.waypoints.length-1] : a1;
+                    const a2 = prevPt ? Utils.getBestAnchor(n2, prevPt) : n2.getAnchors()[0];
+                    let pts = [a1]; if(interact.selLink.waypoints) pts = pts.concat(interact.selLink.waypoints); pts.push(a2);
+                    
+                    let closestDist = Infinity; let insertIdx = -1;
+                    for(let i=0; i<pts.length-1; i++) {
+                        let d = Utils.distToSegment(tp.x, tp.y, pts[i].x, pts[i].y, pts[i+1].x, pts[i+1].y);
+                        if (d < 15 && d < closestDist) { closestDist = d; insertIdx = i; }
+                    }
+                    if (insertIdx !== -1) {
+                        if(!interact.selLink.waypoints) interact.selLink.waypoints = [];
+                        interact.selLink.waypoints.splice(insertIdx, 0, {x: Utils.snap(tp.x), y: Utils.snap(tp.y)});
+                        HistoryManager.record(); Renderer.draw();
+                    }
+                }
+            },
+            handleKeyDown(e) {
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT' || e.target.tagName === 'TEXTAREA') return;
+                if(e.key === 'Delete' || e.key === 'Backspace') UIManager.deleteSelected();
+                if(e.key === 'Escape') { interact.linkStart = null; UIManager.selectNode(null); interact.selLink = null; HardwareManager.closePicker(); CodeGenerator.closeModal(); Renderer.draw(); }
+                if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C')) { e.preventDefault(); UIManager.copyNode(); }
+                if ((e.ctrlKey || e.metaKey) && (e.key === 'v' || e.key === 'V')) { e.preventDefault(); UIManager.pasteNode(); }
+                if ((e.ctrlKey || e.metaKey) && (e.key === 'z' || e.key === 'Z')) { e.preventDefault(); HistoryManager.undo(); }
+                if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || e.key === 'Y')) { e.preventDefault(); HistoryManager.redo(); }
+            }
+        };
+
+        // --- SIMULATION ENGINE ---
+        const SimEngine = {
+            timer: 0,
+            lastTime: 0,
+            frameId: null,
+            delayInitialized: null,
+            nodeActionExecuted: false,
+            evaluateExpression(expr) {
+                if (!expr) return 0;
+                let evalStr = String(expr);
+                let vars = Object.keys(simVars).sort((a,b) => b.length - a.length);
+                vars.forEach(v => {
+                    let re = new RegExp('\\b' + v + '\\b', 'g');
+                    evalStr = evalStr.replace(re, simVars[v]);
+                });
+                evalStr = evalStr.replace(/[^0-9+\-*/(). ]/g, '');
+                try { return Function('"use strict";return (' + evalStr + ')')() || 0; } catch(e) { return 0; }
+            },
+            getNextLink(nodeId, conditionBranch = 'bottom') { return state.links.find(l => l.from === nodeId && l.fromAnchor === conditionBranch); },
+            evalNextNode(n) {
+                if (!n) return null;
+                
+                if(n.type === 'terminal' && n.subType === 'STOP') { return null; }
+                else if(n.type === 'terminal' && n.subType === 'START') {
+                    const link = this.getNextLink(n.id, 'bottom'); return link ? link.to : null;
+                }
+                else if(n.type === 'sub_start' || n.type === 'process' || n.type === 'io') {
+                    const link = this.getNextLink(n.id, 'bottom'); return link ? link.to : null;
+                }
+                else if(n.type === 'junction') {
+                    const link = state.links.find(l => l.from === n.id); return link ? link.to : null;
+                }
+                else if(n.type === 'decision') {
+                    let checkVal = n.decType === 'pin' ? (hwMemory[n.pin] || 0) : (simVars[n.varName] || 0);
+                    let result1 = false;
+                    if(n.cond === '==') result1 = (checkVal == n.val); 
+                    else if(n.cond === '>') result1 = (checkVal > n.val); 
+                    else if(n.cond === '<') result1 = (checkVal < n.val);
+                    else if(n.cond === '>=') result1 = (checkVal >= n.val);
+                    else if(n.cond === '<=') result1 = (checkVal <= n.val);
+                    
+                    let finalResult = result1;
+                    if (n.hasCond2) {
+                        let result2 = false;
+                        if(n.cond2 === '==') result2 = (checkVal == n.val2); 
+                        else if(n.cond2 === '>') result2 = (checkVal > n.val2); 
+                        else if(n.cond2 === '<') result2 = (checkVal < n.val2);
+                        else if(n.cond2 === '>=') result2 = (checkVal >= n.val2);
+                        else if(n.cond2 === '<=') result2 = (checkVal <= n.val2);
+
+                        if (n.logicOp === 'AND') finalResult = result1 && result2;
+                        else finalResult = result1 || result2;
+                    }
+                    
+                    let sideBranch = n.branchOut === 'left' ? 'left' : 'right';
+                    let yBranch = n.swapBranches ? sideBranch : 'bottom';
+                    let nBranch = n.swapBranches ? 'bottom' : sideBranch;
+                    const branch = finalResult ? yBranch : nBranch; 
+                    const link = this.getNextLink(n.id, branch);
+                    
+                    if(!link) { UIManager.showToast(`Error: Missing '${finalResult?'Y':'N'}' branch at '${n.text.replace(/\n/g, ' ')}'.`, true); return null; }
+                    return link ? link.to : null;
+                } 
+                else if(n.type === 'sub') {
+                    let subStart = state.nodes.find(x => x.type === 'sub_start' && x.subName === n.subName);
+                    if (subStart) { state.callStack.push(n.id); return subStart.id; } 
+                    else { UIManager.showToast(`Error: Missing Sub-procedure '${n.subName}'.`, true); return null; }
+                }
+                else if(n.type === 'return') {
+                    if(state.callStack.length > 0) {
+                        let callerId = state.callStack.pop();
+                        const link = this.getNextLink(callerId, 'bottom'); 
+                        if(!link) { UIManager.showToast(`Error: Dead end after returning from '${n.text}'.`, true); return null; }
+                        return link ? link.to : null;
+                    } else { UIManager.showToast("Error: Return outside sub-procedure.", true); return null; }
+                }
+                return null;
+            },
+            executeNodeAction(n) {
+                if (!n) return;
+                
+                if(n.type === 'terminal' && n.subType === 'STOP') { 
+                    UIManager.showToast("Programme Finished."); 
+                }
+                else if(n.type === 'process') {
+                    if(n.pType === 'var_set') { simVars[n.varName] = n.varVal; } 
+                    else if(n.pType === 'var_math') {
+                        let current = simVars[n.varName] || 0;
+                        if(n.mathOp === '+') simVars[n.varName] = current + n.mathVal;
+                        else if(n.mathOp === '-') simVars[n.varName] = current - n.mathVal;
+                        else if(n.mathOp === '*') simVars[n.varName] = current * n.mathVal;
+                        else if(n.mathOp === '/') simVars[n.varName] = current / n.mathVal;
+                    }
+                }
+                else if(n.type === 'io') {
+                    if(n.ioType === 'in') { 
+                        simVars[n.varName || 'sensorVal'] = hwMemory[n.pin] || 0; 
+                    } 
+                    else {
+                        let pins = n.outPins && n.outPins.length > 0 ? n.outPins : (n.pin ? [n.pin] : []);
+                        pins.forEach(pin => {
+                            if(n.action === 'ON') hwMemory[pin] = 255; 
+                            else if(n.action === 'OFF') hwMemory[pin] = 0; 
+                            else hwMemory[pin] = n.pwmVal;
+                        });
+                        HardwareManager.updateState();
+                    }
+                } 
+            },
+            loop(timestamp) {
+                if(!state.simRunning) return;
+                if(!SimEngine.lastTime) SimEngine.lastTime = timestamp; 
+                const dt = timestamp - SimEngine.lastTime; 
+                SimEngine.lastTime = timestamp;
+                
+                const n = state.nodes.find(x => x.id === state.activeNodeId);
+                if(!n) { this.stop(); return; }
+
+                let speedMult = parseFloat(document.getElementById('simSpeed').value) || 1.0;
+
+                if (!this.nodeActionExecuted) {
+                    this.executeNodeAction(n);
+                    this.nodeActionExecuted = true;
+                    
+                    if(n.type === 'process' && n.pType === 'delay') {
+                        let ms = n.delayType === 'variable' ? this.evaluateExpression(n.varName) : n.delayMs;
+                        this.timer = ms / speedMult;
+                    } else if (n.type === 'junction') {
+                        this.timer = 0; // Junctions take 0ms to evaluate
+                    } else {
+                        this.timer = 100 / speedMult;
+                    }
+                    Renderer.draw(); 
+                }
+
+                this.timer -= dt;
+
+                if (this.timer <= 0) {
+                    if (n.type === 'terminal' && n.subType === 'STOP') {
+                        this.stop(); return;
+                    }
+                    
+                    let nextId = this.evalNextNode(n);
+                    if (nextId) {
+                        state.activeNodeId = nextId;
+                        this.nodeActionExecuted = false; 
+                        Renderer.draw();
+                    } else {
+                        if (n.type !== 'terminal' && n.type !== 'junction') {
+                            UIManager.showToast(`Error: Dead end at '${n.text.replace(/\n/g, ' ')}'.`, true);
+                        }
+                        this.stop();
+                        return;
+                    }
+                }
+
+                this.frameId = requestAnimationFrame((ts) => this.loop(ts));
+            },
+            start() {
+                const start = state.nodes.find(n => n.type === 'terminal' && n.subType === 'START'); 
+                if(!start) { UIManager.showToast("Error: No START node found.", true); return; }
+                state.simRunning = true; 
+                state.activeNodeId = start.id; 
+                UIManager.selectNode(null); 
+                interact.selLink = null; interact.multiSel = [];
+                simVars = {}; 
+                state.callStack = [];
+                this.nodeActionExecuted = false;
+                this.timer = 0;
+                
+                document.getElementById('btnSim').classList.add('hidden'); 
+                document.getElementById('btnStop').classList.remove('hidden');
+                ['btnDelete', 'btnClear', 'btnUndo', 'btnRedo'].forEach(id => document.getElementById(id).classList.add('opacity-50', 'cursor-not-allowed'));
+                
+                this.lastTime = 0; 
+                this.frameId = requestAnimationFrame((ts) => this.loop(ts)); 
+                UIManager.showToast("Programme Running..."); 
+                Renderer.draw();
+            },
+            stop() {
+                state.simRunning = false; state.activeNodeId = null; cancelAnimationFrame(this.frameId);
+                document.getElementById('btnSim').classList.remove('hidden'); document.getElementById('btnStop').classList.add('hidden');
+                ['btnDelete', 'btnClear'].forEach(id => document.getElementById(id).classList.remove('opacity-50', 'cursor-not-allowed')); HistoryManager.updateButtons();
+                state.pins.forEach(p => { hwMemory[p.id] = 0; }); HardwareManager.updateState(); Renderer.draw();
+            }
+        };
+
+        // --- DUAL LANGUAGE COMPILER CLASS ---
+        class CodeCompiler {
+            constructor(appState, lang = 'arduino') {
+                this.state = appState;
+                this.lang = lang;
+                this.pinVars = {};
+                this.usedVars = new Set();
+                this.globalVisited = new Set();
+                this.hasComplexLoops = false;
+                this.picaxeVars = {};
+                this.varCount = 0;
+            }
+
+            isValidVarName(name) {
+                return /^[a-zA-Z_][a-zA-Z0-9_]*$/.test(name);
+            }
+
+            compile() {
+                let code = "";
+                if (this.lang === 'arduino') {
+                    code += "/* Generated by NoSyntaxSim V2.0 */\n/* Target: Arduino C++ */\n\n";
+                } else {
+                    code += "; Generated by NoSyntaxSim V2.0\n; Target: PICAXE BASIC\n\n";
+                }
+                
+                // Identify active pins
+                const activePinIds = new Set(this.state.pins.filter(p => p.component !== null).map(p => p.id));
+                this.state.nodes.forEach(n => {
+                    if (n.type === 'io' && n.ioType !== 'in') {
+                        let pins = n.outPins && n.outPins.length > 0 ? n.outPins : (n.pin ? [n.pin] : []);
+                        pins.forEach(p => activePinIds.add(p));
+                    } else if ((n.type === 'io' || n.type === 'decision') && n.decType !== 'var' && n.pin) {
+                        activePinIds.add(n.pin);
+                    }
+                });
+
+                const activePins = this.state.pins.filter(p => activePinIds.has(p.id));
+
+                if (this.lang === 'arduino') {
+                    activePins.forEach(p => {
+                        let safeName = p.name.replace(/[^a-zA-Z0-9_]/g, '_');
+                        if (/^[0-9]/.test(safeName)) safeName = 'Pin_' + safeName;
+                        this.pinVars[p.id] = safeName;
+                        code += `const int ${safeName} = ${p.pinNum};\n`;
+                    });
+                } else {
+                    activePins.forEach(p => {
+                        let safeName = p.name.replace(/[^a-zA-Z0-9_]/g, '_');
+                        this.pinVars[p.id] = safeName;
+                    });
+                }
+                
+                this.state.nodes.forEach(n => {
+                    if((n.type === 'process' && n.pType === 'var_set') || 
+                       (n.type === 'process' && n.pType === 'var_math') ||
+                       (n.type === 'decision' && n.decType === 'var') ||
+                       (n.type === 'io' && n.ioType === 'in') ||
+                       (n.type === 'process' && n.pType === 'delay' && n.delayType === 'variable')) {
+                        if(n.varName && this.isValidVarName(n.varName)) this.usedVars.add(n.varName);
+                    }
+                });
+                
+                if (this.lang === 'arduino') {
+                    if(this.usedVars.size > 0) code += "\n";
+                    this.usedVars.forEach(v => { code += `int ${v} = 0;\n`; });
+
+                    code += "\nvoid setup() {\n";
+                    activePins.forEach(p => {
+                        let mode = p.type === 'input' ? 'INPUT' : 'OUTPUT';
+                        code += `  pinMode(${this.pinVars[p.id]}, ${mode});\n`;
+                    });
+                    code += "}\n\n";
+                } else {
+                    if(this.usedVars.size > 0) {
+                        code += "\n; --- Variables ---\n";
+                        this.usedVars.forEach(v => { 
+                            this.picaxeVars[v] = `b${this.varCount++}`;
+                            code += `symbol ${v} = ${this.picaxeVars[v]}\n`; 
+                        });
+                        code += `symbol tempVar = b27\n\n`;
+                    }
+                }
+
+                const safeName = (name) => (name || 'sub').replace(/[^a-zA-Z0-9]/g, '_');
+                let subStarts = this.state.nodes.filter(n => n.type === 'sub_start');
+
+                subStarts.forEach(sub => {
+                    code += this.lang === 'arduino' ? `void sub_${safeName(sub.subName)}() {\n` : `sub_${safeName(sub.subName)}:\n`;
+                    let startLink = SimEngine.getNextLink(sub.id, 'bottom');
+                    if (startLink) code += this.generateBlock(startLink.to, this.lang === 'arduino' ? "  " : "  ");
+                    code += this.lang === 'arduino' ? "}\n\n" : "  return\n\n";
+                });
+
+                if (this.lang === 'arduino') {
+                    code += "void loop() {\n";
+                } else {
+                    code += "main:\n";
+                }
+                
+                let startNode = this.state.nodes.find(n => n.type === 'terminal' && n.subType === 'START');
+                if(startNode) {
+                    let startLink = SimEngine.getNextLink(startNode.id, 'bottom');
+                    if (startLink) code += this.generateBlock(startLink.to, "  ");
+                }
+                
+                if (this.lang === 'arduino') {
+                    code += "}\n";
+                } else {
+                    code += "  goto main\n";
+                }
+                
+                return code;
+            }
+
+            getForLoopDetails(varSetNodeId) {
+                let varSetNode = this.state.nodes.find(n => n.id === varSetNodeId);
+                if (!varSetNode || varSetNode.pType !== 'var_set') return null;
+                
+                let varName = varSetNode.varName;
+                let startVal = varSetNode.varVal;
+                let bodyStartLink = SimEngine.getNextLink(varSetNodeId, 'bottom') || this.state.links.find(l => l.from === varSetNodeId);
+                if (!bodyStartLink) return null;
+                
+                let bodyStartId = bodyStartLink.to;
+                let currId = bodyStartId;
+                let visited = new Set();
+                let mathNodeId = null; let decNodeId = null; let limit = null; let exitNodeId = null;
+                let mathOp = '+'; let mathVal = 1; let cond = '==';
+                
+                while (currId && !visited.has(currId)) {
+                    visited.add(currId);
+                    let n = this.state.nodes.find(x => x.id === currId);
+                    if (!n) break;
+                    
+                    if (n.type === 'process' && n.pType === 'var_math' && n.varName === varName) {
+                        mathNodeId = n.id; mathOp = n.mathOp; mathVal = n.mathVal;
+                    }
+                    else if (n.type === 'decision' && n.decType === 'var' && n.varName === varName && !n.hasCond2) {
+                        decNodeId = n.id; limit = n.val; cond = n.cond;
+                        let sideBranch = n.branchOut === 'left' ? 'left' : 'right';
+                        let yBranch = n.swapBranches ? sideBranch : 'bottom';
+                        let nBranch = n.swapBranches ? 'bottom' : sideBranch;
+                        let yLink = SimEngine.getNextLink(n.id, yBranch);
+                        let nLink = SimEngine.getNextLink(n.id, nBranch);
+                        
+                        let loopsBack = false;
+                        if (yLink && yLink.to === bodyStartId) { loopsBack = true; exitNodeId = nLink ? nLink.to : null; } 
+                        else if (nLink && nLink.to === bodyStartId) { loopsBack = true; exitNodeId = yLink ? yLink.to : null; }
+                        
+                        if (loopsBack && mathNodeId) {
+                            return { varName, startVal, limit, cond, mathOp, mathVal, bodyStartId, mathNodeId, decNodeId, exitNodeId };
+                        }
+                    }
+                    
+                    if (n.type === 'junction') {
+                        let nextL = this.state.links.find(l => l.from === currId);
+                        currId = nextL ? nextL.to : null;
+                        continue;
+                    }
+
+                    let nextL = SimEngine.getNextLink(currId, 'bottom');
+                    if (!nextL && n.type === 'decision') nextL = SimEngine.getNextLink(currId, 'right') || SimEngine.getNextLink(currId, 'left');
+                    currId = nextL ? nextL.to : null;
+                }
+                return null;
+            }
+
+            generateBlock(nodeId, indentStr, exitNodeId = null) {
+                if (!nodeId || nodeId === exitNodeId) return "";
+                let curr = nodeId;
+                let blockCode = "";
+                let localVisited = new Set();
+
+                while(curr && curr !== exitNodeId) {
+                    if (localVisited.has(curr)) break; 
+                    localVisited.add(curr);
+
+                    let n = this.state.nodes.find(x => x.id === curr);
+                    if (!n) break;
+
+                    if (this.globalVisited.has(curr)) {
+                        let startLink = SimEngine.getNextLink(this.state.nodes.find(x=>x.type==='terminal' && x.subType==='START')?.id, 'bottom');
+                        if (startLink && curr === startLink.to) { break; } 
+                        else if (curr === this.state.nodes.find(x=>x.type==='terminal' && x.subType==='START')?.id) { break; } 
+                        else {
+                            this.hasComplexLoops = true;
+                            blockCode += indentStr + (this.lang === 'arduino' ? "// Flowchart loops back to an earlier point here\n" : "; Flowchart loops back to an earlier point here\n");
+                            break;
+                        }
+                    }
+                    this.globalVisited.add(curr);
+
+                    if (n.type === 'junction') {
+                        let nextL = SimEngine.getNextLink(n.id, 'bottom') || this.state.links.find(l => l.from === n.id);
+                        curr = nextL ? nextL.to : null;
+                        continue;
+                    }
+
+                    // Legacy block loop detection
+                    if (n.type === 'process' && n.pType === 'var_set') {
+                        let loopInfo = this.getForLoopDetails(curr);
+                        if (loopInfo) {
+                            if (this.lang === 'arduino') {
+                                let opStr = loopInfo.mathOp === '+' && loopInfo.mathVal === 1 ? '++' : 
+                                            loopInfo.mathOp === '-' && loopInfo.mathVal === 1 ? '--' : 
+                                            ` ${loopInfo.mathOp}= ${loopInfo.mathVal}`;
+                                
+                                let conditionStr = loopInfo.cond === '==' ? `< ${loopInfo.limit}` : `${loopInfo.cond} ${loopInfo.limit}`;
+                                
+                                blockCode += indentStr + `for (${loopInfo.varName} = ${loopInfo.startVal}; ${loopInfo.varName} ${conditionStr}; ${loopInfo.varName}${opStr}) {\n`;
+                                blockCode += this.generateBlock(loopInfo.bodyStartId, indentStr + "  ", loopInfo.mathNodeId);
+                                blockCode += indentStr + "}\n";
+                            } else {
+                                let stepStr = loopInfo.mathVal !== 1 ? ` step ${loopInfo.mathOp === '-' ? '-' : ''}${loopInfo.mathVal}` : '';
+                                let limitVal = loopInfo.limit;
+                                if (loopInfo.cond === '<') limitVal -= 1;
+                                if (loopInfo.cond === '>') limitVal += 1;
+                                
+                                blockCode += indentStr + `for ${loopInfo.varName} = ${loopInfo.startVal} to ${limitVal}${stepStr}\n`;
+                                blockCode += this.generateBlock(loopInfo.bodyStartId, indentStr + "  ", loopInfo.mathNodeId);
+                                blockCode += indentStr + `next ${loopInfo.varName}\n`;
+                            }
+                            curr = loopInfo.exitNodeId;
+                            continue;
+                        }
+                    }
+
+                    if (n.type === 'terminal' && n.subType === 'STOP') {
+                        blockCode += indentStr + (this.lang === 'arduino' ? "while(true) { delay(100); } // End\n" : "end\n");
+                        break;
+                    }
+                    else if (n.type === 'process') {
+                        let isLoopIncrement = false;
+                        if(n.pType === 'var_math' && (n.mathOp === '+' || n.mathOp === '-')) {
+                            let nL = SimEngine.getNextLink(n.id, 'bottom');
+                            if (nL && nL.to === exitNodeId) { isLoopIncrement = true; }
+                        }
+
+                        if (!isLoopIncrement) {
+                            if (n.pType === 'delay') {
+                                if (n.delayType === 'variable') { 
+                                    blockCode += indentStr + (this.lang === 'arduino' ? `delay(${n.varName || 'delayTime'});\n` : `pause ${n.varName || 'delayTime'}\n`); 
+                                } else { 
+                                    blockCode += indentStr + (this.lang === 'arduino' ? `delay(${n.delayMs});\n` : `pause ${n.delayMs}\n`); 
+                                }
+                            }
+                            else if (n.pType === 'var_set') {
+                                blockCode += indentStr + (this.lang === 'arduino' ? `${n.varName} = ${n.varVal};\n` : `let ${n.varName} = ${n.varVal}\n`);
+                            }
+                            else if (n.pType === 'var_math') {
+                                blockCode += indentStr + (this.lang === 'arduino' ? `${n.varName} = ${n.varName} ${n.mathOp} ${n.mathVal};\n` : `let ${n.varName} = ${n.varName} ${n.mathOp} ${n.mathVal}\n`);
+                            }
+                        }
+                        let next = SimEngine.getNextLink(n.id, 'bottom'); curr = next ? next.to : null;
+                    }
+                    else if (n.type === 'sub') {
+                        blockCode += indentStr + (this.lang === 'arduino' ? `sub_${(n.subName || 'sub').replace(/[^a-zA-Z0-9]/g, '_')}();\n` : `gosub sub_${(n.subName || 'sub').replace(/[^a-zA-Z0-9]/g, '_')}\n`);
+                        let next = SimEngine.getNextLink(n.id, 'bottom'); curr = next ? next.to : null;
+                    }
+                    else if (n.type === 'return') {
+                        blockCode += indentStr + (this.lang === 'arduino' ? "return;\n" : "return\n");
+                        break;
+                    }
+                    else if (n.type === 'io') {
+                        if (n.ioType === 'in') {
+                            let pName = this.pinVars[n.pin] || n.pin;
+                            let pinObj = this.state.pins.find(x=>x.id === n.pin);
+                            let hw = pinObj ? pinObj.component : null;
+                            if (this.lang === 'arduino') {
+                                if (hw === 'slider') { blockCode += indentStr + `${n.varName || 'sensorVal'} = map(analogRead(${pName}), 0, 1023, 0, 255);\n`; } 
+                                else { blockCode += indentStr + `${n.varName || 'sensorVal'} = digitalRead(${pName}) == HIGH ? 255 : 0;\n`; }
+                            } else {
+                                let num = n.pin.replace('in','').replace('out','');
+                                if (hw === 'slider') { blockCode += indentStr + `readadc ${num}, ${n.varName || 'sensorVal'}\n`; }
+                                else { blockCode += indentStr + `if pinC.${num} = 1 then\n${indentStr}  let ${n.varName || 'sensorVal'} = 255\n${indentStr}else\n${indentStr}  let ${n.varName || 'sensorVal'} = 0\n${indentStr}endif\n`; }
+                            }
+                        } else {
+                            let pins = n.outPins && n.outPins.length > 0 ? n.outPins : (n.pin ? [n.pin] : []);
+                            pins.forEach(pin => {
+                                let currPName = this.pinVars[pin] || pin;
+                                let num = pin.replace('in','').replace('out','');
+                                if (this.lang === 'arduino') {
+                                    if (n.action === 'ON') blockCode += indentStr + `digitalWrite(${currPName}, HIGH);\n`;
+                                    else if (n.action === 'OFF') blockCode += indentStr + `digitalWrite(${currPName}, LOW);\n`;
+                                    else blockCode += indentStr + `analogWrite(${currPName}, ${n.pwmVal});\n`;
+                                } else {
+                                    if (n.action === 'ON') blockCode += indentStr + `high ${num}\n`;
+                                    else if (n.action === 'OFF') blockCode += indentStr + `low ${num}\n`;
+                                    else blockCode += indentStr + `pwmout ${num}, 150, ${n.pwmVal}\n`;
+                                }
+                            });
+                        }
+                        let next = SimEngine.getNextLink(n.id, 'bottom'); curr = next ? next.to : null;
+                    }
+                    else if (n.type === 'decision') {
+                        let sideBranch = n.branchOut === 'left' ? 'left' : 'right';
+                        let yBranch = n.swapBranches ? sideBranch : 'bottom';
+                        let nBranch = n.swapBranches ? 'bottom' : sideBranch;
+
+                        let yLink = SimEngine.getNextLink(n.id, yBranch);
+                        let nLink = SimEngine.getNextLink(n.id, nBranch);
+
+                        let pinObj = this.state.pins.find(x=>x.id === n.pin);
+                        let hw = pinObj ? pinObj.component : null;
+                        let pName = this.pinVars[n.pin] || n.pin;
+                        let num = n.pin.replace('in','').replace('out','');
+                        
+                        let op = n.cond;
+                        let opPx = op === '==' ? '=' : op;
+                        
+                        let cond1Ard, cond1Px;
+
+                        if (n.decType === 'pin') {
+                            if (hw === 'slider') {
+                                cond1Ard = `map(analogRead(${pName}), 0, 1023, 0, 255) ${op} ${n.val}`;
+                                if (this.lang === 'picaxe') blockCode += indentStr + `readadc ${num}, tempVar\n`;
+                                cond1Px = `tempVar ${opPx} ${n.val}`;
+                            } else {
+                                cond1Ard = `digitalRead(${pName}) == ${n.val > 0 ? 'HIGH' : 'LOW'}`;
+                                cond1Px = `pinC.${num} = ${n.val > 0 ? '1' : '0'}`;
+                            }
+                        } else {
+                            cond1Ard = `${n.varName} ${op} ${n.val}`;
+                            cond1Px = `${n.varName} ${opPx} ${n.val}`;
+                        }
+
+                        let finalCondArd = cond1Ard;
+                        let finalCondPx = cond1Px;
+
+                        if (n.hasCond2) {
+                            let op2 = n.cond2;
+                            let op2Px = op2 === '==' ? '=' : op2;
+                            let cond2Ard, cond2Px;
+                            
+                            if (n.decType === 'pin') {
+                                if (hw === 'slider') {
+                                    cond2Ard = `map(analogRead(${pName}), 0, 1023, 0, 255) ${op2} ${n.val2}`;
+                                    cond2Px = `tempVar ${op2Px} ${n.val2}`;
+                                } else {
+                                    cond2Ard = `digitalRead(${pName}) == ${n.val2 > 0 ? 'HIGH' : 'LOW'}`;
+                                    cond2Px = `pinC.${num} = ${n.val2 > 0 ? '1' : '0'}`;
+                                }
+                            } else {
+                                cond2Ard = `${n.varName} ${op2} ${n.val2}`;
+                                cond2Px = `${n.varName} ${op2Px} ${n.val2}`;
+                            }
+
+                            let logicArd = n.logicOp === 'AND' ? '&&' : '||';
+                            let logicPx = n.logicOp === 'AND' ? 'and' : 'or';
+                            finalCondArd = `(${cond1Ard}) ${logicArd} (${cond2Ard})`;
+                            finalCondPx = `${cond1Px} ${logicPx} ${cond2Px}`;
+                        }
+
+                        let finalCondStr = this.lang === 'arduino' ? finalCondArd : finalCondPx;
+                        let startId = this.state.nodes.find(x => x.type === 'terminal' && x.subType === 'START')?.id;
+                        
+                        let isNEmpty = !nLink || nLink.to === startId || (nLink.to === n.id && indentStr === "  ");
+                        let isYEmpty = !yLink || yLink.to === startId || (yLink.to === n.id && indentStr === "  ");
+
+                        if (yLink && yLink.to === n.id && !isYEmpty) {
+                            if (this.lang === 'arduino') blockCode += indentStr + `while (${finalCondStr}) { delay(10); }\n`;
+                            else blockCode += indentStr + `do\n${indentStr}  pause 10\n${indentStr}loop while ${finalCondStr}\n`;
+                            curr = nLink ? nLink.to : null;
+                            continue;
+                        } else if (nLink && nLink.to === n.id && !isNEmpty) {
+                            if (this.lang === 'arduino') blockCode += indentStr + `while (!(${finalCondStr})) { delay(10); }\n`;
+                            else blockCode += indentStr + `do\n${indentStr}  pause 10\n${indentStr}loop until ${finalCondStr}\n`;
+                            curr = yLink ? yLink.to : null;
+                            continue;
+                        }
+
+                        if (isNEmpty && !isYEmpty) {
+                            blockCode += indentStr + (this.lang === 'arduino' ? `if (${finalCondStr}) {\n` : `if ${finalCondStr} then\n`);
+                            let snapVisited = new Set(this.globalVisited);
+                            blockCode += this.generateBlock(yLink.to, indentStr + "  ", exitNodeId);
+                            blockCode += indentStr + (this.lang === 'arduino' ? "}\n" : "endif\n");
+                        } 
+                        else if (isYEmpty && !isNEmpty) {
+                            if (this.lang === 'arduino') blockCode += indentStr + `if (!(${finalCondStr})) {\n`;
+                            else blockCode += indentStr + `if ${finalCondStr} then\n${indentStr}else\n`;
+                            let snapVisited = new Set(this.globalVisited);
+                            blockCode += this.generateBlock(nLink.to, indentStr + "  ", exitNodeId);
+                            blockCode += indentStr + (this.lang === 'arduino' ? "}\n" : "endif\n");
+                        }
+                        else if (!isNEmpty && !isYEmpty) {
+                            blockCode += indentStr + (this.lang === 'arduino' ? `if (${finalCondStr}) {\n` : `if ${finalCondStr} then\n`);
+                            let snapVisited = new Set(this.globalVisited);
+                            blockCode += this.generateBlock(yLink.to, indentStr + "  ", exitNodeId);
+                            blockCode += indentStr + (this.lang === 'arduino' ? "} else {\n" : "else\n");
+                            this.globalVisited = new Set(snapVisited); 
+                            blockCode += this.generateBlock(nLink.to, indentStr + "  ", exitNodeId);
+                            blockCode += indentStr + (this.lang === 'arduino' ? "}\n" : "endif\n");
+                        }
+                        break; 
+                    }
+                }
+                return blockCode;
+            }
+        }
+
+        const CodeGenerator = {
+            generate() {
+                try {
+                    const lang = document.getElementById('codeLangSelect') ? document.getElementById('codeLangSelect').value : 'arduino';
+                    const compiler = new CodeCompiler(state, lang);
+                    const code = compiler.compile();
+                    document.getElementById('codeEditor').value = code; 
+                    
+                    const m = document.getElementById('codeModal'); 
+                    const c = document.getElementById('codeModalContent'); 
+                    m.classList.remove('hidden'); 
+                    setTimeout(() => c.classList.remove('scale-95'), 10); 
+                } catch (err) {
+                    console.error(err);
+                    UIManager.showToast("Error generating code: " + err.message, true);
+                }
+            },
+            closeModal() { 
+                const m = document.getElementById('codeModal'); 
+                const c = document.getElementById('codeModalContent'); 
+                c.classList.add('scale-95'); 
+                setTimeout(() => m.classList.add('hidden'), 150); 
+            },
+            copyCode() { 
+                const txt = document.getElementById('codeEditor'); 
+                txt.select(); 
+                document.execCommand('copy'); 
+                UIManager.showToast("Code Copied to Clipboard!"); 
+                window.getSelection().removeAllRanges(); 
+            }
+        };
+
+        // --- APP INITIALIZATION ---
+        window.onload = () => {
+            document.getElementById('simSpeed').value = "1.0";
+            document.getElementById('speedVal').innerText = "1.0x";
+            resize(); 
+            UIManager.init();
+            InputManager.init();
+            HistoryManager.record(); 
+            HardwareManager.renderPanel(); 
+        };
+
+    </script>
+</body>
+</html>

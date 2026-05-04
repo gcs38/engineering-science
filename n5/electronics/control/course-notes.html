@@ -1,50 +1,891 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Course notes — Control systems — Engineering Science Scotland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Control Systems — Course Notes — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .resource-page{max-width:680px;margin:0 auto;padding:32px 32px 64px;}
-    .open-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px 24px;text-align:center;margin-bottom:16px;}
-    .open-card-icon{font-size:36px;margin-bottom:10px;}
-    .open-card-title{font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:-.4px;margin-bottom:6px;}
-    .open-card-sub{font-size:13px;color:var(--gray-600);margin-bottom:20px;line-height:1.5;}
-    .open-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-400);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .open-btn:hover{background:var(--teal-600);}
-    .sim-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-800);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .sim-btn:hover{background:var(--teal-600);}
-    .back-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:20px;}
-    .back-link:hover{color:var(--teal-800);}
-    .info-note{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;margin-top:12px;}
+    .notes-wrap { max-width:860px; margin:0 auto; padding:28px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .back-link:hover { color:var(--teal-800); }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+    .warning { background:#FFF7ED; border-left:4px solid #F97316; border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#9A3412; }
+
+    /* Flowchart symbol reference */
+    .symbol-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin:16px 0 20px; }
+    .symbol-card { background:white; border:1px solid var(--gray-200); border-radius:10px; padding:14px 12px; display:flex; align-items:flex-start; gap:12px; }
+    .symbol-img { width:52px; flex-shrink:0; }
+    .symbol-desc { flex:1; }
+    .symbol-name { font-size:13px; font-weight:700; color:var(--gray-900); margin-bottom:3px; }
+    .symbol-detail { font-size:12px; color:var(--gray-500); line-height:1.4; }
+
+    /* Pin table */
+    .pin-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .pin-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .pin-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .pin-table tr:nth-child(even) td { background:var(--gray-50); }
+    .pin-in { color:#0369a1; font-weight:700; }
+    .pin-out { color:#15803d; font-weight:700; }
+
+    /* Comparison cards */
+    .compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0; }
+    .compare-card { background:white; border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; }
+    .compare-card-header { padding:10px 14px; font-size:13px; font-weight:700; color:white; }
+    .compare-card-body { padding:12px 14px; font-size:13px; color:var(--gray-600); line-height:1.6; }
+    .compare-card-body li { margin-bottom:4px; }
+
+    /* Data table */
+    .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .data-table tr:nth-child(even) td { background:var(--gray-50); }
+
+    /* Worked examples */
+    .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:18px 20px; margin:16px 0; }
+    .worked-example-title { font-size:13px; font-weight:600; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+    .step { display:flex; gap:12px; margin-bottom:10px; }
+    .step-num { width:24px; height:24px; border-radius:50%; background:var(--teal-400); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .step-content { font-size:13px; color:var(--gray-600); line-height:1.6; flex:1; }
+    .step-content strong { color:var(--gray-900); }
+
+    /* Spec box — for written specifications */
+    .spec-box { background:#f0fdf4; border:2px solid #86efac; border-radius:8px; padding:14px 16px; margin:14px 0; }
+    .spec-box-title { font-size:12px; font-weight:700; color:#15803d; text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
+    .spec-box ol, .spec-box ul { margin:0; padding-left:20px; }
+    .spec-box li { font-size:13px; color:#166534; line-height:1.7; margin-bottom:2px; }
+
+    /* Assignments */
+    .assignment { background:white; border:2px solid var(--teal-400); border-radius:12px; margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:6px; font-weight:500; }
+    .task-q-sub { font-size:13px; color:var(--gray-700); margin:5px 0 5px 16px; }
+
+    /* Answer boxes */
+    .answer-label { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin:8px 0 3px; display:flex; align-items:center; gap:6px; }
+    .saved-indicator { font-size:11px; color:#10b981; font-weight:600; opacity:0; transition:opacity .3s; text-transform:none; letter-spacing:0; }
+    .saved-indicator.show { opacity:1; }
+    .answer-box { background:#f8faff; border:2px solid #c7d7f5; border-radius:8px; padding:10px 12px; min-height:68px; font-size:14px; color:var(--gray-700); line-height:1.7; outline:none; transition:border-color .2s, box-shadow .2s; display:block; width:100%; box-sizing:border-box; }
+    .answer-box:focus { border-color:var(--teal-400); box-shadow:0 0 0 3px rgba(45,212,191,0.12); }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-sm { min-height:44px; }
+    .answer-box-lg { min-height:110px; }
+
+    /* Simulator embed */
+    .sim-embed-section { margin:24px 0; }
+    .sim-embed-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+    .sim-embed-title { font-size:14px; font-weight:500; color:var(--gray-900); display:flex; align-items:center; gap:8px; }
+    .sim-embed-title span { font-size:18px; }
+    .sim-fullscreen-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 14px; background:var(--teal-800); color:white; border-radius:var(--radius-md); font-size:12px; font-weight:500; text-decoration:none; transition:all var(--transition); }
+    .sim-fullscreen-btn:hover { background:var(--teal-600); }
+    .sim-wrap { border-radius:10px; overflow:hidden; border:2px solid var(--teal-100); }
+    .sim-iframe { width:100%; height:600px; border:none; display:block; }
+    .sim-credit { font-size:11px; color:var(--gray-400); margin-top:5px; text-align:right; }
+    .sim-instruction { background:var(--teal-50); border:1px solid var(--teal-100); border-radius:8px; padding:10px 14px; margin-bottom:10px; font-size:13px; color:var(--teal-800); }
+
+    .controls-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:32px 0 8px; padding:12px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; }
+    .controls-label { font-size:12px; color:var(--gray-500); font-weight:600; flex:1; min-width:140px; }
+    .ctrl-btn { display:inline-flex; align-items:center; gap:5px; padding:7px 14px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:all .15s; }
+    .ctrl-btn-clear { background:#fef2f2; color:#ef4444; }
+    .ctrl-btn-clear:hover { background:#fee2e2; }
+    .ctrl-btn-print { background:var(--teal-50); color:var(--teal-800); }
+    .ctrl-btn-print:hover { background:var(--teal-100); }
+    .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+    @media print {
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.sim-embed-section { display:none!important; }
+      .layout { display:block!important; }
+      .main { margin:0!important; padding:0!important; }
+      .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
+    }
   </style>
-</head><body>
-<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a><a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+</head>
+<body>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a>
+    <a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
+
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero">
-      <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Control systems</div>
-      <h1 class="hero-title">📄 Course notes</h1>
-      <p class="hero-sub">Control systems</p>
-      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../index.html">Electronics and Control</a> &rsaquo; <a href="index.html">Control systems</a> &rsaquo; <span>Course notes</span></div>
-    </div>
-    <div class="content">
-      <div class="resource-page">
-        <a href="index.html" class="back-link">&larr; Back to Control systems</a>
-      <!-- EDIT BELOW: replace REPLACE_WITH_DRIVE_ID with your Google Drive file ID -->
-      <script>
-        var driveFileId = "REPLACE_WITH_DRIVE_ID";
-        if (driveFileId === "REPLACE_WITH_DRIVE_ID") {
-          document.write('<div class="open-card" style="background:var(--gray-50);border:1px dashed var(--gray-200);"><div class="open-card-icon" style="font-size:32px;">📂</div><div class="open-card-title" style="color:var(--gray-600);">Material coming soon</div><div class="open-card-sub">This resource is being prepared and will be available here shortly.</div></div>');
-        } else {
-          var url = "https://drive.google.com/file/d/" + driveFileId + "/view";
-          document.write('<div class="open-card"><div class="open-card-icon">📄</div><div class="open-card-title">Course notes</div><div class="open-card-sub">Notes, explanations and worked examples aligned to the SQA specification.</div><a href="' + url + '" target="_blank" class="open-btn"><svg viewBox="0 0 16 16" fill="none"><path d="M6 2h4l4 4v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M6 2v4h4M8 8v5M6 11l2 2 2-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Open document</a></div><div class="info-note"><strong>Note:</strong> Opens in a new tab. Use your browser back button to return.</div>');
-        }
-      </script>
+      <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Control Systems</div>
+      <h1 class="hero-title">&#x1F916; Control Systems &mdash; Course Notes</h1>
+      <p class="hero-sub">Microcontrollers, flowcharts, inputs, outputs and programmed control sequences</p>
+      <div class="breadcrumb">
+        <a href="../../../../index.html">Home</a> &rsaquo;
+        <a href="../index.html">Electronics and Control</a> &rsaquo;
+        <a href="index.html">Control Systems</a> &rsaquo;
+        <span>Course notes</span>
       </div>
+    </div>
+
+    <div class="content">
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to Control Systems</a>
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 1: Electronic Control Systems</h1>
+
+      <p class="notes-p">Almost every modern device — from a microwave oven to a car engine — uses an <strong>electronic control system</strong>. These systems allow devices to respond to the world around them, make decisions, and control outputs automatically.</p>
+
+      <p class="notes-p">Any electronic control system can be broken down into three parts:</p>
+
+      <div class="key-point" style="text-align:center; font-size:16px; letter-spacing:0.05em;">
+        INPUT &nbsp;&rarr;&nbsp; PROCESS &nbsp;&rarr;&nbsp; OUTPUT
+      </div>
+
+      <p class="notes-p">Devices that combine <strong>electronic control</strong> with <strong>moving mechanisms</strong> are called <strong>mechatronic</strong> systems. A washing machine, robot arm or DVD player are all mechatronic — electronics tells the mechanisms what to do.</p>
+
+      <h2 class="notes-h2">Inputs and outputs</h2>
+
+      <div class="compare-grid">
+        <div class="compare-card">
+          <div class="compare-card-header" style="background:#0369a1;">&#x1F4E5; Input transducers (sensors)</div>
+          <div class="compare-card-body">
+            <ul>
+              <li><strong>Push switch / toggle switch</strong> — detects a press or on/off</li>
+              <li><strong>Light-dependent resistor (LDR)</strong> — detects light level</li>
+              <li><strong>Thermistor</strong> — detects temperature</li>
+              <li><strong>Microphone</strong> — detects sound</li>
+              <li><strong>Pressure pad</strong> — detects weight or pressure</li>
+              <li><strong>Tilt switch</strong> — detects orientation</li>
+              <li><strong>Infrared sensor</strong> — detects IR signals or motion</li>
+            </ul>
+          </div>
+        </div>
+        <div class="compare-card">
+          <div class="compare-card-header" style="background:#15803d;">&#x1F4E4; Output transducers (actuators)</div>
+          <div class="compare-card-body">
+            <ul>
+              <li><strong>LED / lamp</strong> — produces light</li>
+              <li><strong>Buzzer / speaker</strong> — produces sound</li>
+              <li><strong>DC motor</strong> — produces rotary motion</li>
+              <li><strong>Solenoid</strong> — produces linear motion</li>
+              <li><strong>Relay</strong> — switches higher-power circuits</li>
+              <li><strong>7-segment display</strong> — displays numbers</li>
+              <li><strong>Servo motor</strong> — produces controlled angular movement</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Control systems</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. List the advantages of using a microcontroller within a product design.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t1a" data-placeholder="List the advantages here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Name three devices that contain a microcontroller. For each, explain why the microcontroller is useful in that product.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t1b" data-placeholder="Device 1: ... Device 2: ... Device 3: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A popular electronic toy (such as a Furby) uses sensors to react to its environment. List three input transducers it might have and describe what each one detects.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="cs-t1c" data-placeholder="Input 1: ... Input 2: ... Input 3: ..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 2: What is a Microcontroller?</h1>
+
+      <p class="notes-p">A <strong>microcontroller</strong> is often described as a <em>computer-on-a-chip</em>. It contains a processor, memory and input/output connections all in a single small, inexpensive package. Because of this, microcontrollers can easily be built into everyday products to make them more intelligent.</p>
+
+      <p class="notes-p">Unlike a general-purpose computer, a microcontroller is typically <strong>programmed to do one specific job</strong>. The key advantage is flexibility — the same hardware can be reprogrammed to do something completely different simply by changing the software.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/microcontroller-block-diagram.png" alt="Microcontroller block diagram showing inputs, the microcontroller chip, and outputs" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;">
+
+      <h2 class="notes-h2">Advantages of microcontrollers</h2>
+      <ul class="notes-ul">
+        <li><strong>Reliability</strong> — fewer separate components means fewer things to go wrong</li>
+        <li><strong>Compact</strong> — one chip replaces many separate components, saving space</li>
+        <li><strong>Flexible</strong> — reprogramming changes what the product does without changing hardware</li>
+        <li><strong>Rapid development</strong> — changes to the product are made in software, not by redesigning the circuit</li>
+        <li><strong>Low cost</strong> — mass production makes microcontrollers very inexpensive</li>
+      </ul>
+
+      <h2 class="notes-h2">Why use a microcontroller instead of fixed logic?</h2>
+      <p class="notes-p">Fixed logic circuits (using logic gates) are hard-wired — to change their behaviour you must physically change the circuit. A microcontroller simply needs a new program. This makes microcontrollers far better for complex control sequences and for products that need to be updated or customised.</p>
+
+      <div class="key-point">A microcontroller is advantageous because the control sequence can be changed by reprogramming rather than redesigning the hardware. This reduces cost and development time.</div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 3: Inputs, Outputs and Pin Numbers</h1>
+
+      <p class="notes-p">The microcontroller used in NoSyntaxSim is based on the <strong>Arduino</strong> platform. Inputs and outputs connect to numbered <strong>digital pins</strong> (D2–D13). In the SQA exam, you will always be given a <strong>pin table</strong> telling you which pin connects to which input or output device.</p>
+
+      <div class="key-point">In any flowchart you draw, you <strong>must</strong> use the correct pin numbers from the pin table. The SQA specifically requires pin numbers in flowcharts — do not just write "switch" or "LED".</div>
+
+      <h2 class="notes-h2">Example pin table</h2>
+
+      <table class="pin-table">
+        <tr><th>Pin</th><th>Direction</th><th>Device</th></tr>
+        <tr><td>D2</td><td class="pin-in">INPUT</td><td>Push button (start switch)</td></tr>
+        <tr><td>D3</td><td class="pin-in">INPUT</td><td>Temperature sensor</td></tr>
+        <tr><td>D4</td><td class="pin-in">INPUT</td><td>Pressure pad</td></tr>
+        <tr><td>D5</td><td class="pin-in">INPUT</td><td>Reset button</td></tr>
+        <tr><td>D8</td><td class="pin-out">OUTPUT</td><td>Red LED</td></tr>
+        <tr><td>D9</td><td class="pin-out">OUTPUT</td><td>Green LED</td></tr>
+        <tr><td>D10</td><td class="pin-out">OUTPUT</td><td>Motor</td></tr>
+        <tr><td>D11</td><td class="pin-out">OUTPUT</td><td>Buzzer</td></tr>
+      </table>
+
+      <h2 class="notes-h2">Digital inputs</h2>
+      <p class="notes-p">A <strong>digital input</strong> can only be logic 1 (ON) or logic 0 (OFF). A push button is digital — it is either pressed or not. In a decision box in a flowchart, a digital input is checked as: <em>"Is D2 ON?"</em></p>
+
+      <h2 class="notes-h2">Analogue inputs</h2>
+      <p class="notes-p">An <strong>analogue input</strong> can be any value between a minimum and maximum (e.g. a thermistor produces a varying voltage as temperature changes). To use an analogue signal, the microcontroller must first convert it to a digital number using an <strong>Analogue-to-Digital Converter (ADC)</strong>. In NoSyntaxSim, analogue inputs appear as sliders.</p>
+
+      <h2 class="notes-h2">Output drivers</h2>
+      <p class="notes-p">A microcontroller pin can only supply a small current — not enough to directly drive a motor or solenoid. An <strong>output driver</strong> (typically a transistor or relay) amplifies the signal to power the output device. In exam circuits, a <strong>transistor driver circuit</strong> is commonly shown between the microcontroller output pin and the output device.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/transistor-driver-circuit.png" alt="Transistor driver circuit connecting microcontroller output pin to a motor or buzzer" style="width:100%;max-width:600px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Inputs, outputs and pin tables</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Using the example pin table above, identify which pin you would read in a flowchart to check if the pressure pad is activated.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t2a" data-placeholder="Pin number and reason..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Explain why a transistor driver is needed between the microcontroller and a motor output.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="cs-t2b" data-placeholder="Explain why a driver is needed..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Explain the difference between a digital input and an analogue input. Give one example of each.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="cs-t2c" data-placeholder="Digital: ... Analogue: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. Why does an analogue input need an ADC before the microcontroller can use it?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t2d" data-placeholder="Explain the need for ADC..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 4: Flowcharts</h1>
+
+      <p class="notes-p">A <strong>flowchart</strong> is a graphical way of planning and communicating a control sequence. It shows exactly what the microcontroller should do, in what order, and under what conditions. Flowcharts are used in the SQA assignment and exam — you must be able to read, draw, correct and simulate them.</p>
+
+      <h2 class="notes-h2">Standard SQA flowchart symbols</h2>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/flowchart-symbols.png" alt="SQA standard flowchart symbols: terminal, process, input/output parallelogram, decision diamond" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;">
+
+      <table class="data-table">
+        <tr><th>Symbol shape</th><th>Name</th><th>Used for</th><th>Examples</th></tr>
+        <tr><td>Rounded rectangle (pill)</td><td><strong>Terminal</strong></td><td>START and STOP of the program</td><td>START, STOP</td></tr>
+        <tr><td>Parallelogram</td><td><strong>Input / Output</strong></td><td>Reading from an input pin or writing to an output pin</td><td>Turn D8 ON, Turn D10 OFF, Read D2</td></tr>
+        <tr><td>Rectangle</td><td><strong>Process</strong></td><td>Time delays, calculations, variable operations</td><td>Wait 500ms, count = count + 1</td></tr>
+        <tr><td>Diamond</td><td><strong>Decision</strong></td><td>Checking a condition — has YES and NO exits</td><td>Is D2 ON? Is count &gt; 5?</td></tr>
+        <tr><td>Flow arrows</td><td><strong>Flow lines</strong></td><td>Showing the direction the program follows</td><td>Arrows connecting all symbols</td></tr>
+      </table>
+
+      <div class="warning">&#x26A0;&#xFE0F; <strong>Common exam mistake:</strong> Many pupils write "open loop" or "closed loop" to describe a repeating flowchart. The correct SQA term is <strong>fixed loop</strong>. A fixed loop is one where the program repeats continuously from the end back to the start.</div>
+
+      <h2 class="notes-h2">The fixed loop</h2>
+      <p class="notes-p">Most microcontroller programs run <strong>continuously</strong> — they repeat the same sequence over and over. This is called a <strong>fixed loop</strong>. The last step in the flowchart connects back to an earlier point (usually the START or the first decision box), so the sequence repeats indefinitely.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/flowchart-fixed-loop.png" alt="Flowchart showing a fixed loop — LED flashing sequence that returns from STOP back to START continuously" style="width:100%;max-width:400px;display:block;margin:16px auto;border-radius:8px;">
+
+      <h2 class="notes-h2">Delay units</h2>
+      <p class="notes-p">A <strong>delay</strong> is used in a Process box to make the program wait for a set time before continuing. In the SQA exam, you <strong>must include the delay unit</strong> — simply writing "500" is not acceptable. Always write: <strong>Wait 500 ms</strong> or <strong>Delay 2 s</strong>.</p>
+
+      <div class="key-point">Always include units on delays: ms (milliseconds) or s (seconds). 1 second = 1000 milliseconds.</div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Flowchart symbols and terminology</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. State the name and purpose of each flowchart symbol: (a) diamond, (b) parallelogram, (c) pill/rounded rectangle, (d) rectangle.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t3a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t3a" data-placeholder="(a) Diamond: ... (b) Parallelogram: ... (c) Pill: ... (d) Rectangle: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. What is the correct SQA term for a flowchart that repeats continuously? Why is "closed loop" incorrect?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t3b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="cs-t3b" data-placeholder="Correct term: ... Why closed loop is wrong: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A student writes "Wait 2000" in a Process box. What is wrong with this, and how should it be written correctly?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t3c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t3c" data-placeholder="What is wrong and how to correct it..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 5: Drawing Flowcharts from a Specification</h1>
+
+      <p class="notes-p">In the SQA exam and assignment you will be given a written specification and asked to draw a flowchart. Read the specification carefully — each step becomes one or more boxes in the flowchart.</p>
+
+      <h2 class="notes-h2">Method</h2>
+      <ol class="notes-ol">
+        <li>Read the full specification first</li>
+        <li>Identify all inputs and outputs from the pin table</li>
+        <li>Draw a START terminal</li>
+        <li>Work through the specification step by step — one action per box</li>
+        <li>Use Decision boxes for any "wait until…" or "if… then…" conditions</li>
+        <li>Use Process boxes for all delays (with units)</li>
+        <li>Use In/Out parallelograms to turn outputs ON or OFF</li>
+        <li>Add a fixed loop arrow back to the start if the sequence repeats</li>
+      </ol>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Flashing LED</div>
+        <div class="spec-box">
+          <div class="spec-box-title">&#x1F4CB; Specification</div>
+          <ol>
+            <li>Turn LED (D8) ON</li>
+            <li>Wait 500 ms</li>
+            <li>Turn LED (D8) OFF</li>
+            <li>Wait 500 ms</li>
+            <li>Repeat continuously</li>
+          </ol>
+        </div>
+        <!-- DIAGRAM PLACEHOLDER -->
+        <img src="images/flowchart-flashing-led.png" alt="Flowchart for a flashing LED: START → Turn D8 ON → Wait 500ms → Turn D8 OFF → Wait 500ms → loop back to Turn D8 ON" style="width:100%;max-width:320px;display:block;margin:12px auto;border-radius:8px;">
+        <p style="font-size:13px;color:var(--gray-600);text-align:center;margin-top:6px;">Note the fixed loop arrow returning from the last box to the "Turn D8 ON" step.</p>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Traffic Lights</div>
+        <div class="spec-box">
+          <div class="spec-box-title">&#x1F4CB; Specification — Pin table</div>
+          <ul style="list-style:none;padding:0;margin:0;">
+            <li>D8 = Red LED &nbsp;|&nbsp; D9 = Amber LED &nbsp;|&nbsp; D10 = Green LED</li>
+          </ul>
+        </div>
+        <div class="spec-box" style="margin-top:8px;">
+          <div class="spec-box-title">&#x1F4CB; Sequence</div>
+          <ol>
+            <li>Red ON — Wait 10 s</li>
+            <li>Red ON, Amber ON — Wait 2 s</li>
+            <li>Red OFF, Amber OFF, Green ON — Wait 10 s</li>
+            <li>Green OFF, Amber ON — Wait 2 s</li>
+            <li>Amber OFF — repeat from step 1</li>
+          </ol>
+        </div>
+        <!-- DIAGRAM PLACEHOLDER -->
+        <img src="images/flowchart-traffic-lights.png" alt="Flowchart for traffic light sequence with pin numbers D8 D9 D10 and delay boxes showing 10s and 2s" style="width:100%;max-width:380px;display:block;margin:12px auto;border-radius:8px;">
+      </div>
+
+      <!-- Simulator embed 1 — basic flowcharts -->
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F916;</span> NoSyntaxSim &mdash; build your first flowcharts</div>
+          <a href="../../../../simulators/control.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          <strong>Getting started:</strong> Drag symbols from the left panel onto the canvas. Hover over a node to reveal anchor points — click and drag to connect them. Click a node to open the Properties Inspector on the right. Add pins using the + ADD button in the Hardware panel, then attach components (LED, buzzer, button). Click <strong>&#x25B6; RUN PROGRAMME</strong> to simulate.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/control.html" title="NoSyntaxSim control systems simulator" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoSyntaxSim V2 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Drawing flowcharts from a specification</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">For each task: draw the flowchart in your notes, then build and simulate it in NoSyntaxSim. Use the Export Image button to save your circuit for your portfolio.</p>
+
+          <div class="task-item">
+            <div class="task-q">1. Design a system that makes a lamp (D8) flash on and off continuously. Each on and off period should last 0.5 s.</div>
+            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-t4a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t4a" data-placeholder="Sketch or describe your flowchart here..."></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">2. Draw a flowchart for the traffic lights sequence shown in the worked example. Pin table: D8 = Red, D9 = Amber, D10 = Green. The sequence must repeat continuously as a fixed loop.</div>
+            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-t4b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t4b" data-placeholder="Sketch or describe your flowchart here..."></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">3. A microwave oven operates with this sequence. Draw a flowchart and simulate it.</div>
+            <div class="spec-box">
+              <div class="spec-box-title">&#x1F4CB; Microwave specification</div>
+              <ol>
+                <li>Wait until start button (D2) AND door sensor (D3) are both ON</li>
+                <li>Turn light (D8) ON, turntable motor (D9) ON, magnetron (D10) ON</li>
+                <li>Wait 10 s</li>
+                <li>Turn magnetron (D10) OFF</li>
+                <li>Wait 1 s — Turn turntable (D9) OFF</li>
+                <li>Turn buzzer (D11) ON — Wait 0.5 s — Turn buzzer (D11) OFF</li>
+                <li>Turn light (D8) OFF — STOP</li>
+              </ol>
+            </div>
+            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-t4c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t4c" data-placeholder="Sketch or describe your flowchart here..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 6: Using Inputs — Decision Boxes</h1>
+
+      <p class="notes-p">Most real control systems respond to sensor inputs. A <strong>decision box</strong> (diamond) checks whether an input is ON or OFF and branches the flowchart accordingly.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/flowchart-decision-box.png" alt="Decision box showing Is D2 ON? with Y and N branches — Y continues, N loops back to check again" style="width:100%;max-width:480px;display:block;margin:16px auto;border-radius:8px;">
+
+      <h2 class="notes-h2">Waiting for an input</h2>
+      <p class="notes-p">To make the program wait until a button is pressed, use a decision box that loops back to itself on the NO branch:</p>
+
+      <div class="key-point">
+        Is D2 ON? &nbsp;→&nbsp; <strong>NO:</strong> loop back to the same question &nbsp;→&nbsp; <strong>YES:</strong> continue to next step
+      </div>
+
+      <p class="notes-p">This is called a <strong>polling loop</strong> — the microcontroller keeps checking the input until it becomes active.</p>
+
+      <h2 class="notes-h2">AND control — both inputs must be active</h2>
+      <p class="notes-p">When <strong>two conditions must both be true</strong> before continuing, two decision boxes are placed in series. The YES output of the first leads into the second decision. Only when both return YES does the program continue.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/flowchart-and-control.png" alt="Flowchart showing AND control — Is D2 ON? (N loops back) → Is D3 ON? (N loops back) → both YES → continue" style="width:100%;max-width:420px;display:block;margin:16px auto;border-radius:8px;">
+
+      <h2 class="notes-h2">OR control — either input can be active</h2>
+      <p class="notes-p">When <strong>either of two conditions being true</strong> is enough to continue, two decision boxes are placed in parallel. The YES output of either one leads to the same next step.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/flowchart-or-control.png" alt="Flowchart showing OR control — Is D2 ON? Y → continue / N → Is D3 ON? Y → continue / N → loop back" style="width:100%;max-width:420px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Automatic door with inputs</div>
+        <div class="spec-box">
+          <div class="spec-box-title">&#x1F4CB; Specification</div>
+          <ol>
+            <li>Wait until pressure pad (D2) is ON</li>
+            <li>Turn motor (D8) ON — door opens</li>
+            <li>Wait until door limit switch (D3) is ON — door fully open</li>
+            <li>Turn motor (D8) OFF</li>
+            <li>Wait 3 s</li>
+            <li>Close door — turn motor (D9) ON (reverse direction)</li>
+            <li>Wait until close limit switch (D4) is ON</li>
+            <li>Turn motor (D9) OFF — STOP (or loop)</li>
+          </ol>
+        </div>
+        <!-- DIAGRAM PLACEHOLDER -->
+        <img src="images/flowchart-automatic-door.png" alt="Flowchart for automatic door: polling D2 for pressure pad, turning motor on D8, polling D3 for limit switch, delay, reverse motor D9, polling D4" style="width:100%;max-width:380px;display:block;margin:12px auto;border-radius:8px;">
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Motor direction control</div>
+        <p class="notes-p" style="margin-bottom:10px;">Many control systems need to drive a motor in <strong>two directions</strong> — for example a conveyor belt that moves forwards then reverses. In NoSyntaxSim, two separate output pins control direction: one pin drives the motor forwards, the other drives it backwards. Only one should ever be ON at the same time.</p>
+        <div class="spec-box">
+          <div class="spec-box-title">&#x1F4CB; Specification — Pin table</div>
+          <ul style="list-style:none;padding:0;margin:0;">
+            <li>D2 = Forward button &nbsp;|&nbsp; D3 = Reverse button &nbsp;|&nbsp; D8 = Motor forwards &nbsp;|&nbsp; D9 = Motor backwards</li>
+          </ul>
+        </div>
+        <div class="spec-box" style="margin-top:8px;">
+          <div class="spec-box-title">&#x1F4CB; Sequence</div>
+          <ol>
+            <li>Wait until forward button (D2) OR reverse button (D3) is pressed</li>
+            <li>If D2 is pressed → turn D8 ON (motor forwards) — Wait 2 s — turn D8 OFF</li>
+            <li>If D3 is pressed → turn D9 ON (motor backwards) — Wait 2 s — turn D9 OFF</li>
+            <li>Repeat (fixed loop)</li>
+          </ol>
+        </div>
+        <div class="warning">&#x26A0;&#xFE0F; <strong>Important:</strong> Never turn D8 and D9 ON at the same time — this would cause a short circuit in a real motor driver. The flowchart must always turn one OFF before turning the other ON.</div>
+        <!-- DIAGRAM PLACEHOLDER -->
+        <img src="images/flowchart-motor-direction.png" alt="Flowchart for motor direction: Is D2 ON? Y → D8 ON, Wait 2s, D8 OFF / N → Is D3 ON? Y → D9 ON, Wait 2s, D9 OFF / fixed loop" style="width:100%;max-width:420px;display:block;margin:12px auto;border-radius:8px;">
+      </div>
+
+      <!-- Simulator embed 2 — inputs and decisions -->
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F916;</span> NoSyntaxSim &mdash; inputs and decision boxes</div>
+          <a href="../../../../simulators/control.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Add a <strong>Push Button</strong> as an input and an <strong>LED</strong> as an output. Use a <strong>Decision</strong> diamond to check "Is D2 ON?". Connect the NO branch back to the same decision box (polling loop). Connect the YES branch to turn the LED on. Run and click the button to test.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/control.html" title="NoSyntaxSim input decision simulator" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoSyntaxSim V2 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Inputs and decision boxes</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. A traffic light system stays on green until a pedestrian presses a button (D2). When pressed, the lights change: Amber (D9) for 2 s, then Red (D8) for 5 s, then Red+Amber together for 2 s, then back to Green (D10). Draw the flowchart and simulate it.</div>
+            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-t5a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t5a" data-placeholder="Sketch or describe your flowchart here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A security door in a bank must only open when two buttons (D2 AND D3) are both pressed together. It must close when a third button (D4) is pressed. Design and simulate the system.</div>
+            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-t5b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t5b" data-placeholder="Sketch or describe your flowchart here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A burglar alarm must sound (D8) when either a pressure pad (D2) is pressed OR a window sensor (D3) is activated. Design and simulate the system.</div>
+            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-t5c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t5c" data-placeholder="Sketch or describe your flowchart here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A heater (D8) must switch on when the temperature drops (D2 = ON when cold). It must be switched off by a separate reset button (D3). Design and simulate the system.</div>
+            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-t5d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t5d" data-placeholder="Sketch or describe your flowchart here..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 7: Finite (Counted) Loops</h1>
+
+      <p class="notes-p">A <strong>finite loop</strong> (also called a <strong>counted loop</strong> or <strong>for loop</strong>) repeats a sequence a <strong>fixed number of times</strong> before stopping. This is different from a fixed loop, which repeats indefinitely.</p>
+
+      <div class="key-point">In programming and in the SQA exam, this construct is called a <strong>for…next loop</strong>. The loop runs <strong>FOR</strong> a set number of times, carrying out its instructions each time, then moves on to the <strong>NEXT</strong> instruction after the loop. You must be able to recognise this term and construct a flowchart that represents it.</div>
+
+      <p class="notes-p">To create a for…next loop in a flowchart, a <strong>variable</strong> (e.g. <em>count</em>) is used to keep track of how many times the loop has run:</p>
+
+      <ol class="notes-ol">
+        <li><strong>Initialise</strong> the variable: <em>count = 0</em></li>
+        <li>Perform the repeated action (e.g. flash an LED)</li>
+        <li><strong>Increment</strong> the variable: <em>count = count + 1</em></li>
+        <li><strong>Decide</strong>: is count &lt; target number? YES → repeat. NO → exit loop.</li>
+      </ol>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/flowchart-finite-loop.png" alt="Flowchart showing a finite loop: count=0, flash LED, count=count+1, Is count less than 10? Yes loop back, No continue" style="width:100%;max-width:380px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="key-point">In NoSyntaxSim, drag the <strong>For Loop (Macro)</strong> from the left panel — it automatically creates the three required blocks (initialise, increment, decision) formatted to SQA standards.</div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; School bell sounds 5 times</div>
+        <div class="spec-box">
+          <div class="spec-box-title">&#x1F4CB; Specification</div>
+          <ol>
+            <li>Wait until button (D2) is pressed</li>
+            <li>Sound buzzer (D8) 5 times — each buzz lasts 0.5 s with 0.5 s gap</li>
+            <li>Reset and wait for the button again</li>
+          </ol>
+        </div>
+        <div class="step"><div class="step-num">1</div><div class="step-content">Set count = 0</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">Turn D8 ON → Wait 500 ms → Turn D8 OFF → Wait 500 ms</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content">count = count + 1</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content">Is count &lt; 5? YES → back to step 2. NO → loop back to wait for button.</div></div>
+        <!-- DIAGRAM PLACEHOLDER -->
+        <img src="images/flowchart-school-bell.png" alt="Flowchart for school bell: polling D2, count=0, buzz on D8, 500ms, off, 500ms, count+1, Is count less than 5? loop" style="width:100%;max-width:360px;display:block;margin:12px auto;border-radius:8px;">
+      </div>
+
+      <!-- Simulator embed 3 — finite loops -->
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F916;</span> NoSyntaxSim &mdash; finite loops</div>
+          <a href="../../../../simulators/control.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Drag the <strong>For Loop (Macro)</strong> from the left panel — it places the three loop blocks automatically. Set the initial value to 0 and the condition to count &lt; 5. Place your repeating action (e.g. flash an LED) between the initialise and increment blocks. Run the simulation and watch the execution highlight move through the loop.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/control.html" title="NoSyntaxSim finite loop simulator" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoSyntaxSim V2 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Finite loops</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Design a system that makes a lamp (D8) flash exactly 10 times. Each flash must last 0.5 s. Draw the flowchart and simulate it.</div>
+            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-t6a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t6a" data-placeholder="Sketch or describe your flowchart here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A school bell (D8) must sound 6 times when a button (D2) is pressed. Once complete, the system should reset and be ready for the next button press.</div>
+            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-t6b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t6b" data-placeholder="Sketch or describe your flowchart here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A laser cutter must move between two sensors. A switch (D2) activates the system. The motor turns clockwise (D8 ON) until sensor 1 (D3) is triggered. It then turns anticlockwise (D9 ON) until sensor 2 (D4) is triggered. This cycle repeats 5 times before stopping.</div>
+            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-t6c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t6c" data-placeholder="Sketch or describe your flowchart here..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 8: Reading and Correcting Flowcharts</h1>
+
+      <p class="notes-p">In the SQA exam you will often be given a flowchart that contains <strong>errors</strong> and asked to identify and correct them. Common errors include:</p>
+
+      <ul class="notes-ul">
+        <li>Missing delay units (writing "500" instead of "500 ms")</li>
+        <li>Wrong pin number used in an input or output box</li>
+        <li>Decision box branching the wrong way (YES and NO swapped)</li>
+        <li>Missing connection — the loop does not return to the correct point</li>
+        <li>Wrong order of steps (e.g. turning a device ON after the delay instead of before)</li>
+        <li>No START or STOP terminal</li>
+        <li>Wrong flowchart symbol used (e.g. a rectangle instead of a diamond for a decision)</li>
+      </ul>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Spot and correct the errors</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px;">The flowchart below is supposed to flash a lamp (D8) when a moisture sensor (D2) is detected. Find two errors.</p>
+        <!-- DIAGRAM PLACEHOLDER -->
+        <img src="images/flowchart-errors-example.png" alt="Flowchart with deliberate errors: decision box has Y and N branches swapped, and delay box missing units" style="width:100%;max-width:360px;display:block;margin:12px auto;border-radius:8px;">
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Error 1:</strong> The YES and NO branches on the decision box are swapped. The YES branch should lead to turning the LED ON, not loop back.</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Error 2:</strong> The delay box reads "500" — this is missing the unit. It should read "Wait 500 ms".</div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Reading and correcting flowcharts</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. A flowchart is designed to make a buzzer (D8) sound when a button (D2) is pressed. Study the flowchart shown in your teacher's handout and list any errors you can find. For each error, state what is wrong and how it should be corrected.</div>
+            <div class="answer-label">Errors found and corrections <span class="saved-indicator" id="ind-t7a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t7a" data-placeholder="Error 1: ... Correction: ... Error 2: ... Correction: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A student designs a flowchart for a fire alarm system with this specification: (a) a switch (D2) must be pressed to arm the system; (b) if a heat sensor (D3) is activated OR a button (D4) is pressed, the alarm (D8) sounds; (c) the alarm continues until a reset switch (D5) is pressed. The student's flowchart has the reset check placed BEFORE the alarm is switched on. Explain why this is wrong and draw the corrected sequence.</div>
+            <div class="answer-label">Explanation and corrected sequence <span class="saved-indicator" id="ind-t7b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t7b" data-placeholder="Why it is wrong: ... Corrected sequence: ..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 9: Generating Arduino Code</h1>
+
+      <p class="notes-p">One of the most powerful features of NoSyntaxSim is that it can automatically convert your flowchart into real <strong>Arduino C++ code</strong>. This is the actual code that would run on a physical microcontroller.</p>
+
+      <p class="notes-p">While you do not need to write or memorise code for the N5 exam, understanding the connection between a flowchart and the code it produces helps to show how real engineering systems work.</p>
+
+      <div class="key-point">After building and testing your flowchart in NoSyntaxSim, click <strong>GENERATE CODE</strong> on the hardware panel. The code appears in a window — you can copy it and paste it directly into the Arduino IDE to run on real hardware.</div>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/nosyntax-code-export.png" alt="Screenshot of NoSyntaxSim Generate Code button and example Arduino code output for a flashing LED" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; From flowchart to code</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Build the flashing LED flowchart from Task 4 in NoSyntaxSim. Click GENERATE CODE. Look at the generated code and answer the following:</div>
+            <div class="task-q-sub">a) What function does the code use to turn an output ON or OFF?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t8a" data-placeholder="Function name..."></div>
+            <div class="task-q-sub">b) What function is used to create a time delay?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t8b" data-placeholder="Function name..."></div>
+            <div class="task-q-sub">c) What does the main loop() function in Arduino code do?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t8c" data-placeholder="Explain what loop() does..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Explain in your own words why being able to generate code from a flowchart is useful for an engineer.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8d">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="cs-t8d" data-placeholder="Explain the benefit..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 10: Design Challenges</h1>
+
+      <p class="notes-p">For each challenge below, follow the full engineering process: read the specification carefully, draw a flowchart in your notes, then build and simulate it in NoSyntaxSim. Use the <strong>Export Image</strong> button to save your work.</p>
+
+      <!-- Final simulator embed — open workspace -->
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F916;</span> NoSyntaxSim &mdash; design challenge workspace</div>
+          <a href="../../../../simulators/control.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Use this workspace for all the design challenges below. Remember to use the <strong>Export Image</strong> button (camera icon) to save a clean PNG of your flowchart and hardware panel for your portfolio. Use the speed slider to slow down execution if debugging.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/control.html" title="NoSyntaxSim design challenge workspace" loading="lazy"></iframe></div>
+        <div class="sim-credit">NoSyntaxSim V2 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x1F3AF; Design Challenges</div></div>
+        <div class="assignment-body">
+
+          <div class="task-item">
+            <div class="task-q"><strong>Challenge 1 &mdash; Museum people counter</strong></div>
+            <p style="font-size:13px;color:var(--gray-500);margin:4px 0 8px;">This challenge combines decision boxes, a counted variable and two inputs — exactly the kind of multi-part problem that appears in the N5 exam.</p>
+            <div class="spec-box">
+              <div class="spec-box-title">&#x1F4CB; Specification — Pin table</div>
+              <ul style="list-style:none;padding:0;margin:0 0 6px;">
+                <li>D2 = Entry sensor (ON when person enters) &nbsp;|&nbsp; D3 = Exit sensor (ON when person leaves)</li>
+                <li>D8 = Display / counter output &nbsp;|&nbsp; D9 = Alarm (sounds when museum is full)</li>
+              </ul>
+            </div>
+            <div class="spec-box" style="margin-top:8px;">
+              <div class="spec-box-title">&#x1F4CB; Sequence</div>
+              <ol>
+                <li>Set count = 0</li>
+                <li>Check entry sensor (D2) — if ON, add 1 to count</li>
+                <li>Check exit sensor (D3) — if ON, subtract 1 from count</li>
+                <li>If count &gt; 50 (museum full), turn alarm (D9) ON, otherwise turn alarm OFF</li>
+                <li>Output count value to display (D8)</li>
+                <li>Repeat continuously</li>
+              </ol>
+            </div>
+            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-dc1">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc1" data-placeholder="Sketch or describe your flowchart here..."></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q"><strong>Challenge 2 &mdash; Coin-operated can dispenser</strong></div>
+            <p style="font-size:13px;color:var(--gray-500);margin:4px 0 8px;">This challenge combines a for…next counted loop with multiple inputs and a sequenced output — a common exam question format.</p>
+            <div class="spec-box">
+              <div class="spec-box-title">&#x1F4CB; Specification — Pin table</div>
+              <ul style="list-style:none;padding:0;margin:0 0 6px;">
+                <li>D2 = 10p coin sensor &nbsp;|&nbsp; D3 = 20p coin sensor &nbsp;|&nbsp; D4 = Dispense button</li>
+                <li>D8 = Can dispenser motor &nbsp;|&nbsp; D9 = Change/reject indicator light</li>
+              </ul>
+            </div>
+            <div class="spec-box" style="margin-top:8px;">
+              <div class="spec-box-title">&#x1F4CB; Sequence</div>
+              <ol>
+                <li>Set total = 0</li>
+                <li>Wait for a coin — if D2 pressed (10p) add 10 to total; if D3 pressed (20p) add 20 to total</li>
+                <li>Repeat step 2 until dispense button (D4) is pressed</li>
+                <li>If total &ge; 30p: turn D8 ON (dispense can) — Wait 1 s — turn D8 OFF</li>
+                <li>If total &ne; 30p exactly: flash D9 (change light) 3 times — each flash 0.5 s ON, 0.5 s OFF</li>
+                <li>Reset total to 0 and repeat</li>
+              </ol>
+            </div>
+            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-dc2">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc2" data-placeholder="Sketch or describe your flowchart here..."></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q"><strong>Challenge 3 &mdash; Fire alarm system</strong></div>
+            <div class="spec-box">
+              <div class="spec-box-title">&#x1F4CB; Specification</div>
+              <ul>
+                <li>A master switch (D2) must be pressed to arm the system</li>
+                <li>If a heat sensor (D3) is activated OR a manual alarm button (D4) is pressed, the alarm (D8) sounds</li>
+                <li>The alarm continues to sound until a reset switch (D5) is pressed</li>
+                <li>After reset, the system returns to waiting (armed state)</li>
+              </ul>
+            </div>
+            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-dc3">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc3" data-placeholder="Sketch or describe your flowchart here..."></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q"><strong>Challenge 4 &mdash; Starting signal for a race (exam-style)</strong></div>
+            <div class="spec-box">
+              <div class="spec-box-title">&#x1F4CB; Specification — Pin table</div>
+              <ul style="list-style:none;padding:0;margin:0;">
+                <li>D2 = Start button &nbsp;|&nbsp; D8 = Red LED &nbsp;|&nbsp; D9 = Amber LED &nbsp;|&nbsp; D10 = Green LED &nbsp;|&nbsp; D11 = Buzzer</li>
+              </ul>
+            </div>
+            <div class="spec-box" style="margin-top:8px;">
+              <div class="spec-box-title">&#x1F4CB; Sequence</div>
+              <ol>
+                <li>Wait until start button (D2) is pressed</li>
+                <li>Red LED (D8) ON — Wait 3 s</li>
+                <li>Red (D8) OFF, Amber (D9) ON — Wait 1 s</li>
+                <li>Amber (D9) OFF, Green (D10) ON, Buzzer (D11) ON — Wait 0.5 s</li>
+                <li>Buzzer (D11) OFF — Green LED stays ON</li>
+                <li>System waits for the next race (fixed loop back to wait for button)</li>
+              </ol>
+            </div>
+            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-dc4">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc4" data-placeholder="Sketch or describe your flowchart here..."></div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
+        <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
+      </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
+
+    </div>
     </div>
   </div>
 </div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
-<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script><script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script></body></html>
+
+<footer class="footer">
+  <span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span>
+  <a href="../../../../teacher/login.html">Teacher area</a>
+</footer>
+
+<script src="../../../../js/site.js"></script>
+<script src="../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
+
+<script>
+const STORAGE_PREFIX='ess_answers_';
+function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
+function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
+function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
+function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.answer-box').forEach(function(box){
+    var key=box.dataset.key;if(!key)return;
+    var saved=loadValue(key);if(saved)box.innerHTML=saved;
+    var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
+    box.addEventListener('input',ds);
+    box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
+  });
+});
+</script>
+
+</body>
+</html>
