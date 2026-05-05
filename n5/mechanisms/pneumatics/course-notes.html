@@ -2,80 +2,180 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pneumatics — Course Notes | Engineering Science Scotland</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pneumatics &mdash; Course Notes &mdash; Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
-  <script src="../../../../js/site.js" defer></script>
-  <script src="../../../../js/nav.js" defer></script>
+  <style>
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .back-link:hover { color:var(--teal-800); }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:16px 0 8px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+    .warning { background:#FFF7ED; border-left:4px solid #F97316; border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#9A3412; }
+
+    .diagram-placeholder { background:#f0f9ff; border:2px dashed #7dd3fc; border-radius:10px; padding:18px 20px; margin:16px 0; text-align:center; }
+    .diagram-placeholder-icon { font-size:28px; margin-bottom:6px; }
+    .diagram-placeholder-text { font-size:13px; color:#0369a1; font-weight:600; }
+    .diagram-placeholder-sub { font-size:11px; color:#7dd3fc; margin-top:4px; font-style:italic; }
+
+    .formula-box { background:white; border:2px solid var(--teal-100); border-radius:10px; padding:16px 20px; margin:16px 0; text-align:center; }
+    .formula { font-size:17px; font-weight:600; color:var(--teal-800); font-family:monospace; letter-spacing:.02em; }
+    .formula-sub { font-size:12px; color:var(--gray-400); margin-top:6px; }
+
+    .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:18px 20px; margin:16px 0; }
+    .worked-example-title { font-size:13px; font-weight:600; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+    .step { display:flex; gap:12px; margin-bottom:10px; }
+    .step-num { width:24px; height:24px; border-radius:50%; background:var(--teal-400); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .step-content { font-size:13px; color:var(--gray-600); line-height:1.6; flex:1; }
+    .step-content strong { color:var(--gray-900); }
+
+    .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .data-table tr:nth-child(even) td { background:var(--gray-50); }
+
+    .assignment { background:white; border:2px solid var(--teal-400); border-radius:12px; margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:6px; font-weight:500; }
+
+    .answer-label { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin:8px 0 3px; display:flex; align-items:center; gap:6px; }
+    .saved-indicator { font-size:11px; color:#10b981; font-weight:600; opacity:0; transition:opacity .3s; text-transform:none; letter-spacing:0; }
+    .saved-indicator.show { opacity:1; }
+    .answer-box { background:#f8faff; border:2px solid #c7d7f5; border-radius:8px; padding:10px 12px; min-height:68px; font-size:14px; color:var(--gray-700); line-height:1.7; outline:none; transition:border-color .2s, box-shadow .2s; display:block; width:100%; box-sizing:border-box; }
+    .answer-box:focus { border-color:var(--teal-400); box-shadow:0 0 0 3px rgba(45,212,191,0.12); }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-sm { min-height:44px; }
+    .answer-box-lg { min-height:100px; }
+
+    .sim-embed-section { margin:24px 0; }
+    .sim-embed-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+    .sim-embed-title { font-size:14px; font-weight:500; color:var(--gray-900); display:flex; align-items:center; gap:8px; }
+    .sim-embed-title span { font-size:18px; }
+    .sim-fullscreen-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 14px; background:var(--teal-800); color:white; border-radius:var(--radius-md); font-size:12px; font-weight:500; text-decoration:none; transition:all var(--transition); border:none; cursor:pointer; }
+    .sim-fullscreen-btn:hover { background:var(--teal-600); }
+    .sim-wrap { border-radius:10px; overflow:hidden; border:2px solid var(--teal-100); }
+    .sim-iframe { width:100%; height:600px; border:none; display:block; }
+    .sim-credit { font-size:11px; color:var(--gray-400); margin-top:5px; text-align:right; }
+    .sim-instruction { background:var(--teal-50); border:1px solid var(--teal-100); border-radius:8px; padding:10px 14px; margin-bottom:10px; font-size:13px; color:var(--teal-800); }
+
+    .controls-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:32px 0 8px; padding:12px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; }
+    .controls-label { font-size:12px; color:var(--gray-500); font-weight:600; flex:1; min-width:140px; }
+    .ctrl-btn { display:inline-flex; align-items:center; gap:5px; padding:7px 14px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:all .15s; }
+    .ctrl-btn-clear { background:#fef2f2; color:#ef4444; }
+    .ctrl-btn-clear:hover { background:#fee2e2; }
+    .ctrl-btn-print { background:var(--teal-50); color:var(--teal-800); }
+    .ctrl-btn-print:hover { background:var(--teal-100); }
+    .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
+
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+
+    @media print {
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.sim-embed-section { display:none!important; }
+      .layout { display:block!important; }
+      .main { margin:0!important; padding:0!important; }
+      .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
+      .diagram-placeholder { border:1.5px solid #7dd3fc!important; }
+    }
+  </style>
 </head>
 <body>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/contexts/index.html" class="level-tab active">National 5</a>
+    <a href="../../../../higher/contexts/index.html" class="level-tab">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
 
-<div id="topbar"></div>
-
-<div class="page-layout">
-  <aside id="sidebar"></aside>
-
-  <main class="notes-main">
-
-    <div class="notes-header">
-      <div class="notes-breadcrumb">N5 &rsaquo; Mechanisms &rsaquo; Pneumatics</div>
-      <h1 class="notes-title">Pneumatics</h1>
-      <p class="notes-intro">Pneumatic systems use compressed air to transmit force and motion. In this topic you will learn how pneumatic components work, how to read and draw circuit diagrams, and how to analyse single and double acting cylinder circuits.</p>
+<div class="layout">
+  <nav class="sidebar" id="sidebar"></nav>
+  <div class="main">
+    <div class="hero">
+      <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Pneumatics</div>
+      <h1 class="hero-title">&#x1F4A8; Pneumatics &mdash; Course Notes</h1>
+      <p class="hero-sub">Pneumatic components, circuit diagrams, SAC and DAC circuits, speed control, and automatic circuits</p>
+      <div class="breadcrumb">
+        <a href="../../../../index.html">Home</a> &rsaquo;
+        <a href="../index.html">Mechanisms and Structures</a> &rsaquo;
+        <a href="index.html">Pneumatics</a> &rsaquo;
+        <span>Course notes</span>
+      </div>
     </div>
 
-    <!-- ============================================================
-         SECTION 1 — WHAT IS PNEUMATICS?
-    ============================================================ -->
-    <section class="notes-section" id="s1">
-      <h2 class="notes-h1">1. What is Pneumatics?</h2>
+    <div class="content">
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to Pneumatics</a>
 
-      <p class="notes-p">Pneumatics is the use of pressurised air to do mechanical work. A pneumatic system takes air from the atmosphere, compresses it, stores it, and then controls its flow to produce linear or rotary movement.</p>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 1: What is Pneumatics?</h1>
+
+      <p class="notes-p">Pneumatics is the use of <strong>pressurised air</strong> to do mechanical work. A pneumatic system takes air from the atmosphere, compresses it, stores it, and then controls its flow to produce linear or rotary movement.</p>
 
       <div class="key-point">
         <strong>Key point:</strong> Pneumatic systems are widely used in industry because compressed air is safe, clean, and readily available. Common applications include automated assembly lines, door openers, dental drills, and bus door mechanisms.
       </div>
 
-      <h3 class="notes-h2">Advantages of pneumatic systems</h3>
-      <p class="notes-p">Pneumatic systems offer several advantages over hydraulic or electrical systems for certain applications: compressed air is non-flammable and safe to use in hazardous environments; the components are relatively low-cost; speed is easy to adjust using flow control valves; and any leaks result only in air escaping rather than fluid spillage.</p>
+      <h2 class="notes-h2">Advantages of pneumatic systems</h2>
+      <p class="notes-p">Pneumatic systems offer several advantages over hydraulic or electrical systems: compressed air is <strong>non-flammable</strong> and safe to use in hazardous environments; the components are relatively low-cost; speed is easy to adjust using flow control valves; and any leaks result only in air escaping rather than fluid spillage.</p>
 
-      <h3 class="notes-h2">Disadvantages</h3>
-      <p class="notes-p">Air is compressible, so precise positioning can be difficult. Pneumatic systems can be noisy, and energy is lost as heat when air is compressed. A compressor and air supply are always required.</p>
-
-      <div class="assignment">
-        <div class="assignment-header">Task 1.1 — Pneumatics in everyday life</div>
-        <p class="notes-p">Give three examples of pneumatic systems you might encounter in everyday life. For each one, describe what work the compressed air is doing.</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t1a" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t1a"></span>
-      </div>
+      <h2 class="notes-h2">Disadvantages</h2>
+      <p class="notes-p">Air is compressible, so <strong>precise positioning</strong> can be difficult. Pneumatic systems can be noisy, and energy is lost as heat when air is compressed. A compressor and air supply are always required.</p>
 
       <div class="assignment">
-        <div class="assignment-header">Task 1.2 — Advantages and disadvantages</div>
-        <p class="notes-p">Explain one advantage and one disadvantage of using a pneumatic system compared to an electric motor for a factory door-opening mechanism.</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t1b" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t1b"></span>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Pneumatics in context</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <p class="task-q">1a. Give three examples of pneumatic systems you might encounter in everyday life. For each one, describe what work the compressed air is doing.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t1a" data-placeholder="Type your answer here…"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">1b. Explain one advantage and one disadvantage of using a pneumatic system compared to an electric motor for a factory door-opening mechanism.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t1b" data-placeholder="Type your answer here…"></div>
+          </div>
+        </div>
       </div>
-    </section>
 
-    <!-- ============================================================
-         SECTION 2 — PNEUMATIC COMPONENTS
-    ============================================================ -->
-    <section class="notes-section" id="s2">
-      <h2 class="notes-h1">2. Pneumatic Components</h2>
+      <hr class="divider">
 
-      <p class="notes-p">A pneumatic circuit is made up of several standard components. You need to be able to recognise each component, know its function, and draw its correct BS/ISO symbol.</p>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 2: Pneumatic Components</h1>
 
-      <h3 class="notes-h2">The compressor</h3>
-      <p class="notes-p">The compressor draws in atmospheric air and increases its pressure. Most workshop compressors compress air to around 6–8 bar (six to eight times atmospheric pressure). The compressed air is stored in a reservoir until needed.</p>
+      <p class="notes-p">A pneumatic circuit is made up of several standard components. You need to be able to <strong>recognise each component</strong>, know its function, and draw its correct BS/ISO symbol.</p>
+
+      <h2 class="notes-h2">The compressor</h2>
+      <p class="notes-p">The compressor draws in atmospheric air and increases its pressure. Most workshop compressors compress air to around <strong>6–8 bar</strong> (six to eight times atmospheric pressure). The compressed air is stored in a reservoir until needed.</p>
 
       <img src="images/compressor-symbol.png" alt="BS/ISO symbol for an air compressor" style="width:100%;max-width:480px;display:block;margin:16px auto;border-radius:8px;">
 
-      <h3 class="notes-h2">The air service unit (FRL unit)</h3>
+      <h2 class="notes-h2">The air service unit (FRL unit)</h2>
       <p class="notes-p">Before reaching the rest of the circuit, air passes through a Filter–Regulator–Lubricator (FRL) unit. The <strong>filter</strong> removes water and particles. The <strong>regulator</strong> sets a steady working pressure. The <strong>lubricator</strong> adds a fine oil mist to reduce wear on moving parts.</p>
 
       <img src="images/frl-unit-symbol.png" alt="BS/ISO symbols for filter, regulator and lubricator" style="width:100%;max-width:600px;display:block;margin:16px auto;border-radius:8px;">
 
-      <h3 class="notes-h2">Directional control valves (DCVs)</h3>
-      <p class="notes-p">Directional control valves direct air to different parts of the circuit. They are described by the number of ports (connections) and the number of positions (states). A <strong>3/2 valve</strong> has 3 ports and 2 positions; a <strong>5/2 valve</strong> has 5 ports and 2 positions.</p>
+      <h2 class="notes-h2">Directional control valves (DCVs)</h2>
+      <p class="notes-p">Directional control valves direct air to different parts of the circuit. They are described by the number of <strong>ports</strong> (connections) and the number of <strong>positions</strong> (states). A <strong>3/2 valve</strong> has 3 ports and 2 positions; a <strong>5/2 valve</strong> has 5 ports and 2 positions.</p>
 
       <div class="key-point">
         <strong>Reading valve notation:</strong> The first number is the ports, the second is the positions. A 5/2 valve is the most common valve for controlling a double acting cylinder.
@@ -83,172 +183,161 @@
 
       <img src="images/dcv-symbols.png" alt="BS/ISO symbols for 3/2 and 5/2 directional control valves" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;">
 
-      <h3 class="notes-h2">Actuators — cylinders</h3>
-      <p class="notes-p">Cylinders convert air pressure into linear motion (a push or pull force). There are two main types:</p>
+      <h2 class="notes-h2">Actuators — cylinders</h2>
       <p class="notes-p"><strong>Single acting cylinder (SAC):</strong> Air pressure extends (pushes out) the piston rod. A spring returns the rod to its original position when pressure is released. SACs are used where a force is only needed in one direction.</p>
       <p class="notes-p"><strong>Double acting cylinder (DAC):</strong> Air pressure is used for both extension and retraction. There are two air ports — one on each side of the piston. DACs provide force in both directions and are more versatile than SACs.</p>
 
       <img src="images/cylinder-symbols.png" alt="BS/ISO symbols for single and double acting cylinders" style="width:100%;max-width:600px;display:block;margin:16px auto;border-radius:8px;">
 
-      <h3 class="notes-h2">Flow control valves</h3>
-      <p class="notes-p">Flow control valves (also called restrictors or throttle valves) limit the flow rate of air, which controls the speed of a cylinder. A <strong>one-way flow control valve</strong> (restrictor with check valve) allows free flow in one direction but restricts flow in the other. This is used to control the speed of extension or retraction independently.</p>
+      <h2 class="notes-h2">Flow control valves (restrictors)</h2>
+      <p class="notes-p">Flow control valves limit the flow rate of air, controlling the <strong>speed</strong> of a cylinder. A <strong>one-way flow control valve</strong> (restrictor with check valve) allows free flow in one direction but restricts flow in the other, so extension and retraction speeds can be set independently.</p>
 
       <img src="images/flow-control-symbol.png" alt="BS/ISO symbol for a one-way flow control valve" style="width:100%;max-width:360px;display:block;margin:16px auto;border-radius:8px;">
 
-      <h3 class="notes-h2">Shuttle valve (OR valve)</h3>
-      <p class="notes-p">A shuttle valve has two inlets and one outlet. If pressure is applied at either inlet, the ball inside moves to block the other inlet and allow air through to the outlet. This is equivalent to a logical OR function — air passes through if input A <em>or</em> input B is pressurised.</p>
+      <h2 class="notes-h2">Shuttle valve (OR valve)</h2>
+      <p class="notes-p">A shuttle valve has two inlets and one outlet. If pressure is applied at either inlet, the ball inside moves to block the other inlet and allows air through to the outlet. This is a logical <strong>OR</strong> function — air passes through if input A <em>or</em> input B is pressurised.</p>
 
       <img src="images/shuttle-valve-symbol.png" alt="BS/ISO symbol for a shuttle valve" style="width:100%;max-width:360px;display:block;margin:16px auto;border-radius:8px;">
 
-      <h3 class="notes-h2">T-piece (air supply splitter)</h3>
-      <p class="notes-p">A T-piece (tee connector) simply splits one air supply into two branches. It allows the same air supply to feed two different parts of a circuit simultaneously.</p>
+      <h2 class="notes-h2">T-piece (air supply splitter)</h2>
+      <p class="notes-p">A T-piece simply splits one air supply into two branches, allowing the same supply to feed two different parts of a circuit simultaneously.</p>
 
       <div class="assignment">
-        <div class="assignment-header">Task 2.1 — Component identification</div>
-        <p class="notes-p">Describe the difference between a single acting cylinder and a double acting cylinder. State one application where each type would be the better choice.</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t2a" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t2a"></span>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Component knowledge</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <p class="task-q">2a. Describe the difference between a single acting cylinder and a double acting cylinder. State one application where each type would be the better choice.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t2a" data-placeholder="Type your answer here…"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">2b. Explain what the numbers mean in the notation "5/2 valve". How many ports does it have? How many positions?</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t2b" data-placeholder="Type your answer here…"></div>
+          </div>
+        </div>
       </div>
 
-      <div class="assignment">
-        <div class="assignment-header">Task 2.2 — Valve notation</div>
-        <p class="notes-p">Explain what the numbers mean in the notation "5/2 valve". How many ports does it have? How many positions?</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t2b" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t2b"></span>
-      </div>
-    </section>
+      <hr class="divider">
 
-    <!-- ============================================================
-         SECTION 3 — SINGLE ACTING CYLINDER CIRCUIT (SAC)
-    ============================================================ -->
-    <section class="notes-section" id="s3">
-      <h2 class="notes-h1">3. Single Acting Cylinder Circuit</h2>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 3: Single Acting Cylinder Circuit</h1>
 
-      <p class="notes-p">The simplest pneumatic circuit uses a single acting cylinder controlled by a 3/2 push-button valve. When the button is pressed, air flows to extend the cylinder. When released, the spring in the valve exhausts the air and the cylinder's own spring retracts the rod.</p>
+      <p class="notes-p">The simplest pneumatic circuit uses a <strong>single acting cylinder</strong> controlled by a 3/2 push-button valve. When the button is pressed, air flows to extend the cylinder. When released, the spring in the valve exhausts the air and the cylinder's own spring retracts the rod.</p>
 
       <div class="worked-example">
-        <div class="worked-example-header">Worked Example — How the SAC circuit operates</div>
-        <p class="notes-p"><strong>At rest:</strong> The 3/2 valve is spring-returned to its normal position. Port 1 (supply) is blocked; port 2 (to cylinder) is connected to port 3 (exhaust). The cylinder spring holds the rod retracted.</p>
-        <p class="notes-p"><strong>Button pressed:</strong> The valve switches. Port 1 connects to port 2, supplying air to the cylinder. The piston extends against the spring.</p>
-        <p class="notes-p"><strong>Button released:</strong> The valve spring returns it to rest. Port 2 connects back to port 3. Air exhausts from the cylinder and the cylinder spring retracts the rod.</p>
+        <div class="worked-example-title">Worked Example &mdash; How the SAC circuit operates</div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>At rest:</strong> The 3/2 valve is spring-returned to its normal position. Port 1 (supply) is blocked; port 2 (to cylinder) is connected to port 3 (exhaust). The cylinder spring holds the rod retracted.</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Button pressed:</strong> The valve switches. Port 1 connects to port 2, supplying air to the cylinder. The piston extends against the spring.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Button released:</strong> The valve spring returns it to rest. Port 2 connects back to port 3. Air exhausts from the cylinder and the spring retracts the rod.</div></div>
       </div>
-
-      <p class="notes-p">Use the simulator below to explore a SAC circuit. Press the <strong>SIMULATE</strong> button to start, then click the push-button valve to operate the cylinder. Observe how air flows through the circuit.</p>
 
       <div class="sim-embed-section">
-        <div class="sim-embed-label">🔬 No Pressure Sim — Single Acting Cylinder (SAC)</div>
-        <iframe
-          src="../../../../simulators/pneu-sac.html"
-          width="100%"
-          height="620"
-          style="border:none;border-radius:12px;display:block;"
-          loading="lazy"
-          title="No Pressure Sim — SAC circuit"
-          allow="fullscreen">
-        </iframe>
-        <p class="sim-credit">Simulator by Peter Strain, Bearsden Academy</p>
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Single Acting Cylinder (SAC)</div>
+          <a href="../../../../simulators/pneu-sac.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          The circuit loads and starts automatically. Click the <strong>push-button valve</strong> to extend the cylinder, then release it to retract. Observe how air flows through the pipes.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-sac.html" title="No Pressure Sim — SAC circuit" loading="lazy"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4.1 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
       <div class="assignment">
-        <div class="assignment-header">Task 3.1 — SAC circuit description</div>
-        <p class="notes-p">Describe what happens in the circuit when the push-button valve is pressed and then released. Include reference to the valve positions and air flow paths.</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t3a" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t3a"></span>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; SAC circuit</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <p class="task-q">3a. Describe what happens in the circuit when the push-button valve is pressed and then released. Include reference to the valve positions and air flow paths.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t3a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t3a" data-placeholder="Type your answer here…"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">3b. A single acting cylinder has a piston area of 20 cm² and is supplied with air at 5 bar (500 000 Pa). Calculate the force produced when the cylinder extends. Show all working.</p>
+            <div class="formula-box"><div class="formula">Force (N) = Pressure (Pa) &times; Area (m&sup2;)</div></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t3b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t3b" data-placeholder="Type your answer here…"></div>
+          </div>
+        </div>
       </div>
 
-      <div class="assignment">
-        <div class="assignment-header">Task 3.2 — SAC force calculation</div>
-        <p class="notes-p">A single acting cylinder has a piston area of 20 cm² and is supplied with air at 5 bar (500 000 Pa). Calculate the force produced when the cylinder extends. State the formula you use and show all working.</p>
-        <div class="formula-box">Force (N) = Pressure (Pa) × Area (m²)</div>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t3b" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t3b"></span>
-      </div>
-    </section>
+      <hr class="divider">
 
-    <!-- ============================================================
-         SECTION 4 — DOUBLE ACTING CYLINDER CIRCUIT (DAC)
-    ============================================================ -->
-    <section class="notes-section" id="s4">
-      <h2 class="notes-h1">4. Double Acting Cylinder Circuit</h2>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 4: Double Acting Cylinder Circuit</h1>
 
-      <p class="notes-p">A double acting cylinder (DAC) requires air to be directed to either side of the piston. This is controlled by a <strong>5/2 directional control valve</strong>, which routes air to the extend port or the retract port depending on its position.</p>
+      <p class="notes-p">A double acting cylinder (DAC) requires air to be directed to <strong>either side</strong> of the piston. This is controlled by a <strong>5/2 directional control valve</strong>, which routes air to the extend port or the retract port depending on its position.</p>
 
-      <p class="notes-p">The 5/2 valve has 5 ports: port 1 (supply), port 2 (to extend side), port 3 (exhaust from extend), port 4 (to retract side), and port 5 (exhaust from retract). When the valve switches, air to the cylinder reverses direction, actively pushing the rod both ways.</p>
+      <p class="notes-p">The 5/2 valve has 5 ports: port 1 (supply), port 2 (to extend side), port 3 (exhaust from extend), port 4 (to retract side), and port 5 (exhaust from retract). When the valve switches, air to the cylinder reverses direction, actively driving the rod both ways.</p>
 
       <div class="key-point">
-        <strong>DAC advantage over SAC:</strong> Because air actively retracts the DAC piston rod, it can exert a pushing force in both directions. The retraction force is slightly less than the extension force because the rod itself reduces the effective piston area on the retract side.
+        <strong>DAC advantage over SAC:</strong> Because air actively retracts the DAC piston rod, it can exert a pushing force in both directions. The retraction force is slightly less than extension force because the rod reduces the effective piston area on the retract side.
       </div>
-
-      <p class="notes-p">Explore the DAC circuit below. Notice how pressing the valve in one direction extends the cylinder and pressing in the other direction actively retracts it.</p>
 
       <div class="sim-embed-section">
-        <div class="sim-embed-label">🔬 No Pressure Sim — Double Acting Cylinder (DAC)</div>
-        <iframe
-          src="../../../../simulators/pneu-dac.html"
-          width="100%"
-          height="620"
-          style="border:none;border-radius:12px;display:block;"
-          loading="lazy"
-          title="No Pressure Sim — DAC circuit"
-          allow="fullscreen">
-        </iframe>
-        <p class="sim-credit">Simulator by Peter Strain, Bearsden Academy</p>
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Double Acting Cylinder (DAC)</div>
+          <a href="../../../../simulators/pneu-dac.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          The circuit loads automatically. Operate the <strong>5/2 valve</strong> in each direction to extend and actively retract the cylinder. Notice that air pressure drives both strokes.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-dac.html" title="No Pressure Sim — DAC circuit" loading="lazy"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4.1 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
       <div class="assignment">
-        <div class="assignment-header">Task 4.1 — DAC vs SAC comparison</div>
-        <p class="notes-p">Compare the operation of a double acting cylinder circuit with a single acting cylinder circuit. Your answer should refer to: (a) how retraction is achieved in each case; (b) the type of control valve used; (c) a situation where a DAC would be preferred over a SAC.</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t4a" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t4a"></span>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; DAC circuit</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <p class="task-q">4a. Compare the operation of a DAC circuit with a SAC circuit. Refer to: (a) how retraction is achieved; (b) the type of control valve used; (c) a situation where a DAC would be preferred.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t4a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t4a" data-placeholder="Type your answer here…"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">4b. A 5/2 valve has five ports numbered 1–5. State the function of each port.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t4b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t4b" data-placeholder="Type your answer here…"></div>
+          </div>
+        </div>
       </div>
 
-      <div class="assignment">
-        <div class="assignment-header">Task 4.2 — Port identification</div>
-        <p class="notes-p">A 5/2 valve has five ports numbered 1–5. State the function of each port.</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t4b" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t4b"></span>
-      </div>
-    </section>
+      <hr class="divider">
 
-    <!-- ============================================================
-         SECTION 5 — T-PIECE (AIR SUPPLY SPLITTING)
-    ============================================================ -->
-    <section class="notes-section" id="s5">
-      <h2 class="notes-h1">5. T-Piece — Splitting the Air Supply</h2>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 5: T-Piece — Splitting the Air Supply</h1>
 
-      <p class="notes-p">A T-piece connector allows one compressed air supply to feed two or more separate branches of a circuit simultaneously. Both branches receive the same supply pressure. T-pieces are used when a single air source needs to power multiple actuators or sensors at the same time.</p>
-
-      <p class="notes-p">In the simulator below you can see how a T-piece is used to connect one supply to two parts of the circuit. Both outputs remain pressurised as long as the supply is on.</p>
+      <p class="notes-p">A <strong>T-piece connector</strong> allows one compressed air supply to feed two or more separate branches of a circuit simultaneously. Both branches receive the same supply pressure. T-pieces are used when a single air source needs to power multiple actuators or valves at the same time.</p>
 
       <div class="sim-embed-section">
-        <div class="sim-embed-label">🔬 No Pressure Sim — T-Piece Air Supply Splitting</div>
-        <iframe
-          src="../../../../simulators/pneu-tpiece.html"
-          width="100%"
-          height="620"
-          style="border:none;border-radius:12px;display:block;"
-          loading="lazy"
-          title="No Pressure Sim — T-Piece circuit"
-          allow="fullscreen">
-        </iframe>
-        <p class="sim-credit">Simulator by Peter Strain, Bearsden Academy</p>
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; T-Piece Air Supply Splitting</div>
+          <a href="../../../../simulators/pneu-tpiece.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Observe how the T-piece distributes the air supply to two separate branches simultaneously. Both outputs remain pressurised as long as the supply is on.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-tpiece.html" title="No Pressure Sim — T-Piece circuit" loading="lazy"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4.1 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
       <div class="assignment">
-        <div class="assignment-header">Task 5.1 — T-piece application</div>
-        <p class="notes-p">Describe what a T-piece does in a pneumatic circuit. Give one example of a situation in a factory where a T-piece would be needed.</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t5a" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t5a"></span>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; T-piece</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <p class="task-q">5a. Describe what a T-piece does in a pneumatic circuit. Give one example of a situation in a factory where a T-piece would be needed.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t5a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t5a" data-placeholder="Type your answer here…"></div>
+          </div>
+        </div>
       </div>
-    </section>
 
-    <!-- ============================================================
-         SECTION 6 — SHUTTLE VALVE
-    ============================================================ -->
-    <section class="notes-section" id="s6">
-      <h2 class="notes-h1">6. Shuttle Valve (OR Valve)</h2>
+      <hr class="divider">
 
-      <p class="notes-p">A shuttle valve (also called an OR valve) allows a cylinder to be operated from two separate control valves — either valve can extend the cylinder. This is useful when a machine needs to be operated from two different locations for safety or convenience.</p>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 6: Shuttle Valve (OR Valve)</h1>
+
+      <p class="notes-p">A <strong>shuttle valve</strong> (also called an OR valve) allows a cylinder to be operated from two separate control valves — either valve can extend the cylinder. This is useful when a machine needs to be operated from two different locations.</p>
 
       <p class="notes-p">Inside the shuttle valve is a small ball. When air enters from one inlet, it pushes the ball to seal the other inlet and passes through to the outlet. If air enters the other inlet instead, the ball moves across and the same thing happens.</p>
 
@@ -257,294 +346,246 @@
       </div>
 
       <div class="sim-embed-section">
-        <div class="sim-embed-label">🔬 No Pressure Sim — Shuttle Valve (OR Valve)</div>
-        <iframe
-          src="../../../../simulators/pneu-shuttle.html"
-          width="100%"
-          height="620"
-          style="border:none;border-radius:12px;display:block;"
-          loading="lazy"
-          title="No Pressure Sim — Shuttle valve circuit"
-          allow="fullscreen">
-        </iframe>
-        <p class="sim-credit">Simulator by Peter Strain, Bearsden Academy</p>
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Shuttle Valve (OR Valve)</div>
+          <a href="../../../../simulators/pneu-shuttle.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Operate each push-button valve independently. Either valve can extend the cylinder — this is the OR logic of the shuttle valve in action.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-shuttle.html" title="No Pressure Sim — Shuttle valve circuit" loading="lazy"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4.1 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
       <div class="assignment">
-        <div class="assignment-header">Task 6.1 — Shuttle valve operation</div>
-        <p class="notes-p">Explain how a shuttle valve works. Why is it described as performing a logical OR function?</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t6a" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t6a"></span>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Shuttle valve</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <p class="task-q">6a. Explain how a shuttle valve works. Why is it described as performing a logical OR function?</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t6a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t6a" data-placeholder="Type your answer here…"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">6b. A press in a workshop can be dangerous to operate with one hand. Describe how a shuttle valve could be used as part of a two-handed safety circuit.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t6b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t6b" data-placeholder="Type your answer here…"></div>
+          </div>
+        </div>
       </div>
 
-      <div class="assignment">
-        <div class="assignment-header">Task 6.2 — Shuttle valve application</div>
-        <p class="notes-p">A press in a workshop can be dangerous to operate with one hand. Describe how a shuttle valve could be used as part of a two-handed safety circuit.</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t6b" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t6b"></span>
-      </div>
-    </section>
+      <hr class="divider">
 
-    <!-- ============================================================
-         SECTION 7 — FLOW CONTROL (RESTRICTORS)
-    ============================================================ -->
-    <section class="notes-section" id="s7">
-      <h2 class="notes-h1">7. Speed Control — Flow Control Valves</h2>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 7: Speed Control — Flow Control Valves</h1>
 
-      <p class="notes-p">The speed of a pneumatic cylinder can be controlled by limiting the flow rate of air into or out of it. A <strong>flow control valve</strong> (restrictor) contains a variable needle valve in parallel with a check (non-return) valve.</p>
+      <p class="notes-p">The speed of a pneumatic cylinder can be controlled by limiting the <strong>flow rate</strong> of air into or out of it. A flow control valve (restrictor) contains a variable needle valve in parallel with a check (non-return) valve.</p>
 
-      <p class="notes-p"><strong>Meter-in:</strong> The restrictor is placed on the supply side. It limits air flowing <em>into</em> the cylinder, slowing extension but not retraction (if on the extend side).</p>
+      <p class="notes-p"><strong>Meter-in:</strong> The restrictor is placed on the supply side. It limits air flowing <em>into</em> the cylinder, slowing the stroke in that direction.</p>
       <p class="notes-p"><strong>Meter-out:</strong> The restrictor is placed on the exhaust side. It limits air flowing <em>out</em> of the cylinder. This gives smoother speed control and is preferred in most applications because back-pressure supports the load.</p>
 
       <div class="key-point">
-        <strong>One-way flow control valve:</strong> The check valve allows free flow in one direction and restricted flow in the other. This means you can control the speed in one direction independently of the other.
+        <strong>One-way flow control valve:</strong> The check valve allows free flow in one direction and restricted flow in the other. This means you can control the speed of extension independently from retraction.
       </div>
 
       <div class="sim-embed-section">
-        <div class="sim-embed-label">🔬 No Pressure Sim — SAC with Flow Control Restrictors</div>
-        <iframe
-          src="../../../../simulators/pneu-restrictors.html"
-          width="100%"
-          height="620"
-          style="border:none;border-radius:12px;display:block;"
-          loading="lazy"
-          title="No Pressure Sim — SAC with restrictors"
-          allow="fullscreen">
-        </iframe>
-        <p class="sim-credit">Simulator by Peter Strain, Bearsden Academy</p>
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; SAC with Flow Control Restrictors</div>
+          <a href="../../../../simulators/pneu-restrictors.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Observe how the flow control valves slow the cylinder movement. The check valve allows free flow in one direction but restricts the other — controlling extension and retraction speed independently.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-restrictors.html" title="No Pressure Sim — SAC with restrictors" loading="lazy"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4.1 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
       <div class="assignment">
-        <div class="assignment-header">Task 7.1 — Flow control valves</div>
-        <p class="notes-p">Explain the difference between meter-in and meter-out speed control. Which method is generally preferred and why?</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t7a" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t7a"></span>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Speed control</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <p class="task-q">7a. Explain the difference between meter-in and meter-out speed control. Which method is generally preferred and why?</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t7a" data-placeholder="Type your answer here…"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">7b. A packaging machine uses a SAC to push items along a conveyor. The operator wants the cylinder to extend slowly but retract quickly. Explain where a one-way flow control valve should be placed and how it should be oriented.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t7b" data-placeholder="Type your answer here…"></div>
+          </div>
+        </div>
       </div>
 
-      <div class="assignment">
-        <div class="assignment-header">Task 7.2 — Restrictor in a circuit</div>
-        <p class="notes-p">A packaging machine uses a SAC to push items along a conveyor. The operator wants the cylinder to extend slowly but retract quickly. Explain where a one-way flow control valve should be placed and how it should be oriented.</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t7b" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t7b"></span>
-      </div>
-    </section>
+      <hr class="divider">
 
-    <!-- ============================================================
-         SECTION 8 — SEMI-AUTOMATIC CIRCUIT
-    ============================================================ -->
-    <section class="notes-section" id="s8">
-      <h2 class="notes-h1">8. Semi-Automatic Circuit</h2>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 8: Semi-Automatic Circuit</h1>
 
-      <p class="notes-p">A semi-automatic circuit is one that requires a manual input to start each cycle, but part of the operation happens automatically. A typical semi-automatic circuit uses a DAC, a 5/2 main control valve, and a <strong>pilot-operated valve</strong> or limit valve that is triggered by the cylinder reaching the end of its stroke.</p>
+      <p class="notes-p">A <strong>semi-automatic circuit</strong> requires a manual input to start each cycle, but part of the operation happens automatically. A typical arrangement uses a DAC, a 5/2 main control valve, and a <strong>roller trip valve</strong> (limit valve) triggered by the cylinder reaching the end of its stroke.</p>
 
-      <p class="notes-p">A common arrangement: the operator presses a start button (3/2 valve) to extend the DAC. At full extension, the rod trips a <strong>roller trip valve</strong> (a limit valve). This automatically pilots the 5/2 valve to reverse, retracting the cylinder. The operator must press the button again to start the next cycle.</p>
+      <p class="notes-p">The operator presses a start button to extend the DAC. At full extension, the rod trips the limit valve. This automatically pilots the 5/2 valve to reverse, retracting the cylinder. The operator must press the button again to start the next cycle.</p>
 
       <div class="worked-example">
-        <div class="worked-example-header">Worked Example — Semi-automatic cycle</div>
-        <p class="notes-p"><strong>Step 1 — Start:</strong> Operator presses push-button. Pilot signal switches the 5/2 valve → air extends the DAC.</p>
-        <p class="notes-p"><strong>Step 2 — End of stroke:</strong> Rod reaches full extension and operates the roller trip valve → pilot signal switches the 5/2 valve back → air retracts the DAC.</p>
-        <p class="notes-p"><strong>Step 3 — Wait:</strong> Cylinder is fully retracted. Circuit waits for operator to press button again.</p>
+        <div class="worked-example-title">Worked Example &mdash; Semi-automatic cycle</div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Start:</strong> Operator presses push-button &rarr; pilot signal switches the 5/2 valve &rarr; air extends the DAC.</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>End of stroke:</strong> Rod reaches full extension and operates the roller trip valve &rarr; pilot signal switches the 5/2 valve back &rarr; air retracts the DAC.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Wait:</strong> Cylinder is fully retracted. Circuit waits for the operator to press the button again.</div></div>
       </div>
 
       <div class="sim-embed-section">
-        <div class="sim-embed-label">🔬 No Pressure Sim — Semi-Automatic Circuit</div>
-        <iframe
-          src="../../../../simulators/pneu-semi-auto.html"
-          width="100%"
-          height="620"
-          style="border:none;border-radius:12px;display:block;"
-          loading="lazy"
-          title="No Pressure Sim — Semi-automatic circuit"
-          allow="fullscreen">
-        </iframe>
-        <p class="sim-credit">Simulator by Peter Strain, Bearsden Academy</p>
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Semi-Automatic Circuit</div>
+          <a href="../../../../simulators/pneu-semi-auto.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Press the start button to begin the cycle. The cylinder extends, then automatically retracts when it reaches the end stop. The circuit then waits for your next button press.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-semi-auto.html" title="No Pressure Sim — Semi-automatic circuit" loading="lazy"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4.1 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
       <div class="assignment">
-        <div class="assignment-header">Task 8.1 — Semi-automatic circuit operation</div>
-        <p class="notes-p">Describe the complete operating cycle of a semi-automatic pneumatic circuit. Include reference to: the start signal, how the cylinder extends, what triggers the retraction, and what happens at the end of the cycle.</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t8a" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t8a"></span>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; Semi-automatic circuit</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <p class="task-q">8a. Describe the complete operating cycle of a semi-automatic pneumatic circuit. Include reference to: the start signal, how the cylinder extends, what triggers the retraction, and what happens at the end of the cycle.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t8a" data-placeholder="Type your answer here…"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">8b. Explain the difference between a manual circuit and a semi-automatic circuit. Give one advantage of using a semi-automatic circuit in a production environment.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t8b" data-placeholder="Type your answer here…"></div>
+          </div>
+        </div>
       </div>
 
-      <div class="assignment">
-        <div class="assignment-header">Task 8.2 — Why semi-automatic?</div>
-        <p class="notes-p">Explain the difference between a manual circuit and a semi-automatic circuit. Give one advantage of using a semi-automatic circuit in a production environment.</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t8b" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t8b"></span>
-      </div>
-    </section>
+      <hr class="divider">
 
-    <!-- ============================================================
-         SECTION 9 — FULLY AUTOMATIC CIRCUIT
-    ============================================================ -->
-    <section class="notes-section" id="s9">
-      <h2 class="notes-h1">9. Fully Automatic Circuit</h2>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 9: Fully Automatic Circuit</h1>
 
-      <p class="notes-p">A fully automatic circuit repeats its cycle continuously without any manual input after the initial start signal. This is achieved by adding a second limit valve at the retracted position so that the cylinder automatically starts extending again as soon as it returns home.</p>
-
-      <p class="notes-p">The circuit uses two roller trip (limit) valves — one at each end of the stroke. The end-of-extension valve causes retraction; the end-of-retraction valve causes extension. Once started, the cycle repeats until a stop signal is given.</p>
+      <p class="notes-p">A <strong>fully automatic circuit</strong> repeats its cycle continuously without any manual input after the initial start signal. A second limit valve at the retracted position triggers the next extension automatically, so the cylinder cycles back and forth until a stop signal is given.</p>
 
       <div class="key-point">
-        <strong>Fully automatic vs semi-automatic:</strong> In a semi-automatic circuit only one limit valve is used, so the cylinder stops and waits at the retracted position. In a fully automatic circuit a second limit valve at the retracted end triggers the next extension automatically.
+        <strong>Fully automatic vs semi-automatic:</strong> In a semi-automatic circuit, one limit valve is used so the cylinder stops at the retracted position. In a fully automatic circuit, a second limit valve at the retracted end immediately triggers the next extension.
       </div>
 
       <div class="sim-embed-section">
-        <div class="sim-embed-label">🔬 No Pressure Sim — Fully Automatic Circuit</div>
-        <iframe
-          src="../../../../simulators/pneu-fully-auto.html"
-          width="100%"
-          height="620"
-          style="border:none;border-radius:12px;display:block;"
-          loading="lazy"
-          title="No Pressure Sim — Fully automatic circuit"
-          allow="fullscreen">
-        </iframe>
-        <p class="sim-credit">Simulator by Peter Strain, Bearsden Academy</p>
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Fully Automatic Circuit</div>
+          <a href="../../../../simulators/pneu-fully-auto.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Press the start button and watch the cylinder cycle continuously. Each limit valve triggers the next stroke — the circuit repeats without further operator input.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-fully-auto.html" title="No Pressure Sim — Fully automatic circuit" loading="lazy"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4.1 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
       <div class="assignment">
-        <div class="assignment-header">Task 9.1 — Fully automatic circuit</div>
-        <p class="notes-p">Explain the role of each limit valve in a fully automatic circuit. What would happen if the limit valve at the retracted position were removed?</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t9a" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t9a"></span>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 9 &mdash; Fully automatic circuit</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <p class="task-q">9a. Explain the role of each limit valve in a fully automatic circuit. What would happen if the limit valve at the retracted position were removed?</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t9a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t9a" data-placeholder="Type your answer here…"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">9b. A fully automatic circuit is used in a bottling plant to cap bottles on a conveyor. Describe how the circuit could be modified to allow an operator to stop the machine safely at the end of a cycle (not mid-stroke).</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t9b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t9b" data-placeholder="Type your answer here…"></div>
+          </div>
+        </div>
       </div>
 
-      <div class="assignment">
-        <div class="assignment-header">Task 9.2 — Application</div>
-        <p class="notes-p">A fully automatic circuit is used in a bottling plant to cap bottles on a conveyor. Describe how the circuit could be modified to allow an operator to stop the machine safely at the end of a cycle (i.e. not mid-stroke).</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t9b" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t9b"></span>
-      </div>
-    </section>
+      <hr class="divider">
 
-    <!-- ============================================================
-         SECTION 10 — TIME DELAY CIRCUIT
-    ============================================================ -->
-    <section class="notes-section" id="s10">
-      <h2 class="notes-h1">10. Time Delay Circuit</h2>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 10: Time Delay Circuit</h1>
 
-      <p class="notes-p">A time delay valve (or timer valve) introduces a controllable delay between an input signal and an output action. It consists of a flow control valve feeding a small reservoir, which builds up enough pressure over time to pilot a 3/2 valve.</p>
+      <p class="notes-p">A <strong>time delay valve</strong> introduces a controllable delay between an input signal and an output action. It consists of a flow control valve feeding a small reservoir, which builds up enough pressure over time to pilot a 3/2 valve.</p>
 
-      <p class="notes-p">By adjusting the flow control valve, the fill time of the reservoir — and therefore the length of the delay — can be changed. Time delays are used in industrial processes where a fixed wait is needed between operations, for example: holding a part in a jig while adhesive sets before releasing it.</p>
+      <p class="notes-p">By adjusting the flow control valve, the fill time of the reservoir — and therefore the length of the delay — can be changed. Time delays are used where a fixed wait is needed between operations, for example holding a part in a jig while adhesive sets before releasing it.</p>
 
       <div class="worked-example">
-        <div class="worked-example-header">Worked Example — Time delay operation</div>
-        <p class="notes-p"><strong>Input signal received:</strong> Air flows through the adjustable restrictor, slowly filling the reservoir (capacitance vessel).</p>
-        <p class="notes-p"><strong>During delay:</strong> Reservoir pressure is below the pilot threshold — the output valve remains in its normal position.</p>
-        <p class="notes-p"><strong>Delay complete:</strong> Reservoir pressure reaches the pilot threshold — the 3/2 valve switches and the output signal is delivered to the actuator.</p>
-        <p class="notes-p"><strong>Resetting:</strong> When the input signal is removed, the reservoir vents quickly through the check valve and the timer resets immediately.</p>
+        <div class="worked-example-title">Worked Example &mdash; Time delay operation</div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Input signal received:</strong> Air flows through the adjustable restrictor, slowly filling the reservoir (capacitance vessel).</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>During delay:</strong> Reservoir pressure is below the pilot threshold — the output valve remains in its normal position.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Delay complete:</strong> Reservoir pressure reaches the pilot threshold — the 3/2 valve switches and the output signal is delivered to the actuator.</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Reset:</strong> When the input signal is removed, the reservoir vents quickly through the check valve and the timer resets immediately.</div></div>
       </div>
 
       <div class="sim-embed-section">
-        <div class="sim-embed-label">🔬 No Pressure Sim — Time Delay Circuit</div>
-        <iframe
-          src="../../../../simulators/pneu-time-delay.html"
-          width="100%"
-          height="620"
-          style="border:none;border-radius:12px;display:block;"
-          loading="lazy"
-          title="No Pressure Sim — Time delay circuit"
-          allow="fullscreen">
-        </iframe>
-        <p class="sim-credit">Simulator by Peter Strain, Bearsden Academy</p>
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Time Delay Circuit</div>
+          <a href="../../../../simulators/pneu-time-delay.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Operate the input valve and watch the reservoir fill gradually. The cylinder only extends once reservoir pressure reaches the pilot threshold — demonstrating the time delay in action.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-time-delay.html" title="No Pressure Sim — Time delay circuit" loading="lazy"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V2.4.1 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
       <div class="assignment">
-        <div class="assignment-header">Task 10.1 — Time delay valve</div>
-        <p class="notes-p">Describe how a pneumatic time delay valve produces a time delay. Include reference to the flow control valve, reservoir, and pilot-operated output valve.</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t10a" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t10a"></span>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 10 &mdash; Time delay circuit</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <p class="task-q">10a. Describe how a pneumatic time delay valve produces a time delay. Include reference to the flow control valve, reservoir, and pilot-operated output valve.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t10a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t10a" data-placeholder="Type your answer here…"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">10b. A time delay circuit is set to delay for 3 seconds. An engineer wants to increase the delay to 8 seconds. Explain how this could be achieved without replacing any components.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t10b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t10b" data-placeholder="Type your answer here…"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">10c. Describe one practical application of a time delay circuit in an industrial or domestic context. Explain what the delay achieves in your chosen example.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t10c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t10c" data-placeholder="Type your answer here…"></div>
+          </div>
+        </div>
       </div>
 
-      <div class="assignment">
-        <div class="assignment-header">Task 10.2 — Changing the delay</div>
-        <p class="notes-p">A time delay circuit is set to delay for 3 seconds. An engineer wants to increase the delay to 8 seconds. Explain how this could be achieved without replacing any components.</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t10b" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t10b"></span>
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Your answers are saved automatically in this browser</span>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
+        <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
       </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
 
-      <div class="assignment">
-        <div class="assignment-header">Task 10.3 — Application</div>
-        <p class="notes-p">Describe one practical application of a time delay circuit in an industrial or domestic context. Explain what the delay achieves in your chosen example.</p>
-        <div class="answer-box" contenteditable="true" data-key="pneu-t10c" data-placeholder="Type your answer here…"></div>
-        <span class="saved-indicator" data-for="pneu-t10c"></span>
-      </div>
-    </section>
-
-    <!-- ============================================================
-         CONTROLS BAR
-    ============================================================ -->
-    <div class="controls-bar">
-      <span class="auto-save-msg">&#10003; Answers saved automatically</span>
-      <button class="btn-print" onclick="window.print()">&#128438; Print</button>
-      <button class="btn-clear" onclick="clearAllAnswers()">&#128465; Clear answers</button>
     </div>
-
-  </main>
+    </div>
+  </div>
 </div>
 
-<div id="footer"></div>
+<footer class="footer">
+  <span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span>
+  <a href="../../../../teacher/login.html">Teacher area</a>
+</footer>
+
+<script src="../../../../js/site.js"></script>
+<script src="../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
 
 <script>
-  // Sidebar
-  document.getElementById("sidebar").innerHTML = buildSidebar("n5", "../../../../");
-
-  // ── localStorage save/restore ──────────────────────────────────────
-  const PREFIX = "ess_answers_";
-
-  function saveAnswer(key, value) {
-    try { localStorage.setItem(PREFIX + key, value); } catch(e) {}
-  }
-
-  function loadAnswers() {
-    document.querySelectorAll(".answer-box[data-key]").forEach(el => {
-      const stored = localStorage.getItem(PREFIX + el.dataset.key);
-      if (stored) el.innerText = stored;
-      if (!el.innerText.trim()) {
-        el.setAttribute("data-empty", "true");
-      }
-    });
-  }
-
-  function showSaved(key) {
-    const ind = document.querySelector(`.saved-indicator[data-for="${key}"]`);
-    if (!ind) return;
-    ind.textContent = "✓ Saved";
-    ind.classList.add("visible");
-    setTimeout(() => ind.classList.remove("visible"), 2000);
-  }
-
-  function clearAllAnswers() {
-    if (!confirm("Clear all saved answers for this page? This cannot be undone.")) return;
-    document.querySelectorAll(".answer-box[data-key]").forEach(el => {
-      localStorage.removeItem(PREFIX + el.dataset.key);
-      el.innerText = "";
-      el.setAttribute("data-empty", "true");
-    });
-  }
-
-  // Debounced save on input
-  const timers = {};
-  document.querySelectorAll(".answer-box[data-key]").forEach(el => {
-    const key = el.dataset.key;
-
-    el.addEventListener("focus", () => el.removeAttribute("data-empty"));
-    el.addEventListener("blur", () => {
-      if (!el.innerText.trim()) el.setAttribute("data-empty", "true");
-      saveAnswer(key, el.innerText);
-      showSaved(key);
-    });
-    el.addEventListener("input", () => {
-      clearTimeout(timers[key]);
-      timers[key] = setTimeout(() => {
-        saveAnswer(key, el.innerText);
-        showSaved(key);
-      }, 800);
-    });
+const STORAGE_PREFIX='ess_answers_';
+function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
+function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
+function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
+function showSaved(key){var ind=document.getElementById('ind-'+key.replace('pneu-',''));if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.answer-box').forEach(function(box){
+    var key=box.dataset.key;if(!key)return;
+    var saved=loadValue(key);if(saved)box.innerHTML=saved;
+    var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
+    box.addEventListener('input',ds);
+    box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
   });
-
-  loadAnswers();
+});
 </script>
 
 </body>
