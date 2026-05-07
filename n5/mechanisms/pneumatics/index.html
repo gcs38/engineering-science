@@ -47,11 +47,6 @@
       background: #fef2f2; color: #b91c1c;
       padding: 2px 7px; border-radius: 20px; margin-top: 6px;
     }
-    .rtc-badge-checking {
-      display: inline-block; font-size: 10px; font-weight: 500;
-      background: var(--gray-100); color: var(--gray-400);
-      padding: 2px 7px; border-radius: 20px; margin-top: 6px;
-    }
   </style>
 </head>
 <body>
@@ -76,11 +71,11 @@
       <div class="tab-panel active" id="tab-pupils">
         <p class="tab-note">Resources for pupils to use independently.</p>
         <div class="resource-type-grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));">
-          <a href="course-notes.html" class="resource-type-card" data-check="course-notes.html">
+          <a href="course-notes.html" class="resource-type-card" data-status="available">
             <div class="rtc-icon">&#x1F4C4;</div>
             <div class="rtc-title">Course notes</div>
             <div class="rtc-sub">Notes, explanations and worked examples aligned to the SQA specification.</div>
-            <span class="rtc-badge">Checking&hellip;</span>
+            <span class="rtc-badge"></span>
           </a>
           <a href="https://sites.google.com/view/nostrainsim/pneumatics" target="_blank" class="resource-type-card" style="border-color:var(--teal-100);background:var(--teal-50);">
             <div class="rtc-icon">&#x1F5A5;&#xFE0F;</div>
@@ -88,17 +83,17 @@
             <div class="rtc-sub">Build and test pneumatic circuits with interactive components.</div>
             <span class="rtc-badge">Launch</span>
           </a>
-          <a href="extension.html" class="resource-type-card" data-check="extension.html">
+          <a href="extension.html" class="resource-type-card" data-status="available">
             <div class="rtc-icon">&#x1F680;</div>
             <div class="rtc-title">Extension tasks</div>
             <div class="rtc-sub">Challenge activities and enrichment tasks for pupils who want to go further.</div>
-            <span class="rtc-badge">Checking&hellip;</span>
+            <span class="rtc-badge"></span>
           </a>
-          <a href="homework.html" class="resource-type-card" data-check="homework.html">
+          <a href="homework.html" class="resource-type-card" data-status="available">
             <div class="rtc-icon">&#x1F3E0;</div>
             <div class="rtc-title">Homework assignment</div>
             <div class="rtc-sub">Take-home practice questions to consolidate learning from this topic.</div>
-            <span class="rtc-badge">Checking&hellip;</span>
+            <span class="rtc-badge"></span>
           </a>
           <a href="answer-sheet.html" class="resource-type-card" style="border-color:#c7d7f5;background:#f8faff;">
             <div class="rtc-icon">&#x1F4DD;</div>
@@ -113,17 +108,17 @@
       <div class="tab-panel" id="tab-teacher">
         <p class="tab-note">Resources for classroom delivery and assessment.</p>
         <div class="resource-type-grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));">
-          <a href="presentation.html" class="resource-type-card" data-check="presentation.html">
+          <a href="presentation.html" class="resource-type-card" data-status="available">
             <div class="rtc-icon">&#x1F3AC;</div>
             <div class="rtc-title">Teaching presentation</div>
             <div class="rtc-sub">Slide deck for classroom delivery covering key concepts and worked examples.</div>
-            <span class="rtc-badge">Checking&hellip;</span>
+            <span class="rtc-badge"></span>
           </a>
-          <a href="practical.html" class="resource-type-card" data-check="practical.html">
+          <a href="practical.html" class="resource-type-card" data-status="soon">
             <div class="rtc-icon">&#x1F52C;</div>
             <div class="rtc-title">Practical tasks and demonstrations</div>
             <div class="rtc-sub">Hands-on activities and demonstrations for classroom use.</div>
-            <span class="rtc-badge">Checking&hellip;</span>
+            <span class="rtc-badge"></span>
           </a>
           <a href="../../../../teacher/login.html" class="resource-type-card teacher-only">
             <div class="rtc-icon">&#x2705;</div>
@@ -148,31 +143,19 @@
     btn.classList.add('active');
   }
 
-  // Self-checking availability badges
-  // GitHub Pages returns 200 even for missing files, so we fetch the content
-  // and check it contains our site marker rather than GitHub's 404 page.
+  // Badge setter — reads data-status="available" or data-status="soon"
+  // To mark a resource as available: change data-status="soon" to data-status="available"
   document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('[data-check]').forEach(function (card) {
-      var file = card.getAttribute('data-check');
-      var badge = card.querySelector('.rtc-badge, .rtc-badge-checking, .rtc-badge-unavailable');
+    document.querySelectorAll('[data-status]').forEach(function (card) {
+      var badge = card.querySelector('.rtc-badge');
       if (!badge) return;
-      badge.className = 'rtc-badge-checking';
-      badge.textContent = 'Checking\u2026';
-      fetch(file)
-        .then(function (res) { return res.text(); })
-        .then(function (html) {
-          if (html.indexOf('Engineering Science Scotland') !== -1) {
-            badge.className = 'rtc-badge';
-            badge.textContent = 'Available';
-          } else {
-            badge.className = 'rtc-badge-unavailable';
-            badge.textContent = 'Not yet available';
-          }
-        })
-        .catch(function () {
-          badge.className = 'rtc-badge-unavailable';
-          badge.textContent = 'Not yet available';
-        });
+      if (card.getAttribute('data-status') === 'available') {
+        badge.className = 'rtc-badge';
+        badge.textContent = 'Available';
+      } else {
+        badge.className = 'rtc-badge-unavailable';
+        badge.textContent = 'Not yet available';
+      }
     });
   });
 </script>
