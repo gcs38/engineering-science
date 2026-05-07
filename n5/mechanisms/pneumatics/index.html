@@ -149,17 +149,19 @@
   }
 
   // Self-checking availability badges
-  // Fetches each file with data-check attribute — shows Available or Not yet available
+  // GitHub Pages returns 200 even for missing files, so we fetch the content
+  // and check it contains our site marker rather than GitHub's 404 page.
   document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('[data-check]').forEach(function (card) {
       var file = card.getAttribute('data-check');
-      var badge = card.querySelector('.rtc-badge');
+      var badge = card.querySelector('.rtc-badge, .rtc-badge-checking, .rtc-badge-unavailable');
       if (!badge) return;
       badge.className = 'rtc-badge-checking';
       badge.textContent = 'Checking\u2026';
-      fetch(file, { method: 'HEAD' })
-        .then(function (res) {
-          if (res.ok) {
+      fetch(file)
+        .then(function (res) { return res.text(); })
+        .then(function (html) {
+          if (html.indexOf('Engineering Science Scotland') !== -1) {
             badge.className = 'rtc-badge';
             badge.textContent = 'Available';
           } else {
