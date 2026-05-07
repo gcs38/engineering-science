@@ -188,7 +188,16 @@
           <div class="motion-card-eg">e.g. sewing machine needle, car engine piston</div>
         </div>
         <div class="motion-card">
-          <div class="motion-card-icon">&#x1F3CB;&#xFE0F;</div>
+          <div class="motion-card-icon">
+            <svg viewBox="0 0 40 44" width="36" height="40" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto 2px;">
+              <line x1="20" y1="2" x2="20" y2="2" stroke="var(--teal-400)" stroke-width="2.5" stroke-linecap="round"/>
+              <line x1="8" y1="2" x2="32" y2="2" stroke="var(--gray-400)" stroke-width="2" stroke-linecap="round"/>
+              <line x1="20" y1="2" x2="10" y2="36" stroke="var(--gray-600)" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="10" cy="38" r="4" fill="var(--teal-400)"/>
+              <line x1="20" y1="2" x2="30" y2="36" stroke="var(--gray-300)" stroke-width="1.5" stroke-dasharray="3 2" stroke-linecap="round"/>
+              <circle cx="30" cy="38" r="3" fill="var(--gray-300)"/>
+            </svg>
+          </div>
           <div class="motion-card-name">Oscillating</div>
           <div class="motion-card-desc">Swinging backwards and forwards in an arc.</div>
           <div class="motion-card-eg">e.g. clock pendulum, playground swing</div>
@@ -199,16 +208,52 @@
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Types of motion</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <div class="task-q">Complete the table by ticking the correct type(s) of motion for each activity.</div>
-            <table class="motion-table">
+            <div class="task-q">Complete the table by clicking each cell to mark the correct type(s) of motion for each activity. Click once to tick, click again to clear.</div>
+            <style>
+              .motion-toggle-table { width:100%; border-collapse:collapse; margin:14px 0 6px; font-size:13px; }
+              .motion-toggle-table th { background:var(--teal-800); color:white; padding:8px 10px; text-align:center; font-weight:600; }
+              .motion-toggle-table th:first-child { text-align:left; }
+              .motion-toggle-table td { padding:0; border:1px solid var(--gray-200); text-align:center; }
+              .motion-toggle-table td:first-child { padding:8px 10px; font-weight:500; color:var(--gray-900); text-align:left; }
+              .motion-toggle-table tr:nth-child(even) td { background:var(--gray-50); }
+              .toggle-cell { width:100%; height:100%; min-height:38px; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:16px; user-select:none; transition:background .1s; padding:8px 4px; box-sizing:border-box; }
+              .toggle-cell:hover { background:var(--teal-50); }
+              .toggle-cell.ticked { color:var(--teal-600); font-weight:700; }
+            </style>
+            <table class="motion-toggle-table">
               <tr><th>Activity</th><th>Rotary</th><th>Linear</th><th>Reciprocating</th><th>Oscillating</th></tr>
-              <tr><td>Playground swing</td><td></td><td></td><td></td><td></td></tr>
-              <tr><td>100m sprint</td><td></td><td></td><td></td><td></td></tr>
-              <tr><td>Pedalling a bike</td><td></td><td></td><td></td><td></td></tr>
-              <tr><td>Bungee jump</td><td></td><td></td><td></td><td></td></tr>
-              <tr><td>Playground see-saw</td><td></td><td></td><td></td><td></td></tr>
-              <tr><td>Curling stone</td><td></td><td></td><td></td><td></td></tr>
+              <tr><td>Playground swing</td>
+                <td><div class="toggle-cell" data-key="ds-m-swing-r" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-swing-l" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-swing-rc" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-swing-o" onclick="toggleCell(this)"></div></td></tr>
+              <tr><td>100m sprint</td>
+                <td><div class="toggle-cell" data-key="ds-m-sprint-r" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-sprint-l" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-sprint-rc" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-sprint-o" onclick="toggleCell(this)"></div></td></tr>
+              <tr><td>Pedalling a bike</td>
+                <td><div class="toggle-cell" data-key="ds-m-bike-r" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-bike-l" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-bike-rc" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-bike-o" onclick="toggleCell(this)"></div></td></tr>
+              <tr><td>Bungee jump</td>
+                <td><div class="toggle-cell" data-key="ds-m-bungee-r" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-bungee-l" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-bungee-rc" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-bungee-o" onclick="toggleCell(this)"></div></td></tr>
+              <tr><td>Playground see-saw</td>
+                <td><div class="toggle-cell" data-key="ds-m-seesaw-r" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-seesaw-l" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-seesaw-rc" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-seesaw-o" onclick="toggleCell(this)"></div></td></tr>
+              <tr><td>Curling stone</td>
+                <td><div class="toggle-cell" data-key="ds-m-curl-r" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-curl-l" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-curl-rc" onclick="toggleCell(this)"></div></td>
+                <td><div class="toggle-cell" data-key="ds-m-curl-o" onclick="toggleCell(this)"></div></td></tr>
             </table>
+            <div style="font-size:11px;color:var(--gray-400);margin-top:2px;">&#x1F4BE; Tick selections saved automatically in this browser.</div>
           </div>
           <div class="task-item">
             <div class="task-q">List as many machines or tools from your school's practical rooms as you can for each type of motion.</div>
@@ -1072,15 +1117,37 @@ function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatu
 function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
 function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
 function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
-function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});document.querySelectorAll('.toggle-cell').forEach(function(c){var k=c.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);c.textContent='';c.classList.remove('ticked');}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
 function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
+
+// Toggle cell for motion table
+function toggleCell(el) {
+  var ticked = el.classList.contains('ticked');
+  if (ticked) {
+    el.classList.remove('ticked');
+    el.textContent = '';
+    saveValue(el.dataset.key, '');
+  } else {
+    el.classList.add('ticked');
+    el.textContent = '✓';
+    saveValue(el.dataset.key, '1');
+  }
+  updateStatusBar();
+}
+
 document.addEventListener('DOMContentLoaded',function(){
+  // Load answer boxes
   document.querySelectorAll('.answer-box').forEach(function(box){
     var key=box.dataset.key;if(!key)return;
     var saved=loadValue(key);if(saved)box.innerHTML=saved;
     var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
     box.addEventListener('input',ds);
     box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
+  });
+  // Load toggle cells
+  document.querySelectorAll('.toggle-cell').forEach(function(cell){
+    var key=cell.dataset.key;if(!key)return;
+    if(loadValue(key)==='1'){cell.classList.add('ticked');cell.textContent='✓';}
   });
 });
 </script>
