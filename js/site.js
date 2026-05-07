@@ -57,6 +57,61 @@ function teacherLogout() {
 }
 
 document.addEventListener('DOMContentLoaded', setActiveNav);
+
+/* ============================================================
+   RESOURCE STATUS
+   Controls the Available / Not yet available badges on every
+   topic index page.
+
+   HOW TO UPDATE WHEN YOU UPLOAD A NEW RESOURCE:
+   1. Open js/site.js in Notepad
+   2. Find the topic below (e.g. 'pneumatics')
+   3. Find the resource you've just uploaded (e.g. 'homework')
+   4. Change 'soon' to 'available'
+   5. Save the file and push via GitHub Desktop
+   The badge on the index page updates automatically.
+
+   RESOURCE KEYS:
+   notes        = Course notes
+   extension    = Extension tasks
+   homework     = Homework assignment
+   presentation = Teaching presentation
+   practical    = Practical tasks and demonstrations
+   ============================================================ */
+
+var RESOURCE_STATUS = {
+  'systems-approach':  { notes:'available', extension:'available', homework:'soon', presentation:'soon', practical:'soon' },
+  'energy-efficiency': { notes:'available', extension:'available', homework:'soon', presentation:'soon', practical:'soon' },
+  'roles-disciplines': { notes:'available', extension:'available', homework:'soon', presentation:'soon', practical:'soon' },
+  'impacts':           { notes:'available', extension:'available', homework:'soon', presentation:'soon', practical:'soon' },
+  'analogue':          { notes:'available', extension:'soon',      homework:'soon', presentation:'soon', practical:'soon' },
+  'digital':           { notes:'available', extension:'soon',      homework:'soon', presentation:'soon', practical:'soon' },
+  'control':           { notes:'available', extension:'soon',      homework:'soon', presentation:'soon', practical:'soon' },
+  'drive-systems':     { notes:'available', extension:'soon',      homework:'soon', presentation:'soon', practical:'soon' },
+  'pneumatics':        { notes:'available', extension:'soon',      homework:'soon', presentation:'available', practical:'soon' },
+  'structures-forces': { notes:'available', extension:'soon',      homework:'soon', presentation:'soon', practical:'soon' },
+  'materials':         { notes:'available', extension:'soon',      homework:'soon', presentation:'soon', practical:'soon' }
+};
+
+// Reads the TOPIC variable declared on each index page and sets badges accordingly
+document.addEventListener('DOMContentLoaded', function () {
+  if (typeof TOPIC === 'undefined') return;
+  var status = RESOURCE_STATUS[TOPIC];
+  if (!status) return;
+  document.querySelectorAll('[data-resource]').forEach(function (card) {
+    var key = card.getAttribute('data-resource');
+    var badge = card.querySelector('.rtc-badge-auto');
+    if (!badge || !status[key]) return;
+    if (status[key] === 'available') {
+      badge.className = 'rtc-badge';
+      badge.textContent = 'Available';
+    } else {
+      badge.className = 'rtc-badge-unavailable';
+      badge.textContent = 'Not yet available';
+    }
+  });
+});
+
 /* ============================================================
    DEVELOPMENT BANNER + FEEDBACK BUTTON
    Paste this block at the bottom of js/site.js
@@ -87,6 +142,9 @@ document.addEventListener('DOMContentLoaded', setActiveNav);
       'color:#5c3d00',
       'font-family:inherit',
       'text-align:center',
+      'position:sticky',
+      'top:0',
+      'z-index:999',
       'width:100%',
       'box-sizing:border-box'
     ].join(';');
