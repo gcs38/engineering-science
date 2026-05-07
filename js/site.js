@@ -94,7 +94,8 @@ var RESOURCE_STATUS = {
 };
 
 // Reads the TOPIC variable declared on each index page and sets badges accordingly
-document.addEventListener('DOMContentLoaded', function () {
+// Called directly from each index page after TOPIC is declared
+function applyResourceBadges() {
   if (typeof TOPIC === 'undefined') return;
   var status = RESOURCE_STATUS[TOPIC];
   if (!status) return;
@@ -110,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function () {
       badge.textContent = 'Not yet available';
     }
   });
-});
+}
 
 /* ============================================================
    DEVELOPMENT BANNER + FEEDBACK BUTTON
