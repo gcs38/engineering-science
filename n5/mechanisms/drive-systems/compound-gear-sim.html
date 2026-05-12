@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- 
-    NOGRIND SIMULATOR V1.4.1
+    NOGRIND SIMULATOR V1.2
     ---------------------------------------------------
     This is intended for educational use only and is not to be sold for profit
     developed by Peter Strain with Gemini.
@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoGrind Sim V1.4.1</title>
+    <title>NoGrind Sim V1.2</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <!-- Three.js Library -->
@@ -20,14 +20,22 @@
 
     <style>
         body { margin: 0; overflow: hidden; background-color: #f0f4f9; font-family: 'Roboto', sans-serif; user-select: none; touch-action: none; }
-        canvas { display: block; outline: none; border-radius: 24px; }
+        canvas { display: block; outline: none; }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
         
         .panel { @apply bg-white/95 backdrop-blur-md border border-slate-200 shadow-xl rounded-2xl p-4 transition-all; }
+        .btn-gradient { @apply bg-gradient-to-r from-blue-500 to-pink-500 text-white font-bold rounded-xl shadow-md hover:from-blue-600 hover:to-pink-600 active:scale-95 transition-all text-sm py-2 px-4 flex justify-center items-center gap-2; }
+        .btn-chain { @apply bg-gradient-to-r from-slate-600 to-slate-800 text-white font-bold rounded-xl shadow-md hover:from-slate-700 hover:to-slate-900 active:scale-95 transition-all text-sm py-2 px-4 flex justify-center items-center gap-2; }
+        .btn-cassette { @apply bg-gradient-to-r from-emerald-600 to-teal-700 text-white font-bold rounded-xl shadow-md hover:from-emerald-700 hover:to-teal-800 active:scale-95 transition-all text-sm py-2 px-4 flex justify-center items-center gap-2; }
+        .btn-belt { @apply bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-bold rounded-xl shadow-md hover:from-cyan-600 hover:to-blue-700 active:scale-95 transition-all text-sm py-2 px-4 flex justify-center items-center gap-2; }
+        .btn-worm { @apply bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-bold rounded-xl shadow-md hover:from-purple-600 hover:to-indigo-700 active:scale-95 transition-all text-sm py-2 px-4 flex justify-center items-center gap-2; }
+        .btn-nut { @apply bg-gradient-to-r from-amber-500 to-orange-500 text-white font-bold rounded-xl shadow-md hover:from-amber-600 hover:to-orange-600 active:scale-95 transition-all text-sm py-2 px-4 flex justify-center items-center gap-2; }
+        .btn-motor { @apply bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-bold rounded-xl shadow-md hover:from-emerald-600 hover:to-teal-600 active:scale-95 transition-all text-sm py-2 px-4 flex justify-center items-center gap-2; }
+        .btn-rack { @apply bg-gradient-to-r from-rose-500 to-red-500 text-white font-bold rounded-xl shadow-md hover:from-rose-600 hover:to-red-600 active:scale-95 transition-all text-sm py-2 px-4 flex justify-center items-center gap-2; }
         
-        .tool-btn { @apply p-2.5 rounded-full text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-200; }
+        .tool-btn { @apply p-2.5 rounded-full text-slate-500 hover:bg-slate-200 hover:text-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-pink-200; }
         .tool-btn:disabled { @apply opacity-50 cursor-not-allowed hover:bg-transparent text-slate-300; }
         
         .submenu { max-height: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; transform: translateY(-10px); }
@@ -38,11 +46,17 @@
         .acc-btn { @apply w-full px-5 py-3.5 flex justify-between items-center text-sm font-extrabold text-slate-800 bg-white rounded-xl hover:bg-slate-50 transition-all shadow-sm border border-transparent hover:border-slate-200; }
         .acc-btn[aria-expanded="true"] { @apply bg-slate-100 shadow-none border-slate-200; }
 
-        /* Component Cards */
-        .comp-card { display:flex; flex-direction:column; align-items:center; justify-content:space-between; padding:8px; background:white; border-radius:16px; border:1px solid #e2e8f0; box-shadow:0 1px 3px rgba(0,0,0,.06); cursor:pointer; transition:all .2s; height:80px; user-select:none; position:relative; overflow:hidden; }
-        .comp-card:hover { border-color:#3b82f6; box-shadow:0 4px 12px rgba(59,130,246,.2); background:#f0f9ff; }
-        .comp-card:active { cursor:pointer; box-shadow:0 0 0 2px #2563eb; }
-        .card-label { font-size:11px; font-weight:700; color:#475569; text-align:center; line-height:1.3; margin-top:4px; }
+        /* Drawer Transitions */
+        #sidebarList { width: 18rem; transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); z-index: 40; }
+        #canvasWrapper { position: absolute; top: 0; bottom: 0; right: 0; transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        
+        .drawer-open #sidebarList { transform: translateX(0); }
+        .drawer-closed #sidebarList { transform: translateX(-100%); }
+        .drawer-open #canvasWrapper { left: 18rem; }
+        .drawer-closed #canvasWrapper { left: 0; }   
+        
+        .menu-shadow { box-shadow: 10px 0 25px -5px rgba(0, 0, 0, 0.1); }
+        .drawer-closed #sidebarToggleIcon { transform: rotate(180deg) translateX(-2px); }
 
         /* SVG & Labels */
         .gear-label {
@@ -100,10 +114,10 @@
     <div class="h-16 bg-white z-50 flex items-center justify-between px-6 shadow-sm border-b border-slate-200 shrink-0">
         <div class="flex items-center gap-4">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-pink-500 text-white rounded-xl flex items-center justify-center shadow-lg hover:scale-105 transition-transform cursor-pointer">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-pink-500 text-white rounded-xl flex items-center justify-center shadow-lg">
+                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1-1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                 </div>
-                <h1 class="text-xl font-bold text-slate-700 tracking-tight leading-none">NoGrind<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500">Sim</span> <span class="text-xs text-slate-400 font-mono ml-1">V1.4.1</span></h1>
+                <h1 class="text-xl font-bold text-slate-700 tracking-tight leading-none">NoGrind <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500">Sim V1.2</span></h1>
             </div>
             
             <div class="h-8 w-px bg-slate-200 mx-2 rounded-full"></div>
@@ -157,122 +171,161 @@
     </div>
 
     <!-- Main App Container -->
-    <div id="appContainer" class="flex flex-1 overflow-hidden p-4 gap-4 relative">
+    <div id="appContainer" class="flex flex-1 overflow-hidden relative drawer-open">
         
-        <!-- Left Sidebar: Floating Menu Drawer -->
-        <div id="sidebarContainer" class="relative flex-shrink-0 z-20 transition-all duration-300" style="width:18rem;">
-            <div id="sidebarContent" class="w-72 h-full flex flex-col overflow-y-auto pr-2 gap-3 pb-6">
+        <!-- Left Sidebar: Solid White Menu Drawer -->
+        <div id="sidebarList" class="absolute inset-y-0 left-0 bg-white border-r border-slate-200 flex flex-col menu-shadow !overflow-visible z-40">
+            
+            <!-- Toggle Button attached to edge -->
+            <button id="sidebarToggle" onclick="toggleSidebar()" class="absolute top-1/2 -right-6 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-pink-500 text-white shadow-lg hover:shadow-slate-300 hover:scale-110 active:scale-95 transition-all duration-300 focus:outline-none group">
+                <svg id="sidebarToggleIcon" class="w-6 h-6 stroke-[3px] transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+            </button>
+
+            <!-- Scrollable Content -->
+            <div class="flex-1 overflow-y-auto px-4 pb-4 pt-4 space-y-4">
+                <h2 class="text-xs font-black text-slate-400 uppercase tracking-widest px-2 mb-1">Components</h2>
                 
-                <div class="sticky top-0 z-20 pb-1 pt-1" style="background:#f0f4f9;">
-                    <div class="relative">
-                        <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                        <input type="text" id="compSearch" class="block w-full p-3 pl-10 text-sm border border-transparent rounded-full bg-white shadow-sm outline-none placeholder-slate-400 transition-all" placeholder="Search components..." onfocus="this.style.boxShadow='0 0 0 2px #3b82f6'" onblur="this.style.boxShadow=''">
-                    </div>
-                </div>
-
-                <h2 class="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2 mb-1 mt-2 text-center">Components</h2>
-                
-                <!-- Gears & Racks -->
-                <div class="sidebar-group">
-                    <button class="acc-btn" onclick="toggleMenu('menu-gears', this)" aria-expanded="true">
-                        <span>Gears & Racks</span> 
-                        <span class="rotate-icon open text-slate-400 text-[10px]">▼</span>
-                    </button>
-                    <div id="menu-gears" class="submenu open grid grid-cols-2 gap-2 mt-2">
-                        <div class="comp-card" id="btnAddGear">
-                            <svg viewBox="0 0 24 24" class="w-8 h-8 mt-1" fill="none" stroke="#334155" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                            <span class="card-label">Spur Gear</span>
-                        </div>
-                        <div class="comp-card" id="btnAddRack">
-                            <svg viewBox="0 0 40 40" class="w-8 h-8 mt-1"><path d="M5 30 h30 v5 h-30 z" fill="none" stroke="#334155" stroke-width="2"/><path d="M8 30 v-3 M14 30 v-3 M20 30 v-3 M26 30 v-3 M32 30 v-3" stroke="#334155" stroke-width="2"/><circle cx="20" cy="18" r="8" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="3 2"/><circle cx="20" cy="18" r="2" fill="#334155"/></svg>
-                            <span class="card-label">Rack & Pinion</span>
+                <!-- Building Tools -->
+                <div id="builderToolsPanel" class="space-y-4">
+                    <!-- Gears -->
+                    <div class="sidebar-group">
+                        <button class="acc-btn" onclick="toggleMenu('menu-gears', this)" aria-expanded="true">
+                            <span>Gears</span> 
+                            <span class="rotate-icon open text-slate-400 text-[10px]">▼</span>
+                        </button>
+                        <div id="menu-gears" class="submenu open flex flex-col gap-3 mt-2">
+                            <button id="btnAddGear" class="w-full btn-gradient py-3 text-sm">
+                                + Add Gear
+                            </button>
+                            <div class="bg-blue-50 p-3 rounded-lg border border-blue-100 text-[11px] text-blue-800 font-medium leading-relaxed shadow-inner">
+                                <strong>How to build:</strong><br>
+                                1. Click "Add" on a component.<br>
+                                2. Hover near roots to snap.<br>
+                                3. Click to place.<br>
+                                4. Press <strong>Escape</strong> to cancel.
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Drives -->
-                <div class="sidebar-group">
-                    <button class="acc-btn" onclick="toggleMenu('menu-chain', this)" aria-expanded="true">
-                        <span>Pulleys & Drives</span> 
-                        <span class="rotate-icon open text-slate-400 text-[10px]">▼</span>
-                    </button>
-                    <div id="menu-chain" class="submenu open grid grid-cols-2 gap-2 mt-2">
-                         <div class="comp-card" id="btnAddBelt">
-                            <svg viewBox="0 0 50 30" class="w-10 h-6 mt-1.5"><circle cx="12" cy="15" r="8" fill="none" stroke="#334155" stroke-width="2"/><circle cx="38" cy="15" r="8" fill="none" stroke="#334155" stroke-width="2"/><line x1="12" y1="7" x2="38" y2="7" stroke="#334155" stroke-width="2"/><line x1="12" y1="23" x2="38" y2="23" stroke="#334155" stroke-width="2"/><circle cx="12" cy="15" r="2" fill="#334155"/><circle cx="38" cy="15" r="2" fill="#334155"/></svg>
-                            <span class="card-label">Belt Drive</span>
-                        </div>
-                        <div class="comp-card" id="btnAddChain">
-                            <svg viewBox="0 0 50 30" class="w-10 h-6 mt-1.5"><circle cx="12" cy="15" r="8" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="2 2"/><circle cx="38" cy="15" r="8" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="2 2"/><line x1="12" y1="7" x2="38" y2="7" stroke="#334155" stroke-width="2" stroke-dasharray="2 2"/><line x1="12" y1="23" x2="38" y2="23" stroke="#334155" stroke-width="2" stroke-dasharray="2 2"/><circle cx="12" cy="15" r="2" fill="#334155"/><circle cx="38" cy="15" r="2" fill="#334155"/></svg>
-                            <span class="card-label">Chain Drive</span>
-                        </div>
-                        <div class="comp-card" id="btnAddCassette">
-                            <svg viewBox="0 0 40 40" class="w-8 h-8 mt-1"><polygon points="10,35 30,35 25,5 15,5" fill="none" stroke="#334155" stroke-width="2"/><line x1="14" y1="10" x2="26" y2="10" stroke="#334155" stroke-width="2"/><line x1="13" y1="15" x2="27" y2="15" stroke="#334155" stroke-width="2"/><line x1="12" y1="20" x2="28" y2="20" stroke="#334155" stroke-width="2"/><line x1="11" y1="25" x2="29" y2="25" stroke="#334155" stroke-width="2"/><line x1="10" y1="30" x2="30" y2="30" stroke="#334155" stroke-width="2"/><line x1="20" y1="2" x2="20" y2="38" stroke="#334155" stroke-width="1.5" stroke-dasharray="2 2"/></svg>
-                            <span class="card-label">8-Spd Cassette</span>
+                    <!-- Chain Drive -->
+                    <div class="sidebar-group">
+                        <button class="acc-btn" onclick="toggleMenu('menu-chain', this)" aria-expanded="false">
+                            <span>Chain Drives</span> 
+                            <span class="rotate-icon text-slate-400 text-[10px]">▼</span>
+                        </button>
+                        <div id="menu-chain" class="submenu flex flex-col gap-2 mt-2">
+                             <button id="btnAddChain" class="w-full btn-chain py-3 text-sm">
+                                + Standard Sprocket
+                            </button>
+                            <button id="btnAddCassette" class="w-full btn-cassette py-3 text-sm">
+                                + 8-Speed Cassette
+                            </button>
+                            <div class="bg-slate-100 p-3 rounded-lg border border-slate-200 text-[10px] text-slate-600 font-medium leading-relaxed shadow-inner mt-1">
+                                Sprockets do not mesh directly. They snap to existing axles.
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <!-- Worm Mechanisms -->
-                <div class="sidebar-group">
-                    <button class="acc-btn" onclick="toggleMenu('menu-worm', this)" aria-expanded="true">
-                        <span>Worm Mechanisms</span> 
-                        <span class="rotate-icon open text-slate-400 text-[10px]">▼</span>
-                    </button>
-                    <div id="menu-worm" class="submenu open grid grid-cols-2 gap-2 mt-2">
-                         <div class="comp-card" id="btnAddWorm">
-                            <svg viewBox="0 0 40 40" class="w-8 h-8 mt-1"><rect x="15" y="5" width="10" height="30" fill="none" stroke="#334155" stroke-width="2"/><line x1="15" y1="10" x2="25" y2="14" stroke="#334155" stroke-width="2"/><line x1="15" y1="18" x2="25" y2="22" stroke="#334155" stroke-width="2"/><line x1="15" y1="26" x2="25" y2="30" stroke="#334155" stroke-width="2"/><circle cx="8" cy="20" r="12" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="4 2"/><circle cx="8" cy="20" r="2" fill="#334155"/></svg>
-                            <span class="card-label">Worm & Wheel</span>
+                    <!-- Belt Drive -->
+                    <div class="sidebar-group">
+                        <button class="acc-btn" onclick="toggleMenu('menu-belt', this)" aria-expanded="false">
+                            <span>Belt Drive</span> 
+                            <span class="rotate-icon text-slate-400 text-[10px]">▼</span>
+                        </button>
+                        <div id="menu-belt" class="submenu flex flex-col gap-2 mt-2">
+                             <button id="btnAddBelt" class="w-full btn-belt py-3 text-sm">
+                                + Add Belt Drive
+                            </button>
+                            <div class="bg-slate-100 p-3 rounded-lg border border-slate-200 text-[10px] text-slate-600 font-medium leading-relaxed shadow-inner mt-1">
+                                Pulleys snap to existing axles. Adjust diameter to change VR.
+                            </div>
                         </div>
-                        <div class="comp-card" id="btnAddWormNut">
-                            <svg viewBox="0 0 40 40" class="w-8 h-8 mt-1"><rect x="16" y="5" width="8" height="30" fill="none" stroke="#334155" stroke-width="2"/><line x1="16" y1="10" x2="24" y2="13" stroke="#334155" stroke-width="2"/><line x1="16" y1="15" x2="24" y2="18" stroke="#334155" stroke-width="2"/><line x1="16" y1="20" x2="24" y2="23" stroke="#334155" stroke-width="2"/><line x1="16" y1="25" x2="24" y2="28" stroke="#334155" stroke-width="2"/><rect x="12" y="14" width="16" height="8" fill="#ffffff" stroke="#334155" stroke-width="2"/></svg>
-                            <span class="card-label">Lead Screw</span>
+                    </div>
+
+                    <!-- Worm and Wheel -->
+                    <div class="sidebar-group">
+                        <button class="acc-btn" onclick="toggleMenu('menu-worm', this)" aria-expanded="false">
+                            <span>Worm Drive</span> 
+                            <span class="rotate-icon text-slate-400 text-[10px]">▼</span>
+                        </button>
+                        <div id="menu-worm" class="submenu flex flex-col gap-2 mt-2">
+                             <button id="btnAddWorm" class="w-full btn-worm py-3 text-sm">
+                                + Add Worm & Wheel
+                            </button>
+                            <div class="bg-slate-100 p-3 rounded-lg border border-slate-200 text-[10px] text-slate-600 font-medium leading-relaxed shadow-inner mt-1">
+                                High reduction! The worm acts as a 1-tooth gear. Snaps to an axle to drive a perpendicular wheel.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Worm and Nut -->
+                    <div class="sidebar-group">
+                        <button class="acc-btn" onclick="toggleMenu('menu-nut', this)" aria-expanded="false">
+                            <span>Worm & Nut</span> 
+                            <span class="rotate-icon text-slate-400 text-[10px]">▼</span>
+                        </button>
+                        <div id="menu-nut" class="submenu flex flex-col gap-2 mt-2">
+                             <button id="btnAddWormNut" class="w-full btn-nut py-3 text-sm">
+                                + Add Lead Screw
+                            </button>
+                            <div class="bg-slate-100 p-3 rounded-lg border border-slate-200 text-[10px] text-slate-600 font-medium leading-relaxed shadow-inner mt-1">
+                                Converts rotation to linear motion using a lead screw. Snaps to an existing axle. Has physical limits.
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Rack and Pinion -->
+                    <div class="sidebar-group">
+                        <button class="acc-btn" onclick="toggleMenu('menu-rack', this)" aria-expanded="false">
+                            <span>Rack and Pinion</span> 
+                            <span class="rotate-icon text-slate-400 text-[10px]">▼</span>
+                        </button>
+                        <div id="menu-rack" class="submenu flex flex-col gap-2 mt-2">
+                             <button id="btnAddRack" class="w-full btn-rack py-3 text-sm">
+                                + Add Rack & Pinion
+                            </button>
+                            <div class="bg-slate-100 p-3 rounded-lg border border-slate-200 text-[10px] text-slate-600 font-medium leading-relaxed shadow-inner mt-1">
+                                Converts rotation to linear motion. Snaps to an existing axle or meshes with a gear. Has physical limits.
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-            <button onclick="toggleSidebar()" class="absolute top-1/2 -right-4 w-8 h-8 bg-white border border-blue-200 rounded-full shadow-md flex items-center justify-center text-slate-500 hover:text-blue-600 hover:scale-110 z-50 transform -translate-y-1/2 transition-all">
-                <svg id="sidebarIcon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/></svg>
-            </button>
         </div>
 
         <!-- 3D Canvas Area -->
-        <div class="flex-1 relative bg-white rounded-3xl shadow-sm border border-white overflow-hidden" id="canvasContainer">
-            <div id="three-container" class="absolute inset-0 w-full h-full"></div>
-            <svg id="svg-overlay" class="absolute inset-0 w-full h-full pointer-events-none z-10"></svg>
-            <div id="labels-container" class="absolute inset-0 pointer-events-none z-20 overflow-hidden"></div>
-            
-            <!-- Controls overlay -->
-            <div class="absolute bottom-4 left-4 z-20 flex gap-2">
-                <button id="btnPanToggle" class="w-12 h-12 bg-white border border-slate-200 shadow-md rounded-full flex items-center justify-center text-slate-500 hover:text-blue-500 hover:bg-slate-50 transition-colors focus:outline-none group" title="Toggle Pan Mode (Hand)">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" /></svg>
-                </button>
-                <div class="bg-white/80 backdrop-blur border border-slate-200 shadow-sm rounded-full px-4 flex items-center text-[10px] font-bold text-slate-500 tracking-wide uppercase">
-                    Left Click: Orbit &nbsp;|&nbsp; Right Click: Pan &nbsp;|&nbsp; Scroll: Zoom
-                </div>
-            </div>
-
-            <!-- Floating Inspector (Top Right) -->
-            <div id="panel-inspect" class="absolute top-4 right-4 w-64 panel pointer-events-auto hidden z-30 flex flex-col max-h-[90vh]">
+        <div id="canvasWrapper" class="absolute p-4 h-full z-0">
+            <div id="canvasContainer" class="w-full h-full relative bg-gradient-to-br from-slate-50 to-slate-200 rounded-3xl shadow-sm border border-white overflow-hidden flex flex-col">
                 
-                <div id="panel-inspect-header" class="cursor-move flex items-center justify-between mb-3 pb-2 border-b border-slate-100 shrink-0 select-none">
-                    <div class="flex items-center gap-2">
-                        <h2 class="text-xs font-black text-slate-800 uppercase tracking-widest">Properties</h2>
-                        <span id="badgeType" class="text-[9px] font-bold px-2 py-1 bg-pink-100 text-pink-600 rounded-md uppercase">GEAR</span>
-                    </div>
-                    <button onclick="const w=document.getElementById('panel-inspect-wrapper'); w.classList.toggle('hidden'); this.querySelector('svg').style.transform=w.classList.contains('hidden')?'rotate(180deg)':'rotate(0deg)';" class="text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer" title="Minimise">
-                        <svg class="w-4 h-4 transition-transform" style="transform:rotate(0deg);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                <div id="three-container" class="absolute inset-0 w-full h-full"></div>
+                <svg id="svg-overlay" class="absolute inset-0 w-full h-full pointer-events-none z-10"></svg>
+                <div id="labels-container" class="absolute inset-0 pointer-events-none z-20 overflow-hidden"></div>
+                
+                <!-- Controls overlay -->
+                <div class="absolute bottom-4 left-4 z-20 flex gap-2">
+                    <button id="btnPanToggle" class="w-12 h-12 bg-white border border-slate-200 shadow-md rounded-full flex items-center justify-center text-slate-500 hover:text-blue-500 hover:bg-slate-50 transition-colors focus:outline-none group" title="Toggle Pan Mode (Hand)">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" /></svg>
                     </button>
+                    <div class="bg-white/80 backdrop-blur border border-slate-200 shadow-sm rounded-full px-4 flex items-center text-[10px] font-bold text-slate-500 tracking-wide uppercase">
+                        Left Click: Orbit &nbsp;|&nbsp; Right Click: Pan &nbsp;|&nbsp; Scroll: Zoom
+                    </div>
                 </div>
 
-                <div id="panel-inspect-wrapper" class="flex flex-col gap-3 overflow-y-auto pr-1">
-                    <!-- Visibility Toggle -->
-                    <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 shadow-inner flex items-center justify-between cursor-pointer" onclick="document.getElementById('propShowLabel').click()">
-                        <label class="text-[10px] font-bold text-slate-500 uppercase cursor-pointer pointer-events-none">Show Data Label</label>
-                        <input type="checkbox" id="propShowLabel" class="w-4 h-4 cursor-pointer rounded border-slate-300 text-blue-500 focus:ring-blue-500" onclick="event.stopPropagation()">
+                <!-- Floating Inspector (Top Right) -->
+                <div id="panel-inspect" class="absolute top-4 right-4 w-64 panel pointer-events-auto hidden z-30 flex flex-col max-h-[90vh]">
+                    
+                    <div id="panel-inspect-header" class="cursor-move flex items-center justify-between mb-3 pb-2 border-b border-slate-100 shrink-0 select-none">
+                        <div class="flex items-center gap-2">
+                            <h2 class="text-xs font-black text-slate-800 uppercase tracking-widest">Properties</h2>
+                            <span id="badgeType" class="text-[9px] font-bold px-2 py-1 bg-pink-100 text-pink-600 rounded-md uppercase">GEAR</span>
+                        </div>
+                        <button onclick="const w=document.getElementById('panel-inspect-wrapper'); w.classList.toggle('hidden'); this.querySelector('svg').style.transform=w.classList.contains('hidden')?'rotate(180deg)':'rotate(0deg)';" class="text-slate-400 hover:text-slate-600 focus:outline-none cursor-pointer" title="Minimise">
+                            <svg class="w-4 h-4 transition-transform" style="transform:rotate(0deg);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                        </button>
                     </div>
 
-                    <!-- Motor Settings -->
+                    <div id="panel-inspect-wrapper" class="flex flex-col gap-3 overflow-y-auto pr-1">
+                        <!-- Motor Settings -->
                     <div id="motorControls" class="space-y-3 hidden bg-slate-50 p-3 rounded-xl border border-slate-100 shadow-inner">
                         <div>
                             <label class="text-[10px] font-bold text-slate-500 uppercase">Label</label>
@@ -284,46 +337,47 @@
                         </div>
                         <div>
                             <label class="text-[10px] font-bold text-slate-500 uppercase mb-1 block">Direction</label>
-                            <div class="flex gap-2">
-                                <button id="btnDirCW" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-colors bg-blue-500 text-white shadow-md border border-blue-600">Clockwise ↻</button>
-                                <button id="btnDirACW" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-colors bg-white text-slate-500 border border-slate-200 hover:bg-slate-100 hover:text-slate-800">Anti-Clockwise ↺</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Generic Component Settings -->
-                    <div id="gearControls" class="space-y-3 hidden bg-slate-50 p-3 rounded-xl border border-slate-100 shadow-inner">
-                        <div>
-                            <label class="text-[10px] font-bold text-slate-500 uppercase">Label</label>
-                            <input type="text" id="gearLabel" class="w-full mt-1 bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-pink-500" placeholder="e.g. A">
-                        </div>
-                        
-                        <!-- Standard Teeth / Length Input -->
-                        <div id="gearTeethContainer">
-                            <label id="lblTeethOrDia" class="text-[10px] font-bold text-slate-500 uppercase">Number of Teeth (Max 300)</label>
-                            <input type="number" id="gearTeeth" min="8" max="1000" step="1" value="20" class="w-full mt-1 bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-bold text-pink-600 outline-none focus:ring-2 focus:ring-pink-500">
-                        </div>
-
-                        <!-- Cassette Shifting Controls -->
-                        <div id="cassetteControls" class="hidden mt-2">
-                            <label class="text-[10px] font-bold text-slate-500 uppercase mb-1 block">Gear Selection</label>
-                            <div class="flex justify-between items-center bg-white p-1.5 rounded-lg border border-slate-200 shadow-sm">
-                                <button id="btnShiftDown" class="tool-btn bg-slate-100 hover:bg-slate-200 w-10 h-8 flex items-center justify-center rounded-lg text-slate-800 font-black text-lg transition-all active:scale-95 shadow-sm">▼</button>
-                                <div class="text-center flex-1">
-                                    <div id="cassetteGearLbl" class="text-sm font-black text-slate-800 leading-tight">Gear 1</div>
-                                    <div id="cassetteTeethLbl" class="text-[10px] font-bold text-emerald-600 uppercase tracking-wide">34 Teeth</div>
+                                <div class="flex gap-2">
+                                    <button id="btnDirCW" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-colors bg-blue-500 text-white shadow-md border border-blue-600">Clockwise ↻</button>
+                                    <button id="btnDirACW" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition-colors bg-white text-slate-500 border border-slate-200 hover:bg-slate-100 hover:text-slate-800">Anti-Clockwise ↺</button>
                                 </div>
-                                <button id="btnShiftUp" class="tool-btn bg-slate-100 hover:bg-slate-200 w-10 h-8 flex items-center justify-center rounded-lg text-slate-800 font-black text-lg transition-all active:scale-95 shadow-sm">▲</button>
                             </div>
                         </div>
-                        
-                        <button id="btnDelete" class="w-full mt-1 bg-white text-rose-500 font-bold text-xs py-2 rounded-lg hover:bg-rose-50 transition-colors uppercase border border-rose-200 shadow-sm">
-                            Delete
-                        </button>
+
+                        <!-- Generic Component Settings -->
+                        <div id="gearControls" class="space-y-3 hidden bg-slate-50 p-3 rounded-xl border border-slate-100 shadow-inner">
+                            <div>
+                                <label class="text-[10px] font-bold text-slate-500 uppercase">Label</label>
+                                <input type="text" id="gearLabel" class="w-full mt-1 bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-bold text-slate-700 outline-none focus:ring-2 focus:ring-pink-500" placeholder="e.g. A">
+                            </div>
+                            
+                            <!-- Standard Teeth / Length Input -->
+                            <div id="gearTeethContainer">
+                                <label id="lblTeethOrDia" class="text-[10px] font-bold text-slate-500 uppercase">Number of Teeth (Max 300)</label>
+                                <input type="number" id="gearTeeth" min="8" max="1000" step="1" value="20" class="w-full mt-1 bg-white border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-bold text-pink-600 outline-none focus:ring-2 focus:ring-pink-500">
+                            </div>
+
+                            <!-- Cassette Shifting Controls -->
+                            <div id="cassetteControls" class="hidden mt-2">
+                                <label class="text-[10px] font-bold text-slate-500 uppercase mb-1 block">Gear Selection</label>
+                                <div class="flex justify-between items-center bg-white p-1.5 rounded-lg border border-slate-200 shadow-sm">
+                                    <button id="btnShiftDown" class="tool-btn bg-slate-100 hover:bg-slate-200 w-10 h-8 flex items-center justify-center rounded-lg text-slate-800 font-black text-lg transition-all active:scale-95 shadow-sm">▼</button>
+                                    <div class="text-center flex-1">
+                                        <div id="cassetteGearLbl" class="text-sm font-black text-slate-800 leading-tight">Gear 1</div>
+                                        <div id="cassetteTeethLbl" class="text-[10px] font-bold text-emerald-600 uppercase tracking-wide">34 Teeth</div>
+                                    </div>
+                                    <button id="btnShiftUp" class="tool-btn bg-slate-100 hover:bg-slate-200 w-10 h-8 flex items-center justify-center rounded-lg text-slate-800 font-black text-lg transition-all active:scale-95 shadow-sm">▲</button>
+                                </div>
+                            </div>
+                            
+                            <button id="btnDelete" class="w-full mt-1 bg-white text-rose-500 font-bold text-xs py-2 rounded-lg hover:bg-rose-50 transition-colors uppercase border border-rose-200 shadow-sm">
+                                Delete
+                            </button>
+                        </div>
                     </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
 
@@ -333,21 +387,13 @@
         let sidebarOpen = true;
         function toggleSidebar() {
             sidebarOpen = !sidebarOpen;
-            const c = document.getElementById('sidebarContainer');
-            const content = document.getElementById('sidebarContent');
-            const icon = document.getElementById('sidebarIcon');
+            const app = document.getElementById('appContainer');
             if(sidebarOpen) {
-                c.style.width = '18rem';
-                content.style.opacity = '1';
-                content.style.pointerEvents = 'auto';
-                icon.style.transform = '';
+                app.classList.remove('drawer-closed'); app.classList.add('drawer-open');
             } else {
-                c.style.width = '0';
-                content.style.opacity = '0';
-                content.style.pointerEvents = 'none';
-                icon.style.transform = 'rotate(180deg)';
+                app.classList.remove('drawer-open'); app.classList.add('drawer-closed');
             }
-            setTimeout(resize, 300); 
+            setTimeout(resize, 450); 
         }
 
         function toggleMenu(id, btn) { 
@@ -359,36 +405,9 @@
             if(i) i.classList.toggle('open'); 
         }
 
-        // Component Search Logic
-        document.getElementById('compSearch')?.addEventListener('input', e => {
-            const q = e.target.value.toLowerCase();
-            document.querySelectorAll('.sidebar-group').forEach(group => {
-                let hasVisible = false;
-                const menu = group.querySelector('.submenu');
-                const btn = group.querySelector('.acc-btn');
-                const icon = btn?.querySelector('.rotate-icon');
-                group.querySelectorAll('.comp-card').forEach(card => {
-                    const label = card.querySelector('.card-label')?.textContent?.toLowerCase() || '';
-                    if(!q || label.includes(q)){
-                        card.style.display = 'flex';
-                        hasVisible = true;
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-                group.style.display = hasVisible ? 'block' : 'none';
-                if(q && hasVisible && menu && btn){
-                    menu.classList.add('open');
-                    btn.setAttribute('aria-expanded','true');
-                    if(icon) icon.classList.add('open');
-                }
-            });
-        });
-
         let toastTimeout;
         function showToast(msg) {
             const t = document.getElementById('toast');
-            if(!t) return;
             t.innerHTML = msg;
             t.style.opacity = '1';
             t.style.transform = 'translate(-50%, 0) scale(1)';
@@ -397,6 +416,31 @@
                 t.style.opacity = '0';
                 t.style.transform = 'translate(-50%, 0) scale(0.95)';
             }, 3000);
+        }
+
+        const wormModal = document.getElementById('wormModal');
+        const wormModalCard = document.getElementById('wormModalCard');
+
+        function openWormModal() {
+            if(isSimulating) return;
+            wormModal.classList.remove('hidden');
+            setTimeout(() => {
+                wormModal.classList.remove('opacity-0');
+                wormModalCard.classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeWormModal() {
+            wormModal.classList.add('opacity-0');
+            wormModalCard.classList.add('scale-95');
+            setTimeout(() => {
+                wormModal.classList.add('hidden');
+            }, 300);
+        }
+
+        const btnWormCancel = document.getElementById('btnWormCancel');
+        if (btnWormCancel) {
+            btnWormCancel.onclick = closeWormModal;
         }
 
         // Add makeDraggable helper function
@@ -444,20 +488,20 @@
         }
 
         // --- 3D SETUP & ENGINE ---
-        const container = document.getElementById('canvasContainer');
+        const container = document.getElementById('three-container');
         const labelsContainer = document.getElementById('labels-container');
         const svgOverlay = document.getElementById('svg-overlay');
         
         const scene = new THREE.Scene();
 
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 3000);
-        camera.position.set(60, 135, 150);
+        camera.position.set(0, 60, 160);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.shadowMap.enabled = true;
         renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        document.getElementById('three-container').appendChild(renderer.domElement);
+        container.appendChild(renderer.domElement);
 
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
@@ -746,6 +790,7 @@
                 if (len < 0.1) continue;
                 
                 let angle = Math.atan2(y, x);
+                // Corrected handedness of the thread to match visual nut rotation
                 let phase = angle + (z * 2 * Math.PI / pitch);
                 phase = (phase % (Math.PI * 2));
                 if (phase > Math.PI) phase -= Math.PI * 2;
@@ -769,7 +814,7 @@
                 pos.setY(i, (y / len) * r);
             }
             geo.computeVertexNormals();
-            geo.translate(0, 0, length / 2); 
+            geo.translate(0, 0, length / 2); // Shift geometry to start exactly at origin and extend forward
             
             const mat = new THREE.MeshStandardMaterial({ color: 0xcbd5e1, metalness: 0.9, roughness: 0.2 });
             group.add(new THREE.Mesh(geo, mat));
@@ -900,7 +945,7 @@
                 pos.setY(i, (y / len) * r);
             }
             geo.computeVertexNormals();
-            geo.translate(0, 0, length / 2); 
+            geo.translate(0, 0, length / 2); // Shift geometry to start exactly at origin and extend forward
             
             const mat = new THREE.MeshStandardMaterial({ color: 0xcbd5e1, metalness: 0.9, roughness: 0.2 });
             const worm = new THREE.Mesh(geo, mat);
@@ -944,6 +989,7 @@
         const colors = [0x3b82f6, 0x8b5cf6, 0xd946ef, 0xec4899, 0x0ea5e9];
         let colorIdx = 0;
 
+        // Matte black/dark metal materials for the redesigned motor
         const motorMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.8, metalness: 0.2 });
         const motorAccentMat = new THREE.MeshStandardMaterial({ color: 0x27272a, roughness: 0.6, metalness: 0.4 });
         
@@ -963,8 +1009,8 @@
                 this.length = (type === 'rack' || type === 'leadscrew') ? param : 0;
                 
                 if (type === 'cassette') {
-                    this.gearSizes = [34, 28, 24, 21, 18, 15, 13, 11]; 
-                    this.activeGearIdx = 0; 
+                    this.gearSizes = [34, 28, 24, 21, 18, 15, 13, 11]; // Standard 8-speed MTB setup
+                    this.activeGearIdx = 0; // Starts at 34T (lowest gear)
                     this.teeth = this.gearSizes[this.activeGearIdx];
                 } else {
                     this.teeth = (type === 'rack' || type === 'leadscrew') ? 0 : param; 
@@ -978,7 +1024,6 @@
                 else this.radius = getRadius(this.teeth);
 
                 this.label = type === 'motor' ? 'Input' : '';
-                this.showLabel = true;
                 this.axis = 'z'; 
                 
                 this.parent = null;
@@ -1013,31 +1058,13 @@
                     labelStartOffsetY = this.labelOffset.y;
                 });
 
-                // Add robust touch support for label dragging
-                this.labelEl.addEventListener('touchstart', (e) => {
-                    if (!isSimulating) return;
-                    e.stopPropagation();
-                    draggedLabelNode = this;
-                    labelDragStartX = e.touches[0].clientX;
-                    labelDragStartY = e.touches[0].clientY;
-                    labelStartOffsetX = this.labelOffset.x;
-                    labelStartOffsetY = this.labelOffset.y;
-                }, {passive: false});
-
                 labelsContainer.appendChild(this.labelEl);
                 
                 this.lineEl = document.createElementNS('http://www.w3.org/2000/svg', 'line');
                 this.lineEl.setAttribute('stroke', '#3b82f6');
                 this.lineEl.setAttribute('stroke-width', '2');
                 this.lineEl.style.display = 'none';
-                
-                this.dotEl = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-                this.dotEl.setAttribute('fill', '#3b82f6');
-                this.dotEl.setAttribute('r', '3');
-                this.dotEl.style.display = 'none';
-
                 svgOverlay.appendChild(this.lineEl);
-                svgOverlay.appendChild(this.dotEl);
             }
 
             buildVisuals() {
@@ -1057,17 +1084,20 @@
                 let geo, mat;
                 if(this.type === 'motor') {
                     const motorLength = 35;
+                    // Main black motor casing
                     geo = new THREE.CylinderGeometry(this.radius, this.radius, motorLength, 32);
                     geo.rotateX(Math.PI/2);
                     geo.translate(0, 0, -motorLength/2 - 2); 
                     this.coreMesh = new THREE.Mesh(geo, motorMat);
                     
+                    // Thicker, distinct static front faceplate
                     const flangeGeo = new THREE.CylinderGeometry(this.radius + 2, this.radius + 2, 4, 32);
                     flangeGeo.rotateX(Math.PI/2);
-                    flangeGeo.translate(0, 0, -2); 
+                    flangeGeo.translate(0, 0, -2); // Face perfectly flat at Z=0, extends backwards
                     const flange = new THREE.Mesh(flangeGeo, motorAccentMat);
                     this.coreMesh.add(flange);
 
+                    // Rear cap
                     const capGeo = new THREE.CylinderGeometry(this.radius - 1, this.radius - 1, 6, 32);
                     capGeo.rotateX(Math.PI/2);
                     capGeo.translate(0, 0, -motorLength - 5);
@@ -1117,6 +1147,8 @@
                         mesh.userData = { node: this };
                         this.coreMesh.add(mesh);
                     });
+                    // Shift the entire cassette so the *active* gear is precisely at z=0 
+                    // This perfectly aligns it with the planar chain without angling the chain geometry
                     this.coreMesh.position.z = -this.activeGearIdx * 2.5; 
                     this.rotGroup.add(this.coreMesh);
                 } else {
@@ -1149,17 +1181,19 @@
                     const axle = new THREE.Mesh(axleGeo, axleMat);
                     axle.rotation.x = Math.PI / 2;
                     if (this.type === 'motor') axle.position.z = 6; 
-                    if (this.type === 'cassette') axle.position.z = (7 * 2.5) / 2 - (this.activeGearIdx * 2.5);
+                    if (this.type === 'cassette') axle.position.z = (7 * 2.5) / 2 - (this.activeGearIdx * 2.5); // Shift axle alongside cassette body
                     axle.userData = { node: this };
                     this.rotGroup.add(axle);
 
                     if (this.type === 'motor') {
+                        // Create a physical rotating steel hub so the white line makes logical sense and prevents glitches
                         const collarGeo = new THREE.CylinderGeometry(this.radius - 3, this.radius - 3, 1.5, 32);
                         collarGeo.rotateX(Math.PI / 2);
                         const collar = new THREE.Mesh(collarGeo, new THREE.MeshStandardMaterial({ color: 0x3f3f46, metalness: 0.5, roughness: 0.6 }));
-                        collar.position.z = 0.75; 
+                        collar.position.z = 0.75; // Sits physically outside the static faceplate
                         this.rotGroup.add(collar);
 
+                        // The thick white indicator line embedded seamlessly in the rotating hub
                         const markerGeo = new THREE.BoxGeometry(this.radius - 2, 1.5, 1.6);
                         const marker = new THREE.Mesh(markerGeo, new THREE.MeshBasicMaterial({color: 0xffffff}));
                         marker.position.x = (this.radius - 2) / 2 - 1; 
@@ -1183,7 +1217,7 @@
                 this.activeGearIdx = newIdx;
                 this.teeth = this.gearSizes[this.activeGearIdx];
                 this.radius = getRadius(this.teeth);
-                this.buildVisuals(); 
+                this.buildVisuals(); // Geometrically shifts cassette back into exact alignment
                 
                 if(selectedNode === this) {
                     this.setHighlight(true);
@@ -1218,7 +1252,7 @@
                     this.type === 'leadscrew' ? 0xf97316 :
                     this.type === 'nut' ? 0xf59e0b :
                     this.type === 'rack' ? 0x64748b :
-                    this.type === 'cassette' ? 0x0ea5e9 : 
+                    this.type === 'cassette' ? 0x0ea5e9 : // Blue highlight
                     this.type === 'worm_wheel' ? 0x8b5cf6 : 0xec4899) : 0x000000;
                     
                 const intensity = state ? (this.type === 'motor' ? 1.0 : 0.4) : 0.0;
@@ -1238,9 +1272,8 @@
 
             destroy() {
                 scene.remove(this.meshGroup);
-                this.labelEl?.remove();
-                this.lineEl?.remove();
-                this.dotEl?.remove();
+                this.labelEl.remove();
+                this.lineEl.remove();
                 
                 if(this.linkVisual) scene.remove(this.linkVisual);
 
@@ -1261,21 +1294,11 @@
                 updateLabels();
             }
         });
-        window.addEventListener('touchmove', (e) => {
-            if (draggedLabelNode && isSimulating) {
-                const dx = e.touches[0].clientX - labelDragStartX;
-                const dy = e.touches[0].clientY - labelDragStartY;
-                draggedLabelNode.labelOffset.x = labelStartOffsetX + dx;
-                draggedLabelNode.labelOffset.y = labelStartOffsetY + dy;
-                updateLabels();
-            }
-        }, {passive: false});
-
         window.addEventListener('mouseup', () => {
-            if (draggedLabelNode) { draggedLabelNode = null; recordState(); }
-        });
-        window.addEventListener('touchend', () => {
-            if (draggedLabelNode) { draggedLabelNode = null; recordState(); }
+            if (draggedLabelNode) {
+                draggedLabelNode = null;
+                recordState(); 
+            }
         });
 
         // --- TREE & POSITIONING LOGIC ---
@@ -1328,6 +1351,7 @@
                         else if (child.linkType === 'worm_mesh') {
                             dist = 6.5 + child.radius; 
                             child.axis = node.axis === 'z' ? 'x' : 'z'; 
+                            // Shift wheel to center of worm
                             let shift = new THREE.Vector3(0, 0, 15).applyEuler(node.meshGroup.rotation);
                             nx += shift.x; ny += shift.y; nz += shift.z;
                         }
@@ -1460,45 +1484,6 @@
         let dragMode = null; 
         let ghostNode = null;
         let activeSnap = null; 
-
-        window.spawnGhost = function(type) {
-            if(isSimulating) return;
-            dragMode = type;
-            let param = 20;
-            if (type === 'belt' || type.startsWith('worm_drive')) param = 40;
-            if (type === 'cassette_drive') param = 34;
-            if (type === 'worm_nut' || type === 'rack_pinion') param = 200;
-            if (type === 'rack_pinion') param = 20; 
-
-            if (type === 'gear' || type === 'worm_wheel' || type === 'cassette' || type === 'pulley') {
-                createGhost(type, param);
-            } else {
-                createDriveGhost(type, param);
-            }
-            container.style.cursor = 'grab';
-            selectNode(null);
-            
-            let tip = "";
-            if (type === 'gear') tip = "place gear.";
-            else if (type === 'rack_pinion') tip = "place rack & pinion.";
-            else if (type === 'chain') tip = "place standard chain drive.";
-            else if (type === 'cassette_drive') tip = "place 8-Speed Cassette.";
-            else if (type === 'belt') tip = "place belt drive.";
-            else if (type === 'worm_drive_worm') tip = "snap WORM to an axle.";
-            else if (type === 'worm_nut') tip = "snap Lead Screw to an axle.";
-            
-            showToast(`Move mouse into canvas to ${tip}`);
-        };
-
-        // Attach clicks safely via optional chaining
-        document.getElementById('btnAddGear')?.addEventListener('click', () => window.spawnGhost('gear'));
-        document.getElementById('btnAddRack')?.addEventListener('click', () => window.spawnGhost('rack_pinion'));
-        document.getElementById('btnAddBelt')?.addEventListener('click', () => window.spawnGhost('belt'));
-        document.getElementById('btnAddChain')?.addEventListener('click', () => window.spawnGhost('chain'));
-        document.getElementById('btnAddCassette')?.addEventListener('click', () => window.spawnGhost('cassette_drive'));
-        document.getElementById('btnAddWorm')?.addEventListener('click', () => window.spawnGhost('worm_drive_worm'));
-        document.getElementById('btnAddWormNut')?.addEventListener('click', () => window.spawnGhost('worm_nut'));
-
 
         function createGhost(type, param) {
             if(ghostNode) scene.remove(ghostNode);
@@ -1654,6 +1639,69 @@
             });
         }
 
+        document.getElementById('btnAddGear').onclick = () => {
+            if(isSimulating) return;
+            dragMode = 'gear';
+            createGhost('gear', 20); 
+            container.style.cursor = 'grab';
+            selectNode(null); 
+            showToast("Move mouse into canvas to place gear.");
+        };
+
+        document.getElementById('btnAddRack').onclick = () => {
+            if(isSimulating) return;
+            dragMode = 'rack_pinion';
+            createDriveGhost('rack_pinion', 20); 
+            container.style.cursor = 'grab';
+            selectNode(null); 
+            showToast("Move mouse into canvas to place rack & pinion.");
+        };
+
+        document.getElementById('btnAddChain').onclick = () => {
+            if(isSimulating) return;
+            dragMode = 'chain';
+            createDriveGhost('chain', 20); 
+            container.style.cursor = 'grab';
+            selectNode(null); 
+            showToast("Move mouse into canvas to place standard chain drive.");
+        };
+
+        document.getElementById('btnAddCassette').onclick = () => {
+            if(isSimulating) return;
+            dragMode = 'cassette_drive';
+            createDriveGhost('cassette_drive', 34); 
+            container.style.cursor = 'grab';
+            selectNode(null); 
+            showToast("Move mouse into canvas to place 8-Speed Cassette.");
+        };
+        
+        document.getElementById('btnAddBelt').onclick = () => {
+            if(isSimulating) return;
+            dragMode = 'belt';
+            createDriveGhost('belt', 40); 
+            container.style.cursor = 'grab';
+            selectNode(null); 
+            showToast("Move mouse into canvas to place belt drive.");
+        };
+        
+        document.getElementById('btnAddWorm').onclick = () => {
+            if(isSimulating) return;
+            dragMode = 'worm_drive_worm';
+            createDriveGhost('worm_drive_worm', 40);
+            container.style.cursor = 'grab';
+            selectNode(null);
+            showToast("Move mouse into canvas to snap WORM to an axle.");
+        };
+
+        document.getElementById('btnAddWormNut').onclick = () => {
+            if(isSimulating) return;
+            dragMode = 'worm_nut';
+            createDriveGhost('worm_nut', 200); 
+            container.style.cursor = 'grab';
+            selectNode(null); 
+            showToast("Move mouse into canvas to snap Lead Screw to an axle.");
+        };
+
         window.addEventListener('pointermove', (e) => {
             if(!container || draggedLabelNode) return;
             const r = container.getBoundingClientRect();
@@ -1711,7 +1759,7 @@
         });
 
         window.addEventListener('pointerdown', (e) => {
-            if(e.target.closest('.panel') || e.target.closest('.gear-label') || e.target.closest('.tool-btn') || e.target.closest('.comp-card')) return;
+            if(e.target.closest('.panel') || e.target.closest('.gear-label') || e.target.closest('.tool-btn') || e.target.closest('#wormModal')) return;
 
             if(dragMode && ghostNode) {
                 if(activeSnap) {
@@ -1760,7 +1808,7 @@
                         selectNode(d2); 
                     }
                     else if (dragMode === 'cassette_drive') {
-                        const d1 = new Node('sprocket', 34); 
+                        const d1 = new Node('sprocket', 34); // Standard front ring
                         d1.parent = activeSnap.parent;
                         d1.linkType = activeSnap.type;
                         d1.linkDir = activeSnap.dir;
@@ -1845,8 +1893,6 @@
         function updateDirButtons() {
             const cw = document.getElementById('btnDirCW');
             const acw = document.getElementById('btnDirACW');
-            if(!cw || !acw) return;
-            
             if (motorInputDirection === 1) {
                 cw.className = "flex-1 py-1.5 rounded-lg text-xs font-bold transition-colors bg-blue-500 text-white shadow-md border border-blue-600";
                 acw.className = "flex-1 py-1.5 rounded-lg text-xs font-bold transition-colors bg-white text-slate-500 border border-slate-200 hover:bg-slate-100 hover:text-slate-800";
@@ -1878,13 +1924,10 @@
             const gearTeethInput = document.getElementById('gearTeeth');
             const lblType = document.getElementById('lblTeethOrDia');
             const badgeType = document.getElementById('badgeType');
-            const propShowLabel = document.getElementById('propShowLabel');
             
             if(selectedNode) {
                 selectedNode.setHighlight(true);
-                panel?.classList.remove('hidden');
-                
-                if(propShowLabel) propShowLabel.checked = selectedNode.showLabel;
+                panel.classList.remove('hidden');
                 
                 if (gearTeethInput) {
                     gearTeethInput.disabled = false;
@@ -1892,39 +1935,32 @@
                 }
 
                 if(selectedNode.type === 'motor') {
-                    if(badgeType) {
-                        badgeType.innerText = 'MOTOR';
-                        badgeType.className = 'text-[9px] font-bold px-2 py-1 bg-slate-200 text-slate-700 rounded-md uppercase';
-                    }
-                    motorUI?.classList.remove('hidden');
-                    gearUI?.classList.add('hidden');
-                    const lblInput = document.getElementById('motorLabel');
-                    if(lblInput) lblInput.value = selectedNode.label;
-                    const rpmInput = document.getElementById('motorRPM');
-                    if(rpmInput) rpmInput.value = motorInputSpeed;
+                    badgeType.innerText = 'MOTOR';
+                    badgeType.className = 'text-[9px] font-bold px-2 py-1 bg-slate-200 text-slate-700 rounded-md uppercase';
+                    motorUI.classList.remove('hidden');
+                    gearUI.classList.add('hidden');
+                    document.getElementById('motorLabel').value = selectedNode.label;
+                    document.getElementById('motorRPM').value = motorInputSpeed;
                     updateDirButtons();
                 } else {
-                    motorUI?.classList.add('hidden');
-                    gearUI?.classList.remove('hidden');
-                    const glblInput = document.getElementById('gearLabel');
-                    if(glblInput) glblInput.value = selectedNode.label;
+                    motorUI.classList.add('hidden');
+                    gearUI.classList.remove('hidden');
+                    document.getElementById('gearLabel').value = selectedNode.label;
                     
                     const conf = NODE_UI_CONFIG[selectedNode.type];
-                    if (conf && badgeType) {
+                    if (conf) {
                         badgeType.innerText = conf.badge;
                         badgeType.className = `text-[9px] font-bold px-2 py-1 rounded-md uppercase ${conf.bgClass}`;
                         
                         if (selectedNode.type === 'cassette') {
-                            document.getElementById('gearTeethContainer')?.classList.add('hidden');
-                            document.getElementById('cassetteControls')?.classList.remove('hidden');
-                            const cgLbl = document.getElementById('cassetteGearLbl');
-                            if(cgLbl) cgLbl.innerText = `Gear ${selectedNode.activeGearIdx + 1}`;
-                            const ctLbl = document.getElementById('cassetteTeethLbl');
-                            if(ctLbl) ctLbl.innerText = `${selectedNode.teeth} TEETH`;
+                            document.getElementById('gearTeethContainer').classList.add('hidden');
+                            document.getElementById('cassetteControls').classList.remove('hidden');
+                            document.getElementById('cassetteGearLbl').innerText = `Gear ${selectedNode.activeGearIdx + 1}`;
+                            document.getElementById('cassetteTeethLbl').innerText = `${selectedNode.teeth} TEETH`;
                         } else {
-                            document.getElementById('gearTeethContainer')?.classList.remove('hidden');
-                            document.getElementById('cassetteControls')?.classList.add('hidden');
-                            if(lblType) lblType.innerText = conf.label;
+                            document.getElementById('gearTeethContainer').classList.remove('hidden');
+                            document.getElementById('cassetteControls').classList.add('hidden');
+                            lblType.innerText = conf.label;
                             
                             if (gearTeethInput) {
                                 gearTeethInput.max = conf.max;
@@ -1938,42 +1974,34 @@
                     }
                 }
             } else {
-                panel?.classList.add('hidden');
+                panel.classList.add('hidden');
             }
         }
 
         // UI Event Listeners
-        document.getElementById('propShowLabel')?.addEventListener('change', e => {
-            if(selectedNode) {
-                selectedNode.showLabel = e.target.checked;
-                updateLabels();
-                recordState();
-            }
-        });
-
-        document.getElementById('motorLabel')?.addEventListener('input', e => {
+        document.getElementById('motorLabel').addEventListener('input', e => {
             if(selectedNode && selectedNode.type === 'motor') {
                 selectedNode.label = e.target.value;
                 if(isSimulating) updateLabels();
             }
         });
-        document.getElementById('motorLabel')?.addEventListener('change', () => recordState());
+        document.getElementById('motorLabel').addEventListener('change', () => recordState());
 
-        document.getElementById('gearLabel')?.addEventListener('input', e => {
+        document.getElementById('gearLabel').addEventListener('input', e => {
             if(selectedNode && selectedNode.type !== 'motor') {
                 selectedNode.label = e.target.value;
                 if(isSimulating) updateLabels();
             }
         });
-        document.getElementById('gearLabel')?.addEventListener('change', () => recordState());
+        document.getElementById('gearLabel').addEventListener('change', () => recordState());
 
-        document.getElementById('motorRPM')?.addEventListener('input', e => {
+        document.getElementById('motorRPM').addEventListener('input', e => {
             let val = parseInt(e.target.value);
             if(isNaN(val) || val < 0) return;
             motorInputSpeed = val;
             if(isSimulating) calculateKinematics();
         });
-        document.getElementById('motorRPM')?.addEventListener('change', e => {
+        document.getElementById('motorRPM').addEventListener('change', e => {
             let val = parseInt(e.target.value);
             if(isNaN(val) || val < 1) val = 1;
             e.target.value = val;
@@ -1981,8 +2009,7 @@
             recordState();
         });
 
-        const btnDirCW = document.getElementById('btnDirCW');
-        if(btnDirCW) btnDirCW.onclick = () => {
+        document.getElementById('btnDirCW').onclick = () => {
             motorInputDirection = 1;
             isMotorCutoff = false; 
             updateDirButtons();
@@ -1990,8 +2017,7 @@
             recordState();
         };
 
-        const btnDirACW = document.getElementById('btnDirACW');
-        if(btnDirACW) btnDirACW.onclick = () => {
+        document.getElementById('btnDirACW').onclick = () => {
             motorInputDirection = -1;
             isMotorCutoff = false; 
             updateDirButtons();
@@ -1999,21 +2025,19 @@
             recordState();
         };
 
-        const btnShiftUp = document.getElementById('btnShiftUp');
-        if(btnShiftUp) btnShiftUp.onclick = () => {
+        document.getElementById('btnShiftUp').onclick = () => {
             if(selectedNode && selectedNode.type === 'cassette') {
-                selectedNode.shift(1); 
+                selectedNode.shift(1); // Smaller gear
             }
         };
 
-        const btnShiftDown = document.getElementById('btnShiftDown');
-        if(btnShiftDown) btnShiftDown.onclick = () => {
+        document.getElementById('btnShiftDown').onclick = () => {
             if(selectedNode && selectedNode.type === 'cassette') {
-                selectedNode.shift(-1); 
+                selectedNode.shift(-1); // Larger gear
             }
         };
 
-        document.getElementById('gearTeeth')?.addEventListener('input', e => {
+        document.getElementById('gearTeeth').addEventListener('input', e => {
             if(selectedNode && (selectedNode.type === 'worm' || selectedNode.type === 'nut' || selectedNode.type === 'cassette')) return;
             let val = parseInt(e.target.value);
             if(isNaN(val)) return;
@@ -2028,8 +2052,7 @@
                 selectedNode.setTeeth(val);
             }
         });
-        
-        document.getElementById('gearTeeth')?.addEventListener('change', e => {
+        document.getElementById('gearTeeth').addEventListener('change', e => {
             if(selectedNode && (selectedNode.type === 'worm' || selectedNode.type === 'nut' || selectedNode.type === 'cassette')) return;
             let val = parseInt(e.target.value);
             let maxVal = (selectedNode.type === 'rack' || selectedNode.type === 'leadscrew') ? 1000 : 300;
@@ -2046,8 +2069,7 @@
             }
         });
 
-        const btnDelete = document.getElementById('btnDelete');
-        if(btnDelete) btnDelete.onclick = () => {
+        document.getElementById('btnDelete').onclick = () => {
             if(selectedNode && selectedNode.type !== 'motor') {
                 selectedNode.destroy();
                 selectNode(null);
@@ -2056,8 +2078,7 @@
             }
         };
 
-        const btnClear = document.getElementById('btnClear');
-        if(btnClear) btnClear.onclick = () => {
+        document.getElementById('btnClear').onclick = () => {
             [...nodes].forEach(c => c.destroy());
             nodes = [];
             selectNode(null);
@@ -2066,8 +2087,7 @@
             recordState();
         };
 
-        const btnHome = document.getElementById('btnHome');
-        if(btnHome) btnHome.onclick = centerCamera;
+        document.getElementById('btnHome').onclick = centerCamera;
 
         // --- SAVE/LOAD/UNDO/REDO & EXPORT ---
         function getStateJSON() {
@@ -2076,7 +2096,6 @@
                 type: n.type,
                 param: (n.type === 'rack' || n.type === 'leadscrew') ? n.length : n.teeth,
                 label: n.label,
-                showLabel: n.showLabel,
                 axis: n.axis,
                 labelOffset: n.labelOffset,
                 linearPosition: n.linearPosition,
@@ -2085,22 +2104,13 @@
                 linkType: n.linkType,
                 linkDir: n.linkDir
             }));
-            
-            return JSON.stringify({ 
-                nodes: data, 
-                motorSpeed: motorInputSpeed, 
-                motorDir: motorInputDirection,
-                camera: {
-                    pos: { x: camera.position.x, y: camera.position.y, z: camera.position.z },
-                    target: { x: controls.target.x, y: controls.target.y, z: controls.target.z }
-                }
-            });
+            return JSON.stringify({ nodes: data, motorSpeed: motorInputSpeed, motorDir: motorInputDirection });
         }
 
         function loadStateJSON(jsonStr) {
             try {
                 const parsed = JSON.parse(jsonStr);
-                nodes.forEach(n => { scene.remove(n.meshGroup); n.labelEl?.remove(); n.lineEl?.remove(); n.dotEl?.remove(); if(n.linkVisual) scene.remove(n.linkVisual); });
+                nodes.forEach(n => { scene.remove(n.meshGroup); n.labelEl.remove(); n.lineEl.remove(); if(n.linkVisual) scene.remove(n.linkVisual); });
                 nodes = [];
                 selectNode(null);
 
@@ -2117,7 +2127,6 @@
                     n.id = d.id;
                     if (d.axis) n.axis = d.axis;
                     if (d.label !== undefined) n.label = d.label;
-                    if (d.showLabel !== undefined) n.showLabel = d.showLabel;
                     if (d.labelOffset) n.labelOffset = d.labelOffset;
                     if (d.linearPosition) n.linearPosition = d.linearPosition;
                     if (d.type === 'cassette' && d.activeGearIdx !== undefined) {
@@ -2145,14 +2154,7 @@
                 }
 
                 updateTreePositions();
-                
-                if (parsed.camera && parsed.camera.pos && parsed.camera.target) {
-                    camera.position.set(parsed.camera.pos.x, parsed.camera.pos.y, parsed.camera.pos.z);
-                    controls.target.set(parsed.camera.target.x, parsed.camera.target.y, parsed.camera.target.z);
-                    controls.update();
-                } else {
-                    centerCamera(); 
-                }
+                centerCamera(); 
             } catch(e) { console.error("Error loading state", e); }
         }
 
@@ -2204,18 +2206,15 @@
                 }
             }
             if (e.key === 'Delete' || e.key === 'Backspace') {
-                if(selectedNode && selectedNode.type !== 'motor') document.getElementById('btnDelete')?.click();
+                if(selectedNode && selectedNode.type !== 'motor') document.getElementById('btnDelete').click();
             }
         });
 
-        const btnUndo = document.getElementById('btnUndo');
-        if(btnUndo) btnUndo.onclick = undo;
-        const btnRedo = document.getElementById('btnRedo');
-        if(btnRedo) btnRedo.onclick = redo;
+        document.getElementById('btnUndo').onclick = undo;
+        document.getElementById('btnRedo').onclick = redo;
 
-        const btnSave = document.getElementById('btnSave');
-        if(btnSave) btnSave.onclick = () => {
-            const blob = new Blob([getStateJSON()], {type: "application/json"});
+        document.getElementById('btnSave').onclick = () => {
+            const blob = new Blob([JSON.stringify(JSON.parse(getStateJSON()), null, 2)], {type: "application/json"});
             const url = URL.createObjectURL(blob); 
             const a = document.createElement('a'); 
             a.href = url;
@@ -2224,8 +2223,7 @@
             URL.revokeObjectURL(url);
         };
 
-        const fileLoad = document.getElementById('fileLoad');
-        if(fileLoad) fileLoad.onchange = (e) => {
+        document.getElementById('fileLoad').onchange = (e) => {
             const file = e.target.files[0]; if (!file) return;
             const reader = new FileReader();
             reader.onload = (evt) => { loadStateJSON(evt.target.result); recordState(); e.target.value=''; };
@@ -2243,8 +2241,7 @@
             'default': (n) => `${n.teeth} Teeth`
         };
 
-        const btnExport = document.getElementById('btnExport');
-        if(btnExport) btnExport.onclick = () => {
+        document.getElementById('btnExport').onclick = () => {
             const currentSel = selectedNode; 
             selectNode(null); 
             
@@ -2283,37 +2280,18 @@
             
             if (isSimulating) {
                 nodes.forEach(n => {
-                    if (n.labelEl.style.display === 'none' || !n.showLabel) return;
+                    if (n.labelEl.style.display === 'none') return;
                     
                     const pos = n.meshGroup.position.clone();
-                    pos.project(camera);
                     
+                    pos.project(camera);
                     const px = (pos.x * .5 + .5) * width;
                     const py = (pos.y * -.5 + .5) * height;
                     const lx = px + n.labelOffset.x;
                     const ly = py + n.labelOffset.y;
                     
-                    let originX = px;
-                    let originY = py;
-                    const distToLabel = Math.hypot(lx - px, ly - py);
-                    
-                    if (distToLabel > 0 && n.radius > 0 && n.type !== 'rack' && n.type !== 'leadscrew' && n.type !== 'nut') {
-                        const distCam = camera.position.distanceTo(n.meshGroup.position);
-                        const heightWorld = 2 * distCam * Math.tan(camera.fov * Math.PI / 360);
-                        const pixelPerUnit = height / heightWorld;
-                        let pixelRadius23 = (n.radius || 0) * 0.666 * pixelPerUnit;
-                        
-                        pixelRadius23 = Math.min(pixelRadius23, distToLabel - 10);
-                        
-                        const dirX = (lx - px) / distToLabel;
-                        const dirY = (ly - py) / distToLabel;
-                        
-                        originX = px + dirX * pixelRadius23;
-                        originY = py + dirY * pixelRadius23;
-                    }
-                    
-                    const spx = originX * scaleFactor;
-                    const spy = originY * scaleFactor;
+                    const spx = px * scaleFactor;
+                    const spy = py * scaleFactor;
                     const slx = lx * scaleFactor;
                     const sly = ly * scaleFactor;
                     
@@ -2323,12 +2301,6 @@
                     tCtx.strokeStyle = '#3b82f6';
                     tCtx.lineWidth = 2 * scaleFactor;
                     tCtx.stroke();
-
-                    // Anchor Dot
-                    tCtx.beginPath();
-                    tCtx.arc(spx, spy, 3 * scaleFactor, 0, Math.PI * 2);
-                    tCtx.fillStyle = '#3b82f6';
-                    tCtx.fill();
                     
                     let rpmStr, d;
                     
@@ -2427,33 +2399,28 @@
         };
 
         // --- SIMULATION & ANIMATION ---
-        const btnSim = document.getElementById('btnSim');
-        if(btnSim) btnSim.onclick = () => {
+        document.getElementById('btnSim').onclick = () => {
             isSimulating = true;
             isMotorCutoff = false;
             selectNode(null); 
-            document.getElementById('btnSim')?.classList.add('hidden');
-            document.getElementById('btnStop')?.classList.remove('hidden');
+            document.getElementById('btnSim').classList.add('hidden');
+            document.getElementById('btnStop').classList.remove('hidden');
+            // centerCamera(); <-- Removed per request so viewport stays as is!
             calculateKinematics();
             nodes.forEach(n => { 
-                if (n.showLabel) {
-                    if(n.labelEl) n.labelEl.style.display = 'block'; 
-                    if(n.lineEl) n.lineEl.style.display = 'block';
-                    if(n.dotEl) n.dotEl.style.display = 'block';
-                }
+                n.labelEl.style.display = 'block'; 
+                n.lineEl.style.display = 'block';
             });
         };
 
-        const btnStop = document.getElementById('btnStop');
-        if(btnStop) btnStop.onclick = () => {
+        document.getElementById('btnStop').onclick = () => {
             isSimulating = false;
             isMotorCutoff = false;
-            document.getElementById('btnSim')?.classList.remove('hidden');
-            document.getElementById('btnStop')?.classList.add('hidden');
+            document.getElementById('btnSim').classList.remove('hidden');
+            document.getElementById('btnStop').classList.add('hidden');
             nodes.forEach(n => { 
-                if(n.labelEl) n.labelEl.style.display = 'none'; 
-                if(n.lineEl) n.lineEl.style.display = 'none'; 
-                if(n.dotEl) n.dotEl.style.display = 'none'; 
+                n.labelEl.style.display = 'none'; 
+                n.lineEl.style.display = 'none'; 
             });
         };
 
@@ -2462,16 +2429,7 @@
         function updateLabels() {
             if(!isSimulating) return;
             nodes.forEach(n => {
-                if(!n.showLabel) {
-                    if(n.labelEl) n.labelEl.style.display = 'none';
-                    if(n.lineEl) n.lineEl.style.display = 'none';
-                    if(n.dotEl) n.dotEl.style.display = 'none';
-                    return;
-                } else {
-                    if(n.labelEl) n.labelEl.style.display = 'block';
-                    if(n.lineEl) n.lineEl.style.display = 'block';
-                    if(n.dotEl) n.dotEl.style.display = 'block';
-                }
+                if(n.labelEl.style.display === 'none') return;
                 
                 let html = "";
                 if(n.label && n.label.trim() !== '') {
@@ -2500,9 +2458,10 @@
                     html += `<div class="label-rpm">${r} rev min⁻¹</div><span class="dir-tag">${d}</span>`;
                 }
                 
-                if(n.labelEl) n.labelEl.innerHTML = html;
+                n.labelEl.innerHTML = html;
                 
                 const pos = n.meshGroup.position.clone();
+                
                 pos.project(camera);
                 
                 const px = (pos.x * .5 + .5) * container.clientWidth;
@@ -2511,43 +2470,13 @@
                 const lx = px + n.labelOffset.x;
                 const ly = py + n.labelOffset.y;
                 
-                if(n.labelEl) {
-                    n.labelEl.style.left = `${lx}px`;
-                    n.labelEl.style.top = `${ly}px`;
-                }
+                n.labelEl.style.left = `${lx}px`;
+                n.labelEl.style.top = `${ly}px`;
 
-                // Calculate 2/3rds line origin
-                let originX = px;
-                let originY = py;
-                const distToLabel = Math.hypot(lx - px, ly - py);
-                
-                if (distToLabel > 0 && n.radius > 0 && n.type !== 'rack' && n.type !== 'leadscrew' && n.type !== 'nut') {
-                    const distCam = camera.position.distanceTo(n.meshGroup.position);
-                    const heightWorld = 2 * distCam * Math.tan(camera.fov * Math.PI / 360);
-                    const pixelPerUnit = container.clientHeight / heightWorld;
-                    let pixelRadius23 = (n.radius || 0) * 0.666 * pixelPerUnit;
-                    
-                    // Cap it to slightly less than the distance to the label to prevent crossover
-                    pixelRadius23 = Math.min(pixelRadius23, distToLabel - 10);
-                    
-                    const dirX = (lx - px) / distToLabel;
-                    const dirY = (ly - py) / distToLabel;
-                    
-                    originX = px + dirX * pixelRadius23;
-                    originY = py + dirY * pixelRadius23;
-                }
-
-                if(n.lineEl) {
-                    n.lineEl.setAttribute('x1', originX);
-                    n.lineEl.setAttribute('y1', originY);
-                    n.lineEl.setAttribute('x2', lx);
-                    n.lineEl.setAttribute('y2', ly);
-                }
-
-                if(n.dotEl) {
-                    n.dotEl.setAttribute('cx', originX);
-                    n.dotEl.setAttribute('cy', originY);
-                }
+                n.lineEl.setAttribute('x1', px);
+                n.lineEl.setAttribute('y1', py);
+                n.lineEl.setAttribute('x2', lx);
+                n.lineEl.setAttribute('y2', ly);
             });
         }
 
@@ -2637,7 +2566,87 @@
             makeDraggable(document.getElementById('panel-inspect'), document.getElementById('panel-inspect-header'), false);
 
             // === 1. PASTE YOUR SAVED JSON STRING INSIDE THE BACKTICKS BELOW ===
-            const preloadedLesson = `{"nodes":[{"id":"5mks37ub8","type":"motor","param":20,"label":"Input Motor","showLabel":false,"axis":"z","labelOffset":{"x":0,"y":-60},"linearPosition":0,"parentId":null,"linkType":null,"linkDir":null},{"id":"8t9w0fz66","type":"worm","param":20,"label":"","showLabel":true,"axis":"z","labelOffset":{"x":16,"y":140},"linearPosition":0,"parentId":"5mks37ub8","linkType":"axle","linkDir":"f"},{"id":"x4o2n18fx","type":"worm_wheel","param":50,"label":"","showLabel":true,"axis":"x","labelOffset":{"x":-253,"y":-4},"linearPosition":0,"parentId":"8t9w0fz66","linkType":"worm_mesh","linkDir":"u"}],"motorSpeed":60,"motorDir":-1,"camera":{"pos":{"x":125.49217554373053,"y":40.09564515340092,"z":43.68018264372413},"target":{"x":-8.472441889801388,"y":8.110440413063907,"z":6.213571877462132}}}`; 
+            const preloadedLesson = `{
+  "nodes": [
+    {
+      "id": "motor001",
+      "type": "motor",
+      "param": 20,
+      "label": "Input Motor",
+      "axis": "z",
+      "labelOffset": {
+        "x": -197,
+        "y": -197
+      },
+      "linearPosition": 0,
+      "parentId": null,
+      "linkType": null,
+      "linkDir": null
+    },
+    {
+      "id": "gear001",
+      "type": "gear",
+      "param": 20,
+      "label": "A - Driver (20T)",
+      "axis": "z",
+      "labelOffset": {
+        "x": -210,
+        "y": 160
+      },
+      "linearPosition": 0,
+      "parentId": "motor001",
+      "linkType": "axle",
+      "linkDir": "f"
+    },
+    {
+      "id": "gear002",
+      "type": "gear",
+      "param": 80,
+      "label": "B (80T)",
+      "axis": "z",
+      "labelOffset": {
+        "x": 220,
+        "y": 160
+      },
+      "linearPosition": 0,
+      "parentId": "gear001",
+      "linkType": "mesh",
+      "linkDir": "r"
+    },
+    {
+      "id": "gear003",
+      "type": "gear",
+      "param": 10,
+      "label": "C (10T)",
+      "axis": "z",
+      "labelOffset": {
+        "x": 220,
+        "y": -160
+      },
+      "linearPosition": 0,
+      "parentId": "gear002",
+      "linkType": "axle",
+      "linkDir": "f"
+    },
+    {
+      "id": "gear004",
+      "type": "gear",
+      "param": 60,
+      "label": "D - Output (60T)",
+      "axis": "z",
+      "labelOffset": {
+        "x": -210,
+        "y": -160
+      },
+      "linearPosition": 0,
+      "parentId": "gear003",
+      "linkType": "mesh",
+      "linkDir": "r"
+    }
+  ],
+  "motorSpeed": 120,
+  "motorDir": 1
+}`; 
 
             // === 2. AUTO-LOAD LOGIC ===
             if (preloadedLesson.trim().length > 10) {
@@ -2650,20 +2659,17 @@
                 // Automatically adjust view and start the simulation!
                 setTimeout(() => {
                     resize();
-                    // Notice centerCamera() is NOT called here because loadStateJSON applies the saved camera
-                    document.getElementById('btnSim')?.click();
+                    centerCamera();
+                    document.getElementById('btnSim').click();
                 }, 350); // Wait 350ms for the sidebar to finish animating
                 
             } else {
                 // If no lesson is pasted, just do the normal empty startup
                 initScene();
-                setTimeout(() => {
-                    resize();
-                    centerCamera();
-                }, 50);
             }
 
             recordState();
+            setTimeout(resize, 50);
             animate();
         };
     </script>
