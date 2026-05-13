@@ -58,6 +58,14 @@ function teacherLogout() {
 
 document.addEventListener('DOMContentLoaded', setActiveNav);
 
+// Update footer text sitewide
+document.addEventListener('DOMContentLoaded', function () {
+  var footerSpan = document.querySelector('.footer span');
+  if (footerSpan) {
+    footerSpan.textContent = 'Engineering Science Scotland \u00b7 Aligned to Qualifications Scotland course specifications';
+  }
+});
+
 /* ============================================================
    RESOURCE STATUS
    Controls the Available / Not yet available badges on every
@@ -94,8 +102,7 @@ var RESOURCE_STATUS = {
 };
 
 // Reads the TOPIC variable declared on each index page and sets badges accordingly
-// Called directly from each index page after TOPIC is declared
-function applyResourceBadges() {
+document.addEventListener('DOMContentLoaded', function () {
   if (typeof TOPIC === 'undefined') return;
   var status = RESOURCE_STATUS[TOPIC];
   if (!status) return;
@@ -111,7 +118,7 @@ function applyResourceBadges() {
       badge.textContent = 'Not yet available';
     }
   });
-}
+});
 
 /* ============================================================
    DEVELOPMENT BANNER + FEEDBACK BUTTON
