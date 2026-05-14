@@ -178,7 +178,7 @@ var TEACHER_DOCS = {
     { key: 'test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
   ],
   'drive-systems': [
-    { key: 'ext_marking',  status: 'available', id: 'REPLACE_WITH_DRIVE_ID', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'ext_marking',  status: 'available', id: '1UVduGkmJ_b479Ru9qu0MJOM_74FzYu_I', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
     { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
     { key: 'test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
