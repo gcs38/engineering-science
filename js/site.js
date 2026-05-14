@@ -58,14 +58,6 @@ function teacherLogout() {
 
 document.addEventListener('DOMContentLoaded', setActiveNav);
 
-// Update footer text sitewide
-document.addEventListener('DOMContentLoaded', function () {
-  var footerSpan = document.querySelector('.footer span');
-  if (footerSpan) {
-    footerSpan.textContent = 'Engineering Science Scotland \u00b7 Aligned to Qualifications Scotland course specifications';
-  }
-});
-
 /* ============================================================
    RESOURCE STATUS
    Controls the Available / Not yet available badges on every
@@ -121,7 +113,118 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /* ============================================================
-   DEVELOPMENT BANNER + FEEDBACK BUTTON
+   TEACHER RESOURCE STATUS
+   Controls document cards on each teacher topic page.
+
+   HOW TO UPDATE WHEN YOU ADD A NEW DOCUMENT:
+   1. Upload the DOCX to Google Drive, set sharing to
+      "Anyone with the link can view"
+   2. Copy the file ID from the share URL
+   3. Open js/site.js in Notepad
+   4. Find the topic below (e.g. 'drive-systems')
+   5. Change 'soon' to 'available' for that document
+   6. Replace 'DRIVE_ID' with the actual file ID
+   7. Save and push via GitHub Desktop
+
+   DOCUMENT KEYS:
+   ext_marking  = Marking instructions — extension tasks
+   hw_marking   = Marking instructions — homework
+   test         = Class test paper
+   test_marking = Marking instructions — class test
+   notes        = Teacher notes / lesson plan
+   ============================================================ */
+
+var TEACHER_DOCS = {
+  'systems-approach': [
+    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
+    { key: 'test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
+  ],
+  'energy-efficiency': [
+    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
+    { key: 'test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
+  ],
+  'roles-disciplines': [
+    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
+    { key: 'test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
+  ],
+  'impacts': [
+    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
+    { key: 'test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
+  ],
+  'analogue': [
+    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
+    { key: 'test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
+  ],
+  'digital': [
+    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
+    { key: 'test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
+  ],
+  'control': [
+    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
+    { key: 'test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
+  ],
+  'drive-systems': [
+    { key: 'ext_marking',  status: 'available', id: 'REPLACE_WITH_DRIVE_ID', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
+    { key: 'test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
+  ],
+  'pneumatics': [
+    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
+    { key: 'test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
+  ],
+  'structures-forces': [
+    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
+    { key: 'test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
+  ],
+  'materials': [
+    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
+    { key: 'test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
+  ],
+};
+
+function renderTeacherDocs(topicKey, containerId) {
+  var container = document.getElementById(containerId);
+  if (!container) return;
+  var docs = TEACHER_DOCS[topicKey];
+  if (!docs) return;
+  var html = '';
+  docs.forEach(function(doc) {
+    var available = doc.status === 'available' && doc.id && doc.id !== 'REPLACE_WITH_DRIVE_ID';
+    var href = available ? 'https://drive.google.com/file/d/' + doc.id + '/view' : '#';
+    var badge = available
+      ? '<span class="rtc-badge">Available</span>'
+      : '<span class="rtc-badge-unavailable" style="display:inline-block;font-size:10px;font-weight:500;background:#fef2f2;color:#b91c1c;padding:2px 7px;border-radius:20px;margin-top:6px;">Not yet available</span>';
+    html += '<a href="' + href + '" ' + (available ? 'target="_blank"' : '') + ' class="resource-type-card' + (available ? '' : ' teacher-only') + '" style="text-align:center;' + (available ? '' : 'opacity:0.5;pointer-events:none;') + '">' +
+      '<div class="rtc-icon">' + doc.icon + '</div>' +
+      '<div class="rtc-title">' + doc.label + '</div>' +
+      badge +
+      '</a>';
+  });
+  container.innerHTML = html;
+}
+
+/* ============================================================
    Paste this block at the bottom of js/site.js
    ============================================================ */
 

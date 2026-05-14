@@ -2,66 +2,72 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Teacher Dashboard — Engineering Science Scotland</title>
+  <title>Teacher Dashboard &mdash; Engineering Science Scotland</title>
   <link rel="stylesheet" href="../css/style.css">
   <style>
-    .dash{margin-top:var(--topbar-h);padding:32px 40px;max-width:960px;margin-left:auto;margin-right:auto;}
-    .dash-label{font-size:11px;font-weight:500;color:var(--teal-400);letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px;}
-    .dash-title{font-family:'DM Serif Display',serif;font-size:28px;letter-spacing:-.5px;margin-bottom:6px;}
-    .dash-sub{font-size:14px;color:var(--gray-600);margin-bottom:28px;}
-    .tc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:28px;}
-    .tc{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:16px;text-decoration:none;transition:all var(--transition);display:block;}
-    .tc:hover{border-color:var(--teal-100);background:var(--teal-50);}
-    .tc-icon{font-size:22px;margin-bottom:8px;}
-    .tc-name{font-size:13px;font-weight:500;color:var(--gray-900);margin-bottom:3px;}
-    .tc-meta{font-size:11px;color:var(--gray-400);}
-    .tc.dim{opacity:0.45;pointer-events:none;}
-    .info-box{padding:16px;background:var(--teal-50);border:1px solid var(--teal-100);border-radius:var(--radius-md);font-size:13px;color:var(--teal-800);margin-bottom:28px;line-height:1.6;}
-    .logout-btn{font-size:12px;color:var(--gray-400);background:none;border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:5px 12px;cursor:pointer;transition:all var(--transition);}
-    .logout-btn:hover{background:var(--gray-100);}
+    .dash { margin-top:var(--topbar-h); padding:32px 40px; max-width:960px; margin-left:auto; margin-right:auto; }
+    .dash-label { font-size:11px; font-weight:500; color:var(--teal-400); letter-spacing:.8px; text-transform:uppercase; margin-bottom:6px; }
+    .dash-title { font-family:'DM Serif Display',serif; font-size:28px; letter-spacing:-.5px; margin-bottom:6px; }
+    .dash-sub { font-size:14px; color:var(--gray-600); margin-bottom:28px; }
+    .info-box { padding:14px 16px; background:var(--teal-50); border:1px solid var(--teal-100); border-radius:8px; font-size:13px; color:var(--teal-800); margin-bottom:28px; line-height:1.6; }
+    .tc-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:12px; margin-bottom:28px; }
+    .tc { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:18px; text-decoration:none; transition:all var(--transition); display:block; }
+    .tc:hover { border-color:var(--teal-400); background:var(--teal-50); transform:translateY(-2px); }
+    .tc-icon { font-size:26px; margin-bottom:8px; }
+    .tc-name { font-size:13px; font-weight:600; color:var(--gray-900); margin-bottom:4px; }
+    .tc-meta { font-size:11px; color:var(--gray-400); }
+    .logout-btn { font-size:12px; color:var(--gray-400); background:none; border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:5px 12px; cursor:pointer; transition:all var(--transition); }
+    .logout-btn:hover { background:var(--gray-100); }
   </style>
 </head>
 <body>
 <nav class="topbar">
   <a href="../index.html" class="logo">
     <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Scotland</span></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
   </a>
   <div></div>
   <div class="topbar-right"><button class="logout-btn" onclick="teacherLogout()">Sign out</button></div>
 </nav>
 <div class="dash">
   <div class="dash-label">Teacher area</div>
-  <h1 class="dash-title">Marking instructions</h1>
-  <p class="dash-sub">Answer sheets and marking guidance for tasks and homework assignments. Not visible to pupils.</p>
+  <h1 class="dash-title">&#x1F4CB; Teacher Dashboard</h1>
+  <p class="dash-sub">Access marking instructions, class tests and other teacher documents. Select a course area below.</p>
+
   <div class="info-box">
-    <strong>How to add your marking documents:</strong> Upload each marking instruction Word doc to Google Drive, set sharing to &ldquo;Anyone with the link can view&rdquo;, copy the file ID from the URL, then replace <code>REPLACE_WITH_DRIVE_ID</code> in the relevant <code>marking.html</code> page. The document will then embed automatically for logged-in teachers.
+    <strong>Adding a new document:</strong> Upload to Google Drive &rarr; set sharing to &ldquo;Anyone with the link can view&rdquo; &rarr; copy the file ID &rarr; open <code>js/site.js</code> in Notepad &rarr; find the topic, change <code>'soon'</code> to <code>'available'</code> and paste the file ID &rarr; save and push.
   </div>
-  <div class="section-label">National 5 &mdash; Mechanisms &amp; Structures</div>
-  <div class="tc-grid">
-    <a href="../n5/mechanisms/drive-systems/marking.html" class="tc"><div class="tc-icon">&#x2705;</div><div class="tc-name">Drive systems</div><div class="tc-meta">Marking instructions &middot; N5</div></a>
-    <a href="../n5/mechanisms/converting-motion/marking.html" class="tc"><div class="tc-icon">&#x2705;</div><div class="tc-name">Converting motion</div><div class="tc-meta">Marking instructions &middot; N5</div></a>
-    <a href="../n5/mechanisms/structures-forces/marking.html" class="tc"><div class="tc-icon">&#x2705;</div><div class="tc-name">Structures &amp; forces</div><div class="tc-meta">Marking instructions &middot; N5</div></a>
-    <a href="../n5/mechanisms/materials/marking.html" class="tc"><div class="tc-icon">&#x2705;</div><div class="tc-name">Materials</div><div class="tc-meta">Marking instructions &middot; N5</div></a>
-  </div>
-  <div class="section-label">National 5 &mdash; Electronics &amp; Control</div>
-  <div class="tc-grid">
-    <a href="../n5/electronics/analogue/marking.html" class="tc"><div class="tc-icon">&#x2705;</div><div class="tc-name">Analogue electronics</div><div class="tc-meta">Marking instructions &middot; N5</div></a>
-    <a href="../n5/electronics/digital/marking.html" class="tc"><div class="tc-icon">&#x2705;</div><div class="tc-name">Digital electronics</div><div class="tc-meta">Marking instructions &middot; N5</div></a>
-    <a href="../n5/electronics/microcontrollers/marking.html" class="tc"><div class="tc-icon">&#x2705;</div><div class="tc-name">Microcontrollers</div><div class="tc-meta">Marking instructions &middot; N5</div></a>
-  </div>
+
   <div class="section-label">National 5 &mdash; Engineering Contexts</div>
   <div class="tc-grid">
-    <a href="../n5/contexts/systems/marking.html" class="tc"><div class="tc-icon">&#x2705;</div><div class="tc-name">Engineering systems</div><div class="tc-meta">Marking instructions &middot; N5</div></a>
-    <a href="../n5/contexts/energy/marking.html" class="tc"><div class="tc-icon">&#x2705;</div><div class="tc-name">Energy &amp; sustainability</div><div class="tc-meta">Marking instructions &middot; N5</div></a>
-    <a href="../n5/contexts/roles/marking.html" class="tc"><div class="tc-icon">&#x2705;</div><div class="tc-name">Roles &amp; impacts</div><div class="tc-meta">Marking instructions &middot; N5</div></a>
+    <a href="n5/contexts/systems-approach.html" class="tc"><div class="tc-icon">&#x1F4CA;</div><div class="tc-name">The Systems Approach</div><div class="tc-meta">N5 &middot; Engineering Contexts</div></a>
+    <a href="n5/contexts/energy-efficiency.html" class="tc"><div class="tc-icon">&#x26A1;</div><div class="tc-name">Energy and Efficiency</div><div class="tc-meta">N5 &middot; Engineering Contexts</div></a>
+    <a href="n5/contexts/roles-disciplines.html" class="tc"><div class="tc-icon">&#x1F477;</div><div class="tc-name">Engineering Roles and Disciplines</div><div class="tc-meta">N5 &middot; Engineering Contexts</div></a>
+    <a href="n5/contexts/impacts.html" class="tc"><div class="tc-icon">&#x1F333;</div><div class="tc-name">Impacts of Engineering</div><div class="tc-meta">N5 &middot; Engineering Contexts</div></a>
   </div>
+
+  <div class="section-label">National 5 &mdash; Electronics and Control</div>
+  <div class="tc-grid">
+    <a href="n5/electronics/analogue.html" class="tc"><div class="tc-icon">&#x1F4F6;</div><div class="tc-name">Analogue Electronics</div><div class="tc-meta">N5 &middot; Electronics and Control</div></a>
+    <a href="n5/electronics/digital.html" class="tc"><div class="tc-icon">&#x1F4BB;</div><div class="tc-name">Digital Electronics</div><div class="tc-meta">N5 &middot; Electronics and Control</div></a>
+    <a href="n5/electronics/control.html" class="tc"><div class="tc-icon">&#x1F39B;&#xFE0F;</div><div class="tc-name">Control Systems</div><div class="tc-meta">N5 &middot; Electronics and Control</div></a>
+  </div>
+
+  <div class="section-label">National 5 &mdash; Mechanisms and Structures</div>
+  <div class="tc-grid">
+    <a href="n5/mechanisms/drive-systems.html" class="tc"><div class="tc-icon">&#x2699;&#xFE0F;</div><div class="tc-name">Drive Systems</div><div class="tc-meta">N5 &middot; Mechanisms and Structures</div></a>
+    <a href="n5/mechanisms/pneumatics.html" class="tc"><div class="tc-icon">&#x1F4A8;</div><div class="tc-name">Pneumatics</div><div class="tc-meta">N5 &middot; Mechanisms and Structures</div></a>
+    <a href="n5/mechanisms/structures-forces.html" class="tc"><div class="tc-icon">&#x1F3D7;&#xFE0F;</div><div class="tc-name">Structures and Forces</div><div class="tc-meta">N5 &middot; Mechanisms and Structures</div></a>
+    <a href="n5/mechanisms/materials.html" class="tc"><div class="tc-icon">&#x1F9F1;</div><div class="tc-name">Materials</div><div class="tc-meta">N5 &middot; Mechanisms and Structures</div></a>
+  </div>
+
   <div class="section-label">Higher &amp; Advanced Higher</div>
   <div class="tc-grid">
-    <div class="tc dim"><div class="tc-icon">&#x2705;</div><div class="tc-name">Higher resources</div><div class="tc-meta">Coming soon</div></div>
-    <div class="tc dim"><div class="tc-icon">&#x2705;</div><div class="tc-name">Advanced Higher resources</div><div class="tc-meta">Coming soon</div></div>
+    <div class="tc" style="opacity:0.4;pointer-events:none;"><div class="tc-icon">&#x1F4DA;</div><div class="tc-name">Higher resources</div><div class="tc-meta">Coming soon</div></div>
+    <div class="tc" style="opacity:0.4;pointer-events:none;"><div class="tc-icon">&#x1F4DA;</div><div class="tc-name">Advanced Higher resources</div><div class="tc-meta">Coming soon</div></div>
   </div>
 </div>
 <script src="../js/site.js"></script>
 <script>checkTeacherAuth();</script>
-</body></html>
+</body>
+</html>
