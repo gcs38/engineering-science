@@ -1,3 +1,15 @@
+// ── CACHE BUST ──
+// Forces all browsers and school networks to reload style.css fresh.
+// If you ever update style.css again, increment the number (v=3, v=4 etc.)
+(function() {
+  var links = document.querySelectorAll('link[rel="stylesheet"]');
+  links.forEach(function(link) {
+    if (link.href && link.href.indexOf('style.css') !== -1) {
+      link.href = link.href.split('?')[0] + '?v=2';
+    }
+  });
+})();
+
 // ── SIDEBAR TOGGLE ──
 function toggleSection(id) {
   const children = document.getElementById(id + '-children');
