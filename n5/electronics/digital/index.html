@@ -7,170 +7,163 @@
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
     /* ============================================================
-       TOPIC CARD PHOTOS
-       To change a photo, replace the URL inside src="..."
-       Use any direct image URL (Unsplash, your own uploaded image, etc.)
-       The image will always be cropped to a circle — any square or
-       landscape photo works fine.
+       TOPIC INDEX PAGE — Material You style with circle photos
+       Cards sit in the main content area beside the sidebar.
+       Two rows of compact horizontal cards — student then teacher.
        ============================================================ */
 
-    .resource-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-      margin: 24px 0;
+    .topic-intro {
+      font-size: 14px;
+      color: #444441;
+      line-height: 1.7;
+      margin: 0 0 16px;
     }
 
-    .resource-card {
-      background: #ffffff;
-      border: 1.5px solid #d4ede3;
-      border-radius: 20px;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .resource-card:hover {
-      border-color: #1d9e75;
-      box-shadow: 0 4px 16px rgba(29,158,117,0.1);
-    }
-
-    .card-header {
+    /* Simulator banner — full width of main content area */
+    .sim-banner {
       display: flex;
       align-items: center;
       gap: 14px;
-    }
-
-    /* ---- Circle photo ---- */
-    .card-photo {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 2px solid #9FE1CB;
-      flex-shrink: 0;
-      /* Fallback colour shown if photo fails to load */
-      background-color: #e8f5f0;
-    }
-
-    .card-title {
-      font-size: 15px;
-      font-weight: 600;
-      color: #085041;
-      margin: 0;
-    }
-
-    .card-badge {
-      display: inline-block;
-      font-size: 10px;
-      font-weight: 600;
-      padding: 2px 8px;
-      border-radius: 20px;
-      margin-top: 3px;
-    }
-
-    .badge-student {
-      background: #e8f5f0;
-      color: #0f6e56;
-    }
-
-    .badge-teacher {
-      background: #faeeda;
-      color: #633806;
-    }
-
-    .card-desc {
-      font-size: 13px;
-      color: #5F5E5A;
-      line-height: 1.6;
-      margin: 0;
-    }
-
-    .card-link-label {
-      font-size: 12px;
-      font-weight: 600;
-      color: #1d9e75;
-      margin-top: auto;
-    }
-
-    /* Featured simulator banner */
-    .sim-banner {
-      background: linear-gradient(135deg, #085041 0%, #1d9e75 100%);
-      border-radius: 20px;
-      padding: 20px 24px;
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin: 0 0 24px;
+      background: #085041;
+      border-radius: 16px;
+      padding: 14px 18px;
+      margin: 0 0 20px;
       text-decoration: none;
     }
-
     /* ============================================================
        SIMULATOR BANNER PHOTO
-       Replace the src URL below to change the simulator banner image
+       To change: replace the URL in src="..." on the img tag below.
+       Search unsplash.com, right-click a photo, Copy image address,
+       then add ?w=100&h=100&fit=crop to the end.
        ============================================================ */
     .sim-banner-photo {
-      width: 60px;
-      height: 60px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
       object-fit: cover;
-      border: 2px solid rgba(255,255,255,0.4);
+      border: 2px solid rgba(255,255,255,0.35);
       flex-shrink: 0;
-      background-color: rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.1);
     }
-
-    .sim-banner-text { flex: 1; }
+    .sim-banner-text { flex: 1; min-width: 0; }
     .sim-banner-label {
       font-size: 10px;
       font-weight: 700;
-      color: rgba(255,255,255,0.75);
+      color: #9FE1CB;
       text-transform: uppercase;
-      letter-spacing: 0.08em;
-      margin-bottom: 4px;
+      letter-spacing: 0.07em;
+      margin-bottom: 2px;
     }
     .sim-banner-title {
-      font-size: 17px;
+      font-size: 15px;
       font-weight: 700;
       color: #ffffff;
-      margin-bottom: 4px;
+      margin-bottom: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .sim-banner-sub {
-      font-size: 12px;
-      color: rgba(255,255,255,0.8);
+      font-size: 11px;
+      color: rgba(255,255,255,0.75);
     }
     .sim-banner-btn {
-      background: rgba(255,255,255,0.2);
-      border: 1.5px solid rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.3);
       border-radius: 50px;
       color: white;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
-      padding: 10px 20px;
+      padding: 7px 14px;
       white-space: nowrap;
       flex-shrink: 0;
       font-family: inherit;
       cursor: pointer;
     }
 
-    .page-intro {
-      font-size: 14px;
-      color: #444441;
-      line-height: 1.7;
-      margin-bottom: 20px;
-      max-width: 680px;
-    }
-
-    .section-label {
+    /* Section heading above each group of cards */
+    .section-heading {
       font-size: 11px;
       font-weight: 700;
       color: #0f6e56;
       text-transform: uppercase;
       letter-spacing: 0.08em;
-      margin: 24px 0 10px;
+      margin: 0 0 8px;
+    }
+
+    /* Card list — one card per row, compact horizontal layout */
+    .card-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .resource-card {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #ffffff;
+      border: 1.5px solid #d4ede3;
+      border-radius: 14px;
+      padding: 10px 14px;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s;
+    }
+    .resource-card:hover {
+      border-color: #1d9e75;
+    }
+
+    /* ============================================================
+       CARD PHOTOS — how to change any photo
+       1. Go to unsplash.com and search for something relevant
+       2. Right-click the photo → Copy image address
+       3. Find the card below (each has a comment with its name)
+       4. Replace the URL in src="..." with your new URL
+       5. Add ?w=80&h=80&fit=crop&crop=center to the end
+       6. Save in Notepad and push via GitHub Desktop
+       ============================================================ */
+    .card-photo {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #9FE1CB;
+      flex-shrink: 0;
+      background-color: #e8f5f0;
+    }
+
+    .card-body { flex: 1; min-width: 0; }
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #085041;
+      margin-bottom: 2px;
+    }
+    .card-desc {
+      font-size: 12px;
+      color: #5F5E5A;
+      line-height: 1.4;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .card-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 9px;
+      border-radius: 20px;
+      flex-shrink: 0;
+    }
+    .badge-student { background: #e8f5f0; color: #0f6e56; }
+    .badge-teacher { background: #faeeda; color: #633806; }
+
+    .card-arrow {
+      font-size: 14px;
+      color: #9FE1CB;
+      flex-shrink: 0;
     }
   </style>
 </head>
@@ -183,175 +176,126 @@
       <div class="page-header">
         <div class="breadcrumb">N5 &rsaquo; Electronics &rsaquo; Digital Electronics</div>
         <h1 class="page-title">Digital Electronics</h1>
-        <p class="page-intro">
-          Logic gates, truth tables, and Boolean algebra — everything you need for your SQA National 5 exam.
-          Use the course notes to study, the simulator to experiment, and the homework to practise.
-        </p>
       </div>
+
+      <p class="topic-intro">Logic gates, truth tables, and Boolean algebra — everything you need for your SQA National 5 exam.</p>
 
       <!-- ============================================================
            SIMULATOR BANNER
-           To change the photo: replace the src URL on the img below.
-           Good search term: "logic circuit board electronics"
-           on unsplash.com — copy the image address and paste it here.
+           To change photo: replace src URL on the img tag below.
+           Search suggestion: "logic circuit board electronics"
            ============================================================ -->
       <a class="sim-banner" href="../../../../simulators/digital.html">
-        <img
-          class="sim-banner-photo"
-          src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=120&h=120&fit=crop&crop=center"
-          alt="Logic circuit board"
-          onerror="this.style.display='none'">
+        <img class="sim-banner-photo"
+          src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=100&h=100&fit=crop&crop=center"
+          alt="Circuit board" onerror="this.style.display='none'">
         <div class="sim-banner-text">
-          <div class="sim-banner-label">Featured tool</div>
+          <div class="sim-banner-label">Featured simulator</div>
           <div class="sim-banner-title">NoNANDSense Simulator</div>
-          <div class="sim-banner-sub">Build logic circuits — AND, OR, NAND, NOR, XOR — with auto truth tables</div>
+          <div class="sim-banner-sub">AND, OR, NAND, NOR, XOR gates — with auto truth tables</div>
         </div>
         <button class="sim-banner-btn">Launch →</button>
       </a>
 
-      <div class="section-label">Study resources</div>
+      <!-- ===================== PUPIL RESOURCES ===================== -->
+      <div class="section-heading">Pupil resources</div>
+      <div class="card-list">
 
-      <div class="resource-grid">
-
-        <!-- ============================================================
-             CARD PHOTOS — how to change them
-             1. Go to unsplash.com and search for a relevant photo
-             2. Right-click the photo and choose "Copy image address"
-             3. Paste that URL into the src="..." below, replacing the existing URL
-             4. Add ?w=120&h=120&fit=crop to the end of the URL for best cropping
-             5. Save the file in Notepad and push via GitHub Desktop
-             ============================================================ -->
-
-        <!-- Course Notes card
-             Photo search suggestion: "electronics textbook study" -->
+        <!-- Course Notes card · search: "electronics textbook study" -->
         <a class="resource-card" href="course-notes.html">
-          <div class="card-header">
-            <img
-              class="card-photo"
-              src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=120&h=120&fit=crop&crop=center"
-              alt="Course notes"
-              onerror="this.style.display='none'">
-            <div>
-              <div class="card-title">Course Notes</div>
-              <span class="card-badge badge-student">Student</span>
-            </div>
+          <img class="card-photo"
+            src="https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=80&h=80&fit=crop&crop=center"
+            alt="Course notes" onerror="this.style.display='none'">
+          <div class="card-body">
+            <div class="card-title">Course Notes</div>
+            <div class="card-desc">Full notes with worked examples and interactive answer boxes</div>
           </div>
-          <p class="card-desc">Full topic notes covering all 8 sections, with worked examples, key points, and interactive answer boxes that save automatically.</p>
-          <span class="card-link-label">Open notes →</span>
+          <span class="card-badge badge-student">Pupil</span>
+          <span class="card-arrow">›</span>
         </a>
 
-        <!-- Answer Sheet card
-             Photo search suggestion: "student writing notepad" -->
+        <!-- Answer Sheet card · search: "student writing notepad" -->
         <a class="resource-card" href="answer-sheet.html">
-          <div class="card-header">
-            <img
-              class="card-photo"
-              src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=120&h=120&fit=crop&crop=center"
-              alt="Answer sheet"
-              onerror="this.style.display='none'">
-            <div>
-              <div class="card-title">Answer Sheet</div>
-              <span class="card-badge badge-student">Student</span>
-            </div>
+          <img class="card-photo"
+            src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=80&h=80&fit=crop&crop=center"
+            alt="Answer sheet" onerror="this.style.display='none'">
+          <div class="card-body">
+            <div class="card-title">Answer Sheet</div>
+            <div class="card-desc">Free-form answer sheet — saves automatically, print anytime</div>
           </div>
-          <p class="card-desc">A free-form answer sheet for set tasks. Your answers save automatically in your browser and can be printed.</p>
-          <span class="card-link-label">Open answer sheet →</span>
+          <span class="card-badge badge-student">Pupil</span>
+          <span class="card-arrow">›</span>
         </a>
 
-        <!-- Presentation card
-             Photo search suggestion: "presentation projector classroom" -->
+        <!-- Presentation card · search: "presentation slides classroom" -->
         <a class="resource-card" href="presentation.html">
-          <div class="card-header">
-            <img
-              class="card-photo"
-              src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=120&h=120&fit=crop&crop=center"
-              alt="Presentation slides"
-              onerror="this.style.display='none'">
-            <div>
-              <div class="card-title">Presentation</div>
-              <span class="card-badge badge-student">Student</span>
-            </div>
+          <img class="card-photo"
+            src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=80&h=80&fit=crop&crop=center"
+            alt="Presentation" onerror="this.style.display='none'">
+          <div class="card-body">
+            <div class="card-title">Presentation</div>
+            <div class="card-desc">Slide deck — view as PDF or download PowerPoint</div>
           </div>
-          <p class="card-desc">Slide deck for this topic — view as PDF in your browser or download the PowerPoint file.</p>
-          <span class="card-link-label">View slides →</span>
+          <span class="card-badge badge-student">Pupil</span>
+          <span class="card-arrow">›</span>
         </a>
 
-        <!-- Homework card
-             Photo search suggestion: "homework desk pencil paper" -->
+        <!-- Homework card · search: "homework desk pencil paper" -->
         <a class="resource-card" href="homework.html">
-          <div class="card-header">
-            <img
-              class="card-photo"
-              src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=120&h=120&fit=crop&crop=center"
-              alt="Homework"
-              onerror="this.style.display='none'">
-            <div>
-              <div class="card-title">Homework</div>
-              <span class="card-badge badge-student">Student</span>
-            </div>
+          <img class="card-photo"
+            src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=80&h=80&fit=crop&crop=center"
+            alt="Homework" onerror="this.style.display='none'">
+          <div class="card-body">
+            <div class="card-title">Homework</div>
+            <div class="card-desc">Practice questions set by your teacher</div>
           </div>
-          <p class="card-desc">Practice questions set by your teacher. Complete and submit as instructed.</p>
-          <span class="card-link-label">Open homework →</span>
+          <span class="card-badge badge-student">Pupil</span>
+          <span class="card-arrow">›</span>
         </a>
 
-        <!-- Extension card
-             Photo search suggestion: "challenge puzzle engineering" -->
+        <!-- Extension card · search: "challenge engineering technology" -->
         <a class="resource-card" href="extension.html">
-          <div class="card-header">
-            <img
-              class="card-photo"
-              src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=120&h=120&fit=crop&crop=center"
-              alt="Extension task"
-              onerror="this.style.display='none'">
-            <div>
-              <div class="card-title">Extension Task</div>
-              <span class="card-badge badge-student">Student</span>
-            </div>
+          <img class="card-photo"
+            src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=80&h=80&fit=crop&crop=center"
+            alt="Extension task" onerror="this.style.display='none'">
+          <div class="card-body">
+            <div class="card-title">Extension Task</div>
+            <div class="card-desc">Challenge activity beyond the core content</div>
           </div>
-          <p class="card-desc">Challenge yourself beyond the core content with this extension activity.</p>
-          <span class="card-link-label">Open task →</span>
+          <span class="card-badge badge-student">Pupil</span>
+          <span class="card-arrow">›</span>
         </a>
 
-        <!-- Practical card
-             Photo search suggestion: "electronics lab practical experiment" -->
+        <!-- Practical card · search: "electronics lab experiment" -->
         <a class="resource-card" href="practical.html">
-          <div class="card-header">
-            <img
-              class="card-photo"
-              src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=120&h=120&fit=crop&crop=center"
-              alt="Practical activity"
-              onerror="this.style.display='none'">
-            <div>
-              <div class="card-title">Practical Activity</div>
-              <span class="card-badge badge-student">Student</span>
-            </div>
+          <img class="card-photo"
+            src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=80&h=80&fit=crop&crop=center"
+            alt="Practical" onerror="this.style.display='none'">
+          <div class="card-body">
+            <div class="card-title">Practical Activity</div>
+            <div class="card-desc">Hands-on task — instructions and worksheet</div>
           </div>
-          <p class="card-desc">Hands-on practical task — instructions and worksheet.</p>
-          <span class="card-link-label">Open practical →</span>
+          <span class="card-badge badge-student">Pupil</span>
+          <span class="card-arrow">›</span>
         </a>
 
       </div>
 
-      <div class="section-label">Teacher resources</div>
+      <!-- ===================== TEACHER RESOURCES =================== -->
+      <div class="section-heading">Teacher resources</div>
+      <div class="card-list">
 
-      <div class="resource-grid">
-
-        <!-- Marking Scheme card
-             Photo search suggestion: "marking pen red teacher" -->
+        <!-- Marking Scheme card · search: "marking teacher red pen" -->
         <a class="resource-card" href="marking.html">
-          <div class="card-header">
-            <img
-              class="card-photo"
-              src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=120&h=120&fit=crop&crop=center"
-              alt="Marking scheme"
-              onerror="this.style.display='none'">
-            <div>
-              <div class="card-title">Marking Scheme</div>
-              <span class="card-badge badge-teacher">Teacher</span>
-            </div>
+          <img class="card-photo"
+            src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=80&h=80&fit=crop&crop=center"
+            alt="Marking scheme" onerror="this.style.display='none'">
+          <div class="card-body">
+            <div class="card-title">Marking Scheme</div>
+            <div class="card-desc">Full mark scheme for homework and assessments</div>
           </div>
-          <p class="card-desc">Full mark scheme for homework and assessment tasks.</p>
-          <span class="card-link-label">Open marking →</span>
+          <span class="card-badge badge-teacher">Teacher</span>
+          <span class="card-arrow">›</span>
         </a>
 
       </div>
