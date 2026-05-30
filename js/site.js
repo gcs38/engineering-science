@@ -134,93 +134,72 @@ document.addEventListener('DOMContentLoaded', function () {
    notes        = Teacher notes / lesson plan
    ============================================================ */
 
+
+// ── UNIT TEST CONFIG (Digital Electronics trial) ──
+// Set the password pupils need to access the unit test
+// Set the Drive ID once you've uploaded the test to Google Drive
+// Change status to 'available' when ready to release
+var UNIT_TEST_CONFIG = {
+  'digital': {
+    status: 'soon',           // change to 'available' when ready
+    id: '',                   // paste Drive file ID here when ready
+    password: 'estest2025'    // password pupils enter to access the test
+  }
+};
 var TEACHER_DOCS = {
   'systems-approach': [
     { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
-    { key: 'test_marking',      status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
-  { key: 'unit_test',         status: 'soon', id: '', label: 'Unit test',                                        icon: '\uD83D\uDCDD' },
   { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
   ],
   'energy-efficiency': [
     { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
-    { key: 'test_marking',      status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
-  { key: 'unit_test',         status: 'soon', id: '', label: 'Unit test',                                        icon: '\uD83D\uDCDD' },
   { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
   ],
   'roles-disciplines': [
     { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
-    { key: 'test_marking',      status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
-  { key: 'unit_test',         status: 'soon', id: '', label: 'Unit test',                                        icon: '\uD83D\uDCDD' },
   { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
   ],
   'impacts': [
     { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
-    { key: 'test_marking',      status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
-  { key: 'unit_test',         status: 'soon', id: '', label: 'Unit test',                                        icon: '\uD83D\uDCDD' },
   { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
   ],
   'analogue': [
     { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
-    { key: 'test_marking',      status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
-  { key: 'unit_test',         status: 'soon', id: '', label: 'Unit test',                                        icon: '\uD83D\uDCDD' },
   { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
   ],
   'digital': [
     { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
-    { key: 'test_marking',      status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
-  { key: 'unit_test',         status: 'soon', id: '', label: 'Unit test',                                        icon: '\uD83D\uDCDD' },
   { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
   ],
   'control': [
     { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
-    { key: 'test_marking',      status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
-  { key: 'unit_test',         status: 'soon', id: '', label: 'Unit test',                                        icon: '\uD83D\uDCDD' },
   { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
   ],
   'drive-systems': [
     { key: 'ext_marking',  status: 'available', id: '1UVduGkmJ_b479Ru9qu0MJOM_74FzYu_I', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
-    { key: 'test_marking',      status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
-  { key: 'unit_test',         status: 'soon', id: '', label: 'Unit test',                                        icon: '\uD83D\uDCDD' },
   { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
   ],
   'pneumatics': [
     { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
-    { key: 'test_marking',      status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
-  { key: 'unit_test',         status: 'soon', id: '', label: 'Unit test',                                        icon: '\uD83D\uDCDD' },
   { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
   ],
   'structures-forces': [
     { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
-    { key: 'test_marking',      status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
-  { key: 'unit_test',         status: 'soon', id: '', label: 'Unit test',                                        icon: '\uD83D\uDCDD' },
   { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
   ],
   'materials': [
     { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'test',         status: 'soon', id: '', label: 'Class test',                                  icon: '\uD83D\uDCDD' },
-    { key: 'test_marking',      status: 'soon', id: '', label: 'Marking instructions \u2014 class test',      icon: '\u2705' },
-  { key: 'unit_test',         status: 'soon', id: '', label: 'Unit test',                                        icon: '\uD83D\uDCDD' },
   { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
   ],
 };
