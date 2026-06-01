@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- 
-    NO PRESSURE SIMULATOR public version V2.4.1
+    NO PRESSURE SIMULATOR public version V3
     ---------------------------------------------------
     Developed by Peter Strain
     
@@ -12,7 +12,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>No Pressure Sim V2.4.1</title>
+    <title>No Pressure Sim V3</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -34,34 +34,46 @@
         .preview-box { @apply w-full flex-1 border-2 border-slate-700 bg-slate-50 flex items-center justify-center text-[10px] font-black text-slate-700 rounded-lg mb-1; }
         .card-label { font-size:11px; font-weight:700; color:#475569; text-align:center; line-height:1.2; margin-top:4px; }
         
-        .tool-btn { padding:10px; border-radius:50%; color:#64748b; background:transparent; border:none; cursor:pointer; transition:all .15s; display:flex; align-items:center; justify-content:center; }
+        .tool-btn { padding:6px; border-radius:50%; color:#64748b; background:transparent; border:none; cursor:pointer; transition:all .15s; display:flex; align-items:center; justify-content:center; }
         .tool-btn:hover { background:#f1f5f9; color:#1e293b; }
         .tool-btn:disabled { opacity:.35; cursor:not-allowed; }
 
         .acc-btn { width:100%; padding:12px 20px; display:flex; justify-content:space-between; align-items:center; font-size:14px; font-weight:800; color:#1e293b; background:white; border-radius:50px; border:1px solid transparent; cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,.06); transition:all .2s; }
         .acc-btn:hover { background:#fff7ed; color:#9a3412; border-color:#fed7aa; }
         .acc-btn[aria-expanded="true"] { background:#ffedd5; color:#9a3412; }
+        
+        @media print {
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; color-adjust: exact !important; }
+            html, body { display: block !important; height: auto !important; width: 100% !important; overflow: visible !important; background: white !important; }
+            body > :not(#printArea) { display: none !important; }
+            #printArea { display: block !important; width: 100% !important; background: white !important; padding: 0; margin: 0; }
+            @page { margin: 10mm; size: A4 portrait; }
+            .print-section { page-break-inside: avoid; margin-bottom: 20px; display: block !important; width: 100%; }
+            .print-img { width: 100%; max-height: 350px; object-fit: contain; display: block; margin: 0 auto; border-radius: 8px; border: 1px solid #e2e8f0; }
+        }
     </style>
 </head>
-<body class="flex h-screen flex-col text-slate-800 bg-[#f0f4f9]">
+<body class="flex flex-col h-screen">
 
     <!-- Toolbar -->
-    <div class="h-16 bg-[#f0f4f9] z-20 flex items-center justify-between px-6">
-        <div class="flex items-center gap-4">
-            <div class="flex items-center gap-3">
-                <div class="w-12 h-12 bg-gradient-to-br from-red-600 via-orange-500 to-amber-500 text-white rounded-xl shadow-lg hover:scale-105 transition-transform flex items-center justify-center border border-white/20 select-none">
-                    <svg class="w-8 h-8 drop-shadow-sm" viewBox="0 0 50 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+    <div class="h-16 bg-[#f0f4f9] z-20 flex items-center justify-between px-4 shrink-0">
+        
+        <!-- Left Side: Logo & Main Actions -->
+        <div class="flex items-center gap-2">
+            <div class="flex items-center gap-2">
+                <div class="w-10 h-10 bg-gradient-to-br from-red-600 via-orange-500 to-amber-500 text-white rounded-xl shadow-lg hover:scale-105 transition-transform flex items-center justify-center border border-white/20 select-none">
+                    <svg class="w-6 h-6 drop-shadow-sm" viewBox="0 0 50 20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="2" y="2" width="30" height="16" rx="2" />
                         <rect x="32" y="8" width="14" height="4" />
                         <line x1="12" y1="2" x2="12" y2="18" stroke-width="2" />
                     </svg>
                 </div>
-                <h1 class="text-xl font-bold text-slate-700 tracking-tight whitespace-nowrap">No Pressure <span class="text-orange-600">Sim</span> <span class="text-xs text-slate-400 font-mono ml-1">V2.4.1</span></h1>
+                <h1 class="text-lg font-bold text-slate-700 tracking-tight whitespace-nowrap hidden sm:block">No Pressure <span class="text-orange-600">Sim</span> <span class="text-xs text-slate-400 font-mono ml-1">V3</span></h1>
             </div>
             
-            <div class="h-8 w-px bg-slate-300 mx-2 rounded-full"></div>
+            <div class="h-8 w-px bg-slate-300 mx-1 rounded-full hidden sm:block"></div>
 
-            <div class="flex items-center gap-2 bg-white/60 p-1.5 rounded-full shadow-sm border border-white">
+            <div class="flex items-center gap-1 bg-white/60 p-1 rounded-full shadow-sm border border-white shrink-0">
                 <button id="btnSave" class="tool-btn" title="Save">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V7l-4-4zm-5 16v-4a2 2 0 012-2h0a2 2 0 012 2v4M9 3v4a2 2 0 002 2h4a2 2 h4a2 2 0 002-2V3"/></svg>
                 </button>
@@ -72,31 +84,43 @@
                 <button id="btnExport" class="tool-btn" title="Export Image (I)">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
                 </button>
-            </div>
-
-            <button id="btnSim" type="button" class="px-6 py-2 bg-emerald-500 text-white rounded-full hover:bg-emerald-600 font-bold text-xs shadow-md shadow-slate-900/20 transition-all flex items-center gap-2 active:scale-95"><span>▶</span> SIMULATE</button>
-            <button id="btnStop" type="button" class="hidden px-6 py-2 bg-rose-500 text-white rounded-full hover:bg-rose-600 font-bold text-xs shadow-md shadow-slate-900/20 transition-all flex items-center gap-2 active:scale-95"><span>■</span> STOP</button>
-            <div id="simLiveIndicator" class="hidden items-center gap-2 px-3 py-1.5 bg-white/60 rounded-full shadow-sm border border-white text-[10px] font-bold text-emerald-800 tracking-wider ml-2 uppercase">
-                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> LIVE SIMULATION
-            </div>
-            
-            <div class="flex items-center gap-2 bg-white/60 p-1.5 rounded-full shadow-sm border border-white ml-2">
-                <span class="text-[10px] font-bold text-slate-500 pl-2 uppercase">Speed</span>
-                <input type="range" id="simSpeed" min="0.1" max="3.0" step="0.1" value="1.0" class="w-24 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-orange-600" title="Simulation Speed">
-                <span id="speedVal" class="text-[10px] font-bold text-slate-600 w-8 text-right pr-2 font-mono">1.0x</span>
+                <div class="h-4 w-px bg-slate-300 mx-1"></div>
+                <button id="btnReport" class="tool-btn text-sky-600 hover:text-sky-800" title="Generate Report" onclick="generateReport()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                </button>
+                <button id="btnAnalyse" class="tool-btn text-indigo-600 hover:text-indigo-800" title="Analyse Circuit" onclick="generateAnalysis()">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
+                </button>
             </div>
         </div>
 
-        <div class="flex items-center gap-2 bg-white/60 p-1.5 rounded-full shadow-sm border border-white">
+        <!-- Center: Simulation Controls -->
+        <div class="flex items-center gap-2">
+            <button id="btnSim" type="button" class="px-4 py-2 bg-emerald-500 text-white rounded-full hover:bg-emerald-600 font-bold text-xs shadow-md shadow-slate-900/20 transition-all flex items-center gap-1 active:scale-95 shrink-0"><span>▶</span> SIMULATE</button>
+            <button id="btnStop" type="button" class="hidden px-4 py-2 bg-rose-500 text-white rounded-full hover:bg-rose-600 font-bold text-xs shadow-md shadow-slate-900/20 transition-all flex items-center gap-1 active:scale-95 shrink-0"><span>■</span> STOP</button>
+            
+            <div id="simLiveIndicator" class="hidden items-center gap-2 px-3 py-1.5 bg-white/60 rounded-full shadow-sm border border-white text-[10px] font-bold text-emerald-800 tracking-wider uppercase shrink-0">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> LIVE
+            </div>
+            
+            <div class="hidden md:flex items-center gap-1 bg-white/60 p-1 rounded-full shadow-sm border border-white shrink-0">
+                <span class="text-[10px] font-bold text-slate-500 pl-2 uppercase">Speed</span>
+                <input type="range" id="simSpeed" min="0.1" max="3.0" step="0.1" value="1.0" class="w-16 h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-orange-600" title="Simulation Speed">
+                <span id="speedVal" class="text-[10px] font-bold text-slate-600 w-6 text-right pr-2 font-mono">1.0x</span>
+            </div>
+        </div>
+
+        <!-- Right Side: View & Editing Tools -->
+        <div class="flex items-center gap-1 bg-white/60 p-1 rounded-full shadow-sm border border-white shrink-0">
             <button id="btnUndo" class="tool-btn" title="Undo (Ctrl+Z)" disabled><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg></button>
             <button id="btnRedo" class="tool-btn" title="Redo (Ctrl+Y)" disabled><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6"/></svg></button>
-            <div class="h-5 w-px bg-slate-300 mx-1"></div>
+            <div class="h-4 w-px bg-slate-300 mx-0.5"></div>
             <button id="btnZoomIn" type="button" class="tool-btn" title="Zoom In"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></button>
             <button id="btnZoomOut" type="button" class="tool-btn" title="Zoom Out"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg></button>
             <button id="btnHome" type="button" class="tool-btn" title="Fit to Screen"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg></button>
-            <button id="btnToggleLabels" type="button" class="tool-btn text-slate-500" title="Toggle Component Names"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg></button>
+            <button id="btnToggleLabels" type="button" class="tool-btn text-orange-600 bg-orange-50" title="Toggle Component Names"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/></svg></button>
             
-            <div class="h-5 w-px bg-slate-300 mx-1"></div>
+            <div class="h-4 w-px bg-slate-300 mx-0.5"></div>
             <button id="btnRotate" type="button" class="tool-btn" title="Rotate (R)">↻</button>
             <button id="btnFlipH" type="button" class="tool-btn" title="Flip Horizontal (H)">
                 <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -111,7 +135,7 @@
                 </svg>
             </button>
             
-            <div class="h-5 w-px bg-slate-300 mx-1"></div>
+            <div class="h-4 w-px bg-slate-300 mx-0.5"></div>
             
             <button id="btnDelete" type="button" class="tool-btn text-rose-500 hover:bg-rose-100" title="Delete Selected (Del)">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,6 +146,7 @@
         </div>
     </div>
 
+    <!-- Main Workspace -->
     <div class="flex flex-1 overflow-hidden p-4 gap-4 relative">
         <div id="sidebarContainer" class="relative flex-shrink-0 z-20 transition-all duration-300" style="width:18rem;">
             <div id="sidebarContent" class="w-72 h-full flex flex-col overflow-y-auto pr-2 gap-3 pb-6">
@@ -147,6 +172,7 @@
                 <button class="acc-btn" onclick="toggleMenu('menu-vlv32', this)"><span>3/2 Valves</span> <span class="rotate-icon text-slate-400 text-[10px]">▼</span></button>
                 <div id="menu-vlv32" class="submenu grid grid-cols-2 gap-2">
                     <div class="comp-card" data-type="valve32"><canvas width="140" height="50" class="w-full h-[40px] object-contain pointer-events-none"></canvas><span class="card-label">Button</span></div>
+                    <div class="comp-card" data-type="valve32lever"><canvas width="140" height="50" class="w-full h-[40px] object-contain pointer-events-none"></canvas><span class="card-label">Lever</span></div>
                     <div class="comp-card" data-type="valve32roller"><canvas width="140" height="50" class="w-full h-[40px] object-contain pointer-events-none"></canvas><span class="card-label">Roller</span></div>
                     <div class="comp-card" data-type="valve32plunger"><canvas width="140" height="50" class="w-full h-[40px] object-contain pointer-events-none"></canvas><span class="card-label">Plunger</span></div>
                     <div class="comp-card" data-type="valve32sol"><canvas width="140" height="50" class="w-full h-[40px] object-contain pointer-events-none"></canvas><span class="card-label">Solenoid</span></div>
@@ -202,12 +228,14 @@
             <svg id="sidebarIcon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/></svg>
         </button>
         
-    </div> <div class="flex-1 relative bg-white rounded-3xl shadow-sm border border-white overflow-hidden flex flex-col" id="canvasContainer">
+    </div> 
+    
+    <div class="flex-1 relative bg-white rounded-3xl shadow-sm border border-white overflow-hidden flex flex-col" id="canvasContainer">
             <div class="flex-1 relative overflow-hidden">
                 <canvas id="simCanvas" class="absolute inset-0 w-full h-full"></canvas>
                 
-                <button id="btnViewToggle" type="button" class="absolute top-6 right-6 bg-gradient-to-br from-red-600 via-orange-500 to-amber-500 text-white border border-white/20 px-6 py-4 rounded-2xl shadow-xl hover:scale-105 transition-all font-extrabold text-sm flex items-center justify-center z-30 focus:outline-none tracking-wide">
-                    <span id="viewToggleText">SWITCH TO SYMBOLS</span>
+                <button id="btnViewToggle" type="button" class="absolute top-6 right-6 bg-gradient-to-br from-red-600 via-orange-500 to-amber-500 text-white border border-white/20 px-4 py-2.5 rounded-xl shadow-lg hover:scale-105 transition-all font-bold text-xs flex items-center justify-center z-30 focus:outline-none tracking-wider">
+                    <span id="viewToggleText">SWITCH TO BLOCKS</span>
                 </button>
 
                <div id="inspector" class="hidden absolute top-28 right-6 bg-white/90 p-4 rounded-2xl shadow-xl border border-white/50 w-72 backdrop-blur-md z-20 flex flex-col max-h-[80vh]" style="min-height: 45px;">
@@ -218,6 +246,27 @@
                         </button>
                     </div>
                     <div id="insp-wrapper" class="flex flex-col flex-1 overflow-y-auto mt-2 space-y-3 pr-1">
+                        <!-- Supply Pressure Input -->
+                        <div id="insp-supply" class="hidden pt-2 border-t border-slate-100">
+                             <label class="text-[10px] font-bold text-slate-500 uppercase">System Pressure (N/mm²)</label>
+                             <input type="number" id="propPressure" step="0.1" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-bold text-slate-700 outline-none mt-1" placeholder="e.g. 0.6">
+                        </div>
+
+                        <!-- Cylinder Diameter & Force Output -->
+                        <div id="insp-cyl" class="hidden pt-2 border-t border-slate-100 space-y-2">
+                             <div>
+                                 <label class="text-[10px] font-bold text-slate-500 uppercase">Cylindar Diameter (mm)</label>
+                                 <input type="number" id="propBore" step="1" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-bold text-slate-700 outline-none mt-1">
+                             </div>
+                             <div>
+                                 <label class="text-[10px] font-bold text-slate-500 uppercase">Rod Diameter (mm)</label>
+                                 <input type="number" id="propRod" step="1" class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-bold text-slate-700 outline-none mt-1">
+                             </div>
+                             <div class="bg-orange-50 p-2 rounded-lg border border-orange-200 mt-2">
+                                 <div class="text-[10px] font-bold text-orange-800 uppercase flex justify-between"><span>Outstroke:</span> <span id="outForceOut" class="font-mono">0 N</span></div>
+                                 <div class="text-[10px] font-bold text-orange-800 uppercase flex justify-between"><span>Instroke:</span> <span id="inForceOut" class="font-mono">0 N</span></div>
+                             </div>
+                        </div>
                         <div id="insp-props" class="hidden">
                              <label class="text-[10px] font-bold text-slate-500 uppercase">Label</label>
                              <div class="flex gap-2 mt-1"><input type="text" id="propLabel" class="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-bold text-slate-700 uppercase focus:ring-2 focus:ring-orange-500 outline-none" placeholder="ID"><button id="btnSetProp" type="button" class="bg-orange-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-orange-700 shadow-md shadow-orange-200">SET</button></div>
@@ -246,6 +295,12 @@
                                 <button type="button" id="btnValveNC" class="flex-1 py-1.5 rounded-lg text-xs font-bold border border-slate-200 bg-white text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors">Normally Closed</button>
                                 <button type="button" id="btnValveNO" class="flex-1 py-1.5 rounded-lg text-xs font-bold border border-slate-200 bg-white text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors">Normally Open</button>
                             </div>
+                        </div><!-- V3: Latching Toggle -->
+                        <div id="insp-latching" class="hidden pt-3 border-t border-slate-100">
+                             <div class="flex items-center justify-between">
+                                 <label class="text-[10px] font-bold text-slate-500 uppercase cursor-pointer" for="propLatching">Latching (Toggle)</label>
+                                 <input type="checkbox" id="propLatching" class="w-4 h-4 text-orange-600 rounded cursor-pointer accent-orange-600">
+                             </div>
                         </div>
                         <div id="insp-pipe" class="hidden pt-2 border-t border-slate-100">
                             <label class="text-xs font-bold text-slate-600">Pipe Colour</label>
@@ -264,7 +319,36 @@
         </div>
     </div>
 
-   <script>
+ <div id="reportModal" class="hidden fixed inset-0 z-[110] flex items-center justify-center p-4" style="background:rgba(15,23,42,.7);backdrop-filter:blur(4px);">
+    <div class="bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden border border-slate-100 transform transition-all">
+        <div class="bg-emerald-50 px-6 py-4 border-b border-emerald-100 flex justify-between items-center">
+            <h3 class="text-lg font-bold text-emerald-900 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                Generate Report
+            </h3>
+            <button onclick="closeReportModal()" class="text-emerald-700 hover:text-emerald-900 font-bold">✕</button>
+        </div>
+        <div class="p-6 space-y-4">
+            <p class="text-xs text-slate-500 mb-2">Enter your details to generate an official printout of this circuit and its calculations.</p>
+            <div class="mb-3">
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Student Name</label>
+                <input type="text" id="inp_report_name" placeholder="Enter your full name" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-500">
+            </div>
+            <div class="mb-3">
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">SCN <span class="text-slate-400 font-normal normal-case">(Optional)</span></label>
+                <input type="text" id="inp_report_scn" placeholder="e.g. 123456789" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-500">
+            </div>
+            <div class="mb-3">
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Task Number <span class="text-slate-400 font-normal normal-case">(Optional)</span></label>
+                <input type="text" id="inp_report_task" placeholder="e.g. Task 1A" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-emerald-500">
+            </div>
+        </div>
+        <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-2">
+            <button onclick="closeReportModal()" class="px-4 py-2 rounded-xl text-slate-500 hover:bg-slate-200 font-bold text-sm transition-colors">Cancel</button>
+            <button onclick="executeReportGeneration()" class="px-6 py-2 rounded-xl bg-emerald-700 text-white hover:bg-emerald-800 font-bold text-sm shadow-md shadow-slate-300 transition-colors">Generate PDF / Print</button>
+        </div>
+    </div>
+</div>  <script>
         function toggleMenu(id, btn) { 
             const m=document.getElementById(id); const i=btn.querySelector('.rotate-icon'); 
             const isOpen = m.classList.contains('open'); btn.setAttribute('aria-expanded', !isOpen);
@@ -295,7 +379,6 @@
 
         document.getElementById('compSearch').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase().trim();
-// ... (rest of the code continues normally)
             document.querySelectorAll('.sidebar-group').forEach(group => {
                 const cards = group.querySelectorAll('.comp-card');
                 let hasVisible = false;
@@ -311,9 +394,10 @@
             });
         });
 
-        const CFG = { grid:5, portR:5, hitR:14, col:{off:'#cbd5e1', on:'#2563eb', sel:'#f59e0b', txt:'#334155'} };
+       const CFG = { grid:5, portR:5, hitR:14, col:{off:'#cbd5e1', on:'#2563eb', sel:'#f59e0b', txt:'#334155'} };
         const view = { x:0, y:0, scale:1 };
-       let state = { comps:[], pipes:[], sim:false, t:0, sel:null, multiSel:[], boxSel:null, drag:{act:false}, pipe:{act:false,pts:[]}, ms:{x:0,y:0}, anim:0, viewMode: 'block' };
+        window.showNames = true;
+       let state = { comps:[], pipes:[], sim:false, t:0, sel:null, multiSel:[], boxSel:null, drag:{act:false}, pipe:{act:false,pts:[]}, ms:{x:0,y:0}, anim:0, viewMode: 'symbol', activeTouches: {} };
         let clipboard = null; let historyStack = [], historyIndex = -1; const MAX_HISTORY = 50;
         
         function isSelected(obj) { 
@@ -348,6 +432,7 @@
             block: {
                 spring: (ctx) => { ctx.beginPath(); ctx.strokeStyle = "#64748b"; ctx.lineWidth = 2; ctx.moveTo(0, 0); ctx.lineTo(4, -5); ctx.lineTo(8, 5); ctx.lineTo(12, -5); ctx.lineTo(16, 5); ctx.lineTo(20, 0); ctx.stroke(); },
                 button: (ctx) => { ctx.fillStyle="#f1f5f9"; ctx.strokeStyle="#64748b"; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(10, 0); ctx.stroke(); ctx.beginPath(); ctx.moveTo(10, -10); ctx.lineTo(10, 10); ctx.bezierCurveTo(25, 10, 25, -10, 10, -10); ctx.fill(); ctx.stroke(); },
+                lever: (ctx) => { ctx.fillStyle="#f1f5f9"; ctx.strokeStyle="#64748b"; ctx.lineWidth=2; ctx.fillRect(0, -8, 12, 16); ctx.strokeRect(0, -8, 12, 16); ctx.beginPath(); ctx.moveTo(6, 0); ctx.lineTo(20, -18); ctx.stroke(); ctx.beginPath(); ctx.arc(22, -20, 4, 0, Math.PI*2); ctx.fillStyle="#ef4444"; ctx.fill(); ctx.stroke(); },
                 roller: (ctx) => { ctx.strokeStyle="#64748b"; ctx.lineWidth=1; ctx.fillStyle="#f1f5f9"; ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(10, 0); ctx.stroke(); ctx.beginPath(); ctx.arc(15, 0, 5, 0, Math.PI*2); ctx.fill(); ctx.stroke(); },
                 plunger: (ctx) => { ctx.strokeStyle="#64748b"; ctx.fillStyle="#f1f5f9"; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(0, -4); ctx.lineTo(12, -4); ctx.quadraticCurveTo(18, 0, 12, 4); ctx.lineTo(0, 4); ctx.fill(); ctx.stroke(); },
                 solenoid: (ctx) => { ctx.fillStyle="#f1f5f9"; ctx.strokeStyle="#64748b"; ctx.lineWidth=1; ctx.fillRect(0, -10, 30, 20); ctx.strokeRect(0, -10, 30, 20); ctx.beginPath(); ctx.moveTo(0, -10); ctx.lineTo(30, 10); ctx.stroke(); },
@@ -364,6 +449,7 @@
             symbol: {
                 spring: (ctx) => { ctx.beginPath(); ctx.strokeStyle = "#1e293b"; ctx.lineWidth = 2; ctx.moveTo(0, 0); ctx.lineTo(4, -10); ctx.lineTo(8, 10); ctx.lineTo(12, -10); ctx.lineTo(16, 10); ctx.lineTo(20, 0); ctx.stroke(); },
                 button: (ctx) => { ctx.fillStyle="#ffffff"; ctx.strokeStyle="#1e293b"; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0, -6); ctx.lineTo(18, -6); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0, 6); ctx.lineTo(18, 6); ctx.stroke(); ctx.beginPath(); ctx.moveTo(18, -14); ctx.lineTo(18, 14); ctx.bezierCurveTo(32, 14, 32, -14, 18, -14); ctx.fill(); ctx.stroke(); },
+                lever: (ctx) => { ctx.fillStyle="#ffffff"; ctx.strokeStyle="#1e293b"; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0, -5); ctx.lineTo(22, -5); ctx.stroke(); ctx.beginPath(); ctx.moveTo(0, 5); ctx.lineTo(16, 5); ctx.stroke(); ctx.beginPath(); ctx.moveTo(10, 15); ctx.lineTo(30, -20); ctx.stroke(); ctx.beginPath(); ctx.arc(33, -25, 4, 0, Math.PI*2); ctx.fill(); ctx.stroke(); },
                 roller: (ctx) => { ctx.fillStyle="#ffffff"; ctx.strokeStyle="#1e293b"; ctx.lineWidth=2; ctx.fillRect(0, -5, 20, 10); ctx.strokeRect(0, -5, 20, 10); ctx.beginPath(); ctx.arc(30, 0, 10, 0, Math.PI*2); ctx.fill(); ctx.stroke(); ctx.beginPath(); ctx.arc(30, 0, 2, 0, Math.PI*2); ctx.stroke(); },
                 plunger: (ctx) => { ctx.fillStyle="#ffffff"; ctx.strokeStyle="#1e293b"; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(0, -10); ctx.lineTo(20, -10); ctx.quadraticCurveTo(30, 0, 20, 10); ctx.lineTo(0, 10); ctx.fill(); ctx.stroke(); },
                 solenoid: (ctx) => { ctx.fillStyle="#f8fafc"; ctx.strokeStyle="#1e293b"; ctx.lineWidth=2; ctx.fillRect(0, -10, 30, 20); ctx.strokeRect(0, -10, 30, 20); ctx.beginPath(); ctx.moveTo(0, -10); ctx.lineTo(30, 10); ctx.stroke(); },
@@ -451,22 +537,36 @@
         }
 
         class Supply extends Component {
-            constructor(x,y) { super('supply',x,y); this.addP('1',22,0,'out'); } 
+            constructor(x,y) { super('supply',x,y); this.addP('1',22,0,'out'); this.pressure = 0.6; }
             update() { this.ports[0].p=2; this.ports[0].flow=1; } 
             drawBlock(ctx) { 
                 ctx.beginPath(); ctx.arc(0,0,10,0,Math.PI*2); ctx.fillStyle="#2563eb"; ctx.fill(); ctx.strokeStyle="#1e293b"; ctx.lineWidth=2; ctx.stroke();
                 ctx.fillStyle="white"; ctx.beginPath(); ctx.arc(0,0,4,0,Math.PI*2); ctx.fill();
                 ctx.beginPath(); ctx.moveTo(10,0); ctx.lineTo(22,0); ctx.strokeStyle="#94a3b8"; ctx.lineWidth=2; ctx.stroke();
+                
+                // V3: Draw pressure label if toggled on
+                if (window.showNames) {
+                    ctx.fillStyle = "#666"; ctx.font = "bold 9px Roboto"; ctx.textAlign = "center";
+                    const pText = (this.pressure !== undefined ? this.pressure : 0.6) + " N/mm²";
+                    drawCompText(ctx, pText, 0, 22, this.flipV, this.flipH);
+                }
             }
         }
 
         class Manifold extends Component {
-            constructor(x,y) { super('manifold',x,y); for(let i=0; i<5; i++) this.addP((i+1).toString(), -40 + (i*20), -12, 'out'); }
+           constructor(x,y) { super('manifold',x,y); for(let i=0; i<5; i++) this.addP((i+1).toString(), -40 + (i*20), -12, 'out'); this.pressure = 0.6; }
             update() { this.ports.forEach(p => { p.p=2; p.flow=1; }); } 
             drawBlock(ctx) { 
                 ctx.fillStyle="#2563eb"; ctx.strokeStyle="#1e293b"; ctx.lineWidth=2; ctx.beginPath(); ctx.roundRect(-50, -10, 100, 20, 10); ctx.fill(); ctx.stroke();
                 ctx.fillStyle="white"; for(let i=0; i<5; i++) { ctx.beginPath(); ctx.arc(-40 + (i*20), -5, 3, 0, Math.PI*2); ctx.fill(); }
                 ctx.fillStyle="#1e293b"; ctx.font="bold 8px Roboto"; ctx.textAlign="center"; drawCompText(ctx, "MANIFOLD", 0, 15, this.flipV, this.flipH); 
+                
+                // V3: Draw pressure label if toggled on
+                if (window.showNames) {
+                    ctx.fillStyle = "#666"; ctx.font = "bold 9px Roboto"; ctx.textAlign = "center";
+                    const pText = (this.pressure !== undefined ? this.pressure : 0.6) + " N/mm²";
+                    drawCompText(ctx, pText, 0, 28, this.flipV, this.flipH);
+                }
             }
         }
 
@@ -729,17 +829,60 @@
                 super(d ? 'dac' : 'sac', x, y); 
                 this.d = d; 
                 this.ext = 0; 
-                // Wider port spacing to match the new massive 200px body
                 this.addP('1', -80, 25, 'in'); 
                 if(d) this.addP('2', 80, 25, 'in'); 
+                
+                // New V3 Properties
+                this.boreDia = 50; 
+                this.rodDia = 16;
             }
-            update(dt) {
+           update(dt) {
                 const speed = 200 * dt, p1 = this.ports[0], p2 = this.d ? this.ports[1] : null;
-                const P1 = (p1.p && !p1.elec) ? p1.p : 0, Flow1 = p1.flow || 1; 
-                const P2 = (p2 && p2.p && !p2.elec) ? p2.p : 0, Flow2 = p2 ? p2.flow : 1;
-                const netForce = (P1 * 1.0) - (P2 * 0.5); let isJudder = false;
-                if (netForce > 0.1) { let flowOut = 1.0; if (p2 && p2.ex) flowOut = p2.flow; if (Flow1 < 0.9 && ( !this.d || Flow1 < flowOut )) isJudder = true; if(this.d && !p2.ex && P2>0) flowOut = 0.05; let move = speed * Math.min(Flow1, flowOut); if(isJudder) move = ((state.anim % 10) < 5) ? 0 : move * 2.0; this.ext = Math.min(100, this.ext + move); } 
-                else if (netForce < -0.1 || (!P1 && !this.d)) { let flowIn = this.d ? Flow2 : 1.0; let flowOut = 1.0; if(p1.ex) flowOut = p1.flow; if (this.d && flowIn < 0.9 && flowIn < flowOut) isJudder = true; let move = speed * Math.min(flowIn, flowOut); if(isJudder) move = ((state.anim % 10) < 5) ? 0 : move * 2.0; this.ext = Math.max(0, this.ext - move); }
+                const Flow1 = p1.flow || 1, Flow2 = p2 ? p2.flow : 1;
+                
+                // Are the ports currently pressurized with air?
+                const P1_active = (p1.p && !p1.elec);
+                const P2_active = (p2 && p2.p && !p2.elec);
+
+                // Use the tracer to find the actual pressure feeding each port (default to 0.6 if trace fails)
+                const trueP1 = P1_active ? (tracePressure(p1) || 0.6) : 0;
+                const trueP2 = P2_active ? (tracePressure(p2) || 0.6) : 0;
+
+                // Grab dimensions and calculate true areas
+                const bDia = this.boreDia || 50;
+                const rDia = this.rodDia || 16;
+                const areaOut = Math.PI * (bDia / 2) * (bDia / 2);
+                const areaIn = areaOut - (Math.PI * (rDia / 2) * (rDia / 2));
+
+                // Calculate the real opposing forces (Force = Pressure * Area)
+                const forceOut = trueP1 * areaOut;
+                const forceIn = this.d ? (trueP2 * areaIn) : 0;
+                
+                // The winning force determines direction!
+                const netForce = forceOut - forceIn;
+
+                let isJudder = false;
+
+                // Move Outstroke (if net force is pushing right)
+                if (netForce > 0.1) { 
+                    let flowOut = 1.0; 
+                    if (p2 && p2.ex) flowOut = p2.flow; 
+                    if (Flow1 < 0.9 && ( !this.d || Flow1 < flowOut )) isJudder = true; 
+                    if (this.d && !p2.ex && P2_active) flowOut = 0.05; // Air compression resistance 
+                    let move = speed * Math.min(Flow1, flowOut); 
+                    if(isJudder) move = ((state.anim % 10) < 5) ? 0 : move * 2.0; 
+                    this.ext = Math.min(100, this.ext + move); 
+                } 
+                // Move Instroke (if net force is pushing left, OR it's a spring-return SAC)
+                else if (netForce < -0.1 || (!P1_active && !this.d)) { 
+                    let flowIn = this.d ? Flow2 : 1.0; 
+                    let flowOut = 1.0; 
+                    if(p1.ex) flowOut = p1.flow; 
+                    if (this.d && flowIn < 0.9 && flowIn < flowOut) isJudder = true; 
+                    let move = speed * Math.min(flowIn, flowOut); 
+                    if(isJudder) move = ((state.anim % 10) < 5) ? 0 : move * 2.0; 
+                    this.ext = Math.max(0, this.ext - move); 
+                }
             }
             drawBlock(ctx) {
                 // New massive stroke calculations
@@ -809,6 +952,8 @@
             switch(type) {
                 case 'supply': return new Supply(x,y); case 'manifold': return new Manifold(x,y);
                 case 'valve32': return new GenericValve(type,x,y,3,'button','spring',"Button 3/2",false,false);
+                
+                case 'valve32lever': return new GenericValve(type,x,y,3,'lever','spring',"Lever 3/2",false,false);
                 case 'valve32roller': return new GenericValve(type,x,y,3,'roller','spring',"Roller 3/2",false,false);
                 case 'valve32plunger': return new GenericValve(type,x,y,3,'plunger','spring',"Plunger 3/2",false,false);
                 case 'valve32sol': return new GenericValve(type,x,y,3,'solenoid','spring',"Solenoid 3/2",true,false,"SOL (14)");
@@ -922,14 +1067,20 @@
         function solveMechanical() {
             state.comps.forEach(c => { if(c.type === 'valve32roller' || c.type === 'valve32plunger') c.mech = false; });
             state.comps.forEach(c => {
-                if((c.type === 'sac' || c.type === 'dac') && c.lbl) {
-                    const lblMinus = c.lbl + "-"; const lblPlus = c.lbl + "+";
-                    state.comps.forEach(v => {
-                        if(v.type === 'valve32roller' || v.type === 'valve32plunger') {
-                            if(v.lbl === lblMinus && c.ext <= 2) v.mech = true;
-                            if(v.lbl === lblPlus && c.ext >= 98) v.mech = true;
-                        }
-                    });
+                if(c.type === 'sac' || c.type === 'dac') {
+                    // Use the smart proximity label function instead of just the strict property
+                    const cylLabel = getEffectiveLabel(c);
+                    if (cylLabel) {
+                        const lblMinus = cylLabel + "-"; 
+                        const lblPlus = cylLabel + "+";
+                        state.comps.forEach(v => {
+                            if(v.type === 'valve32roller' || v.type === 'valve32plunger') {
+                                const valveLabel = getEffectiveLabel(v);
+                                if(valveLabel === lblMinus && c.ext <= 2) v.mech = true;
+                                if(valveLabel === lblPlus && c.ext >= 98) v.mech = true;
+                            }
+                        });
+                    }
                 }
             });
         }
@@ -1031,7 +1182,10 @@
         cvs.oncontextmenu = e => { e.preventDefault(); return false; };
 
         const onDown = e => {
-            if(e.touches && e.touches.length === 2) {
+            const touches = e.changedTouches ? Array.from(e.changedTouches) : [e];
+
+            // 1. PINCH/PAN LOGIC (Only allow in Build Mode!)
+            if(e.touches && e.touches.length >= 2 && !state.sim) {
                 e.preventDefault();
                 if(state.pipe.act) { state.pipe.act = false; draw(); } 
                 isPanning = true;
@@ -1044,22 +1198,39 @@
 
             if(e.type === 'touchstart') e.preventDefault();
 
+            // 2. SIMULATION MODE (Multi-touch support for valves)
+            if (state.sim) {
+                touches.forEach(t => {
+                    const p = getPos(t);
+                    if (t.identifier !== undefined) state.ms = p; 
+
+                    for(let i=state.comps.length-1; i>=0; i--) { 
+                        const c = state.comps[i]; 
+                        if(c.hit(p.x, p.y) && (c.type === 'valve32' || c.type === 'valve32lever')) { 
+                            if (c.latching || c.type === 'valve32lever') { 
+                                c.toggle(); 
+                            } else { 
+                                c.manual = true; 
+                                // Map this specific finger to this specific valve
+                                if (t.identifier !== undefined) state.activeTouches[t.identifier] = c;
+                                else state.activeValve = c; // Fallback for mouse clicks
+                            }
+                            draw(); break; // Break out of this finger's loop so it doesn't click items behind it
+                        } 
+                        if(c.hit(p.x, p.y) && c.type === 'switch') { c.manual=!c.manual; draw(); break; } 
+                        if(c.hit(p.x, p.y) && c.type === 'bleed') { c.capped=!c.capped; draw(); break; } 
+                    }
+                });
+                return; // Stop here during simulation so we don't trigger wire drawing
+            }
+
+            // 3. BUILD MODE (Single touch logic for wires and dragging)
             const raw = e.touches ? e.touches[0] : e;
             const p = getPos(raw); 
             state.ms = p; 
             
             if(raw.button === 1 || raw.button === 2 || e.ctrlKey || e.metaKey) {
                 isPanning = true; startPan = {x:raw.clientX, y:raw.clientY}; cvs.style.cursor='grabbing'; return;
-            }
-
-            if (state.sim) {
-                 for(let i=state.comps.length-1; i>=0; i--) { 
-                     const c = state.comps[i]; 
-                     if(c.hit(p.x, p.y) && c.type === 'valve32') { c.toggle(); draw(); return; } 
-                     if(c.hit(p.x, p.y) && c.type === 'switch') { c.manual=!c.manual; draw(); return; } 
-                     if(c.hit(p.x, p.y) && c.type === 'bleed') { c.capped=!c.capped; draw(); return; } 
-                 } 
-                 return;
             }
 
             let hit = false;
@@ -1077,6 +1248,7 @@
                     draw(); return;
                 }
             }
+            
             if(state.pipe.act) { 
                 let snapX = p.x, snapY = p.y;
                 const lastPt = state.pipe.points.length > 0 ? state.pipe.points[state.pipe.points.length-1] : state.pipe.start.parent.absP(state.pipe.start);
@@ -1160,7 +1332,6 @@
                 draw(); return;
             }
 
-            // Only block scroll if interacting directly with the canvas
             const isCanvasInteraction = e.target === cvs || isPanning || state.drag.act || state.pipe.act || state.boxSel?.act;
             if (!isCanvasInteraction && e.type === 'touchmove') return;
             if(e.cancelable && isCanvasInteraction) e.preventDefault();
@@ -1203,10 +1374,25 @@
         };
 
         const onUp = e => { 
+            const touches = e.changedTouches ? Array.from(e.changedTouches) : [e];
+
+            touches.forEach(t => {
+                if (t.identifier !== undefined && state.activeTouches[t.identifier]) {
+                    state.activeTouches[t.identifier].manual = false;
+                    delete state.activeTouches[t.identifier];
+                    if(state.sim) draw();
+                }
+            });
+
+            if (state.activeValve) {
+                state.activeValve.manual = false;
+                state.activeValve = null;
+                if(state.sim) draw();
+            }
+
             if(e.touches && e.touches.length < 2 && isPanning) {
                 isPanning = false; initialPinchDist = 0;
             }
-
             if (state.drag.act && state.drag.moved) recordState(); 
             
             if (state.boxSel?.act) {
@@ -1327,7 +1513,46 @@
             state.comps = state.comps.filter(c => !cDel.has(c));
             state.multiSel = []; state.sel = null; updInsp(); recordState(); draw(); 
         }
-        
+
+        // V3: Pathfinding algorithm to trace a port back to its pressure source
+        function tracePressure(startPort) {
+            if (!startPort) return null;
+            let q = [startPort];
+            let visited = new Set([startPort]);
+
+            while(q.length > 0) {
+                let curr = q.shift();
+                
+                // If we hit a supply or manifold, grab its exact pressure!
+                if (curr.parent.type === 'supply' || curr.parent.type === 'manifold') {
+                    return curr.parent.pressure !== undefined ? curr.parent.pressure : 0.6;
+                }
+
+                // 1. Follow external pipes
+                state.pipes.forEach(pipe => {
+                    if (pipe.p1 === curr && !visited.has(pipe.p2)) { visited.add(pipe.p2); q.push(pipe.p2); }
+                    if (pipe.p2 === curr && !visited.has(pipe.p1)) { visited.add(pipe.p1); q.push(pipe.p1); }
+                });
+
+                // 2. Follow internal paths (STRUCTURAL TRACE - ignores spool state!)
+                if (curr.parent) {
+                    const pType = curr.parent.type;
+                    if (pType.startsWith('valve')) {
+                        // Bridge out-ports (2,4) back to in-port (1) to find supply pressure
+                        if (curr.id === '2' || curr.id === '4') {
+                            let inPort = curr.parent.ports.find(p => p.id === '1');
+                            if (inPort && !visited.has(inPort)) { visited.add(inPort); q.push(inPort); }
+                        }
+                    } else if (['shuttle', 'unidir', 'tpiece'].includes(pType)) {
+                        curr.parent.ports.forEach(p => {
+                            if (!visited.has(p)) { visited.add(p); q.push(p); }
+                        });
+                    }
+                }
+            }
+            return null; // Return null if no supply is found connected to this port
+        }
+
         function updInsp() {
             const el = document.getElementById('inspector');
             if(!state.sel) return el.classList.add('hidden');
@@ -1347,13 +1572,17 @@
                 document.getElementById('btnValveRight').className = !isLeft ? "flex-1 py-1.5 rounded-lg text-xs font-bold bg-orange-600 text-white shadow-md shadow-orange-200" : "flex-1 py-1.5 rounded-lg text-xs font-bold border border-slate-200 bg-white text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors";
             }
             
-            show('insp-valve32', isC && ['valve32', 'valve32roller', 'valve32plunger', 'valve32sol', 'valve32pilot', 'valve32dia'].includes(obj.type));
+            show('insp-valve32', isC && ['valve32', 'valve32lever', 'valve32roller', 'valve32plunger', 'valve32sol', 'valve32pilot', 'valve32dia'].includes(obj.type));
             if(isC && obj.normallyOpen !== undefined) {
                 const isNC = !obj.normallyOpen;
                 document.getElementById('btnValveNC').className = isNC ? "flex-1 py-1.5 rounded-lg text-xs font-bold bg-orange-600 text-white shadow-md shadow-orange-200" : "flex-1 py-1.5 rounded-lg text-xs font-bold border border-slate-200 bg-white text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors";
                 document.getElementById('btnValveNO').className = !isNC ? "flex-1 py-1.5 rounded-lg text-xs font-bold bg-orange-600 text-white shadow-md shadow-orange-200" : "flex-1 py-1.5 rounded-lg text-xs font-bold border border-slate-200 bg-white text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors";
             }
-            
+            // V3: Show latching checkbox for standard buttons
+            show('insp-latching', isC && obj.type === 'valve32');
+            if(isC && obj.type === 'valve32') {
+                document.getElementById('propLatching').checked = !!obj.latching;
+            }
             show('insp-text', isC && obj.type === 'text');
             if(isC && obj.type === 'text') { document.getElementById('propText').value = obj.text; document.getElementById('propSize').value = obj.fontSize; }
             
@@ -1363,7 +1592,48 @@
                 btn.className = obj.dashed ? "w-full py-2 bg-slate-800 text-white text-xs font-bold rounded-xl hover:bg-slate-700 transition-colors mt-2 shadow-sm" : "w-full py-2 bg-slate-100 text-slate-600 text-xs font-bold rounded-xl hover:bg-slate-200 transition-colors mt-2";
                 btn.innerText = obj.dashed ? "Pilot Line (ON)" : "Pilot Line (Dashed)";
             }
-        }
+      // V3: Supply Pressure Logic
+            show('insp-supply', isC && (obj.type === 'supply' || obj.type === 'manifold'));
+            if(isC && (obj.type === 'supply' || obj.type === 'manifold')) { 
+                const pInput = document.getElementById('propPressure');
+                // Only overwrite the box if the user isn't currently clicking/typing inside it!
+                if (document.activeElement !== pInput) {
+                    pInput.value = obj.pressure !== undefined ? obj.pressure : 0.6; 
+                }
+            }
+
+            // V3: Cylinder Force Calculation Logic
+            show('insp-cyl', isC && (obj.type === 'sac' || obj.type === 'dac'));
+            if(isC && (obj.type === 'sac' || obj.type === 'dac')) {
+                const bDia = obj.boreDia !== undefined ? obj.boreDia : 50;
+                const rDia = obj.rodDia !== undefined ? obj.rodDia : 16;
+                const bInput = document.getElementById('propBore');
+                const rInput = document.getElementById('propRod');
+                
+                // Only overwrite the boxes if they aren't actively being typed in
+                if (document.activeElement !== bInput) bInput.value = bDia;
+                if (document.activeElement !== rInput) rInput.value = rDia;
+
+               // TRACE individual port pressures! 
+                // If a port isn't connected to a supply, its pressure is 0.
+                const traceOut = tracePressure(obj.ports[0]);
+                const traceIn = (obj.d && obj.ports[1]) ? tracePressure(obj.ports[1]) : null;
+
+                const P_out = traceOut !== null ? traceOut : 0;
+                const P_in  = traceIn !== null ? traceIn : 0;
+
+                // Calculate Areas: π * r²
+                const bRad = bDia / 2;
+                const rRad = rDia / 2;
+                const areaOut = Math.PI * (bRad * bRad);
+                const areaIn = areaOut - (Math.PI * (rRad * rRad));
+
+                // Calculate Forces: F = P * A
+                document.getElementById('outForceOut').innerText = Math.round(areaOut * P_out) + " N";
+                
+                // If it's a Double Acting Cylinder (DAC), show instroke force. If Single Acting (SAC), show "SPRING"
+                document.getElementById('inForceOut').innerText = obj.d ? (Math.round(areaIn * P_in) + " N") : "SPRING";
+            } }
 
         function fitToScreen() {
             if (state.comps.length === 0) { view.x = cvs.width/2; view.y = cvs.height/2; view.scale = 1; draw(); return; }
@@ -1376,7 +1646,16 @@
                 }
             };
 
-            state.comps.forEach(c => { addPt(c.x - 60, c.y - 40); addPt(c.x + 60, c.y + 40); });
+           state.comps.forEach(c => { 
+                if (c.type === 'sac' || c.type === 'dac') {
+                    // Massive bounding box to accommodate the full extended rod!
+                    addPt(c.x - 110, c.y - 50); 
+                    addPt(c.x + 350, c.y + 50); 
+                } else {
+                    addPt(c.x - 60, c.y - 40); 
+                    addPt(c.x + 60, c.y + 40); 
+                }
+            });
             state.pipes.forEach(l => {
                 if (l.p1 && l.p1.parent) { const p = l.p1.parent.absP(l.p1); addPt(p.x, p.y); }
                 if (l.p2 && l.p2.parent) { const p = l.p2.parent.absP(l.p2); addPt(p.x, p.y); }
@@ -1389,7 +1668,7 @@
             const w = maxX - minX, h = maxY - minY; if (w <= 0 || h <= 0) return;
             
             const cw = cvs.width || 800; const ch = cvs.height || 600; 
-            let newScale = Math.min(cw / w, ch / h); newScale = Math.min(Math.max(newScale, 0.15), 1.5);
+            let newScale = Math.min(cw / w, ch / h); newScale = Math.min(Math.max(newScale, 0.15), 1.0);
             
             view.scale = newScale; 
             view.x = (cw / 2) - ((minX + w / 2) * newScale); 
@@ -1399,7 +1678,10 @@
 
         function getStateJSON() {
             return JSON.stringify({
-                components: state.comps.map(c => ({ id: c.id, type: c.type, x: c.x, y: c.y, rot: c.rot, lbl: c.lbl || "", restrict: c.restrict || 0, capped: c.capped || false, manual: c.manual || false, flipV: c.flipV || false, flipH: c.flipH || false, startPos: c.startPos, text: c.text, fontSize: c.fontSize, normallyOpen: c.normallyOpen })),
+                components: state.comps.map(c => ({ 
+                    id: c.id, type: c.type, x: c.x, y: c.y, rot: c.rot, lbl: c.lbl || "", restrict: c.restrict || 0, capped: c.capped || false, manual: c.manual || false, flipV: c.flipV || false, flipH: c.flipH || false, startPos: c.startPos, text: c.text, fontSize: c.fontSize, normallyOpen: c.normallyOpen, 
+                    pressure: c.pressure, boreDia: c.boreDia, rodDia: c.rodDia, latching: c.latching 
+                })),
                 pipes: state.pipes.map(p => ({ p1_comp: p.p1.parent.id, p1_idx: p.p1.parent.ports.indexOf(p.p1), p2_comp: p.p2.parent.id, p2_idx: p.p2.parent.ports.indexOf(p.p2), points: p.points, color: p.color, dashed: p.dashed || false }))
             });
         }
@@ -1424,7 +1706,9 @@
                         c.fontSize = d.fontSize !== undefined ? d.fontSize : c.fontSize; 
                         c.normallyOpen = d.normallyOpen !== undefined ? d.normallyOpen : c.normallyOpen;
                         state.comps.push(c); 
-                    }
+                   c.pressure = d.pressure !== undefined ? d.pressure : c.pressure;
+c.boreDia = d.boreDia !== undefined ? d.boreDia : c.boreDia;
+c.rodDia = d.rodDia !== undefined ? d.rodDia : c.rodDia;c.latching = d.latching !== undefined ? d.latching : false; }
                 });
                 data.pipes.forEach(p => {
                     const c1 = state.comps.find(x => x.id === p.p1_comp); const c2 = state.comps.find(x => x.id === p.p2_comp);
@@ -1536,8 +1820,10 @@
         safeBind('btnRotate', 'onclick', ()=>{ if(state.multiSel.length > 0 && !state.sim) { state.multiSel.forEach(s => { if(s.type==='c') s.obj.rot=(s.obj.rot+90)%360; }); recordState(); draw(); }});
         safeBind('btnFlipH', 'onclick', ()=>{ if(state.multiSel.length > 0 && !state.sim) { state.multiSel.forEach(s => { if(s.type==='c') s.obj.toggleFlip('H'); }); recordState(); draw(); }});
         safeBind('btnFlipV', 'onclick', ()=>{ if(state.multiSel.length > 0 && !state.sim) { state.multiSel.forEach(s => { if(s.type==='c') s.obj.toggleFlip('V'); }); recordState(); draw(); }});
-        safeBind('propRestrict', 'onchange', (e)=>{ if(state.sel?.type==='c') { state.sel.obj.restrict=parseFloat(e.target.value); document.getElementById('restrictVal').innerText=Math.round(e.target.value*100)+'%'; recordState(); }});
-        safeBind('propRestrict', 'oninput', (e)=>{ if(state.sel?.type==='c') { state.sel.obj.restrict=parseFloat(e.target.value); document.getElementById('restrictVal').innerText=Math.round(e.target.value*100)+'%'; }});
+        safeBind('propPressure', 'oninput', (e) => { if(state.sel?.type==='c' && (state.sel.obj.type==='supply' || state.sel.obj.type==='manifold')) { let val = parseFloat(e.target.value); state.sel.obj.pressure = isNaN(val) ? 0 : val; updInsp(); recordState(); }});
+        safeBind('propBore', 'oninput', (e) => { if(state.sel?.type==='c' && (state.sel.obj.type==='sac' || state.sel.obj.type==='dac')) { let val = parseFloat(e.target.value); state.sel.obj.boreDia = isNaN(val) ? 0 : val; updInsp(); recordState(); }});
+        safeBind('propRod', 'oninput', (e) => { if(state.sel?.type==='c' && (state.sel.obj.type==='sac' || state.sel.obj.type==='dac')) { let val = parseFloat(e.target.value); state.sel.obj.rodDia = isNaN(val) ? 0 : val; updInsp(); recordState(); }});
+        safeBind('propLatching', 'onchange', (e) => { if(state.sel?.type==='c' && state.sel.obj.type==='valve32') { state.sel.obj.latching = e.target.checked; recordState(); }});
         safeBind('btnValveLeft', 'onclick', () => { if(state.sel?.type==='c' && state.sel.obj.type.startsWith('valve52')) { state.sel.obj.startPos = true; state.sel.obj.active = true; state.sel.obj.spoolPos = 1; recordState(); updInsp(); draw(); } });
         safeBind('btnValveRight', 'onclick', () => { if(state.sel?.type==='c' && state.sel.obj.type.startsWith('valve52')) { state.sel.obj.startPos = false; state.sel.obj.active = false; state.sel.obj.spoolPos = 0; recordState(); updInsp(); draw(); } });
         safeBind('btnValveNC', 'onclick', () => { if(state.sel?.type==='c') { state.sel.obj.normallyOpen = false; recordState(); updInsp(); draw(); } });
@@ -1548,9 +1834,11 @@
         safeBind('propText', 'onchange', (e) => { if(state.sel?.type==='c' && state.sel.obj.type === 'text') { recordState(); } }); 
         safeBind('propSize', 'oninput', (e) => { if(state.sel?.type==='c' && state.sel.obj.type === 'text') { state.sel.obj.fontSize = parseInt(e.target.value); draw(); } });
         safeBind('propSize', 'onchange', (e) => { if(state.sel?.type==='c' && state.sel.obj.type === 'text') { recordState(); } });
-        safeBind('btnPipeDashed', 'onclick', () => { if(state.sel?.type === 'l') { state.sel.obj.dashed = !state.sel.obj.dashed; recordState(); updInsp(); draw(); } });
+        safeBind('btnPipeDashed', 'onclick', () => { if(state.sel?.type === 'l') { state.sel.obj.dashed = !state.sel.obj.dashed; recordState(); updInsp(); draw(); } });safeBind('propRestrict', 'oninput', (e) => { if(state.sel?.type==='c' && state.sel.obj.type==='unidir') { state.sel.obj.restrict = parseFloat(e.target.value); document.getElementById('restrictVal').innerText = Math.round(state.sel.obj.restrict*100)+'%'; recordState(); draw(); }});
 
-        document.querySelectorAll('.comp-card').forEach(el => el.ondragstart = e => { if(!state.sim) e.dataTransfer.setData('t', el.dataset.type); });
+        document.querySelectorAll('.comp-card').forEach(el => {
+            el.ondragstart = e => { if(!state.sim) e.dataTransfer.setData('t', el.dataset.type); };
+        });
         cvs.ondragover = e => e.preventDefault();
         cvs.ondrop = e => {
             if(state.sim) return;
@@ -1561,12 +1849,30 @@
         
         function setPipeColor(c) { if(state.sel?.type==='l') { state.sel.obj.color=c; recordState(); draw(); } }
         
-        document.getElementById('btnSave').onclick = () => {
-            const jsonStr = getStateJSON(); const data = JSON.parse(jsonStr); data.version = "V2.4.1";
-            const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"}); const url = URL.createObjectURL(blob); 
-            const a = document.createElement('a'); a.href = url; const d = new Date(); a.download = `circuit_${d.getHours()}-${d.getMinutes()}.json`; 
-            a.click(); URL.revokeObjectURL(url);
-        };
+     document.getElementById('btnSave').onclick = () => {
+    // 1. Automatically generate a name using the current time (no prompt)
+    const d = new Date();
+    const fileName = `circuit_${d.getHours()}-${d.getMinutes()}.json`;
+
+    // 2. Gather the circuit data
+    const jsonStr = getStateJSON(); 
+    const data = JSON.parse(jsonStr); 
+    data.version = "V3";
+    const finalJson = JSON.stringify(data, null, 2);
+
+    // 3. Immediately trigger the download
+    const blob = new Blob([finalJson], {type: "application/json"}); 
+    const url = URL.createObjectURL(blob); 
+    const a = document.createElement('a'); 
+    a.href = url; 
+    a.download = fileName; 
+    
+    // Append, click, and remove to satisfy basic browser security
+    document.body.appendChild(a);
+    a.click(); 
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+};
 
         document.getElementById('btnExport').onclick = () => {
             const currentSel = state.sel; 
@@ -1582,136 +1888,583 @@
             };
 
             if (state.comps.length > 0) {
-                state.comps.forEach(c => { addPt(c.x - 60, c.y - 40); addPt(c.x + 60, c.y + 40); });
+                state.comps.forEach(c => { 
+                    if (c.type === 'sac' || c.type === 'dac') {
+                        addPt(c.x - 110, c.y - 50); 
+                        addPt(c.x + 350, c.y + 50); 
+                    } else {
+                        addPt(c.x - 60, c.y - 40); 
+                        addPt(c.x + 60, c.y + 40); 
+                    }
+                });
                 state.pipes.forEach(l => {
                     if (l.p1 && l.p1.parent) { const p = l.p1.parent.absP(l.p1); addPt(p.x, p.y); }
                     if (l.p2 && l.p2.parent) { const p = l.p2.parent.absP(l.p2); addPt(p.x, p.y); }
                     if (l.points) l.points.forEach(pt => addPt(pt.x, pt.y));
                 });
             } else {
-                // Fallback if the canvas is completely empty
-                addPt(0, 0);
-                addPt(cvs.width, cvs.height);
+                addPt(0, 0); addPt(cvs.width, cvs.height);
             }
 
-            // Add a clean margin around the circuit
-            const margin = 80;
-            minX -= margin; maxX += margin; minY -= margin; maxY += margin;
-
-            const exportWidth = maxX - minX;
-            const exportHeight = maxY - minY;
-
-            // 2. Setup the high-resolution temporary canvas
+            const margin = 80; minX -= margin; maxX += margin; minY -= margin; maxY += margin;
+            const exportWidth = maxX - minX; const exportHeight = maxY - minY;
             const scaleFactor = 3;
             const tempCvs = document.createElement('canvas');
-            tempCvs.width = exportWidth * scaleFactor;
-            tempCvs.height = exportHeight * scaleFactor;
-
+            tempCvs.width = exportWidth * scaleFactor; tempCvs.height = exportHeight * scaleFactor;
             const tCtx = tempCvs.getContext('2d');
-            tCtx.fillStyle = '#ffffff';
-            tCtx.fillRect(0, 0, tempCvs.width, tempCvs.height);
+            tCtx.fillStyle = '#ffffff'; tCtx.fillRect(0, 0, tempCvs.width, tempCvs.height);
 
-            // 3. Temporarily hijack the view state to perfectly frame the bounding box
             const oldView = { x: view.x, y: view.y, scale: view.scale };
-            view.x = -minX * scaleFactor;
-            view.y = -minY * scaleFactor;
-            view.scale = scaleFactor;
+            view.x = -minX * scaleFactor; view.y = -minY * scaleFactor; view.scale = scaleFactor;
 
-            // 4. Draw the cropped circuit to the temporary canvas
             draw(tCtx, false);
 
-            // 5. Instantly restore the user's original view and selection
-            view.x = oldView.x;
-            view.y = oldView.y;
-            view.scale = oldView.scale;
+            view.x = oldView.x; view.y = oldView.y; view.scale = oldView.scale;
             state.sel = currentSel;
-            draw(); // Redraw the main canvas so it looks like nothing happened
+            draw(); 
 
-            // 6. Trigger the download
             const url = tempCvs.toDataURL('image/png'); 
-            const a = document.createElement('a'); 
-            a.href = url; 
-            a.download = 'circuit_snapshot_highres.png'; 
-            a.click();
+            const a = document.createElement('a'); a.href = url; a.download = 'circuit_snapshot_highres.png'; a.click();
         };
 
-        document.getElementById('fileLoad').onchange = (e) => {
-            const file = e.target.files[0]; if (!file) return;
-            const reader = new FileReader();
-            reader.onload = (evt) => { 
-                try { 
-                    loadStateJSON(evt.target.result); 
-                    recordState(); 
-                    fitToScreen(); 
-                } catch(err) { 
-                    console.error(err); 
-                } finally { 
-                    e.target.value = ''; 
-                } 
-            };
-            reader.readAsText(file);
-        };
-// --- DRAGGABLE INSPECTOR LOGIC ---
-        function makeDraggable(el, handle) {
-            if (!handle || !el) return;
-            handle.onmousedown = e => {
-                // Ignore clicks on buttons or inputs
-                if (e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
-                
-                e.preventDefault(); 
-                e.stopPropagation();
-                
-                let p3 = e.clientX, p4 = e.clientY;
-                
-                // Temporarily disable any CSS transitions so it doesn't rubber-band
-                el.style.transition = 'none';
+       // === 2. INITIALISATION & AUTO-LOAD ===
+window.onload = () => {
+    renderSidebarIcons(); // Draw the menu icons first
 
-                // Calculate exact visual position to prevent jumping
-                const rect = el.getBoundingClientRect();
-                const parentRect = el.offsetParent ? el.offsetParent.getBoundingClientRect() : { left: 0, top: 0 };
-                
-                el.style.right = 'auto'; 
-                el.style.bottom = 'auto';
-                el.style.left = (rect.left - parentRect.left) + 'px';
-                el.style.top = (rect.top - parentRect.top) + 'px';
-                
-                const onMove = e => {
-                    const dx = p3 - e.clientX;
-                    const dy = p4 - e.clientY;
-                    p3 = e.clientX; 
-                    p4 = e.clientY;
-                    
-                    let newTop = el.offsetTop - dy;
-                    let newLeft = el.offsetLeft - dx;
-                    
-                    // Keep it within the screen bounds
-                    const maxX = Math.max(0, window.innerWidth - el.offsetWidth);
-                    const maxY = Math.max(0, window.innerHeight - el.offsetHeight);
-                    
-                    el.style.top = Math.max(0, Math.min(newTop, maxY)) + 'px';
-                    el.style.left = Math.max(0, Math.min(newLeft, maxX)) + 'px';
-                };
-                
-                const onUp = () => {
-                    document.removeEventListener('mousemove', onMove);
-                    document.removeEventListener('mouseup', onUp);
-                };
-                
-                document.addEventListener('mousemove', onMove);
-                document.addEventListener('mouseup', onUp);
-            };
+    if (preloadedLesson && preloadedLesson.trim().length > 10) {
+        // 1. Load the saved JSON circuit
+        loadStateJSON(preloadedLesson);
+        recordState();
+        
+        // 2. KIOSK MODE: Completely hide the top and side menus
+        document.getElementById('sidebarContainer').style.display = 'none';
+        
+        // Target the top toolbar (the first element with these specific classes)
+        const topToolbar = document.querySelector('.h-16.bg-\\[\\#f0f4f9\\].z-20');
+        if (topToolbar) topToolbar.style.display = 'none';
+        
+        // 3. Start the live simulation automatically
+        document.getElementById('btnSim').click();
+
+        // 4. Resize and center (Wait time reduced since there is no slide animation anymore)
+        setTimeout(() => {
+            resize();         // Update internal canvas dimensions
+            fitToScreen();    // Calculate the perfect centre
+        }, 50); 
+        
+    } else {
+        // Normal empty startup (Menus remain visible)
+        recordState();
+        draw();
+    }
+};
+     // ============================================================================
+      // --- QS CIRCUIT ANALYSIS GENERATOR (PATTERN MATCHER ARCHITECTURE) ---
+      // ============================================================================
+      
+      function getEffectiveLabel(comp) {
+          if (comp.lbl && comp.lbl.trim() !== "") return comp.lbl;
+          let closestText = null; let minDist = 100; 
+          state.comps.forEach(c => {
+              if (c.type === 'text' && c.text) {
+                  let d = Math.hypot(c.x - comp.x, c.y - comp.y);
+                  if (d < minDist) { minDist = d; closestText = c.text.trim(); }
+              }
+          });
+          return closestText;
+      }
+
+      function analyzePathway(startPort) {
+          if (!startPort) return null;
+          
+          let result = {
+              triggers: [],          
+              hasMemory52: false,    
+              logic: 'SINGLE',       
+              hasTimeDelay: false,   
+              isDirectSupply: false,
+              isSlowed: false       // Tracks restrictors on cylinder lines
+          };
+
+          let q = [startPort];
+          let visitedPorts = new Set();
+          let visitedComps = new Set();
+          let allCompsInPath = [];
+          let hitMemoryValve = false;
+
+          while (q.length > 0) {
+              let curr = q.shift();
+              if (visitedPorts.has(curr)) continue;
+              visitedPorts.add(curr);
+
+              state.pipes.forEach(pipe => {
+                  if (pipe.p1 === curr || pipe.p2 === curr) {
+                      let nextPort = pipe.p1 === curr ? pipe.p2 : pipe.p1;
+                      if (visitedPorts.has(nextPort)) return;
+                      visitedPorts.add(nextPort);
+                      
+                      let comp = nextPort.parent;
+                      if (!comp || comp.type === 'sac' || comp.type === 'dac') return;
+                      
+                      if (comp.type === 'supply' || comp.type === 'manifold') {
+                          result.isDirectSupply = true; return;
+                      }
+
+                      if (!visitedComps.has(comp)) {
+                          visitedComps.add(comp);
+                          allCompsInPath.push(comp);
+                      }
+
+                      if (comp.type.startsWith('valve52')) {
+                          result.hasMemory52 = true;
+                          hitMemoryValve = true;
+                          if (nextPort.id === '4') { let p = comp.ports.find(x => x.id === '14'); if(p) q.push(p); }
+                          else if (nextPort.id === '2') { let p = comp.ports.find(x => x.id === '12'); if(p) q.push(p); }
+                      } 
+                      else if (comp.type.startsWith('valve32') || comp.type === 'signal') {
+                          if (!result.triggers.includes(comp)) result.triggers.push(comp);
+                          
+                          if (nextPort.id === '2' && comp.type.startsWith('valve32')) {
+                              let p1 = comp.ports.find(x => x.id === '1'); if(p1) q.push(p1);
+                              if (comp.cfg && comp.cfg.p14) { let p14 = comp.ports.find(x => x.id === '14'); if(p14) q.push(p14); }
+                              if (comp.cfg && comp.cfg.p12) { let p12 = comp.ports.find(x => x.id === '12'); if(p12) q.push(p12); }
+                          }
+                      } 
+                      else if (comp.type === 'shuttle') {
+                          result.logic = 'OR';
+                          comp.ports.forEach(p => { if (p.id !== nextPort.id) q.push(p); }); // FIX: Removed exhaust restriction
+                      }
+                      else if (['unidir', 'reservoir', 'tpiece'].includes(comp.type)) {
+                          // If we hit a restrictor BEFORE hitting a 5/2 valve, it's slowing the cylinder stroke!
+                          if (comp.type === 'unidir' && !hitMemoryValve) result.isSlowed = true;
+                          comp.ports.forEach(p => { if (p.id !== nextPort.id) q.push(p); }); // FIX: Removed exhaust restriction
+                      }
+                  }
+              });
+          }
+
+          if (allCompsInPath.some(c => c.type === 'reservoir') && allCompsInPath.some(c => c.type === 'unidir')) {
+              result.hasTimeDelay = true;
+          }
+          if (result.triggers.length > 1 && result.logic !== 'OR') result.logic = 'AND';
+          if (result.triggers.length === 0 && !result.isDirectSupply) return null;
+
+          return result;
+      }
+
+      function buildTriggerSentence(path) {
+          if (!path) return "Unknown trigger";
+          if (path.triggers.length === 0) return "direct air is supplied";
+
+          let getValveName = (v) => {
+              let name = getEffectiveLabel(v);
+              let nStr = name ? ` "${name}"` : "";
+              if (v.type === 'valve32') return `push button valve${nStr}`;
+              if (v.type === 'valve32lever') return `lever valve${nStr}`;
+              if (v.type === 'valve32roller') return `roller trip valve${nStr}`;
+              if (v.type === 'valve32plunger') return `plunger valve${nStr}`;
+              if (v.type === 'signal') return `electric signal${nStr}`;
+              return `valve${nStr}`;
+          };
+
+          let valveNames = [...new Set(path.triggers.map(getValveName))];
+          let text = "";
+
+          if (path.logic === 'OR') text = `EITHER ${valveNames.join(" OR ")} is actuated (OR logic)`;
+          else if (path.logic === 'AND') text = `BOTH ${valveNames.join(" AND ")} are actuated (AND logic)`;
+          else text = `the ${valveNames[0]} is actuated`;
+
+          return text; // Time delay phrasing is now handled directly in the output generator
+      }
+
+     function generateAnalysis() {
+          if (state.comps.length === 0) { alert("Please build a circuit first."); return; }
+          const cylinders = state.comps.filter(c => c.type === 'sac' || c.type === 'dac');
+          if (cylinders.length === 0) { alert("Circuit requires at least one cylinder for sequential analysis."); return; }
+
+          let analysisHtml = `<div style="font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: 0 auto; line-height: 1.6; color: #333;">`;
+          analysisHtml += `<h2 style="border-bottom: 2px solid #2563eb; color: #1e293b; padding-bottom: 5px;">Circuit Operation Description</h2>`;
+          analysisHtml += `<p style="font-size: 14px; color: #64748b; margin-bottom: 12px;">(Generated in QS Exam Style)</p>`;
+          
+          // --- THE NEW CAVEAT BANNER ---
+          analysisHtml += `<div style="background-color: #fff7ed; border-left: 4px solid #ea580c; padding: 12px; margin-bottom: 20px; font-size: 13px; color: #9a3412; border-radius: 0 4px 4px 0;">`;
+          analysisHtml += `<strong>Please Note:</strong> This system is not generating a perfect QS standard response. It is a guide only. Your teacher will be able to instruct you on wording better than this simulator.`;
+          analysisHtml += `</div>`;
+          
+          analysisHtml += `<ul style="font-size: 15px; margin-top: 15px;">`;
+
+          let groups = [];
+          
+          cylinders.forEach((cyl, index) => {
+              const cylName = getEffectiveLabel(cyl) || `Cylinder ${index + 1}`;
+              const outPath = analyzePathway(cyl.ports[0]);
+              const inPath = cyl.d && cyl.ports[1] ? analyzePathway(cyl.ports[1]) : null;
+              
+              const outText = buildTriggerSentence(outPath);
+              const inText = cyl.d ? buildTriggerSentence(inPath) : "SPRING";
+              
+              let matched = groups.find(g => g.outText === outText && g.inText === inText && g.d === cyl.d);
+              if (matched && outText !== "direct air is supplied") {
+                  matched.names.push(cylName);
+                  matched.hasTpiece = matched.hasTpiece || (outPath && outPath.triggers.some(c => c.type === 'tpiece'));
+              } else {
+                  groups.push({ names: [cylName], d: cyl.d, outPath, inPath, outText, inText });
+              }
+          });
+
+          groups.forEach(group => {
+              let cylNames = group.names.join(" and ");
+              let isPlural = group.names.length > 1;
+
+              let outP = group.outPath || { triggers: [], hasMemory52: false, isSlowed: false, hasTimeDelay: false };
+              let inP = group.inPath || { triggers: [], hasMemory52: false, isSlowed: false, hasTimeDelay: false };
+              
+              let limitOut = outP.triggers.find(c => c.type.includes('roller') || c.type.includes('plunger'));
+              let limitIn = inP.triggers.find(c => c.type.includes('roller') || c.type.includes('plunger'));
+
+              let outSpeed = "";
+              let inSpeed = "";
+              if (group.d) {
+                  // For Double Acting: Restricting the exhaust line slows the opposite stroke
+                  outSpeed = inP.isSlowed ? " slowly" : "";
+                  inSpeed = outP.isSlowed ? " slowly" : "";
+              } else {
+                  // For Single Acting: The single line restricts both ways
+                  outSpeed = outP.isSlowed ? " slowly" : "";
+                  inSpeed = outP.isSlowed ? " slowly" : "";
+              }
+
+              // Fully-Automatic Cycle Detection
+              if (limitOut && limitIn && outP.hasMemory52 && outP.triggers.some(c => { let el = getEffectiveLabel(c); return el && el.includes('-'); })) {
+                  const v1Name = getEffectiveLabel(limitOut) || "Valve 1";
+                  const v2Name = getEffectiveLabel(limitIn) || "Valve 2";
+                  
+                  let tdOut = outP.hasTimeDelay ? " air is sent through a time delay (restrictor, t-piece and reservoir in this order) and then " : " ";
+                  let tdIn = inP.hasTimeDelay ? " air is sent through a time delay (restrictor, t-piece and reservoir in this order) and then " : " ";
+                  
+                  let manualStarts = outP.triggers.filter(c => c.type === 'valve32' || c.type === 'valve32lever' || c.type === 'signal');
+                  if (manualStarts.length > 0) {
+                      let manualNames = manualStarts.map(v => {
+                          let lbl = getEffectiveLabel(v);
+                          if (lbl) return `"${lbl}"`;
+                          return v.type === 'valve32lever' ? 'the lever valve' : 'the push button';
+                      }).join(" and ");
+                      
+                      analysisHtml += `<li style="margin-bottom: 10px;">When <strong>${cylNames}</strong> ${isPlural?'are':'is'} instroked the roller trip valve <strong>"${v1Name}"</strong> is actuated. If <strong>${manualNames}</strong> is ALSO actuated (AND logic), a pilot signal is sent,${tdOut}the 5/2 valve changes its state which outstrokes <strong>${cylNames}</strong>${outSpeed}.</li>`;
+                  } else {
+                      analysisHtml += `<li style="margin-bottom: 10px;">When <strong>${cylNames}</strong> ${isPlural?'are':'is'} instroked the roller trip valve <strong>"${v1Name}"</strong> is actuated. This sends a pilot signal,${tdOut}the 5/2 valve changes its state which outstrokes <strong>${cylNames}</strong>${outSpeed}.</li>`;
+                  }
+
+                  analysisHtml += `<li style="margin-bottom: 10px;">When fully outstroked the roller trip valve <strong>"${v2Name}"</strong> is actuated and this sends a pilot signal,${tdIn}the 5/2 valve is reset, which instrokes <strong>${cylNames}</strong>${inSpeed}.</li>`;
+                  analysisHtml += `<li style="margin-bottom: 10px;">The system is reset and the process will start again.</li>`;
+                  return; 
+              }
+
+              // Outstroke Logic
+              if (outP.hasMemory52) {
+                  let pluralText = isPlural ? ` causing them BOTH to outstroke${outSpeed}` : ` which outstrokes <strong>${cylNames}</strong>${outSpeed}`;
+                  if (outP.hasTimeDelay) {
+                      analysisHtml += `<li style="margin-bottom: 10px;">When <strong>${group.outText}</strong>, air is sent through a time delay (restrictor, t-piece and reservoir in this order) and then the 5/2 valve changes its state,${pluralText}.</li>`;
+                  } else {
+                      let tdOutStr = isPlural ? `. At the same time air is sent to <strong>${cylNames}</strong> causing them BOTH to outstroke${outSpeed}` : ` which outstrokes <strong>${cylNames}</strong>${outSpeed}`;
+                      analysisHtml += `<li style="margin-bottom: 10px;">When <strong>${group.outText}</strong>, a pilot signal is sent to the 5/2 valve, changing its state${tdOutStr}.</li>`;
+                  }
+              } else {
+                  let tdOutStr = outP.hasTimeDelay ? "air is sent through a time delay before it is supplied" : "air is supplied";
+                  let pluralText = isPlural ? ` causing them BOTH to outstroke${outSpeed} at the same time` : `, causing it to outstroke${outSpeed}`;
+                  analysisHtml += `<li style="margin-bottom: 10px;">When <strong>${group.outText}</strong>, ${tdOutStr} to the outstroke port of <strong>${cylNames}</strong>${pluralText}.</li>`;
+              }
+
+              // Instroke Logic
+              if (!group.d) {
+                  analysisHtml += `<li style="margin-bottom: 10px;">When the input signal is removed, the internal spring forces <strong>${cylNames}</strong> to instroke${inSpeed}.</li>`;
+              } else {
+                  if (limitIn && inP.hasMemory52) {
+                      const v2Name = getEffectiveLabel(limitIn) ? ` "${getEffectiveLabel(limitIn)}"` : "";
+                      let tdRoller = inP.hasTimeDelay ? " air is sent through a time delay (restrictor, t-piece and reservoir in this order) and then " : " ";
+                      analysisHtml += `<li style="margin-bottom: 10px;">When fully outstroked the roller trip valve<strong>${v2Name}</strong> is actuated which sends pilot air,${tdRoller}the 5/2 valve is reset and <strong>${cylNames}</strong> instroke${isPlural?'':'s'}${inSpeed}.</li>`;
+                      analysisHtml += `<li style="margin-bottom: 10px;">The system is reset.</li>`;
+                  } else if (inP.hasMemory52) {
+                      let pluralText = isPlural ? ` causing them BOTH to instroke${inSpeed}` : `, which instrokes <strong>${cylNames}</strong>${inSpeed}`;
+                      if (inP.hasTimeDelay) {
+                          analysisHtml += `<li style="margin-bottom: 10px;">When <strong>${group.inText}</strong>, air is sent through a time delay (restrictor, t-piece and reservoir in this order) and then the 5/2 valve is reset${pluralText}.</li>`;
+                      } else {
+                          analysisHtml += `<li style="margin-bottom: 10px;">When <strong>${group.inText}</strong>, a pilot signal is sent back to the 5/2 valve resetting it${pluralText}.</li>`;
+                      }
+                  } else {
+                      let tdInDirect = inP.hasTimeDelay ? "air is sent through a time delay before it is supplied" : "air is supplied";
+                      let pluralText = isPlural ? ` causing them BOTH to instroke${inSpeed}` : `. This forces <strong>${cylNames}</strong> to instroke${inSpeed}`;
+                      analysisHtml += `<li style="margin-bottom: 10px;">When <strong>${group.inText}</strong>, ${tdInDirect} to the instroke port of <strong>${cylNames}</strong>${pluralText}.</li>`;
+                  }
+              }
+          });
+          
+          analysisHtml += `</ul></div>`;
+          const win = window.open('', '_blank', 'width=700,height=600');
+          win.document.write(analysisHtml); win.document.close();
+      }
+// --- PRINT REPORT FUNCTIONS ---
+function generateReport() {
+    if (state.comps.length === 0) {
+        alert("Please build a circuit first before generating a report.");
+        return;
+    }
+    document.getElementById('inp_report_name').value = '';
+    document.getElementById('inp_report_scn').value = '';
+    document.getElementById('inp_report_task').value = '';
+    document.getElementById('reportModal').classList.remove('hidden');
+}
+
+function closeReportModal() {
+    document.getElementById('reportModal').classList.add('hidden');
+}
+
+function executeReportGeneration() {
+    const stuName = document.getElementById('inp_report_name').value || 'Student';
+    const stuSCN = document.getElementById('inp_report_scn').value;
+    const stuTask = document.getElementById('inp_report_task').value;
+    closeReportModal();
+
+    // 1. CAPTURE CIRCUIT (High-Res & Cropped)
+    const currentSel = state.sel; 
+    state.sel = null; 
+
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    const addPt = (x, y) => {
+        if (Number.isFinite(x) && Number.isFinite(y)) {
+            minX = Math.min(minX, x); maxX = Math.max(maxX, x);
+            minY = Math.min(minY, y); maxY = Math.max(maxY, y);
         }
+    };
+
+    if (state.comps.length > 0) {
+        state.comps.forEach(c => { 
+            if (c.type === 'sac' || c.type === 'dac') {
+                addPt(c.x - 110, c.y - 50); addPt(c.x + 350, c.y + 50); 
+            } else {
+                addPt(c.x - 60, c.y - 40); addPt(c.x + 60, c.y + 40); 
+            }
+        });
+        state.pipes.forEach(l => {
+            if (l.p1 && l.p1.parent) { const p = l.p1.parent.absP(l.p1); addPt(p.x, p.y); }
+            if (l.p2 && l.p2.parent) { const p = l.p2.parent.absP(l.p2); addPt(p.x, p.y); }
+            if (l.points) l.points.forEach(pt => addPt(pt.x, pt.y));
+        });
+    } else {
+        addPt(0, 0); addPt(cvs.width, cvs.height);
+    }
+
+    const margin = 80;
+    minX -= margin; maxX += margin; minY -= margin; maxY += margin;
+    const exportWidth = maxX - minX;
+    const exportHeight = maxY - minY;
+
+    const scaleFactor = 3;
+    const tempCvs = document.createElement('canvas');
+    tempCvs.width = exportWidth * scaleFactor;
+    tempCvs.height = exportHeight * scaleFactor;
+
+    const tCtx = tempCvs.getContext('2d');
+    tCtx.fillStyle = '#ffffff';
+    tCtx.fillRect(0, 0, tempCvs.width, tempCvs.height);
+
+    const oldView = { x: view.x, y: view.y, scale: view.scale };
+    view.x = -minX * scaleFactor;
+    view.y = -minY * scaleFactor;
+    view.scale = scaleFactor;
+
+    draw(tCtx, false);
+
+    view.x = oldView.x; view.y = oldView.y; view.scale = oldView.scale;
+    state.sel = currentSel;
+    draw(); 
+
+    const circuitDataUrl = tempCvs.toDataURL('image/png');
+
+    // 2. GENERATE CYLINDER MATH HTML
+    let calculationsHtml = '';
+    const cylinders = state.comps.filter(c => c.type === 'sac' || c.type === 'dac');
+
+    if (cylinders.length > 0) {
+        calculationsHtml = `<div class="section"><div class="section-title">Cylinder Force Calculations</div><div class="grid">`;
+
+        let globalP = 0.6;
+        const supplies = state.comps.filter(c => c.type === 'supply' || c.type === 'manifold');
+        if (supplies.length > 0) {
+            globalP = Math.max(...supplies.map(s => s.pressure !== undefined ? s.pressure : 0.6));
+        }
+
+        cylinders.forEach((cyl, index) => {
+            const lbl = cyl.lbl || `Cylinder ${index + 1}`;
+            const bDia = cyl.boreDia !== undefined ? cyl.boreDia : 50;
+            const rDia = cyl.rodDia !== undefined ? cyl.rodDia : 16;
+            const P_out = tracePressure(cyl.ports[0]) || globalP;
+            const P_in  = (cyl.d && cyl.ports[1]) ? (tracePressure(cyl.ports[1]) || globalP) : 0;
+
+            const bRad = bDia / 2;
+            const rRad = rDia / 2;
+            const areaOut = Math.PI * (bRad * bRad);
+            const areaIn = areaOut - (Math.PI * (rRad * rRad));
+
+            const fOut = Math.round(areaOut * P_out);
+            const fIn = cyl.d ? Math.round(areaIn * P_in) : 'Spring Return';
+
+            calculationsHtml += `
+                <div class="card" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                    <div style="font-weight: 900; font-size: 14px; color: #0f172a; border-bottom: 1px solid #cbd5e1; width: 100%; padding-bottom: 4px; margin-bottom: 4px;">${lbl} (${cyl.d ? 'Double' : 'Single'} Acting)</div>
+                    <div style="font-size: 12px; color: #475569;"><strong>Cylinder:</strong> ${bDia}mm (Area: ${Math.round(areaOut)} mm&sup2;)</div>
+                    ${cyl.d ? `<div style="font-size: 12px; color: #475569;"><strong>Rod:</strong> ${rDia}mm (Annulus Area: ${Math.round(areaIn)} mm&sup2;)</div>` : ''}
+                    
+                    <div style="background: #f1f5f9; padding: 8px; border-radius: 6px; width: 100%; margin-top: 4px; box-sizing: border-box;">
+                        <div style="font-size: 12px; margin-bottom: 4px;"><strong>Outstroke Force:</strong></div>
+                        <div style="font-family: monospace; font-size: 11px; color: #64748b;">F = P &times; A</div>
+                        <div style="font-family: monospace; font-size: 11px; color: #64748b;">F = ${P_out} N/mm&sup2; &times; ${Math.round(areaOut)} mm&sup2;</div>
+                        <div style="font-weight: bold; color: #ea580c; font-size: 14px; margin-top: 2px;">= ${fOut} N</div>
+                    </div>
+                    
+                    ${cyl.d ? `
+                    <div style="background: #f1f5f9; padding: 8px; border-radius: 6px; width: 100%; margin-top: 4px; box-sizing: border-box;">
+                        <div style="font-size: 12px; margin-bottom: 4px;"><strong>Instroke Force:</strong></div>
+                        <div style="font-family: monospace; font-size: 11px; color: #64748b;">F = P &times; A</div>
+                        <div style="font-family: monospace; font-size: 11px; color: #64748b;">F = ${P_in} N/mm&sup2; &times; ${Math.round(areaIn)} mm&sup2;</div>
+                        <div style="font-weight: bold; color: #ea580c; font-size: 14px; margin-top: 2px;">= ${fIn} N</div>
+                    </div>` : `
+                    <div style="background: #f1f5f9; padding: 8px; border-radius: 6px; width: 100%; margin-top: 4px; box-sizing: border-box;">
+                        <div style="font-size: 12px; margin-bottom: 4px;"><strong>Instroke Force:</strong></div>
+                        <div style="font-weight: bold; color: #64748b; font-size: 14px; margin-top: 2px;">SPRING RETURN</div>
+                    </div>`}
+                </div>
+            `;
+        });
+        calculationsHtml += `</div></div>`;
+    }
+
+    // 3. INJECT INTO HIDDEN IFRAME & PRINT
+    const htmlStr = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <style>
+                @page { size: A4 portrait; margin: 12mm; }
+                body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #1e293b; line-height: 1.3; margin: 0; padding: 0; background: white; }
+                h1 { font-size: 20px; margin: 0 0 2px 0; color: #0f172a; font-weight: 900; }
+                h2 { font-size: 12px; margin: 0 0 10px 0; color: #64748b; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; }
+                .header-line { border-bottom: 2px solid #ea580c; margin-bottom: 12px; padding-bottom: 6px; }
+                .section { margin-bottom: 12px; page-break-inside: avoid; }
+                .section-title { font-size: 12px; font-weight: bold; border-bottom: 1px solid #e2e8f0; padding-bottom: 3px; margin-bottom: 8px; text-transform: uppercase; color: #334155; }
+                img { max-width: 100%; max-height: 280px; object-fit: contain; border: 1px solid #e2e8f0; border-radius: 6px; display: block; margin: 0 auto; box-shadow: 0 1px 4px rgba(0,0,0,0.05); }
+                .grid { display: flex; flex-wrap: wrap; gap: 8px; }
+                .card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 10px; border-radius: 6px; flex: 1; min-width: 220px; display: flex; box-sizing: border-box; }
+                .footer { margin-top: 15px; border-top: 1px solid #cbd5e1; padding-top: 10px; font-size: 10px; display: flex; justify-content: space-between; color: #64748b; page-break-inside: avoid; }
+                .footer-col p { margin: 2px 0; }
+                .footer-col strong { color: #1e293b; }
+            </style>
+        </head>
+        <body>
+            <div class="header-line">
+                <h1>NoPressure<span style="color:#ea580c">Sim V3</span></h1>
+                <h2>Circuit & Calculations Report</h2>
+            </div>
+            
+            <div class="section">
+                <div class="section-title">Circuit Schematic</div>
+                <img src="${circuitDataUrl}" />
+            </div>
+
+            ${calculationsHtml}
+
+            <div class="footer">
+                <div class="footer-col">
+                    <p><strong>Student Name:</strong> ${stuName}</p>
+                    ${stuSCN ? `<p><strong>SCN:</strong> ${stuSCN}</p>` : ''}
+                    ${stuTask ? `<p><strong>Task:</strong> ${stuTask}</p>` : ''}
+                </div>
+                <div class="footer-col" style="text-align: right;">
+                    <p>Generated: ${new Date().toLocaleString('en-GB')}</p>
+                </div>
+            </div>
+        </body>
+        </html>
+    `;
+
+    const iframe = document.createElement('iframe');
+    iframe.style.position = 'absolute';
+    iframe.style.width = '0px';
+    iframe.style.height = '0px';
+    iframe.style.border = 'none';
+    document.body.appendChild(iframe);
+    
+    const doc = iframe.contentWindow.document;
+    doc.open();
+    doc.write(htmlStr);
+    doc.close();
+
+    // Wait for base64 images to decode, then print
+    setTimeout(() => {
+        iframe.contentWindow.focus();
+        iframe.contentWindow.print();
+        setTimeout(() => document.body.removeChild(iframe), 2000); 
+    }, 500);
+}
+
+// --- DRAGGABLE INSPECTOR LOGIC ---
+function makeDraggable(el, handle) {
+    if (!handle || !el) return;
+    handle.onmousedown = e => {
+        // Ignore clicks on buttons or inputs
+        if (e.target.tagName === 'BUTTON' || e.target.closest('button') || e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
         
+        e.preventDefault(); 
+        e.stopPropagation();
         
-        // Initialize the draggable inspector
-        makeDraggable(document.getElementById('inspector'), document.getElementById('insp-header'));
-        // ---------------------------------
-        // =============================================================================
-        // AUTO-LOAD PRE-MADE CIRCUIT LOGIC
-        // =============================================================================
+        let p3 = e.clientX, p4 = e.clientY;
         
-        // === 1. PASTE YOUR SAVED JSON STRING INSIDE THE BACKTICKS BELOW ===
-        const preloadedLesson = `{
+        // Temporarily disable any CSS transitions so it doesn't rubber-band
+        el.style.transition = 'none';
+
+        // Calculate exact visual position to prevent jumping
+        const rect = el.getBoundingClientRect();
+        const parentRect = el.offsetParent ? el.offsetParent.getBoundingClientRect() : { left: 0, top: 0 };
+        
+        el.style.right = 'auto'; 
+        el.style.bottom = 'auto';
+        el.style.left = (rect.left - parentRect.left) + 'px';
+        el.style.top = (rect.top - parentRect.top) + 'px';
+        
+        const onMove = e => {
+            const dx = p3 - e.clientX;
+            const dy = p4 - e.clientY;
+            p3 = e.clientX; 
+            p4 = e.clientY;
+            
+            let newTop = el.offsetTop - dy;
+            let newLeft = el.offsetLeft - dx;
+            
+            // Keep it within the screen bounds
+            const maxX = Math.max(0, window.innerWidth - el.offsetWidth);
+            const maxY = Math.max(0, window.innerHeight - el.offsetHeight);
+            
+            el.style.top = Math.max(0, Math.min(newTop, maxY)) + 'px';
+            el.style.left = Math.max(0, Math.min(newLeft, maxX)) + 'px';
+        };
+        
+        const onUp = () => {
+            document.removeEventListener('mousemove', onMove);
+            document.removeEventListener('mouseup', onUp);
+        };
+        
+        document.addEventListener('mousemove', onMove);
+        document.addEventListener('mouseup', onUp);
+    };
+}
+
+// Initialize the draggable inspector
+makeDraggable(document.getElementById('inspector'), document.getElementById('insp-header'));
+
+// =============================================================================
+// AUTO-LOAD PRE-MADE CIRCUIT LOGIC
+// =============================================================================
+const preloadedLesson = `{
   "components": [
     {
       "id": "3ovhc8q9i",
@@ -1884,80 +2637,90 @@
   ],
   "version": "V2.4.1"
 }`; 
+
 function renderSidebarIcons() {
-            const oldViewMode = state.viewMode;
-            state.viewMode = 'block'; // Force block mode for rendering the menu
-            
-            document.querySelectorAll('.comp-card').forEach(card => {
-                const type = card.dataset.type;
-                if(type === 'text') return; // Text note has custom HTML
-                
-                const canvas = card.querySelector('canvas');
-                if (!canvas) return;
-                
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                const c = createComponent(type, 0, 0);
-                if (!c) return;
-                
-                ctx.save();
-                ctx.translate(canvas.width / 2, canvas.height / 2);
-                
-                // --- RE-TUNED SCALES & SHIFTS ---
-                let s = 0.8; 
-                if (type.startsWith('valve52')) s = 0.6;
-                else if (type.startsWith('valve32')) { s = 0.35; ctx.translate(0, 4); } // Shrunk and shunted down to prevent clipping!
-                else if (type === 'sac' || type === 'dac') { s = 0.3; ctx.translate(-20, 0); } 
-                else if (type === 'manifold') s = 0.6;
-                else if (type === 'reservoir') s = 0.6;
-                else if (type === 'unidir') s = 0.65;
-                else if (type === 'shuttle') s = 0.7;
-                else if (type === 'signal') s = 0.95; 
-                else if (type === 'bleed') s = 0.95;  
-                
-                ctx.scale(s, s);
-                
-                // --- APPLY NATIVE ROTATION ---
-                // This ensures 3/2 valves sit vertically at 90 degrees!
-                if (c.rot) ctx.rotate(c.rot * Math.PI / 180);
-                
-                // Draw the block (or fallback to symbol if block doesn't exist)
-                if (c.drawBlock) c.drawBlock(ctx);
-                else if (c.drawSymbol) c.drawSymbol(ctx);
-                
-                ctx.restore();
-            });
-            
-            state.viewMode = oldViewMode; // Restore user's current view mode
-        }
-     // === 2. INITIALISATION & AUTO-LOAD ===
-        window.onload = () => {
-            renderSidebarIcons(); // Draw the sidebar icons
+    const oldViewMode = state.viewMode;
+    state.viewMode = 'block'; // Force block mode for rendering the menu
+    
+    document.querySelectorAll('.comp-card').forEach(card => {
+        const type = card.dataset.type;
+        if(type === 'text') return; // Text note has custom HTML
+        
+        const canvas = card.querySelector('canvas');
+        if (!canvas) return;
+        
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        const c = createComponent(type, 0, 0);
+        if (!c) return;
+        
+        ctx.save();
+        ctx.translate(canvas.width / 2, canvas.height / 2);
+        
+        // --- RE-TUNED SCALES & SHIFTS ---
+        let s = 0.8; 
+        if (type.startsWith('valve52')) s = 0.6;
+        else if (type.startsWith('valve32')) { s = 0.35; ctx.translate(0, 4); } // Shrunk and shunted down to prevent clipping!
+        else if (type === 'sac' || type === 'dac') { s = 0.3; ctx.translate(-20, 0); } 
+        else if (type === 'manifold') s = 0.6;
+        else if (type === 'reservoir') s = 0.6;
+        else if (type === 'unidir') s = 0.65;
+        else if (type === 'shuttle') s = 0.7;
+        else if (type === 'signal') s = 0.95; 
+        else if (type === 'bleed') s = 0.95;  
+        
+        ctx.scale(s, s);
+        
+        // --- APPLY NATIVE ROTATION ---
+        if (c.rot) ctx.rotate(c.rot * Math.PI / 180);
+        
+        // Draw the block (or fallback to symbol if block doesn't exist)
+        if (c.drawBlock) c.drawBlock(ctx);
+        else if (c.drawSymbol) c.drawSymbol(ctx);
+        
+        ctx.restore();
+    });
+    
+    state.viewMode = oldViewMode; // Restore user's current view mode
+}
 
-            if (preloadedLesson.trim().length > 10) {
-                // 1. Load the pre-made circuit
-                loadStateJSON(preloadedLesson);
-                recordState();
-                
-                // 2. Collapse the sidebar out of the way
-                if (sidebarOpen) toggleSidebar();
-                
-                // 3. Start the simulation automatically
-                document.getElementById('btnSim').click();
+// === 2. INITIALISATION & AUTO-LOAD ===
+window.onload = () => {
+    renderSidebarIcons(); // Draw the menu icons first
 
-                // 4. Wait for the sidebar animation to finish, resize the canvas, THEN fit to screen
-                setTimeout(() => {
-                    resize(); // Force canvas to match the newly expanded window
-                    fitToScreen(); // Center it perfectly
-                }, 350); 
-                
-            } else {
-                // Normal empty startup
-                recordState();
-                draw();
-            }
-        };
-    </script>
+    if (preloadedLesson && preloadedLesson.trim().length > 10) {
+        // 1. Load the saved JSON circuit
+        loadStateJSON(preloadedLesson);
+        recordState();
+        
+        // 2. KIOSK MODE: Completely hide the top and side menus
+        document.getElementById('sidebarContainer').style.display = 'none';
+        
+        // Hide the floating orange toggle button
+        const toggleBtn = document.querySelector('button[onclick="toggleSidebar()"]');
+        if (toggleBtn) toggleBtn.style.display = 'none';
+
+        // Hide the top toolbar (using a selector specific to No Pressure Sim's layout)
+        const topToolbar = document.querySelector('.h-16.bg-\\[\\#f0f4f9\\].z-20');
+        if (topToolbar) topToolbar.style.display = 'none';
+        
+        // 3. Start the live simulation automatically
+        document.getElementById('btnSim').click();
+
+        // 4. Resize and center (Wait time reduced since there is no slide animation anymore)
+        setTimeout(() => {
+            resize();         // Update internal canvas dimensions
+            fitToScreen();    // Calculate the perfect centre
+        }, 50); 
+        
+    } else {
+        // Normal empty startup
+        recordState();
+        draw();
+    }
+};
+
+</script>
 </body>
 </html>
