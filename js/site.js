@@ -141,9 +141,9 @@ document.addEventListener('DOMContentLoaded', function () {
 // Change status to 'available' when ready to release
 var UNIT_TEST_CONFIG = {
   'digital': {
-    status: 'soon',           // change to 'available' when ready
-    id: '',                   // paste Drive file ID here when ready
-    password: 'estest2025'    // password pupils enter to access the test
+    status: 'available',           // change to 'available' when ready
+    id: '1SyYXy6aTWK1nbtr0M9s140ChOhGIM82L',                   // paste Drive file ID here when ready
+    password: 'hello'    // password pupils enter to access the test
   }
 };
 var TEACHER_DOCS = {
