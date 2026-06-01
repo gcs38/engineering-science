@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', function () {
 var UNIT_TEST_CONFIG = {
   'digital': {
     status: 'available',           // change to 'available' when ready
-    id: '1SyYXy6aTWK1nbtr0M9s140ChOhGIM82L',                   // paste Drive file ID here when ready
+    id: '1Z8IMiFjI_ZuDo7GsLg-vJ2RGj7JvZuJW',                   // paste Drive file ID here when ready
     password: 'hello'    // password pupils enter to access the test
   }
 };
