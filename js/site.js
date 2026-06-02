@@ -141,9 +141,14 @@ document.addEventListener('DOMContentLoaded', function () {
 // Change status to 'available' when ready to release
 var UNIT_TEST_CONFIG = {
   'digital': {
-    status: 'available',           // change to 'available' when ready
-    id: '1Z8IMiFjI_ZuDo7GsLg-vJ2RGj7JvZuJW',                   // paste Drive file ID here when ready
-    password: 'hello'    // password pupils enter to access the test
+    status: 'available',
+    id: '1Z8IMiFjI_ZuDo7GsLg-vJ2RGj7JvZuJW',
+    password: 'hello'
+  },
+  'analogue': {
+    status: 'available',
+    id: '1ksmCiJ7COA8cocOkVRW9VT1cgUqnPvqI',
+    password: 'voltage'
   }
 };
 var TEACHER_DOCS = {
