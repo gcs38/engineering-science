@@ -148,7 +148,7 @@
     <div class="hero">
       <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Digital Electronics</div>
       <h1 class="hero-title">&#x1F9E0; Digital Electronics &mdash; Course Notes</h1>
-      <p class="hero-sub">Logic gates, truth tables, Boolean algebra, combinational circuits and real-world applications</p>
+      <p class="hero-sub">NOT, AND and OR gates &mdash; truth tables, Boolean algebra, combinational circuits and real-world applications</p>
       <div class="breadcrumb">
         <a href="../../../../index.html">Home</a> &rsaquo;
         <a href="../index.html">Electronics and Control</a> &rsaquo;
@@ -211,7 +211,7 @@
 
       <p class="notes-p">Logic gates are the building blocks of all digital systems — from simple alarm circuits to the billions of transistors inside a modern CPU.</p>
 
-      <div class="key-point">For N5 Engineering Science you must know: NOT, AND and OR gates — their symbols, truth tables and Boolean expressions. You should also be familiar with NAND and NOR as combinations of these.</div>
+      <div class="key-point">For N5 Engineering Science you must know: NOT, AND and OR gates — their symbols, truth tables and Boolean expressions.</div>
 
       <h2 class="notes-h2">The NOT gate (Inverter)</h2>
       <p class="notes-p">The NOT gate has <strong>one input</strong> and <strong>one output</strong>. It simply <strong>inverts</strong> the input — if the input is 1, the output is 0, and vice versa. The small circle (bubble) on the output of the symbol represents inversion.</p>
@@ -301,43 +301,6 @@
 
       <hr class="divider">
 
-      <h2 class="notes-h2">NAND and NOR gates</h2>
-      <p class="notes-p">NAND and NOR gates are simply AND and OR gates with a NOT (inverter) on the output. The bubble on the output symbol indicates inversion.</p>
-
-      <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/gate-nand-nor-symbols.png" alt="NAND and NOR gate symbols" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;">
-
-      <div style="display:flex;gap:20px;flex-wrap:wrap;margin:14px 0;">
-        <div>
-          <p style="font-size:13px;font-weight:700;color:var(--teal-600);margin-bottom:6px;">NAND truth table</p>
-          <table class="truth-table">
-            <tr><th>A</th><th>B</th><th>Z</th></tr>
-            <tr><td class="lo">0</td><td class="lo">0</td><td class="hi">1</td></tr>
-            <tr><td class="lo">0</td><td class="hi">1</td><td class="hi">1</td></tr>
-            <tr><td class="hi">1</td><td class="lo">0</td><td class="hi">1</td></tr>
-            <tr><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td></tr>
-          </table>
-          <div class="bool-box" style="margin-top:8px;">
-            <div class="bool-expr" style="font-size:14px;">Z = <span style="text-decoration:overline;">A.B</span></div>
-          </div>
-        </div>
-        <div>
-          <p style="font-size:13px;font-weight:700;color:var(--teal-600);margin-bottom:6px;">NOR truth table</p>
-          <table class="truth-table">
-            <tr><th>A</th><th>B</th><th>Z</th></tr>
-            <tr><td class="lo">0</td><td class="lo">0</td><td class="hi">1</td></tr>
-            <tr><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td></tr>
-            <tr><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td></tr>
-            <tr><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td></tr>
-          </table>
-          <div class="bool-box" style="margin-top:8px;">
-            <div class="bool-expr" style="font-size:14px;">Z = <span style="text-decoration:overline;">A+B</span></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="key-point">NAND = NOT AND (output is opposite of AND). &nbsp; NOR = NOT OR (output is opposite of OR). A NAND gate with both inputs tied together acts as a NOT gate.</div>
-
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Logic gates</div></div>
         <div class="assignment-body">
@@ -392,8 +355,6 @@
         <tr><td><span style="text-decoration:overline;">A</span></td><td>NOT A</td><td>Z = <span style="text-decoration:overline;">A</span></td><td>Z is ON when A is OFF</td></tr>
         <tr><td><strong>.</strong></td><td>AND</td><td>Z = A.B</td><td>Z is ON when A AND B are ON</td></tr>
         <tr><td><strong>+</strong></td><td>OR</td><td>Z = A+B</td><td>Z is ON when A OR B (or both) are ON</td></tr>
-        <tr><td><span style="text-decoration:overline;">A.B</span></td><td>NAND</td><td>Z = <span style="text-decoration:overline;">A.B</span></td><td>Z is ON unless both A AND B are ON</td></tr>
-        <tr><td><span style="text-decoration:overline;">A+B</span></td><td>NOR</td><td>Z = <span style="text-decoration:overline;">A+B</span></td><td>Z is ON only when both A and B are OFF</td></tr>
       </table>
 
       <h2 class="notes-h2">Writing a Boolean expression from a circuit</h2>
@@ -721,9 +682,6 @@
         <tr><td><strong>7404</strong></td><td>6 × NOT gates</td><td>Hex inverter — six independent NOT gates</td></tr>
         <tr><td><strong>7408</strong></td><td>4 × 2-input AND gates</td><td>Quad 2-input AND</td></tr>
         <tr><td><strong>7432</strong></td><td>4 × 2-input OR gates</td><td>Quad 2-input OR</td></tr>
-        <tr><td><strong>7400</strong></td><td>4 × 2-input NAND gates</td><td>Quad 2-input NAND</td></tr>
-        <tr><td><strong>7402</strong></td><td>4 × 2-input NOR gates</td><td>Quad 2-input NOR</td></tr>
-        <tr><td><strong>7486</strong></td><td>4 × 2-input XOR gates</td><td>Quad 2-input Exclusive OR</td></tr>
       </table>
 
       <div class="key-point">Pin 14 connects to +5V (Vcc). Pin 7 connects to 0V (GND). These power connections must always be made or the IC will not work.</div>
