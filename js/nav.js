@@ -1,6 +1,56 @@
 function buildSidebar(level, depth) {
   var d = depth || "../../";
 
+  // Inject hamburger button into topbar (mobile only)
+  // Runs after DOM is ready; safe to call multiple times
+  document.addEventListener('DOMContentLoaded', function() {
+    if (document.getElementById('mob-menu-btn')) return; // already added
+
+    // Create overlay
+    var overlay = document.createElement('div');
+    overlay.className = 'mob-overlay';
+    overlay.id = 'mob-overlay';
+    overlay.addEventListener('click', closeMobileMenu);
+    document.body.appendChild(overlay);
+
+    // Create hamburger button and insert at start of topbar
+    var btn = document.createElement('button');
+    btn.className = 'mob-menu-btn';
+    btn.id = 'mob-menu-btn';
+    btn.setAttribute('aria-label', 'Open navigation menu');
+    btn.innerHTML = '<span></span>';
+    btn.addEventListener('click', toggleMobileMenu);
+    var topbar = document.querySelector('.topbar');
+    if (topbar) topbar.insertBefore(btn, topbar.firstChild);
+  });
+
+  function toggleMobileMenu() {
+    var sidebar = document.querySelector('.sidebar');
+    var overlay = document.getElementById('mob-overlay');
+    if (!sidebar || !overlay) return;
+    var isOpen = sidebar.classList.contains('mob-open');
+    if (isOpen) {
+      closeMobileMenu();
+    } else {
+      sidebar.classList.add('mob-open');
+      overlay.classList.add('open');
+    }
+  }
+
+  function closeMobileMenu() {
+    var sidebar = document.querySelector('.sidebar');
+    var overlay = document.getElementById('mob-overlay');
+    if (sidebar) sidebar.classList.remove('mob-open');
+    if (overlay) overlay.classList.remove('open');
+  }
+
+  // Close drawer when any sidebar link is tapped
+  document.addEventListener('click', function(e) {
+    if (e.target.closest && e.target.closest('.sidebar a')) {
+      closeMobileMenu();
+    }
+  });
+
   var n5 = `
     <div class="sb-section">
       <button class="sb-section-btn" onclick="toggleSection('ctx-n5')">
