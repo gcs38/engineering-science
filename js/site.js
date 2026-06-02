@@ -175,7 +175,7 @@ var TEACHER_DOCS = {
   'analogue': [
     { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-  { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
+  { key: 'unit_test_marking', status: 'available', id: '1mcgBs_DMMMGNJg0P5YflEmc6oeOnqj0N', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
   ],
   'digital': [
     { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
