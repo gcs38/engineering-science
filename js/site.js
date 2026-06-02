@@ -175,7 +175,7 @@ var TEACHER_DOCS = {
   'digital': [
     { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-  { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
+  { key: 'unit_test_marking', status: 'available', id: '1Drs8da8RmrLYyEUX2p5o7quAtrzvLCv6', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
   ],
   'control': [
     { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
