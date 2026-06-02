@@ -128,7 +128,7 @@ function buildSidebar(level, depth) {
       </button>
       <div class="sb-children open" id="elec-h-children">
         <a class="sb-topic" href="${d}higher/electronics/index.html">Overview</a>
-        <a class="sb-subtopic" href="${d}higher/electronics/analogue/index.html">Analogue electronic control systems</a>
+        <a class="sb-subtopic" href="${d}higher/electronics/analogue/index.html">Analogue Electronics</a>
         <a class="sb-subtopic" href="${d}higher/electronics/digital/index.html">Digital electronics</a>
         <a class="sb-subtopic" href="${d}higher/electronics/control/index.html">Control systems</a>
       </div>
