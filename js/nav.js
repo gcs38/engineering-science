@@ -6,6 +6,22 @@ function buildSidebar(level, depth) {
   document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById('mob-menu-btn')) return; // already added
 
+    // Replace SVG logo-mark with custom logo image
+    var logoMark = document.querySelector('.logo-mark');
+    if (logoMark) {
+      var img = document.createElement('img');
+      img.src = d + 'images/logo.png';
+      img.alt = 'Engineering Science Scotland logo';
+      img.style.cssText = 'height:34px;width:auto;display:block;';
+      logoMark.replaceWith(img);
+    }
+
+    // Update logo text: "Engineering Science" on top, "S C O T L A N D" below
+    var logoTitle = document.querySelector('.logo-title');
+    var logoSub   = document.querySelector('.logo-sub');
+    if (logoTitle) logoTitle.textContent = 'Engineering Science';
+    if (logoSub)   logoSub.textContent   = 'S C O T L A N D';
+
     // Create overlay
     var overlay = document.createElement('div');
     overlay.className = 'mob-overlay';
