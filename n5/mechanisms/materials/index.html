@@ -12,6 +12,19 @@
     .tab-panel { display:none; } .tab-panel.active { display:block; }
     .tab-note { font-size:12px; color:var(--gray-400); margin-bottom:16px; }
     .rtc-badge-unavailable { display:inline-block; font-size:10px; font-weight:500; background:#fef2f2; color:#b91c1c; padding:2px 7px; border-radius:20px; margin-top:6px; }
+    .rtc-photo { width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid var(--teal-100); background:var(--teal-50); display:block; margin:0 auto 10px; }
+    .ut-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:999; align-items:center; justify-content:center; }
+    .ut-modal-overlay.open { display:flex; }
+    .ut-modal { background:var(--white); border-radius:var(--radius-lg); padding:28px 28px 24px; max-width:340px; width:90%; box-shadow:0 8px 32px rgba(0,0,0,0.18); }
+    .ut-modal-title { font-size:16px; font-weight:700; color:var(--teal-800); margin-bottom:6px; }
+    .ut-modal-sub { font-size:13px; color:var(--gray-600); margin-bottom:18px; line-height:1.5; }
+    .ut-modal-input { width:100%; padding:9px 12px; font-size:14px; border:1px solid var(--gray-200); border-radius:var(--radius-md); margin-bottom:10px; font-family:inherit; outline:none; transition:border-color 0.15s; }
+    .ut-modal-input:focus { border-color:var(--teal-400); }
+    .ut-modal-btn { width:100%; padding:10px; font-size:13px; font-weight:600; background:var(--teal-400); color:var(--white); border:none; border-radius:var(--radius-md); cursor:pointer; font-family:inherit; transition:background 0.15s; }
+    .ut-modal-btn:hover { background:var(--teal-600); }
+    .ut-modal-error { font-size:12px; color:#b91c1c; margin-top:8px; display:none; }
+    .ut-modal-cancel { width:100%; margin-top:8px; padding:8px; font-size:12px; font-weight:500; background:transparent; color:var(--gray-400); border:none; cursor:pointer; font-family:inherit; }
+    .ut-card-notice { font-size:11px; color:var(--gray-400); margin-top:6px; line-height:1.4; }
   </style>
 </head>
 <body>
@@ -20,9 +33,9 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero">
-      <div class="hero-label">National 5 &middot; Mechanisms and Structures</div>
+      <div class="hero-label">National 5 · Mechanisms and Structures</div>
       <h1 class="hero-title">Materials</h1>
-      <p class="hero-sub">Material categories, properties, selection and justification, stress and strain</p>
+      <p class="hero-sub">Properties, selection and application of engineering materials</p>
       <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../../../../n5/mechanisms/index.html">Mechanisms and Structures</a> &rsaquo; <span>Materials</span></div>
     </div>
     <div class="content">
@@ -30,33 +43,120 @@
         <button class="tab-btn active" onclick="switchTab('pupils',this)">&#x1F393; Pupil resources</button>
         <button class="tab-btn" onclick="switchTab('teacher',this)">&#x1F4CB; Teacher resources</button>
       </div>
+
+      <!-- PUPIL TAB -->
       <div class="tab-panel active" id="tab-pupils">
         <p class="tab-note">Resources for pupils to use independently.</p>
-        <div class="resource-type-grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));">
-          <a href="course-notes.html" class="resource-type-card" data-resource="notes"><div class="rtc-icon">&#x1F4C4;</div><div class="rtc-title">Course notes</div><div class="rtc-sub">Notes, explanations and worked examples aligned to the SQA specification.</div><span class="rtc-badge-auto"></span></a>
-          
-          <a href="extension.html" class="resource-type-card" data-resource="extension"><div class="rtc-icon">&#x1F680;</div><div class="rtc-title">Extension tasks</div><div class="rtc-sub">Challenge activities and enrichment tasks for pupils who want to go further.</div><span class="rtc-badge-auto"></span></a>
-          <a href="homework.html" class="resource-type-card" data-resource="homework"><div class="rtc-icon">&#x1F3E0;</div><div class="rtc-title">Homework assignment</div><div class="rtc-sub">Take-home practice questions to consolidate learning from this topic.</div><span class="rtc-badge-auto"></span></a>
-          <a href="answer-sheet.html" class="resource-type-card" style="border-color:#c7d7f5;background:#f8faff;"><div class="rtc-icon">&#x1F4DD;</div><div class="rtc-title">Materials answer sheet</div><div class="rtc-sub">Type and save your answers as you work through tasks. Saved automatically in your browser.</div><span class="rtc-badge" style="background:#e0e7ff;color:#3730a3;">Student tool</span></a>
+        <div class="resource-type-grid">
+          <a href="course-notes.html" class="resource-type-card">
+            <img class="rtc-photo" src="../../../../images/icons/course-notes.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Course notes</div>
+            <div class="rtc-sub">Notes, explanations and worked examples aligned to the Qualifications Scotland specification.</div>
+            <span class="rtc-badge-auto"></span>
+          </a>
+          <a href="extension.html" class="resource-type-card">
+            <img class="rtc-photo" src="../../../../images/icons/extension.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Extension tasks</div>
+            <div class="rtc-sub">Challenge activities and enrichment tasks for pupils who want to go further.</div>
+            <span class="rtc-badge-auto"></span>
+          </a>
+          <a href="homework.html" class="resource-type-card">
+            <img class="rtc-photo" src="../../../../images/icons/homework.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Homework assignment</div>
+            <div class="rtc-sub">Take-home practice questions to consolidate learning from this topic.</div>
+            <span class="rtc-badge-auto"></span>
+          </a>
+          <a href="answer-sheet.html" class="resource-type-card" style="border-color:#c7d7f5;background:#f8faff;">
+            <img class="rtc-photo" src="../../../../images/icons/answer-sheet.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Materials answer sheet</div>
+            <div class="rtc-sub">Type and save your answers as you work through tasks. Saved automatically in your browser.</div>
+            <span class="rtc-badge" style="background:#e0e7ff;color:#3730a3;">Student tool</span>
+          </a>
         </div>
       </div>
+
+      <!-- TEACHER TAB -->
       <div class="tab-panel" id="tab-teacher">
         <p class="tab-note">Resources for classroom delivery and assessment.</p>
-        <div class="resource-type-grid" style="grid-template-columns:repeat(auto-fill,minmax(160px,1fr));">
-          <a href="presentation.html" class="resource-type-card" data-resource="presentation"><div class="rtc-icon">&#x1F3AC;</div><div class="rtc-title">Teaching presentation</div><div class="rtc-sub">Slide deck for classroom delivery covering key concepts and worked examples.</div><span class="rtc-badge-auto"></span></a>
-          <a href="practical.html" class="resource-type-card" data-resource="practical"><div class="rtc-icon">&#x1F52C;</div><div class="rtc-title">Practical tasks and demonstrations</div><div class="rtc-sub">Hands-on activities and demonstrations for classroom use.</div><span class="rtc-badge-auto"></span></a>
-          <a href="../../../../teacher/login.html" class="resource-type-card teacher-only"><div class="rtc-icon">&#x2705;</div><div class="rtc-title">Marking instructions</div><div class="rtc-sub">Answer sheets and marking guidance for tasks and homework.</div><span class="rtc-badge locked">Teacher only</span></a>
+        <div class="resource-type-grid">
+          <a href="presentation.html" class="resource-type-card" data-resource="presentation">
+            <img class="rtc-photo" src="../../../../images/icons/presentation.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Teaching presentation</div>
+            <div class="rtc-sub">Slide deck for classroom delivery covering key concepts and worked examples.</div>
+            <span class="rtc-badge-auto"></span>
+          </a>
+
+          <a href="practical.html" class="resource-type-card" data-resource="practical">
+            <img class="rtc-photo" src="../../../../images/icons/practical.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Practical tasks and demonstrations</div>
+            <div class="rtc-sub">Hands-on activities and demonstrations for classroom use.</div>
+            <span class="rtc-badge-auto"></span>
+          </a>
+
+          <div class="resource-type-card" onclick="openUnitTestModal()" style="cursor:pointer;">
+            <img class="rtc-photo" src="../../../../images/icons/unit-test.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Unit test</div>
+            <div class="rtc-sub">Password-protected assessment for this topic.</div>
+            <div class="ut-card-notice">&#x1F512; Ask your teacher for the password</div>
+          </div>
+
+          <a href="../../../../teacher/login.html" class="resource-type-card teacher-only">
+            <img class="rtc-photo" src="../../../../images/icons/marking.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Marking instructions</div>
+            <div class="rtc-sub">Answer sheets and marking guidance for tasks and homework.</div>
+            <span class="rtc-badge locked">Teacher only</span>
+          </a>
         </div>
       </div>
     </div>
   </div>
 </div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
+
+<!-- UNIT TEST MODAL -->
+<div class="ut-modal-overlay" id="ut-modal-overlay">
+  <div class="ut-modal">
+    <div class="ut-modal-title">&#x1F4DD; Unit Test &mdash; Materials</div>
+    <div class="ut-modal-sub">This test is password protected. Ask your teacher for the password to access it.</div>
+    <input class="ut-modal-input" id="ut-password-input" type="password" placeholder="Enter password" autocomplete="off">
+    <div class="ut-modal-error" id="ut-modal-error">Incorrect password. Please try again.</div>
+    <button class="ut-modal-btn" onclick="checkUnitTestPassword()">Open test</button>
+    <button class="ut-modal-cancel" onclick="closeUnitTestModal()">Cancel</button>
+  </div>
+</div>
+
+<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
 <script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script>
 <script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
 <script>
   var TOPIC = 'materials'; document.addEventListener('DOMContentLoaded', applyResourceBadges);
   function switchTab(id,btn){document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});document.getElementById('tab-'+id).classList.add('active');btn.classList.add('active');}
+</script>
+<script>
+function openUnitTestModal() {
+  var cfg = (typeof UNIT_TEST_CONFIG !== 'undefined') ? UNIT_TEST_CONFIG['materials'] : null;
+  if (!cfg || cfg.status !== 'available' || !cfg.id) {
+    alert('The unit test is not yet available. Check back later or ask your teacher.');
+    return;
+  }
+  document.getElementById('ut-modal-overlay').classList.add('open');
+  document.getElementById('ut-password-input').value = '';
+  document.getElementById('ut-modal-error').style.display = 'none';
+  setTimeout(function(){ document.getElementById('ut-password-input').focus(); }, 100);
+}
+function closeUnitTestModal() { document.getElementById('ut-modal-overlay').classList.remove('open'); }
+function checkUnitTestPassword() {
+  var cfg = UNIT_TEST_CONFIG['materials'];
+  var entered = document.getElementById('ut-password-input').value;
+  if (entered === cfg.password) {
+    closeUnitTestModal();
+    window.open('https://drive.google.com/file/d/' + cfg.id + '/view', '_blank');
+  } else {
+    document.getElementById('ut-modal-error').style.display = 'block';
+    document.getElementById('ut-password-input').value = '';
+    document.getElementById('ut-password-input').focus();
+  }
+}
+document.getElementById('ut-password-input').addEventListener('keydown', function(e){ if (e.key === 'Enter') checkUnitTestPassword(); });
 </script>
 </body>
 </html>
