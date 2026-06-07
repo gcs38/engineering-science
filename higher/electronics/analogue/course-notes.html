@@ -1,50 +1,1085 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Course notes — Analogue electronic control systems — Engineering Science Scotland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analogue Electronics — Higher Engineering Science</title>
   <link rel="stylesheet" href="../../../../css/style.css">
+  <script src="../../../../js/nav.js" defer></script>
   <style>
-    .resource-page{max-width:680px;margin:0 auto;padding:32px 32px 64px;}
-    .open-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px 24px;text-align:center;margin-bottom:16px;}
-    .open-card-icon{font-size:36px;margin-bottom:10px;}
-    .open-card-title{font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:-.4px;margin-bottom:6px;}
-    .open-card-sub{font-size:13px;color:var(--gray-600);margin-bottom:20px;line-height:1.5;}
-    .open-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-400);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .open-btn:hover{background:var(--teal-600);}
-    .sim-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-800);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .sim-btn:hover{background:var(--teal-600);}
-    .back-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:20px;}
-    .back-link:hover{color:var(--teal-800);}
-    .info-note{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;margin-top:12px;}
+    /* ── Page-level answer-box saving indicator ── */
+    .saved-indicator {
+      font-size: 11px; color: var(--teal-600);
+      opacity: 0; transition: opacity 0.4s;
+      margin-left: 8px; vertical-align: middle;
+    }
+    .saved-indicator.show { opacity: 1; }
   </style>
-</head><body>
-<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../../../n5/contexts/index.html" class="level-tab">National 5</a><a href="../../../../higher/contexts/index.html" class="level-tab active">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
-<div class="layout">
-  <nav class="sidebar" id="sidebar"></nav>
-  <div class="main">
-    <div class="hero">
-      <div class="hero-label">Higher &middot; Electronics and Control &rsaquo; Analogue electronic control systems</div>
-      <h1 class="hero-title">📄 Course notes</h1>
-      <p class="hero-sub">Analogue electronic control systems</p>
-      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../index.html">Electronics and Control</a> &rsaquo; <a href="index.html">Analogue electronic control systems</a> &rsaquo; <span>Course notes</span></div>
+</head>
+<body>
+
+<!-- ── TOPBAR / SIDEBAR (injected by nav.js) ── -->
+<div id="topbar"></div>
+<div class="page-wrap">
+  <aside id="sidebar"></aside>
+
+  <main class="main">
+
+    <!-- ══════════════════════════════════════════
+         HERO
+    ══════════════════════════════════════════ -->
+    <div class="notes-hero">
+      <div class="notes-hero-label">Higher Engineering Science &mdash; Electronics &amp; Control</div>
+      <h1 class="notes-hero-title">Analogue Electronics</h1>
+      <p class="notes-hero-sub">
+        Building on your National 5 knowledge of transistor switching, voltage dividers and the
+        systems approach, this topic extends into current amplification, MOSFETs and
+        operational amplifiers.
+      </p>
     </div>
-    <div class="content">
-      <div class="resource-page">
-        <a href="index.html" class="back-link">&larr; Back to Analogue electronic control systems</a>
-      <!-- EDIT BELOW: replace REPLACE_WITH_DRIVE_ID with your Google Drive file ID -->
-      <script>
-        var driveFileId = "REPLACE_WITH_DRIVE_ID";
-        if (driveFileId === "REPLACE_WITH_DRIVE_ID") {
-          document.write('<div class="open-card" style="background:var(--gray-50);border:1px dashed var(--gray-200);"><div class="open-card-icon" style="font-size:32px;">📂</div><div class="open-card-title" style="color:var(--gray-600);">Material coming soon</div><div class="open-card-sub">This resource is being prepared and will be available here shortly.</div></div>');
-        } else {
-          var url = "https://drive.google.com/file/d/" + driveFileId + "/view";
-          document.write('<div class="open-card"><div class="open-card-icon">📄</div><div class="open-card-title">Course notes</div><div class="open-card-sub">Notes, explanations and worked examples aligned to the SQA specification.</div><a href="' + url + '" target="_blank" class="open-btn"><svg viewBox="0 0 16 16" fill="none"><path d="M6 2h4l4 4v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.3"/><path d="M6 2v4h4M8 8v5M6 11l2 2 2-2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>Open document</a></div><div class="info-note"><strong>Note:</strong> Opens in a new tab. Use your browser back button to return.</div>');
-        }
-      </script>
+
+    <div class="notes-wrap">
+
+      <!-- ══════════════════════════════════════
+           SECTION 0 — BEFORE YOU START
+      ══════════════════════════════════════ -->
+      <h2 class="notes-h1">Before You Start</h2>
+      <p class="notes-p">
+        At National 5 you already covered the key ideas that underpin this topic. Before
+        continuing, make sure you are confident with:
+      </p>
+      <ul class="notes-p" style="margin-left:1.4rem;line-height:2.2;">
+        <li>Ohm's Law and Kirchhoff's Voltage Law</li>
+        <li>The voltage divider rule — V<sub>out</sub> = (R<sub>2</sub> / R<sub>T</sub>) &times; V<sub>S</sub></li>
+        <li>How LDRs and thermistors change resistance with light / temperature</li>
+        <li>The transistor as an electronic switch (V<sub>BE</sub> = 0.7 V to saturate)</li>
+        <li>The difference between analogue and digital signals</li>
+      </ul>
+      <div class="key-point">
+        <strong>N5 reminder:</strong> If you need to revise any of the above, go back to the
+        <a href="../../n5/electronics/analogue/course-notes.html">N5 Analogue Electronics notes</a>
+        before continuing here.
       </div>
+
+      <!-- ══════════════════════════════════════
+           SECTION 1 — VOLTAGE DIVIDERS WITH SENSORS
+      ══════════════════════════════════════ -->
+      <h2 class="notes-h1">1 — Voltage Dividers with Input Transducers</h2>
+      <p class="notes-p">
+        At N5 you used a fixed resistor and an LDR or thermistor in a voltage divider to
+        produce a voltage that changed with a physical quantity. At Higher you need to be able
+        to <em>design</em> the divider to meet a specification — choosing the correct resistor
+        value to produce a required output voltage.
+      </p>
+      <p class="notes-p">
+        The three input transducers you need to know for Higher are:
+      </p>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Input Transducers Summary</div>
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr style="background:var(--teal-50);">
+              <th style="padding:8px;text-align:left;border-bottom:1px solid var(--teal-200);">Transducer</th>
+              <th style="padding:8px;text-align:left;border-bottom:1px solid var(--teal-200);">Measures</th>
+              <th style="padding:8px;text-align:left;border-bottom:1px solid var(--teal-200);">Resistance changes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding:8px;">LDR (Light Dependent Resistor)</td><td style="padding:8px;">Light level (lux)</td><td style="padding:8px;">High in dark &rarr; low in bright light</td></tr>
+            <tr style="background:var(--teal-50);"><td style="padding:8px;">NTC Thermistor</td><td style="padding:8px;">Temperature</td><td style="padding:8px;">High when cold &rarr; low when hot</td></tr>
+            <tr><td style="padding:8px;">Variable Resistor (potentiometer)</td><td style="padding:8px;">Position / angle</td><td style="padding:8px;">Set manually — used as a reference</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="notes-p">
+        At Higher you will be given characteristic graphs or tables for LDRs and thermistors.
+        You must read the resistance at the relevant value, then substitute it into the voltage
+        divider formula to find V<sub>out</sub>, or rearrange to find the required fixed resistor.
+      </p>
+
+      <div class="formula-box">
+        V<sub>out</sub> = (R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>)) &times; V<sub>S</sub>
+        &nbsp;&nbsp;&nbsp;or&nbsp;&nbsp;&nbsp;
+        V<sub>1</sub> / V<sub>2</sub> = R<sub>1</sub> / R<sub>2</sub>
+      </div>
+
+      <!-- DIAGRAM SLOT -->
+      <img src="images/ae-voltage-divider-sensor.png"
+           alt="Voltage divider with LDR and fixed resistor"
+           style="width:100%;max-width:480px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="key-point">
+        <strong>Design tip:</strong> Voltage is the same across components connected in
+        parallel. Any output device or amplifier connected across R<sub>2</sub> sees the same
+        voltage as R<sub>2</sub>.
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example — Designing a Sensor Voltage Divider</div>
+        <p class="notes-p">
+          A thermistor has a resistance of 4 k&Omega; at 20 &deg;C. Design a voltage divider
+          connected to a 9 V supply so that V<sub>out</sub> = 3 V at this temperature.
+          The thermistor is in the lower (R<sub>2</sub>) position.
+        </p>
+        <p class="notes-p"><strong>Step 1</strong> — Apply the voltage divider rule:</p>
+        <p class="notes-p" style="margin-left:1.2rem;">
+          V<sub>out</sub> = (R<sub>2</sub> / (R<sub>1</sub> + R<sub>2</sub>)) &times; V<sub>S</sub>
+        </p>
+        <p class="notes-p" style="margin-left:1.2rem;">
+          3 = (4000 / (R<sub>1</sub> + 4000)) &times; 9
+        </p>
+        <p class="notes-p"><strong>Step 2</strong> — Rearrange:</p>
+        <p class="notes-p" style="margin-left:1.2rem;">
+          R<sub>1</sub> + 4000 = (4000 &times; 9) / 3 = 12 000
+        </p>
+        <p class="notes-p" style="margin-left:1.2rem;">
+          R<sub>1</sub> = 12 000 &minus; 4000 = <strong>8 k&Omega;</strong>
+        </p>
+      </div>
+
+      <!-- SIMULATOR EMBED — NoResistance Sim -->
+      <div class="sim-embed-section">
+        <div class="sim-embed-label">Simulator — Explore Voltage Dividers</div>
+        <p class="notes-p" style="font-size:13px;">
+          Use the simulator below to build a voltage divider with a variable resistor and an
+          LDR. Vary the light level and observe how V<sub>out</sub> changes.
+        </p>
+        <div class="sim-iframe-wrap">
+          <iframe
+            src="../../../../simulators/electronics.html"
+            title="NoResistanceSim — Analogue Electronics Simulator"
+            loading="lazy"
+            style="width:100%;height:540px;border:none;border-radius:10px;">
+          </iframe>
+        </div>
+      </div>
+
+      <!-- TASK 1 -->
+      <div class="assignment">
+        <div class="assignment-header">Task 1 — Voltage Divider Calculations</div>
+        <p class="notes-p">
+          (a) A 9 V supply is connected to a voltage divider consisting of a 10 k&Omega; fixed
+          resistor (top) and an LDR (bottom). The LDR has a resistance of 3 k&Omega; at a
+          light level of 200 lux. Calculate V<sub>out</sub> at this light level.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t1a"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t1a">&#10003; Saved</span>
+
+        <p class="notes-p" style="margin-top:14px;">
+          (b) Design a voltage divider with a 12 V supply and a thermistor in the upper
+          (R<sub>1</sub>) position so that V<sub>out</sub> = 4 V when the thermistor resistance
+          is 2 k&Omega;.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t1b"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t1b">&#10003; Saved</span>
+
+        <p class="notes-p" style="margin-top:14px;">
+          (c) A variable resistor is used in a voltage divider with a 6 V supply and a fixed
+          2.2 k&Omega; resistor. What value must the variable resistor be set to in order to
+          produce an output of 2 V? State which position (upper or lower) each resistor
+          occupies in your circuit.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t1c"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t1c">&#10003; Saved</span>
+      </div>
+
+
+      <!-- ══════════════════════════════════════
+           SECTION 2 — BJT AS CURRENT AMPLIFIER
+      ══════════════════════════════════════ -->
+      <h2 class="notes-h1">2 — The BJT as a Current Amplifier</h2>
+      <p class="notes-p">
+        At National 5 you used the transistor as a simple electronic switch: when
+        V<sub>BE</sub> &ge; 0.7 V the transistor turned ON, connecting the output device to
+        the supply. At Higher, you need to understand that the transistor also acts as a
+        <strong>current amplifier</strong>.
+      </p>
+      <p class="notes-p">
+        A small current flowing into the base (I<sub>B</sub>) allows a much larger current to
+        flow between the collector and emitter (I<sub>C</sub>). The ratio of these currents
+        is the <strong>current gain</strong>, given the symbol h<sub>FE</sub>:
+      </p>
+
+      <div class="formula-box">
+        h<sub>FE</sub> = I<sub>C</sub> / I<sub>B</sub>
+        &nbsp;&nbsp;&nbsp;&nbsp;therefore&nbsp;&nbsp;&nbsp;&nbsp;
+        I<sub>C</sub> = h<sub>FE</sub> &times; I<sub>B</sub>
+      </div>
+
+      <!-- DIAGRAM SLOT -->
+      <img src="images/ae-bjt-currents.png"
+           alt="BJT showing base, collector and emitter currents"
+           style="width:100%;max-width:520px;display:block;margin:16px auto;border-radius:8px;">
+
+      <h3 class="notes-h2">Transistor Notation</h3>
+      <div class="worked-example">
+        <div class="worked-example-title">Key Variables</div>
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <tr style="background:var(--teal-50);"><td style="padding:7px;"><strong>I<sub>C</sub></strong></td><td style="padding:7px;">Collector current</td></tr>
+          <tr><td style="padding:7px;"><strong>I<sub>B</sub></strong></td><td style="padding:7px;">Base current</td></tr>
+          <tr style="background:var(--teal-50);"><td style="padding:7px;"><strong>I<sub>E</sub></strong></td><td style="padding:7px;">Emitter current &nbsp;(I<sub>E</sub> = I<sub>B</sub> + I<sub>C</sub> &asymp; I<sub>C</sub>)</td></tr>
+          <tr><td style="padding:7px;"><strong>V<sub>CC</sub></strong></td><td style="padding:7px;">Supply voltage (relative to 0 V)</td></tr>
+          <tr style="background:var(--teal-50);"><td style="padding:7px;"><strong>V<sub>BE</sub></strong></td><td style="padding:7px;">Base–emitter voltage &nbsp;(0.7 V when saturated)</td></tr>
+          <tr><td style="padding:7px;"><strong>V<sub>CE</sub></strong></td><td style="padding:7px;">Collector–emitter voltage</td></tr>
+          <tr style="background:var(--teal-50);"><td style="padding:7px;"><strong>V<sub>L</sub></strong></td><td style="padding:7px;">Voltage across the load resistor</td></tr>
+          <tr><td style="padding:7px;"><strong>h<sub>FE</sub></strong></td><td style="padding:7px;">Current gain of the transistor</td></tr>
+        </table>
+      </div>
+
+      <div class="key-point">
+        <strong>Key relationship:</strong> V<sub>CC</sub> = V<sub>L</sub> + V<sub>CE</sub>
+        &nbsp;&nbsp; (with no emitter resistor). Since I<sub>B</sub> is so small compared to
+        I<sub>C</sub>, it is standard practice to assume I<sub>E</sub> &asymp; I<sub>C</sub>
+        in calculations.
+      </div>
+
+      <h3 class="notes-h2">Designing a BJT Circuit</h3>
+      <p class="notes-p">
+        A typical BJT driver circuit has a base resistor (R<sub>B</sub>) connected between
+        the input/voltage divider and the base. This protects the transistor from excessive
+        base current. The load (e.g. LED, motor, relay) is in the collector line.
+      </p>
+
+      <!-- DIAGRAM SLOT -->
+      <img src="images/ae-bjt-circuit.png"
+           alt="Complete BJT switching and amplifying circuit with sensor voltage divider"
+           style="width:100%;max-width:560px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example — BJT Current Amplifier</div>
+        <p class="notes-p">
+          A transistor (h<sub>FE</sub> = 200) has a base resistor R<sub>B</sub> = 150 k&Omega;
+          connected directly to a 9 V supply. A load resistor R<sub>L</sub> = 470 &Omega; is in
+          the collector line. Calculate the collector current and V<sub>CE</sub>.
+        </p>
+        <p class="notes-p"><strong>Step 1</strong> — Voltage across R<sub>B</sub>:</p>
+        <p class="notes-p" style="margin-left:1.2rem;">
+          V<sub>RB</sub> = V<sub>CC</sub> &minus; V<sub>BE</sub> = 9 &minus; 0.7 = 8.3 V
+        </p>
+        <p class="notes-p"><strong>Step 2</strong> — Base current:</p>
+        <p class="notes-p" style="margin-left:1.2rem;">
+          I<sub>B</sub> = V<sub>RB</sub> / R<sub>B</sub> = 8.3 / 150 000 = 5.53 &times; 10<sup>&minus;5</sup> A
+        </p>
+        <p class="notes-p"><strong>Step 3</strong> — Collector current:</p>
+        <p class="notes-p" style="margin-left:1.2rem;">
+          I<sub>C</sub> = h<sub>FE</sub> &times; I<sub>B</sub> = 200 &times; 5.53 &times; 10<sup>&minus;5</sup> = 0.011 A
+        </p>
+        <p class="notes-p"><strong>Step 4</strong> — Voltage across load:</p>
+        <p class="notes-p" style="margin-left:1.2rem;">
+          V<sub>L</sub> = I<sub>C</sub> &times; R<sub>L</sub> = 0.011 &times; 470 = 5.17 V
+        </p>
+        <p class="notes-p"><strong>Step 5</strong> — V<sub>CE</sub>:</p>
+        <p class="notes-p" style="margin-left:1.2rem;">
+          V<sub>CE</sub> = V<sub>CC</sub> &minus; V<sub>L</sub> = 9 &minus; 5.17 = <strong>3.83 V</strong>
+        </p>
+      </div>
+
+      <!-- SIMULATOR EMBED -->
+      <div class="sim-embed-section">
+        <div class="sim-embed-label">Simulator — BJT Circuits</div>
+        <p class="notes-p" style="font-size:13px;">
+          Build a BJT switching circuit in the simulator. Connect an LDR voltage divider to
+          the base and observe the collector current changing as you vary the light level.
+        </p>
+        <div class="sim-iframe-wrap">
+          <iframe
+            src="../../../../simulators/electronics.html"
+            title="NoResistanceSim — BJT Circuits"
+            loading="lazy"
+            style="width:100%;height:540px;border:none;border-radius:10px;">
+          </iframe>
+        </div>
+      </div>
+
+      <!-- TASK 2 -->
+      <div class="assignment">
+        <div class="assignment-header">Task 2 — BJT Calculations</div>
+        <p class="notes-p">
+          (a) A transistor has a collector current of 75 mA when the base current is 0.5 mA.
+          Calculate the current gain h<sub>FE</sub>.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t2a"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t2a">&#10003; Saved</span>
+
+        <p class="notes-p" style="margin-top:14px;">
+          (b) A transistor with h<sub>FE</sub> = 100 is used in a circuit with V<sub>CC</sub> = 12 V
+          and R<sub>L</sub> = 220 &Omega; in the collector line. The base resistor is 47 k&Omega;
+          and the base is connected to a 5 V input signal. Calculate:
+          (i) the base current, (ii) the collector current, (iii) V<sub>L</sub>, and (iv) V<sub>CE</sub>.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t2b"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t2b">&#10003; Saved</span>
+
+        <p class="notes-p" style="margin-top:14px;">
+          (c) A 6 V, 60 mA lamp is to be switched on by a transistor with h<sub>FE</sub> = 30.
+          The transistor is connected to a 6 V supply. Determine the required base current,
+          then calculate the value of base resistor needed (V<sub>BE</sub> = 0.7 V, base
+          connected to 6 V via R<sub>B</sub>).
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t2c"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t2c">&#10003; Saved</span>
+      </div>
+
+
+      <!-- ══════════════════════════════════════
+           SECTION 3 — MOSFET
+      ══════════════════════════════════════ -->
+      <h2 class="notes-h1">3 — The MOSFET as a Voltage-Operated Switch</h2>
+      <p class="notes-p">
+        A <strong>Metal Oxide Semiconductor Field Effect Transistor (MOSFET)</strong> is an
+        alternative to the BJT for switching applications. At Higher you only need the
+        <strong>n-channel enhancement mode</strong> MOSFET.
+      </p>
+
+      <h3 class="notes-h2">How the MOSFET Works</h3>
+      <p class="notes-p">
+        The MOSFET has three terminals: <strong>Gate (G)</strong>, <strong>Drain (D)</strong>
+        and <strong>Source (S)</strong> — analogous to base, collector and emitter of a BJT.
+        The key difference is that the MOSFET is <em>voltage-operated</em>, not
+        current-operated. No current flows into the gate.
+      </p>
+      <p class="notes-p">
+        When the gate-source voltage (V<sub>GS</sub>) is below the <strong>threshold
+        voltage</strong> (V<sub>T</sub>), no current flows between drain and source — the
+        device is OFF. When V<sub>GS</sub> exceeds V<sub>T</sub>, the MOSFET switches ON and
+        drain current (I<sub>D</sub>) flows. The higher V<sub>GS</sub> goes above V<sub>T</sub>,
+        the more strongly the device conducts.
+      </p>
+
+      <!-- DIAGRAM SLOT -->
+      <img src="images/ae-mosfet-symbol.png"
+           alt="N-channel enhancement MOSFET circuit symbol showing Gate, Drain and Source"
+           style="width:100%;max-width:380px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="formula-box">
+        MOSFET switches ON when: V<sub>GS</sub> &ge; V<sub>T</sub> (threshold voltage)
+      </div>
+
+      <h3 class="notes-h2">MOSFET Circuit Calculations</h3>
+      <p class="notes-p">
+        Because no current enters the gate, Ohm's Law applies directly to the
+        drain-source-load part of the circuit. When the MOSFET is fully ON (saturated):
+      </p>
+      <div class="formula-box">
+        V<sub>CC</sub> = V<sub>DS</sub> + V<sub>load</sub>
+        &nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;&nbsp;&nbsp;&nbsp;
+        I<sub>D</sub> = V<sub>load</sub> / R<sub>load</sub>
+      </div>
+
+      <!-- DIAGRAM SLOT -->
+      <img src="images/ae-mosfet-circuit.png"
+           alt="MOSFET switching circuit with voltage divider input and load resistor"
+           style="width:100%;max-width:520px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example — MOSFET Switching Circuit</div>
+        <p class="notes-p">
+          A MOSFET with a threshold voltage of 2 V has a 100 &Omega; load connected to a 5 V
+          supply. A voltage divider is used to set V<sub>GS</sub> = 3.5 V. Is the MOSFET ON?
+          If so, calculate the drain current.
+        </p>
+        <p class="notes-p">
+          V<sub>GS</sub> = 3.5 V &gt; V<sub>T</sub> = 2 V &rarr; <strong>MOSFET is ON</strong>
+        </p>
+        <p class="notes-p">
+          I<sub>D</sub> = V<sub>CC</sub> / R<sub>load</sub> = 5 / 100 = <strong>50 mA</strong>
+          &nbsp;(assuming V<sub>DS</sub> &asymp; 0 V when fully saturated)
+        </p>
+      </div>
+
+      <h3 class="notes-h2">BJT vs MOSFET — Comparison</h3>
+      <p class="notes-p">
+        You must be able to compare the two devices and justify which is more appropriate
+        for a given application.
+      </p>
+      <div class="worked-example">
+        <div class="worked-example-title">BJT vs MOSFET Comparison Table</div>
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr style="background:var(--teal-100);">
+              <th style="padding:8px;text-align:left;border-bottom:1px solid var(--teal-200);">Feature</th>
+              <th style="padding:8px;text-align:left;border-bottom:1px solid var(--teal-200);">BJT</th>
+              <th style="padding:8px;text-align:left;border-bottom:1px solid var(--teal-200);">MOSFET</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding:8px;">Operated by</td><td style="padding:8px;">Current (I<sub>B</sub>)</td><td style="padding:8px;">Voltage (V<sub>GS</sub>)</td></tr>
+            <tr style="background:var(--teal-50);"><td style="padding:8px;">Input current needed</td><td style="padding:8px;">Yes (small I<sub>B</sub>)</td><td style="padding:8px;">No (gate is insulated)</td></tr>
+            <tr><td style="padding:8px;">Suitable for high currents</td><td style="padding:8px;">Moderate</td><td style="padding:8px;">Yes — very high I<sub>D</sub> possible</td></tr>
+            <tr style="background:var(--teal-50);"><td style="padding:8px;">Switching speed</td><td style="padding:8px;">Fast</td><td style="padding:8px;">Can be slower (gate capacitance)</td></tr>
+            <tr><td style="padding:8px;">Drive from microcontroller</td><td style="padding:8px;">Needs base current</td><td style="padding:8px;">Ideal — voltage output only</td></tr>
+            <tr style="background:var(--teal-50);"><td style="padding:8px;">Static damage risk</td><td style="padding:8px;">Low</td><td style="padding:8px;">High — gate oxide can be damaged</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="key-point">
+        <strong>Exam tip:</strong> A MOSFET is preferred when: (a) the driver is a
+        microcontroller (voltage output only), (b) very high drain currents are needed, or
+        (c) power efficiency is important (very low gate power). A BJT is preferred when fast
+        switching is critical.
+      </div>
+
+      <!-- TASK 3 -->
+      <div class="assignment">
+        <div class="assignment-header">Task 3 — MOSFET</div>
+        <p class="notes-p">
+          (a) Explain what is meant by the <em>threshold voltage</em> of a MOSFET.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t3a"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t3a">&#10003; Saved</span>
+
+        <p class="notes-p" style="margin-top:14px;">
+          (b) A microcontroller output pin supplies 5 V to the gate of a MOSFET (V<sub>T</sub> = 2 V).
+          The load is a motor with resistance 20 &Omega; connected to a 12 V supply. State whether
+          the MOSFET is ON, and if so calculate the drain current.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t3b"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t3b">&#10003; Saved</span>
+
+        <p class="notes-p" style="margin-top:14px;">
+          (c) State <strong>two</strong> advantages of using a MOSFET rather than a BJT to
+          control a motor from a microcontroller output.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t3c"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t3c">&#10003; Saved</span>
+      </div>
+
+
+      <!-- ══════════════════════════════════════
+           SECTION 4 — OP-AMPS INTRODUCTION
+      ══════════════════════════════════════ -->
+      <h2 class="notes-h1">4 — The Operational Amplifier (Op-Amp)</h2>
+      <p class="notes-p">
+        An <strong>operational amplifier (op-amp)</strong> is a high-gain voltage amplifier. It
+        amplifies the <em>difference</em> between its two input voltages. The op-amp symbol
+        shows two inputs: the <strong>inverting input (&minus;)</strong> and the
+        <strong>non-inverting input (+)</strong>.
+      </p>
+
+      <!-- DIAGRAM SLOT -->
+      <img src="images/ae-opamp-symbol.png"
+           alt="Op-amp symbol showing inverting and non-inverting inputs, output, and dual power supply"
+           style="width:100%;max-width:420px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="worked-example">
+        <div class="worked-example-title">Ideal Op-Amp Properties</div>
+        <ul class="notes-p" style="margin-left:1.2rem;line-height:2.2;">
+          <li>Infinite input resistance — draws no current from the source</li>
+          <li>Zero output resistance — can supply current without voltage drop</li>
+          <li>Very high open-loop gain (A<sub>0</sub> &asymp; 100 000)</li>
+          <li>Output limited to approximately 85% of supply voltage (saturation)</li>
+        </ul>
+      </div>
+
+      <p class="notes-p">
+        The basic voltage gain formula applies to all configurations:
+      </p>
+      <div class="formula-box">
+        A<sub>V</sub> = V<sub>out</sub> / V<sub>in</sub>
+      </div>
+
+      <p class="notes-p">
+        You need to know <strong>six configurations</strong> at Higher. Each is covered in the
+        sections below.
+      </p>
+
+      <!-- ══════════════════════════════════════
+           SECTION 5 — INVERTING AMPLIFIER
+      ══════════════════════════════════════ -->
+      <h2 class="notes-h1">5 — Inverting Amplifier</h2>
+      <p class="notes-p">
+        The signal is connected to the <strong>inverting (&minus;)</strong> input through an
+        input resistor R<sub>1</sub>. A feedback resistor R<sub>f</sub> connects the output
+        back to the inverting input. The non-inverting input is connected to 0 V.
+      </p>
+
+      <!-- DIAGRAM SLOT -->
+      <img src="images/ae-inverting-amp.png"
+           alt="Inverting amplifier circuit with R1 at input and Rf as feedback resistor"
+           style="width:100%;max-width:500px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="formula-box">
+        A<sub>V</sub> = &minus;R<sub>f</sub> / R<sub>1</sub>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        V<sub>out</sub> = &minus;(R<sub>f</sub> / R<sub>1</sub>) &times; V<sub>in</sub>
+      </div>
+
+      <div class="warning">
+        The <strong>negative sign</strong> means the output is <em>inverted</em> — if the
+        input is positive, the output is negative, and vice versa.
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example — Inverting Amplifier</div>
+        <p class="notes-p">
+          R<sub>1</sub> = 15 k&Omega;, R<sub>f</sub> = 470 k&Omega;, V<sub>in</sub> = +0.2 V.
+          Find the gain and V<sub>out</sub>.
+        </p>
+        <p class="notes-p">
+          A<sub>V</sub> = &minus;R<sub>f</sub> / R<sub>1</sub> = &minus;470 / 15 = <strong>&minus;31.3</strong>
+        </p>
+        <p class="notes-p">
+          V<sub>out</sub> = &minus;31.3 &times; 0.2 = <strong>&minus;6.27 V</strong>
+        </p>
+      </div>
+
+      <!-- SIMULATOR EMBED -->
+      <div class="sim-embed-section">
+        <div class="sim-embed-label">Simulator — Inverting and Non-Inverting Amplifiers</div>
+        <p class="notes-p" style="font-size:13px;">
+          Build an inverting amplifier in the simulator with R<sub>1</sub> = 10 k&Omega; and
+          R<sub>f</sub> = 47 k&Omega;. Apply an input of 0.5 V and verify your calculated
+          V<sub>out</sub>.
+        </p>
+        <div class="sim-iframe-wrap">
+          <iframe
+            src="../../../../simulators/electronics.html"
+            title="NoResistanceSim — Op-Amp Circuits"
+            loading="lazy"
+            style="width:100%;height:540px;border:none;border-radius:10px;">
+          </iframe>
+        </div>
+      </div>
+
+      <!-- TASK 4 -->
+      <div class="assignment">
+        <div class="assignment-header">Task 4 — Inverting Amplifier</div>
+        <p class="notes-p">
+          (a) An inverting amplifier has R<sub>1</sub> = 10 k&Omega; and R<sub>f</sub> = 100 k&Omega;.
+          The supply is &plusmn;12 V. Calculate V<sub>out</sub> when V<sub>in</sub> = +0.8 V.
+          State whether the op-amp is saturated.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t4a"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t4a">&#10003; Saved</span>
+
+        <p class="notes-p" style="margin-top:14px;">
+          (b) Calculate the value of R<sub>f</sub> needed to give a gain of &minus;25 if
+          R<sub>1</sub> = 4.7 k&Omega;.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t4b"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t4b">&#10003; Saved</span>
+      </div>
+
+
+      <!-- ══════════════════════════════════════
+           SECTION 6 — NON-INVERTING AMPLIFIER
+      ══════════════════════════════════════ -->
+      <h2 class="notes-h1">6 — Non-Inverting Amplifier</h2>
+      <p class="notes-p">
+        The signal is connected directly to the <strong>non-inverting (+)</strong> input.
+        R<sub>f</sub> and R<sub>1</sub> form a voltage divider from the output back to the
+        inverting (&minus;) input. The output is always the same polarity as the input.
+      </p>
+
+      <!-- DIAGRAM SLOT -->
+      <img src="images/ae-noninverting-amp.png"
+           alt="Non-inverting amplifier circuit"
+           style="width:100%;max-width:500px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="formula-box">
+        A<sub>V</sub> = 1 + R<sub>f</sub> / R<sub>1</sub>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        V<sub>out</sub> = (1 + R<sub>f</sub> / R<sub>1</sub>) &times; V<sub>in</sub>
+      </div>
+
+      <div class="key-point">
+        <strong>Key point:</strong> The gain is always greater than 1 for the non-inverting
+        configuration. Because the input resistance is very high (ideally infinite), this
+        configuration is useful when the input transducer cannot supply large currents.
+      </div>
+
+      <!-- TASK 5 -->
+      <div class="assignment">
+        <div class="assignment-header">Task 5 — Non-Inverting Amplifier</div>
+        <p class="notes-p">
+          (a) A non-inverting amplifier has R<sub>1</sub> = 10 k&Omega; and R<sub>f</sub> = 39 k&Omega;.
+          Calculate the gain and V<sub>out</sub> when V<sub>in</sub> = 1.5 V.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t5a"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t5a">&#10003; Saved</span>
+
+        <p class="notes-p" style="margin-top:14px;">
+          (b) An LDR voltage divider produces an output of 0.6 V. A non-inverting amplifier
+          must boost this to at least 3 V. Choose suitable values for R<sub>1</sub> and
+          R<sub>f</sub> and justify your choice.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t5b"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t5b">&#10003; Saved</span>
+      </div>
+
+
+      <!-- ══════════════════════════════════════
+           SECTION 7 — VOLTAGE FOLLOWER
+      ══════════════════════════════════════ -->
+      <h2 class="notes-h1">7 — Voltage Follower</h2>
+      <p class="notes-p">
+        The voltage follower is a special case of the non-inverting amplifier where the output
+        is connected <em>directly</em> to the inverting input (R<sub>f</sub> = 0, R<sub>1</sub>
+        = &infin;). Since gain = 1 + 0/&infin; = 1, V<sub>out</sub> = V<sub>in</sub>.
+      </p>
+
+      <!-- DIAGRAM SLOT -->
+      <img src="images/ae-voltage-follower.png"
+           alt="Voltage follower (buffer) circuit — output connected directly to inverting input"
+           style="width:100%;max-width:380px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="formula-box">
+        V<sub>out</sub> = V<sub>in</sub> &nbsp;&nbsp;&nbsp; (gain = 1)
+      </div>
+
+      <p class="notes-p">
+        Its purpose is <strong>impedance matching</strong>: the circuit has a very high input
+        resistance (so it draws almost no current from the source) and a very low output
+        resistance (so it can drive a low-resistance load). It is often used to isolate or
+        &ldquo;buffer&rdquo; one stage of a circuit from another.
+      </p>
+
+      <!-- TASK 6 -->
+      <div class="assignment">
+        <div class="assignment-header">Task 6 — Voltage Follower</div>
+        <p class="notes-p">
+          (a) State the gain of a voltage follower and explain why this configuration is useful
+          even though it does not amplify the signal.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t6a"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t6a">&#10003; Saved</span>
+      </div>
+
+
+      <!-- ══════════════════════════════════════
+           SECTION 8 — COMPARATOR
+      ══════════════════════════════════════ -->
+      <h2 class="notes-h1">8 — Comparator</h2>
+      <p class="notes-p">
+        The comparator uses the op-amp in <strong>open-loop</strong> mode — there is no
+        feedback resistor. The open-loop gain is enormous (&asymp;100 000), so even the
+        tiniest difference between the two inputs drives the output into positive or negative
+        saturation.
+      </p>
+
+      <!-- DIAGRAM SLOT -->
+      <img src="images/ae-comparator.png"
+           alt="Comparator circuit with two voltage divider inputs — reference and sensor"
+           style="width:100%;max-width:500px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="formula-box">
+        If V<sub>+</sub> &gt; V<sub>&minus;</sub> &rarr; V<sub>out</sub> = +V<sub>sat</sub> (&asymp; +0.85 &times; V<sub>CC</sub>)<br>
+        If V<sub>+</sub> &lt; V<sub>&minus;</sub> &rarr; V<sub>out</sub> = &minus;V<sub>sat</sub> (&asymp; &minus;0.85 &times; V<sub>CC</sub>)
+      </div>
+
+      <div class="key-point">
+        <strong>Two-state control:</strong> The output is either fully ON or fully OFF —
+        there is no &ldquo;in between&rdquo;. This makes the comparator ideal for simple
+        switching applications such as turning a heater on when temperature drops below a
+        set point.
+      </div>
+
+      <p class="notes-p">
+        In a typical circuit, one input is a <strong>reference voltage</strong> (set by a
+        fixed voltage divider or potentiometer), and the other is the <strong>sensor
+        voltage</strong> from an LDR or thermistor divider.
+      </p>
+
+      <!-- DIAGRAM SLOT -->
+      <img src="images/ae-comparator-sensor.png"
+           alt="Practical comparator circuit with thermistor sensing divider and reference divider"
+           style="width:100%;max-width:540px;display:block;margin:16px auto;border-radius:8px;">
+
+      <!-- SIMULATOR EMBED -->
+      <div class="sim-embed-section">
+        <div class="sim-embed-label">Simulator — Comparator</div>
+        <p class="notes-p" style="font-size:13px;">
+          Build a comparator circuit: use one voltage divider with a potentiometer as the
+          reference, and a second with an LDR as the sensor. Observe the output switching
+          as you vary the light level past the reference point.
+        </p>
+        <div class="sim-iframe-wrap">
+          <iframe
+            src="../../../../simulators/electronics.html"
+            title="NoResistanceSim — Comparator"
+            loading="lazy"
+            style="width:100%;height:540px;border:none;border-radius:10px;">
+          </iframe>
+        </div>
+      </div>
+
+      <!-- TASK 7 -->
+      <div class="assignment">
+        <div class="assignment-header">Task 7 — Comparator</div>
+        <p class="notes-p">
+          (a) A comparator has a &plusmn;9 V supply. The reference voltage on the
+          non-inverting input is 3 V. State the output voltage when the sensor voltage on
+          the inverting input is (i) 2 V, (ii) 4 V.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t7a"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t7a">&#10003; Saved</span>
+
+        <p class="notes-p" style="margin-top:14px;">
+          (b) Explain why the comparator gives <strong>two-state</strong> control rather than
+          proportional control.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t7b"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t7b">&#10003; Saved</span>
+
+        <p class="notes-p" style="margin-top:14px;">
+          (c) A street lamp must switch on at light levels below 50 lux. An LDR has a
+          resistance of 8 k&Omega; at 50 lux. The sensing voltage divider uses a 12 V supply
+          with the LDR at the top. Design a suitable reference voltage divider (using two
+          resistors from a 12 V supply) to switch the lamp at the correct light level.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t7c"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t7c">&#10003; Saved</span>
+      </div>
+
+
+      <!-- ══════════════════════════════════════
+           SECTION 9 — DIFFERENCE AMPLIFIER
+      ══════════════════════════════════════ -->
+      <h2 class="notes-h1">9 — Difference Amplifier</h2>
+      <p class="notes-p">
+        The difference amplifier uses closed-loop feedback. Like the comparator, it has two
+        inputs, but unlike the comparator the output is proportional to the
+        <em>difference</em> between those inputs — not just fully on or off.
+      </p>
+      <p class="notes-p">
+        Each input has its own resistor, and R<sub>f</sub> is the feedback resistor. When all
+        four resistors are equal:
+      </p>
+
+      <!-- DIAGRAM SLOT -->
+      <img src="images/ae-difference-amp.png"
+           alt="Difference amplifier circuit with four equal resistors"
+           style="width:100%;max-width:520px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="formula-box">
+        V<sub>out</sub> = (R<sub>f</sub> / R<sub>1</sub>) &times; (V<sub>2</sub> &minus; V<sub>1</sub>)
+      </div>
+
+      <div class="key-point">
+        <strong>Proportional control:</strong> The output is proportional to the error
+        (difference between desired and actual values). Large error = large output; zero
+        error = zero output. This is used in high-precision control systems such as medical
+        equipment and process control.
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example — Difference Amplifier</div>
+        <p class="notes-p">
+          Two strain gauges form the inputs of a difference amplifier. When unstrained,
+          both have resistance 200 &Omega; and V<sub>1</sub> = V<sub>2</sub> = 3 V.
+          When Rg<sub>2</sub> increases to 210 &Omega;, V<sub>2</sub> rises to 3.05 V.
+          All four op-amp resistors are 42 k&Omega;. Calculate V<sub>out</sub>.
+        </p>
+        <p class="notes-p">
+          A<sub>V</sub> = R<sub>f</sub> / R<sub>1</sub> = 42 k / 42 k = 1
+        </p>
+        <p class="notes-p">
+          V<sub>out</sub> = 1 &times; (3.05 &minus; 3.00) = <strong>0.05 V</strong>
+        </p>
+        <p class="notes-p">
+          In a real instrument the gain would be much higher (e.g. 10 000) to give a
+          readable output.
+        </p>
+      </div>
+
+      <!-- SIMULATOR EMBED -->
+      <div class="sim-embed-section">
+        <div class="sim-embed-label">Simulator — Difference Amplifier</div>
+        <p class="notes-p" style="font-size:13px;">
+          Build a difference amplifier with four 10 k&Omega; resistors. Connect two voltage
+          dividers (with potentiometers) to the inputs. Adjust one and observe how the
+          output voltage changes proportionally.
+        </p>
+        <div class="sim-iframe-wrap">
+          <iframe
+            src="../../../../simulators/electronics.html"
+            title="NoResistanceSim — Difference Amplifier"
+            loading="lazy"
+            style="width:100%;height:540px;border:none;border-radius:10px;">
+          </iframe>
+        </div>
+      </div>
+
+      <!-- TASK 8 -->
+      <div class="assignment">
+        <div class="assignment-header">Task 8 — Difference Amplifier</div>
+        <p class="notes-p">
+          (a) A difference amplifier has R<sub>1</sub> = R<sub>f</sub> = 10 k&Omega;.
+          V<sub>1</sub> = 2.5 V and V<sub>2</sub> = 3.1 V. Calculate V<sub>out</sub>.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t8a"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t8a">&#10003; Saved</span>
+
+        <p class="notes-p" style="margin-top:14px;">
+          (b) Explain why a difference amplifier is described as giving <strong>proportional
+          control</strong> and state one application where this is important.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t8b"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t8b">&#10003; Saved</span>
+
+        <p class="notes-p" style="margin-top:14px;">
+          (c) Two strain gauges (R<sub>G1</sub> = R<sub>G2</sub> = 200 &Omega; unstrained) are
+          connected as the inputs of a difference amplifier. R<sub>1</sub> = R<sub>f</sub> = 1 k&Omega;.
+          When load is applied, R<sub>G2</sub> increases to 205 &Omega; while R<sub>G1</sub>
+          stays at 200 &Omega;. If the supply is 6 V, calculate the voltages at each input
+          to the op-amp and hence V<sub>out</sub>.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t8c"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t8c">&#10003; Saved</span>
+      </div>
+
+
+      <!-- ══════════════════════════════════════
+           SECTION 10 — SUMMING AMPLIFIER
+      ══════════════════════════════════════ -->
+      <h2 class="notes-h1">10 — Summing Amplifier</h2>
+      <p class="notes-p">
+        The summing amplifier is a variation of the inverting amplifier with two or more
+        inputs, each connected through its own resistor to the inverting terminal.
+        The op-amp amplifies each input independently and then sums the results.
+      </p>
+
+      <!-- DIAGRAM SLOT -->
+      <img src="images/ae-summing-amp.png"
+           alt="Summing amplifier with three inputs V1 V2 V3 each through their own resistors"
+           style="width:100%;max-width:520px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="formula-box">
+        V<sub>out</sub> = &minus;R<sub>f</sub>
+        &times; (V<sub>1</sub>/R<sub>1</sub> + V<sub>2</sub>/R<sub>2</sub> + V<sub>3</sub>/R<sub>3</sub> + &hellip;)
+      </div>
+
+      <p class="notes-p">
+        When all input resistors are equal (R<sub>1</sub> = R<sub>2</sub> = R<sub>3</sub> = R):
+      </p>
+      <div class="formula-box">
+        V<sub>out</sub> = &minus;(R<sub>f</sub> / R) &times; (V<sub>1</sub> + V<sub>2</sub> + V<sub>3</sub> + &hellip;)
+      </div>
+
+      <div class="warning">
+        Remember the output is <strong>inverted</strong> (negative sign). To get a positive
+        sum, the output is often passed through a second inverting amplifier with gain &minus;1
+        (R<sub>1</sub> = R<sub>f</sub>).
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example — Summing Amplifier</div>
+        <p class="notes-p">
+          Three inputs: V<sub>1</sub> = 4 V (R<sub>1</sub> = 10 k&Omega;),
+          V<sub>2</sub> = 2 V (R<sub>2</sub> = 5 k&Omega;),
+          V<sub>3</sub> = 1 V (R<sub>3</sub> = 2 k&Omega;).
+          R<sub>f</sub> = 10 k&Omega;. Find V<sub>out</sub>.
+        </p>
+        <p class="notes-p">
+          V<sub>out</sub> = &minus;10 000 &times; (4/10 000 + 2/5000 + 1/2000)
+        </p>
+        <p class="notes-p">
+          = &minus;10 000 &times; (0.0004 + 0.0004 + 0.0005) = &minus;10 000 &times; 0.0013 = <strong>&minus;13 V</strong>
+        </p>
+      </div>
+
+      <!-- TASK 9 -->
+      <div class="assignment">
+        <div class="assignment-header">Task 9 — Summing Amplifier</div>
+        <p class="notes-p">
+          (a) A summing amplifier has R<sub>f</sub> = 10 k&Omega;. Three inputs are:
+          V<sub>1</sub> = 1 V (R<sub>1</sub> = 10 k&Omega;),
+          V<sub>2</sub> = 2 V (R<sub>2</sub> = 10 k&Omega;),
+          V<sub>3</sub> = 3 V (R<sub>3</sub> = 10 k&Omega;).
+          Calculate V<sub>out</sub>.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t9a"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t9a">&#10003; Saved</span>
+
+        <p class="notes-p" style="margin-top:14px;">
+          (b) How could the circuit in (a) be modified so that V<sub>out</sub> is positive?
+          Describe (or sketch) the addition required.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t9b"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t9b">&#10003; Saved</span>
+      </div>
+
+
+      <!-- ══════════════════════════════════════
+           SECTION 11 — CHOOSING THE RIGHT CONFIG
+      ══════════════════════════════════════ -->
+      <h2 class="notes-h1">11 — Choosing the Right Op-Amp Configuration</h2>
+      <p class="notes-p">
+        A common exam question asks you to identify which op-amp configuration is most
+        suitable for a given application. Use this summary:
+      </p>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Op-Amp Configuration Summary</div>
+        <table style="width:100%;border-collapse:collapse;font-size:13px;">
+          <thead>
+            <tr style="background:var(--teal-100);">
+              <th style="padding:8px;text-align:left;">Configuration</th>
+              <th style="padding:8px;text-align:left;">Output relative to input</th>
+              <th style="padding:8px;text-align:left;">Type of control</th>
+              <th style="padding:8px;text-align:left;">Typical application</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding:8px;">Inverting</td><td style="padding:8px;">Inverted, amplified</td><td style="padding:8px;">Signal conditioning</td><td style="padding:8px;">Amplifying a sensor signal</td></tr>
+            <tr style="background:var(--teal-50);"><td style="padding:8px;">Non-inverting</td><td style="padding:8px;">Same polarity, amplified</td><td style="padding:8px;">Signal conditioning</td><td style="padding:8px;">Amplifying a low-current source</td></tr>
+            <tr><td style="padding:8px;">Voltage follower</td><td style="padding:8px;">Equal to input</td><td style="padding:8px;">Buffering</td><td style="padding:8px;">Impedance matching between stages</td></tr>
+            <tr style="background:var(--teal-50);"><td style="padding:8px;">Comparator</td><td style="padding:8px;">+V<sub>sat</sub> or &minus;V<sub>sat</sub></td><td style="padding:8px;">Two-state (on/off)</td><td style="padding:8px;">Street lamp, thermostat, alarm</td></tr>
+            <tr><td style="padding:8px;">Difference amplifier</td><td style="padding:8px;">Proportional to difference</td><td style="padding:8px;">Proportional</td><td style="padding:8px;">Strain gauge, precision temp control</td></tr>
+            <tr style="background:var(--teal-50);"><td style="padding:8px;">Summing amplifier</td><td style="padding:8px;">Inverted weighted sum</td><td style="padding:8px;">Signal mixing</td><td style="padding:8px;">Audio mixer, DAC</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- TASK 10 -->
+      <div class="assignment">
+        <div class="assignment-header">Task 10 — Choosing a Configuration</div>
+        <p class="notes-p">
+          For each application below, name the most suitable op-amp configuration and explain
+          your choice:
+        </p>
+        <p class="notes-p">
+          (a) An automatic street light that switches on at dusk and off at dawn.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t10a"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t10a">&#10003; Saved</span>
+
+        <p class="notes-p" style="margin-top:14px;">
+          (b) A temperature monitoring system in an incubator for premature babies, where the
+          heating must reduce <em>gradually</em> as the temperature approaches the set point.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t10b"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t10b">&#10003; Saved</span>
+
+        <p class="notes-p" style="margin-top:14px;">
+          (c) An audio mixer that combines signals from a guitar (50 mV) and a microphone
+          (20 mV) with equal gain.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t10c"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t10c">&#10003; Saved</span>
+
+        <p class="notes-p" style="margin-top:14px;">
+          (d) A buffer stage is needed to connect a high-impedance temperature sensor to a
+          low-impedance output device without affecting the sensor reading.
+        </p>
+        <div class="answer-box" contenteditable="true"
+          data-key="hae-t10d"
+          data-placeholder="Write your answer here…"></div>
+        <span class="saved-indicator" id="ind-hae-t10d">&#10003; Saved</span>
+      </div>
+
+    </div><!-- /notes-wrap -->
+
+    <!-- ══════════════════════════════════════
+         CONTROLS BAR
+    ══════════════════════════════════════ -->
+    <div class="controls-bar">
+      <span class="controls-saved-msg">Answers saved automatically</span>
+      <button class="controls-btn" onclick="window.print()">&#128438; Print</button>
+      <button class="controls-btn controls-btn-clear" onclick="clearAll()">&#128465; Clear all answers</button>
     </div>
-  </div>
-</div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
-<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script><script>document.getElementById("sidebar").innerHTML=buildSidebar("higher","../../../../");</script></body></html>
+
+  </main>
+</div><!-- /page-wrap -->
+
+<!-- ══════════════════════════════════════
+     SIDEBAR INJECTION
+══════════════════════════════════════ -->
+<script>
+  document.getElementById("sidebar").innerHTML = buildSidebar("higher","../../../../");
+</script>
+
+<!-- ══════════════════════════════════════
+     localStorage — SAVE / RESTORE / CLEAR
+══════════════════════════════════════ -->
+<script>
+  const PREFIX = "ess_answers_hae-";
+
+  /* ---- restore on load ---- */
+  document.querySelectorAll(".answer-box[data-key]").forEach(el => {
+    const saved = localStorage.getItem(PREFIX + el.dataset.key);
+    if (saved) el.innerHTML = saved;
+  });
+
+  /* ---- save with debounce ---- */
+  let timers = {};
+  function saveBox(el) {
+    const key = el.dataset.key;
+    clearTimeout(timers[key]);
+    timers[key] = setTimeout(() => {
+      localStorage.setItem(PREFIX + key, el.innerHTML);
+      const ind = document.getElementById("ind-" + key);
+      if (ind) { ind.classList.add("show"); setTimeout(() => ind.classList.remove("show"), 2000); }
+    }, 800);
+  }
+
+  document.querySelectorAll(".answer-box[data-key]").forEach(el => {
+    el.addEventListener("input", () => saveBox(el));
+    el.addEventListener("blur",  () => saveBox(el));
+  });
+
+  /* ---- clear all ---- */
+  function clearAll() {
+    if (!confirm("Clear all saved answers on this page?")) return;
+    document.querySelectorAll(".answer-box[data-key]").forEach(el => {
+      localStorage.removeItem(PREFIX + el.dataset.key);
+      el.innerHTML = "";
+    });
+  }
+</script>
+
+</body>
+</html>
