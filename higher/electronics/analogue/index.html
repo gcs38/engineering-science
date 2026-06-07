@@ -1,209 +1,197 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Analogue Electronics — Higher Engineering Science</title>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Analogue Electronics &mdash; Higher Engineering Science</title>
   <link rel="stylesheet" href="../../../../css/style.css">
-  <script src="../../../../js/site.js"></script>
-  <script src="../../../../js/nav.js" defer></script>
+  <style>
+    .tab-bar { display:flex; gap:6px; margin-bottom:20px; }
+    .tab-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 18px; border-radius:8px; font-size:13px; font-weight:600; cursor:pointer; border:2px solid var(--gray-200); background:var(--white); color:var(--gray-600); font-family:inherit; transition:all 0.15s ease; }
+    .tab-btn:hover { border-color:var(--teal-100); background:var(--teal-50); color:var(--teal-600); }
+    .tab-btn.active { background:var(--teal-400); border-color:var(--teal-400); color:var(--white); }
+    .tab-panel { display:none; } .tab-panel.active { display:block; }
+    .tab-note { font-size:12px; color:var(--gray-400); margin-bottom:16px; }
+    .rtc-photo { width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid var(--teal-100); background:var(--teal-50); display:block; margin:0 auto 10px; }
+    .ut-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:999; align-items:center; justify-content:center; }
+    .ut-modal-overlay.open { display:flex; }
+    .ut-modal { background:var(--white); border-radius:var(--radius-lg); padding:28px 28px 24px; max-width:340px; width:90%; box-shadow:0 8px 32px rgba(0,0,0,0.18); }
+    .ut-modal-title { font-size:16px; font-weight:700; color:var(--teal-800); margin-bottom:6px; }
+    .ut-modal-sub { font-size:13px; color:var(--gray-600); margin-bottom:18px; line-height:1.5; }
+    .ut-modal-input { width:100%; padding:9px 12px; font-size:14px; border:1px solid var(--gray-200); border-radius:var(--radius-md); margin-bottom:10px; font-family:inherit; outline:none; transition:border-color 0.15s; }
+    .ut-modal-input:focus { border-color:var(--teal-400); }
+    .ut-modal-btn { width:100%; padding:10px; font-size:13px; font-weight:600; background:var(--teal-400); color:var(--white); border:none; border-radius:var(--radius-md); cursor:pointer; font-family:inherit; transition:background 0.15s; }
+    .ut-modal-btn:hover { background:var(--teal-600); }
+    .ut-modal-error { font-size:12px; color:#b91c1c; margin-top:8px; display:none; }
+    .ut-modal-cancel { width:100%; margin-top:8px; padding:8px; font-size:12px; font-weight:500; background:transparent; color:var(--gray-400); border:none; cursor:pointer; font-family:inherit; }
+    .ut-card-notice { font-size:11px; color:var(--gray-400); margin-top:6px; line-height:1.4; }
+  </style>
 </head>
 <body>
 
-<!-- ── TOPBAR / SIDEBAR (injected by nav.js) ── -->
-<div id="topbar"></div>
-<div class="page-wrap">
-  <aside id="sidebar"></aside>
+<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../../../n5/contexts/index.html" class="level-tab">National 5</a><a href="../../../../higher/contexts/index.html" class="level-tab active">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
 
-  <main class="main">
-
-    <!-- ══════════════════════════════════════════
-         HERO
-    ══════════════════════════════════════════ -->
-    <div class="notes-hero">
-      <div class="notes-hero-label">Higher Engineering Science &mdash; Electronics &amp; Control</div>
-      <h1 class="notes-hero-title">Analogue Electronics</h1>
-      <p class="notes-hero-sub">
-        Voltage dividers with sensors, BJT current amplifiers, MOSFETs as voltage-operated
-        switches, and operational amplifier configurations — inverting, non-inverting,
-        comparator, difference amplifier, summing amplifier and voltage follower.
-      </p>
+<div class="layout">
+  <nav class="sidebar" id="sidebar"></nav>
+  <div class="main">
+    <div class="hero">
+      <div class="hero-label">Higher &middot; Electronics &amp; Control</div>
+      <h1 class="hero-title">Analogue Electronics</h1>
+      <p class="hero-sub">Voltage dividers with sensors, BJT current amplifiers, MOSFETs and operational amplifier configurations</p>
+      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../../../../higher/electronics/index.html">Electronics</a> &rsaquo; <span>Analogue Electronics</span></div>
     </div>
+    <div class="content">
+      <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('pupils',this)">&#x1F393; Pupil resources</button>
+        <button class="tab-btn" onclick="switchTab('teacher',this)">&#x1F4CB; Teacher resources</button>
+      </div>
 
-    <!-- ══════════════════════════════════════════
-         TABS
-    ══════════════════════════════════════════ -->
-    <div class="tab-bar">
-      <button class="tab-btn tab-active" onclick="showTab('pupil',this)">Pupil Resources</button>
-      <button class="tab-btn" onclick="showTab('teacher',this)">Teacher Resources</button>
-    </div>
+      <!-- =================== PUPIL TAB =================== -->
+      <div class="tab-panel active" id="tab-pupils">
+        <p class="tab-note">Resources for pupils to use independently.</p>
+        <div class="resource-type-grid">
 
-    <!-- ══════════════════════════════════════════
-         PUPIL TAB
-    ══════════════════════════════════════════ -->
-    <div id="tab-pupil" class="tab-content">
-      <div class="rtc-grid">
+          <a href="course-notes.html" class="resource-type-card" data-resource="notes">
+            <img class="rtc-photo" src="../../../../images/icons/course-notes.jpg" alt=""
+              onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Course notes</div>
+            <div class="rtc-sub">Voltage dividers, BJT amplifiers, MOSFETs and all six op-amp configurations — with worked examples, tasks and simulator activities.</div>
+            <span class="rtc-badge-auto"></span>
+          </a>
 
-        <!-- Course Notes -->
-        <a href="course-notes.html" class="rtc-card">
-          <img class="rtc-photo"
-            src="../../../../images/icons/course-notes.jpg"
-            alt="" width="52" height="52" style="width:52px;height:52px;"
-            onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
-          <div class="rtc-title">Course Notes</div>
-          <div class="rtc-desc">
-            Voltage dividers, BJT amplifiers, MOSFETs and all six op-amp configurations —
-            with worked examples, tasks and simulator activities.
-          </div>
-          <div class="rtc-arrow">&#8594;</div>
-        </a>
+          <a href="../../../../simulators/electronics.html" target="_blank" class="resource-type-card" style="border-color:var(--teal-100);background:var(--teal-50);">
+            <img class="rtc-photo" src="../../../../images/icons/simulator-analogue.jpg" alt=""
+              onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">NoResistanceSim simulator</div>
+            <div class="rtc-sub">Build and test voltage divider, transistor and op-amp circuits in your browser. No hardware needed.</div>
+            <span class="rtc-badge">Launch</span>
+          </a>
 
-        <!-- Simulator — Analogue -->
-        <a href="../../../../simulators/electronics.html" class="rtc-card">
-          <img class="rtc-photo"
-            src="../../../../images/icons/simulator-analogue.jpg"
-            alt="" style="width:52px;height:52px;min-width:52px;min-height:52px;"
-            onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
-          <div class="rtc-title">Simulator</div>
-          <div class="rtc-desc">
-            NoResistanceSim — build and test voltage divider, transistor and op-amp
-            circuits in your browser. No hardware needed.
-          </div>
-          <div class="rtc-arrow">&#8594;</div>
-        </a>
+          <a href="extension.html" class="resource-type-card" data-resource="extension">
+            <img class="rtc-photo" src="../../../../images/icons/extension.jpg" alt=""
+              onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Extension tasks</div>
+            <div class="rtc-sub">Challenge activities and enrichment tasks for pupils who want to go further.</div>
+            <span class="rtc-badge-auto"></span>
+          </a>
 
-        <!-- Presentation -->
-        <a href="presentation.html" class="rtc-card rtc-card-soon">
-          <img class="rtc-photo"
-            src="../../../../images/icons/presentation.jpg"
-            alt="" style="width:52px;height:52px;min-width:52px;min-height:52px;"
-            onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
-          <div class="rtc-title">Presentation</div>
-          <div class="rtc-desc">Slide deck covering the key concepts for this topic.</div>
-          <div class="rtc-badge rtc-badge-soon">Coming soon</div>
-        </a>
+          <a href="homework.html" class="resource-type-card" data-resource="homework">
+            <img class="rtc-photo" src="../../../../images/icons/homework.jpg" alt=""
+              onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Homework assignment</div>
+            <div class="rtc-sub">Take-home practice questions to consolidate transistor and op-amp calculations.</div>
+            <span class="rtc-badge-auto"></span>
+          </a>
 
-        <!-- Extension -->
-        <a href="extension.html" class="rtc-card rtc-card-soon">
-          <img class="rtc-photo"
-            src="../../../../images/icons/extension.jpg"
-            alt="" style="width:52px;height:52px;min-width:52px;min-height:52px;"
-            onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
-          <div class="rtc-title">Extension Task</div>
-          <div class="rtc-desc">Challenge questions and design tasks going beyond the core notes.</div>
-          <div class="rtc-badge rtc-badge-soon">Coming soon</div>
-        </a>
+          <a href="answer-sheet.html" class="resource-type-card" style="border-color:#c7d7f5;background:#f8faff;">
+            <img class="rtc-photo" src="../../../../images/icons/answer-sheet.jpg" alt=""
+              onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Analogue Electronics answer sheet</div>
+            <div class="rtc-sub">Type and save your answers as you work through tasks. Saved automatically in your browser.</div>
+            <span class="rtc-badge" style="background:#e0e7ff;color:#3730a3;">Student tool</span>
+          </a>
 
-        <!-- Homework -->
-        <a href="homework.html" class="rtc-card rtc-card-soon">
-          <img class="rtc-photo"
-            src="../../../../images/icons/homework.jpg"
-            alt="" style="width:52px;height:52px;min-width:52px;min-height:52px;"
-            onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
-          <div class="rtc-title">Homework</div>
-          <div class="rtc-desc">Set questions to practise transistor and op-amp calculations.</div>
-          <div class="rtc-badge rtc-badge-soon">Coming soon</div>
-        </a>
-
-        <!-- Practical -->
-        <a href="practical.html" class="rtc-card rtc-card-soon">
-          <img class="rtc-photo"
-            src="../../../../images/icons/practical.jpg"
-            alt="" style="width:52px;height:52px;min-width:52px;min-height:52px;"
-            onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
-          <div class="rtc-title">Practical Activity</div>
-          <div class="rtc-desc">Build and test analogue circuits on breadboard or in simulation.</div>
-          <div class="rtc-badge rtc-badge-soon">Coming soon</div>
-        </a>
-
-        <!-- Answer Sheet -->
-        <a href="answer-sheet.html" class="rtc-card rtc-card-answer">
-          <img class="rtc-photo"
-            src="../../../../images/icons/answer-sheet.jpg"
-            alt="" style="width:52px;height:52px;min-width:52px;min-height:52px;"
-            onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
-          <div class="rtc-title">Answer Sheet</div>
-          <div class="rtc-desc">Blank answer sheet for set tasks — saves automatically in your browser.</div>
-          <div class="rtc-badge rtc-badge-student">Student tool</div>
-          <div class="rtc-arrow">&#8594;</div>
-        </a>
-
-      </div><!-- /rtc-grid -->
-    </div><!-- /tab-pupil -->
-
-    <!-- ══════════════════════════════════════════
-         TEACHER TAB
-    ══════════════════════════════════════════ -->
-    <div id="tab-teacher" class="tab-content" style="display:none;">
-      <div class="rtc-grid">
-
-        <!-- Marking Instructions -->
-        <a href="marking.html" class="rtc-card rtc-card-soon">
-          <img class="rtc-photo"
-            src="../../../../images/icons/marking.jpg"
-            alt="" style="width:52px;height:52px;min-width:52px;min-height:52px;"
-            onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
-          <div class="rtc-title">Marking Instructions</div>
-          <div class="rtc-desc">Model answers and marking guidance for all tasks.</div>
-          <div class="rtc-badge rtc-badge-soon">Coming soon</div>
-        </a>
-
-        <!-- Unit Test — password protected -->
-        <div class="rtc-card rtc-card-test" id="unit-test-card" onclick="openUnitTestModal('higher-analogue')">
-          <img class="rtc-photo"
-            src="../../../../images/icons/unit-test.jpg"
-            alt="" style="width:52px;height:52px;min-width:52px;min-height:52px;"
-            onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
-          <div class="rtc-title">Unit Test</div>
-          <div class="rtc-desc" id="unit-test-desc">Loading…</div>
-          <div class="rtc-badge rtc-badge-teacher">Teacher only</div>
         </div>
+      </div>
 
-      </div><!-- /rtc-grid -->
-    </div><!-- /tab-teacher -->
+      <!-- =================== TEACHER TAB =================== -->
+      <div class="tab-panel" id="tab-teacher">
+        <p class="tab-note">Resources for classroom delivery and assessment.</p>
+        <div class="resource-type-grid">
 
-  </main>
-</div><!-- /page-wrap -->
+          <a href="presentation.html" class="resource-type-card" data-resource="presentation">
+            <img class="rtc-photo" src="../../../../images/icons/presentation.jpg" alt=""
+              onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Teaching presentation</div>
+            <div class="rtc-sub">Slide deck for classroom delivery covering key concepts and worked examples.</div>
+            <span class="rtc-badge-auto"></span>
+          </a>
 
-<!-- ══════════════════════════════════════════
-     UNIT TEST MODAL (driven by site.js)
-══════════════════════════════════════════ -->
-<div id="unit-test-modal" class="modal-overlay" style="display:none;" onclick="closeModalOnOverlay(event)">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeUnitTestModal()">&times;</button>
-    <div class="modal-title">Unit Test — Analogue Electronics</div>
-    <div id="modal-body-content"></div>
+          <a href="practical.html" class="resource-type-card" data-resource="practical">
+            <img class="rtc-photo" src="../../../../images/icons/practical.jpg" alt=""
+              onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Practical tasks and demonstrations</div>
+            <div class="rtc-sub">Hands-on breadboard and simulation activities for classroom use.</div>
+            <span class="rtc-badge-auto"></span>
+          </a>
+
+          <div class="resource-type-card" onclick="openUnitTestModal()" style="cursor:pointer;">
+            <img class="rtc-photo" src="../../../../images/icons/unit-test.jpg" alt=""
+              onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Unit test</div>
+            <div class="rtc-sub">Password-protected assessment for this topic.</div>
+            <div class="ut-card-notice">&#x1F512; Ask your teacher for the password</div>
+          </div>
+
+          <a href="../../../../teacher/login.html" class="resource-type-card teacher-only">
+            <img class="rtc-photo" src="../../../../images/icons/marking.jpg" alt=""
+              onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Marking instructions</div>
+            <div class="rtc-sub">Answer sheets and marking guidance for tasks and homework.</div>
+            <span class="rtc-badge locked">Teacher only</span>
+          </a>
+
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════
-     SIDEBAR INJECTION + TAB LOGIC
-══════════════════════════════════════════ -->
+<!-- ── UNIT TEST PASSWORD MODAL ── -->
+<div class="ut-modal-overlay" id="ut-modal-overlay">
+  <div class="ut-modal">
+    <div class="ut-modal-title">&#x1F4DD; Unit Test &mdash; Analogue Electronics</div>
+    <div class="ut-modal-sub">This test is password protected. Ask your teacher for the password to access it.</div>
+    <input class="ut-modal-input" id="ut-password-input" type="password" placeholder="Enter password" autocomplete="off">
+    <div class="ut-modal-error" id="ut-modal-error">Incorrect password. Please try again.</div>
+    <button class="ut-modal-btn" onclick="checkUnitTestPassword()">Open test</button>
+    <button class="ut-modal-cancel" onclick="closeUnitTestModal()">Cancel</button>
+  </div>
+</div>
+
+<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
+
+<script src="../../../../js/site.js"></script>
+<script src="../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("higher","../../../../");</script>
 <script>
-  document.getElementById("sidebar").innerHTML = buildSidebar("higher","../../../../");
-
-  /* ---- tab switching ---- */
-  function showTab(name, btn) {
-    document.querySelectorAll(".tab-content").forEach(t => t.style.display = "none");
-    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("tab-active"));
-    document.getElementById("tab-" + name).style.display = "block";
-    btn.classList.add("tab-active");
+  var TOPIC = 'higher-analogue';
+  document.addEventListener('DOMContentLoaded', applyResourceBadges);
+  function switchTab(id,btn){
+    document.querySelectorAll('.tab-panel').forEach(function(p){p.classList.remove('active');});
+    document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+    document.getElementById('tab-'+id).classList.add('active');
+    btn.classList.add('active');
   }
-
-  /* ---- unit test card status from UNIT_TEST_CONFIG in site.js ---- */
-  document.addEventListener("DOMContentLoaded", () => {
-    if (typeof UNIT_TEST_CONFIG === "undefined") return;
-    const cfg = UNIT_TEST_CONFIG["higher-analogue"];
-    const desc = document.getElementById("unit-test-desc");
-    const card = document.getElementById("unit-test-card");
-    if (!cfg || cfg.status !== "available") {
-      if (desc) desc.textContent = "Not yet available — check back soon.";
-      if (card) card.style.cursor = "default";
-    } else {
-      if (desc) desc.textContent = "Password-protected unit test for this topic.";
+  function openUnitTestModal() {
+    var cfg = (typeof UNIT_TEST_CONFIG !== 'undefined') ? UNIT_TEST_CONFIG['higher-analogue'] : null;
+    if (!cfg || cfg.status !== 'available' || !cfg.id) {
+      alert('The unit test is not yet available. Check back later or ask your teacher.');
+      return;
     }
+    document.getElementById('ut-modal-overlay').classList.add('open');
+    document.getElementById('ut-password-input').value = '';
+    document.getElementById('ut-modal-error').style.display = 'none';
+    setTimeout(function(){ document.getElementById('ut-password-input').focus(); }, 100);
+  }
+  function closeUnitTestModal() {
+    document.getElementById('ut-modal-overlay').classList.remove('open');
+  }
+  function checkUnitTestPassword() {
+    var cfg = UNIT_TEST_CONFIG['higher-analogue'];
+    var entered = document.getElementById('ut-password-input').value;
+    if (entered === cfg.password) {
+      closeUnitTestModal();
+      window.open('https://drive.google.com/file/d/' + cfg.id + '/view', '_blank');
+    } else {
+      document.getElementById('ut-modal-error').style.display = 'block';
+      document.getElementById('ut-password-input').value = '';
+      document.getElementById('ut-password-input').focus();
+    }
+  }
+  document.getElementById('ut-password-input').addEventListener('keydown', function(e){
+    if (e.key === 'Enter') checkUnitTestPassword();
   });
 </script>
-
 </body>
 </html>
