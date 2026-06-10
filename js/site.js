@@ -113,100 +113,177 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /* ============================================================
-   TEACHER RESOURCE STATUS
-   Controls document cards on each teacher topic page.
+   UNIT TEST CONFIG
+   Controls the password-protected unit tests on each topic page.
 
-   HOW TO UPDATE WHEN YOU ADD A NEW DOCUMENT:
-   1. Upload the DOCX to Google Drive, set sharing to
-      "Anyone with the link can view"
-   2. Copy the file ID from the share URL
-   3. Open js/site.js in Notepad
-   4. Find the topic below (e.g. 'drive-systems')
-   5. Change 'soon' to 'available' for that document
-   6. Replace 'DRIVE_ID' with the actual file ID
+   HOW TO ACTIVATE A UNIT TEST FOR A TOPIC:
+   1. Upload the test PDF to Google Drive
+   2. Set sharing to "Anyone with the link can view"
+   3. Copy the file ID from the share URL
+      (it's the long string between /d/ and /view in the URL)
+   4. Find the topic below
+   5. Replace '' in id: '' with your file ID (keep the quotes)
+   6. Replace '' in password: '' with the password for pupils
+   7. Change status: 'soon' to status: 'available'
+   8. Save and push via GitHub Desktop
+
+   The password will appear automatically in the Teacher Area
+   and the test will become accessible to pupils on the topic page.
+   ============================================================ */
+
+var UNIT_TEST_CONFIG = {
+
+  // ── Engineering Contexts ──────────────────────────────────
+
+  'systems-approach': {
+    status:   'available',
+    id:       '1m6HBJ_8YqNvhZiMKLtgyoRpp7RpCvl1O',
+    password: ''               // ← add the pupil password here
+  },
+  'energy-efficiency': {
+    status:   'soon',
+    id:       '',              // ← paste Google Drive file ID here
+    password: ''               // ← add the pupil password here
+  },
+  'roles-disciplines': {
+    status:   'soon',
+    id:       '',              // ← paste Google Drive file ID here
+    password: ''               // ← add the pupil password here
+  },
+  'impacts': {
+    status:   'soon',
+    id:       '',              // ← paste Google Drive file ID here
+    password: ''               // ← add the pupil password here
+  },
+
+  // ── Electronics and Control ───────────────────────────────
+
+  'analogue': {
+    status:   'available',
+    id:       '1ksmCiJ7COA8cocOkVRW9VT1cgUqnPvqI',
+    password: 'voltage'
+  },
+  'digital': {
+    status:   'available',
+    id:       '1Z8IMiFjI_ZuDo7GsLg-vJ2RGj7JvZuJW',
+    password: 'hello'
+  },
+  'control': {
+    status:   'soon',
+    id:       '',              // ← paste Google Drive file ID here
+    password: ''               // ← add the pupil password here
+  },
+
+  // ── Mechanisms and Structures ─────────────────────────────
+
+  'drive-systems': {
+    status:   'soon',
+    id:       '',              // ← paste Google Drive file ID here
+    password: ''               // ← add the pupil password here
+  },
+  'pneumatics': {
+    status:   'soon',
+    id:       '',              // ← paste Google Drive file ID here
+    password: ''               // ← add the pupil password here
+  },
+  'structures-forces': {
+    status:   'soon',
+    id:       '',              // ← paste Google Drive file ID here
+    password: ''               // ← add the pupil password here
+  },
+  'materials': {
+    status:   'soon',
+    id:       '',              // ← paste Google Drive file ID here
+    password: ''               // ← add the pupil password here
+  }
+
+};
+
+/* ============================================================
+   TEACHER DOCUMENTS
+   Controls the document cards on each Teacher Area topic page.
+
+   HOW TO ADD A DOCUMENT:
+   1. Upload the file to Google Drive
+   2. Set sharing to "Anyone with the link can view"
+   3. Copy the file ID from the share URL
+   4. Find the topic and document key below
+   5. Replace '' in id: '' with your file ID (keep the quotes)
+   6. Change status: 'soon' to status: 'available'
    7. Save and push via GitHub Desktop
 
    DOCUMENT KEYS:
-   ext_marking  = Marking instructions — extension tasks
-   hw_marking   = Marking instructions — homework
-   test         = Class test paper
-   test_marking = Marking instructions — class test
-   notes        = Teacher notes / lesson plan
+   ext_marking       = Marking instructions — extension tasks
+   hw_marking        = Marking instructions — homework
+   unit_test_marking = Marking instructions — unit test
    ============================================================ */
 
-
-// ── UNIT TEST CONFIG (Digital Electronics trial) ──
-// Set the password pupils need to access the unit test
-// Set the Drive ID once you've uploaded the test to Google Drive
-// Change status to 'available' when ready to release
-var UNIT_TEST_CONFIG = {
-  'digital': {
-    status: 'available',
-    id: '1Z8IMiFjI_ZuDo7GsLg-vJ2RGj7JvZuJW',
-    password: 'hello'
-  },
-  'analogue': {
-    status: 'available',
-    id: '1ksmCiJ7COA8cocOkVRW9VT1cgUqnPvqI',
-    password: 'voltage'
-  }
-};
 var TEACHER_DOCS = {
+
+  // ── Engineering Contexts ──────────────────────────────────
+
   'systems-approach': [
-    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
-    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-  { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
+    { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
   'energy-efficiency': [
-    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
-    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-  { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
+    { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
   'roles-disciplines': [
-    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
-    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-  { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
+    { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
   'impacts': [
-    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
-    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-  { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
+    { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
+
+  // ── Electronics and Control ───────────────────────────────
+
   'analogue': [
-    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
-    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-  { key: 'unit_test_marking', status: 'available', id: '1mcgBs_DMMMGNJg0P5YflEmc6oeOnqj0N', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
+    { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'unit_test_marking', status: 'available', id: '1mcgBs_DMMMGNJg0P5YflEmc6oeOnqj0N', label: 'Marking instructions \u2014 unit test', icon: '\u2705' }
   ],
   'digital': [
-    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
-    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-  { key: 'unit_test_marking', status: 'available', id: '1Drs8da8RmrLYyEUX2p5o7quAtrzvLCv6', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
+    { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'unit_test_marking', status: 'available', id: '1Drs8da8RmrLYyEUX2p5o7quAtrzvLCv6', label: 'Marking instructions \u2014 unit test', icon: '\u2705' }
   ],
   'control': [
-    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
-    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-  { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
+    { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
+
+  // ── Mechanisms and Structures ─────────────────────────────
+
   'drive-systems': [
-    { key: 'ext_marking',  status: 'available', id: '1UVduGkmJ_b479Ru9qu0MJOM_74FzYu_I', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
-    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-  { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
+    { key: 'ext_marking',       status: 'available', id: '1UVduGkmJ_b479Ru9qu0MJOM_74FzYu_I', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
   'pneumatics': [
-    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
-    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-  { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
+    { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
   'structures-forces': [
-    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
-    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-  { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
+    { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
   'materials': [
-    { key: 'ext_marking',  status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
-    { key: 'hw_marking',   status: 'soon', id: '', label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-  { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test',       icon: '\u2705' },
-  ],
+    { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
+    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
+  ]
+
 };
 
 function renderTeacherDocs(topicKey, containerId) {
@@ -231,88 +308,42 @@ function renderTeacherDocs(topicKey, containerId) {
 }
 
 /* ============================================================
-   Paste this block at the bottom of js/site.js
+   SITEWIDE UI
+   Development banner and feedback button — injected on every page.
+   Set SHOW_BANNER = false when the site is complete.
    ============================================================ */
 
 (function () {
 
-  /* ----------------------------------------------------------
-     1. SITEWIDE DEVELOPMENT BANNER
-     Appears below the topbar on every page.
-     Remove or set SHOW_BANNER = false when site is complete.
-  ---------------------------------------------------------- */
-
   var SHOW_BANNER = true;
-  var FEEDBACK_EMAIL = 'g.sanderson@gwc.org.uk'; // ← replace with your actual email address
+  var FEEDBACK_EMAIL = 'g.sanderson@gwc.org.uk';
 
   if (SHOW_BANNER) {
     var bannerStyle = [
-      'display:flex',
-      'align-items:center',
-      'justify-content:center',
-      'gap:12px',
-      'flex-wrap:wrap',
-      'background:#ffd000',
-      'border-bottom:1px solid #e6bb00',
-      'padding:5px 20px',
-      'font-size:12px',
-      'color:#5c3d00',
-      'font-family:inherit',
-      'text-align:center',
-      'position:sticky',
-      'top:0',
-      'z-index:999',
-      'width:100%',
-      'box-sizing:border-box'
+      'display:flex', 'align-items:center', 'justify-content:center',
+      'gap:12px', 'flex-wrap:wrap', 'background:#ffd000',
+      'border-bottom:1px solid #e6bb00', 'padding:5px 20px',
+      'font-size:12px', 'color:#5c3d00', 'font-family:inherit',
+      'text-align:center', 'position:sticky', 'top:0', 'z-index:999',
+      'width:100%', 'box-sizing:border-box'
     ].join(';');
-
-    var linkStyle = [
-      'color:#5c3d00',
-      'font-weight:normal',
-      'text-decoration:underline',
-      'cursor:pointer'
-    ].join(';');
-
+    var linkStyle = 'color:#5c3d00;font-weight:normal;text-decoration:underline;cursor:pointer';
     var banner = document.createElement('div');
     banner.setAttribute('style', bannerStyle);
     banner.innerHTML =
       '<span>&#x1F6A7; This site is under active development &mdash; some resources are not yet available.</span>' +
       '<a href="mailto:' + FEEDBACK_EMAIL + '?subject=ESS%20Website%20Feedback" style="' + linkStyle + '">Spotted an issue? Let us know.</a>';
-
-    // Insert as first child of .main so it sits in normal flow below the fixed topbar
     var main = document.querySelector('.main');
-    if (main) {
-      main.insertBefore(banner, main.firstChild);
-    }
+    if (main) main.insertBefore(banner, main.firstChild);
   }
 
-
-  /* ----------------------------------------------------------
-     2. FLOATING FEEDBACK BUTTON
-     Fixed in the bottom-right corner of every page.
-     Opens a mailto link with a pre-filled subject line.
-  ---------------------------------------------------------- */
-
   var btnStyle = [
-    'position:fixed',
-    'bottom:24px',
-    'right:24px',
-    'z-index:9999',
-    'display:inline-flex',
-    'align-items:center',
-    'gap:7px',
-    'background:#0f766e',
-    'color:white',
-    'font-size:13px',
-    'font-weight:600',
-    'font-family:inherit',
-    'padding:10px 16px',
-    'border-radius:999px',
-    'box-shadow:0 4px 14px rgba(0,0,0,0.18)',
-    'text-decoration:none',
-    'transition:background 0.2s, transform 0.15s',
-    'cursor:pointer',
-    'border:none'
+    'position:fixed', 'bottom:24px', 'right:24px', 'z-index:9999',
+    'display:inline-flex', 'align-items:center', 'gap:7px',
+    'background:#0f766e', 'color:white', 'font-size:13px', 'font-weight:600',
+    'font-family:inherit', 'padding:10px 16px', 'border-radius:999px',
+    'box-shadow:0 4px 14px rgba(0,0,0,0.18)', 'text-decoration:none',
+    'transition:background 0.2s, transform 0.15s', 'cursor:pointer', 'border:none'
   ].join(';');
 
   var feedbackBtn = document.createElement('a');
@@ -320,21 +351,11 @@ function renderTeacherDocs(topicKey, containerId) {
   feedbackBtn.setAttribute('style', btnStyle);
   feedbackBtn.innerHTML = '&#x2709;&#xFE0F; Feedback';
   feedbackBtn.title = 'Report an issue or send feedback about this site';
+  feedbackBtn.addEventListener('mouseover', function(){ this.style.background='#0d9488'; this.style.transform='translateY(-2px)'; });
+  feedbackBtn.addEventListener('mouseout',  function(){ this.style.background='#0f766e'; this.style.transform='translateY(0)'; });
 
-  feedbackBtn.addEventListener('mouseover', function () {
-    this.style.background = '#0d9488';
-    this.style.transform = 'translateY(-2px)';
-  });
-  feedbackBtn.addEventListener('mouseout', function () {
-    this.style.background = '#0f766e';
-    this.style.transform = 'translateY(0)';
-  });
-
-  // Add to page once DOM is ready
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () {
-      document.body.appendChild(feedbackBtn);
-    });
+    document.addEventListener('DOMContentLoaded', function(){ document.body.appendChild(feedbackBtn); });
   } else {
     document.body.appendChild(feedbackBtn);
   }
