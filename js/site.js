@@ -138,7 +138,7 @@ var UNIT_TEST_CONFIG = {
   'systems-approach': {
     status:   'available',
     id:       '1m6HBJ_8YqNvhZiMKLtgyoRpp7RpCvl1O',
-    password: ''               // ← add the pupil password here
+    password: 'loop'               // ← add the pupil password here
   },
   'energy-efficiency': {
     status:   'soon',
