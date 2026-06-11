@@ -272,7 +272,7 @@ var TEACHER_DOCS = {
   // ── Mechanisms and Structures ─────────────────────────────
 
   'drive-systems': [
-    { key: 'notes_pdf',         status: 'soon',      id: '',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
+    { key: 'notes_pdf',         status: 'available',      id: '1N0rdDlKFbWYQ1blq7sMei49DFuuKXqJX',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
     { key: 'ext_marking',       status: 'available', id: '1UVduGkmJ_b479Ru9qu0MJOM_74FzYu_I', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
     { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
