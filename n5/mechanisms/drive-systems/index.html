@@ -48,42 +48,36 @@
       <div class="tab-panel active" id="tab-pupils">
         <p class="tab-note">Resources for pupils to use independently.</p>
         <div class="resource-type-grid">
-
           <a href="course-notes.html" class="resource-type-card" data-resource="notes">
             <img class="rtc-photo" src="../../../../images/icons/course-notes.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
             <div class="rtc-title">Course notes</div>
             <div class="rtc-sub">Notes, explanations and worked examples aligned to the Qualifications Scotland specification.</div>
             <span class="rtc-badge-auto"></span>
           </a>
-
           <a href="../../../../simulators/drive-systems.html" target="_blank" class="resource-type-card" style="border-color:var(--teal-100);background:var(--teal-50);">
             <img class="rtc-photo" src="../../../../images/icons/simulator-drives.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
             <div class="rtc-title">NoGrind simulator</div>
             <div class="rtc-sub">Build and explore gear trains, chain drives, belt drives and more in 3D.</div>
             <span class="rtc-badge">Launch</span>
           </a>
-
           <a href="extension.html" class="resource-type-card" data-resource="extension">
             <img class="rtc-photo" src="../../../../images/icons/extension.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
             <div class="rtc-title">Extension tasks</div>
             <div class="rtc-sub">Challenge activities and enrichment tasks for pupils who want to go further.</div>
             <span class="rtc-badge-auto"></span>
           </a>
-
           <a href="homework.html" class="resource-type-card" data-resource="homework">
             <img class="rtc-photo" src="../../../../images/icons/homework.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
             <div class="rtc-title">Homework assignment</div>
             <div class="rtc-sub">Take-home practice questions to consolidate learning from this topic.</div>
             <span class="rtc-badge-auto"></span>
           </a>
-
           <a href="answer-sheet.html" class="resource-type-card" style="border-color:#c7d7f5;background:#f8faff;">
             <img class="rtc-photo" src="../../../../images/icons/answer-sheet.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
             <div class="rtc-title">Drive Systems answer sheet</div>
             <div class="rtc-sub">Type and save your answers as you work through tasks. Saved automatically in your browser.</div>
             <span class="rtc-badge" style="background:#e0e7ff;color:#3730a3;">Student tool</span>
           </a>
-
         </div>
       </div>
 
@@ -91,35 +85,36 @@
       <div class="tab-panel" id="tab-teacher">
         <p class="tab-note">Resources for classroom delivery and assessment.</p>
         <div class="resource-type-grid">
-
           <a href="presentation.html" class="resource-type-card" data-resource="presentation">
             <img class="rtc-photo" src="../../../../images/icons/presentation.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
             <div class="rtc-title">Teaching presentation</div>
             <div class="rtc-sub">Slide deck for classroom delivery covering key concepts and worked examples.</div>
             <span class="rtc-badge-auto"></span>
           </a>
-
           <a href="practical.html" class="resource-type-card" data-resource="practical">
             <img class="rtc-photo" src="../../../../images/icons/practical.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
             <div class="rtc-title">Practical tasks and demonstrations</div>
             <div class="rtc-sub">Hands-on activities and demonstrations for classroom use.</div>
             <span class="rtc-badge-auto"></span>
           </a>
-
+          <a href="../../../../images/icons/printable-notes.jpg" class="resource-type-card teacher-only" id="notes-pdf-card" style="text-align:center;opacity:0.5;pointer-events:none;">
+            <img class="rtc-photo" src="../../../../images/icons/printable-notes.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Printable course notes</div>
+            <div class="rtc-sub">A4 PDF of the course notes, ready to print and distribute to pupils.</div>
+            <span class="rtc-badge-unavailable" id="notes-pdf-badge">Not yet available</span>
+          </a>
           <div class="resource-type-card" onclick="openUnitTestModal()" style="cursor:pointer;">
             <img class="rtc-photo" src="../../../../images/icons/unit-test.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
             <div class="rtc-title">Unit test</div>
             <div class="rtc-sub">Password-protected assessment for this topic.</div>
             <div class="ut-card-notice">&#x1F512; Ask your teacher for the password</div>
           </div>
-
           <a href="../../../../teacher/login.html" class="resource-type-card teacher-only">
             <img class="rtc-photo" src="../../../../images/icons/marking.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
             <div class="rtc-title">Marking instructions</div>
             <div class="rtc-sub">Answer sheets and marking guidance for tasks and homework.</div>
             <span class="rtc-badge locked">Teacher only</span>
           </a>
-
         </div>
       </div>
     </div>
@@ -171,6 +166,26 @@ function checkUnitTestPassword() {
   }
 }
 document.getElementById('ut-password-input').addEventListener('keydown', function(e){ if (e.key === 'Enter') checkUnitTestPassword(); });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var cfg = (typeof TEACHER_DOCS !== 'undefined') ? TEACHER_DOCS['drive-systems'] : null;
+  if (!cfg) return;
+  var doc = cfg.find ? cfg.find(function(d){ return d.key === 'notes_pdf'; }) : null;
+  if (!doc) return;
+  var card = document.getElementById('notes-pdf-card');
+  var badge = document.getElementById('notes-pdf-badge');
+  if (!card || !badge) return;
+  if (doc.status === 'available' && doc.id) {
+    card.href = 'https://drive.google.com/file/d/' + doc.id + '/view';
+    card.target = '_blank';
+    card.style.opacity = '1';
+    card.style.pointerEvents = 'auto';
+    card.classList.remove('teacher-only');
+    badge.className = 'rtc-badge';
+    badge.textContent = 'Available';
+  }
+});
 </script>
 </body>
 </html>

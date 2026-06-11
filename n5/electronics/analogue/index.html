@@ -97,6 +97,14 @@
             <div class="rtc-sub">Hands-on activities and demonstrations for classroom use.</div>
             <span class="rtc-badge-auto"></span>
           </a>
+          <a href="../../../../images/icons/printable-notes.jpg" class="resource-type-card teacher-only" id="notes-pdf-card" style="text-align:center;opacity:0.5;pointer-events:none;">
+            <img class="rtc-photo"
+              src="../../../../images/icons/printable-notes.jpg"
+              alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+            <div class="rtc-title">Printable course notes</div>
+            <div class="rtc-sub">A4 PDF of the course notes, ready to print and distribute to pupils.</div>
+            <span class="rtc-badge-unavailable" id="notes-pdf-badge">Not yet available</span>
+          </a>
           <div class="resource-type-card" onclick="openUnitTestModal()" style="cursor:pointer;">
             <img class="rtc-photo" src="../../../../images/icons/unit-test.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
             <div class="rtc-title">Unit test</div>
@@ -160,6 +168,26 @@ function checkUnitTestPassword() {
   }
 }
 document.getElementById('ut-password-input').addEventListener('keydown', function(e){ if (e.key === 'Enter') checkUnitTestPassword(); });
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var cfg = (typeof TEACHER_DOCS !== 'undefined') ? TEACHER_DOCS[TOPIC] : null;
+  if (!cfg) return;
+  var doc = cfg.find ? cfg.find(function(d){ return d.key === 'notes_pdf'; }) : null;
+  if (!doc) return;
+  var card = document.getElementById('notes-pdf-card');
+  var badge = document.getElementById('notes-pdf-badge');
+  if (!card || !badge) return;
+  if (doc.status === 'available' && doc.id) {
+    card.href = 'https://drive.google.com/file/d/' + doc.id + '/view';
+    card.target = '_blank';
+    card.style.opacity = '1';
+    card.style.pointerEvents = 'auto';
+    card.classList.remove('teacher-only');
+    badge.className = 'rtc-badge';
+    badge.textContent = 'Available';
+  }
+});
 </script>
 </body>
 </html>
