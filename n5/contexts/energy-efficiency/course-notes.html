@@ -51,6 +51,7 @@
     .answer-box { background:#f8faff; border:2px solid #c7d7f5; border-radius:8px; padding:10px 12px; min-height:68px; font-size:14px; color:var(--gray-700); line-height:1.7; outline:none; transition:border-color .2s, box-shadow .2s; display:block; width:100%; box-sizing:border-box; }
     .answer-box:focus { border-color:var(--teal-400); box-shadow:0 0 0 3px rgba(45,212,191,0.12); }
     .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    [contenteditable][data-placeholder]:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
     .answer-box-sm { min-height:44px; }
     .answer-box-lg { min-height:110px; }
     .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
@@ -163,46 +164,15 @@
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e1f" data-placeholder="Explain..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">3. A hydroelectric power station has water in a reservoir (A), water flowing through a pipe called a penstock (B), a turbine (C) and a generator (D). Name the form of energy at each point.</div>
-            <div style="margin:10px 0;">
-              <svg viewBox="0 0 560 120" xmlns="http://www.w3.org/2000/svg" style="width:80%;max-width:688px;display:block;margin:12px auto;font-family:Arial,sans-serif;">
-  <!-- A: Reservoir -->
-  <rect x="8" y="18" width="104" height="56" rx="6" fill="#bfdbfe" stroke="#3b82f6" stroke-width="2"/>
-  <text x="60" y="40" text-anchor="middle" font-size="12" font-weight="700" fill="#1d4ed8">Reservoir</text>
-  <text x="60" y="56" text-anchor="middle" font-size="13" font-weight="700" fill="#1d4ed8">(A)</text>
-  <text x="60" y="88" text-anchor="middle" font-size="11" fill="#475569">A = ?</text>
-  <!-- arrow -->
-  <line x1="112" y1="46" x2="136" y2="46" stroke="#64748b" stroke-width="2"/>
-  <polygon points="130,41 141,46 130,51" fill="#64748b"/>
-  <!-- B: Penstock -->
-  <rect x="141" y="18" width="104" height="56" rx="6" fill="#f0fdf4" stroke="#0f766e" stroke-width="2"/>
-  <text x="193" y="40" text-anchor="middle" font-size="12" font-weight="700" fill="#0f766e">Penstock</text>
-  <text x="193" y="56" text-anchor="middle" font-size="13" font-weight="700" fill="#0f766e">(B)</text>
-  <text x="193" y="88" text-anchor="middle" font-size="11" fill="#475569">B = ?</text>
-  <!-- arrow -->
-  <line x1="245" y1="46" x2="269" y2="46" stroke="#64748b" stroke-width="2"/>
-  <polygon points="263,41 274,46 263,51" fill="#64748b"/>
-  <!-- C: Turbine -->
-  <rect x="274" y="18" width="104" height="56" rx="6" fill="#fefce8" stroke="#ca8a04" stroke-width="2"/>
-  <text x="326" y="40" text-anchor="middle" font-size="12" font-weight="700" fill="#b45309">Turbine</text>
-  <text x="326" y="56" text-anchor="middle" font-size="13" font-weight="700" fill="#b45309">(C)</text>
-  <text x="326" y="88" text-anchor="middle" font-size="11" fill="#475569">C = ?</text>
-  <!-- arrow -->
-  <line x1="378" y1="46" x2="402" y2="46" stroke="#64748b" stroke-width="2"/>
-  <polygon points="396,41 407,46 396,51" fill="#64748b"/>
-  <!-- D: Generator -->
-  <rect x="407" y="18" width="104" height="56" rx="6" fill="#fff7ed" stroke="#f97316" stroke-width="2"/>
-  <text x="459" y="40" text-anchor="middle" font-size="12" font-weight="700" fill="#ea580c">Generator</text>
-  <text x="459" y="56" text-anchor="middle" font-size="13" font-weight="700" fill="#ea580c">(D)</text>
-  <text x="459" y="88" text-anchor="middle" font-size="11" fill="#475569">D = ?</text>
-  <!-- output arrow -->
-  <line x1="511" y1="46" x2="545" y2="46" stroke="#64748b" stroke-width="2"/>
-  <polygon points="539,41 550,46 539,51" fill="#64748b"/>
-  <text x="552" y="43" font-size="14" fill="#0f766e">⚡</text>
-</svg>
-            </div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-e1g">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="en-e1g" data-placeholder="A = ... B = ... C = ... D = ..."></div>
+            <div class="task-q">3. A hydroelectric power station has water in a reservoir (A), water flowing through a pipe called a penstock (B), a turbine (C) and a generator (D). Name the form of energy at each point — click each yellow box to type your answer.</div>
+            <div style="position:relative;display:block;width:88%;max-width:750px;margin:14px auto;">
+              <img src="images/energy-hydro-flow.png" alt="Hydroelectric system: identify energy forms at points A, B, C and D" style="width:100%;display:block;border-radius:8px;">
+              <div contenteditable="true" data-key="en-e1g-a" data-placeholder="Type energy form..." style="position:absolute;background:rgba(255,251,235,0.92);border:2px solid #f97316;border-radius:6px;padding:4px 8px;font-size:13px;font-weight:600;color:#1e293b;min-height:32px;cursor:text;outline:none;box-shadow:0 1px 4px rgba(0,0,0,0.15);left:57%;top:6%;width:21%;" title="Point A: click to type"></div>
+              <div contenteditable="true" data-key="en-e1g-b" data-placeholder="Type energy form..." style="position:absolute;background:rgba(255,251,235,0.92);border:2px solid #f97316;border-radius:6px;padding:4px 8px;font-size:13px;font-weight:600;color:#1e293b;min-height:32px;cursor:text;outline:none;box-shadow:0 1px 4px rgba(0,0,0,0.15);left:75%;top:6%;width:23%;" title="Point B: click to type"></div>
+              <div contenteditable="true" data-key="en-e1g-c" data-placeholder="Type energy form..." style="position:absolute;background:rgba(255,251,235,0.92);border:2px solid #f97316;border-radius:6px;padding:4px 8px;font-size:13px;font-weight:600;color:#1e293b;min-height:32px;cursor:text;outline:none;box-shadow:0 1px 4px rgba(0,0,0,0.15);left:23%;top:54%;width:22%;" title="Point C: click to type"></div>
+              <div contenteditable="true" data-key="en-e1g-d" data-placeholder="Type energy form..." style="position:absolute;background:rgba(255,251,235,0.92);border:2px solid #f97316;border-radius:6px;padding:4px 8px;font-size:13px;font-weight:600;color:#1e293b;min-height:32px;cursor:text;outline:none;box-shadow:0 1px 4px rgba(0,0,0,0.15);left:74%;top:54%;width:23%;" title="Point D: click to type"></div>
+              </div>
+            <div class="answer-label" style="margin-top:8px;">Answers saved automatically as you type</div>
           </div>
         </div>
       </div>
