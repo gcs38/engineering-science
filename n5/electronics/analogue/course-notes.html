@@ -89,6 +89,21 @@
     /* Circuit diagram SVGs inline */
     .circuit-figure { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:16px; margin:16px 0; text-align:center; }
     .circuit-figure figcaption { font-size:12px; color:var(--gray-400); margin-top:8px; font-style:italic; }
+  
+    /* localStorage answer boxes */
+    .answer-box { background:var(--blue-50,#f0f9ff); border:1.5px solid #7dd3fc; border-radius:var(--radius-sm); min-height:60px; padding:10px 12px; margin-top:6px; font-size:13px; color:var(--gray-700); line-height:1.6; cursor:text; outline:none; }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-sm { min-height:36px; }
+    .answer-box-xs { min-height:28px; }
+    .answer-label { font-size:11px; font-weight:700; color:#0ea5e9; text-transform:uppercase; letter-spacing:.4px; margin-top:8px; margin-bottom:2px; display:flex; align-items:center; gap:8px; }
+    .saved-indicator { font-size:10px; color:#22c55e; font-weight:600; }
+    .controls-bar { display:flex; align-items:center; gap:12px; padding:12px 16px; background:var(--gray-50); border-top:1px solid var(--gray-100); margin-top:24px; border-radius:0 0 var(--radius-lg) var(--radius-lg); }
+    .controls-label { font-size:12px; color:var(--gray-400); flex:1; }
+    .ctrl-btn { padding:6px 14px; border-radius:var(--radius-md); font-size:12px; font-weight:600; border:none; cursor:pointer; }
+    .ctrl-btn-print { background:var(--teal-800); color:white; }
+    .ctrl-btn-clear { background:white; color:#ef4444; border:1.5px solid #fca5a5; }
+    .answer-cell-editable { background:var(--blue-50,#f0f9ff) !important; cursor:text; outline:none; }
+    .answer-cell-editable:empty:before { content:"Click to enter..."; color:#94a3b8; font-style:italic; pointer-events:none; }
   </style>
 </head>
 <body>
@@ -160,30 +175,30 @@
             <div class="task-q">1. Complete the table. Keep the voltage at 9 V.</div>
             <table class="data-table">
               <tr><th>Resistance (&Omega;)</th><th>Current (mA)</th></tr>
-              <tr><td>10 000</td><td class="answer-cell"></td></tr>
-              <tr><td>5 000</td><td class="answer-cell"></td></tr>
-              <tr><td>1 000</td><td class="answer-cell"></td></tr>
-              <tr><td>500</td><td class="answer-cell"></td></tr>
+              <tr><td>10 000</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q057" data-placeholder=""></td></tr>
+              <tr><td>5 000</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q058" data-placeholder=""></td></tr>
+              <tr><td>1 000</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q059" data-placeholder=""></td></tr>
+              <tr><td>500</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q060" data-placeholder=""></td></tr>
             </table>
           </div>
           <div class="task-item">
             <div class="task-q">2. Describe what happens to the current as the resistance decreases.</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q001"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q001" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">3. Now reset the resistance to 1 k&Omega;. Change the battery voltage and complete the table.</div>
             <table class="data-table">
               <tr><th>Voltage (V)</th><th>Current (mA)</th></tr>
-              <tr><td>10</td><td class="answer-cell"></td></tr>
-              <tr><td>8</td><td class="answer-cell"></td></tr>
-              <tr><td>6</td><td class="answer-cell"></td></tr>
-              <tr><td>4</td><td class="answer-cell"></td></tr>
-              <tr><td>2</td><td class="answer-cell"></td></tr>
+              <tr><td>10</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q061" data-placeholder=""></td></tr>
+              <tr><td>8</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q062" data-placeholder=""></td></tr>
+              <tr><td>6</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q063" data-placeholder=""></td></tr>
+              <tr><td>4</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q064" data-placeholder=""></td></tr>
+              <tr><td>2</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q065" data-placeholder=""></td></tr>
             </table>
           </div>
           <div class="task-item">
             <div class="task-q">4. Describe what happens to the current as the voltage decreases.</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q002"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q002" data-placeholder="Type your answer here..."></div>
           </div>
         </div>
       </div>
@@ -248,19 +263,19 @@
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1a. A circuit has a 9 V battery and a 1 k&Omega; resistor. Calculate the current in mA.</div>
-            <div class="task-space">Working here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q003"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q003" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">1b. Find the resistance of a component with 12 V across it and 60 mA through it.</div>
-            <div class="task-space">Working here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q004"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q004" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">1c. A 470 &Omega; resistor has 25 mA flowing through it. Calculate the voltage across it.</div>
-            <div class="task-space">Working here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q005"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q005" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">1d. A circuit has a 6 V battery and 30 mA of current. What is the total resistance?</div>
-            <div class="task-space">Working here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q006"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q006" data-placeholder="Type your answer here..."></div>
           </div>
           <p style="font-size:12px;color:var(--teal-600);margin-top:8px;">&#x26A1; Check your answers using the simulator above.</p>
         </div>
@@ -289,19 +304,19 @@
             <div class="task-q">1. Record the voltage across each component.</div>
             <table class="data-table">
               <tr><th>Component</th><th>Voltage (V)</th></tr>
-              <tr><td>Battery</td><td class="answer-cell"></td></tr>
-              <tr><td>1 k&Omega; resistor</td><td class="answer-cell"></td></tr>
-              <tr><td>470 &Omega; resistor</td><td class="answer-cell"></td></tr>
-              <tr><td>Total (R1 + R2)</td><td class="answer-cell"></td></tr>
+              <tr><td>Battery</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q066" data-placeholder=""></td></tr>
+              <tr><td>1 k&Omega; resistor</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q067" data-placeholder=""></td></tr>
+              <tr><td>470 &Omega; resistor</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q068" data-placeholder=""></td></tr>
+              <tr><td>Total (R1 + R2)</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q069" data-placeholder=""></td></tr>
             </table>
           </div>
           <div class="task-item">
             <div class="task-q">2. What do you notice about the total voltage across both resistors compared to the battery voltage? This is <strong>Kirchhoff's second law</strong>.</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q007"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q007" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">3. Move the ammeter to different positions in the series circuit. What do you notice about the current at each point?</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q008"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q008" data-placeholder="Type your answer here..."></div>
           </div>
         </div>
       </div>
@@ -341,21 +356,21 @@
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1. Two resistors (150 &Omega; and 270 &Omega;) are connected in series across a 9 V supply. Calculate:</div>
-            <div class="task-q-sub">a) the total resistance</div><div class="task-space-sm"></div>
-            <div class="task-q-sub">b) the circuit current</div><div class="task-space-sm"></div>
-            <div class="task-q-sub">c) the voltage drop across each resistor</div><div class="task-space-sm"></div>
+            <div class="task-q-sub">a) the total resistance</div><div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q009"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q009" data-placeholder="Type your answer here..."></div>
+            <div class="task-q-sub">b) the circuit current</div><div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q010"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q010" data-placeholder="Type your answer here..."></div>
+            <div class="task-q-sub">c) the voltage drop across each resistor</div><div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q011"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q011" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">2. Three resistors (15 &Omega;, 24 &Omega; and 60 &Omega;) are in series. Calculate the total resistance.</div>
-            <div class="task-space-sm"></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q012"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q012" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">3. Two resistors in series: 25 &Omega; and 75 &Omega;. The voltage across the 25 &Omega; resistor is 4 V. Find the circuit current and the supply voltage.</div>
-            <div class="task-space"></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q013"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q013" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">4. A series circuit has a 12 V supply. The current is 20 mA. One resistor is 220 &Omega;. Using Kirchhoff's second law, find the value of the second resistor.</div>
-            <div class="task-space"></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q014"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q014" data-placeholder="Type your answer here..."></div>
           </div>
           <p style="font-size:12px;color:var(--teal-600);margin-top:8px;">&#x26A1; Build these circuits in the simulator and check your answers.</p>
         </div>
@@ -453,15 +468,15 @@
           <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Build and simulate the following circuits in NoResistance. For each, describe what needs to happen to switch the output on.</p>
           <div class="task-item">
             <div class="task-q">a) A lamp must light when two switches are both closed (AND behaviour). How are the switches connected?</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q015"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q015" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">b) A buzzer must sound when <em>either</em> of two switches is pressed (OR behaviour). How are the switches connected?</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q016"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q016" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">c) A red LED lights when a motor is not running. When a switch is pressed, the LED switches off and the motor starts. Describe your circuit design.</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q017"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q017" data-placeholder="Type your answer here..."></div>
           </div>
         </div>
       </div>
@@ -513,15 +528,15 @@
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1. Draw the circuit symbol for a) a lamp, b) a motor, c) an LED, d) a diode.</div>
-            <div class="task-space" style="min-height:80px;">Draw here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q018"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q018" data-placeholder="Type your answer here..." style="min-height:80px;"></div>
           </div>
           <div class="task-item">
             <div class="task-q">2. In the simulator, build a circuit where a green LED lights when switch A <strong>AND</strong> switch B are both closed. Describe your circuit.</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q019"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q019" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">3. Why do we use circuit symbols rather than pictures of components?</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q020"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q020" data-placeholder="Type your answer here..."></div>
           </div>
         </div>
       </div>
@@ -571,21 +586,21 @@
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1. A 10 &Omega; and 14 &Omega; resistor are connected in parallel across a 6 V supply. Calculate:</div>
-            <div class="task-q-sub">a) total resistance</div><div class="task-space-sm"></div>
-            <div class="task-q-sub">b) circuit current</div><div class="task-space-sm"></div>
-            <div class="task-q-sub">c) current through each resistor</div><div class="task-space-sm"></div>
+            <div class="task-q-sub">a) total resistance</div><div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q021"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q021" data-placeholder="Type your answer here..."></div>
+            <div class="task-q-sub">b) circuit current</div><div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q022"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q022" data-placeholder="Type your answer here..."></div>
+            <div class="task-q-sub">c) current through each resistor</div><div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q023"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q023" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">2. A 660 &Omega; and 470 &Omega; resistor are in parallel. The supply voltage is 9 V. Calculate the total resistance, circuit current, and current through each branch. Use Kirchhoff's first law to verify your answer.</div>
-            <div class="task-space"></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q024"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q024" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">3. A 440 &Omega; resistor is in parallel with a 330 &Omega; resistor. The current through the 440 &Omega; is 300 mA. Find the current through the 330 &Omega;.</div>
-            <div class="task-space"></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q025"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q025" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">4. A 6 &Omega; and 75 &Omega; resistor are in parallel across 12 V. Calculate the total circuit current.</div>
-            <div class="task-space-sm"></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q026"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q026" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="extension-task">
             <div class="extension-header"><div class="extension-header-text">&#x2B50; Extension tasks</div></div>
@@ -593,7 +608,7 @@
               <div class="task-item">
                 <div class="task-q">5. For the circuit below, calculate a) combined resistance, b) current from battery, c) current in each branch.</div>
                 <p style="font-size:12px;color:var(--gray-500);margin:4px 0 8px;">R<sub>1</sub> = 100 &Omega;, R<sub>2</sub> = 150 &Omega;, R<sub>3</sub> = 300 &Omega; all in parallel across 12 V.</p>
-                <div class="task-space"></div>
+                <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q027"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q027" data-placeholder="Type your answer here..."></div>
               </div>
             </div>
           </div>
@@ -630,21 +645,21 @@
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1. A 1 k&Omega; resistor is in series with two parallel resistors (both 500 &Omega;) across a 9 V supply. Calculate:</div>
-            <div class="task-q-sub">a) combined resistance</div><div class="task-space-sm"></div>
-            <div class="task-q-sub">b) circuit current</div><div class="task-space-sm"></div>
-            <div class="task-q-sub">c) voltage across the 1 k&Omega; resistor</div><div class="task-space-sm"></div>
-            <div class="task-q-sub">d) current through each 500 &Omega; resistor</div><div class="task-space-sm"></div>
+            <div class="task-q-sub">a) combined resistance</div><div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q028"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q028" data-placeholder="Type your answer here..."></div>
+            <div class="task-q-sub">b) circuit current</div><div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q029"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q029" data-placeholder="Type your answer here..."></div>
+            <div class="task-q-sub">c) voltage across the 1 k&Omega; resistor</div><div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q030"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q030" data-placeholder="Type your answer here..."></div>
+            <div class="task-q-sub">d) current through each 500 &Omega; resistor</div><div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q031"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q031" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">2. A 1 k&Omega; resistor is in series with two parallel resistors (both 1 k&Omega;) across 12 V. Find the combined resistance, circuit current, voltage across the series resistor, and current through each parallel resistor.</div>
-            <div class="task-space"></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q032"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q032" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="extension-task">
             <div class="extension-header"><div class="extension-header-text">&#x2B50; Extension task</div></div>
             <div class="extension-body">
               <div class="task-item">
                 <div class="task-q">3. A 10 k&Omega; resistor is in series with a parallel combination of 500 &Omega; and 1 k&Omega; across 9 V. Find a) combined resistance, b) circuit current, c) voltage across the 10 k&Omega;, d) current through the 500 &Omega;.</div>
-                <div class="task-space"></div>
+                <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q033"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q033" data-placeholder="Type your answer here..."></div>
               </div>
             </div>
           </div>
@@ -727,18 +742,18 @@
             <div class="task-q">1. With a 9 V supply, R<sub>fixed</sub> = 10 k&Omega; and LDR at different light levels, record the output voltage across the fixed resistor.</div>
             <table class="data-table">
               <tr><th>Light level</th><th>LDR resistance (approx.)</th><th>V<sub>out</sub> across R<sub>fixed</sub></th></tr>
-              <tr><td>Very bright</td><td class="answer-cell">~100 &Omega;</td><td class="answer-cell"></td></tr>
-              <tr><td>Medium</td><td class="answer-cell">~5 k&Omega;</td><td class="answer-cell"></td></tr>
-              <tr><td>Dark</td><td class="answer-cell">~100 k&Omega;</td><td class="answer-cell"></td></tr>
+              <tr><td>Very bright</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q070" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q071" data-placeholder=""></td></tr>
+              <tr><td>Medium</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q072" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q073" data-placeholder=""></td></tr>
+              <tr><td>Dark</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q074" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q075" data-placeholder=""></td></tr>
             </table>
           </div>
           <div class="task-item">
             <div class="task-q">2. Describe what happens to V<sub>out</sub> as the light level decreases. Explain why.</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q034"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q034" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">3. Swap the positions of the LDR and the fixed resistor. Describe what happens to V<sub>out</sub> now as the light level decreases.</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q035"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q035" data-placeholder="Type your answer here..."></div>
           </div>
         </div>
       </div>
@@ -748,28 +763,28 @@
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1. A voltage divider has R<sub>1</sub> = 200 &Omega; and R<sub>2</sub> = 600 &Omega; with a 12 V supply. Calculate the voltage across each resistor.</div>
-            <div class="task-space-sm"></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q036"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q036" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">2. A voltage divider has R<sub>1</sub> = 1.2 k&Omega; and R<sub>2</sub> = 2.4 k&Omega; with a 9 V supply. Calculate the voltage across the 1.2 k&Omega; resistor.</div>
-            <div class="task-space-sm"></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q037"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q037" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">3. A voltage divider produces 4 V across R<sub>2</sub> from a 12 V supply. If R<sub>2</sub> = 300 &Omega;, calculate R<sub>1</sub>.</div>
-            <div class="task-space"></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q038"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q038" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">4. A thermistor is used in a voltage divider with a 10 k&Omega; fixed resistor and 9 V supply. At 80&deg;C the thermistor resistance is 500 &Omega;. At 20&deg;C it is 10 k&Omega;.</div>
-            <div class="task-q-sub">a) Calculate V<sub>out</sub> across the fixed resistor at 80&deg;C.</div><div class="task-space-sm"></div>
-            <div class="task-q-sub">b) Calculate V<sub>out</sub> across the fixed resistor at 20&deg;C.</div><div class="task-space-sm"></div>
-            <div class="task-q-sub">c) What happens to the voltage across the <em>thermistor</em> as temperature increases? Explain why.</div><div class="task-space"></div>
+            <div class="task-q-sub">a) Calculate V<sub>out</sub> across the fixed resistor at 80&deg;C.</div><div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q039"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q039" data-placeholder="Type your answer here..."></div>
+            <div class="task-q-sub">b) Calculate V<sub>out</sub> across the fixed resistor at 20&deg;C.</div><div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q040"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q040" data-placeholder="Type your answer here..."></div>
+            <div class="task-q-sub">c) What happens to the voltage across the <em>thermistor</em> as temperature increases? Explain why.</div><div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q041"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q041" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="extension-task">
             <div class="extension-header"><div class="extension-header-text">&#x2B50; Extension task</div></div>
             <div class="extension-body">
               <div class="task-item">
                 <div class="task-q">5. A voltage divider is required to give V<sub>out</sub> = 4.5 V from a 9 V supply when a thermistor has a resistance of 2 k&Omega; at 100&deg;C. Calculate a suitable value for the fixed resistor. State whether V<sub>out</sub> will increase or decrease as temperature drops, and explain your answer.</div>
-                <div class="task-space"></div>
+                <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q042"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q042" data-placeholder="Type your answer here..."></div>
               </div>
             </div>
           </div>
@@ -833,19 +848,19 @@
           <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Build a light-sensing transistor circuit in the simulator. Use a 9 V supply, an LDR in series with a 10 k&Omega; resistor as the voltage divider (base circuit), and an LED in series with a 470 &Omega; resistor as the output (collector circuit).</p>
           <div class="task-item">
             <div class="task-q">1a. Simulate the circuit. Adjust the LDR light level. Describe what happens to the LED in bright and dark conditions.</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q043"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q043" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">1b. Use a voltmeter to measure the voltage at the transistor base. At what voltage does the transistor switch on?</div>
-            <div class="task-space-sm">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q044"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q044" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">2. Build a temperature-sensing circuit using a thermistor instead of the LDR. Describe what happens as the temperature is varied.</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q045"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q045" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">3. Adjust the variable resistor in the base circuit to a lower value (around 1 k&Omega;). Describe the difference this makes to the sensitivity of the circuit.</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q046"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q046" data-placeholder="Type your answer here..."></div>
           </div>
         </div>
       </div>
@@ -858,11 +873,11 @@
           </div>
           <div class="task-item">
             <div class="task-q">1. A motor switches on when it gets light.</div>
-            <div class="task-space" style="min-height:100px;">Circuit design here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q047"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q047" data-placeholder="Type your answer here..." style="min-height:100px;"></div>
           </div>
           <div class="task-item">
             <div class="task-q">2. A solenoid switches on when it gets cold.</div>
-            <div class="task-space" style="min-height:100px;">Circuit design here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q048"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q048" data-placeholder="Type your answer here..." style="min-height:100px;"></div>
           </div>
         </div>
       </div>
@@ -917,26 +932,26 @@
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1. Explain in your own words why a relay is needed in some circuits.</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q049"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q049" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">2. Simulate the relay circuit. What happens when the transistor is switched on?</div>
-            <div class="task-space-sm">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q050"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q050" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">3. Explain the purpose of the protective diode in a relay circuit.</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q051"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q051" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">4. A solenoid also requires a protective diode. Explain why.</div>
-            <div class="task-space">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q052"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q052" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="extension-task">
             <div class="extension-header"><div class="extension-header-text">&#x2B50; Extension task</div></div>
             <div class="extension-body">
               <div class="task-item">
                 <div class="task-q">5. Using a DPDT relay, design a circuit where a motor reverses direction when the relay is energised. Simulate it and sketch the circuit.</div>
-                <div class="task-space" style="min-height:100px;">Circuit design here&hellip;</div>
+                <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q053"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q053" data-placeholder="Type your answer here..." style="min-height:100px;"></div>
               </div>
             </div>
           </div>
@@ -977,33 +992,38 @@
             <div class="task-q">1. In the simulator, build an LED series circuit with a 9 V battery, 470 &Omega; resistor and red LED. Measure the voltage across each component using a voltmeter. Record your readings.</div>
             <table class="data-table">
               <tr><th>Component</th><th>Voltage (V)</th></tr>
-              <tr><td>Battery</td><td class="answer-cell"></td></tr>
-              <tr><td>Resistor</td><td class="answer-cell"></td></tr>
-              <tr><td>LED</td><td class="answer-cell"></td></tr>
+              <tr><td>Battery</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q076" data-placeholder=""></td></tr>
+              <tr><td>Resistor</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q077" data-placeholder=""></td></tr>
+              <tr><td>LED</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q078" data-placeholder=""></td></tr>
             </table>
           </div>
           <div class="task-item">
             <div class="task-q">2. Add an ammeter to the circuit. Record the current.</div>
-            <div class="task-space-sm">Current = ___________</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q054"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q054" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">3. Verify Kirchhoff's voltage law using your measurements. Show your working.</div>
-            <div class="task-space">Working here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q055"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q055" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">4. Build the transistor switching circuit from Section 9 and measure the base-emitter voltage when the transistor is on. What value do you get?</div>
-            <div class="task-space-sm">Answer here&hellip;</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q056"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q056" data-placeholder="Type your answer here..."></div>
           </div>
         </div>
       </div>
 
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8; Print</button>
+        <button class="ctrl-btn ctrl-btn-clear" id="btn-clear-all">&#x1F5D1; Clear all answers</button>
+      </div>
     </div>
     </div>
   </div>
 </div>
 
 <footer class="footer">
-  <span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span>
+  <span>Engineering Science Scotland &middot; Aligned to QS course specifications</span>
   <a href="../../../../teacher/login.html">Teacher area</a>
 </footer>
 
@@ -1032,5 +1052,58 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+
+<script>
+// ── localStorage saving for all answer boxes ──────────────────────────────────
+(function() {
+  const PREFIX = 'ess_answers_ae-';
+  let debounceTimers = {};
+
+  function saveKey(key, val) {
+    try { localStorage.setItem(PREFIX + key, val); } catch(e) {}
+  }
+  function loadKey(key) {
+    try { return localStorage.getItem(PREFIX + key); } catch(e) { return null; }
+  }
+  function showSaved(el) {
+    const ind = el.closest('.task-item, td')?.querySelector('.saved-indicator') ||
+                document.getElementById('ind-' + el.dataset.key);
+    if (ind) { ind.textContent = '✓ Saved'; setTimeout(() => { ind.textContent = ''; }, 2000); }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    // Restore and wire up all contenteditable answer boxes and cells
+    document.querySelectorAll('[data-key]').forEach(el => {
+      const key = el.dataset.key;
+      const saved = loadKey(key);
+      if (saved !== null) el.innerHTML = saved;
+
+      el.addEventListener('input', function() {
+        clearTimeout(debounceTimers[key]);
+        debounceTimers[key] = setTimeout(() => {
+          saveKey(key, el.innerHTML);
+          showSaved(el);
+        }, 800);
+      });
+      el.addEventListener('blur', function() {
+        clearTimeout(debounceTimers[key]);
+        saveKey(key, el.innerHTML);
+      });
+    });
+
+    // Clear all button
+    const clearBtn = document.getElementById('btn-clear-all');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', function() {
+        if (!confirm('Clear all saved answers? This cannot be undone.')) return;
+        document.querySelectorAll('[data-key]').forEach(el => {
+          el.innerHTML = '';
+          saveKey(el.dataset.key, '');
+        });
+      });
+    }
+  });
+})();
+</script>
 </body>
 </html>
