@@ -173,7 +173,7 @@
           <a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
         </div>
         <div class="sim-instruction">A demo circuit (5&thinsp;V battery, 2&thinsp;k&Omega; resistor, ammeter) has already been loaded below. Click on the simulator, then change the battery voltage or resistor value using the <strong>Properties</strong> panel and click <strong>SIMULATE</strong> to see the ammeter reading update live.</div>
-        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-main" title="NoResistance circuit simulator" loading="lazy"></iframe></div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-main" title="NoResistance circuit simulator" src="../../../../simulators/electronics.html" loading="lazy"></iframe></div>
         <div class="sim-credit">NoResistanceSim V1.4 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
@@ -531,7 +531,7 @@
           <a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
         </div>
         <div class="sim-instruction">Build a circuit with a battery, resistor and LED. Press <strong>SIMULATE</strong> to see the LED light. Then reverse the LED and observe what happens.</div>
-        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-diode" title="Diode circuit" loading="lazy"></iframe></div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-diode" title="Diode circuit" src="../../../../simulators/electronics.html" loading="lazy"></iframe></div>
         <div class="sim-credit">NoResistanceSim V1.4 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
@@ -743,7 +743,7 @@
           <a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
         </div>
         <div class="sim-instruction">Build a circuit with a 9 V battery, an LDR and a 10 k&Omega; resistor in series. Add a voltmeter across the 10 k&Omega;. Press <strong>SIMULATE</strong> then click the LDR and adjust the light level with the slider. Watch how the voltage changes.</div>
-        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-ldr" title="LDR voltage divider" loading="lazy"></iframe></div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-ldr" title="LDR voltage divider" src="../../../../simulators/electronics.html" loading="lazy"></iframe></div>
         <div class="sim-credit">NoResistanceSim V1.4 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
@@ -850,7 +850,7 @@
           <a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
         </div>
         <div class="sim-instruction">Build a circuit: battery → lamp → collector. Emitter → 0V. Add a resistor (10 k&Omega;) from the battery to the base. Simulate it and touch a wire to the base resistor junction. The lamp should light. Now build a voltage divider (LDR + 10 k&Omega;) connected to the base to make a light-sensing switch.</div>
-        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-transistor" title="Transistor switch" loading="lazy"></iframe></div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-transistor" title="Transistor switch" src="../../../../simulators/electronics.html" loading="lazy"></iframe></div>
         <div class="sim-credit">NoResistanceSim V1.4 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
@@ -935,7 +935,7 @@
           <a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
         </div>
         <div class="sim-instruction">Build a relay circuit. Connect a transistor to switch the relay coil on. Connect a lamp to the relay's normally-open contacts and a higher voltage supply. Simulate and observe how activating the transistor switches the relay and turns on the lamp.</div>
-        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-relay" title="Relay circuit" loading="lazy"></iframe></div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-relay" title="Relay circuit" src="../../../../simulators/electronics.html" loading="lazy"></iframe></div>
         <div class="sim-credit">NoResistanceSim V1.4 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
@@ -1043,48 +1043,7 @@
 <script src="../../../../js/nav.js"></script>
 <script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
 
-<script>
-// Lazy-load all NoResistance simulator iframes on scroll into view
-// sim-main also receives a pre-loaded circuit via postMessage
-document.addEventListener('DOMContentLoaded', function() {
-  var circuitJSON = `{"comps":[{"id":"18omt93zy","type":"battery","x":330,"y":120,"rot":0,"lbl":"BAT1","value":5,"unit":"V","state":0,"freq":0.5,"setting":0.5,"precision":"auto","portLabels":[{"id":"p","label":""},{"id":"n","label":""}]},{"id":"vavgnf5th","type":"resistor","x":330,"y":250,"rot":0,"lbl":"R1","value":2,"unit":"kΩ","state":0,"freq":0.5,"setting":0.5,"precision":"auto","portLabels":[{"id":"p","label":""},{"id":"n","label":""}]},{"id":"mxzjk7t4x","type":"ammeter","x":440,"y":190,"rot":270,"lbl":"A1","value":0,"unit":"","state":0,"freq":0.5,"setting":0.5,"precision":"auto","portLabels":[{"id":"p","label":""},{"id":"n","label":""}]}],"wires":[{"p1c":"vavgnf5th","p1p":"p","p2c":"18omt93zy","p2p":"p","points":[{"x":230,"y":250},{"x":230,"y":120}]},{"p1c":"18omt93zy","p1p":"n","p2c":"mxzjk7t4x","p2p":"n","points":[{"x":440,"y":120}]},{"p1c":"mxzjk7t4x","p1p":"p","p2c":"vavgnf5th","p2p":"n","points":[{"x":440,"y":250}]}],"flowchart":{"nodes":[{"id":"fn_s0cn490kj","type":"terminal","x":200,"y":80,"w":120,"h":50,"subType":"START","text":"START"}],"links":[]}}`;
 
-  function sendCircuit(iframe) {
-    try { iframe.contentWindow.postMessage({ type: 'loadCircuit', data: circuitJSON }, '*'); } catch(e) {}
-  }
-
-  var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(entry) {
-      if (entry.isIntersecting) {
-        var iframe = entry.target;
-        if (!iframe.src || iframe.src === window.location.href) {
-          if (iframe.id === 'sim-main') {
-            // Load circuit after sim is ready
-            iframe.addEventListener('load', function onLoad() {
-              iframe.removeEventListener('load', onLoad);
-              setTimeout(function() { sendCircuit(iframe); }, 800);
-            });
-            // Also listen for simReady message
-            window.addEventListener('message', function onMsg(e) {
-              if (e.source === iframe.contentWindow &&
-                  e.data && (e.data.type === 'simReady' || e.data.type === 'ready')) {
-                window.removeEventListener('message', onMsg);
-                sendCircuit(iframe);
-              }
-            });
-          }
-          iframe.src = '../../../../simulators/electronics.html';
-        }
-        observer.unobserve(iframe);
-      }
-    });
-  }, { rootMargin: '200px' });
-
-  document.querySelectorAll('.sim-iframe').forEach(function(iframe) {
-    observer.observe(iframe);
-  });
-});
-</script>
 
 
 <script>
@@ -1140,5 +1099,25 @@ document.addEventListener('DOMContentLoaded', function() {
 })();
 </script>
 
+
+<script>
+// Send demo circuit to Investigation 1 simulator once it loads
+(function() {
+  var circuitJSON = `{"comps":[{"id":"18omt93zy","type":"battery","x":330,"y":120,"rot":0,"lbl":"BAT1","value":5,"unit":"V","state":0,"freq":0.5,"setting":0.5,"precision":"auto","portLabels":[{"id":"p","label":""},{"id":"n","label":""}]},{"id":"vavgnf5th","type":"resistor","x":330,"y":250,"rot":0,"lbl":"R1","value":2,"unit":"kΩ","state":0,"freq":0.5,"setting":0.5,"precision":"auto","portLabels":[{"id":"p","label":""},{"id":"n","label":""}]},{"id":"mxzjk7t4x","type":"ammeter","x":440,"y":190,"rot":270,"lbl":"A1","value":0,"unit":"","state":0,"freq":0.5,"setting":0.5,"precision":"auto","portLabels":[{"id":"p","label":""},{"id":"n","label":""}]}],"wires":[{"p1c":"vavgnf5th","p1p":"p","p2c":"18omt93zy","p2p":"p","points":[{"x":230,"y":250},{"x":230,"y":120}]},{"p1c":"18omt93zy","p1p":"n","p2c":"mxzjk7t4x","p2p":"n","points":[{"x":440,"y":120}]},{"p1c":"mxzjk7t4x","p1p":"p","p2c":"vavgnf5th","p2p":"n","points":[{"x":440,"y":250}]}],"flowchart":{"nodes":[{"id":"fn_s0cn490kj","type":"terminal","x":200,"y":80,"w":120,"h":50,"subType":"START","text":"START"}],"links":[]}}`;
+  function trySend(iframe) {
+    try { iframe.contentWindow.postMessage({ type: 'loadCircuit', data: circuitJSON }, '*'); } catch(e) {}
+  }
+  window.addEventListener('load', function() {
+    var iframe = document.getElementById('sim-main');
+    if (!iframe) return;
+    // Try on load event
+    iframe.addEventListener('load', function() { setTimeout(function(){ trySend(iframe); }, 800); });
+    // Also try on simReady message
+    window.addEventListener('message', function(e) {
+      if (e.data && (e.data.type === 'simReady' || e.data.type === 'ready')) { trySend(iframe); }
+    });
+  });
+})();
+</script>
 </body>
 </html>
