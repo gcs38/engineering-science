@@ -1045,20 +1045,42 @@
 
 <script>
 // Lazy-load all NoResistance simulator iframes on scroll into view
+// sim-main also receives a pre-loaded circuit via postMessage
 document.addEventListener('DOMContentLoaded', function() {
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
+  var circuitJSON = `{"comps":[{"id":"18omt93zy","type":"battery","x":330,"y":120,"rot":0,"lbl":"BAT1","value":5,"unit":"V","state":0,"freq":0.5,"setting":0.5,"precision":"auto","portLabels":[{"id":"p","label":""},{"id":"n","label":""}]},{"id":"vavgnf5th","type":"resistor","x":330,"y":250,"rot":0,"lbl":"R1","value":2,"unit":"kΩ","state":0,"freq":0.5,"setting":0.5,"precision":"auto","portLabels":[{"id":"p","label":""},{"id":"n","label":""}]},{"id":"mxzjk7t4x","type":"ammeter","x":440,"y":190,"rot":270,"lbl":"A1","value":0,"unit":"","state":0,"freq":0.5,"setting":0.5,"precision":"auto","portLabels":[{"id":"p","label":""},{"id":"n","label":""}]}],"wires":[{"p1c":"vavgnf5th","p1p":"p","p2c":"18omt93zy","p2p":"p","points":[{"x":230,"y":250},{"x":230,"y":120}]},{"p1c":"18omt93zy","p1p":"n","p2c":"mxzjk7t4x","p2p":"n","points":[{"x":440,"y":120}]},{"p1c":"mxzjk7t4x","p1p":"p","p2c":"vavgnf5th","p2p":"n","points":[{"x":440,"y":250}]}],"flowchart":{"nodes":[{"id":"fn_s0cn490kj","type":"terminal","x":200,"y":80,"w":120,"h":50,"subType":"START","text":"START"}],"links":[]}}`;
+
+  function sendCircuit(iframe) {
+    try { iframe.contentWindow.postMessage({ type: 'loadCircuit', data: circuitJSON }, '*'); } catch(e) {}
+  }
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
       if (entry.isIntersecting) {
-        const iframe = entry.target;
+        var iframe = entry.target;
         if (!iframe.src || iframe.src === window.location.href) {
-          iframe.src = "../../../../simulators/electronics.html";
+          if (iframe.id === 'sim-main') {
+            // Load circuit after sim is ready
+            iframe.addEventListener('load', function onLoad() {
+              iframe.removeEventListener('load', onLoad);
+              setTimeout(function() { sendCircuit(iframe); }, 800);
+            });
+            // Also listen for simReady message
+            window.addEventListener('message', function onMsg(e) {
+              if (e.source === iframe.contentWindow &&
+                  e.data && (e.data.type === 'simReady' || e.data.type === 'ready')) {
+                window.removeEventListener('message', onMsg);
+                sendCircuit(iframe);
+              }
+            });
+          }
+          iframe.src = '../../../../simulators/electronics.html';
         }
         observer.unobserve(iframe);
       }
     });
   }, { rootMargin: '200px' });
 
-  document.querySelectorAll('.sim-iframe').forEach(iframe => {
+  document.querySelectorAll('.sim-iframe').forEach(function(iframe) {
     observer.observe(iframe);
   });
 });
@@ -1118,19 +1140,5 @@ document.addEventListener('DOMContentLoaded', function() {
 })();
 </script>
 
-<script>
-(function() {
-  var circuitJSON = `{"comps":[{"id":"18omt93zy","type":"battery","x":330,"y":120,"rot":0,"lbl":"BAT1","value":5,"unit":"V","state":0,"freq":0.5,"setting":0.5,"precision":"auto","portLabels":[{"id":"p","label":""},{"id":"n","label":""}]},{"id":"vavgnf5th","type":"resistor","x":330,"y":250,"rot":0,"lbl":"R1","value":2,"unit":"kΩ","state":0,"freq":0.5,"setting":0.5,"precision":"auto","portLabels":[{"id":"p","label":""},{"id":"n","label":""}]},{"id":"mxzjk7t4x","type":"ammeter","x":440,"y":190,"rot":270,"lbl":"A1","value":0,"unit":"","state":0,"freq":0.5,"setting":0.5,"precision":"auto","portLabels":[{"id":"p","label":""},{"id":"n","label":""}]}],"wires":[{"p1c":"vavgnf5th","p1p":"p","p2c":"18omt93zy","p2p":"p","points":[{"x":230,"y":250},{"x":230,"y":120}]},{"p1c":"18omt93zy","p1p":"n","p2c":"mxzjk7t4x","p2p":"n","points":[{"x":440,"y":120}]},{"p1c":"mxzjk7t4x","p1p":"p","p2c":"vavgnf5th","p2p":"n","points":[{"x":440,"y":250}]}],"flowchart":{"nodes":[{"id":"fn_s0cn490kj","type":"terminal","x":200,"y":80,"w":120,"h":50,"subType":"START","text":"START"}],"links":[]}}`;
-  var iframe = document.getElementById('sim-main');
-  if (!iframe) return;
-  function sendCircuit() {
-    try { iframe.contentWindow.postMessage({ type: 'loadCircuit', data: circuitJSON }, '*'); } catch(e) {}
-  }
-  iframe.addEventListener('load', function() { setTimeout(sendCircuit, 600); });
-  window.addEventListener('message', function(e) {
-    if (e.data && (e.data.type === 'simReady' || e.data.type === 'ready')) { sendCircuit(); }
-  });
-})();
-</script>
 </body>
 </html>
