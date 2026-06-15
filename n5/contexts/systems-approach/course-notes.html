@@ -208,17 +208,17 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 2: Sub-Systems Diagrams</h1>
 
-      <p class="notes-p">The universal system diagram tells us what goes in and what comes out — but not how it works inside. The next step is to <strong>explode the process box</strong> into its sub-systems, showing how each part of the system interacts.</p>
+      <p class="notes-p">The universal system diagram tells us what goes in and what comes out — but not how it works inside. The next step is to <strong>divide the process box</strong> into its sub-systems, showing how each part of the system interacts.</p>
 
       <div class="key-point">A <strong>sub-systems diagram</strong> shows all the individual components inside the system boundary, each in its own box, with arrows showing how signals or energy flows between them.</div>
 
       <h2 class="notes-h2">Key terms</h2>
       <ul class="notes-ul">
         <li><strong>System boundary</strong> — a dashed line enclosing all the sub-systems. Real-world inputs and outputs are outside the boundary.</li>
-        <li><strong>Transducer</strong> — a device that converts one form of energy to another. Input transducers convert real-world inputs into electrical signals; output transducers convert electrical signals into real-world outputs.</li>
-        <li><strong>Input transducer (sensor)</strong> — e.g. thermistor, LDR, microphone, switch</li>
-        <li><strong>Output transducer (actuator)</strong> — e.g. motor, loudspeaker, LED, heater</li>
-        <li><strong>Output driver</strong> (also called a transducer driver) — an electronic component that boosts a low-power control signal from the control unit to provide the higher current or voltage required to operate an output device such as a motor or heating element. Every output transducer needs a driver (e.g. transistor, relay, op-amp).</li>
+        convert real-world inputs into electrical signals; output devices convert electrical signals into real-world outputs.</li>
+        <li><strong>Input device (sensor)</strong> — converts a real-world input into an electrical signal. Examples: thermistor, microphone, switch, light sensor.</li>
+        <li><strong>Output device (actuator)</strong> — converts an electrical signal into a real-world output. Examples: motor, loudspeaker, LED, heater.</li>
+        <li><strong>Output driver</strong>  — an electronic component that boosts a low-power control signal from the control unit to provide the higher current or voltage required to operate an output device such as a motor or heating element. Every output device needs a driver (e.g. transistor, relay).</li>
       </ul>
 
 
@@ -250,14 +250,14 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s2b" data-placeholder="Describe or sketch your sub-systems diagram here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">3. For each system below, identify the input transducer and output transducer, then describe how the system works by explaining the function of each sub-system in order.</div>
-            <div class="task-q-sub">a) Toaster — input transducer: timer switch &nbsp;|&nbsp; output transducer: heating element</div>
+            <div class="task-q">3. For each system below, identify the input device and output device, then describe how the system works by explaining the function of each sub-system in order.</div>
+            <div class="task-q-sub">a) Toaster — input device: timer switch &nbsp;|&nbsp; output device: heating element</div>
             <div class="answer-label">Description <span class="saved-indicator" id="ind-s2c">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="sys-s2c" data-placeholder="Describe how this system works..."></div>
-            <div class="task-q-sub">b) Greenhouse watering (irrigation) system — input transducer: moisture sensor &nbsp;|&nbsp; output transducer: water pump</div>
+            <div class="task-q-sub">b) Greenhouse watering (irrigation) system — input device: moisture sensor &nbsp;|&nbsp; output device: water pump</div>
             <div class="answer-label">Description <span class="saved-indicator" id="ind-s2d">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="sys-s2d" data-placeholder="Describe how this system works..."></div>
-            <div class="task-q-sub">c) Factory press machine — input transducer: push button &nbsp;|&nbsp; output transducer: motor / solenoid</div>
+            <div class="task-q-sub">c) Factory press machine — input device: push button &nbsp;|&nbsp; output device: motor / solenoid</div>
             <div class="answer-label">Description <span class="saved-indicator" id="ind-s2e">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="sys-s2e" data-placeholder="Describe how this system works..."></div>
           </div>
@@ -276,9 +276,9 @@
 
       <div class="worked-example">
         <div class="worked-example-title">Worked Example &mdash; Open-loop control: Automatic street light</div>
-        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">An automatic street light uses an LDR (light-dependent resistor) to detect when it gets dark. When the light level drops below a set threshold, the LDR triggers the control unit, which switches on the LED array via an output driver. There is no feedback — the system cannot detect whether the light is actually illuminating the street. It simply switches on when dark and off when light returns.</p>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">An automatic street light uses a light sensor to detect when it gets dark. When the light level drops below a set threshold, the light sensor triggers the control unit, which switches on the LED array via an output driver. There is no feedback — the system cannot detect whether the light is actually illuminating the street. It simply switches on when dark and off when light returns.</p>
         <img src="images/systems-open-loop.png"
-           alt="Open-loop control diagram for a street light — Ambient light (input) → LDR → Control unit → Output driver → LED array → Light (output). System boundary shown as dashed box. No feedback arrow."
+           alt="Open-loop control diagram for a street light — Ambient light (input) → Light sensor → Control unit → Output driver → LED array → Light (output). System boundary shown as dashed box. No feedback arrow."
            style="width:100%;max-width:700px;display:block;margin:8px auto;border-radius:8px;"
            onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='block';">
         <div class="diagram-placeholder" style="display:none;">
@@ -320,7 +320,7 @@
               <li>More complex and expensive</li>
               <li>Feedback allows automatic correction</li>
               <li>Output is maintained at the desired value</li>
-              <li>Examples: thermostat, cruise control, GHD straighteners</li>
+              <li>Examples: thermostat, cruise control, hair straighteners with automatic temperature control</li>
             </ul>
           </div>
         </div>
@@ -352,39 +352,84 @@
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Open and closed-loop control</div></div>
         <div class="assignment-body">
+
           <div class="task-item">
-            <div class="task-q">1. Explain the main difference between open-loop and closed-loop control systems.</div>
+            <div class="task-q">1. State one difference between an open-loop and a closed-loop control system.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-s3a">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="sys-s3a" data-placeholder="Explain the key difference..."></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s3a" data-placeholder="An open-loop system... whereas a closed-loop system..."></div>
           </div>
+
           <div class="task-item">
-            <div class="task-q">2. Classify each of the following as open-loop or closed-loop, and explain your reasoning.</div>
-            <div class="task-q-sub">a) Electric kettle (modern kettle that switches off when water boils)</div>
+            <div class="task-q">2. State whether each of the following is open-loop or closed-loop control.</div>
+            <div class="task-q-sub">a) A microwave oven set to run for 2 minutes.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-s3b">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s3b" data-placeholder="Open or closed-loop? Explain..."></div>
-            <div class="task-q-sub">b) Car cruise control</div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s3b" data-placeholder="Open-loop / closed-loop"></div>
+            <div class="task-q-sub">b) Car cruise control that maintains a set speed.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-s3c">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s3c" data-placeholder="Open or closed-loop? Explain..."></div>
-            <div class="task-q-sub">c) Timer-controlled oven</div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s3c" data-placeholder="Open-loop / closed-loop"></div>
+            <div class="task-q-sub">c) Hair straighteners with automatic temperature control.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-s3d">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s3d" data-placeholder="Open or closed-loop? Explain..."></div>
-            <div class="task-q-sub">d) GHD hair straighteners (with automatic temperature control)</div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s3d" data-placeholder="Open-loop / closed-loop"></div>
+            <div class="task-q-sub">d) A security light on a timer that switches on at 6pm every evening.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-s3e">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s3e" data-placeholder="Open or closed-loop? Explain..."></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s3e" data-placeholder="Open-loop / closed-loop"></div>
           </div>
+
           <div class="task-item">
-            <div class="task-q">3. Draw a closed-loop control diagram for a <strong>central heating system</strong> that maintains a room at a set temperature. Include: temperature sensor, system boundary, control unit, output driver, boiler/heater.</div>
-            <div class="answer-label">Control diagram sketch <span class="saved-indicator" id="ind-s3f">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s3f" data-placeholder="Sketch or describe your control diagram here..."></div>
+            <div class="task-q">3. The diagram below represents a closed-loop control system for a <strong>central heating system</strong>.</div>
+            <div style="background:#f8fafc;border:1px solid var(--gray-200);border-radius:8px;padding:14px;margin:8px 0;font-size:12px;">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <div style="border:2px solid #0f766e;padding:5px 10px;border-radius:4px;font-weight:700;color:#0f766e;">Set temperature<br><span style="font-size:10px;font-weight:400;">(input signal)</span></div>
+                <span style="color:#0f766e;font-size:18px;">→</span>
+                <div style="background:#0f766e;color:white;padding:6px 10px;border-radius:4px;font-weight:700;">CONTROL UNIT<br><span style="font-size:10px;font-weight:400;">compares signals</span></div>
+                <span style="color:#0f766e;font-size:18px;">→</span>
+                <div style="background:#0f766e;color:white;padding:6px 10px;border-radius:4px;font-weight:700;">OUTPUT DRIVER</div>
+                <span style="color:#0f766e;font-size:18px;">→</span>
+                <div style="background:#0f766e;color:white;padding:6px 10px;border-radius:4px;font-weight:700;">BOILER</div>
+                <span style="color:#0f766e;font-size:18px;">→</span>
+                <div style="border:2px solid #0f766e;padding:5px 10px;border-radius:4px;font-weight:700;color:#0f766e;">Heat output</div>
+              </div>
+              <div style="margin-top:10px;padding-left:20px;color:#e11d48;font-size:12px;font-weight:600;">↑ Temperature sensor (feedback) ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←</div>
+            </div>
+            <div class="task-q-sub">a) Name the sub-system that provides the feedback signal.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-s3f">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s3f" data-placeholder="Name of sub-system..."></div>
+            <div class="task-q-sub">b) What does the feedback signal tell the control unit?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-s3f2">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s3f2" data-placeholder="The feedback signal tells the control unit..."></div>
+            <div class="task-q-sub">c) What action does the control unit take if the room temperature falls below the set value?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-s3f3">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s3f3" data-placeholder="The control unit instructs..."></div>
           </div>
+
           <div class="task-item">
-            <div class="task-q">4. A car's <strong>air conditioning system</strong> uses closed-loop control to automatically maintain the cabin at a set temperature. A temperature sensor detects the cabin temperature and adjusts the compressor output to maintain the desired value. Describe how this closed-loop system works, identifying each sub-system and the role of feedback.</div>
+            <div class="task-q">4. The diagram below shows a closed-loop control system for an <strong>electric oven</strong>. Describe how the system operates. In your answer, refer to the input signal, the feedback signal, and what the control unit does.</div>
+            <div style="background:#f8fafc;border:1px solid var(--gray-200);border-radius:8px;padding:14px;margin:8px 0;font-size:12px;">
+              <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                <div style="border:2px solid #0f766e;padding:5px 10px;border-radius:4px;font-weight:700;color:#0f766e;">Desired temp<br><span style="font-size:10px;font-weight:400;">(input signal)</span></div>
+                <span style="color:#0f766e;font-size:18px;">→</span>
+                <div style="background:#0f766e;color:white;padding:6px 10px;border-radius:4px;font-weight:700;">CONTROL UNIT</div>
+                <span style="color:#0f766e;font-size:18px;">→</span>
+                <div style="background:#0f766e;color:white;padding:6px 10px;border-radius:4px;font-weight:700;">OUTPUT DRIVER</div>
+                <span style="color:#0f766e;font-size:18px;">→</span>
+                <div style="background:#0f766e;color:white;padding:6px 10px;border-radius:4px;font-weight:700;">HEATING ELEMENT</div>
+                <span style="color:#0f766e;font-size:18px;">→</span>
+                <div style="border:2px solid #0f766e;padding:5px 10px;border-radius:4px;font-weight:700;color:#0f766e;">Heat</div>
+              </div>
+              <div style="margin-top:10px;padding-left:20px;color:#e11d48;font-size:12px;font-weight:600;">↑ Temperature sensor (feedback) ←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←←</div>
+            </div>
             <div class="answer-label">Description <span class="saved-indicator" id="ind-s3g">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s3g" data-placeholder="Describe how the system works..."></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s3g" data-placeholder="The user sets the desired temperature (input signal). The control unit compares this to the feedback signal from the temperature sensor. If the oven is too cold, the control unit instructs the output driver to switch the heating element on..."></div>
           </div>
+
+          <div class="task-item">
+            <div class="task-q">5. Draw a closed-loop control diagram for a <strong>refrigerator</strong> that automatically maintains a set temperature. Include: temperature sensor, control unit, output driver, compressor. Show the system boundary and clearly mark arrowheads on both lines of the feedback loop. Remember: the feedback line must come from <em>after</em> the output device.</div>
+            <div class="answer-label">Control diagram <span class="saved-indicator" id="ind-s3h">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s3h" data-placeholder="Sketch or describe your control diagram here..."></div>
+          </div>
+
         </div>
       </div>
-
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
@@ -461,14 +506,14 @@
             <div class="answer-box" contenteditable="true" data-key="sys-s5a" data-placeholder="Describe how the Furby system works..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">2. List the input transducers for the Furby and state the function of each. (Hints: push switches on front and back, switch in mouth, light sensor, tilt sensor)</div>
-            <div class="answer-label">Input transducers <span class="saved-indicator" id="ind-s5b">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s5b" data-placeholder="List each input transducer and its function..."></div>
+            <div class="task-q">2. List the input devices for the Furby and state the function of each. (Hints: push switches on front and back, switch in mouth, light sensor, tilt sensor)</div>
+            <div class="answer-label">Input devices <span class="saved-indicator" id="ind-s5b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s5b" data-placeholder="List each input device and its function..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">3. List the output transducers for the Furby. (Hints: speaker, motor for moving parts)</div>
-            <div class="answer-label">Output transducers <span class="saved-indicator" id="ind-s5c">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="sys-s5c" data-placeholder="List each output transducer..."></div>
+            <div class="task-q">3. List the output devices for the Furby. (Hints: speaker, motor for moving parts)</div>
+            <div class="answer-label">Output devices <span class="saved-indicator" id="ind-s5c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sys-s5c" data-placeholder="List each output device..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">4. Draw a sub-systems diagram for the Furby. Show the system boundary and make clear the difference between real-world inputs/outputs and system sub-systems.</div>
@@ -495,7 +540,7 @@
     </div>
   </div>
 </div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
+<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to QS course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
 <script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script>
 <script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
 <script>
