@@ -140,6 +140,72 @@
         <strong>Safety:</strong> Always ensure the air supply is isolated before connecting or disconnecting components. Never point a pneumatic line at yourself or others. Check all connections are secure before pressurising a circuit.
       </div>
 
+      <h2 class="notes-h2">Physical components</h2>
+      <p class="notes-p">Below are photographs of the physical components you will encounter in the lab. You should be able to match each physical component to its circuit symbol.</p>
+
+      <div class="symbol-grid">
+        <div class="symbol-card">
+          <img src="images/photo-compressor.jpg" alt="Photograph of a pneumatic compressor"
+               onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+          <div class="symbol-card-name">Compressor</div>
+          <div class="symbol-card-desc">Draws in air from the atmosphere and compresses it to supply the circuit</div>
+        </div>
+        <div class="symbol-card">
+          <img src="images/photo-sac.jpg" alt="Photograph of a single acting cylinder"
+               onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+          <div class="symbol-card-name">Single acting cylinder (SAC)</div>
+          <div class="symbol-card-desc">Outstroke by main air, instroke by internal spring</div>
+        </div>
+        <div class="symbol-card">
+          <img src="images/photo-dac.jpg" alt="Photograph of a double acting cylinder"
+               onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+          <div class="symbol-card-name">Double acting cylinder (DAC)</div>
+          <div class="symbol-card-desc">Main air drives both outstroke and instroke</div>
+        </div>
+        <div class="symbol-card">
+          <img src="images/photo-32-valve.jpg" alt="Photograph of a 3/2 push-button valve"
+               onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+          <div class="symbol-card-name">3/2 push-button valve</div>
+          <div class="symbol-card-desc">3 ports, 2 states — used with SAC circuits</div>
+        </div>
+        <div class="symbol-card">
+          <img src="images/photo-52-valve.jpg" alt="Photograph of a 5/2 valve"
+               onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+          <div class="symbol-card-name">5/2 valve</div>
+          <div class="symbol-card-desc">5 ports, 2 states — used with DAC circuits</div>
+        </div>
+        <div class="symbol-card">
+          <img src="images/photo-roller-valve.jpg" alt="Photograph of a roller valve"
+               onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+          <div class="symbol-card-name">Roller valve</div>
+          <div class="symbol-card-desc">Used as a limit valve — tripped by the cylinder rod at end of stroke</div>
+        </div>
+        <div class="symbol-card">
+          <img src="images/photo-udr.jpg" alt="Photograph of a uni-directional restrictor"
+               onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+          <div class="symbol-card-name">Uni-directional restrictor (UDR)</div>
+          <div class="symbol-card-desc">Controls speed of outstroke or instroke independently</div>
+        </div>
+        <div class="symbol-card">
+          <img src="images/photo-shuttle-valve.jpg" alt="Photograph of a shuttle valve"
+               onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+          <div class="symbol-card-name">Shuttle valve</div>
+          <div class="symbol-card-desc">Two inlets, one outlet — allows operation from two separate valves</div>
+        </div>
+        <div class="symbol-card">
+          <img src="images/photo-tpiece.jpg" alt="Photograph of a T-piece connector"
+               onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+          <div class="symbol-card-name">T-piece</div>
+          <div class="symbol-card-desc">Splits one main air supply into two branches</div>
+        </div>
+        <div class="symbol-card">
+          <img src="images/photo-tubing.jpg" alt="Photograph of pneumatic tubing"
+               onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
+          <div class="symbol-card-name">Pneumatic tubing</div>
+          <div class="symbol-card-desc">Push-fit tubing connects components — push in to connect, press collar to release</div>
+        </div>
+      </div>
+
       <h2 class="notes-h2">Advantages of pneumatic systems</h2>
       <p class="notes-p">Pneumatic systems offer several advantages over hydraulic or electrical systems: compressed air is <strong>non-flammable</strong> and safe to use in hazardous environments; the components are relatively low-cost; speed is easy to adjust using flow control valves; and any leaks result only in air escaping rather than fluid spillage.</p>
 
@@ -268,6 +334,12 @@
           <div class="symbol-card-desc">Electrical signal switches the valve — used in electronically controlled systems</div>
         </div>
       </div>
+
+      <h2 class="notes-h2">Solenoid circuit example</h2>
+      <p class="notes-p">A solenoid-actuated valve is connected to an electrical control system (such as a microcontroller or PLC). When the control system sends an electrical signal to the solenoid, it switches the valve and main air flows to the cylinder. When the electrical signal is removed, the spring returns the valve to its normal state and the cylinder instrokes. This allows a pneumatic circuit to be controlled entirely by software or by electronic sensors such as light gates or pressure switches.</p>
+
+      <img src="images/circuit-solenoid.png" alt="Solenoid-controlled SAC circuit diagram showing electrical signal triggering a solenoid valve which causes the cylinder to outstroke" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;"
+           onerror="this.style.display='none'">
 
       <h2 class="notes-h2">Restrictors</h2>
       <p class="notes-p">Restrictors limit the flow rate of air, controlling the <strong>speed</strong> of a cylinder. There are two types:</p>
@@ -476,8 +548,69 @@
 
       <hr class="divider">
 
+      <hr class="divider">
+
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 7: Speed Control — Restrictors</h1>
+      <h1 class="notes-h1">Section 7: Air Bleed (Diaphragm) Circuit</h1>
+
+      <p class="notes-p">An <strong>air bleed circuit</strong> uses a diaphragm-actuated 3/2 valve and works differently from all the circuits you have seen so far &mdash; instead of pressing a valve to supply air, this circuit works by <strong>blocking</strong> a small continuous flow of air.</p>
+
+      <h2 class="notes-h2">How it works</h2>
+      <p class="notes-p">In the normal state, main air constantly bleeds to atmosphere through a small hole in the circuit (the bleed point). Because this air is always escaping, there is never enough pressure to act on the diaphragm &mdash; the valve stays in its normal state and the cylinder remains instroked.</p>
+
+      <p class="notes-p">When an object or a finger <strong>covers the bleed hole</strong>, the escaping air is blocked. Pressure immediately builds up behind the diaphragm. Once it reaches the switching threshold, the diaphragm switches the 3/2 valve, main air flows to the cylinder, and the cylinder outstrokes.</p>
+
+      <p class="notes-p">As soon as the obstruction is removed, air bleeds away again, pressure drops, the diaphragm releases, and the valve spring returns it to its normal state &mdash; causing the cylinder to instroke.</p>
+
+      <div class="key-point">
+        <strong>Key point:</strong> The air bleed circuit is a <strong>proximity/presence detection</strong> circuit. No electrical signal is needed &mdash; physical contact or proximity blocking the bleed hole is enough to trigger the cylinder. This makes it useful for detecting products on a conveyor, detecting when a hand is near a machine, or triggering an action when a part arrives at a station.
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Air bleed circuit operation</div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>At rest (bleed open):</strong> Main air flows slowly through the circuit and bleeds continuously to atmosphere at the bleed point. Pressure at the diaphragm is below the switching threshold. The 3/2 valve stays in its normal state. Cylinder is instroked.</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Bleed blocked:</strong> An object covers the bleed hole. Air can no longer escape, so pressure builds up rapidly behind the diaphragm. Once pressure reaches the threshold, the diaphragm switches the 3/2 valve.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Cylinder outstrokes:</strong> Main air flows through the switched valve to the cylinder. The cylinder outstrokes for as long as the bleed hole remains covered.</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Bleed unblocked:</strong> The object moves away. Air bleeds to atmosphere again, pressure drops below the threshold, and the diaphragm releases. The 3/2 valve spring-returns to its normal state, exhausting the cylinder. The cylinder instrokes.</div></div>
+      </div>
+
+      <img src="images/circuit-air-bleed.png" alt="Air bleed circuit diagram showing a diaphragm-actuated 3/2 valve and SAC" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;"
+           onerror="this.style.display='none'">
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Air Bleed Circuit</div>
+          <a href="../../../../simulators/pneu-air-bleed.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Click on the bleed point to cover it. Watch how pressure builds behind the diaphragm and triggers the cylinder outstroke. Release to see the cylinder instroke automatically.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-air-bleed.html" title="No Pressure Sim — Air bleed circuit" loading="lazy"></iframe></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Air bleed circuit</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <p class="task-q">7a. Explain how an air bleed circuit works. In your answer, describe what happens at the bleed point when it is open, and what happens when it is blocked.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t7a" data-placeholder="Type your answer here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">7b. Describe one practical application of an air bleed circuit. Explain what causes the bleed to be blocked in your example and what action this triggers.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t7b" data-placeholder="Type your answer here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">7c. State one key difference between an air bleed circuit and a standard push-button SAC circuit.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t7c" data-placeholder="Type your answer here&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 8: Speed Control — Restrictors</h1>
 
       <p class="notes-p">The speed of a pneumatic cylinder can be controlled by limiting the <strong>flow rate</strong> of air using a uni-directional restrictor (UDR).</p>
 
@@ -500,17 +633,17 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Speed control</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; Speed control</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <p class="task-q">7a. Use the simulator or physical components to build a circuit with a UDR. Adjust the restrictor and observe how the cylinder speed changes. Explain the difference between meter-in and meter-out speed control. Which method should always be used in pneumatics and why?</p>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7a">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="pneu-t7a" data-placeholder="Type your answer here…"></div>
+            <p class="task-q">8a. Use the simulator or physical components to build a circuit with a UDR. Adjust the restrictor and observe how the cylinder speed changes. Explain the difference between meter-in and meter-out speed control. Which method should always be used in pneumatics and why?</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t8a" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">7b. A packaging machine uses a SAC to push items along a conveyor. The operator wants the outstroke to be slow but the instroke to be quick. Explain where a uni-directional restrictor (UDR) should be placed and how it should be oriented to achieve this.</p>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7b">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="pneu-t7b" data-placeholder="Type your answer here…"></div>
+            <p class="task-q">8b. A packaging machine uses a SAC to push items along a conveyor. The operator wants the outstroke to be slow but the instroke to be quick. Explain where a uni-directional restrictor (UDR) should be placed and how it should be oriented to achieve this.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t8b" data-placeholder="Type your answer here…"></div>
           </div>
         </div>
       </div>
@@ -518,7 +651,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 8: Semi-Automatic Circuit</h1>
+      <h1 class="notes-h1">Section 9: Semi-Automatic Circuit</h1>
 
       <p class="notes-p">A <strong>semi-automatic circuit</strong> requires a manual input to start each cycle, but part of the operation happens automatically. A typical arrangement uses a DAC, a 5/2 valve with <strong>pilot actuators</strong>, and a roller spring-return valve triggered by the cylinder rod at the end of its outstroke.</p>
 
@@ -543,17 +676,17 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; Semi-automatic circuit</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 9 &mdash; Semi-automatic circuit</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <p class="task-q">8a. Describe the complete operating cycle of a semi-automatic pneumatic circuit. Include reference to: the pilot signal, how main air causes the outstroke, what triggers the instroke, and what happens at the end of the cycle.</p>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8a">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t8a" data-placeholder="Type your answer here…"></div>
+            <p class="task-q">9a. Describe the complete operating cycle of a semi-automatic pneumatic circuit. Include reference to: the pilot signal, how main air causes the outstroke, what triggers the instroke, and what happens at the end of the cycle.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t9a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t9a" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">8b. Explain the difference between a manual circuit and a semi-automatic circuit. Give one advantage of using a semi-automatic circuit in a production environment.</p>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8b">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="pneu-t8b" data-placeholder="Type your answer here…"></div>
+            <p class="task-q">9b. Explain the difference between a manual circuit and a semi-automatic circuit. Give one advantage of using a semi-automatic circuit in a production environment.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t9b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t9b" data-placeholder="Type your answer here…"></div>
           </div>
         </div>
       </div>
@@ -561,7 +694,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 9: Fully Automatic Circuit</h1>
+      <h1 class="notes-h1">Section 10: Fully Automatic Circuit</h1>
 
       <p class="notes-p">A <strong>fully automatic circuit</strong> repeats its cycle continuously without any manual input after the initial start signal. A second limit valve at the instroked position sends a pilot signal to trigger the next outstroke automatically, so the cylinder cycles back and forth until the main air supply is cut off.</p>
 
@@ -581,17 +714,17 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 9 &mdash; Fully automatic circuit</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 10 &mdash; Fully automatic circuit</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <p class="task-q">9a. Explain the role of each limit valve in a fully automatic circuit. What would happen if the limit valve at the retracted position were removed?</p>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t9a">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t9a" data-placeholder="Type your answer here…"></div>
+            <p class="task-q">10a. Explain the role of each limit valve in a fully automatic circuit. What would happen if the limit valve at the retracted position were removed?</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t10a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t10a" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">9b. A fully automatic circuit is used in a bottling plant to cap bottles on a conveyor. Describe how the circuit could be modified to allow an operator to stop the machine safely at the end of a cycle (not mid-stroke).</p>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t9b">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="pneu-t9b" data-placeholder="Type your answer here…"></div>
+            <p class="task-q">10b. A fully automatic circuit is used in a bottling plant to cap bottles on a conveyor. Describe how the circuit could be modified to allow an operator to stop the machine safely at the end of a cycle (not mid-stroke).</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t10b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t10b" data-placeholder="Type your answer here…"></div>
           </div>
         </div>
       </div>
@@ -599,7 +732,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 10: Time Delay Circuit</h1>
+      <h1 class="notes-h1">Section 11: Time Delay Circuit</h1>
 
       <p class="notes-p">A <strong>time delay valve</strong> introduces a controllable delay between an input signal and an output action. It consists of a uni-directional restrictor feeding a <strong>reservoir</strong>, which builds up main air pressure slowly until it is high enough to pilot (switch) a 3/2 output valve.</p>
 
@@ -625,25 +758,25 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 10 &mdash; Time delay circuit</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 11 &mdash; Time delay circuit</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <p class="task-q">10a. Describe how a pneumatic time delay circuit produces a time delay. Include reference to the restrictor, reservoir, and pilot-operated output valve.</p>
+            <p class="task-q">11a. Describe how a pneumatic time delay circuit produces a time delay. Include reference to the restrictor, reservoir, and pilot-operated output valve.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t10a">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t10a" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">10b. A time delay circuit is set to delay for 3 seconds. An engineer wants to increase the delay to 8 seconds. Explain two ways this could be achieved.</p>
+            <p class="task-q">11b. A time delay circuit is set to delay for 3 seconds. An engineer wants to increase the delay to 8 seconds. Explain two ways this could be achieved.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t10b">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t10b" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">10c. Use the simulator or physical components to build a time delay circuit. Adjust the UDR to make the delay longer and shorter. Describe what you observe and explain why adjusting the restrictor changes the delay time.</p>
+            <p class="task-q">11c. Use the simulator or physical components to build a time delay circuit. Adjust the UDR to make the delay longer and shorter. Describe what you observe and explain why adjusting the restrictor changes the delay time.</p>
             <div class="answer-label">Observations <span class="saved-indicator" id="ind-t10c">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t10c" data-placeholder="Describe what you observed…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">10d. Describe one practical application of a time delay circuit in an industrial or domestic context. Explain what the delay achieves in your chosen example.</p>
+            <p class="task-q">11d. Describe one practical application of a time delay circuit in an industrial or domestic context. Explain what the delay achieves in your chosen example.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t10d">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t10d" data-placeholder="Type your answer here…"></div>
           </div>
