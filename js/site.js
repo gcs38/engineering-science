@@ -224,7 +224,7 @@ var TEACHER_DOCS = {
   // ── Engineering Contexts ──────────────────────────────────
 
   'systems-approach': [
-    { key: 'notes_pdf',         status: 'available',      id: '1GTdGkcTyCs69tEKFof7Oitz8vIrIEHxs',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
+    { key: 'notes_pdf',         status: 'available',      id: '1HacIrf-ItyBXJmdyqJSGfHLyYrGiBf5h',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
     { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
