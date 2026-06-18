@@ -7,8 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        html, body { height:100%; }
-        body { margin:0; overflow:hidden; background:#f0f4f9; font-family:'Roboto',sans-serif; user-select:none; height:100vh; }
+        body { margin:0; overflow:hidden; background:#f0f4f9; font-family:'Roboto',sans-serif; user-select:none; }
         canvas { display:block; background:transparent; cursor:default; touch-action:none; border-radius:24px; }
         ::-webkit-scrollbar { width:6px; }
         ::-webkit-scrollbar-track { background:transparent; }
@@ -4486,12 +4485,7 @@ function makeDraggable(el, handle, isModal = false) {
         document.addEventListener('mouseup', onUp);
     };
 }
-function resize(){
-    const w = cvs.parentElement.clientWidth || window.innerWidth;
-    const h = cvs.parentElement.clientHeight || window.innerHeight;
-    if(w > 0 && h > 0){ cvs.width = w; cvs.height = h; }
-    renderSimulation();
-}
+function resize(){cvs.width=cvs.parentElement.clientWidth;cvs.height=cvs.parentElement.clientHeight;renderSimulation();}
 function flowResize(){if(!fcvs.parentElement)return;fcvs.width=fcvs.parentElement.clientWidth;fcvs.height=fcvs.parentElement.clientHeight;FlowRenderer.draw();}
 window.addEventListener('resize',()=>{resize();if(drawerOpen)flowResize();});
 
@@ -4554,18 +4548,5 @@ window.onload=()=>{
     updatePinLegend();
     requestAnimationFrame(loop);
 };
-
-// Re-fit when iframe is resized (fixes 0x0 canvas issue in iframes)
-(function(){
-    function doResize(){ resize(); fitToScreen(); }
-    window.addEventListener('resize', doResize);
-    if(typeof ResizeObserver !== 'undefined'){
-        new ResizeObserver(doResize).observe(document.documentElement);
-    }
-    // Extra safety: re-fit after load in case layout wasn't ready
-    setTimeout(doResize, 100);
-    setTimeout(doResize, 500);
-    setTimeout(doResize, 1200);
-})();
 </script>
 </html>
