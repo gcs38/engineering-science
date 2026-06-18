@@ -632,17 +632,6 @@
         </div>
     </div>
 </div>
-
-// Re-fit whenever the iframe viewport settles (handles iframe sizing delays)
-window.addEventListener('load', function(){
-    function doFit(){ if(typeof resize==='function'&&typeof fitToScreen==='function'){ resize(); fitToScreen(); } }
-    if(typeof ResizeObserver !== 'undefined'){
-        var ro = new ResizeObserver(function(){ doFit(); });
-        var cc = document.getElementById('canvasContainer');
-        if(cc) ro.observe(cc);
-    }
-    window.addEventListener('resize', doFit);
-});
 </body>
 
 <script>
@@ -3858,18 +3847,7 @@ function executeReportGeneration() {
                     </tr>
                 </tfoot>
             </table>
-        
-// Re-fit whenever the iframe viewport settles (handles iframe sizing delays)
-window.addEventListener('load', function(){
-    function doFit(){ if(typeof resize==='function'&&typeof fitToScreen==='function'){ resize(); fitToScreen(); } }
-    if(typeof ResizeObserver !== 'undefined'){
-        var ro = new ResizeObserver(function(){ doFit(); });
-        var cc = document.getElementById('canvasContainer');
-        if(cc) ro.observe(cc);
-    }
-    window.addEventListener('resize', doFit);
-});
-</body>
+        </body>
         </html>
     `;
     const iframe = document.createElement('iframe');
@@ -4553,13 +4531,11 @@ window.onload=()=>{
         // 3. Start the live simulation automatically
         setSimMode(true);
 
-        // 4. Resize and center — multiple attempts to handle iframe layout settling
-        function doFit(){ resize(); fitToScreen(); }
-        doFit();
-        setTimeout(doFit, 100);
-        setTimeout(doFit, 400);
-        setTimeout(doFit, 900);
-        setTimeout(doFit, 1800);
+        // 4. Resize and center (Wait time reduced since there is no slide animation anymore)
+        setTimeout(() => {
+            resize(); 
+            fitToScreen(); 
+        }, 50); 
     } else {
         // Normal empty startup
         const startNode=new FNode('terminal',200,80);startNode.subType='START';startNode.text='START';
