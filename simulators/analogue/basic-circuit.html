@@ -4484,7 +4484,12 @@ function makeDraggable(el, handle, isModal = false) {
         document.addEventListener('mouseup', onUp);
     };
 }
-function resize(){cvs.width=cvs.parentElement.clientWidth;cvs.height=cvs.parentElement.clientHeight;renderSimulation();}
+function resize(){
+    const w = cvs.parentElement.clientWidth || window.innerWidth;
+    const h = cvs.parentElement.clientHeight || window.innerHeight;
+    if(w > 0 && h > 0){ cvs.width = w; cvs.height = h; }
+    renderSimulation();
+}
 function flowResize(){if(!fcvs.parentElement)return;fcvs.width=fcvs.parentElement.clientWidth;fcvs.height=fcvs.parentElement.clientHeight;FlowRenderer.draw();}
 window.addEventListener('resize',()=>{resize();if(drawerOpen)flowResize();});
 
@@ -4547,5 +4552,17 @@ window.onload=()=>{
     updatePinLegend();
     requestAnimationFrame(loop);
 };
+
+// Re-fit when iframe is resized (fixes 0x0 canvas issue in iframes)
+(function(){
+    function doResize(){ resize(); fitToScreen(); }
+    window.addEventListener('resize', doResize);
+    if(typeof ResizeObserver !== 'undefined'){
+        new ResizeObserver(doResize).observe(document.documentElement);
+    }
+    // Extra safety: re-fit after load in case layout wasn't ready
+    setTimeout(doResize, 300);
+    setTimeout(doResize, 800);
+})();
 </script>
 </html>
