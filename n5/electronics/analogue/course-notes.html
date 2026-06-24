@@ -129,7 +129,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" style="position:relative;">
-      <div style="position:absolute;top:12px;right:16px;font-size:11px;color:#94a3b8;font-family:monospace;letter-spacing:.3px;">Updated 24 Jun 2026 16:05</div>
+      <div style="position:absolute;top:12px;right:16px;font-size:11px;color:#94a3b8;font-family:monospace;letter-spacing:.3px;">Updated 24 Jun 2026 17:22</div>
       <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Analogue Electronics</div>
       <h1 class="hero-title">&#x26A1; Analogue Electronics &mdash; Course Notes</h1>
       <p class="hero-sub">Current, voltage, resistance, Ohm's law, circuit types, components and transistor switching</p>
@@ -764,7 +764,7 @@
       <p class="notes-p">An LDR has <strong>high resistance in the dark</strong> and <strong>low resistance in bright light</strong>. The graph below shows how the resistance of an ORP12 LDR changes with illumination. Both axes are logarithmic.</p>
 
       <div class="circuit-figure">
-        <img src="ldr-graph.png" alt="ORP12 LDR characteristic graph: cell resistance (kΩ) vs illumination (lux), log-log scale" style="max-width:100%;height:auto;display:block;margin:0 auto;">
+        <img src="ldr-graph.png" alt="ORP12 LDR characteristic graph: cell resistance (kΩ) vs illumination (lux), log-log scale" style="max-width:75%;height:auto;display:block;margin:0 auto;">
         <figcaption>Fig. 1 &mdash; ORP12 LDR: resistance vs illumination (log&ndash;log scale)</figcaption>
       </div>
 
@@ -792,7 +792,7 @@
       <p class="notes-p">An NTC (Negative Temperature Coefficient) thermistor has <strong>high resistance when cold</strong> and <strong>low resistance when hot</strong>. The graph below shows six different thermistor types (curves 1&ndash;6). <strong>Use curve 3</strong> for all questions in this section unless told otherwise.</p>
 
       <div class="circuit-figure">
-        <img src="thermistor-graph.png" alt="Thermistor characteristic graph: resistance (Ω) vs temperature (°C), six curves labelled 1–6" style="max-width:100%;height:auto;display:block;margin:0 auto;">
+        <img src="thermistor-graph.png" alt="Thermistor characteristic graph: resistance (Ω) vs temperature (°C), six curves labelled 1–6" style="max-width:75%;height:auto;display:block;margin:0 auto;">
         <figcaption>Fig. 2 &mdash; Thermistor resistance vs temperature. Use <strong>curve 3</strong> for all exercises.</figcaption>
       </div>
 
@@ -894,16 +894,11 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q095"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q095" data-placeholder="Show working for both temperatures..."></div>
           </div>
 
-          <div class="task-item">
-            <div class="task-q">6. A transistor in the circuit switches on when the base voltage reaches 0.7 V. The base is connected to the output of the thermistor divider above. At approximately what temperature (read from the graph) would the transistor switch on? Explain your reasoning.</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q096"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q096" data-placeholder="Type your answer here..."></div>
-          </div>
-
           <div class="extension-task">
             <div class="extension-header"><div class="extension-header-text">&#x2B50; Extension task</div></div>
             <div class="extension-body">
               <div class="task-item">
-                <div class="task-q">7. A designer needs V<sub>out</sub> = 6 V from a 9 V supply when the ORP12 LDR is illuminated at 1 000 lux. V<sub>out</sub> is taken across the fixed resistor (lower position). Use the graph to find the LDR resistance at 1 000 lux, then calculate the value of fixed resistor needed. Show all working.</div>
+                <div class="task-q">6. A designer needs V<sub>out</sub> = 6 V from a 9 V supply when the ORP12 LDR is illuminated at 1 000 lux. V<sub>out</sub> is taken across the fixed resistor (lower position). Use the graph to find the LDR resistance at 1 000 lux, then calculate the value of fixed resistor needed. Show all working.</div>
                 <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q097"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q097" data-placeholder="Type your answer here..."></div>
               </div>
             </div>
@@ -921,25 +916,52 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 4 &mdash; LDR voltage divider</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 4 &mdash; How does V<sub>out</sub> change in a sensor voltage divider?</div></div>
         <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">In this investigation you will explore how the output voltage of a sensor voltage divider depends on (a) the sensor's resistance, and (b) which way round the components are placed. Use the simulator above. V<sub>out</sub> is always measured <strong>between the midpoint of the divider and 0 V (ground)</strong> &mdash; the voltage at the mid-rail.</p>
+
+          <h3 style="font-size:14px;font-weight:600;color:var(--gray-700);margin:14px 0 8px;">Part A &mdash; Effect of resistance on V<sub>out</sub></h3>
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px;">Set up: LDR in the <strong>upper</strong> position, 10 k&Omega; fixed resistor in the <strong>lower</strong> position. V<sub>out</sub> is measured across the fixed resistor (lower component).</p>
+
           <div class="task-item">
-            <div class="task-q">1. With a 9 V supply, R<sub>fixed</sub> = 10 k&Omega; and LDR at different light levels, record the output voltage across the fixed resistor.</div>
-            <table class="data-table">
-              <tr><th>Light level</th><th>LDR resistance (approx.)</th><th>V<sub>out</sub> across R<sub>fixed</sub></th></tr>
-              <tr><td>Very bright</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q070" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q071" data-placeholder=""></td></tr>
-              <tr><td>Medium</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q072" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q073" data-placeholder=""></td></tr>
-              <tr><td>Dark</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q074" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q075" data-placeholder=""></td></tr>
+            <div class="task-q">1. Adjust the LDR light level from dark to bright. Record V<sub>out</sub> at each condition.</div>
+            <table class="data-table" style="margin-top:8px;">
+              <tr><th>Light condition</th><th>LDR resistance (approx.)</th><th>V<sub>out</sub> (across lower resistor)</th></tr>
+              <tr><td>Very dark</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q070" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q071" data-placeholder=""></td></tr>
+              <tr><td>Dim</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q072" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q073" data-placeholder=""></td></tr>
+              <tr><td>Bright</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q074" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q075" data-placeholder=""></td></tr>
             </table>
           </div>
+
           <div class="task-item">
-            <div class="task-q">2. Describe what happens to V<sub>out</sub> as the light level decreases. Explain why.</div>
+            <div class="task-q">2. As it gets darker, the LDR resistance <em>increases</em>. What happens to V<sub>out</sub> across the lower (fixed) resistor? Explain using the idea of voltage sharing.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q034"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q034" data-placeholder="Type your answer here..."></div>
           </div>
+
+          <h3 style="font-size:14px;font-weight:600;color:var(--gray-700);margin:14px 0 8px;">Part B &mdash; Effect of swapping the components</h3>
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px;">Now swap: put the <strong>fixed resistor in the upper position</strong> and the <strong>LDR in the lower position</strong>. V<sub>out</sub> is now measured across the LDR.</p>
+
           <div class="task-item">
-            <div class="task-q">3. Swap the positions of the LDR and the fixed resistor. Describe what happens to V<sub>out</sub> now as the light level decreases.</div>
+            <div class="task-q">3. Repeat at the same three light conditions.</div>
+            <table class="data-table" style="margin-top:8px;">
+              <tr><th>Light condition</th><th>LDR resistance (approx.)</th><th>V<sub>out</sub> (across lower LDR)</th></tr>
+              <tr><td>Very dark</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q098" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q099" data-placeholder=""></td></tr>
+              <tr><td>Dim</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q100" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q101" data-placeholder=""></td></tr>
+              <tr><td>Bright</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q102" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q103" data-placeholder=""></td></tr>
+            </table>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">4. Compare your results from Parts A and B. What is the key difference in how V<sub>out</sub> responds to changing light levels? Which arrangement gives a <em>higher</em> V<sub>out</sub> in darkness?</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q035"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q035" data-placeholder="Type your answer here..."></div>
           </div>
+
+          <div class="task-item">
+            <div class="task-q">5. A designer wants V<sub>out</sub> to be <strong>high</strong> when the temperature is <strong>high</strong>. Should the thermistor be in the upper or lower position? Explain your reasoning.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q104"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q104" data-placeholder="Type your answer here..."></div>
+          </div>
+
+          <div class="key-point" style="margin-top:14px;"><strong>Key conclusion:</strong> a sensor voltage divider produces a voltage that <em>varies</em> with conditions &mdash; but a varying voltage on its own cannot switch a motor or lamp on and off. We need a component that can use a small voltage from the sensor circuit to control a much larger current in a separate output circuit. That component is the <strong>transistor</strong>.</div>
         </div>
       </div>
 
@@ -978,11 +1000,16 @@
 
       <hr class="divider">
 
-      <!-- ═══════════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 9: Transistors</h1>
 
+      <h2 class="notes-h2">Why do we need a transistor?</h2>
+      <p class="notes-p">You have seen that a sensor voltage divider produces a voltage that varies with conditions &mdash; rising in darkness, falling in light, or rising with heat. But that varying voltage on its own cannot switch a motor, a buzzer, or a lamp. Those output devices need a <strong>much larger current</strong> than the tiny sensor circuit can ever supply.</p>
+      <p class="notes-p">What we need is a component that can use a <strong>small voltage (and tiny current)</strong> from the sensor circuit to control a <strong>much larger current</strong> in a completely separate output circuit. That component is the <strong>transistor</strong>.</p>
+
+      <div class="key-point" style="font-size:14px;">&#x1F4A1; <strong>The big idea:</strong> a small current into the transistor's <strong>base</strong> controls a much larger current through the <strong>collector</strong> and <strong>emitter</strong>. The transistor is a current-controlled switch &mdash; like a tap where a small turn of the handle (base current) controls a large flow of water (collector current).</div>
+
       <h2 class="notes-h2">What is a transistor?</h2>
-      <p class="notes-p">A transistor is an electronic <strong>switch</strong> (and amplifier). The type used in N5 Engineering Science is the <strong>NPN Bipolar Junction Transistor (BJT)</strong>. It has three connections:</p>
+      <p class="notes-p">The type used in N5 Engineering Science is the <strong>NPN Bipolar Junction Transistor (BJT)</strong>. It has three legs:</p>
 
       <div class="comp-grid">
         <div class="comp-card-sym">
@@ -1003,35 +1030,65 @@
         </div>
       </div>
 
-      <p class="notes-p">The transistor acts as an electronically controlled switch:</p>
       <ul class="notes-ul">
-        <li>When about <strong>0.7 V</strong> is applied to the <strong>base</strong>, a small base current flows.</li>
-        <li>This switches the transistor <strong>ON</strong> &mdash; a much larger current can now flow from <strong>collector to emitter</strong>.</li>
-        <li>When the base voltage drops below 0.7 V, the transistor switches <strong>OFF</strong> and no current flows.</li>
+        <li><strong>Base (B)</strong> &mdash; the control input. Connected to the output of the sensor voltage divider. When V<sub>B</sub> rises above ~0.7 V, the transistor switches on.</li>
+        <li><strong>Collector (C)</strong> &mdash; connected to the positive supply through the output device (lamp, motor, relay coil, etc.).</li>
+        <li><strong>Emitter (E)</strong> &mdash; connected to 0 V (ground). Current exits here.</li>
       </ul>
 
-      <div class="key-point">A small base current controls a much larger collector current. This is the <strong>current amplification</strong> property of the transistor.</div>
+      <h2 class="notes-h2">How the transistor switches</h2>
 
-      <div class="warning">&#x26A0;&#xFE0F; At N5, we treat the transistor as a simple <strong>on/off switch</strong>. The gradual dimming of a bulb as base voltage changes is beyond the scope of the course.</div>
+      <table class="data-table">
+        <tr><th>Base voltage (V<sub>B</sub>)</th><th>Transistor state</th><th>Collector&ndash;emitter path</th><th>Output device</th></tr>
+        <tr><td>Below ~0.7 V</td><td><strong>OFF</strong></td><td>Open circuit &mdash; no current flows</td><td>Off</td></tr>
+        <tr><td>Above ~0.7 V</td><td><strong>ON</strong></td><td>Closed &mdash; large current flows freely</td><td>On</td></tr>
+      </table>
 
-      <h2 class="notes-h2">Transistor switching circuit</h2>
-      <p class="notes-p">A typical transistor switching circuit uses a <strong>voltage divider sensor</strong> to control the base voltage. When conditions change (e.g. it gets dark), the base voltage rises above 0.7 V, switching the transistor on and activating the output device.</p>
+      <div class="warning">&#x26A0;&#xFE0F; At N5, we treat the transistor as a simple <strong>on/off switch</strong>. In reality the transistor switches on gradually as base voltage increases &mdash; this amplification behaviour is beyond the scope of the course.</div>
+
+      <h2 class="notes-h2">The complete transistor switching circuit</h2>
+      <p class="notes-p">A transistor switching circuit has <strong>two separate loops</strong>:</p>
+      <ul class="notes-ul">
+        <li><strong>Input (base) circuit:</strong> the sensor voltage divider. When conditions change, V<sub>out</sub> from the divider rises above 0.7 V and turns the transistor on.</li>
+        <li><strong>Output (collector) circuit:</strong> the output device sits between the positive supply and the collector. When the transistor switches on, current flows through the device.</li>
+      </ul>
+      <p class="notes-p">The two circuits share only the <strong>common 0 V connection at the emitter</strong>. This separation means the output circuit can operate at a much higher current than the delicate sensor circuit &mdash; the transistor bridges the gap between them.</p>
 
       <div class="sim-embed-section">
         <div class="sim-embed-header">
           <div class="sim-embed-title"><span>&#x26A1;</span> Try it &mdash; Transistor as a switch</div>
           <a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
         </div>
-        <div class="sim-instruction">A transistor switching circuit with an LDR voltage divider has been loaded below. Click on the LDR and adjust the light level slider &mdash; observe how the output voltage changes and at what point the transistor switches on.</div>
+        <div class="sim-instruction">The simulator below shows a transistor switching circuit controlled by an LDR voltage divider. Adjust the light level and observe: (1) how the base voltage changes, (2) the exact point at which the transistor switches on, and (3) what happens to the output device.</div>
         <div class="sim-wrap"><iframe class="sim-iframe" id="sim-transistor" title="Transistor switch" src="../../../../simulators/ae-voltage-divider.html" loading="lazy"></iframe></div>
+      </div>
+
+      <h2 class="notes-h2">The need for a protective diode</h2>
+      <p class="notes-p">If the output device is a <strong>relay coil, motor, solenoid, or buzzer</strong>, there is a hidden danger. These devices contain coils of wire. When the transistor switches the current <em>off</em>, the magnetic field inside the coil collapses very rapidly. By Faraday's law, this collapsing field <strong>generates a large voltage spike in the reverse direction</strong> &mdash; sometimes hundreds of volts, lasting only a fraction of a millisecond.</p>
+      <p class="notes-p">This is called <strong>back e.m.f.</strong> (back electromotive force). It travels backwards through the collector pin and can <strong>permanently destroy the transistor</strong>.</p>
+
+      <div class="key-point">Whenever a transistor drives a coil-based device (relay, motor, solenoid, buzzer), a <strong>protective diode</strong> must be wired in <strong>reverse</strong> across that device to absorb the back e.m.f. spike.</div>
+
+      <p class="notes-p">The diode works in two phases:</p>
+      <ul class="notes-ul">
+        <li><strong>Transistor ON:</strong> current flows normally through the coil. The diode is reverse-biased &mdash; it blocks the current and plays no part.</li>
+        <li><strong>Transistor OFF:</strong> the back e.m.f. tries to drive current backwards. The diode is now forward-biased. It conducts and provides a safe circular path around the coil, dissipating the energy harmlessly as a tiny amount of heat. The transistor never sees the spike.</li>
+      </ul>
+
+      <!-- Placeholder for back e.m.f. simulator -->
+      <div class="sim-embed-section" style="border:2px dashed var(--gray-300);background:var(--gray-50);">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> Try it &mdash; Back e.m.f. and the protective diode</div>
+        </div>
+        <div class="sim-instruction" style="color:var(--gray-500);font-style:italic;">&#x1F6A7; <strong>Simulator placeholder.</strong> Suggested simulator: show (a) a transistor driving a relay coil <em>without</em> a diode, displaying the voltage spike at the collector when it switches off; then (b) the same circuit <em>with</em> a protective diode across the coil, showing the spike is suppressed. Suggested filename: <code>ae-back-emf.html</code></div>
       </div>
 
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 5 &mdash; Transistor switching</div></div>
         <div class="assignment-body">
-          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Build a light-sensing transistor circuit in the simulator. Use a 9 V supply, an LDR in series with a 10 k&Omega; resistor as the voltage divider (base circuit), and an LED in series with a 470 &Omega; resistor as the output (collector circuit).</p>
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Build a light-sensing transistor circuit in the simulator. Use a 9 V supply, an LDR in series with a 10 k&Omega; fixed resistor as the voltage divider (base circuit), and an LED in series with a 470 &Omega; resistor as the output (collector circuit).</p>
           <div class="task-item">
-            <div class="task-q">1a. Simulate the circuit. Adjust the LDR light level. Describe what happens to the LED in bright and dark conditions.</div>
+            <div class="task-q">1a. Adjust the LDR light level. Describe what happens to the LED in bright and dark conditions.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q043"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q043" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
@@ -1039,11 +1096,11 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q044"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q044" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">2. Build a temperature-sensing circuit using a thermistor instead of the LDR. Describe what happens as the temperature is varied.</div>
+            <div class="task-q">2. Replace the LDR with a thermistor. Describe what happens as temperature is varied. Does the LED switch on when it gets hotter or cooler? Which component position (upper or lower in the divider) gives this behaviour?</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q045"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q045" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">3. Adjust the variable resistor in the base circuit to a lower value (around 1 k&Omega;). Describe the difference this makes to the sensitivity of the circuit.</div>
+            <div class="task-q">3. Replace the LED with a relay coil and add a protective diode across the coil. Explain in your own words why the diode is needed and what would happen to the transistor without it.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q046"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q046" data-placeholder="Type your answer here..."></div>
           </div>
         </div>
@@ -1053,14 +1110,14 @@
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 7 &mdash; Transistor circuit design</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <div class="task-q">Design and simulate transistor circuits (in the simulator) that will perform the following functions. Sketch your final circuit designs below each question.</div>
+            <div class="task-q">Design transistor switching circuits for the functions below. Sketch each circuit and explain your component choices.</div>
           </div>
           <div class="task-item">
             <div class="task-q">1. A motor switches on when it gets light.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q047"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q047" data-placeholder="Type your answer here..." style="min-height:100px;"></div>
           </div>
           <div class="task-item">
-            <div class="task-q">2. A solenoid switches on when it gets cold.</div>
+            <div class="task-q">2. A solenoid switches on when it gets cold. Include a protective diode in your design. Mark clearly where the diode goes and explain why it is needed.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q048"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q048" data-placeholder="Type your answer here..." style="min-height:100px;"></div>
           </div>
         </div>
