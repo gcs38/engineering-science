@@ -25,7 +25,7 @@
     .extension-note { background:#faf5ff; border-left:4px solid #8b5cf6; border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:13px; color:#5b21b6; }
 
     /* Component symbol grid */
-    .comp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin:16px auto; justify-items:center; text-align:center; }
+    .comp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin:16px auto; justify-items:center; justify-content:center; text-align:center; }
     .comp-card-sym { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:14px 12px 10px; text-align:center; width:100%; }
     .comp-card-sym svg { display:block; margin:0 auto 8px; }
     .comp-card-sym .comp-name { font-size:12px; font-weight:700; color:var(--gray-900); }
@@ -129,7 +129,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" style="position:relative;">
-      <div style="position:absolute;top:12px;right:16px;font-size:11px;color:#94a3b8;font-family:monospace;letter-spacing:.3px;">Updated 24 Jun 2026 18:10</div>
+      <div style="position:absolute;top:12px;right:16px;font-size:11px;color:#94a3b8;font-family:monospace;letter-spacing:.3px;">Updated 24 Jun 2026 18:58</div>
       <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Analogue Electronics</div>
       <h1 class="hero-title">&#x26A1; Analogue Electronics &mdash; Course Notes</h1>
       <p class="hero-sub">Current, voltage, resistance, Ohm's law, circuit types, components and transistor switching</p>
@@ -323,7 +323,7 @@
             </table>
           </div>
           <div class="task-item">
-            <div class="task-q">2. What do you notice about the total voltage across both resistors compared to the battery voltage? This is <strong>Kirchhoff's second law</strong>.</div>
+            <div class="task-q">2. What do you notice about the total voltage across both resistors compared to the battery voltage?</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q007"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q007" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
@@ -333,12 +333,13 @@
         </div>
       </div>
 
-      <h2 class="notes-h2">Kirchhoff's Laws</h2>
-      <p class="notes-p">Two important rules govern voltage and current in circuits:</p>
+      <h2 class="notes-h2">Voltage drops and current at junctions</h2>
+      <p class="notes-p">Two important rules govern voltage and current in all circuits:</p>
       <ul class="notes-ul">
-        <li><strong>Kirchhoff's Voltage Law (KVL):</strong> The sum of the voltage drops around any complete loop equals the supply voltage.</li>
-        <li><strong>Kirchhoff's Current Law (KCL):</strong> The current flowing into a junction equals the current flowing out.</li>
+        <li><strong>Voltage rule:</strong> the sum of the voltage drops around any complete loop equals the supply voltage.</li>
+        <li><strong>Current rule:</strong> the current flowing into a junction equals the current flowing out.</li>
       </ul>
+      <div class="spec-note">&#x1F4D6; These rules are sometimes called <em>Kirchhoff's Laws</em> (after the German physicist Gustav Kirchhoff). You do <strong>not</strong> need to remember his name for the exam &mdash; just the rules themselves.</div>
 
       <div class="key-point">In a <strong>series circuit</strong>: the current is the same everywhere, and the voltages add up to the supply voltage.</div>
 
@@ -390,7 +391,7 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q013"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q013" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">4. A series circuit has a 12 V supply. The current is 20 mA. One resistor is 220 &Omega;. Using Kirchhoff's second law, find the value of the second resistor.</div>
+            <div class="task-q">4. A series circuit has a 12 V supply. The current is 20 mA. One resistor is 220 &Omega;. Using the voltage rule, find the value of the second resistor.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q014"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q014" data-placeholder="Type your answer here..."></div>
           </div>
           <p style="font-size:12px;color:var(--teal-600);margin-top:8px;">&#x26A1; Build these circuits in the simulator and check your answers.</p>
@@ -402,45 +403,38 @@
       <!-- ═══════════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 5: Components and Circuit Symbols</h1>
 
-      <p class="notes-p">In Engineering Science you need to recognise and draw standard circuit symbols. These are the same symbols used by engineers worldwide, known as <strong>QS (Qualification Standard) symbols</strong>.</p>
+      <p class="notes-p">In Engineering Science you need to recognise and draw standard circuit symbols. These are the same symbols used by engineers worldwide.</p>
 
-      <h2 class="notes-h2">Output devices</h2>
+      <p class="notes-p">It helps to think of components in terms of the <strong>Systems Approach</strong> &mdash; the same framework used in the Systems and Control unit:</p>
+
+      <table class="data-table" style="margin-bottom:16px;">
+        <tr><th>Category</th><th>Role in the circuit</th><th>Examples</th></tr>
+        <tr><td><strong>Input</strong></td><td>Provide power or detect a condition and send a signal into the circuit</td><td>Battery, switches, LDR, thermistor</td></tr>
+        <tr><td><strong>Process</strong></td><td>Respond to the input signal and control the output</td><td>Transistor, resistor, diode</td></tr>
+        <tr><td><strong>Output</strong></td><td>Do something useful &mdash; produce light, sound, or movement</td><td>Lamp, LED, motor, buzzer, relay</td></tr>
+      </table>
+
+      <h2 class="notes-h2">Input components &mdash; power supply</h2>
 
       <div class="comp-grid">
         <div class="comp-card-sym">
           <svg width="80" height="40" viewBox="0 0 80 40">
-            <line x1="2" y1="20" x2="18" y2="20" stroke="#334155" stroke-width="2"/>
-            <circle cx="40" cy="20" r="18" fill="white" stroke="#334155" stroke-width="2"/>
-            <line x1="33" y1="13" x2="47" y2="27" stroke="#334155" stroke-width="1.5"/>
-            <line x1="47" y1="13" x2="33" y2="27" stroke="#334155" stroke-width="1.5"/>
-            <line x1="58" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+            <line x1="2" y1="20" x2="28" y2="20" stroke="#334155" stroke-width="2"/>
+            <line x1="28" y1="10" x2="28" y2="30" stroke="#334155" stroke-width="3"/>
+            <line x1="36" y1="14" x2="36" y2="26" stroke="#334155" stroke-width="1.5"/>
+            <line x1="44" y1="10" x2="44" y2="30" stroke="#334155" stroke-width="3"/>
+            <line x1="52" y1="14" x2="52" y2="26" stroke="#334155" stroke-width="1.5"/>
+            <line x1="52" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+            <text x="26" y="8" font-size="8" fill="#dc2626" font-weight="700">+</text>
+            <text x="72" y="8" font-size="8" fill="#3b82f6" font-weight="700">&minus;</text>
           </svg>
-          <div class="comp-name">Lamp</div>
-          <div class="comp-unit">Output &mdash; light</div>
-        </div>
-        <div class="comp-card-sym">
-          <svg width="80" height="40" viewBox="0 0 80 40">
-            <line x1="2" y1="20" x2="18" y2="20" stroke="#334155" stroke-width="2"/>
-            <circle cx="40" cy="20" r="18" fill="white" stroke="#334155" stroke-width="2"/>
-            <text x="40" y="25" text-anchor="middle" font-size="14" font-weight="900" fill="#334155">M</text>
-            <line x1="58" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
-          </svg>
-          <div class="comp-name">Motor</div>
-          <div class="comp-unit">Output &mdash; motion</div>
-        </div>
-        <div class="comp-card-sym">
-          <svg width="80" height="40" viewBox="0 0 80 40">
-            <line x1="4" y1="12" x2="20" y2="12" stroke="#334155" stroke-width="2"/>
-            <line x1="4" y1="28" x2="20" y2="28" stroke="#334155" stroke-width="2"/>
-            <path d="M 30 6 L 30 34 A 14 14 0 0 1 30 6 Z" fill="white" stroke="#334155" stroke-width="2"/>
-          </svg>
-          <div class="comp-name">Buzzer</div>
-          <div class="comp-unit">Output &mdash; sound</div>
+          <div class="comp-name">Battery</div>
+          <div class="comp-unit">Input &mdash; power supply</div>
         </div>
       </div>
 
-      <h2 class="notes-h2">Switches</h2>
-      <p class="notes-p">Switches are <strong>input devices</strong> (also called transducers). They control whether current can flow. The most common types are:</p>
+      <h2 class="notes-h2">Input components &mdash; switches</h2>
+      <p class="notes-p">Switches control whether current can flow in a circuit. In the systems approach they are <strong>input devices</strong> &mdash; a person (or mechanism) operates them to send a signal to the rest of the circuit.</p>
 
       <div class="comp-grid">
         <div class="comp-card-sym">
@@ -481,7 +475,41 @@
         </div>
       </div>
 
-      <p class="notes-p">A <strong>DPDT (Double Pole Double Throw)</strong> switch is used to reverse the direction of a motor. It switches two separate circuits at the same time.</p>
+      <h2 class="notes-h2">Output devices</h2>
+      <p class="notes-p">Output devices convert electrical energy into something useful. They sit at the end of the system and respond to signals from the process stage.</p>
+
+      <div class="comp-grid">
+        <div class="comp-card-sym">
+          <svg width="80" height="40" viewBox="0 0 80 40">
+            <line x1="2" y1="20" x2="18" y2="20" stroke="#334155" stroke-width="2"/>
+            <circle cx="40" cy="20" r="18" fill="white" stroke="#334155" stroke-width="2"/>
+            <line x1="33" y1="13" x2="47" y2="27" stroke="#334155" stroke-width="1.5"/>
+            <line x1="47" y1="13" x2="33" y2="27" stroke="#334155" stroke-width="1.5"/>
+            <line x1="58" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+          </svg>
+          <div class="comp-name">Lamp</div>
+          <div class="comp-unit">Output &mdash; light</div>
+        </div>
+        <div class="comp-card-sym">
+          <svg width="80" height="40" viewBox="0 0 80 40">
+            <line x1="2" y1="20" x2="18" y2="20" stroke="#334155" stroke-width="2"/>
+            <circle cx="40" cy="20" r="18" fill="white" stroke="#334155" stroke-width="2"/>
+            <text x="40" y="25" text-anchor="middle" font-size="14" font-weight="900" fill="#334155">M</text>
+            <line x1="58" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+          </svg>
+          <div class="comp-name">Motor</div>
+          <div class="comp-unit">Output &mdash; motion</div>
+        </div>
+        <div class="comp-card-sym">
+          <svg width="80" height="40" viewBox="0 0 80 40">
+            <line x1="4" y1="12" x2="20" y2="12" stroke="#334155" stroke-width="2"/>
+            <line x1="4" y1="28" x2="20" y2="28" stroke="#334155" stroke-width="2"/>
+            <path d="M 30 6 L 30 34 A 14 14 0 0 1 30 6 Z" fill="white" stroke="#334155" stroke-width="2"/>
+          </svg>
+          <div class="comp-name">Buzzer</div>
+          <div class="comp-unit">Output &mdash; sound</div>
+        </div>
+      </div>
 
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 3 &mdash; Switch circuits</div></div>
@@ -620,7 +648,7 @@
             <div class="task-q-sub">c) current through each resistor</div><div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q023"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q023" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">2. A 660 &Omega; and 470 &Omega; resistor are in parallel. The supply voltage is 9 V. Calculate the total resistance, circuit current, and current through each branch. Use Kirchhoff's first law to verify your answer.</div>
+            <div class="task-q">2. A 660 &Omega; and 470 &Omega; resistor are in parallel. The supply voltage is 9 V. Calculate the total resistance, circuit current, and current through each branch. Verify that the branch currents add up to the total current.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q024"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q024" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
@@ -655,7 +683,7 @@
         <li>Find the combined resistance of the <strong>parallel section</strong> first (call it R<sub>P</sub>).</li>
         <li>Add R<sub>P</sub> to any series resistors to find the <strong>total resistance</strong> R<sub>T</sub>.</li>
         <li>Use Ohm's Law to find the circuit current.</li>
-        <li>Use Kirchhoff's laws to find individual voltages and currents.</li>
+        <li>Use the voltage and current rules to find individual voltages and currents.</li>
       </ol>
 
       <div class="worked-example">
@@ -665,7 +693,7 @@
         <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Total resistance:</strong> R<sub>T</sub> = R<sub>1</sub> + R<sub>P</sub> = 100 + 100 = <strong>200 &Omega;</strong></div></div>
         <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Circuit current:</strong> I<sub>C</sub> = V &divide; R<sub>T</sub> = 9 &divide; 200 = <strong>45 mA</strong></div></div>
         <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Voltage across R<sub>1</sub>:</strong> V<sub>R1</sub> = 0.045 &times; 100 = <strong>4.5 V</strong></div></div>
-        <div class="step"><div class="step-num">5</div><div class="step-content"><strong>Voltage across parallel section</strong> (Kirchhoff's 2nd law): V<sub>P</sub> = 9 &minus; 4.5 = <strong>4.5 V</strong></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-content"><strong>Voltage across parallel section</strong> (voltage rule): V<sub>P</sub> = 9 &minus; 4.5 = <strong>4.5 V</strong></div></div>
         <div class="step"><div class="step-num">6</div><div class="step-content"><strong>Current through R<sub>2</sub>:</strong> I<sub>2</sub> = 4.5 &divide; 300 = <strong>15 mA</strong></div></div>
       </div>
 
@@ -1243,7 +1271,7 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q054"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q054" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">3. Verify Kirchhoff's voltage law using your measurements. Show your working.</div>
+            <div class="task-q">3. Verify the voltage rule using your measurements. Show your working.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q055"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q055" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
