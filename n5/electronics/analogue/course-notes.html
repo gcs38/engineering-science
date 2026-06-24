@@ -25,8 +25,8 @@
     .extension-note { background:#faf5ff; border-left:4px solid #8b5cf6; border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:13px; color:#5b21b6; }
 
     /* Component symbol grid */
-    .comp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin:16px 0; }
-    .comp-card-sym { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:14px 12px 10px; text-align:center; }
+    .comp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin:16px auto; justify-items:center; text-align:center; }
+    .comp-card-sym { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:14px 12px 10px; text-align:center; width:100%; }
     .comp-card-sym svg { display:block; margin:0 auto 8px; }
     .comp-card-sym .comp-name { font-size:12px; font-weight:700; color:var(--gray-900); }
     .comp-card-sym .comp-unit { font-size:11px; color:var(--gray-400); margin-top:2px; }
@@ -752,6 +752,122 @@
       </div>
 
       <p class="notes-p">Typically, a thermistor or LDR is connected in series with a fixed resistor to form a voltage divider. The output is taken from across the fixed resistor (or the sensor, depending on whether you want the voltage to rise or fall as the condition changes).</p>
+
+      <h2 class="notes-h2">Reading resistance values from tables</h2>
+      <p class="notes-p">In real circuits, we look up the resistance of an LDR or thermistor from a <strong>data table</strong> provided by the manufacturer. The table gives resistance values at different conditions (light levels or temperatures). You then substitute the resistance value you read from the table directly into the voltage divider formula.</p>
+
+      <div class="spec-note"><strong>Course specification:</strong> Candidates should gain experience of interpreting information on LDRs and thermistors from given tables, and use that resistance value to calculate output voltages from voltage dividers.</div>
+
+      <h3 class="notes-h3">LDR resistance table</h3>
+      <p class="notes-p">An LDR has <strong>high resistance in the dark</strong> and <strong>low resistance in bright light</strong>. A typical data table looks like this:</p>
+
+      <table class="data-table">
+        <tr><th>Light level</th><th>Illuminance (lux)</th><th>LDR resistance</th></tr>
+        <tr><td>Very dark (night)</td><td>1</td><td>1 M&Omega; (1 000 000 &Omega;)</td></tr>
+        <tr><td>Dim (moonlight)</td><td>10</td><td>100 k&Omega; (100 000 &Omega;)</td></tr>
+        <tr><td>Dim room</td><td>100</td><td>10 k&Omega; (10 000 &Omega;)</td></tr>
+        <tr><td>Bright room</td><td>1 000</td><td>1 k&Omega; (1 000 &Omega;)</td></tr>
+        <tr><td>Bright sunlight</td><td>10 000</td><td>150 &Omega;</td></tr>
+      </table>
+
+      <div class="key-point">LDR: resistance <strong>falls</strong> as light increases. In bright light &rarr; low resistance. In darkness &rarr; high resistance.</div>
+
+      <h3 class="notes-h3">Thermistor resistance table</h3>
+      <p class="notes-p">An NTC (Negative Temperature Coefficient) thermistor has <strong>high resistance when cold</strong> and <strong>low resistance when hot</strong>. This is the most common type used in N5 Engineering Science:</p>
+
+      <table class="data-table">
+        <tr><th>Temperature (&deg;C)</th><th>Thermistor resistance</th></tr>
+        <tr><td>0</td><td>32 k&Omega;</td></tr>
+        <tr><td>20</td><td>10 k&Omega;</td></tr>
+        <tr><td>40</td><td>3.5 k&Omega;</td></tr>
+        <tr><td>60</td><td>1.5 k&Omega;</td></tr>
+        <tr><td>80</td><td>700 &Omega;</td></tr>
+        <tr><td>100</td><td>330 &Omega;</td></tr>
+      </table>
+
+      <div class="key-point">NTC Thermistor: resistance <strong>falls</strong> as temperature increases. Hot &rarr; low resistance. Cold &rarr; high resistance.</div>
+
+      <h2 class="notes-h2">Using a table value in a voltage divider calculation</h2>
+      <p class="notes-p">The process is always the same: <strong>read the resistance from the table</strong>, then treat it exactly like any other resistor in the voltage divider formula.</p>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked example 1 &mdash; LDR voltage divider (from table)</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A circuit has a 9 V supply, a fixed resistor R<sub>1</sub> = 10 k&Omega; (top), and an LDR as R<sub>2</sub> (bottom). The output voltage V<sub>out</sub> is measured across the LDR. Use the LDR table above to find V<sub>out</sub> in a dim room.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Read from the table:</strong> at "dim room" (100 lux), the LDR resistance = <strong>10 k&Omega;</strong> = 10 000 &Omega;</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Find total resistance:</strong> R<sub>T</sub> = R<sub>1</sub> + R<sub>LDR</sub> = 10 000 + 10 000 = <strong>20 000 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Apply voltage divider formula:</strong> V<sub>out</sub> = V<sub>supply</sub> &times; R<sub>LDR</sub> &divide; R<sub>T</sub></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content">V<sub>out</sub> = 9 &times; 10 000 &divide; 20 000 = 9 &times; 0.5 = <strong>4.5 V</strong></div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked example 2 &mdash; LDR voltage divider (bright conditions)</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">Same circuit. Use the table to find V<sub>out</sub> across the LDR in bright sunlight.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Read from the table:</strong> at "bright sunlight", LDR resistance = <strong>150 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Find total resistance:</strong> R<sub>T</sub> = 10 000 + 150 = <strong>10 150 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content">V<sub>out</sub> = 9 &times; 150 &divide; 10 150 = <strong>0.13 V</strong> (very small &mdash; the LDR has a tiny share of the voltage because its resistance is so low)</div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked example 3 &mdash; Thermistor voltage divider (from table)</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A 9 V circuit has a thermistor (top, R<sub>1</sub>) in series with a fixed resistor R<sub>2</sub> = 10 k&Omega; (bottom). V<sub>out</sub> is taken across the fixed resistor. Use the thermistor table above to find V<sub>out</sub> at 20&deg;C and at 80&deg;C.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>At 20&deg;C:</strong> thermistor resistance = 10 k&Omega; (from table)</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">R<sub>T</sub> = 10 000 + 10 000 = 20 000 &Omega; &nbsp;&nbsp; V<sub>out</sub> = 9 &times; 10 000 &divide; 20 000 = <strong>4.5 V</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>At 80&deg;C:</strong> thermistor resistance = 700 &Omega; (from table)</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content">R<sub>T</sub> = 700 + 10 000 = 10 700 &Omega; &nbsp;&nbsp; V<sub>out</sub> = 9 &times; 10 000 &divide; 10 700 = <strong>8.41 V</strong></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-content"><strong>Conclusion:</strong> as temperature rises, the thermistor resistance falls, so it takes a smaller share of the voltage &mdash; and the output voltage across the fixed resistor <em>rises</em>.</div></div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 6a &mdash; Reading sensor tables and calculating V<sub>out</sub></div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Use the LDR and thermistor tables above to answer these questions. Show all working.</p>
+
+          <div class="task-item">
+            <div class="task-q">1. An LDR is the <strong>lower</strong> resistor (R<sub>2</sub>) in a voltage divider with a 10 k&Omega; fixed resistor (R<sub>1</sub>) and a 9 V supply. V<sub>out</sub> is measured across the LDR. Use the LDR table to complete the table below.</div>
+            <table class="data-table" style="margin-top:10px;">
+              <tr><th>Light level</th><th>LDR resistance (from table)</th><th>R<sub>T</sub> (total)</th><th>V<sub>out</sub> across LDR</th></tr>
+              <tr><td>Dim room (100 lux)</td><td>10 k&Omega;</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q080" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q081" data-placeholder=""></td></tr>
+              <tr><td>Bright room (1 000 lux)</td><td>1 k&Omega;</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q082" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q083" data-placeholder=""></td></tr>
+              <tr><td>Bright sunlight (10 000 lux)</td><td>150 &Omega;</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q084" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q085" data-placeholder=""></td></tr>
+            </table>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">2. Describe what happens to V<sub>out</sub> across the LDR as the light gets brighter. Explain why this happens using your knowledge of resistance.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q086"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q086" data-placeholder="Type your answer here..."></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">3. The same circuit has the LDR and fixed resistor swapped: the fixed resistor (10 k&Omega;) is now the lower resistor and V<sub>out</sub> is measured across it. Use the LDR table to calculate V<sub>out</sub> in a bright room (1 000 lux).</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q087"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q087" data-placeholder="Type your answer here..."></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">4. A thermistor is the <strong>upper</strong> resistor (R<sub>1</sub>) in a voltage divider with a 10 k&Omega; fixed resistor (R<sub>2</sub>) and a 9 V supply. V<sub>out</sub> is measured across the fixed resistor. Use the thermistor table to complete the table below.</div>
+            <table class="data-table" style="margin-top:10px;">
+              <tr><th>Temperature</th><th>Thermistor resistance (from table)</th><th>R<sub>T</sub> (total)</th><th>V<sub>out</sub> across fixed R</th></tr>
+              <tr><td>0 &deg;C</td><td>32 k&Omega;</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q088" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q089" data-placeholder=""></td></tr>
+              <tr><td>40 &deg;C</td><td>3.5 k&Omega;</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q090" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q091" data-placeholder=""></td></tr>
+              <tr><td>100 &deg;C</td><td>330 &Omega;</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q092" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q093" data-placeholder=""></td></tr>
+            </table>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">5. Using your results from Q4, describe the relationship between temperature and V<sub>out</sub>. Would this circuit be suitable to switch on a fan when a room gets hot? Explain your reasoning.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q094"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q094" data-placeholder="Type your answer here..."></div>
+          </div>
+
+          <div class="extension-task">
+            <div class="extension-header"><div class="extension-header-text">&#x2B50; Extension task</div></div>
+            <div class="extension-body">
+              <div class="task-item">
+                <div class="task-q">6. A designer wants the output voltage to be exactly 6 V when the temperature is 60&deg;C. Using the thermistor table, calculate the value of the fixed resistor needed. The supply is 9 V and the fixed resistor is in the lower position (V<sub>out</sub> is taken across it). Show all working.</div>
+                <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q095"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q095" data-placeholder="Type your answer here..."></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <div class="sim-embed-section">
         <div class="sim-embed-header">
