@@ -129,7 +129,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" style="position:relative;">
-      <div style="position:absolute;top:12px;right:16px;font-size:11px;color:#94a3b8;font-family:monospace;letter-spacing:.3px;">Updated 24 Jun 2026 19:22</div>
+      <div style="position:absolute;top:12px;right:16px;font-size:11px;color:#94a3b8;font-family:monospace;letter-spacing:.3px;">Updated 24 Jun 2026 19:48</div>
       <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Analogue Electronics</div>
       <h1 class="hero-title">&#x26A1; Analogue Electronics &mdash; Course Notes</h1>
       <p class="hero-sub">Current, voltage, resistance, Ohm's law, circuit types, components and transistor switching</p>
@@ -1130,7 +1130,7 @@
       </div>
 
       <h2 class="notes-h2">The need for a protective diode</h2>
-      <p class="notes-p">If the output device is a <strong>relay coil, motor, solenoid, or buzzer</strong>, there is a hidden danger. These devices contain coils of wire. When the transistor switches the current <em>off</em>, the magnetic field inside the coil collapses very rapidly. By Faraday's law, this collapsing field <strong>generates a large voltage spike in the reverse direction</strong> &mdash; sometimes hundreds of volts, lasting only a fraction of a millisecond.</p>
+      <p class="notes-p">If the output device is a <strong>relay coil, motor, solenoid, or buzzer</strong>, there is a hidden danger. These devices contain coils of wire. When the transistor switches the current <em>off</em>, the magnetic field inside the coil collapses very rapidly. This generates a large voltage spike in the reverse direction &mdash; sometimes hundreds of volts, lasting only a fraction of a millisecond.</p>
       <p class="notes-p">This is called <strong>back e.m.f.</strong> (back electromotive force). It travels backwards through the collector pin and can <strong>permanently destroy the transistor</strong>.</p>
 
       <div class="key-point">Whenever a transistor drives a coil-based device (relay, motor, solenoid, buzzer), a <strong>protective diode</strong> must be wired in <strong>reverse</strong> across that device to absorb the back e.m.f. spike.</div>
@@ -1196,15 +1196,12 @@
       <h1 class="notes-h1">Section 10: Relays</h1>
 
       <h2 class="notes-h2">Why use a relay?</h2>
-      <p class="notes-p">Many output devices &mdash; such as motors in electric cars or industrial machinery &mdash; require much higher voltages and currents than a low-power electronic circuit can supply. A <strong>relay</strong> is the link between the low-power control circuit and the high-power output circuit.</p>
+      <p class="notes-p">Many output devices &mdash; such as motors in industrial machinery or mains-powered heaters &mdash; require much higher voltages and currents than a low-power electronic circuit can safely supply. A <strong>relay</strong> is the link between the two: a small control current switches a magnetically operated contact that controls the high-power circuit.</p>
 
       <h2 class="notes-h2">How the relay works</h2>
-      <p class="notes-p">When current flows through the relay <strong>coil</strong>, it becomes an <strong>electromagnet</strong>. This attracts the metal <strong>armature</strong> (a flexible metal strip), which moves and connects or disconnects the switch contacts. This allows a small current to control a large one.</p>
+      <p class="notes-p">When current flows through the relay <strong>coil</strong>, it becomes an <strong>electromagnet</strong>. This attracts a flexible metal strip called the <strong>armature</strong>, which moves and closes (or opens) the switch contacts. When the current stops, a spring pulls the armature back.</p>
 
-      <div class="key-point">Relay: a switch operated by electromagnetism. A small current in the coil switches a larger current in the output circuit.</div>
-
-      <h2 class="notes-h2">Protective diode</h2>
-      <p class="notes-p">When a relay (or motor, solenoid or buzzer) switches off, the collapsing magnetic field in the coil generates a large <strong>reverse voltage spike</strong> (back e.m.f.). This can destroy transistors and other components. A <strong>protective diode</strong> connected in reverse across the coil provides a safe path for this reverse current to flow.</p>
+      <div class="key-point">A relay uses a small current in the coil to switch a much larger current in a completely separate output circuit &mdash; with no electrical connection between the two.</div>
 
       <div class="comp-grid">
         <div class="comp-card-sym">
@@ -1227,37 +1224,37 @@
 
       <div class="sim-embed-section">
         <div class="sim-embed-header">
-          <div class="sim-embed-title"><span>&#x26A1;</span> Try it &mdash; Relay circuit</div>
-          <a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+          <div class="sim-embed-title"><span>&#x26A1;</span> Try it &mdash; Relay circuit: low-voltage control of a mains heater</div>
+          <a href="../../../../simulators/ae-relay.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
         </div>
-        <div class="sim-instruction">Use the full-screen simulator to explore relay circuits. Try connecting a transistor to switch a relay coil, with a lamp on the relay's normally-open contacts. Click <strong>SIMULATE</strong> and observe how the transistor controls the relay and switches the lamp.</div>
-        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-relay" title="Relay circuit" src="../../../../simulators/electronics.html" loading="lazy"></iframe></div>
+        <div class="sim-instruction">The circuit below shows a <strong>5 V microcontroller-style circuit</strong> using a transistor and relay to switch a <strong>230 V mains heater</strong>. Adjust the variable resistor to change the base voltage and observe how the transistor controls the relay, which in turn switches the mains heater on and off &mdash; with complete electrical isolation between the two circuits.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-relay" title="Relay circuit" src="../../../../simulators/ae-relay.html" loading="lazy"></iframe></div>
       </div>
 
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 8 &mdash; Relays</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <div class="task-q">1. Explain in your own words why a relay is needed in some circuits.</div>
+            <div class="task-q">1. Explain in your own words why a relay is needed to connect the 5 V control circuit to the 230 V mains heater. Why can the transistor not do this job directly?</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q049"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q049" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">2. Simulate the relay circuit. What happens when the transistor is switched on?</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q050"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q050" data-placeholder="Type your answer here..."></div>
+            <div class="task-q">2. Looking at the circuit in the simulator, the transistor has no protective diode across the relay coil. Why does this make the transistor vulnerable? What would you add to protect it?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q050"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q050" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">3. Explain the purpose of the protective diode in a relay circuit.</div>
+            <div class="task-q">3. In the simulator, adjust the variable resistor so the heater switches on. Describe what you observe in both the control circuit and the mains circuit.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q051"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q051" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">4. A solenoid also requires a protective diode. Explain why.</div>
+            <div class="task-q">4. Give two reasons why it would be dangerous to connect the mains heater directly to the transistor output instead of using a relay.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q052"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q052" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="extension-task">
             <div class="extension-header"><div class="extension-header-text">&#x2B50; Extension task</div></div>
             <div class="extension-body">
               <div class="task-item">
-                <div class="task-q">5. Using a DPDT relay, design a circuit where a motor reverses direction when the relay is energised. Simulate it and sketch the circuit.</div>
+                <div class="task-q">5. The relay in this circuit is an SPDT type (Single Pole Double Throw). It has a normally-open (NO) and a normally-closed (NC) contact. Describe how you could use the NC contact to make a circuit that switches the heater <em>off</em> when the transistor switches <em>on</em>. When might this be useful?</div>
                 <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q053"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q053" data-placeholder="Type your answer here..." style="min-height:100px;"></div>
               </div>
             </div>
