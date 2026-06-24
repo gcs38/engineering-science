@@ -129,7 +129,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" style="position:relative;">
-      <div style="position:absolute;top:12px;right:16px;font-size:11px;color:#94a3b8;font-family:monospace;letter-spacing:.3px;">Updated 24 Jun 2026 18:58</div>
+      <div style="position:absolute;top:12px;right:16px;font-size:11px;color:#94a3b8;font-family:monospace;letter-spacing:.3px;">Updated 24 Jun 2026 19:22</div>
       <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Analogue Electronics</div>
       <h1 class="hero-title">&#x26A1; Analogue Electronics &mdash; Course Notes</h1>
       <p class="hero-sub">Current, voltage, resistance, Ohm's law, circuit types, components and transistor switching</p>
@@ -936,11 +936,49 @@
 
       <div class="sim-embed-section">
         <div class="sim-embed-header">
-          <div class="sim-embed-title"><span>&#x26A1;</span> Try it &mdash; LDR voltage divider</div>
-          <a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+          <div class="sim-embed-title"><span>&#x26A1;</span> Try it &mdash; LDR voltage divider (light sensor)</div>
+          <a href="../../../../simulators/ae-ldr-divider.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
         </div>
-        <div class="sim-instruction">A light sensor (LDR) voltage divider circuit has been loaded below. Click on the LDR component and use the slider to adjust the light level &mdash; watch how the voltmeter reading changes as the LDR resistance changes.</div>
-        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-ldr" title="LDR voltage divider" src="../../../../simulators/ae-voltage-divider.html" loading="lazy"></iframe></div>
+        <div class="sim-instruction">An LDR voltage divider circuit has been loaded below. The LDR is in the <strong>lower</strong> position and the voltmeter measures V<sub>out</sub> across it. Click on the LDR and use the slider to adjust the light level &mdash; watch how the voltmeter reading changes.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-ldr" title="LDR voltage divider" src="../../../../simulators/ae-ldr-divider.html" loading="lazy"></iframe></div>
+      </div>
+
+      <h3 class="notes-h3">What does the output voltage tell us?</h3>
+      <p class="notes-p">In this configuration, the LDR is the <strong>lower</strong> resistor and V<sub>out</sub> is measured across it. As the light level increases, the LDR resistance <strong>falls</strong>. Because it now takes a smaller share of the total resistance, it also takes a smaller share of the supply voltage &mdash; so <strong>V<sub>out</sub> falls</strong> as it gets brighter.</p>
+      <p class="notes-p">Conversely, as it gets <strong>darker</strong>, the LDR resistance rises, it claims a larger share of the voltage, and <strong>V<sub>out</sub> rises</strong>. This circuit therefore produces a <em>high</em> output voltage in darkness &mdash; which is why it is often called a <strong>dark sensor</strong>.</p>
+
+      <div class="key-point">LDR in the <strong>lower</strong> position: V<sub>out</sub> is <strong>high in the dark</strong>, low in the light &mdash; a dark sensor.<br>LDR in the <strong>upper</strong> position: V<sub>out</sub> is <strong>high in the light</strong>, low in the dark &mdash; a light sensor.</div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task &mdash; Light sensor vs dark sensor</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Using the simulator above, record V<sub>out</sub> at three different light levels and describe the trend.</div>
+            <table class="data-table" style="margin-top:8px;">
+              <tr><th>Light level</th><th>V<sub>out</sub> (V)</th></tr>
+              <tr><td>Dark</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q105" data-placeholder=""></td></tr>
+              <tr><td>Medium</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q106" data-placeholder=""></td></tr>
+              <tr><td>Bright</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q107" data-placeholder=""></td></tr>
+            </table>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Now rebuild the circuit in the simulator with the LDR and fixed resistor <strong>swapped</strong> (LDR on top, fixed resistor below, voltmeter across the fixed resistor). Record V<sub>out</sub> at the same three light levels.</div>
+            <table class="data-table" style="margin-top:8px;">
+              <tr><th>Light level</th><th>V<sub>out</sub> (V) &mdash; LDR on top</th></tr>
+              <tr><td>Dark</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q108" data-placeholder=""></td></tr>
+              <tr><td>Medium</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q109" data-placeholder=""></td></tr>
+              <tr><td>Bright</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q110" data-placeholder=""></td></tr>
+            </table>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. In the second circuit (LDR on top), V<sub>out</sub> is high when it is bright and low when it is dark. This configuration is often called a <strong>light sensor</strong>. Explain why the first circuit (LDR on the bottom) is commonly known as a <strong>dark sensor</strong>.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q111"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q111" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A designer wants to use a transistor to switch on a street lamp automatically when it gets dark. Should they use a light sensor or a dark sensor configuration for the voltage divider? Explain your reasoning.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q112"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q112" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
       </div>
 
       <div class="assignment">
