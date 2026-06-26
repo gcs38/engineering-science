@@ -153,19 +153,34 @@
 
       <p class="notes-p">An electric circuit is a <strong>closed loop</strong> made up of components such as batteries, lamps, switches and wires. Current can only flow if the circuit is complete.</p>
 
+      <h3 class="notes-h3">Power supplies and voltage rails</h3>
+      <p class="notes-p">In circuit diagrams, rather than drawing a battery symbol every time, we often use <strong>voltage rails</strong>: a labelled positive line at the top of the diagram (e.g. <strong>+9V</strong>) and a <strong>0V</strong> line (also called <em>ground</em> or <em>GND</em>) at the bottom. Any component connected between these two rails receives the supply voltage across it. You will see this notation used throughout these notes.</p>
+      <div class="key-point">+V rail (top) = positive terminal. &nbsp; 0V rail (bottom) = negative terminal / ground. &nbsp; Conventional current flows from + to 0V through the circuit.</div>
+
       <h2 class="notes-h2">The three key quantities</h2>
 
       <h3 class="notes-h3">Current</h3>
-      <p class="notes-p">Electric current is the flow of negatively charged particles called <strong>electrons</strong>. In Engineering Science, current flows from the positive (+) terminal of the power supply, through the circuit, to the negative (0V) terminal.</p>
-      <div class="key-point">Current is measured in <strong>Amperes (A)</strong>. A milliamp (mA) is one thousandth of an amp: 1 mA = 0.001 A.</div>
+      <p class="notes-p">Electric current is the flow of negatively charged particles called <strong>electrons</strong>. In Engineering Science, we use a standard called <strong>conventional current flow</strong>. This means we always treat current as flowing out from the positive (+) terminal of the power supply, through the circuit, and back into the negative (or 0V/ground) terminal.</p>
+      <div class="key-point">Current is measured in <strong>Amperes (A)</strong>. The symbol for current on a circuit diagram is <strong>A</strong> (for Ammeter). A milliamp (mA) is one thousandth of an amp: 1 mA = 0.001 A.</div>
 
       <h3 class="notes-h3">Voltage</h3>
       <p class="notes-p">Voltage is the electrical force that pushes current around a circuit. It comes from a battery or power supply. The bigger the voltage, the harder it pushes the electrons.</p>
-      <div class="key-point">Voltage is measured in <strong>Volts (V)</strong>.</div>
+      <div class="key-point">Voltage is measured in <strong>Volts (V)</strong>. On a circuit diagram, voltage is measured using a <strong>voltmeter</strong>, shown with the symbol <strong>V</strong> inside a circle.</div>
 
       <h3 class="notes-h3">Resistance</h3>
       <p class="notes-p">All components in a circuit resist the flow of current to some degree. A <strong>resistor</strong> is a component specifically designed to reduce current flow. The greater the resistance, the less current will flow for a given voltage.</p>
+      <p class="notes-p">Resistance can be physically measured using a <strong>multimeter</strong> set to the resistance (Ω) function — but there is no separate resistance measurement symbol on a circuit diagram.</p>
       <div class="key-point">Resistance is measured in <strong>Ohms (&Omega;)</strong>. Larger values are written as k&Omega; (kilohms, &times;1000) or M&Omega; (megohms, &times;1&nbsp;000&nbsp;000).</div>
+
+      <h2 class="notes-h2">Measuring voltage and current in a circuit</h2>
+
+      <h3 class="notes-h3">Measuring voltage with a voltmeter</h3>
+      <p class="notes-p">A <strong>voltmeter</strong> measures the voltage (potential difference) <em>across</em> a component. It is connected in <strong>parallel</strong> &mdash; one probe on each side of the component. A voltmeter has very high resistance so it takes almost no current from the circuit.</p>
+      <div class="key-point">Voltmeter symbol: <strong>V</strong> in a circle &mdash; connected in <strong>parallel</strong> (does not break the circuit).</div>
+
+      <h3 class="notes-h3">Measuring current with an ammeter</h3>
+      <p class="notes-p">An <strong>ammeter</strong> measures the current <em>through</em> a component. It must be connected in <strong>series</strong> &mdash; the circuit must be broken and the ammeter inserted. An ammeter has very low resistance so it barely affects the circuit.</p>
+      <div class="key-point">Ammeter symbol: <strong>A</strong> in a circle &mdash; connected in <strong>series</strong> (the circuit must be broken to insert it).</div>
 
       <!-- Investigate first task (Ash comment 4) -->
       <div class="sim-embed-section">
@@ -180,7 +195,7 @@
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 1 &mdash; Voltage, resistance and current</div></div>
         <div class="assignment-body">
-          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Open the NoResistance simulator in a new window (using the link on the Analogue Electronics page). Create a copy of the demo circuit and then change the battery voltage and resistance value using the <strong>Properties</strong> panel and record the ammeter readings in the tables below.</p>
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;"><a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn" style="display:inline-flex;">&#x26A1; Open the NoResistance simulator</a> Create a copy of the demo circuit and then change the battery voltage and resistance value using the <strong>Properties</strong> panel and record the ammeter readings in the tables below.</p>
 
           <div class="task-item">
             <div class="task-q">1. Keep the resistance at <strong>2 k&Omega;</strong>. Change the battery voltage to each value below and record the current.</div>
@@ -250,7 +265,28 @@
         <p style="font-size:12px;color:var(--gray-400);margin-top:8px;">Cover the quantity you want to find &mdash; the other two show how to calculate it.</p>
       </div>
 
-      <p class="notes-p">So: &nbsp; <strong>V = I &times; R</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>I = V &divide; R</strong> &nbsp;&nbsp;|&nbsp;&nbsp; <strong>R = V &divide; I</strong></p>
+      <p class="notes-p">So:</p>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin:12px 0 16px;">
+        <div class="formula-box" style="flex:1;min-width:140px;margin:0;">
+          <div class="formula">V = I &times; R</div>
+        </div>
+        <div class="formula-box" style="flex:1;min-width:140px;margin:0;">
+          <div class="formula" style="display:flex;flex-direction:column;align-items:center;gap:0;">
+            <span>V</span>
+            <span style="border-top:2px solid var(--teal-800);width:40px;display:block;margin:2px 0;"></span>
+            <span>R</span>
+          </div>
+          <div class="formula-sub" style="margin-top:6px;">I = V &divide; R</div>
+        </div>
+        <div class="formula-box" style="flex:1;min-width:140px;margin:0;">
+          <div class="formula" style="display:flex;flex-direction:column;align-items:center;gap:0;">
+            <span>V</span>
+            <span style="border-top:2px solid var(--teal-800);width:40px;display:block;margin:2px 0;"></span>
+            <span>I</span>
+          </div>
+          <div class="formula-sub" style="margin-top:6px;">R = V &divide; I</div>
+        </div>
+      </div>
 
       <h2 class="notes-h2">Using Ohm's Law &mdash; worked examples</h2>
 
@@ -271,22 +307,22 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 1 &mdash; Ohm's Law calculations</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Ohm's Law calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <div class="task-q">1a. A circuit has a 9 V battery and a 1 k&Omega; resistor. Calculate the current in mA.</div>
+            <div class="task-q">1a) A 1 k&Omega; resistor has 9 V across it. Calculate the current in mA.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q003"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q003" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">1b. Find the resistance of a component with 12 V across it and 60 mA through it.</div>
+            <div class="task-q">1b) Find the resistance of a component with 12 V across it and 60 mA through it.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q004"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q004" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">1c. A 470 &Omega; resistor has 25 mA flowing through it. Calculate the voltage across it.</div>
+            <div class="task-q">1c) A 470 &Omega; resistor has 25 mA flowing through it. Calculate the voltage across it.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q005"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q005" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">1d. A circuit has a 6 V battery and 30 mA of current. What is the total resistance?</div>
+            <div class="task-q">1d) A circuit has a 6 V battery and 30 mA of current. Calculate the total resistance.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q006"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q006" data-placeholder="Type your answer here..."></div>
           </div>
           <p style="font-size:12px;color:var(--teal-600);margin-top:8px;">&#x26A1; Check your answers using the simulator above.</p>
@@ -296,22 +332,22 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 3: Measuring Voltage and Current</h1>
+      <h1 class="notes-h1">Section 2 (continued): Measuring Voltage and Current</h1>
 
       <h2 class="notes-h2">Measuring voltage with a voltmeter</h2>
       <p class="notes-p">A <strong>voltmeter</strong> measures the voltage (potential difference) <em>across</em> a component. It is connected in <strong>parallel</strong> &mdash; one probe on each side of the component. A voltmeter has very high resistance so it takes almost no current from the circuit.</p>
 
-      <div class="key-point">Voltmeter = connected in <strong>parallel</strong> &mdash; does not break the circuit.</div>
+      <div class="key-point">Voltmeter symbol: <strong>V</strong> in a circle &mdash; connected in <strong>parallel</strong> &mdash; does not break the circuit.</div>
 
       <h2 class="notes-h2">Measuring current with an ammeter</h2>
       <p class="notes-p">An <strong>ammeter</strong> measures the current <em>through</em> a component. It must be connected in <strong>series</strong> &mdash; the circuit must be broken and the ammeter inserted. An ammeter has very low resistance so it barely affects the circuit.</p>
 
-      <div class="key-point">Ammeter = connected in <strong>series</strong> &mdash; the circuit must be broken to insert it.</div>
+      <div class="key-point">Ammeter symbol: <strong>A</strong> in a circle &mdash; connected in <strong>series</strong> &mdash; the circuit must be broken to insert it.</div>
 
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 2 &mdash; Measuring voltage and current</div></div>
         <div class="assignment-body">
-          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Open the NoResistance simulator in a new window (using the link on the Analogue Electronics page). Build the following circuit: a 9 V battery, a 1 k&Omega; resistor and a 470 &Omega; resistor in series. Add a voltmeter across each component and an ammeter in series.</p>
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;"><a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn" style="display:inline-flex;">&#x26A1; Open the NoResistance simulator</a> Build the following circuit: a 9 V battery, a 1 k&Omega; resistor and a 470 &Omega; resistor in series. Add a voltmeter across each component and an ammeter in series.</p>
           <div class="task-item">
             <div class="task-q">1. Record the voltage across each component.</div>
             <table class="data-table">
@@ -333,20 +369,20 @@
         </div>
       </div>
 
-      <h2 class="notes-h2">Voltage drops and current at junctions</h2>
-      <p class="notes-p">Two important rules govern voltage and current in all circuits:</p>
+      <h2 class="notes-h2">Voltage drops in a series circuit</h2>
+      <p class="notes-p">An important rule governs voltage in series circuits:</p>
       <ul class="notes-ul">
         <li><strong>Voltage rule:</strong> the sum of the voltage drops around any complete loop equals the supply voltage.</li>
-        <li><strong>Current rule:</strong> the current flowing into a junction equals the current flowing out.</li>
       </ul>
-      <div class="spec-note">&#x1F4D6; These rules are sometimes called <em>Kirchhoff's Laws</em> (after the German physicist Gustav Kirchhoff). You do <strong>not</strong> need to remember his name for the exam &mdash; just the rules themselves.</div>
+      <div class="spec-note">&#x1F4D6; This rule is part of <em>Kirchhoff's Laws</em> (after the German physicist Gustav Kirchhoff). You do <strong>not</strong> need to remember his name for the exam &mdash; just the rule itself.</div>
 
       <div class="key-point">In a <strong>series circuit</strong>: the current is the same everywhere, and the voltages add up to the supply voltage.</div>
+      <p class="notes-p" style="font-size:13px;color:var(--gray-500);"><em>Note: a second rule about current at junctions applies to parallel circuits &mdash; you will meet this in Section 5.</em></p>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 4: Resistors in Series</h1>
+      <h1 class="notes-h1">Section 3: Resistors in Series</h1>
 
       <p class="notes-p">When resistors are connected one after another (in series), their resistances <strong>add together</strong>:</p>
 
@@ -369,12 +405,12 @@
           <div class="sim-embed-title"><span>&#x26A1;</span> Try it &mdash; Series circuit</div>
           <a href="../../../../simulators/ae-series-circuit.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
         </div>
-        <div class="sim-instruction">A series circuit with three lamps, voltmeters and an ammeter has been loaded below. Click each switch to turn the lamps on and use the voltmeters to observe how the supply voltage is shared across the lamps. Notice that the current shown on the ammeter is the same everywhere in the circuit.</div>
+        <div class="sim-instruction">A series circuit with three lamps, voltmeters and an ammeter has been loaded below. Click each switch to turn the lamps on and use the voltmeters to observe how the supply voltage is shared across the lamps. The ammeter shows the circuit current &mdash; in a series circuit this is the same value at every point. Try moving the ammeter to different positions in your own version to confirm this.</div>
         <div class="sim-wrap"><iframe class="sim-iframe" title="Series circuit simulator" src="../../../../simulators/ae-series-circuit.html" loading="lazy"></iframe></div>
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 2 &mdash; Series circuits</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Series circuits</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1. Two resistors (150 &Omega; and 270 &Omega;) are connected in series across a 9 V supply. Calculate:</div>
@@ -401,7 +437,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 5: Components and Circuit Symbols</h1>
+      <h1 class="notes-h1">Section 4: Components and Circuit Symbols</h1>
 
       <p class="notes-p">In Engineering Science you need to recognise and draw standard circuit symbols. These are the same symbols used by engineers worldwide.</p>
 
@@ -514,24 +550,36 @@
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 3 &mdash; Switch circuits</div></div>
         <div class="assignment-body">
-          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Open the NoResistance simulator in a new window and build the following circuits. For each, describe what needs to happen to switch the output on.</p>
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;"><a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn" style="display:inline-flex;">&#x26A1; Open the NoResistance simulator</a> Build the following circuits. For each, paste your completed circuit design into the answer space below.</p>
           <div class="task-item">
             <div class="task-q">a) A lamp must light when two switches are both closed (AND behaviour). How are the switches connected?</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q015"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q015" data-placeholder="Type your answer here..."></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q015"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q015" data-placeholder="Paste or describe your circuit design here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">b) A buzzer must sound when <em>either</em> of two switches is pressed (OR behaviour). How are the switches connected?</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q016"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q016" data-placeholder="Type your answer here..."></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q016"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q016" data-placeholder="Paste or describe your circuit design here..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">c) A red LED lights when a motor is not running. When a switch is pressed, the LED switches off and the motor starts. Describe your circuit design.</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q017"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q017" data-placeholder="Type your answer here..."></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q017"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q017" data-placeholder="Paste or describe your circuit design here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) Build a circuit where a single switch can control which of two outputs is on &mdash; when the switch is in one position a motor runs; when it is in the other position a buzzer sounds. What type of switch do you need?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q017b"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q017b" data-placeholder="Paste or describe your circuit design here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">e) A signal lamp must be able to be switched on and off from <em>two different locations</em> &mdash; for example upstairs and downstairs. Each switch must work independently. Build this circuit. (Hint: this is how staircase lighting works.)</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q017c"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q017c" data-placeholder="Paste or describe your circuit design here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">f) Build a circuit with four lamps first in <strong>series</strong>, then in <strong>parallel</strong>, each controlled by a single switch. Which layout is more reliable if one lamp fails? Explain why.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q017d"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q017d" data-placeholder="Type your answer here..."></div>
           </div>
         </div>
       </div>
 
       <h2 class="notes-h2">Diodes</h2>
-      <p class="notes-p">A diode allows current to flow in <strong>one direction only</strong>. The two terminals are the <strong>anode</strong> (+) and <strong>cathode</strong> (&minus;). Current only flows when the anode is connected to the positive supply.</p>
+      <p class="notes-p">A diode allows current to flow in <strong>one direction only</strong>. The two terminals are the <strong>anode</strong> (A, +) and <strong>cathode</strong> (c, &minus;). Current only flows when the anode is at a higher voltage than the cathode.</p>
 
       <div class="comp-grid">
         <div class="comp-card-sym">
@@ -541,7 +589,7 @@
             <line x1="42" y1="10" x2="42" y2="30" stroke="#334155" stroke-width="2.5"/>
             <line x1="42" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
             <text x="22" y="8" font-size="9" fill="#dc2626" font-weight="700">A</text>
-            <text x="42" y="8" font-size="9" fill="#3b82f6" font-weight="700">K</text>
+            <text x="42" y="8" font-size="9" fill="#3b82f6" font-weight="700">c</text>
           </svg>
           <div class="comp-name">Diode</div>
           <div class="comp-unit">One-way current</div>
@@ -560,7 +608,7 @@
         </div>
       </div>
 
-      <p class="notes-p">A <strong>Light-Emitting Diode (LED)</strong> is a special diode that produces light when current flows through it. The short leg (cathode) must be connected to 0V. LEDs are used as indicators to show when a circuit is working.</p>
+      <p class="notes-p">A <strong>Light-Emitting Diode (LED)</strong> is a special diode that produces light when current flows through it. The short leg is the cathode (c) and must be at a lower voltage than the anode &mdash; in most circuits this means connecting the cathode closer to 0V. LEDs are used as indicators to show when a circuit is working.</p>
 
       <div class="sim-embed-section">
         <div class="sim-embed-header">
@@ -572,10 +620,10 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 3 &mdash; Components and symbols</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Components and symbols</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <div class="task-q">1. Draw the circuit symbol for a) a lamp, b) a motor, c) an LED, d) a diode.</div>
+            <div class="task-q">1. Draw the circuit symbol for a) a lamp, b) a motor, c) an LED.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q018"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q018" data-placeholder="Type your answer here..." style="min-height:80px;"></div>
           </div>
           <div class="task-item">
@@ -583,7 +631,7 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q019"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q019" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">3. Why do we use circuit symbols rather than pictures of components?</div>
+            <div class="task-q">3. Why do we use circuit symbols rather than pictures of components? Think about engineers, technicians and manufacturers from different countries working together on the same design.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q020"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q020" data-placeholder="Type your answer here..."></div>
           </div>
         </div>
@@ -592,12 +640,52 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 6: Parallel Circuits</h1>
+      <h1 class="notes-h1">Section 5: Parallel Circuits</h1>
 
       <h2 class="notes-h2">What is a parallel circuit?</h2>
       <p class="notes-p">In a parallel circuit there is more than one path for current to flow. Each branch receives the <strong>full supply voltage</strong>, so devices operate independently. A common example is the lighting in a room &mdash; each light has its own switch and works independently of the others.</p>
 
+      <div class="circuit-figure">
+        <svg viewBox="0 0 340 200" width="340" height="200" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">
+          <!-- Battery left -->
+          <line x1="30" y1="30" x2="30" y2="80" stroke="#334155" stroke-width="2"/>
+          <line x1="20" y1="80" x2="40" y2="80" stroke="#334155" stroke-width="3"/>
+          <line x1="23" y1="88" x2="37" y2="88" stroke="#334155" stroke-width="1.5"/>
+          <line x1="20" y1="96" x2="40" y2="96" stroke="#334155" stroke-width="3"/>
+          <line x1="23" y1="104" x2="37" y2="104" stroke="#334155" stroke-width="1.5"/>
+          <line x1="30" y1="104" x2="30" y2="170" stroke="#334155" stroke-width="2"/>
+          <text x="6" y="77" font-size="9" fill="#334155" font-weight="700">+</text>
+          <text x="6" y="108" font-size="9" fill="#334155" font-weight="700">−</text>
+          <text x="2" y="125" font-size="9" fill="#64748b">9V</text>
+          <!-- Top and bottom rails -->
+          <line x1="30" y1="30" x2="310" y2="30" stroke="#334155" stroke-width="2"/>
+          <line x1="30" y1="170" x2="310" y2="170" stroke="#334155" stroke-width="2"/>
+          <!-- Branch 1: R1=100Ω -->
+          <line x1="100" y1="30" x2="100" y2="55" stroke="#334155" stroke-width="2"/>
+          <rect x="84" y="55" width="32" height="60" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+          <text x="100" y="90" text-anchor="middle" font-size="10" fill="#334155" font-weight="700">R1</text>
+          <text x="100" y="103" text-anchor="middle" font-size="9" fill="#64748b">100Ω</text>
+          <line x1="100" y1="115" x2="100" y2="170" stroke="#334155" stroke-width="2"/>
+          <!-- Branch 2: R2=150Ω -->
+          <line x1="190" y1="30" x2="190" y2="55" stroke="#334155" stroke-width="2"/>
+          <rect x="174" y="55" width="32" height="60" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+          <text x="190" y="90" text-anchor="middle" font-size="10" fill="#334155" font-weight="700">R2</text>
+          <text x="190" y="103" text-anchor="middle" font-size="9" fill="#64748b">150Ω</text>
+          <line x1="190" y1="115" x2="190" y2="170" stroke="#334155" stroke-width="2"/>
+          <!-- Branch 3: R3=300Ω -->
+          <line x1="280" y1="30" x2="280" y2="55" stroke="#334155" stroke-width="2"/>
+          <rect x="264" y="55" width="32" height="60" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+          <text x="280" y="90" text-anchor="middle" font-size="10" fill="#334155" font-weight="700">R3</text>
+          <text x="280" y="103" text-anchor="middle" font-size="9" fill="#64748b">300Ω</text>
+          <line x1="280" y1="115" x2="280" y2="170" stroke="#334155" stroke-width="2"/>
+          <!-- Labels -->
+          <text x="170" y="192" text-anchor="middle" font-size="11" fill="#64748b">Parallel circuit: three resistors across 9 V</text>
+        </svg>
+        <figcaption>Each branch receives the full 9 V. Removing one resistor does not affect the others.</figcaption>
+      </div>
+
       <div class="key-point">In a parallel circuit: each branch gets the full supply voltage, and the currents in each branch add together to give the total current.</div>
+      <div class="spec-note">&#x1F4D6; This is <em>Kirchhoff's Current Rule</em>: the current flowing into a junction equals the current flowing out. Combined with the voltage rule from Section 3, these two laws govern every circuit you will ever analyse.</div>
 
       <h2 class="notes-h2">Resistors in parallel</h2>
       <p class="notes-p">When resistors are connected in parallel, the combined resistance is <strong>less</strong> than any individual resistor. This is because more paths are available for current to flow.</p>
@@ -614,19 +702,22 @@
       </div>
 
       <div class="worked-example">
-        <div class="worked-example-title">Worked example 1 &mdash; Two resistors in parallel</div>
-        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">R<sub>1</sub> = 270 &Omega;, R<sub>2</sub> = 100 &Omega;. Find the combined resistance.</p>
-        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Use product/sum:</strong> R<sub>T</sub> = (270 &times; 100) &divide; (270 + 100)</div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content">R<sub>T</sub> = 27 000 &divide; 370 = <strong>73 &Omega;</strong></div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content">Note: 73 &Omega; is less than both 270 &Omega; and 100 &Omega; &mdash; this is expected.</div></div>
+        <div class="worked-example-title">Worked example 1 &mdash; Two resistors in parallel (full solution)</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">R<sub>1</sub> = 270 &Omega;, R<sub>2</sub> = 100 &Omega;, supply voltage = 9 V. Find the combined resistance, circuit current, and current through each branch.</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Combined resistance (product/sum):</strong> R<sub>T</sub> = (270 &times; 100) &divide; (270 + 100) = 27 000 &divide; 370 = <strong>73 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Circuit (total) current:</strong> I<sub>T</sub> = V &divide; R<sub>T</sub> = 9 &divide; 73 = <strong>123 mA</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Current through R<sub>1</sub>:</strong> I<sub>1</sub> = V &divide; R<sub>1</sub> = 9 &divide; 270 = <strong>33 mA</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Current through R<sub>2</sub>:</strong> I<sub>2</sub> = V &divide; R<sub>2</sub> = 9 &divide; 100 = <strong>90 mA</strong></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-content"><strong>Check:</strong> I<sub>1</sub> + I<sub>2</sub> = 33 + 90 = 123 mA &mdash; matches I<sub>T</sub>. &#x2713;</div></div>
       </div>
 
       <div class="worked-example">
         <div class="worked-example-title">Worked example 2 &mdash; Three resistors in parallel</div>
-        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">R<sub>1</sub> = 220 &Omega;, R<sub>2</sub> = 100 &Omega;, R<sub>3</sub> = 330 &Omega;. Find the combined resistance.</p>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">R<sub>1</sub> = 220 &Omega;, R<sub>2</sub> = 100 &Omega;, R<sub>3</sub> = 330 &Omega;, supply = 9 V. Find the combined resistance.</p>
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Use the general formula:</strong> 1/R<sub>T</sub> = 1/220 + 1/100 + 1/330</div></div>
         <div class="step"><div class="step-num">2</div><div class="step-content">1/R<sub>T</sub> = 0.00455 + 0.01 + 0.00303 = 0.01758</div></div>
         <div class="step"><div class="step-num">3</div><div class="step-content">R<sub>T</sub> = 1 &divide; 0.01758 = <strong>56.9 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Circuit current:</strong> I<sub>T</sub> = 9 &divide; 56.9 = <strong>158 mA</strong></div></div>
       </div>
 
       <div class="sim-embed-section">
@@ -639,7 +730,7 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 4 &mdash; Parallel circuits</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Parallel circuits</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1. A 10 &Omega; and 14 &Omega; resistor are connected in parallel across a 6 V supply. Calculate:</div>
@@ -664,7 +755,7 @@
             <div class="extension-body">
               <div class="task-item">
                 <div class="task-q">5. For the circuit below, calculate a) combined resistance, b) current from battery, c) current in each branch.</div>
-                <p style="font-size:12px;color:var(--gray-500);margin:4px 0 8px;">R<sub>1</sub> = 100 &Omega;, R<sub>2</sub> = 150 &Omega;, R<sub>3</sub> = 300 &Omega; all in parallel across 12 V.</p>
+                <div class="task-q" style="font-weight:400;color:var(--gray-600);">R<sub>1</sub> = 100 &Omega;, R<sub>2</sub> = 150 &Omega;, R<sub>3</sub> = 300 &Omega; all in parallel across 12 V.</div>
                 <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q027"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q027" data-placeholder="Type your answer here..."></div>
               </div>
             </div>
@@ -676,9 +767,55 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 7: Combined Series and Parallel Circuits</h1>
+      <h1 class="notes-h1">Section 6: Combined Series and Parallel Circuits</h1>
 
       <p class="notes-p">Real circuits often have a mix of series and parallel connections. To solve these you must <strong>simplify step by step</strong>:</p>
+
+      <div class="circuit-figure">
+        <svg viewBox="0 0 360 220" width="360" height="220" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">
+          <!-- Battery -->
+          <line x1="30" y1="30" x2="30" y2="80" stroke="#334155" stroke-width="2"/>
+          <line x1="20" y1="80" x2="40" y2="80" stroke="#334155" stroke-width="3"/>
+          <line x1="23" y1="88" x2="37" y2="88" stroke="#334155" stroke-width="1.5"/>
+          <line x1="20" y1="96" x2="40" y2="96" stroke="#334155" stroke-width="3"/>
+          <line x1="23" y1="104" x2="37" y2="104" stroke="#334155" stroke-width="1.5"/>
+          <line x1="30" y1="104" x2="30" y2="190" stroke="#334155" stroke-width="2"/>
+          <text x="4" y="77" font-size="9" fill="#334155" font-weight="700">+</text>
+          <text x="4" y="108" font-size="9" fill="#334155" font-weight="700">−</text>
+          <text x="2" y="145" font-size="9" fill="#64748b">9V</text>
+          <!-- Top and bottom rails -->
+          <line x1="30" y1="30" x2="330" y2="30" stroke="#334155" stroke-width="2"/>
+          <line x1="30" y1="190" x2="330" y2="190" stroke="#334155" stroke-width="2"/>
+          <!-- R1 series (left) -->
+          <line x1="120" y1="30" x2="120" y2="65" stroke="#334155" stroke-width="2"/>
+          <rect x="104" y="65" width="32" height="60" rx="3" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+          <text x="120" y="100" text-anchor="middle" font-size="10" fill="#1e40af" font-weight="700">R1</text>
+          <text x="120" y="112" text-anchor="middle" font-size="8" fill="#64748b">100Ω</text>
+          <line x1="120" y1="125" x2="120" y2="190" stroke="#334155" stroke-width="2"/>
+          <text x="95" y="55" font-size="9" fill="#3b82f6">series</text>
+          <!-- Junction nodes -->
+          <circle cx="220" cy="30" r="4" fill="#334155"/>
+          <circle cx="220" cy="190" r="4" fill="#334155"/>
+          <!-- R2 parallel top -->
+          <line x1="220" y1="30" x2="220" y2="65" stroke="#334155" stroke-width="2"/>
+          <rect x="204" y="65" width="32" height="55" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+          <text x="220" y="97" text-anchor="middle" font-size="10" fill="#15803d" font-weight="700">R2</text>
+          <text x="220" y="110" text-anchor="middle" font-size="8" fill="#64748b">300Ω</text>
+          <line x1="220" y1="120" x2="220" y2="190" stroke="#334155" stroke-width="2"/>
+          <!-- R3 parallel -->
+          <line x1="290" y1="30" x2="290" y2="65" stroke="#334155" stroke-width="2"/>
+          <rect x="274" y="65" width="32" height="55" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+          <text x="290" y="97" text-anchor="middle" font-size="10" fill="#15803d" font-weight="700">R3</text>
+          <text x="290" y="110" text-anchor="middle" font-size="8" fill="#64748b">150Ω</text>
+          <line x1="290" y1="120" x2="290" y2="190" stroke="#334155" stroke-width="2"/>
+          <!-- Label for parallel section -->
+          <rect x="196" y="138" width="102" height="18" rx="3" fill="#f0fdf4" stroke="#16a34a" stroke-width="1"/>
+          <text x="247" y="151" text-anchor="middle" font-size="9" fill="#15803d">parallel section</text>
+          <!-- Label -->
+          <text x="180" y="212" text-anchor="middle" font-size="11" fill="#64748b">R1 in series with R2 ∥ R3, supply = 9 V</text>
+        </svg>
+        <figcaption>The blue resistor (R1) is in series; the green resistors (R2, R3) are in parallel with each other.</figcaption>
+      </div>
       <ol class="notes-ol">
         <li>Find the combined resistance of the <strong>parallel section</strong> first (call it R<sub>P</sub>).</li>
         <li>Add R<sub>P</sub> to any series resistors to find the <strong>total resistance</strong> R<sub>T</sub>.</li>
@@ -698,7 +835,7 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 5 &mdash; Combined circuits</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Combined circuits</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1. A 1 k&Omega; resistor is in series with two parallel resistors (both 500 &Omega;) across a 9 V supply. Calculate:</div>
@@ -726,19 +863,90 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 8: Voltage Dividers</h1>
+      <h1 class="notes-h1">Section 7: Voltage Dividers</h1>
 
-      <p class="notes-p">In a series circuit, each resistor gets a <strong>share</strong> of the supply voltage. The bigger the resistor, the bigger its share. This principle allows us to build <strong>sensor circuits</strong> where the output voltage changes in response to environmental conditions.</p>
+      <p class="notes-p">A voltage divider is two (or more) resistors connected in series across a power supply, with an output connection taken from the midpoint between them. In a series circuit, each resistor gets a <strong>share</strong> of the supply voltage — the bigger the resistor, the bigger its share.</p>
 
-      <div class="formula-box">
-        <div class="formula">V<sub>out</sub> = V<sub>supply</sub> &times; R<sub>2</sub> &divide; R<sub>T</sub></div>
-        <div class="formula-sub">where R<sub>2</sub> is the lower resistor and R<sub>T</sub> is the total resistance (R<sub>1</sub> + R<sub>2</sub>)</div>
+      <!-- Labelled voltage divider diagram + terminology table -->
+      <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;margin:16px 0;">
+        <div class="circuit-figure" style="flex:0 0 auto;min-width:160px;">
+          <svg viewBox="0 0 160 260" width="160" height="260" xmlns="http://www.w3.org/2000/svg">
+            <!-- Vs top label -->
+            <text x="14" y="22" font-size="11" font-weight="700" fill="#0f766e">Vs</text>
+            <line x1="25" y1="26" x2="25" y2="40" stroke="#334155" stroke-width="2"/>
+            <!-- R1 -->
+            <rect x="10" y="40" width="30" height="50" rx="3" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+            <text x="25" y="68" text-anchor="middle" font-size="11" font-weight="700" fill="#1e40af">R1</text>
+            <!-- V1 label right of R1 -->
+            <text x="52" y="55" font-size="10" fill="#64748b">V1</text>
+            <line x1="44" y1="40" x2="48" y2="40" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="44" y1="90" x2="48" y2="90" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="48" y1="40" x2="48" y2="90" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+            <!-- midpoint wire + output -->
+            <line x1="25" y1="90" x2="25" y2="110" stroke="#334155" stroke-width="2"/>
+            <circle cx="25" cy="110" r="4" fill="#334155"/>
+            <line x1="25" y1="110" x2="90" y2="110" stroke="#334155" stroke-width="2"/>
+            <circle cx="90" cy="110" r="4" fill="white" stroke="#334155" stroke-width="2"/>
+            <text x="97" y="114" font-size="10" fill="#334155">Output</text>
+            <!-- R2 -->
+            <rect x="10" y="110" width="30" height="50" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+            <text x="25" y="138" text-anchor="middle" font-size="11" font-weight="700" fill="#15803d">R2</text>
+            <!-- V2 / Vout label right of R2 -->
+            <text x="52" y="128" font-size="10" fill="#64748b">V2</text>
+            <text x="52" y="142" font-size="9" fill="#0f766e">(Vout)</text>
+            <line x1="44" y1="110" x2="48" y2="110" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="44" y1="160" x2="48" y2="160" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="48" y1="110" x2="48" y2="160" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+            <!-- bottom wire -->
+            <line x1="25" y1="160" x2="25" y2="185" stroke="#334155" stroke-width="2"/>
+            <!-- 0v label -->
+            <line x1="15" y1="185" x2="35" y2="185" stroke="#334155" stroke-width="2"/>
+            <line x1="18" y1="190" x2="32" y2="190" stroke="#334155" stroke-width="1.5"/>
+            <line x1="21" y1="195" x2="29" y2="195" stroke="#334155" stroke-width="1"/>
+            <text x="14" y="210" font-size="11" font-weight="700" fill="#64748b">0V</text>
+            <!-- RT brace left -->
+            <line x1="4" y1="40" x2="1" y2="40" stroke="#94a3b8" stroke-width="1"/>
+            <line x1="4" y1="160" x2="1" y2="160" stroke="#94a3b8" stroke-width="1"/>
+            <line x1="1" y1="40" x2="1" y2="160" stroke="#94a3b8" stroke-width="1"/>
+            <text x="-26" y="105" font-size="9" fill="#64748b" transform="rotate(-90,0,105)">RT = R1+R2</text>
+          </svg>
+        </div>
+
+        <div style="flex:1;min-width:220px;">
+          <table class="data-table" style="margin:0;">
+            <tr><th>Label</th><th>What it means</th></tr>
+            <tr><td><strong>Vs</strong></td><td>Supply voltage &mdash; equal to V1 + V2</td></tr>
+            <tr><td><strong>R1</strong></td><td>Upper resistor (or component)</td></tr>
+            <tr><td><strong>R2</strong></td><td>Lower resistor (or component)</td></tr>
+            <tr><td><strong>V1</strong></td><td>Voltage from Vs to the output connection</td></tr>
+            <tr><td><strong>V2 / Vout</strong></td><td>Voltage from output to 0V &mdash; this is the useful output</td></tr>
+            <tr><td><strong>RT</strong></td><td>Total resistance = R1 + R2</td></tr>
+            <tr><td><strong>0V</strong></td><td>Ground / negative terminal of supply</td></tr>
+          </table>
+        </div>
       </div>
 
-      <p class="notes-p">You can also use the ratio rule: V<sub>1</sub>/V<sub>2</sub> = R<sub>1</sub>/R<sub>2</sub></p>
+      <h2 class="notes-h2">Calculating Vout</h2>
+      <p class="notes-p">There are two ways to find Vout (V2), depending on what you already know:</p>
 
-      <h2 class="notes-h2">Sensor components</h2>
-      <p class="notes-p">Three components change their resistance in response to their environment, making them ideal for voltage divider sensors:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:16px;margin:12px 0;">
+        <div class="formula-box" style="flex:1;min-width:200px;">
+          <div class="formula-sub" style="font-weight:700;color:var(--teal-800);margin-bottom:6px;">Method 1 &mdash; if you know V1</div>
+          <div style="font-size:14px;color:var(--teal-800);font-weight:600;">V1/V2 = R1/R2</div>
+          <div class="formula-sub">The ratio of voltages equals the ratio of resistances</div>
+        </div>
+        <div class="formula-box" style="flex:1;min-width:200px;">
+          <div class="formula-sub" style="font-weight:700;color:var(--teal-800);margin-bottom:6px;">Method 2 &mdash; if you know Vs</div>
+          <div class="formula">V<sub>out</sub> = V<sub>s</sub> &times; R<sub>2</sub> &divide; R<sub>T</sub></div>
+          <div class="formula-sub">where R<sub>T</sub> = R<sub>1</sub> + R<sub>2</sub></div>
+        </div>
+      </div>
+
+      <p class="notes-p">You can also find V1 using <strong>Kirchhoff's Voltage Law</strong>: Vs = V1 + V2, so V1 = Vs &minus; V2.</p>
+
+      <h2 class="notes-h2">Sensor components and transducers</h2>
+      <p class="notes-p">Three components change their resistance in response to their environment, making them ideal for voltage divider sensors. These are called <strong>input transducers</strong> &mdash; components that convert a physical change (light, heat, pressure) into an electrical signal.</p>
+      <div class="key-point">&#x1F4A1; <strong>Transducers</strong> convert energy from one form to another. <strong>Input transducers</strong> (LDR, thermistor) convert physical conditions into electrical signals. <strong>Output transducers</strong> (lamp, motor, buzzer) convert electrical energy back into light, movement, or sound.</div>
 
       <div class="comp-grid">
         <div class="comp-card-sym">
@@ -877,7 +1085,7 @@
 
       <!-- ── Tasks 6a ────────────────────────────────────────────────── -->
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 6a &mdash; Reading sensor graphs and calculating V<sub>out</sub></div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6a &mdash; Reading sensor graphs and calculating V<sub>out</sub></div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Use the ORP12 LDR graph and the thermistor graph (curve 3) above to answer these questions. For each calculation, show clearly: the resistance you read from the graph, R<sub>T</sub>, and V<sub>out</sub>.</p>
 
@@ -950,7 +1158,7 @@
       <div class="key-point">LDR in the <strong>lower</strong> position: V<sub>out</sub> is <strong>high in the dark</strong>, low in the light &mdash; a dark sensor.<br>LDR in the <strong>upper</strong> position: V<sub>out</sub> is <strong>high in the light</strong>, low in the dark &mdash; a light sensor.</div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task &mdash; Light sensor vs dark sensor</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6b &mdash; Light sensor vs dark sensor</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1. Using the simulator above, record V<sub>out</sub> at three different light levels and describe the trend.</div>
@@ -975,7 +1183,7 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q111"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q111" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">4. A designer wants to use a transistor to switch on a street lamp automatically when it gets dark. Should they use a light sensor or a dark sensor configuration for the voltage divider? Explain your reasoning.</div>
+            <div class="task-q">4. A designer wants to switch on a street lamp automatically when it gets dark. Should they use a light sensor or a dark sensor configuration for the voltage divider? Explain your reasoning.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q112"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q112" data-placeholder="Type your answer here..."></div>
           </div>
         </div>
@@ -1032,7 +1240,7 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 6 &mdash; Voltage divider calculations</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6c &mdash; Voltage divider calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1. A voltage divider has R<sub>1</sub> = 200 &Omega; and R<sub>2</sub> = 600 &Omega; with a 12 V supply. Calculate the voltage across each resistor.</div>
@@ -1066,16 +1274,16 @@
 
       <hr class="divider">
 
-      <h1 class="notes-h1">Section 9: Transistors</h1>
+      <h1 class="notes-h1">Section 8: Transistors</h1>
 
       <h2 class="notes-h2">Why do we need a transistor?</h2>
       <p class="notes-p">You have seen that a sensor voltage divider produces a voltage that varies with conditions &mdash; rising in darkness, falling in light, or rising with heat. But that varying voltage on its own cannot switch a motor, a buzzer, or a lamp. Those output devices need a <strong>much larger current</strong> than the tiny sensor circuit can ever supply.</p>
       <p class="notes-p">What we need is a component that can use a <strong>small voltage (and tiny current)</strong> from the sensor circuit to control a <strong>much larger current</strong> in a completely separate output circuit. That component is the <strong>transistor</strong>.</p>
 
-      <div class="key-point" style="font-size:14px;">&#x1F4A1; <strong>The big idea:</strong> a small current into the transistor's <strong>base</strong> controls a much larger current through the <strong>collector</strong> and <strong>emitter</strong>. The transistor is a current-controlled switch &mdash; like a tap where a small turn of the handle (base current) controls a large flow of water (collector current).</div>
+      <div class="key-point" style="font-size:14px;">&#x1F4A1; <strong>The tap analogy:</strong> imagine a water tap. A tiny turn of the handle (a small base current) allows a large flow of water through the pipe (a large collector current). The transistor works the same way &mdash; a small signal at the base controls a much larger current between collector and emitter. The transistor is the key component here, not a relay &mdash; it is a solid-state (no moving parts) electronic switch built into a tiny package.</div>
 
       <h2 class="notes-h2">What is a transistor?</h2>
-      <p class="notes-p">The type used in N5 Engineering Science is the <strong>NPN Bipolar Junction Transistor (BJT)</strong>. It has three legs:</p>
+      <p class="notes-p">The type used in N5 Engineering Science is the <strong>NPN Bipolar Junction Transistor (BJT)</strong>. It is a solid-state semiconductor device &mdash; it has no moving parts and can switch on and off millions of times per second. It has three legs:</p>
 
       <div class="comp-grid">
         <div class="comp-card-sym">
@@ -1174,7 +1382,7 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 7 &mdash; Transistor circuit design</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Transistor circuit design</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">Design transistor switching circuits for the functions below. Sketch each circuit and explain your component choices.</div>
@@ -1193,7 +1401,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 10: Relays</h1>
+      <h1 class="notes-h1">Section 9: Relays</h1>
 
       <h2 class="notes-h2">Why use a relay?</h2>
       <p class="notes-p">Many output devices &mdash; such as motors in industrial machinery or mains-powered heaters &mdash; require much higher voltages and currents than a low-power electronic circuit can safely supply. A <strong>relay</strong> is the link between the two: a small control current switches a magnetically operated contact that controls the high-power circuit.</p>
@@ -1232,7 +1440,7 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 8 &mdash; Relays</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; Relays</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1. Explain in your own words why a relay is needed to connect the 5 V control circuit to the 230 V mains heater. Why can the transistor not do this job directly?</div>
@@ -1265,7 +1473,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 11: Circuit Construction &mdash; Breadboards</h1>
+      <h1 class="notes-h1">Section 10: Circuit Construction &mdash; Breadboards</h1>
 
       <p class="notes-p">A <strong>prototype circuit board</strong> (breadboard) lets you build and test circuits without soldering. Components and wires can be inserted and removed easily, making it ideal for testing and fault-finding before making a permanent circuit.</p>
 
@@ -1290,7 +1498,7 @@
       </table>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Tasks 9 &mdash; Circuit construction</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 9 &mdash; Circuit construction</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1. In the simulator, build an LED series circuit with a 9 V battery, 470 &Omega; resistor and red LED. Measure the voltage across each component using a voltmeter. Record your readings.</div>
