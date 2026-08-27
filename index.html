@@ -1,85 +1,511 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home — Engineering Science Scotland</title>
-  <link rel="stylesheet" href="css/style.css?v=2">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Engineering Science — Course Notes and Simulators</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --teal: #1F6F5C;
+    --teal-dark: #15503F;
+    --teal-pale: #EAF5F1;
+    --ink: #1C2523;
+    --body-text: #4B5A56;
+    --muted: #7C8B87;
+    --page-bg: #F7F7F5;
+    --card-bg: #FFFFFF;
+    --border: #E4E4E1;
+    --amber-bg: #FDF3D8;
+    --amber-border: #F0DFA8;
+    --amber-text: #7A5B12;
+
+    /* Kept for later use once the full multi-page site goes live again —
+       this is the "Available" status pill style from the real card
+       structure. Not used anywhere in this slimmed page on purpose,
+       since every card here is available by definition. */
+    --pill-green-bg: #DEF2E4;
+    --pill-green-text: #1E6B3B;
+
+    --sim-icon-bg: #DEE8F6;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html, body{ margin: 0; padding: 0; }
+  body{
+    background: var(--page-bg);
+    color: var(--ink);
+    font-family: "Inter", ui-sans-serif, -apple-system, "Segoe UI", sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{ color: inherit; text-decoration: none; }
+  a:focus-visible, button:focus-visible{ outline: 2px solid var(--teal); outline-offset: 2px; }
+
+  /* ---------------- top bar ---------------- */
+  .topbar{
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
+  .topbar-inner{
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 12px 28px;
+  }
+  .brand{ display: flex; align-items: center; gap: 11px; }
+  .brand img.logo{ height: 34px; width: auto; display: block; }
+  .brand-word{ line-height: 1.15; text-align: center; }
+  .brand-word .l1{ font-weight: 800; font-size: 15.5px; color: var(--ink); white-space: pre; }
+  .brand-word .l2{ font-weight: 700; font-size: 10px; color: var(--teal); white-space: pre; }
+
+  .levels{ display: flex; align-items: center; gap: 6px; }
+  .level-pill{
+    font-size: 13.5px; font-weight: 600; padding: 7px 16px; border-radius: 20px;
+  }
+  .level-pill.active{ background: var(--teal); color: #fff; }
+  .level-pill.muted{ color: #B3B9B6; cursor: default; }
+
+  .teacher-btn{
+    display: flex; align-items: center; gap: 7px;
+    font-size: 13.5px; font-weight: 600; color: var(--ink);
+    border: 1px solid var(--border); border-radius: 8px; padding: 8px 14px;
+    white-space: nowrap;
+  }
+
+  .header-actions{ display: flex; align-items: center; gap: 10px; }
+  .full-site-pill{
+    display: flex; align-items: center; gap: 6px;
+    font-size: 12.5px; font-weight: 600; color: var(--muted);
+    border: 1px dashed var(--border); border-radius: 20px; padding: 7px 14px;
+    white-space: nowrap;
+  }
+  .full-site-pill:hover{ color: var(--teal); border-color: var(--teal); }
+  .full-site-pill svg{ width: 12px; height: 12px; }
+
+  /* ---------------- layout ---------------- */
+  .layout{
+    max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: 248px 1fr; gap: 0;
+    align-items: start;
+  }
+  aside.sidebar{
+    position: sticky; top: 60px;
+    padding: 30px 20px 40px 28px;
+    height: calc(100vh - 60px);
+    overflow-y: auto;
+  }
+  .side-group{ margin-bottom: 22px; }
+  .side-group-title{
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em;
+    color: var(--teal-dark); text-transform: uppercase;
+    padding: 6px 10px; margin-bottom: 2px;
+  }
+  .side-link{
+    display: block; font-size: 14px; color: var(--body-text);
+    padding: 7px 10px 7px 20px; border-radius: 7px; margin: 1px 0;
+  }
+  .side-link:hover{ background: #F0F0EE; }
+
+  main.content{ padding: 34px 32px 90px; min-width: 0; }
+
+  .crumb{
+    font-size: 11.5px; font-weight: 700; letter-spacing: 0.05em;
+    color: var(--teal); text-transform: uppercase; margin-bottom: 10px;
+  }
+  h1.page-title{
+    font-size: 2.1rem; font-weight: 800; letter-spacing: -0.015em;
+    margin: 0 0 10px; color: var(--ink);
+  }
+  p.page-lede{
+    font-size: 1.02rem; color: var(--body-text); max-width: 66ch;
+    line-height: 1.6; margin: 0 0 38px;
+  }
+
+  section.area{ margin-bottom: 40px; scroll-margin-top: 76px; }
+  .area-head{
+    display: flex; align-items: baseline; gap: 12px;
+    border-bottom: 2px solid var(--ink); padding-bottom: 10px; margin-bottom: 22px;
+  }
+  .area-head h2{ font-size: 1.4rem; font-weight: 800; margin: 0; letter-spacing: -0.01em; }
+  .area-head .count{ font-size: 12.5px; color: var(--muted); font-weight: 600; }
+
+  .topic{ margin-bottom: 26px; scroll-margin-top: 76px; }
+  .topic:last-child{ margin-bottom: 0; }
+  .topic-head{ margin-bottom: 11px; }
+  .topic-head h3{ font-size: 1.05rem; font-weight: 700; margin: 0 0 2px; color: var(--ink); }
+  .topic-head p{ font-size: 13px; color: var(--muted); margin: 0; max-width: 60ch; }
+
+  .card-row{ display: flex; flex-wrap: wrap; gap: 10px; }
+
+  /* ---- compact card: icon + title (+ launch link for simulators) ---- */
+  .card{
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    width: 148px;
+    padding: 12px 10px 11px;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center;
+    transition: box-shadow .15s ease, transform .15s ease, border-color .15s ease;
+  }
+  .card:hover{
+    box-shadow: 0 5px 14px rgba(28,37,35,0.08);
+    transform: translateY(-2px);
+    border-color: #D3D8D5;
+  }
+  .card-icon-img{
+    width: 40px; height: 40px; border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 8px;
+  }
+  .card-icon-emoji{
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--sim-icon-bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+  .card-disabled{ cursor: default; opacity: 0.55; }
+  .card-disabled:hover{ box-shadow: none; transform: none; border-color: var(--border); }
+  .card h4{ font-size: 12.5px; font-weight: 700; margin: 0; color: var(--ink); line-height: 1.3; }
+  .card .launch-link{ margin-top: 6px; }
+
+  .launch-link{
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; font-weight: 700; color: var(--teal);
+  }
+  .launch-link svg{ width: 10px; height: 10px; }
+
+  footer.site-footer{
+    border-top: 1px solid var(--border);
+    padding: 24px 32px 14px;
+  }
+  footer.site-footer p{
+    font-size: 12.5px; color: var(--muted); margin: 0; white-space: nowrap;
+  }
+  .feedback-btn{
+    position: fixed; right: 22px; bottom: 22px; z-index: 40;
+    background: var(--teal); color: #fff; font-size: 13.5px; font-weight: 700;
+    padding: 11px 18px; border-radius: 24px;
+    display: flex; align-items: center; gap: 8px;
+    box-shadow: 0 6px 16px rgba(21,80,63,0.28);
+  }
+
+  @media (max-width: 900px){
+    .layout{ grid-template-columns: 1fr; }
+    aside.sidebar{ display: none; }
+    main.content{ padding: 26px 20px 80px; }
+    footer.site-footer p{ white-space: normal; }
+  }
+
+  @media (max-width: 700px){
+    .topbar-inner{ flex-wrap: wrap; row-gap: 8px; padding: 12px 16px; }
+    .full-site-pill{ display: none; }
+    .levels{ order: 3; width: 100%; }
+  }
+
+  @media (prefers-reduced-motion: reduce){ *{ transition: none !important; } }
+</style>
 </head>
 <body>
-<style>
-.home-full { margin-top: var(--topbar-h); }
-</style>
-<nav class="topbar">
-  <a href="index.html" class="logo">
-    <img src="images/logo.png" alt="Engineering Science Scotland logo" style="height:34px;width:auto;display:block;">
-    <div class="logo-text">
-      <span class="logo-title">Engineering Science</span>
-      <span class="logo-sub">S C O T L A N D</span>
-    </div>
-  </a>
-  <div class="level-tabs"><a href="n5/mechanisms/index.html" class="level-tab active" data-level="n5">National 5</a><a href="higher/mechanisms/index.html" class="level-tab" data-level="higher">Higher</a><a href="ah/mechanisms/index.html" class="level-tab" data-level="ah">Advanced Higher</a></div>
-  <div class="topbar-right">
-    <a href="teacher/login.html" class="teacher-btn">
-      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
-      Teacher area
-    </a>
-  </div>
-</nav>
-<div class="home-full">
-  <div class="home-hero">
-    <svg class="home-hero-geo" viewBox="0 0 300 400" fill="none" preserveAspectRatio="xMidYMid slice">
-      <circle cx="200" cy="150" r="120" stroke="white" stroke-width="1"/>
-      <circle cx="200" cy="150" r="80" stroke="white" stroke-width="1"/>
-      <circle cx="200" cy="150" r="40" stroke="white" stroke-width="0.5"/>
-      <line x1="80" y1="150" x2="320" y2="150" stroke="white" stroke-width="0.5"/>
-      <line x1="200" y1="30" x2="200" y2="270" stroke="white" stroke-width="0.5"/>
-    </svg>
-    <h1 class="home-hero-title">Engineering Science <span>Scotland</span></h1>
-    <p class="home-hero-label" style="margin-top:4px;margin-bottom:8px;font-size:13px;color:#9FE1CB;letter-spacing:1px;font-weight:600;text-transform:uppercase;">Resource Hub</p>
-    <p class="home-hero-sub" style="max-width:none;width:100%;">Course notes, tasks, simulations and assessments &mdash; fully aligned to the Qualifications Scotland Engineering Science course specifications at National 5, Higher and Advanced Higher.</p>
 
-  </div>
-  <div class="stats-bar">
-    <div class="stat"><div class="stat-val">3</div><div class="stat-label">Course levels</div></div>
-    <div class="stat"><div class="stat-val">10+</div><div class="stat-label">Topic areas</div></div>
-    <div class="stat"><div class="stat-val">Free</div><div class="stat-label">For Scottish schools</div></div>
-  </div>
-  <div class="home-content">
-    <div class="home-section-label">Choose your level</div>
-    <div class="level-cards">
-      <a href="n5/mechanisms/index.html" class="level-card featured">
-        <div class="lc-band n5"></div>
-        <div class="lc-body">
-          <div class="lc-scqf">SCQF Level 5</div>
-          <div class="lc-title">National 5</div>
-          <div class="lc-sub">Core engineering principles with simulation activities and full assessment tasks.</div>
-          <div class="lc-tags"><span class="lc-tag">Contexts</span><span class="lc-tag">Electronics</span><span class="lc-tag">Mechanisms</span></div>
-        </div>
-        <div class="lc-footer"><span class="lc-status">Resources available now</span><span class="lc-arrow">&rarr;</span></div>
+<div class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="https://engineeringsciencescotland.co.uk/index.html">
+      <img class="logo" src="https://engineeringsciencescotland.co.uk/images/logo.png" alt="Engineering Science Scotland">
+      <div class="brand-word">
+        <div class="l1">Engineering Science</div>
+        <div class="l2">S     C      O     T      L     A      N     D</div>
+      </div>
+    </a>
+    <div class="levels">
+      <span class="level-pill active">National 5</span>
+      <span class="level-pill muted">Higher</span>
+      <span class="level-pill muted">Advanced Higher</span>
+    </div>
+    <div class="header-actions">
+      <a class="full-site-pill" href="https://engineeringsciencescotland.co.uk/n5/contexts/index.html">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="12" height="10" rx="1.3"/><path d="M2 6.3h12"/></svg>
+        Team preview
       </a>
-      <a href="higher/mechanisms/index.html" class="level-card">
-        <div class="lc-band higher"></div>
-        <div class="lc-body">
-          <div class="lc-scqf">SCQF Level 6</div>
-          <div class="lc-title">Higher</div>
-          <div class="lc-sub">Extended theory including op-amps, torque calculations and nodal analysis.</div>
-          <div class="lc-tags"><span class="lc-tag">Contexts</span><span class="lc-tag">Electronics</span><span class="lc-tag">Mechanisms</span></div>
-        </div>
-        <div class="lc-footer"><span class="lc-status">Coming soon</span><span class="lc-arrow">&rarr;</span></div>
-      </a>
-      <a href="ah/mechanisms/index.html" class="level-card">
-        <div class="lc-band ah"></div>
-        <div class="lc-body">
-          <div class="lc-scqf">SCQF Level 7</div>
-          <div class="lc-title">Advanced Higher</div>
-          <div class="lc-sub">Advanced analysis &mdash; project management, Kirchhoff&rsquo;s laws, beam deflection.</div>
-          <div class="lc-tags"><span class="lc-tag">Project mgmt</span><span class="lc-tag">Electronics</span><span class="lc-tag">Mechanisms</span></div>
-        </div>
-        <div class="lc-footer"><span class="lc-status">Coming soon</span><span class="lc-arrow">&rarr;</span></div>
+      <a class="teacher-btn" href="https://engineeringsciencescotland.co.uk/teacher/login.html">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3.5" y="7" width="9" height="6.5" rx="1"/><path d="M5.5 7V4.8a2.5 2.5 0 0 1 5 0V7"/></svg>
+        Teacher area
       </a>
     </div>
   </div>
 </div>
-<script src="js/site.js"></script>
-</body></html>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="side-group">
+      <div class="side-group-title">Engineering Contexts</div>
+      <a class="side-link" href="#systems-approach">The Systems Approach</a>
+      <a class="side-link" href="#energy-efficiency">Energy and Efficiency</a>
+      <a class="side-link" href="#roles-disciplines">Engineering Roles and Disciplines</a>
+      <a class="side-link" href="#impacts">Impacts of Engineering</a>
+    </div>
+    <div class="side-group">
+      <div class="side-group-title">Electronics and Control</div>
+      <a class="side-link" href="#analogue">Analogue Electronics</a>
+      <a class="side-link" href="#digital">Digital Electronics</a>
+      <a class="side-link" href="#control">Control Systems</a>
+    </div>
+    <div class="side-group">
+      <div class="side-group-title">Mechanisms and Structures</div>
+      <a class="side-link" href="#drive-systems">Drive Systems</a>
+      <a class="side-link" href="#pneumatics">Pneumatics</a>
+      <a class="side-link" href="#structures-forces">Structures and Forces</a>
+      <a class="side-link" href="#materials">Materials</a>
+    </div>
+  </aside>
+
+  <main class="content">
+    <div class="crumb">National 5</div>
+    <h1 class="page-title">Engineering Science — Course Notes and Simulators</h1>
+    <p class="page-lede">Notes and interactive simulators for every National 5 topic, all on one page. Pick a topic from the list on the left, or scroll through by subject area below.</p>
+
+    <section class="area" id="contexts">
+      <div class="area-head"><h2>Engineering Contexts</h2><span class="count">4 topics</span></div>
+
+      <div class="topic" id="systems-approach">
+        <div class="topic-head">
+          <h3>The Systems Approach</h3>
+          <p>Inputs, processes, outputs and feedback in engineering systems.</p>
+        </div>
+        <div class="card-row">
+          <a class="card" href="https://engineeringsciencescotland.co.uk/n5/contexts/systems-approach/course-notes.html">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/course-notes.jpg" alt="" loading="lazy">
+            <h4>Course notes</h4>
+          </a>
+          <div class="card card-disabled" title="Coming soon">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/printable-notes.jpg" alt="" loading="lazy">
+            <h4>Printable notes</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic" id="energy-efficiency">
+        <div class="topic-head">
+          <h3>Energy and Efficiency</h3>
+          <p>Energy transfer, efficiency and sustainable engineering systems.</p>
+        </div>
+        <div class="card-row">
+          <a class="card" href="https://engineeringsciencescotland.co.uk/n5/contexts/energy-efficiency/course-notes.html">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/course-notes.jpg" alt="" loading="lazy">
+            <h4>Course notes</h4>
+          </a>
+          <div class="card card-disabled" title="Coming soon">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/printable-notes.jpg" alt="" loading="lazy">
+            <h4>Printable notes</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic" id="roles-disciplines">
+        <div class="topic-head">
+          <h3>Engineering Roles and Disciplines</h3>
+          <p>Career pathways, disciplines and the stages of an engineering project.</p>
+        </div>
+        <div class="card-row">
+          <a class="card" href="https://engineeringsciencescotland.co.uk/n5/contexts/roles-disciplines/course-notes.html">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/course-notes.jpg" alt="" loading="lazy">
+            <h4>Course notes</h4>
+          </a>
+          <div class="card card-disabled" title="Coming soon">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/printable-notes.jpg" alt="" loading="lazy">
+            <h4>Printable notes</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic" id="impacts">
+        <div class="topic-head">
+          <h3>Impacts of Engineering</h3>
+          <p>Social, economic and environmental impacts of engineering projects.</p>
+        </div>
+        <div class="card-row">
+          <a class="card" href="https://engineeringsciencescotland.co.uk/n5/contexts/impacts/course-notes.html">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/course-notes.jpg" alt="" loading="lazy">
+            <h4>Course notes</h4>
+          </a>
+          <div class="card card-disabled" title="Coming soon">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/printable-notes.jpg" alt="" loading="lazy">
+            <h4>Printable notes</h4>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="area" id="electronics">
+      <div class="area-head"><h2>Electronics and Control</h2><span class="count">3 topics</span></div>
+
+      <div class="topic" id="analogue">
+        <div class="topic-head">
+          <h3>Analogue Electronics</h3>
+          <p>Current, voltage, resistance, Ohm&#x27;s law, circuit types and transistor switching.</p>
+        </div>
+        <div class="card-row">
+          <a class="card" href="https://engineeringsciencescotland.co.uk/n5/electronics/analogue/course-notes.html">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/course-notes.jpg" alt="" loading="lazy">
+            <h4>Course notes</h4>
+          </a>
+          <div class="card card-disabled" title="Coming soon">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/printable-notes.jpg" alt="" loading="lazy">
+            <h4>Printable notes</h4>
+          </div>
+          <a class="card" href="https://engineeringsciencescotland.co.uk/simulators/electronics.html">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/simulator-analogue.jpg" alt="" loading="lazy">
+            <h4>NoResistance</h4>
+            <span class="launch-link">Launch <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+          </a>
+        </div>
+      </div>
+
+      <div class="topic" id="digital">
+        <div class="topic-head">
+          <h3>Digital Electronics</h3>
+          <p>Logic gates, truth tables and digital circuit design.</p>
+        </div>
+        <div class="card-row">
+          <a class="card" href="https://engineeringsciencescotland.co.uk/n5/electronics/digital/course-notes.html">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/course-notes.jpg" alt="" loading="lazy">
+            <h4>Course notes</h4>
+          </a>
+          <div class="card card-disabled" title="Coming soon">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/printable-notes.jpg" alt="" loading="lazy">
+            <h4>Printable notes</h4>
+          </div>
+          <a class="card" href="https://engineeringsciencescotland.co.uk/simulators/digital.html">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/simulator-digital.jpg" alt="" loading="lazy">
+            <h4>NoNANDSense</h4>
+            <span class="launch-link">Launch <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+          </a>
+        </div>
+      </div>
+
+      <div class="topic" id="control">
+        <div class="topic-head">
+          <h3>Control Systems</h3>
+          <p>Flowcharts, microcontrollers, inputs, outputs and program control.</p>
+        </div>
+        <div class="card-row">
+          <a class="card" href="https://engineeringsciencescotland.co.uk/n5/electronics/control/course-notes.html">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/course-notes.jpg" alt="" loading="lazy">
+            <h4>Course notes</h4>
+          </a>
+          <div class="card card-disabled" title="Coming soon">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/printable-notes.jpg" alt="" loading="lazy">
+            <h4>Printable notes</h4>
+          </div>
+          <a class="card" href="https://engineeringsciencescotland.co.uk/simulators/control.html">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/simulator-control.jpg" alt="" loading="lazy">
+            <h4>NoSyntax</h4>
+            <span class="launch-link">Launch <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="area" id="mechanisms">
+      <div class="area-head"><h2>Mechanisms and Structures</h2><span class="count">4 topics</span></div>
+
+      <div class="topic" id="drive-systems">
+        <div class="topic-head">
+          <h3>Drive Systems</h3>
+          <p>Gears, pulleys, chains and belt drives.</p>
+        </div>
+        <div class="card-row">
+          <a class="card" href="https://engineeringsciencescotland.co.uk/n5/mechanisms/drive-systems/course-notes.html">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/course-notes.jpg" alt="" loading="lazy">
+            <h4>Course notes</h4>
+          </a>
+          <div class="card card-disabled" title="Coming soon">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/printable-notes.jpg" alt="" loading="lazy">
+            <h4>Printable notes</h4>
+          </div>
+          <a class="card" href="https://engineeringsciencescotland.co.uk/simulators/drive-systems.html">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/simulator-drives.jpg" alt="" loading="lazy">
+            <h4>NoGrind</h4>
+            <span class="launch-link">Launch <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+          </a>
+        </div>
+      </div>
+
+      <div class="topic" id="pneumatics">
+        <div class="topic-head">
+          <h3>Pneumatics</h3>
+          <p>Pneumatic components, circuits and control systems.</p>
+        </div>
+        <div class="card-row">
+          <a class="card" href="https://engineeringsciencescotland.co.uk/n5/mechanisms/pneumatics/course-notes.html">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/course-notes.jpg" alt="" loading="lazy">
+            <h4>Course notes</h4>
+          </a>
+          <div class="card card-disabled" title="Coming soon">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/printable-notes.jpg" alt="" loading="lazy">
+            <h4>Printable notes</h4>
+          </div>
+          <a class="card" href="https://engineeringsciencescotland.co.uk/simulators/pneumatics.html">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/simulator-pneumatics.jpg" alt="" loading="lazy">
+            <h4>No Pressure</h4>
+            <span class="launch-link">Launch <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 8h10M9 4l4 4-4 4"/></svg></span>
+          </a>
+        </div>
+      </div>
+
+      <div class="topic" id="structures-forces">
+        <div class="topic-head">
+          <h3>Structures and Forces</h3>
+          <p>Forces, loading and structural design.</p>
+        </div>
+        <div class="card-row">
+          <a class="card" href="https://engineeringsciencescotland.co.uk/n5/mechanisms/structures-forces/course-notes.html">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/course-notes.jpg" alt="" loading="lazy">
+            <h4>Course notes</h4>
+          </a>
+          <div class="card card-disabled" title="Coming soon">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/printable-notes.jpg" alt="" loading="lazy">
+            <h4>Printable notes</h4>
+          </div>
+        </div>
+      </div>
+
+      <div class="topic" id="materials">
+        <div class="topic-head">
+          <h3>Materials</h3>
+          <p>Properties, selection and application of engineering materials.</p>
+        </div>
+        <div class="card-row">
+          <a class="card" href="https://engineeringsciencescotland.co.uk/n5/mechanisms/materials/course-notes.html">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/course-notes.jpg" alt="" loading="lazy">
+            <h4>Course notes</h4>
+          </a>
+          <div class="card card-disabled" title="Coming soon">
+            <img class="card-icon-img" src="https://engineeringsciencescotland.co.uk/images/icons/printable-notes.jpg" alt="" loading="lazy">
+            <h4>Printable notes</h4>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <p>End-of-unit tests, extension tasks, homework assignments, teacher presentations and marking instructions to follow</p>
+    </footer>
+  </main>
+</div>
+
+<a class="feedback-btn" href="mailto:g.sanderson@gwc.org.uk?subject=ESS%20Website%20Feedback">💬 Feedback</a>
+
+</body>
+</html>
