@@ -41,6 +41,13 @@
     .triangle-cell { flex:1; font-size:20px; font-weight:900; color:var(--teal-800); font-family:monospace; text-align:center; padding:0 8px; }
     .triangle-cell + .triangle-cell { border-left:2px solid var(--teal-400); }
 
+    /* Inline fraction (for any calculation that divides one value by another —
+       used instead of the ÷ symbol or a forward slash, in both formula boxes
+       and inline within worked-example steps) */
+    .frac { display:inline-flex; flex-direction:column; align-items:center; justify-content:center; vertical-align:middle; margin:0 4px; line-height:1.25; font-weight:inherit; }
+    .frac .frac-n { padding:0 4px 2px; border-bottom:1.5px solid currentColor; }
+    .frac .frac-d { padding:2px 4px 0; }
+
     /* Worked examples */
     .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:18px 20px; margin:16px 0; }
     .worked-example-title { font-size:13px; font-weight:600; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
@@ -153,10 +160,6 @@
 
       <p class="notes-p">An electric circuit is a <strong>closed loop</strong> made up of components such as batteries, lamps, switches and wires. Current can only flow if the circuit is complete.</p>
 
-      <h3 class="notes-h3">Power supplies and voltage rails</h3>
-      <p class="notes-p">In circuit diagrams, rather than drawing a battery symbol every time, we often use <strong>voltage rails</strong>: a labelled positive line at the top of the diagram (e.g. <strong>+9V</strong>) and a <strong>0V</strong> line (also called <em>ground</em> or <em>GND</em>) at the bottom. Any component connected between these two rails receives the supply voltage across it. You will see this notation used throughout these notes.</p>
-      <div class="key-point">+V rail (top) = positive terminal. &nbsp; 0V rail (bottom) = negative terminal / ground. &nbsp; Conventional current flows from + to 0V through the circuit.</div>
-
       <h2 class="notes-h2">The three key quantities</h2>
 
       <h3 class="notes-h3">Current</h3>
@@ -266,17 +269,32 @@
       <div class="comp-grid">
         <div class="comp-card-sym">
           <svg width="80" height="40" viewBox="0 0 80 40">
-            <line x1="2" y1="20" x2="28" y2="20" stroke="#334155" stroke-width="2"/>
-            <line x1="28" y1="10" x2="28" y2="30" stroke="#334155" stroke-width="3"/>
-            <line x1="36" y1="14" x2="36" y2="26" stroke="#334155" stroke-width="1.5"/>
-            <line x1="44" y1="10" x2="44" y2="30" stroke="#334155" stroke-width="3"/>
-            <line x1="52" y1="14" x2="52" y2="26" stroke="#334155" stroke-width="1.5"/>
+            <line x1="2" y1="20" x2="16" y2="20" stroke="#334155" stroke-width="2"/>
+            <line x1="16" y1="8" x2="16" y2="32" stroke="#334155" stroke-width="1.6"/>
+            <line x1="23" y1="13" x2="23" y2="27" stroke="#334155" stroke-width="4"/>
+            <line x1="29" y1="20" x2="39" y2="20" stroke="#334155" stroke-width="1.4" stroke-dasharray="2.5,2.5"/>
+            <line x1="45" y1="8" x2="45" y2="32" stroke="#334155" stroke-width="1.6"/>
+            <line x1="52" y1="13" x2="52" y2="27" stroke="#334155" stroke-width="4"/>
             <line x1="52" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
-            <text x="26" y="8" font-size="8" fill="#dc2626" font-weight="700">+</text>
-            <text x="72" y="8" font-size="8" fill="#3b82f6" font-weight="700">&minus;</text>
+            <text x="12" y="7" font-size="8" fill="#dc2626" font-weight="700">+</text>
+            <text x="49" y="7" font-size="8" fill="#3b82f6" font-weight="700">&minus;</text>
           </svg>
           <div class="comp-name">Battery</div>
           <div class="comp-unit">Input &mdash; power supply</div>
+        </div>
+        <div class="comp-card-sym">
+          <svg width="80" height="70" viewBox="0 0 80 70">
+            <text x="4" y="10" font-size="9" font-weight="700" fill="#0f766e">+V</text>
+            <line x1="40" y1="14" x2="40" y2="26" stroke="#334155" stroke-width="2"/>
+            <rect x="26" y="26" width="28" height="18" rx="2" fill="white" stroke="#334155" stroke-width="2"/>
+            <line x1="40" y1="44" x2="40" y2="56" stroke="#334155" stroke-width="2"/>
+            <line x1="28" y1="56" x2="52" y2="56" stroke="#334155" stroke-width="2"/>
+            <line x1="32" y1="61" x2="48" y2="61" stroke="#334155" stroke-width="1.5"/>
+            <line x1="36" y1="66" x2="44" y2="66" stroke="#334155" stroke-width="1"/>
+            <text x="4" y="66" font-size="9" font-weight="700" fill="#64748b">0V</text>
+          </svg>
+          <div class="comp-name">Voltage Rails</div>
+          <div class="comp-unit">+V (top), 0V (bottom)</div>
         </div>
       </div>
 
@@ -287,9 +305,9 @@
         <div class="comp-card-sym">
           <svg width="80" height="40" viewBox="0 0 80 40">
             <line x1="2" y1="20" x2="20" y2="20" stroke="#334155" stroke-width="2"/>
-            <circle cx="20" cy="20" r="3" fill="#334155"/>
+            <circle cx="20" cy="20" r="3" fill="white" stroke="#334155" stroke-width="1.6"/>
             <line x1="20" y1="20" x2="55" y2="10" stroke="#334155" stroke-width="2"/>
-            <circle cx="58" cy="20" r="3" fill="white" stroke="#334155" stroke-width="2"/>
+            <circle cx="58" cy="20" r="3" fill="white" stroke="#334155" stroke-width="1.6"/>
             <line x1="58" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
           </svg>
           <div class="comp-name">SPST Switch</div>
@@ -298,7 +316,7 @@
         <div class="comp-card-sym">
           <svg width="80" height="48" viewBox="0 0 80 48">
             <line x1="2" y1="24" x2="20" y2="24" stroke="#334155" stroke-width="2"/>
-            <circle cx="20" cy="24" r="3" fill="#334155"/>
+            <circle cx="20" cy="24" r="3" fill="white" stroke="#334155" stroke-width="1.6"/>
             <line x1="20" y1="24" x2="52" y2="14" stroke="#334155" stroke-width="2"/>
             <circle cx="55" cy="12" r="3" fill="white" stroke="#334155" stroke-width="2"/>
             <line x1="55" y1="12" x2="78" y2="12" stroke="#334155" stroke-width="2"/>
@@ -314,8 +332,8 @@
             <line x1="58" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
             <circle cx="20" cy="20" r="3" fill="white" stroke="#334155" stroke-width="1.5"/>
             <circle cx="58" cy="20" r="3" fill="white" stroke="#334155" stroke-width="1.5"/>
-            <line x1="18" y1="10" x2="60" y2="10" stroke="#334155" stroke-width="2"/>
-            <line x1="40" y1="10" x2="40" y2="2" stroke="#334155" stroke-width="1.5"/>
+            <line x1="18" y1="8" x2="60" y2="8" stroke="#334155" stroke-width="2"/>
+            <line x1="39" y1="8" x2="39" y2="17" stroke="#334155" stroke-width="1.5"/>
           </svg>
           <div class="comp-name">Push-to-make</div>
           <div class="comp-unit">Normally open</div>
@@ -446,7 +464,7 @@
             <span style="border-top:2px solid var(--teal-800);width:40px;display:block;margin:2px 0;"></span>
             <span>R</span>
           </div>
-          <div class="formula-sub" style="margin-top:6px;">I = V &divide; R</div>
+          <div class="formula-sub" style="margin-top:6px;">I = <span class="frac"><span class="frac-n">V</span><span class="frac-d">R</span></span></div>
         </div>
         <div class="formula-box" style="flex:1;min-width:140px;margin:0;">
           <div class="formula" style="display:flex;flex-direction:column;align-items:center;gap:0;">
@@ -454,7 +472,7 @@
             <span style="border-top:2px solid var(--teal-800);width:40px;display:block;margin:2px 0;"></span>
             <span>I</span>
           </div>
-          <div class="formula-sub" style="margin-top:6px;">R = V &divide; I</div>
+          <div class="formula-sub" style="margin-top:6px;">R = <span class="frac"><span class="frac-n">V</span><span class="frac-d">I</span></span></div>
         </div>
       </div>
 
@@ -463,8 +481,8 @@
       <div class="worked-example">
         <div class="worked-example-title">Worked example 1 &mdash; Find the current</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A 6 V battery is connected to a 300 &Omega; resistor. Calculate the current.</p>
-        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Write the formula:</strong> I = V &divide; R</div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Substitute values:</strong> I = 6 &divide; 300</div></div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Write the formula:</strong> I = <span class="frac"><span class="frac-n">V</span><span class="frac-d">R</span></span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Substitute values:</strong> I = <span class="frac"><span class="frac-n">6</span><span class="frac-d">300</span></span></div></div>
         <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate:</strong> I = 0.02 A = <strong>20 mA</strong></div></div>
       </div>
 
@@ -472,8 +490,8 @@
         <div class="worked-example-title">Worked example 2 &mdash; Find the resistance</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A lamp has 9 V across it and 45 mA flowing through it. Calculate the resistance.</p>
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Convert mA to A:</strong> 45 mA = 0.045 A</div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Write the formula:</strong> R = V &divide; I</div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Substitute and calculate:</strong> R = 9 &divide; 0.045 = <strong>200 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Write the formula:</strong> R = <span class="frac"><span class="frac-n">V</span><span class="frac-d">I</span></span></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Substitute and calculate:</strong> R = <span class="frac"><span class="frac-n">9</span><span class="frac-d">0.045</span></span> = <strong>200 &Omega;</strong></div></div>
       </div>
 
       <div class="assignment">
@@ -547,7 +565,7 @@
         <div class="worked-example-title">Worked example &mdash; Series resistors</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">Three resistors are connected in series: 100 &Omega;, 220 &Omega; and 330 &Omega;. The supply voltage is 9 V. Find the total resistance and the circuit current.</p>
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Total resistance:</strong> R<sub>T</sub> = 100 + 220 + 330 = <strong>650 &Omega;</strong></div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Circuit current:</strong> I = V &divide; R = 9 &divide; 650 = <strong>13.8 mA</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Circuit current:</strong> I = <span class="frac"><span class="frac-n">V</span><span class="frac-d">R</span></span> = <span class="frac"><span class="frac-n">9</span><span class="frac-d">650</span></span> = <strong>13.8 mA</strong></div></div>
         <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Voltage across 100 &Omega; resistor:</strong> V = I &times; R = 0.0138 &times; 100 = <strong>1.38 V</strong></div></div>
       </div>
 
@@ -620,7 +638,7 @@
       <ul class="notes-ul">
         <li><strong>Voltage rule:</strong> the sum of the voltage drops around any complete loop equals the supply voltage.</li>
       </ul>
-      <div class="spec-note">&#x1F4D6; This rule is part of <em>Kirchhoff's Laws</em> (after the German physicist Gustav Kirchhoff). You do <strong>not</strong> need to remember his name for the exam &mdash; just the rule itself.</div>
+      <div class="spec-note">&#x1F4D6; This rule is part of <em>Kirchhoff's Laws</em> (after the German physicist Gustav Kirchhoff).<br>You do <strong>not</strong> need to remember his name for the exam &mdash; just the rule itself.</div>
 
       <div class="key-point">In a <strong>series circuit</strong>: the current is the same everywhere, and the voltages add up to the supply voltage.</div>
       <p class="notes-p" style="font-size:13px;color:var(--gray-500);"><em>Note: a second rule about current at junctions applies to parallel circuits &mdash; you will meet this in Section 6.</em></p>
@@ -680,32 +698,44 @@
 
       <p class="notes-p"><strong>General formula</strong> (for any number of resistors):</p>
       <div class="formula-box">
-        <div class="formula">1/R<sub>T</sub> = 1/R<sub>1</sub> + 1/R<sub>2</sub> + 1/R<sub>3</sub> + &hellip;</div>
+        <div class="formula" style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;">
+          <span class="frac"><span class="frac-n">1</span><span class="frac-d">R<sub>T</sub></span></span>
+          <span>=</span>
+          <span class="frac"><span class="frac-n">1</span><span class="frac-d">R<sub>1</sub></span></span>
+          <span>+</span>
+          <span class="frac"><span class="frac-n">1</span><span class="frac-d">R<sub>2</sub></span></span>
+          <span>+</span>
+          <span class="frac"><span class="frac-n">1</span><span class="frac-d">R<sub>3</sub></span></span>
+          <span>+ &hellip;</span>
+        </div>
       </div>
 
       <p class="notes-p"><strong>Special case: two resistors in parallel</strong> (the most common situation):</p>
       <div class="formula-box">
-        <div class="formula">R<sub>T</sub> = (R<sub>1</sub> &times; R<sub>2</sub>) &divide; (R<sub>1</sub> + R<sub>2</sub>)</div>
-        <div class="formula-sub">Product &divide; Sum &mdash; only works for <em>two</em> resistors</div>
+        <div class="formula" style="display:flex;align-items:center;justify-content:center;gap:6px;">
+          <span>R<sub>T</sub> =</span>
+          <span class="frac"><span class="frac-n">R<sub>1</sub> &times; R<sub>2</sub></span><span class="frac-d">R<sub>1</sub> + R<sub>2</sub></span></span>
+        </div>
+        <div class="formula-sub"><span class="frac" style="font-size:11px;"><span class="frac-n">Product</span><span class="frac-d">Sum</span></span> &mdash; only works for <em>two</em> resistors</div>
       </div>
 
       <div class="worked-example">
         <div class="worked-example-title">Worked example 1 &mdash; Two resistors in parallel (full solution)</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">R<sub>1</sub> = 270 &Omega;, R<sub>2</sub> = 100 &Omega;, supply voltage = 9 V. Find the combined resistance, circuit current, and current through each branch.</p>
-        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Combined resistance (product/sum):</strong> R<sub>T</sub> = (270 &times; 100) &divide; (270 + 100) = 27 000 &divide; 370 = <strong>73 &Omega;</strong></div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Circuit (total) current:</strong> I<sub>T</sub> = V &divide; R<sub>T</sub> = 9 &divide; 73 = <strong>123 mA</strong></div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Current through R<sub>1</sub>:</strong> I<sub>1</sub> = V &divide; R<sub>1</sub> = 9 &divide; 270 = <strong>33 mA</strong></div></div>
-        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Current through R<sub>2</sub>:</strong> I<sub>2</sub> = V &divide; R<sub>2</sub> = 9 &divide; 100 = <strong>90 mA</strong></div></div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Combined resistance (product over sum):</strong> R<sub>T</sub> = <span class="frac"><span class="frac-n">270 &times; 100</span><span class="frac-d">270 + 100</span></span> = <span class="frac"><span class="frac-n">27 000</span><span class="frac-d">370</span></span> = <strong>73 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Circuit (total) current:</strong> I<sub>T</sub> = <span class="frac"><span class="frac-n">V</span><span class="frac-d">R<sub>T</sub></span></span> = <span class="frac"><span class="frac-n">9</span><span class="frac-d">73</span></span> = <strong>123 mA</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Current through R<sub>1</sub>:</strong> I<sub>1</sub> = <span class="frac"><span class="frac-n">V</span><span class="frac-d">R<sub>1</sub></span></span> = <span class="frac"><span class="frac-n">9</span><span class="frac-d">270</span></span> = <strong>33 mA</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Current through R<sub>2</sub>:</strong> I<sub>2</sub> = <span class="frac"><span class="frac-n">V</span><span class="frac-d">R<sub>2</sub></span></span> = <span class="frac"><span class="frac-n">9</span><span class="frac-d">100</span></span> = <strong>90 mA</strong></div></div>
         <div class="step"><div class="step-num">5</div><div class="step-content"><strong>Check:</strong> I<sub>1</sub> + I<sub>2</sub> = 33 + 90 = 123 mA &mdash; matches I<sub>T</sub>. &#x2713;</div></div>
       </div>
 
       <div class="worked-example">
         <div class="worked-example-title">Worked example 2 &mdash; Three resistors in parallel</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">R<sub>1</sub> = 220 &Omega;, R<sub>2</sub> = 100 &Omega;, R<sub>3</sub> = 330 &Omega;, supply = 9 V. Find the combined resistance.</p>
-        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Use the general formula:</strong> 1/R<sub>T</sub> = 1/220 + 1/100 + 1/330</div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content">1/R<sub>T</sub> = 0.00455 + 0.01 + 0.00303 = 0.01758</div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content">R<sub>T</sub> = 1 &divide; 0.01758 = <strong>56.9 &Omega;</strong></div></div>
-        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Circuit current:</strong> I<sub>T</sub> = 9 &divide; 56.9 = <strong>158 mA</strong></div></div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Use the general formula:</strong> <span class="frac"><span class="frac-n">1</span><span class="frac-d">R<sub>T</sub></span></span> = <span class="frac"><span class="frac-n">1</span><span class="frac-d">220</span></span> + <span class="frac"><span class="frac-n">1</span><span class="frac-d">100</span></span> + <span class="frac"><span class="frac-n">1</span><span class="frac-d">330</span></span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><span class="frac"><span class="frac-n">1</span><span class="frac-d">R<sub>T</sub></span></span> = 0.00455 + 0.01 + 0.00303 = 0.01758</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content">R<sub>T</sub> = <span class="frac"><span class="frac-n">1</span><span class="frac-d">0.01758</span></span> = <strong>56.9 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Circuit current:</strong> I<sub>T</sub> = <span class="frac"><span class="frac-n">9</span><span class="frac-d">56.9</span></span> = <strong>158 mA</strong></div></div>
       </div>
 
       <div class="sim-embed-section">
@@ -814,13 +844,13 @@
       <div class="worked-example">
         <div class="worked-example-title">Worked example &mdash; Series/parallel circuit</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">R<sub>1</sub> = 100 &Omega; in series with a parallel combination of R<sub>2</sub> = 300 &Omega; and R<sub>3</sub> = 150 &Omega;. Supply = 9 V.</p>
-        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Parallel section:</strong> R<sub>P</sub> = (300 &times; 150) &divide; (300 + 150) = 45 000 &divide; 450 = <strong>100 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Parallel section:</strong> R<sub>P</sub> = <span class="frac"><span class="frac-n">300 &times; 150</span><span class="frac-d">300 + 150</span></span> = <span class="frac"><span class="frac-n">45 000</span><span class="frac-d">450</span></span> = <strong>100 &Omega;</strong></div></div>
         <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Total resistance:</strong> R<sub>T</sub> = R<sub>1</sub> + R<sub>P</sub> = 100 + 100 = <strong>200 &Omega;</strong></div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Circuit current:</strong> I<sub>C</sub> = V &divide; R<sub>T</sub> = 9 &divide; 200 = <strong>45 mA</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Circuit current:</strong> I<sub>C</sub> = <span class="frac"><span class="frac-n">V</span><span class="frac-d">R<sub>T</sub></span></span> = <span class="frac"><span class="frac-n">9</span><span class="frac-d">200</span></span> = <strong>45 mA</strong></div></div>
         <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Voltage across R<sub>1</sub>:</strong> V<sub>R1</sub> = 0.045 &times; 100 = <strong>4.5 V</strong></div></div>
         <div class="step"><div class="step-num">5</div><div class="step-content"><strong>Voltage across parallel section</strong> (voltage rule): V<sub>P</sub> = 9 &minus; 4.5 = <strong>4.5 V</strong></div></div>
-        <div class="step"><div class="step-num">6</div><div class="step-content"><strong>Current through R<sub>2</sub>:</strong> I<sub>2</sub> = 4.5 &divide; 300 = <strong>15 mA</strong></div></div>
-        <div class="step"><div class="step-num">7</div><div class="step-content"><strong>Current through R<sub>3</sub>:</strong> I<sub>3</sub> = 4.5 &divide; 150 = <strong>30 mA</strong></div></div>
+        <div class="step"><div class="step-num">6</div><div class="step-content"><strong>Current through R<sub>2</sub>:</strong> I<sub>2</sub> = <span class="frac"><span class="frac-n">4.5</span><span class="frac-d">300</span></span> = <strong>15 mA</strong></div></div>
+        <div class="step"><div class="step-num">7</div><div class="step-content"><strong>Current through R<sub>3</sub>:</strong> I<sub>3</sub> = <span class="frac"><span class="frac-n">4.5</span><span class="frac-d">150</span></span> = <strong>30 mA</strong></div></div>
         <div class="step"><div class="step-num">8</div><div class="step-content"><strong>Check:</strong> I<sub>2</sub> + I<sub>3</sub> = 15 + 30 = 45 mA &mdash; matches I<sub>C</sub>. &#x2713;</div></div>
       </div>
 
@@ -922,12 +952,19 @@
       <div style="display:flex;flex-wrap:wrap;gap:16px;margin:12px 0;">
         <div class="formula-box" style="flex:1;min-width:200px;">
           <div class="formula-sub" style="font-weight:700;color:var(--teal-800);margin-bottom:6px;">Method 1 &mdash; if you know V1</div>
-          <div style="font-size:14px;color:var(--teal-800);font-weight:600;">V1/V2 = R1/R2</div>
+          <div style="font-size:14px;color:var(--teal-800);font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">
+            <span class="frac"><span class="frac-n">V1</span><span class="frac-d">V2</span></span>
+            <span>=</span>
+            <span class="frac"><span class="frac-n">R1</span><span class="frac-d">R2</span></span>
+          </div>
           <div class="formula-sub">The ratio of voltages equals the ratio of resistances</div>
         </div>
         <div class="formula-box" style="flex:1;min-width:200px;">
           <div class="formula-sub" style="font-weight:700;color:var(--teal-800);margin-bottom:6px;">Method 2 &mdash; if you know Vs</div>
-          <div class="formula">V<sub>out</sub> = V<sub>s</sub> &times; R<sub>2</sub> &divide; R<sub>T</sub></div>
+          <div class="formula" style="display:flex;align-items:center;justify-content:center;gap:6px;">
+            <span>V<sub>out</sub> = V<sub>s</sub> &times;</span>
+            <span class="frac"><span class="frac-n">R<sub>2</sub></span><span class="frac-d">R<sub>T</sub></span></span>
+          </div>
           <div class="formula-sub">where R<sub>T</sub> = R<sub>1</sub> + R<sub>2</sub></div>
         </div>
       </div>
@@ -941,37 +978,35 @@
       <div class="comp-grid">
         <div class="comp-card-sym">
           <svg width="80" height="40" viewBox="0 0 80 40">
-            <line x1="2" y1="20" x2="12" y2="20" stroke="#334155" stroke-width="2"/>
-            <rect x="12" y="12" width="32" height="16" rx="2" fill="white" stroke="#334155" stroke-width="2"/>
-            <line x1="44" y1="20" x2="54" y2="20" stroke="#334155" stroke-width="2"/>
-            <line x1="56" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
-            <text x="28" y="24" text-anchor="middle" font-size="7" font-weight="900" fill="#334155">R</text>
-            <line x1="18" y1="32" x2="36" y2="8" stroke="#334155" stroke-width="1.5"/>
-            <polygon points="36,8 30,10 34,14" fill="#334155"/>
+            <line x1="2" y1="20" x2="14" y2="20" stroke="#334155" stroke-width="2"/>
+            <rect x="14" y="14" width="34" height="12" rx="1" fill="white" stroke="#334155" stroke-width="2"/>
+            <line x1="48" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+            <line x1="18" y1="32" x2="45" y2="6" stroke="#334155" stroke-width="1.6"/>
+            <polygon points="45,6 38,9 41,13" fill="#334155"/>
           </svg>
           <div class="comp-name">Variable Resistor</div>
           <div class="comp-unit">Adjusts by hand</div>
         </div>
         <div class="comp-card-sym">
           <svg width="80" height="40" viewBox="0 0 80 40">
-            <line x1="2" y1="20" x2="12" y2="20" stroke="#334155" stroke-width="2"/>
-            <rect x="12" y="12" width="32" height="16" rx="0" fill="white" stroke="#334155" stroke-width="2"/>
-            <line x1="44" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
-            <line x1="18" y1="34" x2="18" y2="28" stroke="#334155" stroke-width="1.5"/>
-            <line x1="18" y1="28" x2="38" y2="12" stroke="#334155" stroke-width="1.5"/>
-            <text x="28" y="24" text-anchor="middle" font-size="7" font-weight="900" fill="#334155">-t&deg;</text>
+            <line x1="2" y1="20" x2="14" y2="20" stroke="#334155" stroke-width="2"/>
+            <rect x="14" y="14" width="34" height="12" rx="1" fill="white" stroke="#334155" stroke-width="2"/>
+            <line x1="48" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+            <line x1="16" y1="32" x2="45" y2="8" stroke="#334155" stroke-width="1.6"/>
+            <text x="4" y="38" font-size="9" font-weight="700" fill="#334155">-t&deg;</text>
           </svg>
           <div class="comp-name">Thermistor</div>
           <div class="comp-unit">Responds to temperature</div>
         </div>
         <div class="comp-card-sym">
           <svg width="80" height="40" viewBox="0 0 80 40">
-            <circle cx="28" cy="20" r="14" fill="none" stroke="#334155" stroke-width="1.5"/>
-            <rect x="16" y="15" width="24" height="10" fill="white" stroke="#334155" stroke-width="1.5"/>
-            <line x1="2" y1="20" x2="16" y2="20" stroke="#334155" stroke-width="2"/>
-            <line x1="40" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
-            <line x1="18" y1="4" x2="24" y2="10" stroke="#ca8a04" stroke-width="1.5"/>
-            <line x1="23" y1="4" x2="29" y2="10" stroke="#ca8a04" stroke-width="1.5"/>
+            <line x1="2" y1="20" x2="14" y2="20" stroke="#334155" stroke-width="2"/>
+            <rect x="14" y="14" width="34" height="12" rx="1" fill="white" stroke="#334155" stroke-width="2"/>
+            <line x1="48" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+            <line x1="38" y1="2" x2="28" y2="12" stroke="#ca8a04" stroke-width="1.6"/>
+            <polygon points="28,12 30,6 34,10" fill="#ca8a04"/>
+            <line x1="46" y1="2" x2="36" y2="12" stroke="#ca8a04" stroke-width="1.6"/>
+            <polygon points="36,12 38,6 42,10" fill="#ca8a04"/>
           </svg>
           <div class="comp-name">LDR</div>
           <div class="comp-unit">Responds to light</div>
@@ -1051,8 +1086,8 @@
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A circuit has a 9 V supply, a fixed resistor R<sub>1</sub> = 10 k&Omega; (top), and an ORP12 LDR as R<sub>2</sub> (bottom). V<sub>out</sub> is measured across the LDR. Find V<sub>out</sub> when the illumination is 100 lux.</p>
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Read from the graph:</strong> at 100 lux, the ORP12 resistance &asymp; <strong>7 k&Omega;</strong> = 7 000 &Omega;</div></div>
         <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Total resistance:</strong> R<sub>T</sub> = 10 000 + 7 000 = <strong>17 000 &Omega;</strong></div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Voltage divider formula:</strong> V<sub>out</sub> = V<sub>s</sub> &times; R<sub>LDR</sub> &divide; R<sub>T</sub></div></div>
-        <div class="step"><div class="step-num">4</div><div class="step-content">V<sub>out</sub> = 9 &times; 7 000 &divide; 17 000 = <strong>3.71 V</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Voltage divider formula:</strong> V<sub>out</sub> = V<sub>s</sub> &times; <span class="frac"><span class="frac-n">R<sub>LDR</sub></span><span class="frac-d">R<sub>T</sub></span></span></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content">V<sub>out</sub> = 9 &times; <span class="frac"><span class="frac-n">7 000</span><span class="frac-d">17 000</span></span> = <strong>3.71 V</strong></div></div>
       </div>
 
       <div class="worked-example">
@@ -1060,16 +1095,16 @@
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">Same circuit. Find V<sub>out</sub> across the LDR in bright sunlight (10 000 lux).</p>
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Read from graph:</strong> at 10 000 lux, resistance &asymp; <strong>70 &Omega;</strong></div></div>
         <div class="step"><div class="step-num">2</div><div class="step-content">R<sub>T</sub> = 10 000 + 70 = <strong>10 070 &Omega;</strong></div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content">V<sub>out</sub> = 9 &times; 70 &divide; 10 070 = <strong>0.063 V</strong> &mdash; very small, because the LDR has very low resistance and takes only a tiny share of the voltage.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content">V<sub>out</sub> = 9 &times; <span class="frac"><span class="frac-n">70</span><span class="frac-d">10 070</span></span> = <strong>0.063 V</strong> &mdash; very small, because the LDR has very low resistance and takes only a tiny share of the voltage.</div></div>
       </div>
 
       <div class="worked-example">
         <div class="worked-example-title">Worked example 3 &mdash; Thermistor voltage divider (reading from graph)</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A 9 V circuit has a thermistor (curve 3) as the upper resistor (R<sub>1</sub>) and a fixed resistor R<sub>2</sub> = 10 k&Omega; as the lower. V<sub>out</sub> is taken across the fixed resistor. Find V<sub>out</sub> at 25&deg;C and at 100&deg;C.</p>
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>At 25&deg;C:</strong> read curve 3 &rarr; resistance &asymp; <strong>10 k&Omega;</strong> = 10 000 &Omega;</div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content">R<sub>T</sub> = 10 000 + 10 000 = 20 000 &Omega; &nbsp;&nbsp; V<sub>out</sub> = 9 &times; 10 000 &divide; 20 000 = <strong>4.5 V</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">R<sub>T</sub> = 10 000 + 10 000 = 20 000 &Omega; &nbsp;&nbsp; V<sub>out</sub> = 9 &times; <span class="frac"><span class="frac-n">10 000</span><span class="frac-d">20 000</span></span> = <strong>4.5 V</strong></div></div>
         <div class="step"><div class="step-num">3</div><div class="step-content"><strong>At 100&deg;C:</strong> read curve 3 &rarr; resistance &asymp; <strong>800 &Omega;</strong></div></div>
-        <div class="step"><div class="step-num">4</div><div class="step-content">R<sub>T</sub> = 800 + 10 000 = 10 800 &Omega; &nbsp;&nbsp; V<sub>out</sub> = 9 &times; 10 000 &divide; 10 800 = <strong>8.33 V</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content">R<sub>T</sub> = 800 + 10 000 = 10 800 &Omega; &nbsp;&nbsp; V<sub>out</sub> = 9 &times; <span class="frac"><span class="frac-n">10 000</span><span class="frac-d">10 800</span></span> = <strong>8.33 V</strong></div></div>
         <div class="step"><div class="step-num">5</div><div class="step-content"><strong>Conclusion:</strong> as temperature rises, the thermistor resistance falls, so it takes a smaller share of the voltage &mdash; V<sub>out</sub> across the fixed resistor <em>rises</em>.</div></div>
       </div>
 
@@ -1317,7 +1352,7 @@
         <div class="comp-card-sym">
           <svg width="80" height="40" viewBox="0 0 80 40">
             <line x1="2" y1="20" x2="22" y2="20" stroke="#334155" stroke-width="2"/>
-            <polygon points="22,10 22,30 42,20" fill="#334155"/>
+            <polygon points="22,10 22,30 42,20" fill="white" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
             <line x1="42" y1="10" x2="42" y2="30" stroke="#334155" stroke-width="2.5"/>
             <line x1="42" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
             <text x="22" y="8" font-size="9" fill="#dc2626" font-weight="700">A</text>
@@ -1329,11 +1364,13 @@
         <div class="comp-card-sym">
           <svg width="80" height="40" viewBox="0 0 80 40">
             <line x1="2" y1="20" x2="22" y2="20" stroke="#334155" stroke-width="2"/>
-            <polygon points="22,10 22,30 42,20" fill="#ef4444"/>
+            <polygon points="22,10 22,30 42,20" fill="white" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
             <line x1="42" y1="10" x2="42" y2="30" stroke="#334155" stroke-width="2.5"/>
             <line x1="42" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
-            <line x1="45" y1="6" x2="52" y2="0" stroke="#ca8a04" stroke-width="1.5"/>
-            <line x1="49" y1="9" x2="56" y2="3" stroke="#ca8a04" stroke-width="1.5"/>
+            <line x1="34" y1="10" x2="42" y2="0" stroke="#ca8a04" stroke-width="1.6"/>
+            <polygon points="42,0 35,2 38,6" fill="#ca8a04"/>
+            <line x1="42" y1="12" x2="50" y2="2" stroke="#ca8a04" stroke-width="1.6"/>
+            <polygon points="50,2 43,4 46,8" fill="#ca8a04"/>
           </svg>
           <div class="comp-name">LED</div>
           <div class="comp-unit">Emits light</div>
@@ -1513,12 +1550,14 @@
             <rect x="12" y="20" width="22" height="40" fill="white" stroke="#334155" stroke-width="1.5"/>
             <line x1="23" y1="5" x2="23" y2="20" stroke="#334155" stroke-width="1.5"/>
             <line x1="23" y1="60" x2="23" y2="75" stroke="#334155" stroke-width="1.5"/>
-            <line x1="55" y1="5" x2="55" y2="25" stroke="#334155" stroke-width="1.5"/>
-            <line x1="55" y1="25" x2="62" y2="38" stroke="#334155" stroke-width="1.5"/>
-            <line x1="48" y1="48" x2="48" y2="75" stroke="#334155" stroke-width="1.5"/>
-            <line x1="62" y1="48" x2="62" y2="75" stroke="#334155" stroke-width="1.5"/>
-            <polygon points="44,50 48,48 48,52" fill="#334155"/>
-            <polygon points="58,50 62,48 62,52" fill="#334155"/>
+            <line x1="34" y1="40" x2="42" y2="40" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="2,2"/>
+            <line x1="55" y1="5" x2="55" y2="18" stroke="#334155" stroke-width="1.5"/>
+            <circle cx="55" cy="18" r="3" fill="white" stroke="#334155" stroke-width="1.4"/>
+            <line x1="55" y1="18" x2="46" y2="40" stroke="#334155" stroke-width="1.5"/>
+            <circle cx="44" cy="58" r="3" fill="white" stroke="#334155" stroke-width="1.4"/>
+            <line x1="44" y1="61" x2="44" y2="75" stroke="#334155" stroke-width="1.5"/>
+            <circle cx="62" cy="58" r="3" fill="white" stroke="#334155" stroke-width="1.4"/>
+            <line x1="62" y1="61" x2="62" y2="75" stroke="#334155" stroke-width="1.5"/>
           </svg>
           <div class="comp-name">Relay SPDT</div>
           <div class="comp-unit">Coil + switch</div>
