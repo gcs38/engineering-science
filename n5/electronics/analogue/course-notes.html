@@ -167,13 +167,7 @@
       <div class="key-point">Current is measured in <strong>Amperes (A)</strong>. The symbol for current on a circuit diagram is <strong>A</strong> (for Ammeter). A milliamp (mA) is one thousandth of an amp: 1 mA = 0.001 A.</div>
 
       <div class="circuit-figure">
-        <div style="display:flex;align-items:center;justify-content:center;gap:22px;flex-wrap:wrap;">
-          <img src="images/conventional-current.gif" alt="Animation showing conventional current flowing out of the positive terminal of a battery, around a circuit, and back into the negative terminal" style="max-width:60%;height:auto;display:block;">
-          <div style="text-align:center;">
-            <div style="font-weight:700;font-size:15px;color:var(--gray-700,#334155);">Current flow</div>
-            <div style="font-size:12px;color:var(--gray-500,#64748b);margin-top:2px;">(0.5 A or 500 mA)</div>
-          </div>
-        </div>
+        <img src="images/conventional-current.gif" alt="Animation showing conventional current flowing out of the positive terminal of a battery, around a circuit, and back into the negative terminal. When the switch is open, no current flows. When the switch is closed, blue dots animate around the circuit to show current flow at 0.5 A (500 mA)." style="max-width:100%;width:560px;height:auto;display:block;margin:0 auto;">
         <figcaption>Conventional current flow: out of the positive (+) terminal, around the circuit, and back into the negative (&minus;) / 0V terminal.</figcaption>
       </div>
 
@@ -373,9 +367,9 @@
         </div>
         <div class="comp-card-sym">
           <svg width="80" height="40" viewBox="0 0 80 40">
-            <line x1="4" y1="12" x2="20" y2="12" stroke="#334155" stroke-width="2"/>
-            <line x1="4" y1="28" x2="20" y2="28" stroke="#334155" stroke-width="2"/>
-            <path d="M 30 6 L 30 34 A 14 14 0 0 1 30 6 Z" fill="white" stroke="#334155" stroke-width="2"/>
+            <line x1="20" y1="12" x2="36" y2="12" stroke="#334155" stroke-width="2"/>
+            <line x1="20" y1="28" x2="36" y2="28" stroke="#334155" stroke-width="2"/>
+            <path d="M 46 6 L 46 34 A 14 14 0 0 1 46 6 Z" fill="white" stroke="#334155" stroke-width="2"/>
           </svg>
           <div class="comp-name">Buzzer</div>
           <div class="comp-unit">Output &mdash; sound</div>
@@ -799,7 +793,7 @@
       <p class="notes-p">Real circuits often have a mix of series and parallel connections. To solve these you must <strong>simplify step by step</strong>:</p>
 
       <div class="circuit-figure">
-        <svg viewBox="0 0 360 232" width="360" height="232" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">
+        <svg viewBox="0 0 360 216" width="360" height="216" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">
           <!-- Battery -->
           <line x1="30" y1="42" x2="30" y2="92" stroke="#334155" stroke-width="2"/>
           <line x1="20" y1="92" x2="40" y2="92" stroke="#334155" stroke-width="3"/>
@@ -835,8 +829,6 @@
           <text x="290" y="109" text-anchor="middle" font-size="10" fill="#15803d" font-weight="700">R3</text>
           <text x="290" y="122" text-anchor="middle" font-size="8" fill="#64748b">150Ω</text>
           <line x1="290" y1="132" x2="290" y2="202" stroke="#334155" stroke-width="2"/>
-          <!-- Label -->
-          <text x="180" y="224" text-anchor="middle" font-size="11" fill="#64748b">R1 in series with R2 ∥ R3, supply = 9 V</text>
         </svg>
         <figcaption>The blue resistor (R1) is in series; the green resistors (R2, R3) are in parallel with each other.</figcaption>
       </div>
@@ -896,7 +888,7 @@
       <!-- Labelled voltage divider diagram + terminology table -->
       <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start;margin:16px 0;">
         <div class="circuit-figure" style="flex:0 0 auto;min-width:170px;">
-          <svg viewBox="0 0 170 215" width="170" height="215" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">
+          <svg viewBox="0 0 170 248" width="170" height="248" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">
             <!-- Top rail: Vs to the left, vertically centred on it -->
             <text x="2" y="21" font-size="11" font-weight="700" fill="#0f766e">Vs</text>
             <line x1="18" y1="18" x2="42" y2="18" stroke="#334155" stroke-width="2"/>
@@ -909,26 +901,28 @@
             <line x1="44" y1="98" x2="48" y2="98" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
             <line x1="48" y1="30" x2="48" y2="98" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
             <text x="54" y="68" font-size="10" fill="#64748b">V1</text>
-            <!-- Output tap: exactly at the R1/R2 boundary, equidistant from both -->
-            <line x1="30" y1="98" x2="100" y2="98" stroke="#334155" stroke-width="2"/>
-            <circle cx="100" cy="98" r="4" fill="white" stroke="#334155" stroke-width="2"/>
-            <text x="107" y="102" font-size="10" fill="#334155">Output</text>
-            <!-- R2: long and thin -->
-            <rect x="20" y="98" width="20" height="68" rx="2" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
-            <text x="30" y="136" text-anchor="middle" font-size="11" font-weight="700" fill="#15803d">R2</text>
+            <!-- Connecting wire through the gap between R1 and R2 -->
+            <line x1="30" y1="98" x2="30" y2="132" stroke="#334155" stroke-width="2"/>
+            <!-- Output tap: at the centre of the gap between the two resistors -->
+            <line x1="30" y1="115" x2="100" y2="115" stroke="#334155" stroke-width="2"/>
+            <circle cx="100" cy="115" r="4" fill="white" stroke="#334155" stroke-width="2"/>
+            <text x="107" y="119" font-size="10" fill="#334155">Output</text>
+            <!-- R2: long and thin, moved down to leave a gap -->
+            <rect x="20" y="132" width="20" height="68" rx="2" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+            <text x="30" y="170" text-anchor="middle" font-size="11" font-weight="700" fill="#15803d">R2</text>
             <!-- V2 bracket, vertically centred on R2 -->
-            <line x1="44" y1="98" x2="48" y2="98" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
-            <line x1="44" y1="166" x2="48" y2="166" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
-            <line x1="48" y1="98" x2="48" y2="166" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
-            <text x="54" y="130" font-size="10" fill="#64748b">V2</text>
-            <text x="54" y="144" font-size="9" fill="#0f766e">(Vout)</text>
+            <line x1="44" y1="132" x2="48" y2="132" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="44" y1="200" x2="48" y2="200" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+            <line x1="48" y1="132" x2="48" y2="200" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,2"/>
+            <text x="54" y="166" font-size="10" fill="#64748b">V2</text>
+            <text x="54" y="180" font-size="9" fill="#0f766e">(Vout)</text>
             <!-- bottom wire -->
-            <line x1="30" y1="166" x2="30" y2="190" stroke="#334155" stroke-width="2"/>
+            <line x1="30" y1="200" x2="30" y2="224" stroke="#334155" stroke-width="2"/>
             <!-- 0V ground symbol -->
-            <line x1="20" y1="190" x2="40" y2="190" stroke="#334155" stroke-width="2"/>
-            <line x1="23" y1="195" x2="37" y2="195" stroke="#334155" stroke-width="1.5"/>
-            <line x1="26" y1="200" x2="34" y2="200" stroke="#334155" stroke-width="1"/>
-            <text x="2" y="207" font-size="11" font-weight="700" fill="#64748b">0V</text>
+            <line x1="20" y1="224" x2="40" y2="224" stroke="#334155" stroke-width="2"/>
+            <line x1="23" y1="229" x2="37" y2="229" stroke="#334155" stroke-width="1.5"/>
+            <line x1="26" y1="234" x2="34" y2="234" stroke="#334155" stroke-width="1"/>
+            <text x="2" y="241" font-size="11" font-weight="700" fill="#64748b">0V</text>
           </svg>
         </div>
 
@@ -1184,38 +1178,40 @@
 
       <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin:16px 0;">
         <div class="circuit-figure" style="flex:0 0 auto;min-width:150px;">
-          <svg viewBox="0 0 140 190" width="140" height="190" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 140 225" width="140" height="225" xmlns="http://www.w3.org/2000/svg">
             <text x="10" y="16" font-size="10" font-weight="700" fill="#0f766e">Vs</text>
             <line x1="20" y1="20" x2="20" y2="34" stroke="#334155" stroke-width="2"/>
             <rect x="12" y="34" width="16" height="56" rx="2" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
             <text x="20" y="65" text-anchor="middle" font-size="9" font-weight="700" fill="#1e40af" transform="rotate(-90 20 62)">R fixed</text>
-            <line x1="20" y1="90" x2="76" y2="90" stroke="#334155" stroke-width="2"/>
-            <circle cx="76" cy="90" r="4" fill="white" stroke="#334155" stroke-width="2"/>
-            <text x="82" y="94" font-size="9" fill="#0f766e">Vout</text>
-            <rect x="12" y="90" width="16" height="56" rx="2" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
-            <text x="20" y="121" text-anchor="middle" font-size="9" font-weight="700" fill="#854d0e" transform="rotate(-90 20 118)">LDR</text>
-            <line x1="20" y1="146" x2="20" y2="160" stroke="#334155" stroke-width="2"/>
-            <line x1="10" y1="160" x2="30" y2="160" stroke="#334155" stroke-width="2"/>
-            <line x1="13" y1="165" x2="27" y2="165" stroke="#334155" stroke-width="1.5"/>
-            <text x="8" y="180" font-size="9" font-weight="700" fill="#64748b">0V</text>
+            <line x1="20" y1="90" x2="20" y2="118" stroke="#334155" stroke-width="2"/>
+            <line x1="20" y1="104" x2="76" y2="104" stroke="#334155" stroke-width="2"/>
+            <circle cx="76" cy="104" r="4" fill="white" stroke="#334155" stroke-width="2"/>
+            <text x="82" y="108" font-size="9" fill="#0f766e">Vout</text>
+            <rect x="12" y="118" width="16" height="56" rx="2" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+            <text x="20" y="149" text-anchor="middle" font-size="9" font-weight="700" fill="#854d0e" transform="rotate(-90 20 146)">LDR</text>
+            <line x1="20" y1="174" x2="20" y2="188" stroke="#334155" stroke-width="2"/>
+            <line x1="10" y1="188" x2="30" y2="188" stroke="#334155" stroke-width="2"/>
+            <line x1="13" y1="193" x2="27" y2="193" stroke="#334155" stroke-width="1.5"/>
+            <text x="8" y="208" font-size="9" font-weight="700" fill="#64748b">0V</text>
           </svg>
           <figcaption><strong>LDR lower</strong> &mdash; V<sub>out</sub> high in the <strong>dark</strong> (dark sensor)</figcaption>
         </div>
         <div class="circuit-figure" style="flex:0 0 auto;min-width:150px;">
-          <svg viewBox="0 0 140 190" width="140" height="190" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 140 225" width="140" height="225" xmlns="http://www.w3.org/2000/svg">
             <text x="10" y="16" font-size="10" font-weight="700" fill="#0f766e">Vs</text>
             <line x1="20" y1="20" x2="20" y2="34" stroke="#334155" stroke-width="2"/>
             <rect x="12" y="34" width="16" height="56" rx="2" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
             <text x="20" y="65" text-anchor="middle" font-size="9" font-weight="700" fill="#854d0e" transform="rotate(-90 20 62)">LDR</text>
-            <line x1="20" y1="90" x2="76" y2="90" stroke="#334155" stroke-width="2"/>
-            <circle cx="76" cy="90" r="4" fill="white" stroke="#334155" stroke-width="2"/>
-            <text x="82" y="94" font-size="9" fill="#0f766e">Vout</text>
-            <rect x="12" y="90" width="16" height="56" rx="2" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
-            <text x="20" y="121" text-anchor="middle" font-size="9" font-weight="700" fill="#1e40af" transform="rotate(-90 20 118)">R fixed</text>
-            <line x1="20" y1="146" x2="20" y2="160" stroke="#334155" stroke-width="2"/>
-            <line x1="10" y1="160" x2="30" y2="160" stroke="#334155" stroke-width="2"/>
-            <line x1="13" y1="165" x2="27" y2="165" stroke="#334155" stroke-width="1.5"/>
-            <text x="8" y="180" font-size="9" font-weight="700" fill="#64748b">0V</text>
+            <line x1="20" y1="90" x2="20" y2="118" stroke="#334155" stroke-width="2"/>
+            <line x1="20" y1="104" x2="76" y2="104" stroke="#334155" stroke-width="2"/>
+            <circle cx="76" cy="104" r="4" fill="white" stroke="#334155" stroke-width="2"/>
+            <text x="82" y="108" font-size="9" fill="#0f766e">Vout</text>
+            <rect x="12" y="118" width="16" height="56" rx="2" fill="#dbeafe" stroke="#3b82f6" stroke-width="2"/>
+            <text x="20" y="149" text-anchor="middle" font-size="9" font-weight="700" fill="#1e40af" transform="rotate(-90 20 146)">R fixed</text>
+            <line x1="20" y1="174" x2="20" y2="188" stroke="#334155" stroke-width="2"/>
+            <line x1="10" y1="188" x2="30" y2="188" stroke="#334155" stroke-width="2"/>
+            <line x1="13" y1="193" x2="27" y2="193" stroke="#334155" stroke-width="1.5"/>
+            <text x="8" y="208" font-size="9" font-weight="700" fill="#64748b">0V</text>
           </svg>
           <figcaption><strong>LDR upper</strong> &mdash; V<sub>out</sub> high in the <strong>light</strong> (light sensor)</figcaption>
         </div>
@@ -1363,10 +1359,10 @@
             <polygon points="22,10 22,30 42,20" fill="white" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
             <line x1="42" y1="10" x2="42" y2="30" stroke="#334155" stroke-width="2.5"/>
             <line x1="42" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
-            <line x1="34" y1="10" x2="42" y2="0" stroke="#334155" stroke-width="1.6"/>
-            <polygon points="42,0 40,7.3 35.3,3.6" fill="#334155"/>
-            <line x1="42" y1="12" x2="50" y2="2" stroke="#334155" stroke-width="1.6"/>
-            <polygon points="50,2 48,9.3 43.3,5.6" fill="#334155"/>
+            <line x1="28" y1="10" x2="36" y2="0" stroke="#334155" stroke-width="1.6"/>
+            <polygon points="36,0 34,7.3 29.3,3.6" fill="#334155"/>
+            <line x1="36" y1="12" x2="44" y2="2" stroke="#334155" stroke-width="1.6"/>
+            <polygon points="44,2 42,9.3 37.3,5.6" fill="#334155"/>
           </svg>
           <div class="comp-name">LED</div>
           <div class="comp-unit">Emits light</div>
@@ -1422,7 +1418,10 @@
             <line x1="45" y1="10" x2="45" y2="0" stroke="#334155" stroke-width="2"/>
             <line x1="20" y1="52" x2="45" y2="70" stroke="#334155" stroke-width="2"/>
             <line x1="45" y1="70" x2="45" y2="80" stroke="#334155" stroke-width="2"/>
-            <polygon points="35,62.8 25.4,60.8 30,54.3" fill="#334155"/>
+            <polygon points="38.8,65.5 31.4,53.4 25.0,62.4" fill="#334155"/>
+            <text x="2" y="34" font-size="11" font-weight="700" fill="#dc2626">B</text>
+            <text x="50" y="10" font-size="11" font-weight="700" fill="#dc2626">C</text>
+            <text x="50" y="76" font-size="11" font-weight="700" fill="#dc2626">E</text>
           </svg>
           <div class="comp-name">NPN Transistor</div>
           <div class="comp-unit">B=Base, C=Collector, E=Emitter</div>
@@ -1546,7 +1545,7 @@
             <line x1="34" y1="40" x2="42" y2="40" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="2,2"/>
             <line x1="55" y1="5" x2="55" y2="18" stroke="#334155" stroke-width="1.5"/>
             <circle cx="55" cy="18" r="3" fill="white" stroke="#334155" stroke-width="1.4"/>
-            <line x1="55" y1="18" x2="46" y2="40" stroke="#334155" stroke-width="1.5"/>
+            <line x1="55" y1="18" x2="44.8" y2="55.1" stroke="#334155" stroke-width="1.5"/>
             <circle cx="44" cy="58" r="3" fill="white" stroke="#334155" stroke-width="1.4"/>
             <line x1="44" y1="61" x2="44" y2="75" stroke="#334155" stroke-width="1.5"/>
             <circle cx="62" cy="58" r="3" fill="white" stroke="#334155" stroke-width="1.4"/>
