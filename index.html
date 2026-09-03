@@ -10,15 +10,20 @@
 
 <style>
   :root{
-    --teal: #1F6F5C;
-    --teal-dark: #15503F;
-    --teal-pale: #EAF5F1;
-    --ink: #1C2523;
-    --body-text: #4B5A56;
-    --muted: #7C8B87;
-    --page-bg: #F7F7F5;
+    /* Pulled directly from the live site's stylesheet (css/style.css) so this
+       page matches the real brand palette: teal-400 for filled accents,
+       teal-600 for readable teal text/hover, teal-50 for pale backgrounds,
+       gray-900/600/400 for ink/body/muted text, gray-50/200 for page bg/border. */
+    --teal: #1D9E75;
+    --teal-dark: #0F6E56;
+    --teal-deep: #085041;
+    --teal-pale: #E1F5EE;
+    --ink: #1C1C1A;
+    --body-text: #5F5E5A;
+    --muted: #888780;
+    --page-bg: #F7F7F6;
     --card-bg: #FFFFFF;
-    --border: #E4E4E1;
+    --border: #DEDDD9;
     --amber-bg: #FDF3D8;
     --amber-border: #F0DFA8;
     --amber-text: #7A5B12;
@@ -123,12 +128,19 @@
     color: var(--teal); text-transform: uppercase; margin-bottom: 10px;
   }
   h1.page-title{
-    font-size: 2.1rem; font-weight: 800; letter-spacing: -0.015em;
+    font-size: 1.5rem; font-weight: 800; letter-spacing: -0.015em;
     margin: 0 0 10px; color: var(--ink);
   }
   p.page-lede{
-    font-size: 1.02rem; color: var(--body-text); max-width: 66ch;
-    line-height: 1.6; margin: 0 0 38px;
+    font-size: 0.92rem; color: var(--body-text); max-width: 66ch;
+    line-height: 1.55; margin: 0 0 14px;
+  }
+  p.page-release-note{
+    display: inline-flex; align-items: flex-start; gap: 8px;
+    font-size: 0.82rem; line-height: 1.5; color: var(--amber-text);
+    background: var(--amber-bg); border: 1px solid var(--amber-border);
+    border-radius: 8px; padding: 9px 15px; max-width: 66ch;
+    margin: 0 0 34px;
   }
 
   section.area{ margin-bottom: 40px; scroll-margin-top: 76px; }
@@ -151,7 +163,7 @@
   .card{
     background: var(--card-bg);
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     width: 148px;
     padding: 12px 10px 11px;
     text-align: center;
@@ -159,9 +171,9 @@
     transition: box-shadow .15s ease, transform .15s ease, border-color .15s ease;
   }
   .card:hover{
-    box-shadow: 0 5px 14px rgba(28,37,35,0.08);
+    box-shadow: 0 6px 16px rgba(15,110,86,0.10);
     transform: translateY(-2px);
-    border-color: #D3D8D5;
+    border-color: var(--teal-pale);
   }
   .card-icon-img{
     width: 40px; height: 40px; border-radius: 50%;
@@ -198,7 +210,7 @@
     background: var(--teal); color: #fff; font-size: 13.5px; font-weight: 700;
     padding: 11px 18px; border-radius: 24px;
     display: flex; align-items: center; gap: 8px;
-    box-shadow: 0 6px 16px rgba(21,80,63,0.28);
+    box-shadow: 0 6px 16px rgba(15,110,86,0.28);
   }
 
   @media (max-width: 900px){
@@ -273,7 +285,8 @@
   <main class="content">
     <div class="crumb">National 5</div>
     <h1 class="page-title">Engineering Science — Course Notes and Simulators</h1>
-    <p class="page-lede">Notes and interactive simulators for every National 5 topic, all on one page. Pick a topic from the list on the left, or scroll through by subject area below.</p>
+    <p class="page-lede">Notes and interactive simulators for every National 5 topic, all on one page.<br>Pick a topic from the list on the left, or scroll through by subject area below.</p>
+    <p class="page-release-note"><span>&#x1F6E0;&#xFE0F;</span><span>This is website release 1 &mdash; end-of-unit tests, extension tasks, homework assignments, teacher presentations and marking instructions are to follow. Click on the <strong>Team preview</strong> button to access the full site.</span></p>
 
     <section class="area" id="contexts">
       <div class="area-head"><h2>Engineering Contexts</h2><span class="count">4 topics</span></div>
@@ -549,7 +562,7 @@
   </main>
 </div>
 
-<a class="feedback-btn" href="mailto:g.sanderson@gwc.org.uk?subject=ESS%20Website%20Feedback">💬 Feedback</a>
+<a class="feedback-btn" href="mailto:engineeringsciencescotland@gmail.com?subject=ESS%20Website%20Feedback">💬 Feedback</a>
 
 </body>
 </html>
