@@ -255,28 +255,25 @@
       <p class="notes-p">A flowchart determines the order in which instructions are followed by the microcontroller — it is the plan the program must execute, step by step. Each type of instruction (starting/stopping, inputting/outputting, processing, or deciding) has its own standard box shape, so that anyone reading the flowchart can immediately recognise what kind of instruction each box represents, without needing to read every word.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/flowchart-symbols.png" alt="QS standard flowchart symbols: terminal, process, input/output parallelogram, decision diamond" style="width:100%;max-width:510px;display:block;margin:16px auto;border-radius:8px;">
+      <img src="images/flowchart-symbols.png" alt="QS standard flowchart symbols: terminal, process, input/output parallelogram, decision diamond" style="width:100%;max-width:306px;display:block;margin:16px auto;border-radius:8px;">
+      <p style="font-size:12px;color:var(--gray-500);text-align:center;margin-top:-8px;">These symbols are taken from the QS data booklet.</p>
 
-      <p class="notes-p">A flowchart could simply be a single run of commands from start to finish, ending once the last instruction has been carried out.</p>
-
-      <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/flowchart-single-run.png" alt="Simple single-run flowchart: START, turn an output ON, wait 1 second, turn the output OFF, STOP" style="width:100%;max-width:280px;display:block;margin:16px auto;border-radius:8px;">
-
-      <p class="notes-p">However, a flowchart like this would only run through once before stopping. In practice, it is far more common for microcontroller programs to run continuously — a flowchart needs to show this using the flow line symbol to loop back to an appropriate earlier point in the sequence, rather than reaching STOP.</p>
+      <p class="notes-p">A flowchart could simply be a single run of commands from start to finish, ending once the last instruction has been carried out. The example below starts the program, turns an output ON, waits for a set time, then turns the output OFF before stopping. Note that a delay like this must always include its unit — write <strong>Wait 1 s</strong> or <strong>Wait 500 ms</strong>; simply writing "500" is not acceptable.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/flowchart-simple-loop.png" alt="Simple loop flowchart: turn an output ON, wait 1 second, turn the output OFF, wait 1 second, flow line looping back to the first step" style="width:100%;max-width:280px;display:block;margin:16px auto;border-radius:8px;">
-
-      <h2 class="notes-h2">The fixed loop</h2>
-      <p class="notes-p">Most microcontroller programs run <strong>continuously</strong> — they repeat the same sequence over and over. This is called a <strong>fixed loop</strong>. The last step in the flowchart connects back to an earlier point (usually the START or the first decision box), so the sequence repeats indefinitely.</p>
-
-      <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/flowchart-fixed-loop.png" alt="Flowchart showing a fixed loop — LED flashing sequence that returns from STOP back to START continuously" style="width:100%;max-width:400px;display:block;margin:16px auto;border-radius:8px;">
-
-      <h2 class="notes-h2">Delay units</h2>
-      <p class="notes-p">A <strong>delay</strong> is used in a Process box to make the program wait for a set time before continuing. In the QS exam, you <strong>must include the delay unit</strong> — simply writing "500" is not acceptable. Always write: <strong>Wait 500 ms</strong> or <strong>Delay 2 s</strong>.</p>
+      <img src="images/flowchart-single-run.png" alt="Simple single-run flowchart: START, turn an output ON, wait 1 second, turn the output OFF, STOP" style="width:100%;max-width:168px;display:block;margin:16px auto;border-radius:8px;">
 
       <div class="key-point">Always include units on delays: ms (milliseconds) or s (seconds). 1 second = 1000 milliseconds.</div>
+
+      <p class="notes-p">However, a flowchart like this would only run through once before stopping. In practice, it is far more common for microcontroller programs to run continuously — repeating the same sequence over and over. This is called a <strong>fixed loop</strong>. The example below shows this using the flow line symbol, which loops back to an earlier point in the sequence (usually the START, or the first decision box) instead of reaching STOP, so the sequence repeats indefinitely.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/flowchart-simple-loop.png" alt="Simple loop flowchart: turn an output ON, wait 1 second, turn the output OFF, wait 1 second, flow line looping back to the first step" style="width:100%;max-width:168px;display:block;margin:16px auto;border-radius:8px;">
+
+      <p class="notes-p">Here is the same idea as a working example — a flowchart for a flashing LED that repeats forever:</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/flowchart-fixed-loop.png" alt="Flowchart showing a fixed loop — LED flashing sequence that returns from STOP back to START continuously" style="width:100%;max-width:240px;display:block;margin:16px auto;border-radius:8px;">
 
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Flowchart symbols and terminology</div></div>
@@ -331,7 +328,7 @@
           </ol>
         </div>
         <!-- DIAGRAM PLACEHOLDER -->
-        <img src="images/flowchart-flashing-led.png" alt="Flowchart for a flashing LED: START → Turn D8 ON → Wait 500ms → Turn D8 OFF → Wait 500ms → loop back to Turn D8 ON" style="width:100%;max-width:320px;display:block;margin:12px auto;border-radius:8px;">
+        <img src="images/flowchart-flashing-led.png" alt="Flowchart for a flashing LED: START → Turn D8 ON → Wait 500ms → Turn D8 OFF → Wait 500ms → loop back to Turn D8 ON" style="width:100%;max-width:192px;display:block;margin:12px auto;border-radius:8px;">
         <p style="font-size:13px;color:var(--gray-600);text-align:center;margin-top:6px;">Note the fixed loop arrow returning from the last box to the "Turn D8 ON" step.</p>
       </div>
 
@@ -354,7 +351,7 @@
           </ol>
         </div>
         <!-- DIAGRAM PLACEHOLDER -->
-        <img src="images/flowchart-traffic-lights.png" alt="Flowchart for traffic light sequence with pin numbers D8 D9 D10 and delay boxes showing 10s and 2s" style="width:100%;max-width:380px;display:block;margin:12px auto;border-radius:8px;">
+        <img src="images/flowchart-traffic-lights.png" alt="Flowchart for traffic light sequence with pin numbers D8 D9 D10 and delay boxes showing 10s and 2s" style="width:100%;max-width:228px;display:block;margin:12px auto;border-radius:8px;">
       </div>
 
       <!-- Simulator embed 1 — basic flowcharts -->
@@ -415,7 +412,7 @@
       <p class="notes-p">Most real control systems respond to sensor inputs. A <strong>decision box</strong> (diamond) checks whether an input is ON or OFF and branches the flowchart accordingly.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/flowchart-decision-box.png" alt="Decision box showing Is D2 ON? with Y and N branches — Y continues, N loops back to check again" style="width:100%;max-width:480px;display:block;margin:16px auto;border-radius:8px;">
+      <img src="images/flowchart-decision-box.png" alt="Decision box showing Is D2 ON? with Y and N branches — Y continues, N loops back to check again" style="width:100%;max-width:288px;display:block;margin:16px auto;border-radius:8px;">
 
       <h2 class="notes-h2">Waiting for an input</h2>
       <p class="notes-p">To make the program wait until a button is pressed, use a decision box that loops back to itself on the NO branch:</p>
@@ -430,13 +427,13 @@
       <p class="notes-p">When <strong>two conditions must both be true</strong> before continuing, two decision boxes are placed in series. The YES output of the first leads into the second decision. Only when both return YES does the program continue.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/flowchart-and-control.png" alt="Flowchart showing AND control — Is D2 ON? (N loops back) → Is D3 ON? (N loops back) → both YES → continue" style="width:100%;max-width:420px;display:block;margin:16px auto;border-radius:8px;">
+      <img src="images/flowchart-and-control.png" alt="Flowchart showing AND control — Is D2 ON? (N loops back) → Is D3 ON? (N loops back) → both YES → continue" style="width:100%;max-width:252px;display:block;margin:16px auto;border-radius:8px;">
 
       <h2 class="notes-h2">OR control — either input can be active</h2>
       <p class="notes-p">When <strong>either of two conditions being true</strong> is enough to continue, two decision boxes are placed in parallel. The YES output of either one leads to the same next step.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/flowchart-or-control.png" alt="Flowchart showing OR control — Is D2 ON? Y → continue / N → Is D3 ON? Y → continue / N → loop back" style="width:100%;max-width:420px;display:block;margin:16px auto;border-radius:8px;">
+      <img src="images/flowchart-or-control.png" alt="Flowchart showing OR control — Is D2 ON? Y → continue / N → Is D3 ON? Y → continue / N → loop back" style="width:100%;max-width:252px;display:block;margin:16px auto;border-radius:8px;">
 
       <div class="worked-example">
         <div class="worked-example-title">Worked Example &mdash; Automatic door with inputs</div>
@@ -454,7 +451,7 @@
           </ol>
         </div>
         <!-- DIAGRAM PLACEHOLDER -->
-        <img src="images/flowchart-automatic-door.png" alt="Flowchart for automatic door: polling D2 for pressure pad, turning motor on D8, polling D3 for limit switch, delay, reverse motor D9, polling D4" style="width:100%;max-width:380px;display:block;margin:12px auto;border-radius:8px;">
+        <img src="images/flowchart-automatic-door.png" alt="Flowchart for automatic door: polling D2 for pressure pad, turning motor on D8, polling D3 for limit switch, delay, reverse motor D9, polling D4" style="width:100%;max-width:228px;display:block;margin:12px auto;border-radius:8px;">
       </div>
 
       <div class="worked-example">
@@ -477,7 +474,7 @@
         </div>
         <div class="warning">&#x26A0;&#xFE0F; <strong>Important:</strong> Never turn D8 and D9 ON at the same time — this would cause a short circuit in a real motor driver. The flowchart must always turn one OFF before turning the other ON.</div>
         <!-- DIAGRAM PLACEHOLDER -->
-        <img src="images/flowchart-motor-direction.png" alt="Flowchart for motor direction: Is D2 ON? Y → D8 ON, Wait 2s, D8 OFF / N → Is D3 ON? Y → D9 ON, Wait 2s, D9 OFF / fixed loop" style="width:100%;max-width:420px;display:block;margin:12px auto;border-radius:8px;">
+        <img src="images/flowchart-motor-direction.png" alt="Flowchart for motor direction: Is D2 ON? Y → D8 ON, Wait 2s, D8 OFF / N → Is D3 ON? Y → D9 ON, Wait 2s, D9 OFF / fixed loop" style="width:100%;max-width:252px;display:block;margin:12px auto;border-radius:8px;">
       </div>
 
       <!-- Simulator embed 2 — inputs and decisions -->
@@ -538,7 +535,7 @@
       </ol>
 
       <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/flowchart-finite-loop.png" alt="Flowchart showing a finite loop: count=0, flash LED, count=count+1, Is count less than 10? Yes loop back, No continue" style="width:100%;max-width:380px;display:block;margin:16px auto;border-radius:8px;">
+      <img src="images/flowchart-finite-loop.png" alt="Flowchart showing a finite loop: count=0, flash LED, count=count+1, Is count less than 10? Yes loop back, No continue" style="width:100%;max-width:228px;display:block;margin:16px auto;border-radius:8px;">
 
       <div class="key-point">In NoSyntaxSim, drag the <strong>For Loop (Macro)</strong> from the left panel — it automatically creates the three required blocks (initialise, increment, decision) formatted to QS standards.</div>
 
@@ -557,7 +554,7 @@
         <div class="step"><div class="step-num">3</div><div class="step-content">count = count + 1</div></div>
         <div class="step"><div class="step-num">4</div><div class="step-content">Is count &lt; 5? YES → back to step 2. NO → loop back to wait for button.</div></div>
         <!-- DIAGRAM PLACEHOLDER -->
-        <img src="images/flowchart-school-bell.png" alt="Flowchart for school bell: polling D2, count=0, buzz on D8, 500ms, off, 500ms, count+1, Is count less than 5? loop" style="width:100%;max-width:360px;display:block;margin:12px auto;border-radius:8px;">
+        <img src="images/flowchart-school-bell.png" alt="Flowchart for school bell: polling D2, count=0, buzz on D8, 500ms, off, 500ms, count+1, Is count less than 5? loop" style="width:100%;max-width:216px;display:block;margin:12px auto;border-radius:8px;">
       </div>
 
       <!-- Simulator embed 3 — finite loops -->
@@ -615,7 +612,7 @@
         <div class="worked-example-title">Worked Example &mdash; Spot and correct the errors</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px;">The flowchart below is supposed to flash a lamp (D8) when a moisture sensor (D2) is detected. Find two errors.</p>
         <!-- DIAGRAM PLACEHOLDER -->
-        <img src="images/flowchart-errors-example.png" alt="Flowchart with deliberate errors: decision box has Y and N branches swapped, and delay box missing units" style="width:100%;max-width:360px;display:block;margin:12px auto;border-radius:8px;">
+        <img src="images/flowchart-errors-example.png" alt="Flowchart with deliberate errors: decision box has Y and N branches swapped, and delay box missing units" style="width:100%;max-width:216px;display:block;margin:12px auto;border-radius:8px;">
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Error 1:</strong> The YES and NO branches on the decision box are swapped. The YES branch should lead to turning the LED ON, not loop back.</div></div>
         <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Error 2:</strong> The delay box reads "500" — this is missing the unit. It should read "Wait 500 ms".</div></div>
       </div>
