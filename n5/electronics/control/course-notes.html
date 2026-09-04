@@ -163,11 +163,13 @@
 
       <h2 class="notes-h2">Inputs and outputs</h2>
 
+      <p class="notes-p">Inputs and outputs are the only means by which a ‘machine’ does anything. A control system generally works by responding to inputs and producing outputs — without them it has no way to sense the world or act on it.</p>
+
       <div class="compare-grid">
         <div class="compare-card">
           <div class="compare-card-header" style="background:#0369a1;">&#x1F4E5; Input transducers (sensors)</div>
           <div class="compare-card-body">
-            <ul>
+            <ul style="padding-left:18px;margin:0;">
               <li><strong>Push switch / toggle switch</strong> — detects a press or on/off</li>
               <li><strong>Light-dependent resistor (LDR)</strong> — detects light level</li>
               <li><strong>Thermistor</strong> — detects temperature</li>
@@ -181,7 +183,7 @@
         <div class="compare-card">
           <div class="compare-card-header" style="background:#15803d;">&#x1F4E4; Output transducers (actuators)</div>
           <div class="compare-card-body">
-            <ul>
+            <ul style="padding-left:18px;margin:0;">
               <li><strong>LED / lamp</strong> — produces light</li>
               <li><strong>Buzzer / speaker</strong> — produces sound</li>
               <li><strong>DC motor</strong> — produces rotary motion</li>
@@ -190,27 +192,6 @@
               <li><strong>7-segment display</strong> — displays numbers</li>
               <li><strong>Servo motor</strong> — produces controlled angular movement</li>
             </ul>
-          </div>
-        </div>
-      </div>
-
-      <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Control systems</div></div>
-        <div class="assignment-body">
-          <div class="task-item">
-            <div class="task-q">1. List the advantages of using a microcontroller within a product design.</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1a">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t1a" data-placeholder="List the advantages here..."></div>
-          </div>
-          <div class="task-item">
-            <div class="task-q">2. Name three devices that contain a microcontroller. For each, explain why the microcontroller is useful in that product.</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1b">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t1b" data-placeholder="Device 1: ... Device 2: ... Device 3: ..."></div>
-          </div>
-          <div class="task-item">
-            <div class="task-q">3. A popular electronic toy (such as a Furby) uses sensors to react to its environment. List three input transducers it might have and describe what each one detects.</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1c">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="cs-t1c" data-placeholder="Input 1: ... Input 2: ... Input 3: ..."></div>
           </div>
         </div>
       </div>
@@ -241,63 +222,23 @@
 
       <div class="key-point">A microcontroller is advantageous because the control sequence can be changed by reprogramming rather than redesigning the hardware. This reduces cost and development time.</div>
 
-      <hr class="divider">
-
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 3: Inputs, Outputs and Pin Numbers</h1>
-
-      <p class="notes-p">The microcontroller used in NoSyntaxSim is based on the <strong>Arduino</strong> platform. Inputs and outputs connect to numbered <strong>digital pins</strong> (D2–D13). In the SQA exam, you will always be given a <strong>pin table</strong> telling you which pin connects to which input or output device.</p>
-
-      <div class="key-point">In any flowchart you draw, you <strong>must</strong> use the correct pin numbers from the pin table. The SQA specifically requires pin numbers in flowcharts — do not just write "switch" or "LED".</div>
-
-      <h2 class="notes-h2">Example pin table</h2>
-
-      <table class="pin-table">
-        <tr><th>Pin</th><th>Direction</th><th>Device</th></tr>
-        <tr><td>D2</td><td class="pin-in">INPUT</td><td>Push button (start switch)</td></tr>
-        <tr><td>D3</td><td class="pin-in">INPUT</td><td>Temperature sensor</td></tr>
-        <tr><td>D4</td><td class="pin-in">INPUT</td><td>Pressure pad</td></tr>
-        <tr><td>D5</td><td class="pin-in">INPUT</td><td>Reset button</td></tr>
-        <tr><td>D8</td><td class="pin-out">OUTPUT</td><td>Red LED</td></tr>
-        <tr><td>D9</td><td class="pin-out">OUTPUT</td><td>Green LED</td></tr>
-        <tr><td>D10</td><td class="pin-out">OUTPUT</td><td>Motor</td></tr>
-        <tr><td>D11</td><td class="pin-out">OUTPUT</td><td>Buzzer</td></tr>
-      </table>
-
-      <h2 class="notes-h2">Digital inputs</h2>
-      <p class="notes-p">A <strong>digital input</strong> can only be logic 1 (ON) or logic 0 (OFF). A push button is digital — it is either pressed or not. In a decision box in a flowchart, a digital input is checked as: <em>"Is D2 ON?"</em></p>
-
-      <h2 class="notes-h2">Analogue inputs</h2>
-      <p class="notes-p">An <strong>analogue input</strong> can be any value between a minimum and maximum (e.g. a thermistor produces a varying voltage as temperature changes). To use an analogue signal, the microcontroller must first convert it to a digital number using an <strong>Analogue-to-Digital Converter (ADC)</strong>. In NoSyntaxSim, analogue inputs appear as sliders.</p>
-
-      <h2 class="notes-h2">Output drivers</h2>
-      <p class="notes-p">A microcontroller pin can only supply a small current — not enough to directly drive a motor or solenoid. An <strong>output driver</strong> (typically a transistor or relay) amplifies the signal to power the output device. In exam circuits, a <strong>transistor driver circuit</strong> is commonly shown between the microcontroller output pin and the output device.</p>
-
-      <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/transistor-driver-circuit.png" alt="Transistor driver circuit connecting microcontroller output pin to a motor or buzzer" style="width:100%;max-width:600px;display:block;margin:16px auto;border-radius:8px;">
-
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Inputs, outputs and pin tables</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Control systems</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <div class="task-q">1. Using the example pin table above, identify which pin you would read in a flowchart to check if the pressure pad is activated.</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2a">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t2a" data-placeholder="Pin number and reason..."></div>
+            <div class="task-q">1. List the advantages of using a microcontroller within a product design.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t1a" data-placeholder="List the advantages here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">2. Explain why a transistor driver is needed between the microcontroller and a motor output.</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2b">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="cs-t2b" data-placeholder="Explain why a driver is needed..."></div>
+            <div class="task-q">2. Name three devices that contain a microcontroller. For each, explain why the microcontroller is useful in that product.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t1b" data-placeholder="Device 1: ... Device 2: ... Device 3: ..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">3. Explain the difference between a digital input and an analogue input. Give one example of each.</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2c">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="cs-t2c" data-placeholder="Digital: ... Analogue: ..."></div>
-          </div>
-          <div class="task-item">
-            <div class="task-q">4. Why does an analogue input need an ADC before the microcontroller can use it?</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2d">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t2d" data-placeholder="Explain the need for ADC..."></div>
+            <div class="task-q">3. A popular electronic toy (such as a Furby) uses sensors to react to its environment. List three input transducers it might have and describe what each one detects.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="cs-t1c" data-placeholder="Input 1: ... Input 2: ... Input 3: ..."></div>
           </div>
         </div>
       </div>
@@ -305,7 +246,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 4: Flowcharts</h1>
+      <h1 class="notes-h1">Section 3: Flowcharts</h1>
 
       <p class="notes-p">A <strong>flowchart</strong> is a graphical way of planning and communicating a control sequence. It shows exactly what the microcontroller should do, in what order, and under what conditions. Flowcharts are used in the SQA assignment and exam — you must be able to read, draw, correct and simulate them.</p>
 
@@ -360,7 +301,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 5: Drawing Flowcharts from a Specification</h1>
+      <h1 class="notes-h1">Section 4: Drawing Flowcharts from a Specification</h1>
 
       <p class="notes-p">In the SQA exam and assignment you will be given a written specification and asked to draw a flowchart. Read the specification carefully — each step becomes one or more boxes in the flowchart.</p>
 
@@ -468,7 +409,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 6: Using Inputs — Decision Boxes</h1>
+      <h1 class="notes-h1">Section 5: Using Inputs — Decision Boxes</h1>
 
       <p class="notes-p">Most real control systems respond to sensor inputs. A <strong>decision box</strong> (diamond) checks whether an input is ON or OFF and branches the flowchart accordingly.</p>
 
@@ -580,7 +521,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 7: Finite (Counted) Loops</h1>
+      <h1 class="notes-h1">Section 6: Finite (Counted) Loops</h1>
 
       <p class="notes-p">A <strong>finite loop</strong> (also called a <strong>counted loop</strong> or <strong>for loop</strong>) repeats a sequence a <strong>fixed number of times</strong> before stopping. This is different from a fixed loop, which repeats indefinitely.</p>
 
@@ -655,7 +596,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 8: Reading and Correcting Flowcharts</h1>
+      <h1 class="notes-h1">Section 7: Reading and Correcting Flowcharts</h1>
 
       <p class="notes-p">In the SQA exam you will often be given a flowchart that contains <strong>errors</strong> and asked to identify and correct them. Common errors include:</p>
 
@@ -690,6 +631,67 @@
             <div class="task-q">2. A student designs a flowchart for a fire alarm system with this specification: (a) a switch (D2) must be pressed to arm the system; (b) if a heat sensor (D3) is activated OR a button (D4) is pressed, the alarm (D8) sounds; (c) the alarm continues until a reset switch (D5) is pressed. The student's flowchart has the reset check placed BEFORE the alarm is switched on. Explain why this is wrong and draw the corrected sequence.</div>
             <div class="answer-label">Explanation and corrected sequence <span class="saved-indicator" id="ind-t7b">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t7b" data-placeholder="Why it is wrong: ... Corrected sequence: ..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 8: Inputs, Outputs and Pin Numbers</h1>
+
+      <p class="notes-p">The microcontroller used in NoSyntaxSim is based on the <strong>Arduino</strong> platform. Inputs and outputs connect to numbered <strong>digital pins</strong> (D2–D13). In the SQA exam, you will always be given a <strong>pin table</strong> telling you which pin connects to which input or output device.</p>
+
+      <div class="key-point">In any flowchart you draw, you <strong>must</strong> use the correct pin numbers from the pin table. The SQA specifically requires pin numbers in flowcharts — do not just write "switch" or "LED".</div>
+
+      <h2 class="notes-h2">Example pin table</h2>
+
+      <table class="pin-table">
+        <tr><th>Pin</th><th>Direction</th><th>Device</th></tr>
+        <tr><td>D2</td><td class="pin-in">INPUT</td><td>Push button (start switch)</td></tr>
+        <tr><td>D3</td><td class="pin-in">INPUT</td><td>Temperature sensor</td></tr>
+        <tr><td>D4</td><td class="pin-in">INPUT</td><td>Pressure pad</td></tr>
+        <tr><td>D5</td><td class="pin-in">INPUT</td><td>Reset button</td></tr>
+        <tr><td>D8</td><td class="pin-out">OUTPUT</td><td>Red LED</td></tr>
+        <tr><td>D9</td><td class="pin-out">OUTPUT</td><td>Green LED</td></tr>
+        <tr><td>D10</td><td class="pin-out">OUTPUT</td><td>Motor</td></tr>
+        <tr><td>D11</td><td class="pin-out">OUTPUT</td><td>Buzzer</td></tr>
+      </table>
+
+      <h2 class="notes-h2">Digital inputs</h2>
+      <p class="notes-p">A <strong>digital input</strong> can only be logic 1 (ON) or logic 0 (OFF). A push button is digital — it is either pressed or not. In a decision box in a flowchart, a digital input is checked as: <em>"Is D2 ON?"</em></p>
+
+      <h2 class="notes-h2">Analogue inputs</h2>
+      <p class="notes-p">An <strong>analogue input</strong> can be any value between a minimum and maximum (e.g. a thermistor produces a varying voltage as temperature changes). To use an analogue signal, the microcontroller must first convert it to a digital number using an <strong>Analogue-to-Digital Converter (ADC)</strong>. In NoSyntaxSim, analogue inputs appear as sliders.</p>
+
+      <h2 class="notes-h2">Output drivers</h2>
+      <p class="notes-p">A microcontroller pin can only supply a small current — not enough to directly drive a motor or solenoid. An <strong>output driver</strong> (typically a transistor or relay) amplifies the signal to power the output device. In exam circuits, a <strong>transistor driver circuit</strong> is commonly shown between the microcontroller output pin and the output device.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/transistor-driver-circuit.png" alt="Transistor driver circuit connecting microcontroller output pin to a motor or buzzer" style="width:100%;max-width:600px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Inputs, outputs and pin tables</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Using the example pin table above, identify which pin you would read in a flowchart to check if the pressure pad is activated.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t2a" data-placeholder="Pin number and reason..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Explain why a transistor driver is needed between the microcontroller and a motor output.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="cs-t2b" data-placeholder="Explain why a driver is needed..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Explain the difference between a digital input and an analogue input. Give one example of each.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="cs-t2c" data-placeholder="Digital: ... Analogue: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. Why does an analogue input need an ADC before the microcontroller can use it?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t2d" data-placeholder="Explain the need for ADC..."></div>
           </div>
         </div>
       </div>
@@ -845,6 +847,7 @@
 
         </div>
       </div>
+
 
       <!-- Controls -->
       <div class="controls-bar">
