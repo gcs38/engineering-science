@@ -248,23 +248,24 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 3: Flowcharts</h1>
 
-      <p class="notes-p">A <strong>flowchart</strong> is a graphical way of planning and communicating a control sequence. It shows exactly what the microcontroller should do, in what order, and under what conditions. Flowcharts are used in the SQA assignment and exam — you must be able to read, draw, correct and simulate them.</p>
+      <p class="notes-p">A <strong>flowchart</strong> is a graphical way of planning and communicating a control sequence. It shows exactly what the microcontroller should do, in what order, and under what conditions. Flowcharts are used in the QS assignment and exam — you must be able to read, draw, correct and simulate them.</p>
 
-      <h2 class="notes-h2">Standard SQA flowchart symbols</h2>
+      <h2 class="notes-h2">Standard QS flowchart symbols</h2>
+
+      <p class="notes-p">A flowchart determines the order in which instructions are followed by the microcontroller — it is the plan the program must execute, step by step. Each type of instruction (starting/stopping, inputting/outputting, processing, or deciding) has its own standard box shape, so that anyone reading the flowchart can immediately recognise what kind of instruction each box represents, without needing to read every word.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/flowchart-symbols.png" alt="SQA standard flowchart symbols: terminal, process, input/output parallelogram, decision diamond" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;">
+      <img src="images/flowchart-symbols.png" alt="QS standard flowchart symbols: terminal, process, input/output parallelogram, decision diamond" style="width:100%;max-width:510px;display:block;margin:16px auto;border-radius:8px;">
 
-      <table class="data-table">
-        <tr><th>Symbol shape</th><th>Name</th><th>Used for</th><th>Examples</th></tr>
-        <tr><td>Rounded rectangle (pill)</td><td><strong>Terminal</strong></td><td>START and STOP of the program</td><td>START, STOP</td></tr>
-        <tr><td>Parallelogram</td><td><strong>Input / Output</strong></td><td>Reading from an input pin or writing to an output pin</td><td>Turn D8 ON, Turn D10 OFF, Read D2</td></tr>
-        <tr><td>Rectangle</td><td><strong>Process</strong></td><td>Time delays, calculations, variable operations</td><td>Wait 500ms, count = count + 1</td></tr>
-        <tr><td>Diamond</td><td><strong>Decision</strong></td><td>Checking a condition — has YES and NO exits</td><td>Is D2 ON? Is count &gt; 5?</td></tr>
-        <tr><td>Flow arrows</td><td><strong>Flow lines</strong></td><td>Showing the direction the program follows</td><td>Arrows connecting all symbols</td></tr>
-      </table>
+      <p class="notes-p">A flowchart could simply be a single run of commands from start to finish, ending once the last instruction has been carried out.</p>
 
-      <div class="warning">&#x26A0;&#xFE0F; <strong>Common exam mistake:</strong> Many pupils write "open loop" or "closed loop" to describe a repeating flowchart. The correct SQA term is <strong>fixed loop</strong>. A fixed loop is one where the program repeats continuously from the end back to the start.</div>
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/flowchart-single-run.png" alt="Simple single-run flowchart: START, turn an output ON, wait 1 second, turn the output OFF, STOP" style="width:100%;max-width:280px;display:block;margin:16px auto;border-radius:8px;">
+
+      <p class="notes-p">However, a flowchart like this would only run through once before stopping. In practice, it is far more common for microcontroller programs to run continuously — a flowchart needs to show this using the flow line symbol to loop back to an appropriate earlier point in the sequence, rather than reaching STOP.</p>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/flowchart-simple-loop.png" alt="Simple loop flowchart: turn an output ON, wait 1 second, turn the output OFF, wait 1 second, flow line looping back to the first step" style="width:100%;max-width:280px;display:block;margin:16px auto;border-radius:8px;">
 
       <h2 class="notes-h2">The fixed loop</h2>
       <p class="notes-p">Most microcontroller programs run <strong>continuously</strong> — they repeat the same sequence over and over. This is called a <strong>fixed loop</strong>. The last step in the flowchart connects back to an earlier point (usually the START or the first decision box), so the sequence repeats indefinitely.</p>
@@ -273,7 +274,7 @@
       <img src="images/flowchart-fixed-loop.png" alt="Flowchart showing a fixed loop — LED flashing sequence that returns from STOP back to START continuously" style="width:100%;max-width:400px;display:block;margin:16px auto;border-radius:8px;">
 
       <h2 class="notes-h2">Delay units</h2>
-      <p class="notes-p">A <strong>delay</strong> is used in a Process box to make the program wait for a set time before continuing. In the SQA exam, you <strong>must include the delay unit</strong> — simply writing "500" is not acceptable. Always write: <strong>Wait 500 ms</strong> or <strong>Delay 2 s</strong>.</p>
+      <p class="notes-p">A <strong>delay</strong> is used in a Process box to make the program wait for a set time before continuing. In the QS exam, you <strong>must include the delay unit</strong> — simply writing "500" is not acceptable. Always write: <strong>Wait 500 ms</strong> or <strong>Delay 2 s</strong>.</p>
 
       <div class="key-point">Always include units on delays: ms (milliseconds) or s (seconds). 1 second = 1000 milliseconds.</div>
 
@@ -286,7 +287,7 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t3a" data-placeholder="(a) Diamond: ... (b) Parallelogram: ... (c) Pill: ... (d) Rectangle: ..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">2. What is the correct SQA term for a flowchart that repeats continuously? Why is "closed loop" incorrect?</div>
+            <div class="task-q">2. What is the correct QS term for a flowchart that repeats continuously? Why is "closed loop" incorrect?</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t3b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="cs-t3b" data-placeholder="Correct term: ... Why closed loop is wrong: ..."></div>
           </div>
@@ -303,7 +304,7 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 4: Drawing Flowcharts from a Specification</h1>
 
-      <p class="notes-p">In the SQA exam and assignment you will be given a written specification and asked to draw a flowchart. Read the specification carefully — each step becomes one or more boxes in the flowchart.</p>
+      <p class="notes-p">In the QS exam and assignment you will be given a written specification and asked to draw a flowchart. Read the specification carefully — each step becomes one or more boxes in the flowchart.</p>
 
       <h2 class="notes-h2">Method</h2>
       <ol class="notes-ol">
@@ -525,7 +526,7 @@
 
       <p class="notes-p">A <strong>finite loop</strong> (also called a <strong>counted loop</strong> or <strong>for loop</strong>) repeats a sequence a <strong>fixed number of times</strong> before stopping. This is different from a fixed loop, which repeats indefinitely.</p>
 
-      <div class="key-point">In programming and in the SQA exam, this construct is called a <strong>for…next loop</strong>. The loop runs <strong>FOR</strong> a set number of times, carrying out its instructions each time, then moves on to the <strong>NEXT</strong> instruction after the loop. You must be able to recognise this term and construct a flowchart that represents it.</div>
+      <div class="key-point">In programming and in the QS exam, this construct is called a <strong>for…next loop</strong>. The loop runs <strong>FOR</strong> a set number of times, carrying out its instructions each time, then moves on to the <strong>NEXT</strong> instruction after the loop. You must be able to recognise this term and construct a flowchart that represents it.</div>
 
       <p class="notes-p">To create a for…next loop in a flowchart, a <strong>variable</strong> (e.g. <em>count</em>) is used to keep track of how many times the loop has run:</p>
 
@@ -539,7 +540,7 @@
       <!-- DIAGRAM PLACEHOLDER -->
       <img src="images/flowchart-finite-loop.png" alt="Flowchart showing a finite loop: count=0, flash LED, count=count+1, Is count less than 10? Yes loop back, No continue" style="width:100%;max-width:380px;display:block;margin:16px auto;border-radius:8px;">
 
-      <div class="key-point">In NoSyntaxSim, drag the <strong>For Loop (Macro)</strong> from the left panel — it automatically creates the three required blocks (initialise, increment, decision) formatted to SQA standards.</div>
+      <div class="key-point">In NoSyntaxSim, drag the <strong>For Loop (Macro)</strong> from the left panel — it automatically creates the three required blocks (initialise, increment, decision) formatted to QS standards.</div>
 
       <div class="worked-example">
         <div class="worked-example-title">Worked Example &mdash; School bell sounds 5 times</div>
@@ -598,7 +599,7 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 7: Reading and Correcting Flowcharts</h1>
 
-      <p class="notes-p">In the SQA exam you will often be given a flowchart that contains <strong>errors</strong> and asked to identify and correct them. Common errors include:</p>
+      <p class="notes-p">In the QS exam you will often be given a flowchart that contains <strong>errors</strong> and asked to identify and correct them. Common errors include:</p>
 
       <ul class="notes-ul">
         <li>Missing delay units (writing "500" instead of "500 ms")</li>
@@ -640,9 +641,9 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 8: Inputs, Outputs and Pin Numbers</h1>
 
-      <p class="notes-p">The microcontroller used in NoSyntaxSim is based on the <strong>Arduino</strong> platform. Inputs and outputs connect to numbered <strong>digital pins</strong> (D2–D13). In the SQA exam, you will always be given a <strong>pin table</strong> telling you which pin connects to which input or output device.</p>
+      <p class="notes-p">The microcontroller used in NoSyntaxSim is based on the <strong>Arduino</strong> platform. Inputs and outputs connect to numbered <strong>digital pins</strong> (D2–D13). In the QS exam, you will always be given a <strong>pin table</strong> telling you which pin connects to which input or output device.</p>
 
-      <div class="key-point">In any flowchart you draw, you <strong>must</strong> use the correct pin numbers from the pin table. The SQA specifically requires pin numbers in flowcharts — do not just write "switch" or "LED".</div>
+      <div class="key-point">In any flowchart you draw, you <strong>must</strong> use the correct pin numbers from the pin table. The QS specifically requires pin numbers in flowcharts — do not just write "switch" or "LED".</div>
 
       <h2 class="notes-h2">Example pin table</h2>
 
@@ -863,7 +864,7 @@
 </div>
 
 <footer class="footer">
-  <span>Engineering Science Scotland &middot; Aligned to SQA course specifications</span>
+  <span>Engineering Science Scotland &middot; Aligned to QS course specifications</span>
   <a href="../../../../teacher/login.html">Teacher area</a>
 </footer>
 
