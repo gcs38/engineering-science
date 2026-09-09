@@ -1,11 +1,4 @@
 <!DOCTYPE html>
-<!-- 
-    NOSYNTAX SIMULATOR V2.0
-    ---------------------------------------------------
-    Developed for Engineering Science (National 5 & Higher).
-    Adheres to SQA Data Booklet flowchart standards.
-    Features: Dual PICAXE/Arduino Compiler, DIP IC Hardware Panel, SVG Wiring, Grid Snapping, Box-Select, Junction Splitting
--->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -25,7 +18,7 @@
         .rotate-icon { transition: transform 0.3s ease; }
         .rotate-icon.open { transform: rotate(180deg); }
 
-        .comp-card { @apply flex flex-col items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm cursor-grab transition-all duration-200 select-none relative overflow-hidden h-[88px]; }
+        .comp-card { @apply flex flex-col items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100 shadow-sm cursor-grab transition-all duration-200 select-none relative h-[88px]; }
         .comp-card:hover { @apply bg-white border-emerald-300 shadow-md -translate-y-1; }
         .comp-card:active { @apply ring-2 ring-emerald-200 border-emerald-500 cursor-grabbing bg-emerald-50; }
         
@@ -39,9 +32,15 @@
         /* Sidebar Collapse Logic */
         #leftSidebar { transition: margin 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
         #leftSidebar.collapsed { margin-left: -17rem; } 
+        #leftSidebar.collapsed #sidebarToggleIcon { transform: rotate(180deg); }
+
+        /* Right Sidebar Collapse Logic */
+        #rightSidebar { transition: margin 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        #rightSidebar.collapsed { margin-right: -400px; }
+        #rightSidebar.collapsed #rightSidebarToggleIcon { transform: rotate(180deg); }
+
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        #leftSidebar.collapsed #sidebarToggleIcon { transform: rotate(180deg); }
 
         /* Pure CSS Flowchart Symbols */
         .sym-pill { width: 44px; height: 22px; border: 2.5px solid #334155; background-color: white; border-radius: 9999px; margin-top: 4px; box-sizing: border-box; }
@@ -118,8 +117,6 @@
     </style>
 </head>
 <body class="flex flex-col text-slate-800 bg-[#f4fdf8] h-screen w-screen overflow-hidden">
-
-    <!-- Top Toolbar -->
     <div class="h-16 bg-white z-20 flex items-center justify-between px-6 border-b border-emerald-100 shadow-[0_4px_20px_rgba(0,0,0,0.03)] shrink-0">
         <div class="flex items-center gap-4">
             <div class="flex items-center gap-3">
@@ -159,11 +156,8 @@
             <button id="btnClear" type="button" class="tool-btn text-slate-400 hover:text-slate-600" title="Clear All">✕</button>
         </div>
     </div>
-
-    <!-- Main Workspace -->
     <div class="flex flex-1 overflow-hidden p-4 gap-4 relative">
         
-        <!-- Left Sidebar: Flowchart Library -->
         <div id="leftSidebar" class="w-64 flex-shrink-0 bg-white/90 backdrop-blur-xl rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.06)] border border-slate-100 flex flex-col relative z-30 transition-all duration-300 ease-in-out">
             <div class="flex-1 overflow-y-auto p-4 flex flex-col hide-scrollbar" id="sidebarList">
 
@@ -173,7 +167,6 @@
                         <div class="comp-card" data-type="terminal"><div class="sym-pill"></div><span class="card-label">Terminal</span></div>
                         <div class="comp-card" data-type="process"><div class="sym-rect"></div><span class="card-label">Process</span></div>
                         
-                        <!-- Macro Component -->
                         <div class="comp-card" data-type="loop_macro" title="Creates a standard 3-block loop">
                             <div class="flex flex-col items-center gap-1 mt-1">
                                 <div class="sym-rect" style="width:24px;height:10px;margin:0;border-width:2px;"></div>
@@ -197,30 +190,34 @@
                 </div>
             </div>
 
-            <!-- Gradient Circular Collapse Toggle Button -->
             <button id="sidebarToggle" class="absolute -right-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-gradient-to-br from-emerald-500 to-yellow-400 rounded-full shadow-[0_8px_25px_rgba(16,185,129,0.4)] flex items-center justify-center cursor-pointer hover:scale-105 z-10 text-white transition-transform duration-300 border border-white/20" title="Toggle Sidebar">
                 <svg id="sidebarToggleIcon" class="w-6 h-6 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M15 19l-7-7 7-7" /></svg>
             </button>
         </div>
 
-        <!-- Center Workspace: Flowchart Canvas -->
         <div class="flex-1 relative bg-white rounded-3xl shadow-[0_8px_30px_rgba(0,0,0,0.04)] border border-emerald-50 overflow-hidden flex flex-col" id="canvasContainer">
             <canvas id="flowCanvas" class="absolute inset-0 w-full h-full" tabindex="0"></canvas>
             
-            <!-- Dynamic Inspector Panel -->
-            <div id="inspector" class="hidden absolute top-4 right-4 bg-white/95 p-4 rounded-2xl shadow-xl border border-emerald-100 w-72 backdrop-blur-md transition-all z-20 max-h-[80vh] overflow-y-auto hide-scrollbar">
-                <div class="flex justify-between items-center mb-3 pb-2 border-b border-slate-100 sticky top-0 bg-white/95 backdrop-blur-md z-10 pt-1">
-                    <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest" id="inspTitle">Properties</h3>
-                    <span id="badgeType" class="text-[9px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-md uppercase tracking-wider">NODE</span>
+            <div id="inspector" class="hidden absolute top-4 right-4 bg-white/95 p-4 rounded-2xl shadow-xl border border-emerald-100 w-72 backdrop-blur-md transition-all z-20 max-h-[80vh] flex flex-col" style="min-height:55px;">
+                <div id="insp-header" class="cursor-move flex justify-between items-center pb-2 border-b border-slate-100 sticky top-0 bg-white/95 backdrop-blur-md z-10 shrink-0 select-none">
+                    <div class="flex items-center gap-2 pt-1">
+                        <h3 class="text-xs font-black text-slate-400 uppercase tracking-widest" id="inspTitle">Properties</h3>
+                        <span id="badgeType" class="text-[9px] font-bold px-2 py-1 bg-emerald-100 text-emerald-700 rounded-md uppercase tracking-wider">NODE</span>
+                    </div>
+                    <button type="button" onclick="const w=document.getElementById('insp-wrapper'); w.classList.toggle('hidden'); this.querySelector('svg').style.transform=w.classList.contains('hidden')?'rotate(180deg)':'rotate(0deg)';" class="text-slate-400 hover:text-emerald-600 focus:outline-none cursor-pointer p-1" title="Minimise">
+                        <svg class="w-4 h-4 transition-transform" style="transform:rotate(0deg);" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+                    </button>
                 </div>
-                <div id="propContainer" class="space-y-3"></div>
+                <div id="insp-wrapper" class="flex flex-col flex-1 overflow-y-auto hide-scrollbar mt-3">
+                    <div id="propContainer" class="space-y-3"></div>
+                </div>
             </div>
         </div>
-
-        <!-- Right Sidebar: Hardware Controller Panel -->
-        <div class="w-[380px] flex-shrink-0 bg-white rounded-3xl shadow-[0_8px_30px_rgba(16,185,129,0.15)] border border-slate-100 flex flex-col p-4 relative z-10 overflow-hidden">
-            
-            <!-- Header area with Title and Code button -->
+        
+        <div id="rightSidebar" class="w-[380px] flex-shrink-0 bg-white rounded-3xl shadow-[0_8px_30px_rgba(16,185,129,0.15)] border border-slate-100 flex flex-col p-4 relative z-10 transition-all duration-300 ease-in-out">
+            <button id="rightSidebarToggle" class="absolute -left-6 top-1/2 -translate-y-1/2 w-12 h-12 bg-gradient-to-br from-emerald-500 to-yellow-400 rounded-full shadow-[0_8px_25px_rgba(16,185,129,0.4)] flex items-center justify-center cursor-pointer hover:scale-105 z-40 text-white transition-transform duration-300 border border-white/20" title="Toggle Hardware Pane">
+                <svg id="rightSidebarToggleIcon" class="w-6 h-6 transition-transform duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5l7 7-7 7" /></svg>
+            </button>
             <div class="flex justify-between items-center mb-2 px-1">
                 <div>
                     <h2 class="text-sm font-black text-slate-800 uppercase tracking-widest leading-tight">Hardware Interface</h2>
@@ -231,32 +228,25 @@
                 </button>
             </div>
             
-            <!-- Completely Revised Hardware Panel for SVG Wire Layering -->
             <div class="flex-1 w-full relative h-full flex flex-col min-h-0 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-inner">
                 <div class="absolute inset-0 overflow-y-auto hide-scrollbar p-2" id="hardwarePanel">
                     
                     <svg id="hwWireCanvas" class="absolute top-0 left-0 w-full min-h-full pointer-events-none z-10"></svg>
                     
                     <div class="flex justify-between min-h-full relative">
-                        <!-- Left Column (Inputs) -->
                         <div class="w-[90px] flex flex-col gap-3 py-4 z-20" id="hwInputsContainer">
-                            <!-- Populated dynamically -->
-                        </div>
+                            </div>
 
-                        <!-- Center Controller Block (DIP IC style) -->
                         <div class="flex-1 flex justify-center items-center pointer-events-none z-30 px-2 py-4 relative">
                             <div id="centralController" class="w-[90px] bg-[#0f172a] rounded-lg shadow-2xl border-2 border-slate-700 flex flex-col items-center justify-center relative sticky top-[calc(50%-120px)] h-[240px] pointer-events-auto">
-                                <!-- IC Notch -->
                                 <div class="absolute top-0 left-1/2 -translate-x-1/2 w-6 h-3 bg-slate-50 border-b border-l border-r border-slate-700 rounded-b-full"></div>
                                 
                                 <span class="text-slate-500/50 font-mono tracking-[0.2em] font-black text-[12px] transform -rotate-90 select-none uppercase">Microcontroller</span>
                             </div>
                         </div>
 
-                        <!-- Right Column (Outputs) -->
                         <div class="w-[90px] flex flex-col gap-3 py-4 z-20" id="hwOutputsContainer">
-                            <!-- Populated dynamically -->
-                        </div>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -270,8 +260,6 @@
             </div>
         </div>
     </div>
-
-    <!-- HW Picker Modal -->
     <div id="hwPicker" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm">
         <div class="bg-white rounded-2xl shadow-2xl border border-emerald-100 w-[340px] overflow-hidden transform transition-all scale-95" id="hwPickerModalContent">
             <div class="px-4 py-3 border-b border-slate-100 flex justify-between items-center bg-slate-50">
@@ -282,7 +270,6 @@
         </div>
     </div>
 
-    <!-- Colour Picker Modal -->
     <div id="colourPickerModal" class="modal-overlay hidden fixed inset-0 z-[60] flex items-center justify-center bg-slate-900/50 backdrop-blur-sm">
         <div class="bg-white rounded-2xl shadow-2xl border border-emerald-100 w-[240px] overflow-hidden transform transition-all scale-95" id="colourPickerContent">
             <div class="px-4 py-3 border-b border-slate-100 flex justify-between items-center bg-slate-50">
@@ -293,7 +280,6 @@
         </div>
     </div>
 
-    <!-- Code Generation Modal -->
     <div id="codeModal" class="modal-overlay hidden fixed inset-0 z-50 flex items-center justify-center bg-slate-900/70 backdrop-blur-sm">
         <div class="bg-white rounded-2xl shadow-2xl border border-emerald-100 w-[640px] max-w-[95vw] h-[80vh] flex flex-col overflow-hidden transform transition-all scale-95" id="codeModalContent">
             <div class="px-6 py-4 border-b border-slate-100 flex justify-between items-center bg-slate-50 shrink-0">
@@ -319,7 +305,6 @@
         </div>
     </div>
 
-    <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full font-bold shadow-2xl z-[100] pointer-events-none flex items-center gap-2">
         <span id="toastMsg"></span>
     </div>
@@ -487,7 +472,6 @@
                 document.getElementById('btnRedo').style.opacity = (this.index >= this.stack.length - 1) ? 0.3 : 1; 
             }
         };
-
         // --- DYNAMIC INSPECTOR BUILDER ---
         const InspectorBuilder = {
             build(n) {
@@ -692,7 +676,6 @@
                 return html;
             }
         };
-
         // --- UI MANAGER ---
         const UIManager = {
             toastTimer: null,
@@ -730,9 +713,18 @@
                     setTimeout(resize, 400); 
                 };
                 
+                // Add right sidebar toggle handler
+                document.getElementById('rightSidebarToggle').onclick = () => {
+                    document.getElementById('rightSidebar').classList.toggle('collapsed');
+                    setTimeout(resize, 400); 
+                };
+                
                 document.getElementById('hardwarePanel').addEventListener('scroll', () => {
                     HardwareManager.drawWires();
                 });
+
+                // STEP 3: Initialize the draggable properties panel
+                makeDraggable(document.getElementById('inspector'), document.getElementById('insp-header'));
             },
             showToast(msg, isError = false) {
                 const t = document.getElementById('toast');
@@ -798,7 +790,18 @@
                     HistoryManager.record(); Renderer.draw();
                 }
             },
-            saveFile() { const blob = new Blob([HistoryManager.getStateJSON()], {type: "application/json"}); const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; const d = new Date(); a.download = `nosyntax_${d.getHours()}-${d.getMinutes()}.json`; a.click(); URL.revokeObjectURL(url); },
+            saveFile() { 
+                const d = new Date();
+                const fileName = `nosyntax_${d.getHours()}-${d.getMinutes()}.json`;
+
+                const blob = new Blob([HistoryManager.getStateJSON()], {type: "application/json"}); 
+                const url = URL.createObjectURL(blob); 
+                const a = document.createElement('a'); 
+                a.href = url; 
+                a.download = fileName; 
+                a.click(); 
+                URL.revokeObjectURL(url); 
+            },
             exportImage() {
                 const tmpSel = interact.selNode; this.selectNode(null); interact.selLink = null; Renderer.draw();
                 
@@ -1683,7 +1686,16 @@
                     context.arc(p.x, p.y, 4, 0, Math.PI*2);
                     context.fill();
                 }
-                state.nodes.forEach(n => n.draw(context)); context.restore();
+                state.nodes.forEach(n => n.draw(context)); 
+                
+                // --- DRAW TOUCH-FRIENDLY DRAG GHOST ---
+                if (interact.dragGhostEl) {
+                    // Handled as a DOM element outside canvas context for flowchart symbols dragging from sidebar
+                    // But if it's rendered in canvas, we'd do it here. 
+                    // Sticking with DOM overlay for nosyntax sidebar since it overlays HTML panels well.
+                }
+
+                context.restore();
             },
             draw() { this.drawContext(ctx); }
         };
@@ -1702,21 +1714,115 @@
                 this.initDragAndDrop();
             },
             initDragAndDrop() {
+                // Unified touch and mouse drag logic for dropping symbols
                 document.querySelectorAll('.comp-card').forEach(el => {
-                    const startDrag = (e) => {
-                        if(state.simRunning) return; 
-                        e.preventDefault(); 
-                        dragData = { type: 'node', val: el.dataset.type };
-                        dragGhost = document.createElement('div'); 
-                        dragGhost.className = 'drag-ghost flex items-center justify-center';
-                        let visualNode = el.querySelector('div').cloneNode(true); 
-                        visualNode.style.margin = '0';
-                        dragGhost.appendChild(visualNode); 
-                        dragGhost.style.left = e.clientX + 'px'; 
-                        dragGhost.style.top = e.clientY + 'px';
-                        document.body.appendChild(dragGhost);
+                    el.removeAttribute('draggable'); // Ensure native drag is off
+
+                    const startDrag = (e, isTouch) => {
+                        if(state.simRunning) return;
+                        
+                        const type = el.dataset.type;
+                        const r = cvs.getBoundingClientRect();
+                        const sidebarContent = document.getElementById('sidebarList');
+                        
+                        let dragGhostEl = null;
+
+                        const onDragMove = mv => {
+                            const mvX = isTouch ? mv.touches[0].clientX : mv.clientX;
+                            const mvY = isTouch ? mv.touches[0].clientY : mv.clientY;
+                            
+                            // Let the browser natively scroll if we are still inside the sidebar boundaries
+                            if (isTouch && sidebarContent) {
+                                const sideRect = sidebarContent.getBoundingClientRect();
+                                if (mvX < sideRect.right) {
+                                    if (dragGhostEl) {
+                                        document.body.removeChild(dragGhostEl);
+                                        dragGhostEl = null;
+                                    }
+                                    return; 
+                                }
+                            }
+
+                            // Once pulled into the canvas area, hijack the touch to move the ghost
+                            if(mv.cancelable) mv.preventDefault(); 
+                            
+                            if (!dragGhostEl) {
+                                dragGhostEl = document.createElement('div'); 
+                                dragGhostEl.className = 'drag-ghost flex items-center justify-center';
+                                let visualNode = el.querySelector('div').cloneNode(true); 
+                                visualNode.style.margin = '0';
+                                dragGhostEl.appendChild(visualNode); 
+                                document.body.appendChild(dragGhostEl);
+                            }
+                            
+                            dragGhostEl.style.left = mvX + 'px'; 
+                            dragGhostEl.style.top = mvY + 'px';
+                        };
+
+                        const onDragUp = mv => {
+                            if(dragGhostEl) {
+                                document.body.removeChild(dragGhostEl); 
+                                const clientX = isTouch ? (mv.changedTouches ? mv.changedTouches[0].clientX : mv.clientX) : mv.clientX;
+                                const clientY = isTouch ? (mv.changedTouches ? mv.changedTouches[0].clientY : mv.clientY) : mv.clientY;
+                                
+                                if(clientX >= r.left-20 && clientX <= r.right+20 && clientY >= r.top-20 && clientY <= r.bottom+20) {
+                                    const p = Utils.getTransformedPos(clientX - r.left, clientY - r.top);
+                                    
+                                    if (type === 'loop_macro') {
+                                        const n1 = new FNode('process', Utils.snap(p.x), Utils.snap(p.y - 120));
+                                        n1.pType = 'var_set'; n1.varName = 'count'; n1.varVal = 0; n1.text = 'count = 0';
+                                        
+                                        const n2 = new FNode('process', Utils.snap(p.x), Utils.snap(p.y - 20));
+                                        n2.pType = 'var_math'; n2.varName = 'count'; n2.mathOp = '+'; n2.mathVal = 1; n2.text = 'count = count + 1';
+                                        
+                                        const n3 = new FNode('decision', Utils.snap(p.x), Utils.snap(p.y + 100));
+                                        n3.decType = 'var'; n3.varName = 'count'; n3.cond = '=='; n3.val = 5; n3.text = 'count = 5?';
+                                        
+                                        state.nodes.push(n1, n2, n3);
+                                        state.links.push({ from: n1.id, fromAnchor: 'bottom', to: n2.id, waypoints: [] });
+                                        state.links.push({ from: n2.id, fromAnchor: 'bottom', to: n3.id, waypoints: [] });
+                                        
+                                        let wpX = Utils.snap(p.x + 140);
+                                        let wpY_bottom = Utils.snap(p.y + 100);
+                                        let wpY_top = Utils.snap(p.y - 60); 
+                                        
+                                        state.links.push({ 
+                                            from: n3.id, 
+                                            fromAnchor: 'right', 
+                                            to: n2.id, 
+                                            waypoints: [
+                                                {x: wpX, y: wpY_bottom},
+                                                {x: wpX, y: wpY_top},
+                                                {x: Utils.snap(p.x), y: wpY_top}
+                                            ] 
+                                        });
+                                        
+                                        interact.multiSel = [n1, n2, n3];
+                                        UIManager.selectNode(n1);
+                                    } else {
+                                        const node = new FNode(type, Utils.snap(p.x), Utils.snap(p.y));
+                                        state.nodes.push(node); 
+                                        interact.multiSel = [node];
+                                        UIManager.selectNode(node); 
+                                    }
+                                    
+                                    HistoryManager.record(); Renderer.draw();
+                                }
+                                dragGhostEl = null;
+                            }
+                            
+                            document.removeEventListener(isTouch ? 'touchmove' : 'mousemove', onDragMove);
+                            document.removeEventListener(isTouch ? 'touchend' : 'mouseup', onDragUp);
+                            if(isTouch) document.removeEventListener('touchcancel', onDragUp);
+                        };
+                        
+                        document.addEventListener(isTouch ? 'touchmove' : 'mousemove', onDragMove, {passive: false});
+                        document.addEventListener(isTouch ? 'touchend' : 'mouseup', onDragUp);
+                        if(isTouch) document.addEventListener('touchcancel', onDragUp);
                     };
-                    el.addEventListener('pointerdown', startDrag);
+
+                    el.addEventListener('mousedown', e => startDrag(e, false));
+                    el.addEventListener('touchstart', e => startDrag(e, true), {passive: false});
                 });
             },
             onWheel(e) {
@@ -1795,10 +1901,10 @@
                                 interact.linkStart = null;
                             } else {
                                 if (a.id !== 'top' || n.type === 'junction') {
-                            interact.linkStart = { node: n, anchor: a, waypoints: [] };
-                            interact.dynX = tp.x; 
-                            interact.dynY = tp.y;
-                        }
+                                    interact.linkStart = { node: n, anchor: a, waypoints: [] };
+                                    interact.dynX = tp.x; 
+                                    interact.dynY = tp.y;
+                                }
                             }
                             Renderer.draw(); return; 
                         } 
@@ -1925,7 +2031,6 @@
                 if (e.pointerId) cvs.setPointerCapture(e.pointerId);
             },
             onPointerMove(e) {
-                if(dragGhost) { dragGhost.style.left = e.clientX + 'px'; dragGhost.style.top = e.clientY + 'px'; return; }
                 const raw = e.touches ? e.touches[0] : e;
                 const m = Utils.getMousePos(raw); const tp = Utils.getTransformedPos(m.x, m.y);
 
@@ -1948,7 +2053,6 @@
                     if (cvs.style.cursor !== cursor && !interact.pan) cvs.style.cursor = cursor;
                 }
 
-                // NEW LOCATION: Update dynamic wire position even when not holding left-click
                 if(interact.linkStart && !state.simRunning) {
                     interact.dynX = Utils.snap(tp.x);
                     interact.dynY = Utils.snap(tp.y);
@@ -2010,58 +2114,6 @@
                     try { cvs.releasePointerCapture(e.pointerId); } catch(err) {}
                 }
 
-                if(dragGhost) {
-                    document.body.removeChild(dragGhost); 
-                    const r = cvs.getBoundingClientRect();
-                    const clientX = e.changedTouches ? e.changedTouches[0].clientX : e.clientX;
-                    const clientY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
-                    
-                    if(clientX >= r.left-20 && clientX <= r.right+20 && clientY >= r.top-20 && clientY <= r.bottom+20) {
-                        const p = Utils.getTransformedPos(clientX - r.left, clientY - r.top);
-                        
-                        if (dragData.val === 'loop_macro') {
-                            const n1 = new FNode('process', Utils.snap(p.x), Utils.snap(p.y - 120));
-                            n1.pType = 'var_set'; n1.varName = 'count'; n1.varVal = 0; n1.text = 'count = 0';
-                            
-                            const n2 = new FNode('process', Utils.snap(p.x), Utils.snap(p.y - 20));
-                            n2.pType = 'var_math'; n2.varName = 'count'; n2.mathOp = '+'; n2.mathVal = 1; n2.text = 'count = count + 1';
-                            
-                            const n3 = new FNode('decision', Utils.snap(p.x), Utils.snap(p.y + 100));
-                            n3.decType = 'var'; n3.varName = 'count'; n3.cond = '=='; n3.val = 5; n3.text = 'count = 5?';
-                            
-                            state.nodes.push(n1, n2, n3);
-                            state.links.push({ from: n1.id, fromAnchor: 'bottom', to: n2.id, waypoints: [] });
-                            state.links.push({ from: n2.id, fromAnchor: 'bottom', to: n3.id, waypoints: [] });
-                            
-                            let wpX = Utils.snap(p.x + 140);
-                            let wpY_bottom = Utils.snap(p.y + 100);
-                            let wpY_top = Utils.snap(p.y - 60); 
-                            
-                            state.links.push({ 
-                                from: n3.id, 
-                                fromAnchor: 'right', 
-                                to: n2.id, 
-                                waypoints: [
-                                    {x: wpX, y: wpY_bottom},
-                                    {x: wpX, y: wpY_top},
-                                    {x: Utils.snap(p.x), y: wpY_top}
-                                ] 
-                            });
-                            
-                            interact.multiSel = [n1, n2, n3];
-                            UIManager.selectNode(n1);
-                        } else {
-                            const node = new FNode(dragData.val, Utils.snap(p.x), Utils.snap(p.y));
-                            state.nodes.push(node); 
-                            interact.multiSel = [node];
-                            UIManager.selectNode(node); 
-                        }
-                        
-                        HistoryManager.record(); Renderer.draw();
-                    }
-                    dragGhost = null; dragData = null;
-                }
-                
                 if (interact.boxSel && interact.boxSel.act) {
                     const x1 = Math.min(interact.boxSel.start.x, interact.boxSel.end.x);
                     const x2 = Math.max(interact.boxSel.start.x, interact.boxSel.end.x);
@@ -2746,6 +2798,81 @@
                 window.getSelection().removeAllRanges(); 
             }
         };
+
+        function makeDraggable(el, handle) {
+            if (!handle || !el) return;
+            
+            let isDragging = false;
+            let startX, startY, initialLeft, initialTop;
+
+            handle.onmousedown = e => {
+                // Don't drag if clicking buttons, inputs, or selects
+                if (e.target.tagName === 'BUTTON' || e.target.closest('button') || 
+                    e.target.tagName === 'INPUT' || e.target.tagName === 'SELECT') return;
+                
+                e.preventDefault();
+                e.stopPropagation();
+                
+                isDragging = true;
+                
+                // Record the exact starting mouse position
+                startX = e.clientX;
+                startY = e.clientY;
+                
+                // Get the current position of the element
+                const rect = el.getBoundingClientRect();
+                const parentRect = el.offsetParent ? el.offsetParent.getBoundingClientRect() : {left: 0, top: 0};
+                
+                // Lock in the absolute position relative to its container
+                el.style.right = 'auto';
+                el.style.bottom = 'auto';
+                
+                // If it's the first drag, we need to explicitly set left/top
+                if (el.style.left === '' || el.style.top === '') {
+                     el.style.left = (rect.left - parentRect.left) + 'px';
+                     el.style.top = (rect.top - parentRect.top) + 'px';
+                }
+                
+                // Parse the current left/top values 
+                initialLeft = parseFloat(el.style.left);
+                initialTop = parseFloat(el.style.top);
+                
+                // Change cursor to show it's being dragged
+                handle.style.cursor = 'grabbing';
+            };
+
+            const onMove = e => {
+                if (!isDragging) return;
+                
+                e.preventDefault();
+                
+                // Calculate exact pixel delta (no snapping)
+                const dx = e.clientX - startX;
+                const dy = e.clientY - startY;
+                
+                // Calculate new position
+                let newLeft = initialLeft + dx;
+                let newTop = initialTop + dy;
+                
+                // Keep the panel inside the visible window
+                const maxX = Math.max(0, window.innerWidth - el.offsetWidth);
+                const maxY = Math.max(0, window.innerHeight - el.offsetHeight);
+                
+                el.style.left = Math.max(0, Math.min(newLeft, maxX)) + 'px';
+                el.style.top = Math.max(0, Math.min(newTop, maxY)) + 'px';
+            };
+
+            const onUp = () => {
+                if (isDragging) {
+                    isDragging = false;
+                    handle.style.cursor = 'move';
+                }
+            };
+            
+            // Attach to document so dragging continues even if mouse leaves the handle area
+            document.addEventListener('mousemove', onMove);
+            document.addEventListener('mouseup', onUp);
+        }
 
         // --- APP INITIALIZATION ---
         window.onload = () => {

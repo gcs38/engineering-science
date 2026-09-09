@@ -261,31 +261,41 @@
       <p class="notes-p">A flowchart could simply be a single run of commands from start to finish, ending once the last instruction has been carried out. The example below starts the program, turns an output ON, waits for a set time, then turns the output OFF before stopping.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
-      <svg viewBox="0 0 260 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:168px;display:block;margin:16px auto;font-family:Arial,Helvetica,sans-serif;">
+      <svg viewBox="0 0 300 420" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:220px;display:block;margin:16px auto;font-family:Arial,Helvetica,sans-serif;">
+        <title>Single-run flowchart: Start, Set Buzzer ON, Wait 0.5 seconds, Set Buzzer OFF, End</title>
         <defs>
-          <marker id="arrow-sr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <marker id="arrowS" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
             <path d="M0 0L10 5L0 10z" fill="#000"/>
           </marker>
         </defs>
+
         <!-- Start -->
-        <rect x="60" y="10" width="140" height="40" rx="20" fill="none" stroke="#000" stroke-width="2"/>
-        <text x="130" y="35" text-anchor="middle" font-size="16">Start</text>
-        <line x1="130" y1="50" x2="130" y2="78" stroke="#000" stroke-width="2" marker-end="url(#arrow-sr)"/>
-        <!-- Set output ON (parallelogram) -->
-        <polygon points="45,88 215,88 195,128 25,128" fill="none" stroke="#000" stroke-width="2"/>
-        <text x="130" y="113" text-anchor="middle" font-size="14">Turn output ON</text>
-        <line x1="130" y1="128" x2="130" y2="156" stroke="#000" stroke-width="2" marker-end="url(#arrow-sr)"/>
-        <!-- Wait 1 second (rectangle) -->
-        <rect x="30" y="166" width="200" height="40" fill="none" stroke="#000" stroke-width="2"/>
-        <text x="130" y="191" text-anchor="middle" font-size="14">Wait 1 second</text>
-        <line x1="130" y1="206" x2="130" y2="234" stroke="#000" stroke-width="2" marker-end="url(#arrow-sr)"/>
-        <!-- Set output OFF (parallelogram) -->
-        <polygon points="45,244 215,244 195,284 25,284" fill="none" stroke="#000" stroke-width="2"/>
-        <text x="130" y="269" text-anchor="middle" font-size="14">Turn output OFF</text>
-        <line x1="130" y1="284" x2="130" y2="312" stroke="#000" stroke-width="2" marker-end="url(#arrow-sr)"/>
-        <!-- Stop -->
-        <rect x="60" y="322" width="140" height="40" rx="20" fill="none" stroke="#000" stroke-width="2"/>
-        <text x="130" y="347" text-anchor="middle" font-size="16">Stop</text>
+        <rect x="80" y="10" width="140" height="44" rx="22" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="37" text-anchor="middle" font-size="17">Start</text>
+
+        <line x1="150" y1="54" x2="150" y2="94" stroke="#000" stroke-width="2" marker-end="url(#arrowS)"/>
+
+        <!-- Set: Buzzer ON (parallel sides, sloping down-left) -->
+        <polygon points="65,94 235,94 215,138 45,138" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="140" y="121" text-anchor="middle" font-size="15">Set: Buzzer ON</text>
+
+        <line x1="150" y1="138" x2="150" y2="178" stroke="#000" stroke-width="2" marker-end="url(#arrowS)"/>
+
+        <!-- Wait 0.5 seconds -->
+        <rect x="60" y="178" width="180" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="205" text-anchor="middle" font-size="15">Wait 0.5 seconds</text>
+
+        <line x1="150" y1="222" x2="150" y2="262" stroke="#000" stroke-width="2" marker-end="url(#arrowS)"/>
+
+        <!-- Set: Buzzer OFF (parallel sides, sloping down-left) -->
+        <polygon points="65,262 235,262 215,306 45,306" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="140" y="289" text-anchor="middle" font-size="15">Set: Buzzer OFF</text>
+
+        <line x1="150" y1="306" x2="150" y2="346" stroke="#000" stroke-width="2" marker-end="url(#arrowS)"/>
+
+        <!-- End -->
+        <rect x="80" y="346" width="140" height="44" rx="22" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="373" text-anchor="middle" font-size="17">End</text>
       </svg>
 
       <div class="key-point">Note that a delay must always include its units. Wait 0.5 seconds, Wait 0.5s, Wait 500 milliseconds or Wait 500ms would be acceptable in the example above. Remember 1 second = 1000 milliseconds.</div>
@@ -293,30 +303,46 @@
       <p class="notes-p">However, a flowchart like this would only run through once before stopping. In practice, it is far more common for microcontroller programs to run continuously — repeating the same sequence over and over. This is called a <strong>fixed loop</strong>. The example below shows this using the flow line symbol, which loops back to an earlier point in the sequence instead of reaching STOP, so the sequence repeats indefinitely.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
-      <svg viewBox="0 0 320 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:168px;display:block;margin:16px auto;font-family:Arial,Helvetica,sans-serif;">
+      <svg viewBox="0 0 340 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:240px;display:block;margin:16px auto;font-family:Arial,Helvetica,sans-serif;">
+        <title>Loop flowchart: Start, Set Buzzer ON, Wait 0.5 seconds, Set Buzzer OFF, Wait 0.5 seconds, looping back to just after Start</title>
         <defs>
-          <marker id="arrow-sl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+          <marker id="arrowL" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
             <path d="M0 0L10 5L0 10z" fill="#000"/>
           </marker>
         </defs>
-        <!-- loop-back line, drawn first so it sits behind the boxes -->
-        <path d="M130,30 L280,30 L280,360 L130,360" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrow-sl)"/>
-        <!-- Set output ON (parallelogram) -->
-        <polygon points="45,30 215,30 195,70 25,70" fill="none" stroke="#000" stroke-width="2"/>
-        <text x="130" y="55" text-anchor="middle" font-size="14">Turn output ON</text>
-        <line x1="130" y1="70" x2="130" y2="98" stroke="#000" stroke-width="2" marker-end="url(#arrow-sl)"/>
-        <!-- Wait 1 second (rectangle) -->
-        <rect x="30" y="108" width="200" height="40" fill="none" stroke="#000" stroke-width="2"/>
-        <text x="130" y="133" text-anchor="middle" font-size="14">Wait 1 second</text>
-        <line x1="130" y1="148" x2="130" y2="176" stroke="#000" stroke-width="2" marker-end="url(#arrow-sl)"/>
-        <!-- Set output OFF (parallelogram) -->
-        <polygon points="45,186 215,186 195,226 25,226" fill="none" stroke="#000" stroke-width="2"/>
-        <text x="130" y="211" text-anchor="middle" font-size="14">Turn output OFF</text>
-        <line x1="130" y1="226" x2="130" y2="254" stroke="#000" stroke-width="2" marker-end="url(#arrow-sl)"/>
-        <!-- Wait 1 second (rectangle) -->
-        <rect x="30" y="264" width="200" height="40" fill="none" stroke="#000" stroke-width="2"/>
-        <text x="130" y="289" text-anchor="middle" font-size="14">Wait 1 second</text>
-        <line x1="130" y1="304" x2="130" y2="360" stroke="#000" stroke-width="2"/>
+
+        <!-- Start -->
+        <rect x="80" y="10" width="140" height="44" rx="22" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="37" text-anchor="middle" font-size="17">Start</text>
+
+        <!-- trunk line: Start -> Set:Buzzer ON, loop merges in partway down -->
+        <line x1="150" y1="54" x2="150" y2="104" stroke="#000" stroke-width="2" marker-end="url(#arrowL)"/>
+
+        <!-- Set: Buzzer ON (parallel sides, sloping down-left) -->
+        <polygon points="65,104 235,104 215,148 45,148" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="140" y="131" text-anchor="middle" font-size="15">Set: Buzzer ON</text>
+
+        <line x1="150" y1="148" x2="150" y2="188" stroke="#000" stroke-width="2" marker-end="url(#arrowL)"/>
+
+        <!-- Wait 0.5 seconds -->
+        <rect x="60" y="188" width="180" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="215" text-anchor="middle" font-size="15">Wait 0.5 seconds</text>
+
+        <line x1="150" y1="232" x2="150" y2="272" stroke="#000" stroke-width="2" marker-end="url(#arrowL)"/>
+
+        <!-- Set: Buzzer OFF (parallel sides, sloping down-left) -->
+        <polygon points="65,272 235,272 215,316 45,316" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="140" y="299" text-anchor="middle" font-size="15">Set: Buzzer OFF</text>
+
+        <line x1="150" y1="316" x2="150" y2="356" stroke="#000" stroke-width="2" marker-end="url(#arrowL)"/>
+
+        <!-- Wait 0.5 seconds -->
+        <rect x="60" y="356" width="180" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="383" text-anchor="middle" font-size="15">Wait 0.5 seconds</text>
+
+        <!-- feedback loop: further out to the right, arrowhead just touches the Start->first-box arrow -->
+        <path d="M150,400 L150,440 L290,440 L290,79 L150,79"
+              fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowL)"/>
       </svg>
 
       <div class="assignment">
@@ -408,7 +434,6 @@
           <strong>Getting started:</strong> Drag symbols from the left panel onto the canvas. Hover over a node to reveal anchor points — click and drag to connect them. Click a node to open the Properties Inspector on the right. Add pins using the + ADD button in the Hardware panel, then attach components (LED, buzzer, button). Click <strong>&#x25B6; RUN PROGRAMME</strong> to simulate.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/control.html" title="NoSyntaxSim control systems simulator" loading="lazy"></iframe></div>
-        <div class="sim-credit">NoSyntaxSim V2 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
       <div class="assignment">
@@ -531,7 +556,6 @@
           Add a <strong>Push Button</strong> as an input and an <strong>LED</strong> as an output. Use a <strong>Decision</strong> diamond to check "Is D2 ON?". Connect the NO branch back to the same decision box (polling loop). Connect the YES branch to turn the LED on. Run and click the button to test.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/control.html" title="NoSyntaxSim input decision simulator" loading="lazy"></iframe></div>
-        <div class="sim-credit">NoSyntaxSim V2 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
       <div class="assignment">
@@ -611,7 +635,6 @@
           Drag the <strong>For Loop (Macro)</strong> from the left panel — it places the three loop blocks automatically. Set the initial value to 0 and the condition to count &lt; 5. Place your repeating action (e.g. flash an LED) between the initialise and increment blocks. Run the simulation and watch the execution highlight move through the loop.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/control.html" title="NoSyntaxSim finite loop simulator" loading="lazy"></iframe></div>
-        <div class="sim-credit">NoSyntaxSim V2 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
       <div class="assignment">
@@ -792,7 +815,6 @@
           Use this workspace for all the design challenges below. Remember to use the <strong>Export Image</strong> button (camera icon) to save a clean PNG of your flowchart and hardware panel for your portfolio. Use the speed slider to slow down execution if debugging.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/control.html" title="NoSyntaxSim design challenge workspace" loading="lazy"></iframe></div>
-        <div class="sim-credit">NoSyntaxSim V2 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
       <div class="assignment">
