@@ -405,7 +405,29 @@
           </ol>
         </div>
         <!-- DIAGRAM PLACEHOLDER -->
-        <img src="images/flowchart-flashing-led.png" alt="Flowchart for a flashing LED: START → Turn D8 ON → Wait 500ms → Turn D8 OFF → Wait 500ms → loop back to Turn D8 ON" style="width:100%;max-width:192px;display:block;margin:12px auto;border-radius:8px;">
+        <svg viewBox="0 0 340 464" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:200px;display:block;margin:16px auto;font-family:Arial,Helvetica,sans-serif;">
+        <title>Flowchart for a flashing LED: Start, Turn D8 ON, Wait 500 ms, Turn D8 OFF, Wait 500 ms, looping back to Turn D8 ON</title>
+        <defs>
+          <marker id="arrowFL" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#000"/>
+          </marker>
+        </defs>
+        <rect x="80.0" y="10" width="140" height="44" rx="22" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="37.0" text-anchor="middle" font-size="17">Start</text>
+        <line x1="150" y1="54" x2="150" y2="98" stroke="#000" stroke-width="2" marker-end="url(#arrowFL)"/>
+        <polygon points="60.0,98 260.0,98 240.0,142 40.0,142" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="125.0" text-anchor="middle" font-size="14">Turn D8 ON</text>
+        <line x1="150" y1="142" x2="150" y2="182" stroke="#000" stroke-width="2" marker-end="url(#arrowFL)"/>
+        <rect x="50.0" y="182" width="200" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="209.0" text-anchor="middle" font-size="14">Wait 500 ms</text>
+        <line x1="150" y1="226" x2="150" y2="266" stroke="#000" stroke-width="2" marker-end="url(#arrowFL)"/>
+        <polygon points="60.0,266 260.0,266 240.0,310 40.0,310" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="293.0" text-anchor="middle" font-size="14">Turn D8 OFF</text>
+        <line x1="150" y1="310" x2="150" y2="350" stroke="#000" stroke-width="2" marker-end="url(#arrowFL)"/>
+        <rect x="50.0" y="350" width="200" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="377.0" text-anchor="middle" font-size="14">Wait 500 ms</text>
+        <path d="M150,394 L150,434 L290,434 L290,73 L150,73" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowFL)"/>
+      </svg>
         <p style="font-size:13px;color:var(--gray-600);text-align:center;margin-top:6px;">Note the fixed loop arrow returning from the last box to the "Turn D8 ON" step.</p>
       </div>
 
@@ -428,7 +450,46 @@
           </ol>
         </div>
         <!-- DIAGRAM PLACEHOLDER -->
-        <img src="images/flowchart-traffic-lights.png" alt="Flowchart for traffic light sequence with pin numbers D8 D9 D10 and delay boxes showing 10s and 2s" style="width:100%;max-width:228px;display:block;margin:12px auto;border-radius:8px;">
+        <svg viewBox="0 0 360 880" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:230px;display:block;margin:16px auto;font-family:Arial,Helvetica,sans-serif;">
+        <title>Flowchart for a traffic light sequence using D8, D9 and D10, looping back to the start</title>
+        <defs>
+          <marker id="arrowTL" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#000"/>
+          </marker>
+        </defs>
+        <rect x="80.0" y="10" width="140" height="44" rx="22" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="37.0" text-anchor="middle" font-size="17">Start</text>
+        <line x1="150" y1="54" x2="150" y2="98" stroke="#000" stroke-width="2" marker-end="url(#arrowTL)"/>
+        <polygon points="55.0,98 265.0,98 245.0,142 35.0,142" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="125.0" text-anchor="middle" font-size="14">D8 ON</text>
+        <line x1="150" y1="142" x2="150" y2="178" stroke="#000" stroke-width="2" marker-end="url(#arrowTL)"/>
+        <rect x="45.0" y="178" width="210" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="205.0" text-anchor="middle" font-size="14">Wait 10 s</text>
+        <line x1="150" y1="222" x2="150" y2="258" stroke="#000" stroke-width="2" marker-end="url(#arrowTL)"/>
+        <polygon points="55.0,258 265.0,258 245.0,302 35.0,302" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="285.0" text-anchor="middle" font-size="14">D9 ON</text>
+        <line x1="150" y1="302" x2="150" y2="338" stroke="#000" stroke-width="2" marker-end="url(#arrowTL)"/>
+        <rect x="45.0" y="338" width="210" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="365.0" text-anchor="middle" font-size="14">Wait 2 s</text>
+        <line x1="150" y1="382" x2="150" y2="418" stroke="#000" stroke-width="2" marker-end="url(#arrowTL)"/>
+        <polygon points="55.0,418 265.0,418 245.0,478 35.0,478" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="445.0" text-anchor="middle" font-size="14">D8 OFF, D9 OFF,</text>
+        <text x="150" y="461.0" text-anchor="middle" font-size="14">D10 ON</text>
+        <line x1="150" y1="478" x2="150" y2="514" stroke="#000" stroke-width="2" marker-end="url(#arrowTL)"/>
+        <rect x="45.0" y="514" width="210" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="541.0" text-anchor="middle" font-size="14">Wait 10 s</text>
+        <line x1="150" y1="558" x2="150" y2="594" stroke="#000" stroke-width="2" marker-end="url(#arrowTL)"/>
+        <polygon points="55.0,594 265.0,594 245.0,654 35.0,654" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="621.0" text-anchor="middle" font-size="14">D10 OFF,</text>
+        <text x="150" y="637.0" text-anchor="middle" font-size="14">D9 ON</text>
+        <line x1="150" y1="654" x2="150" y2="690" stroke="#000" stroke-width="2" marker-end="url(#arrowTL)"/>
+        <rect x="45.0" y="690" width="210" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="717.0" text-anchor="middle" font-size="14">Wait 2 s</text>
+        <line x1="150" y1="734" x2="150" y2="770" stroke="#000" stroke-width="2" marker-end="url(#arrowTL)"/>
+        <polygon points="55.0,770 265.0,770 245.0,814 35.0,814" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="797.0" text-anchor="middle" font-size="14">D9 OFF</text>
+        <path d="M150,814 L150,850 L300,850 L300,73 L150,73" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowTL)"/>
+      </svg>
       </div>
 
       <!-- Simulator embed 1 — basic flowcharts -->
@@ -488,7 +549,26 @@
       <p class="notes-p">Most real control systems respond to sensor inputs. A <strong>decision box</strong> (diamond) checks whether an input is ON or OFF and branches the flowchart accordingly.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/flowchart-decision-box.png" alt="Decision box showing Is D2 ON? with Y and N branches — Y continues, N loops back to check again" style="width:100%;max-width:288px;display:block;margin:16px auto;border-radius:8px;">
+      <svg viewBox="0 0 400 282" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:260px;display:block;margin:16px auto;font-family:Arial,Helvetica,sans-serif;">
+        <title>Decision box: Is D2 On? Yes continues, No loops back to check again</title>
+        <defs>
+          <marker id="arrowDB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#000"/>
+          </marker>
+        </defs>
+        <rect x="80.0" y="10" width="140" height="44" rx="22" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="37.0" text-anchor="middle" font-size="17">Start</text>
+        <line x1="150" y1="54" x2="150" y2="98" stroke="#000" stroke-width="2" marker-end="url(#arrowDB)"/>
+        <polygon points="150,98 245,140 150,182 55,140" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="145.0" text-anchor="middle" font-size="13">Is D2 On?</text>
+        <text x="250" y="146" font-size="12">Y</text>
+        <path d="M245,140.0 L295,140.0 L295,78.0 L150,78.0" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowDB)"/>
+        <text x="251" y="134.0" font-size="12">N</text>
+        <line x1="150" y1="182" x2="150" y2="218" stroke="#000" stroke-width="2" marker-end="url(#arrowDB)"/>
+        <rect x="50.0" y="218" width="200" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="245.0" text-anchor="middle" font-size="14">Continue...</text>
+        
+      </svg>
 
       <h2 class="notes-h2">Waiting for an input</h2>
       <p class="notes-p">To make the program wait until a button is pressed, use a decision box that loops back to itself on the NO branch:</p>
@@ -503,13 +583,81 @@
       <p class="notes-p">When <strong>two conditions must both be true</strong> before continuing, two decision boxes are placed in series. The YES output of the first leads into the second decision. Only when both return YES does the program continue.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/flowchart-and-control.png" alt="Flowchart showing AND control — Is D2 ON? (N loops back) → Is D3 ON? (N loops back) → both YES → continue" style="width:100%;max-width:252px;display:block;margin:16px auto;border-radius:8px;">
+      <svg viewBox="0 0 400 402" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:230px;display:block;margin:16px auto;font-family:Arial,Helvetica,sans-serif;">
+        <title>AND control: Is D2 On? then Is D3 On?, each looping back on No, both must be Yes to continue</title>
+        <defs>
+          <marker id="arrowAND" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#000"/>
+          </marker>
+        </defs>
+        <rect x="80.0" y="10" width="140" height="44" rx="22" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="37.0" text-anchor="middle" font-size="17">Start</text>
+        <line x1="150" y1="54" x2="150" y2="98" stroke="#000" stroke-width="2" marker-end="url(#arrowAND)"/>
+        <polygon points="150,98 245,140 150,182 55,140" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="145.0" text-anchor="middle" font-size="13">Is D2 On?</text>
+        <text x="250" y="146" font-size="12">Y</text>
+        <path d="M245,140.0 L295,140.0 L295,78.0 L150,78.0" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowAND)"/>
+        <text x="251" y="134.0" font-size="12">N</text>
+        <line x1="150" y1="182" x2="150" y2="218" stroke="#000" stroke-width="2" marker-end="url(#arrowAND)"/>
+        <polygon points="150,218 245,260 150,302 55,260" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="265.0" text-anchor="middle" font-size="13">Is D3 On?</text>
+        <text x="250" y="266" font-size="12">Y</text>
+        <path d="M245,260.0 L295,260.0 L295,198.0 L150,198.0" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowAND)"/>
+        <text x="251" y="254.0" font-size="12">N</text>
+        <line x1="150" y1="302" x2="150" y2="338" stroke="#000" stroke-width="2" marker-end="url(#arrowAND)"/>
+        <rect x="50.0" y="338" width="200" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="365.0" text-anchor="middle" font-size="14">Continue...</text>
+        
+      </svg>
 
       <h2 class="notes-h2">OR control — either input can be active</h2>
       <p class="notes-p">When <strong>either of two conditions being true</strong> is enough to continue, two decision boxes are placed in parallel. The YES output of either one leads to the same next step.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/flowchart-or-control.png" alt="Flowchart showing OR control — Is D2 ON? Y → continue / N → Is D3 ON? Y → continue / N → loop back" style="width:100%;max-width:252px;display:block;margin:16px auto;border-radius:8px;">
+      <svg viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:230px;display:block;margin:16px auto;font-family:Arial,Helvetica,sans-serif;">
+        <title>OR control: Is D2 On? or Is D3 On?, either Yes continues, both No loops back to recheck</title>
+        <defs>
+          <marker id="arrowOR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#000"/>
+          </marker>
+        </defs>
+
+        <!-- Start -->
+        <rect x="100" y="10" width="140" height="44" rx="22" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="37" text-anchor="middle" font-size="17">Start</text>
+        <line x1="170" y1="54" x2="170" y2="98" stroke="#000" stroke-width="2" marker-end="url(#arrowOR)"/>
+
+        <!-- Decision 1: Is D2 On? -->
+        <polygon points="170,98 265,140 170,182 75,140" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="145" text-anchor="middle" font-size="13">Is D2 On?</text>
+        <text x="270" y="134" font-size="12">Y</text>
+        <text x="176" y="200" font-size="12">N</text>
+
+        <!-- Decision1 N: straight down to Decision 2 -->
+        <line x1="170" y1="182" x2="170" y2="218" stroke="#000" stroke-width="2" marker-end="url(#arrowOR)"/>
+
+        <!-- Decision 2: Is D3 On? -->
+        <polygon points="170,218 265,260 170,302 75,260" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="265" text-anchor="middle" font-size="13">Is D3 On?</text>
+        <text x="270" y="254" font-size="12">Y</text>
+        <text x="80" y="320" font-size="12">N</text>
+
+        <!-- Decision1 Y branch -> merges into Continue box -->
+        <path d="M265,140 L325,140 L325,352 L180,352 L180,372"
+              fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowOR)"/>
+
+        <!-- Decision2 Y branch -> merges into Continue box -->
+        <path d="M265,260 L290,260 L290,352 L160,352 L160,372"
+              fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowOR)"/>
+
+        <!-- Decision2 N branch -> loops back up to just above Decision 1 -->
+        <path d="M75,260 L30,260 L30,78 L170,78"
+              fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowOR)"/>
+
+        <!-- Continue box -->
+        <rect x="70" y="372" width="200" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="399" text-anchor="middle" font-size="14">Continue...</text>
+      </svg>
 
       <div class="worked-example">
         <div class="worked-example-title">Worked Example &mdash; Automatic door with inputs</div>
@@ -527,7 +675,53 @@
           </ol>
         </div>
         <!-- DIAGRAM PLACEHOLDER -->
-        <img src="images/flowchart-automatic-door.png" alt="Flowchart for automatic door: polling D2 for pressure pad, turning motor on D8, polling D3 for limit switch, delay, reverse motor D9, polling D4" style="width:100%;max-width:228px;display:block;margin:12px auto;border-radius:8px;">
+        <svg viewBox="0 0 400 922" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:230px;display:block;margin:16px auto;font-family:Arial,Helvetica,sans-serif;">
+        <title>Flowchart for an automatic door polling D2, D3 and D4 with a motor on D8 and D9</title>
+        <defs>
+          <marker id="arrowDoor" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#000"/>
+          </marker>
+        </defs>
+        <rect x="80.0" y="10" width="140" height="44" rx="22" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="37.0" text-anchor="middle" font-size="17">Start</text>
+        <line x1="150" y1="54" x2="150" y2="98" stroke="#000" stroke-width="2" marker-end="url(#arrowDoor)"/>
+        <polygon points="150,98 245,140 150,182 55,140" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="145.0" text-anchor="middle" font-size="13">Is D2 On?</text>
+        <text x="250" y="146" font-size="12">Y</text>
+        <path d="M245,140 L295,140 L295,78.0 L150,78.0" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowDoor)"/>
+        <text x="251" y="134" font-size="12">N</text>
+        <line x1="150" y1="182" x2="150" y2="218" stroke="#000" stroke-width="2" marker-end="url(#arrowDoor)"/>
+        <polygon points="55.0,218 265.0,218 245.0,262 35.0,262" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="245.0" text-anchor="middle" font-size="14">Turn D8 ON</text>
+        <line x1="150" y1="262" x2="150" y2="298" stroke="#000" stroke-width="2" marker-end="url(#arrowDoor)"/>
+        <polygon points="150,298 245,340 150,382 55,340" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="345.0" text-anchor="middle" font-size="13">Is D3 On?</text>
+        <text x="250" y="346" font-size="12">Y</text>
+        <path d="M245,340 L295,340 L295,278.0 L150,278.0" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowDoor)"/>
+        <text x="251" y="334" font-size="12">N</text>
+        <line x1="150" y1="382" x2="150" y2="418" stroke="#000" stroke-width="2" marker-end="url(#arrowDoor)"/>
+        <polygon points="55.0,418 265.0,418 245.0,462 35.0,462" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="445.0" text-anchor="middle" font-size="14">Turn D8 OFF</text>
+        <line x1="150" y1="462" x2="150" y2="498" stroke="#000" stroke-width="2" marker-end="url(#arrowDoor)"/>
+        <rect x="45.0" y="498" width="210" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="525.0" text-anchor="middle" font-size="14">Wait 3 s</text>
+        <line x1="150" y1="542" x2="150" y2="578" stroke="#000" stroke-width="2" marker-end="url(#arrowDoor)"/>
+        <polygon points="55.0,578 265.0,578 245.0,622 35.0,622" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="605.0" text-anchor="middle" font-size="14">Turn D9 ON</text>
+        <line x1="150" y1="622" x2="150" y2="658" stroke="#000" stroke-width="2" marker-end="url(#arrowDoor)"/>
+        <polygon points="150,658 245,700 150,742 55,700" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="705.0" text-anchor="middle" font-size="13">Is D4 On?</text>
+        <text x="250" y="706" font-size="12">Y</text>
+        <path d="M245,700 L295,700 L295,638.0 L150,638.0" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowDoor)"/>
+        <text x="251" y="694" font-size="12">N</text>
+        <line x1="150" y1="742" x2="150" y2="778" stroke="#000" stroke-width="2" marker-end="url(#arrowDoor)"/>
+        <polygon points="55.0,778 265.0,778 245.0,822 35.0,822" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="805.0" text-anchor="middle" font-size="14">Turn D9 OFF</text>
+        <line x1="150" y1="822" x2="150" y2="858" stroke="#000" stroke-width="2" marker-end="url(#arrowDoor)"/>
+        <rect x="80.0" y="858" width="140" height="44" rx="22" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="150" y="885.0" text-anchor="middle" font-size="17">Stop</text>
+        
+      </svg>
       </div>
 
       <div class="worked-example">
@@ -550,7 +744,66 @@
         </div>
         <div class="warning">&#x26A0;&#xFE0F; <strong>Important:</strong> Never turn D8 and D9 ON at the same time — this would cause a short circuit in a real motor driver. The flowchart must always turn one OFF before turning the other ON.</div>
         <!-- DIAGRAM PLACEHOLDER -->
-        <img src="images/flowchart-motor-direction.png" alt="Flowchart for motor direction: Is D2 ON? Y → D8 ON, Wait 2s, D8 OFF / N → Is D3 ON? Y → D9 ON, Wait 2s, D9 OFF / fixed loop" style="width:100%;max-width:252px;display:block;margin:12px auto;border-radius:8px;">
+        <svg viewBox="0 0 640 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:280px;display:block;margin:12px auto;font-family:Arial,Helvetica,sans-serif;">
+        <title>Flowchart for motor direction control using D2, D3, D8 and D9, looping back to repeat</title>
+        <defs>
+          <marker id="arrowMD" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#000"/>
+          </marker>
+        </defs>
+
+        <!-- Start -->
+        <rect x="110" y="10" width="140" height="44" rx="22" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="180" y="37" text-anchor="middle" font-size="17">Start</text>
+        <line x1="180" y1="54" x2="180" y2="98" stroke="#000" stroke-width="2" marker-end="url(#arrowMD)"/>
+
+        <!-- Decision 1: Is D2 On? -->
+        <polygon points="180,98 275,140 180,182 85,140" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="180" y="145" text-anchor="middle" font-size="13">Is D2 On?</text>
+        <text x="280" y="134" font-size="12">Y</text>
+        <text x="186" y="200" font-size="12">N</text>
+        <line x1="180" y1="182" x2="180" y2="218" stroke="#000" stroke-width="2" marker-end="url(#arrowMD)"/>
+
+        <!-- Decision 2: Is D3 On? -->
+        <polygon points="180,218 275,260 180,302 85,260" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="180" y="265" text-anchor="middle" font-size="13">Is D3 On?</text>
+        <text x="280" y="254" font-size="12">Y</text>
+        <text x="90" y="320" font-size="12">N</text>
+
+        <!-- Decision1 Y -> Branch A (motor forwards) -->
+        <line x1="275" y1="140" x2="370" y2="140" stroke="#000" stroke-width="2" marker-end="url(#arrowMD)"/>
+        <polygon points="390,118 550,118 530,162 370,162" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="460" y="145" text-anchor="middle" font-size="14">D8 ON</text>
+        <line x1="460" y1="162" x2="460" y2="198" stroke="#000" stroke-width="2" marker-end="url(#arrowMD)"/>
+        <rect x="370" y="198" width="180" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="460" y="225" text-anchor="middle" font-size="14">Wait 2 s</text>
+        <line x1="460" y1="242" x2="460" y2="278" stroke="#000" stroke-width="2" marker-end="url(#arrowMD)"/>
+        <polygon points="390,278 550,278 530,322 370,322" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="460" y="305" text-anchor="middle" font-size="14">D8 OFF</text>
+
+        <!-- Branch A return to trunk (fixed loop / repeat) -->
+        <path d="M460,322 L460,352 L600,352 L600,78 L180,78"
+              fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowMD)"/>
+
+        <!-- Decision2 Y -> Branch B (motor backwards) -->
+        <line x1="275" y1="260" x2="370" y2="260" stroke="#000" stroke-width="2" marker-end="url(#arrowMD)"/>
+        <polygon points="390,238 550,238 530,282 370,282" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="460" y="265" text-anchor="middle" font-size="14">D9 ON</text>
+        <line x1="460" y1="282" x2="460" y2="318" stroke="#000" stroke-width="2" marker-end="url(#arrowMD)"/>
+        <rect x="370" y="318" width="180" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="460" y="345" text-anchor="middle" font-size="14">Wait 2 s</text>
+        <line x1="460" y1="362" x2="460" y2="398" stroke="#000" stroke-width="2" marker-end="url(#arrowMD)"/>
+        <polygon points="390,398 550,398 530,442 370,442" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="460" y="425" text-anchor="middle" font-size="14">D9 OFF</text>
+
+        <!-- Branch B return to trunk (fixed loop / repeat) -->
+        <path d="M460,442 L460,472 L600,472 L600,78 L180,78"
+              fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowMD)"/>
+
+        <!-- Decision2 N -> still waiting, loop back to Decision 1 -->
+        <path d="M85,260 L20,260 L20,78 L180,78"
+              fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowMD)"/>
+      </svg>
       </div>
 
       <!-- Simulator embed 2 — inputs and decisions -->
@@ -610,7 +863,43 @@
       </ol>
 
       <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/flowchart-finite-loop.png" alt="Flowchart showing a finite loop: count=0, flash LED, count=count+1, Is count less than 10? Yes loop back, No continue" style="width:100%;max-width:228px;display:block;margin:16px auto;border-radius:8px;">
+      <svg viewBox="0 0 380 560" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:230px;display:block;margin:16px auto;font-family:Arial,Helvetica,sans-serif;">
+        <title>Finite loop flowchart: count = 0, Flash LED, count = count + 1, Is count less than 10?</title>
+        <defs>
+          <marker id="arrowFin" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#000"/>
+          </marker>
+        </defs>
+        <rect x="100" y="10" width="140" height="44" rx="22" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="37" text-anchor="middle" font-size="17">Start</text>
+        <line x1="170" y1="54" x2="170" y2="98" stroke="#000" stroke-width="2" marker-end="url(#arrowFin)"/>
+
+        <rect x="80" y="98" width="180" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="125" text-anchor="middle" font-size="14">count = 0</text>
+        <line x1="170" y1="142" x2="170" y2="178" stroke="#000" stroke-width="2" marker-end="url(#arrowFin)"/>
+
+        <polygon points="95,178 255,178 235,222 75,222" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="165" y="205" text-anchor="middle" font-size="14">Flash LED</text>
+        <line x1="170" y1="222" x2="170" y2="258" stroke="#000" stroke-width="2" marker-end="url(#arrowFin)"/>
+
+        <rect x="80" y="258" width="180" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="285" text-anchor="middle" font-size="14">count = count + 1</text>
+        <line x1="170" y1="302" x2="170" y2="338" stroke="#000" stroke-width="2" marker-end="url(#arrowFin)"/>
+
+        <polygon points="170,338 270,380 170,422 70,380" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="384" text-anchor="middle" font-size="13">Is count &lt; 10?</text>
+        <text x="275" y="374" font-size="12">Yes</text>
+        <text x="176" y="440" font-size="12">No</text>
+
+        <!-- Yes: loop back to Flash LED -->
+        <path d="M270,380 L320,380 L320,160 L170,160"
+              fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowFin)"/>
+
+        <!-- No: continue to Stop -->
+        <line x1="170" y1="422" x2="170" y2="458" stroke="#000" stroke-width="2" marker-end="url(#arrowFin)"/>
+        <rect x="100" y="458" width="140" height="44" rx="22" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="485" text-anchor="middle" font-size="17">Stop</text>
+      </svg>
 
       <div class="key-point">In NoSyntaxSim, drag the <strong>For Loop (Macro)</strong> from the left panel — it automatically creates the three required blocks (initialise, increment, decision) formatted to QS standards.</div>
 
@@ -629,7 +918,65 @@
         <div class="step"><div class="step-num">3</div><div class="step-content">count = count + 1</div></div>
         <div class="step"><div class="step-num">4</div><div class="step-content">Is count &lt; 5? YES → back to step 2. NO → loop back to wait for button.</div></div>
         <!-- DIAGRAM PLACEHOLDER -->
-        <img src="images/flowchart-school-bell.png" alt="Flowchart for school bell: polling D2, count=0, buzz on D8, 500ms, off, 500ms, count+1, Is count less than 5? loop" style="width:100%;max-width:216px;display:block;margin:12px auto;border-radius:8px;">
+        <svg viewBox="0 0 460 820" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:220px;display:block;margin:12px auto;font-family:Arial,Helvetica,sans-serif;">
+        <title>Flowchart for a school bell: wait for D2, then sound D8 five times using a counted loop</title>
+        <defs>
+          <marker id="arrowBell" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#000"/>
+          </marker>
+        </defs>
+
+        <rect x="100" y="10" width="140" height="44" rx="22" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="37" text-anchor="middle" font-size="17">Start</text>
+        <line x1="170" y1="54" x2="170" y2="98" stroke="#000" stroke-width="2" marker-end="url(#arrowBell)"/>
+
+        <!-- Decision 1: Is D2 On? (wait for button) -->
+        <polygon points="170,98 265,140 170,182 75,140" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="145" text-anchor="middle" font-size="13">Is D2 On?</text>
+        <path d="M265,140 L315,140 L315,78 L170,78"
+              fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowBell)"/>
+        <text x="271" y="134" font-size="12">N</text>
+        <text x="176" y="200" font-size="12">Y</text>
+
+        <line x1="170" y1="182" x2="170" y2="218" stroke="#000" stroke-width="2" marker-end="url(#arrowBell)"/>
+        <rect x="80" y="218" width="180" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="245" text-anchor="middle" font-size="14">count = 0</text>
+        <line x1="170" y1="262" x2="170" y2="298" stroke="#000" stroke-width="2" marker-end="url(#arrowBell)"/>
+
+        <polygon points="100,298 260,298 240,342 80,342" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="325" text-anchor="middle" font-size="14">D8 ON</text>
+        <line x1="170" y1="342" x2="170" y2="378" stroke="#000" stroke-width="2" marker-end="url(#arrowBell)"/>
+
+        <rect x="80" y="378" width="180" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="405" text-anchor="middle" font-size="14">Wait 500 ms</text>
+        <line x1="170" y1="422" x2="170" y2="458" stroke="#000" stroke-width="2" marker-end="url(#arrowBell)"/>
+
+        <polygon points="100,458 260,458 240,502 80,502" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="485" text-anchor="middle" font-size="14">D8 OFF</text>
+        <line x1="170" y1="502" x2="170" y2="538" stroke="#000" stroke-width="2" marker-end="url(#arrowBell)"/>
+
+        <rect x="80" y="538" width="180" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="565" text-anchor="middle" font-size="14">Wait 500 ms</text>
+        <line x1="170" y1="582" x2="170" y2="618" stroke="#000" stroke-width="2" marker-end="url(#arrowBell)"/>
+
+        <rect x="80" y="618" width="180" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="645" text-anchor="middle" font-size="14">count = count + 1</text>
+        <line x1="170" y1="662" x2="170" y2="698" stroke="#000" stroke-width="2" marker-end="url(#arrowBell)"/>
+
+        <!-- Decision 2: Is count < 5? -->
+        <polygon points="170,698 270,740 170,782 70,740" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="744" text-anchor="middle" font-size="13">Is count &lt; 5?</text>
+        <text x="275" y="734" font-size="12">Yes</text>
+        <text x="75" y="800" font-size="12">No</text>
+
+        <!-- Yes: loop back to D8 ON (inner loop) -->
+        <path d="M270,740 L320,740 L320,280 L170,280"
+              fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowBell)"/>
+
+        <!-- No: loop back to Is D2 On? (outer loop, wait for button again) -->
+        <path d="M70,740 L-30,740 L-30,78 L170,78"
+              fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowBell)"/>
+      </svg>
       </div>
 
       <!-- Simulator embed 3 — finite loops -->
@@ -686,7 +1033,41 @@
         <div class="worked-example-title">Worked Example &mdash; Spot and correct the errors</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px;">The flowchart below is supposed to flash a lamp (D8) when a moisture sensor (D2) is detected. Find two errors.</p>
         <!-- DIAGRAM PLACEHOLDER -->
-        <img src="images/flowchart-errors-example.png" alt="Flowchart with deliberate errors: decision box has Y and N branches swapped, and delay box missing units" style="width:100%;max-width:216px;display:block;margin:12px auto;border-radius:8px;">
+        <svg viewBox="0 0 400 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:220px;display:block;margin:12px auto;font-family:Arial,Helvetica,sans-serif;">
+        <title>Flowchart with deliberate errors: decision branches swapped, and delay box missing its unit</title>
+        <defs>
+          <marker id="arrowErr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#000"/>
+          </marker>
+        </defs>
+
+        <rect x="100" y="10" width="140" height="44" rx="22" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="37" text-anchor="middle" font-size="17">Start</text>
+        <line x1="170" y1="54" x2="170" y2="98" stroke="#000" stroke-width="2" marker-end="url(#arrowErr)"/>
+
+        <!-- Decision: Is D2 On? -->
+        <polygon points="170,98 265,140 170,182 75,140" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="145" text-anchor="middle" font-size="13">Is D2 On?</text>
+
+        <!-- ERROR 1: branches swapped — YES loops back (should continue), NO continues (should loop back) -->
+        <text x="270" y="134" font-size="12">Y</text>
+        <path d="M265,140 L315,140 L315,78 L170,78"
+              fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowErr)"/>
+        <text x="176" y="200" font-size="12">N</text>
+        <line x1="170" y1="182" x2="170" y2="218" stroke="#000" stroke-width="2" marker-end="url(#arrowErr)"/>
+
+        <polygon points="100,218 260,218 240,262 80,262" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="245" text-anchor="middle" font-size="14">Turn D8 ON</text>
+        <line x1="170" y1="262" x2="170" y2="298" stroke="#000" stroke-width="2" marker-end="url(#arrowErr)"/>
+
+        <!-- ERROR 2: delay box is missing its unit -->
+        <rect x="80" y="298" width="180" height="44" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="325" text-anchor="middle" font-size="14">Wait 500</text>
+        <line x1="170" y1="342" x2="170" y2="378" stroke="#000" stroke-width="2" marker-end="url(#arrowErr)"/>
+
+        <polygon points="100,378 260,378 240,422 80,422" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="170" y="405" text-anchor="middle" font-size="14">Turn D8 OFF</text>
+      </svg>
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Error 1:</strong> The YES and NO branches on the decision box are swapped. The YES branch should lead to turning the LED ON, not loop back.</div></div>
         <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Error 2:</strong> The delay box reads "500" — this is missing the unit. It should read "Wait 500 ms".</div></div>
       </div>
