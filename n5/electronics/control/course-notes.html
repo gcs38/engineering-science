@@ -261,14 +261,63 @@
       <p class="notes-p">A flowchart could simply be a single run of commands from start to finish, ending once the last instruction has been carried out. The example below starts the program, turns an output ON, waits for a set time, then turns the output OFF before stopping.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/flowchart-single-run.png" alt="Simple single-run flowchart: START, turn an output ON, wait 1 second, turn the output OFF, STOP" style="width:100%;max-width:168px;display:block;margin:16px auto;border-radius:8px;">
+      <svg viewBox="0 0 260 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:168px;display:block;margin:16px auto;font-family:Arial,Helvetica,sans-serif;">
+        <defs>
+          <marker id="arrow-sr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#000"/>
+          </marker>
+        </defs>
+        <!-- Start -->
+        <rect x="60" y="10" width="140" height="40" rx="20" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="130" y="35" text-anchor="middle" font-size="16">Start</text>
+        <line x1="130" y1="50" x2="130" y2="78" stroke="#000" stroke-width="2" marker-end="url(#arrow-sr)"/>
+        <!-- Set output ON (parallelogram) -->
+        <polygon points="45,88 215,88 195,128 25,128" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="130" y="113" text-anchor="middle" font-size="14">Turn output ON</text>
+        <line x1="130" y1="128" x2="130" y2="156" stroke="#000" stroke-width="2" marker-end="url(#arrow-sr)"/>
+        <!-- Wait 1 second (rectangle) -->
+        <rect x="30" y="166" width="200" height="40" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="130" y="191" text-anchor="middle" font-size="14">Wait 1 second</text>
+        <line x1="130" y1="206" x2="130" y2="234" stroke="#000" stroke-width="2" marker-end="url(#arrow-sr)"/>
+        <!-- Set output OFF (parallelogram) -->
+        <polygon points="45,244 215,244 195,284 25,284" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="130" y="269" text-anchor="middle" font-size="14">Turn output OFF</text>
+        <line x1="130" y1="284" x2="130" y2="312" stroke="#000" stroke-width="2" marker-end="url(#arrow-sr)"/>
+        <!-- Stop -->
+        <rect x="60" y="322" width="140" height="40" rx="20" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="130" y="347" text-anchor="middle" font-size="16">Stop</text>
+      </svg>
 
       <div class="key-point">Note that a delay must always include its units. Wait 0.5 seconds, Wait 0.5s, Wait 500 milliseconds or Wait 500ms would be acceptable in the example above. Remember 1 second = 1000 milliseconds.</div>
 
       <p class="notes-p">However, a flowchart like this would only run through once before stopping. In practice, it is far more common for microcontroller programs to run continuously — repeating the same sequence over and over. This is called a <strong>fixed loop</strong>. The example below shows this using the flow line symbol, which loops back to an earlier point in the sequence instead of reaching STOP, so the sequence repeats indefinitely.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/flowchart-simple-loop.png" alt="Simple loop flowchart: turn an output ON, wait 1 second, turn the output OFF, wait 1 second, flow line looping back to the first step" style="width:100%;max-width:168px;display:block;margin:16px auto;border-radius:8px;">
+      <svg viewBox="0 0 320 400" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:168px;display:block;margin:16px auto;font-family:Arial,Helvetica,sans-serif;">
+        <defs>
+          <marker id="arrow-sl" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M0 0L10 5L0 10z" fill="#000"/>
+          </marker>
+        </defs>
+        <!-- loop-back line, drawn first so it sits behind the boxes -->
+        <path d="M130,30 L280,30 L280,360 L130,360" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrow-sl)"/>
+        <!-- Set output ON (parallelogram) -->
+        <polygon points="45,30 215,30 195,70 25,70" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="130" y="55" text-anchor="middle" font-size="14">Turn output ON</text>
+        <line x1="130" y1="70" x2="130" y2="98" stroke="#000" stroke-width="2" marker-end="url(#arrow-sl)"/>
+        <!-- Wait 1 second (rectangle) -->
+        <rect x="30" y="108" width="200" height="40" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="130" y="133" text-anchor="middle" font-size="14">Wait 1 second</text>
+        <line x1="130" y1="148" x2="130" y2="176" stroke="#000" stroke-width="2" marker-end="url(#arrow-sl)"/>
+        <!-- Set output OFF (parallelogram) -->
+        <polygon points="45,186 215,186 195,226 25,226" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="130" y="211" text-anchor="middle" font-size="14">Turn output OFF</text>
+        <line x1="130" y1="226" x2="130" y2="254" stroke="#000" stroke-width="2" marker-end="url(#arrow-sl)"/>
+        <!-- Wait 1 second (rectangle) -->
+        <rect x="30" y="264" width="200" height="40" fill="none" stroke="#000" stroke-width="2"/>
+        <text x="130" y="289" text-anchor="middle" font-size="14">Wait 1 second</text>
+        <line x1="130" y1="304" x2="130" y2="360" stroke="#000" stroke-width="2"/>
+      </svg>
 
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Flowchart symbols and terminology</div></div>
