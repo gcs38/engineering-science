@@ -135,8 +135,8 @@
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
-    <div class="hero" style="position:relative;">
-      <div style="position:absolute;top:12px;right:16px;font-size:11px;color:#94a3b8;font-family:monospace;letter-spacing:.3px;">Updated 24 Aug 2026</div>
+    <div class="hero" id="top" style="position:relative;">
+      <div style="position:absolute;top:12px;right:16px;font-size:11px;color:#94a3b8;font-family:monospace;letter-spacing:.3px;">Last updated: 11 September 2026</div>
       <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Analogue Electronics</div>
       <h1 class="hero-title">&#x26A1; Analogue Electronics &mdash; Course Notes</h1>
       <p class="hero-sub">Current, voltage, resistance, Ohm's law, circuit types, components and transistor switching</p>
@@ -164,7 +164,7 @@
 
       <h3 class="notes-h3">Current</h3>
       <p class="notes-p">Electric current is the flow of negatively charged particles called <strong>electrons</strong>. In Engineering Science, we use a standard called <strong>conventional current flow</strong>. This means we always treat current as flowing out from the positive (+) terminal of the power supply, through the circuit, and back into the negative (or 0V/ground) terminal.</p>
-      <div class="key-point">Current is measured in <strong>Amperes (A)</strong>. On a circuit diagram, current is measured using an ammeter, shown with the symbol <strong>A</strong> inside a circle. A milliamp (mA) is one thousandth of an amp: 1 mA = 0.001 A.</div>
+      <div class="key-point">Current is measured in <strong>Amperes (A)</strong>. A milliamp (mA) is one thousandth of an amp: 1 mA = 0.001 A.</div>
 
       <div class="circuit-figure">
         <img src="images/conventional-current.gif" alt="Animation showing conventional current flowing out of the positive terminal of a battery, around a circuit, and back into the negative terminal. When the switch is open, no current flows. When the switch is closed, blue dots animate around the circuit to show current flow at 0.5 A (500 mA)." style="max-width:100%;width:560px;height:auto;display:block;margin:0 auto;">
@@ -173,7 +173,7 @@
 
       <h3 class="notes-h3">Voltage</h3>
       <p class="notes-p">Voltage is the electrical force that pushes current around a circuit. It comes from a battery or power supply. The bigger the voltage, the harder it pushes the electrons.</p>
-      <div class="key-point">Voltage is measured in <strong>Volts (V)</strong>. On a circuit diagram, voltage is measured using a <strong>voltmeter</strong>, shown with the symbol <strong>V</strong> inside a circle.</div>
+      <div class="key-point">Voltage is measured in <strong>Volts (V)</strong>.</div>
       <div class="key-point">Voltage is sometimes referred to as potential difference or emf.</div>
 
       <h3 class="notes-h3">Resistance</h3>
@@ -182,51 +182,25 @@
       <div class="key-point">Resistance is measured in <strong>Ohms (&Omega;)</strong>. Larger values are written as k&Omega; (kilohms, &times;1000) or M&Omega; (megohms, &times;1&nbsp;000&nbsp;000). Ohmmeter symbol: <strong>&Omega;</strong> in a circle.</div>
 
       <h2 class="notes-h2">Measuring voltage and current in a circuit</h2>
+      <p class="notes-p">Voltage and current are measured with different instruments, connected in different ways. A <strong>voltmeter</strong> measures the voltage <em>across</em> a component &mdash; one probe on each side &mdash; and has very high resistance so it takes almost no current from the circuit. An <strong>ammeter</strong> measures the current <em>through</em> a component &mdash; the circuit must be broken and the ammeter inserted in line with it &mdash; and has very low resistance so it barely affects the circuit. On a circuit diagram, a voltmeter is shown with the symbol <strong>V</strong> inside a circle, and an ammeter with the symbol <strong>A</strong> inside a circle.</p>
 
-      <h3 class="notes-h3">Measuring voltage with a voltmeter</h3>
-      <p class="notes-p">A <strong>voltmeter</strong> measures the voltage <em>across</em> a component &mdash; one probe on each side. A voltmeter has very high resistance so it takes almost no current from the circuit.</p>
-      <svg width="90" height="50" viewBox="0 0 90 50" style="display:block;margin:6px 0;">
-        <circle cx="45" cy="25" r="15" fill="white" stroke="#334155" stroke-width="2"/>
-        <text x="45" y="31" text-anchor="middle" font-size="16" font-weight="700" fill="#334155">V</text>
-        <line x1="45" y1="0" x2="45" y2="10" stroke="#334155" stroke-width="2"/>
-        <line x1="45" y1="40" x2="45" y2="50" stroke="#334155" stroke-width="2"/>
-      </svg>
       <div class="circuit-figure">
-        <svg width="260" height="90" viewBox="0 0 260 90">
-          <line x1="20" y1="20" x2="240" y2="20" stroke="#334155" stroke-width="2"/>
-          <line x1="20" y1="20" x2="20" y2="70" stroke="#334155" stroke-width="2"/>
-          <line x1="240" y1="20" x2="240" y2="70" stroke="#334155" stroke-width="2"/>
-          <line x1="20" y1="70" x2="100" y2="70" stroke="#334155" stroke-width="2"/>
-          <line x1="160" y1="70" x2="240" y2="70" stroke="#334155" stroke-width="2"/>
-          <rect x="100" y="60" width="60" height="20" fill="white" stroke="#334155" stroke-width="2"/>
-          <text x="130" y="88" text-anchor="middle" font-size="11" fill="#64748b">Resistor</text>
-          <line x1="130" y1="20" x2="130" y2="35" stroke="#334155" stroke-width="1.6"/>
-          <circle cx="130" cy="48" r="13" fill="white" stroke="#334155" stroke-width="2"/>
-          <text x="130" y="53" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">V</text>
-          <line x1="130" y1="61" x2="130" y2="70" stroke="#334155" stroke-width="1.6"/>
+        <svg width="260" height="110" viewBox="0 0 260 110">
+          <line x1="10" y1="30" x2="80" y2="30" stroke="#334155" stroke-width="2"/>
+          <circle cx="100" cy="30" r="16" fill="white" stroke="#334155" stroke-width="2"/>
+          <text x="100" y="36" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">A</text>
+          <line x1="116" y1="30" x2="150" y2="30" stroke="#334155" stroke-width="2"/>
+          <rect x="150" y="20" width="60" height="20" fill="white" stroke="#334155" stroke-width="2"/>
+          <text x="180" y="16" text-anchor="middle" font-size="11" fill="#64748b">Resistor</text>
+          <line x1="210" y1="30" x2="240" y2="30" stroke="#334155" stroke-width="2"/>
+          <line x1="180" y1="40" x2="180" y2="55" stroke="#334155" stroke-width="1.6"/>
+          <circle cx="180" cy="68" r="13" fill="white" stroke="#334155" stroke-width="2"/>
+          <text x="180" y="73" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">V</text>
+          <line x1="180" y1="81" x2="180" y2="90" stroke="#334155" stroke-width="1.6"/>
+          <line x1="10" y1="90" x2="180" y2="90" stroke="#334155" stroke-width="2"/>
+          <line x1="10" y1="30" x2="10" y2="90" stroke="#334155" stroke-width="2"/>
         </svg>
-        <figcaption>A voltmeter connects across the component it is measuring &mdash; it does not break the circuit.</figcaption>
-      </div>
-
-      <h3 class="notes-h3">Measuring current with an ammeter</h3>
-      <p class="notes-p">An <strong>ammeter</strong> measures the current <em>through</em> a component. The circuit must be broken and the ammeter inserted in line with it. An ammeter has very low resistance so it barely affects the circuit.</p>
-      <svg width="90" height="50" viewBox="0 0 90 50" style="display:block;margin:6px 0;">
-        <circle cx="45" cy="25" r="15" fill="white" stroke="#334155" stroke-width="2"/>
-        <text x="45" y="31" text-anchor="middle" font-size="16" font-weight="700" fill="#334155">A</text>
-        <line x1="0" y1="25" x2="30" y2="25" stroke="#334155" stroke-width="2"/>
-        <line x1="60" y1="25" x2="90" y2="25" stroke="#334155" stroke-width="2"/>
-      </svg>
-      <div class="circuit-figure">
-        <svg width="260" height="60" viewBox="0 0 260 60">
-          <line x1="10" y1="30" x2="90" y2="30" stroke="#334155" stroke-width="2"/>
-          <circle cx="110" cy="30" r="16" fill="white" stroke="#334155" stroke-width="2"/>
-          <text x="110" y="36" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">A</text>
-          <line x1="126" y1="30" x2="160" y2="30" stroke="#334155" stroke-width="2"/>
-          <rect x="160" y="20" width="60" height="20" fill="white" stroke="#334155" stroke-width="2"/>
-          <text x="190" y="16" text-anchor="middle" font-size="11" fill="#64748b">Resistor</text>
-          <line x1="220" y1="30" x2="250" y2="30" stroke="#334155" stroke-width="2"/>
-        </svg>
-        <figcaption>An ammeter is wired into the circuit in line with the component &mdash; the circuit must be broken to insert it.</figcaption>
+        <figcaption>The ammeter is wired in line with the circuit (it breaks the circuit to measure current); the voltmeter connects across the component it is measuring (it does not break the circuit).</figcaption>
       </div>
 
       <!-- Investigate first task (Ash comment 4) -->
@@ -1818,6 +1792,12 @@
         <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
         <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8; Print</button>
         <button class="ctrl-btn ctrl-btn-clear" id="btn-clear-all">&#x1F5D1; Clear all answers</button>
+      </div>
+
+      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
+        <button class="ctrl-btn ctrl-btn-print" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});">&#x2B06;&#xFE0F; Back to top</button>
+        <a href="index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">&#x2302; Main menu</a>
+        <a href="../digital/course-notes.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">Next section &#x2192;</a>
       </div>
     </div>
     </div>
