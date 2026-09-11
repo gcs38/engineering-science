@@ -1119,6 +1119,8 @@
       <h2 class="notes-h2">Output drivers</h2>
       <p class="notes-p">A microcontroller pin can only supply a small current — not enough to directly drive a motor or solenoid. An <strong>output driver</strong> (typically a transistor or relay) amplifies the signal to power the output device. In exam circuits, a <strong>transistor driver circuit</strong> is commonly shown between the microcontroller output pin and the output device.</p>
 
+      <p class="notes-p">The circuit below shows three separate outputs in use. <strong>Output5</strong> drives an LED directly through a current-limiting resistor, since an LED only needs a very small current. <strong>Output7</strong> instead drives a transistor through a 500&nbsp;&#8486; resistor — the transistor switches a relay coil, and the relay's own separate switch contacts control a completely separate motor circuit running from a much higher voltage (24&nbsp;V) supply. A relay is needed here because the motor draws far more current, and runs from a higher voltage, than the microcontroller's 5&nbsp;V supply or the transistor could safely handle directly; the relay lets a small, safe signal from the microcontroller switch a completely separate, higher-power circuit without the two ever being electrically connected. The diode connected across the relay coil protects the transistor from the voltage spike produced when the coil switches off.</p>
+
       <!-- DIAGRAM PLACEHOLDER -->
       <img src="images/transistor-driver-circuit.png" alt="Transistor driver circuit connecting microcontroller output pin to a motor or buzzer" style="width:100%;max-width:600px;display:block;margin:16px auto;border-radius:8px;">
 
