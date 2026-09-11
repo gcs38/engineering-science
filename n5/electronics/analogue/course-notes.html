@@ -185,23 +185,60 @@
       <p class="notes-p">Voltage and current are measured with different instruments, connected in different ways. A <strong>voltmeter</strong> measures the voltage <em>across</em> a component &mdash; one probe on each side &mdash; and has very high resistance so it takes almost no current from the circuit. An <strong>ammeter</strong> measures the current <em>through</em> a component &mdash; the circuit must be broken and the ammeter inserted in line with it &mdash; and has very low resistance so it barely affects the circuit. On a circuit diagram, a voltmeter is shown with the symbol <strong>V</strong> inside a circle, and an ammeter with the symbol <strong>A</strong> inside a circle.</p>
 
       <div class="circuit-figure">
-        <svg width="260" height="110" viewBox="0 0 260 110">
-          <line x1="10" y1="30" x2="80" y2="30" stroke="#334155" stroke-width="2"/>
-          <circle cx="100" cy="30" r="16" fill="white" stroke="#334155" stroke-width="2"/>
-          <text x="100" y="36" text-anchor="middle" font-size="14" font-weight="700" fill="#334155">A</text>
-          <line x1="116" y1="30" x2="150" y2="30" stroke="#334155" stroke-width="2"/>
-          <rect x="150" y="20" width="60" height="20" fill="white" stroke="#334155" stroke-width="2"/>
-          <text x="180" y="16" text-anchor="middle" font-size="11" fill="#64748b">Resistor</text>
-          <line x1="210" y1="30" x2="240" y2="30" stroke="#334155" stroke-width="2"/>
-          <line x1="180" y1="40" x2="180" y2="55" stroke="#334155" stroke-width="1.6"/>
-          <circle cx="180" cy="68" r="13" fill="white" stroke="#334155" stroke-width="2"/>
-          <text x="180" y="73" text-anchor="middle" font-size="13" font-weight="700" fill="#334155">V</text>
-          <line x1="180" y1="81" x2="180" y2="90" stroke="#334155" stroke-width="1.6"/>
-          <line x1="10" y1="90" x2="180" y2="90" stroke="#334155" stroke-width="2"/>
-          <line x1="10" y1="30" x2="10" y2="90" stroke="#334155" stroke-width="2"/>
+        <svg width="340" height="300" viewBox="0 0 380 340" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="v-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fde68a" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#fde68a" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Top wire + battery -->
+          <line x1="40" y1="40" x2="340" y2="40" stroke="#6b8cae" stroke-width="2.5"/>
+          <text x="190" y="20" text-anchor="middle" font-size="14" font-weight="700" fill="#1e293b">5 V</text>
+          <line x1="172" y1="30" x2="172" y2="50" stroke="#1e293b" stroke-width="2"/>
+          <line x1="184" y1="26" x2="184" y2="54" stroke="#1e293b" stroke-width="3.5"/>
+          <line x1="196" y1="30" x2="196" y2="50" stroke="#1e293b" stroke-width="2"/>
+          <line x1="208" y1="26" x2="208" y2="54" stroke="#1e293b" stroke-width="3.5"/>
+          <text x="163" y="35" text-anchor="middle" font-size="12" fill="#3b5f8a">+</text>
+          <text x="217" y="35" text-anchor="middle" font-size="12" fill="#3b5f8a">&minus;</text>
+
+          <!-- Left rail down to R rung -->
+          <line x1="40" y1="40" x2="40" y2="190" stroke="#6b8cae" stroke-width="2.5"/>
+
+          <!-- Right rail through ammeter down to R rung -->
+          <line x1="340" y1="40" x2="340" y2="90" stroke="#6b8cae" stroke-width="2.5"/>
+          <circle cx="340" cy="90" r="4" fill="#1e293b"/>
+          <circle cx="340" cy="120" r="23" fill="white" stroke="#1e293b" stroke-width="2.5"/>
+          <text x="340" y="127" text-anchor="middle" font-size="18" font-weight="700" fill="#dc2626">A</text>
+          <circle cx="340" cy="150" r="4" fill="#1e293b"/>
+          <line x1="340" y1="150" x2="340" y2="190" stroke="#6b8cae" stroke-width="2.5"/>
+
+          <!-- R rung -->
+          <line x1="40" y1="190" x2="160" y2="190" stroke="#6b8cae" stroke-width="2.5"/>
+          <circle cx="40" cy="190" r="4" fill="#1e293b"/>
+          <text x="190" y="170" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">1 k&Omega;</text>
+          <rect x="160" y="180" width="60" height="20" rx="2" fill="white" stroke="#1e293b" stroke-width="2"/>
+          <text x="190" y="195" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">R</text>
+          <line x1="220" y1="190" x2="340" y2="190" stroke="#6b8cae" stroke-width="2.5"/>
+          <circle cx="340" cy="190" r="4" fill="#1e293b"/>
+
+          <!-- Down to voltmeter rung -->
+          <line x1="40" y1="190" x2="40" y2="270" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="340" y1="190" x2="340" y2="270" stroke="#6b8cae" stroke-width="2.5"/>
+          <circle cx="40" cy="270" r="4" fill="#1e293b"/>
+          <circle cx="340" cy="270" r="4" fill="#1e293b"/>
+
+          <!-- Voltmeter rung -->
+          <line x1="40" y1="270" x2="160" y2="270" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="220" y1="270" x2="340" y2="270" stroke="#6b8cae" stroke-width="2.5"/>
+          <circle cx="190" cy="270" r="36" fill="url(#v-glow)"/>
+          <circle cx="190" cy="270" r="24" fill="white" stroke="#1e293b" stroke-width="2.5"/>
+          <text x="190" y="278" text-anchor="middle" font-size="18" font-weight="700" fill="#7c3aed">V</text>
         </svg>
-        <figcaption>The ammeter is wired in line with the circuit (it breaks the circuit to measure current); the voltmeter connects across the component it is measuring (it does not break the circuit).</figcaption>
+        <figcaption>The ammeter is wired in line with the circuit (it breaks the circuit to measure current); the voltmeter connects across the resistor &mdash; sharing the same two connection points &mdash; without breaking the circuit.</figcaption>
       </div>
+
 
       <!-- Investigate first task (Ash comment 4) -->
       <div class="sim-embed-section">
