@@ -136,7 +136,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute;top:12px;right:16px;font-size:11px;color:#94a3b8;font-family:monospace;letter-spacing:.3px;">Last updated: 11 September 2026</div>
+      <div style="position:absolute;top:12px;right:16px;font-size:11px;color:#94a3b8;font-family:monospace;letter-spacing:.3px;">Last updated: 12 September 2026</div>
       <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Analogue Electronics</div>
       <h1 class="hero-title">&#x26A1; Analogue Electronics &mdash; Course Notes</h1>
       <p class="hero-sub">Current, voltage, resistance, Ohm's law, circuit types, components and transistor switching</p>
@@ -163,17 +163,19 @@
       <h2 class="notes-h2">The three key quantities</h2>
 
       <h3 class="notes-h3">Current</h3>
-      <p class="notes-p">Electric current is the flow of negatively charged particles called <strong>electrons</strong>. In Engineering Science, we use a standard called <strong>conventional current flow</strong>. This means we always treat current as flowing out from the positive (+) terminal of the power supply, through the circuit, and back into the negative (or 0V/ground) terminal. The symbol used for current in calculations and on circuit diagrams is <strong>I</strong> (for example, I = 2 A).</p>
-      <div class="key-point">Current is measured in <strong>Amperes (A)</strong>. A milliamp (mA) is one thousandth of an amp: 1 mA = 0.001 A.</div>
+      <p class="notes-p">Electric current is the flow of negatively charged particles called <strong>electrons</strong>. In Engineering Science, we use a standard called <strong>conventional current flow</strong>. This means we always treat current as flowing out from the positive (+) terminal of the power supply, through the circuit, and back into the negative (or 0V/ground) terminal.</p>
+      <div class="key-point">Current is measured in <strong>Amperes (A)</strong>.<br>A milliamp (mA) is one thousandth of an amp: 1 mA = 0.001 A.</div>
 
       <div class="circuit-figure">
         <img src="images/conventional-current.gif" alt="Animation showing conventional current flowing out of the positive terminal of a battery, around a circuit, and back into the negative terminal. When the switch is open, no current flows. When the switch is closed, blue dots animate around the circuit to show current flow at 0.5 A (500 mA)." style="max-width:100%;width:560px;height:auto;display:block;margin:0 auto;">
         <figcaption>Conventional current flow: out of the positive (+) terminal, around the circuit, and back into the negative (&minus;) / 0V terminal.</figcaption>
       </div>
 
+      <p class="notes-p">The symbol used for current in calculations and on circuit diagrams is <strong>I</strong> (for example, I = 2 A).</p>
+
       <h3 class="notes-h3">Voltage</h3>
       <p class="notes-p">Voltage is the electrical force that pushes current around a circuit. It comes from a battery or power supply. The bigger the voltage, the harder it pushes the electrons. Voltage is sometimes referred to as potential difference or emf.</p>
-      <div class="key-point">Voltage is measured in <strong>Volts (V)</strong>.</div>
+      <div class="key-point">Voltage is measured in <strong>Volts (V)</strong>.<br>A millivolt (mV) is one thousandth of a volt: 1 mV = 0.001 V.</div>
 
       <h3 class="notes-h3">Resistance</h3>
       <p class="notes-p">All components in a circuit resist the flow of current to some degree. A <strong>resistor</strong> is a component specifically designed to reduce current flow. The greater the resistance, the less current will flow for a given voltage.</p>
@@ -185,8 +187,8 @@
       <p class="notes-p">A <strong>voltmeter</strong> measures the voltage <em>across</em> a component &mdash; one probe on each side &mdash; and has very high resistance so it takes almost no current from the circuit. On a circuit diagram, a voltmeter is shown with the symbol <strong>V</strong> inside a circle.</p>
       <p class="notes-p">An <strong>ammeter</strong> measures the current <em>through</em> a component &mdash; the circuit must be broken and the ammeter inserted in line with it &mdash; and has very low resistance so it barely affects the circuit. On a circuit diagram, an ammeter is shown with the symbol <strong>A</strong> inside a circle.</p>
 
-      <div class="circuit-figure">
-        <svg width="340" height="300" viewBox="0 0 380 340" xmlns="http://www.w3.org/2000/svg">
+      <div class="circuit-figure" style="padding:6px;display:inline-block;">
+        <svg width="238" height="210" viewBox="0 0 380 340" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <radialGradient id="v-glow" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stop-color="#fde68a" stop-opacity="0.9"/>
@@ -221,13 +223,15 @@
           <text x="190" y="195" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">R</text>
           <line x1="220" y1="190" x2="340" y2="190" stroke="#6b8cae" stroke-width="2.5"/>
 
-          <!-- Down to voltmeter, tapped directly off the resistor's own terminals -->
-          <line x1="160" y1="190" x2="160" y2="270" stroke="#6b8cae" stroke-width="2.5"/>
-          <line x1="220" y1="190" x2="220" y2="270" stroke="#6b8cae" stroke-width="2.5"/>
+          <!-- Down to voltmeter, spaced about twice the resistor's length apart -->
+          <line x1="160" y1="190" x2="130" y2="190" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="130" y1="190" x2="130" y2="270" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="220" y1="190" x2="250" y2="190" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="250" y1="190" x2="250" y2="270" stroke="#6b8cae" stroke-width="2.5"/>
 
           <!-- Voltmeter rung, wires run all the way to the circle edge -->
-          <line x1="160" y1="270" x2="166" y2="270" stroke="#6b8cae" stroke-width="2.5"/>
-          <line x1="214" y1="270" x2="220" y2="270" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="130" y1="270" x2="166" y2="270" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="214" y1="270" x2="250" y2="270" stroke="#6b8cae" stroke-width="2.5"/>
           <circle cx="190" cy="270" r="36" fill="url(#v-glow)"/>
           <circle cx="190" cy="270" r="24" fill="white" stroke="#1e293b" stroke-width="2.5"/>
           <text x="190" y="278" text-anchor="middle" font-size="18" font-weight="700" fill="#7c3aed">V</text>
@@ -375,7 +379,7 @@
             <line x1="2" y1="24" x2="78" y2="24" stroke="#334155" stroke-width="2"/>
             <circle cx="20" cy="24" r="3" fill="white" stroke="#334155" stroke-width="1.5"/>
             <circle cx="58" cy="24" r="3" fill="white" stroke="#334155" stroke-width="1.5"/>
-            <line x1="39" y1="6" x2="39" y2="14" stroke="#334155" stroke-width="2"/>
+            <line x1="39" y1="4" x2="39" y2="14" stroke="#334155" stroke-width="2"/>
             <line x1="26" y1="6" x2="52" y2="6" stroke="#334155" stroke-width="2"/>
           </svg>
           <div class="comp-name">Push switch</div>
@@ -492,12 +496,12 @@
 
       <div style="text-align:center;margin:16px 0;">
         <svg width="200" height="150" viewBox="0 0 200 150">
-          <polygon points="100,10 190,140 10,140" fill="var(--teal-50)" stroke="var(--teal-400)" stroke-width="2"/>
-          <line x1="44.6" y1="90" x2="155.4" y2="90" stroke="var(--teal-400)" stroke-width="2"/>
-          <line x1="100" y1="90" x2="100" y2="140" stroke="var(--teal-400)" stroke-width="2"/>
-          <text x="100" y="60" text-anchor="middle" font-size="22" font-weight="900" fill="var(--teal-800)" font-family="monospace">V</text>
-          <text x="72" y="122" text-anchor="middle" font-size="22" font-weight="900" fill="var(--teal-800)" font-family="monospace">I</text>
-          <text x="128" y="122" text-anchor="middle" font-size="22" font-weight="900" fill="var(--teal-800)" font-family="monospace">R</text>
+          <polygon points="100,30 163,120 37,120" fill="var(--teal-50)" stroke="var(--teal-400)" stroke-width="2"/>
+          <line x1="70.6" y1="72" x2="129.4" y2="72" stroke="var(--teal-400)" stroke-width="2"/>
+          <line x1="100" y1="72" x2="100" y2="120" stroke="var(--teal-400)" stroke-width="2"/>
+          <text x="100" y="58" text-anchor="middle" font-size="22" font-weight="900" fill="var(--teal-800)" font-family="monospace">V</text>
+          <text x="78" y="103" text-anchor="middle" font-size="22" font-weight="900" fill="var(--teal-800)" font-family="monospace">I</text>
+          <text x="122" y="103" text-anchor="middle" font-size="22" font-weight="900" fill="var(--teal-800)" font-family="monospace">R</text>
         </svg>
         <p style="font-size:12px;color:var(--gray-400);margin-top:8px;">Cover the quantity you want to find &mdash; the other two show how to calculate it.</p>
       </div>
@@ -542,7 +546,7 @@
               <line x1="190" y1="20" x2="190" y2="110" stroke="#6b8cae" stroke-width="2.5"/>
               <line x1="190" y1="110" x2="140" y2="110" stroke="#6b8cae" stroke-width="2.5"/>
               <line x1="80" y1="110" x2="20" y2="110" stroke="#6b8cae" stroke-width="2.5"/>
-              <line x1="20" y1="110" x2="20" y2="63" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="20" y1="110" x2="20" y2="53" stroke="#6b8cae" stroke-width="2.5"/>
               <line x1="20" y1="20" x2="20" y2="47" stroke="#6b8cae" stroke-width="2.5"/>
               <line x1="10" y1="47" x2="30" y2="47" stroke="#1e293b" stroke-width="2"/>
               <line x1="14" y1="53" x2="26" y2="53" stroke="#1e293b" stroke-width="4"/>
@@ -642,7 +646,7 @@
             <svg width="240" height="90" viewBox="0 0 240 90">
               <line x1="10" y1="20" x2="230" y2="20" stroke="#6b8cae" stroke-width="2.5"/>
               <line x1="10" y1="20" x2="10" y2="47" stroke="#6b8cae" stroke-width="2.5"/>
-              <line x1="10" y1="63" x2="10" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="10" y1="53" x2="10" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
               <line x1="230" y1="20" x2="230" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
               <line x1="10" y1="70" x2="230" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
               <line x1="1" y1="47" x2="19" y2="47" stroke="#1e293b" stroke-width="2"/>
@@ -672,7 +676,7 @@
             <svg width="240" height="90" viewBox="0 0 240 90">
               <line x1="10" y1="20" x2="230" y2="20" stroke="#6b8cae" stroke-width="2.5"/>
               <line x1="10" y1="20" x2="10" y2="42" stroke="#6b8cae" stroke-width="2.5"/>
-              <line x1="10" y1="58" x2="10" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="10" y1="48" x2="10" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
               <line x1="230" y1="20" x2="230" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
               <line x1="10" y1="70" x2="230" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
               <line x1="1" y1="42" x2="19" y2="42" stroke="#1e293b" stroke-width="2"/>
@@ -709,7 +713,7 @@
             <svg width="280" height="120" viewBox="0 0 280 120">
               <line x1="20" y1="20" x2="260" y2="20" stroke="#6b8cae" stroke-width="2.5"/>
               <line x1="20" y1="20" x2="20" y2="52" stroke="#6b8cae" stroke-width="2.5"/>
-              <line x1="20" y1="68" x2="20" y2="100" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="20" y1="58" x2="20" y2="100" stroke="#6b8cae" stroke-width="2.5"/>
               <line x1="260" y1="20" x2="260" y2="100" stroke="#6b8cae" stroke-width="2.5"/>
               <line x1="20" y1="100" x2="260" y2="100" stroke="#6b8cae" stroke-width="2.5"/>
               <line x1="11" y1="52" x2="29" y2="52" stroke="#1e293b" stroke-width="2"/>
@@ -761,7 +765,7 @@
         <svg width="280" height="90" viewBox="0 0 280 90">
           <line x1="20" y1="20" x2="260" y2="20" stroke="#6b8cae" stroke-width="2.5"/>
           <line x1="20" y1="20" x2="20" y2="42" stroke="#6b8cae" stroke-width="2.5"/>
-          <line x1="20" y1="58" x2="20" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="20" y1="48" x2="20" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
           <line x1="260" y1="20" x2="260" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
           <line x1="20" y1="70" x2="260" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
           <line x1="11" y1="42" x2="29" y2="42" stroke="#1e293b" stroke-width="2"/>
@@ -852,7 +856,7 @@
         <svg width="260" height="130" viewBox="0 0 260 130">
           <line x1="20" y1="20" x2="240" y2="20" stroke="#334155" stroke-width="2"/>
           <line x1="20" y1="20" x2="20" y2="52" stroke="#334155" stroke-width="2"/>
-          <line x1="20" y1="68" x2="20" y2="100" stroke="#334155" stroke-width="2"/>
+          <line x1="20" y1="58" x2="20" y2="100" stroke="#334155" stroke-width="2"/>
           <line x1="240" y1="20" x2="240" y2="100" stroke="#334155" stroke-width="2"/>
           <line x1="20" y1="100" x2="240" y2="100" stroke="#334155" stroke-width="2"/>
           <line x1="11" y1="52" x2="29" y2="52" stroke="#1e293b" stroke-width="2"/>
@@ -1048,7 +1052,7 @@
             <svg width="260" height="120" viewBox="0 0 260 120">
               <line x1="20" y1="20" x2="240" y2="20" stroke="#334155" stroke-width="2"/>
               <line x1="20" y1="20" x2="20" y2="42" stroke="#334155" stroke-width="2"/>
-              <line x1="20" y1="58" x2="20" y2="100" stroke="#334155" stroke-width="2"/>
+              <line x1="20" y1="48" x2="20" y2="100" stroke="#334155" stroke-width="2"/>
               <line x1="240" y1="20" x2="240" y2="100" stroke="#334155" stroke-width="2"/>
               <line x1="20" y1="100" x2="240" y2="100" stroke="#334155" stroke-width="2"/>
               <line x1="11" y1="42" x2="29" y2="42" stroke="#1e293b" stroke-width="2"/>
