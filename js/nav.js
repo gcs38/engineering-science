@@ -6,6 +6,13 @@ function buildSidebar(level, depth) {
   document.addEventListener('DOMContentLoaded', function() {
     if (document.getElementById('mob-menu-btn')) return; // already added
 
+    // GoatCounter analytics
+    var gc = document.createElement('script');
+    gc.setAttribute('data-goatcounter', 'https://engineeringsciencescotland.goatcounter.com/count');
+    gc.async = true;
+    gc.src = '//gc.zgo.at/count.js';
+    document.head.appendChild(gc);
+
     // Replace SVG logo-mark with custom logo image
     var logoMark = document.querySelector('.logo-mark');
     if (logoMark) {
