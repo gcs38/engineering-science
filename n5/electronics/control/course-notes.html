@@ -133,7 +133,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 11 September 2026</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 16th September 2026 at 14:23</div>
       <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Control Systems</div>
       <h1 class="hero-title">&#x1F916; Control Systems &mdash; Course Notes</h1>
       <p class="hero-sub">Microcontrollers, flowcharts, inputs, outputs and programmed control sequences</p>
@@ -160,15 +160,15 @@
         INPUT &nbsp;&rarr;&nbsp; PROCESS &nbsp;&rarr;&nbsp; OUTPUT
       </div>
 
-      <p class="notes-p">Devices that combine <strong>electronic control</strong> with <strong>moving mechanisms</strong> are called <strong>mechatronic</strong> systems. A washing machine, robot arm or DVD player are all mechatronic — electronics tells the mechanisms what to do.</p>
+      <p class="notes-p">Devices that combine <strong>electronic control</strong> with <strong>moving mechanisms</strong> are called <strong>mechatronic</strong> systems. A washing machine, robot arm or delivery drone are all mechatronic — electronics tells the mechanisms what to do.</p>
 
       <h2 class="notes-h2">Inputs and outputs</h2>
 
-      <p class="notes-p">Inputs and outputs are the only means by which a ‘machine’ does anything. A control system generally works by responding to inputs and producing outputs — without them it has no way to sense the world or act on it.</p>
+      <p class="notes-p">In general, all systems need inputs from the outside world to sense what is happening and need outputs to influence it.</p>
 
       <div class="compare-grid">
         <div class="compare-card">
-          <div class="compare-card-header" style="background:#0369a1;">&#x1F4E5; Input transducers (sensors)</div>
+          <div class="compare-card-header" style="background:#0369a1;">&#x1F4E5; Input devices (sensors)</div>
           <div class="compare-card-body">
             <ul style="padding-left:18px;margin:0;">
               <li><strong>Push switch / toggle switch</strong> — detects a press or on/off</li>
@@ -182,7 +182,7 @@
           </div>
         </div>
         <div class="compare-card">
-          <div class="compare-card-header" style="background:#15803d;">&#x1F4E4; Output transducers (actuators)</div>
+          <div class="compare-card-header" style="background:#15803d;">&#x1F4E4; Output devices (actuators)</div>
           <div class="compare-card-body">
             <ul style="padding-left:18px;margin:0;">
               <li><strong>LED / lamp</strong> — produces light</li>
@@ -204,17 +204,20 @@
 
       <p class="notes-p">A <strong>microcontroller</strong> is often described as a <em>computer-on-a-chip</em>. It contains a processor, memory and input/output connections all in a single small, inexpensive package. Because of this, microcontrollers can easily be built into everyday products to make them more intelligent.</p>
 
-      <p class="notes-p">Unlike a general-purpose computer, a microcontroller is typically <strong>programmed to do one specific job</strong>. The key advantage is flexibility — the same hardware can be reprogrammed to do something completely different simply by changing the software.</p>
-
       <p class="notes-p">It is easy to think of a microcontroller only as a diagram or a symbol, but it is a real physical device — and different manufacturers package one very differently. The photograph below shows two boards commonly used in schools. On the left is an <strong>Arduino Uno</strong>: the main chip sits at the centre of the board, surrounded by the digital and analogue input/output pins along the edges, with a USB connector for programming and a power socket. On the right is a <strong>PICAXE</strong> project board, along with a bare PICAXE chip of the kind you'll find plugged into it — PICAXE chips are programmed in a similar way to an Arduino, but are typically mounted onto a simpler board that adds just the input/output connections and a power supply needed for a specific project.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
       <img src="images/microcontroller-physical-board.png" alt="Photograph of physical microcontroller hardware: an Arduino Uno board on the left, and a PICAXE project board with a bare PICAXE chip on the right" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;">
 
+      <p class="notes-p">Unlike a general-purpose computer, a microcontroller is typically <strong>programmed to do one specific job</strong>. The key advantage is flexibility — the same hardware can be reprogrammed to do something completely different simply by changing the software.</p>
+
       <p class="notes-p">Away from the physical hardware, a microcontroller is drawn differently again depending on which software or exam paper you are looking at. The image below shows three examples: in <strong>Yenka</strong>, it appears as a simple green block with numbered inputs and outputs; in <strong>NoSyntaxSim</strong>, it appears as an on-screen component with input and output devices connected directly to it; and in a <strong>QS examination or assignment</strong>, it is drawn even more simply, as a plain rectangle with numbered pins down each side. All three are showing the same idea — inputs on one side, outputs on the other — just presented in the style of whichever tool you're using.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
       <img src="images/microcontroller-block-diagram.png" alt="Three representations of a microcontroller side by side: a Yenka block with numbered inputs and outputs, a NoSyntaxSim on-screen microcontroller component with connected input and output devices, and a QS examination-style rectangle with numbered pins" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;">
+
+      <h2 class="notes-h2">Hard-wired circuits</h2>
+      <p class="notes-p">It is possible to produce electronic control circuits without microcontrollers, but they usually need a lot more parts and are significantly more complex. A control circuit without a programmable element is called a <strong>hard-wired circuit</strong>.</p>
 
       <h2 class="notes-h2">Advantages of microcontrollers</h2>
       <ul class="notes-ul">
@@ -225,16 +228,13 @@
         <li><strong>Low cost</strong> — mass production makes microcontrollers very inexpensive</li>
       </ul>
 
-      <h2 class="notes-h2">Why use a microcontroller instead of fixed logic?</h2>
-      <p class="notes-p">Fixed logic circuits (using logic gates) are hard-wired — to change their behaviour you must physically change the circuit. A microcontroller simply needs a new program. This makes microcontrollers far better for complex control sequences and for products that need to be updated or customised.</p>
-
       <div class="key-point">A microcontroller is advantageous because the control sequence can be changed by reprogramming rather than redesigning the hardware. This reduces cost and development time.</div>
 
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Control systems</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <div class="task-q">1. List the advantages of using a microcontroller within a product design.</div>
+            <div class="task-q">1. Explain why an electronic engineer might choose to use a microcontroller rather than a hard-wired circuit for a control system.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1a">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t1a" data-placeholder="List the advantages here..."></div>
           </div>
@@ -381,6 +381,9 @@
 
       <p class="notes-p">In the QS exam and assignment you will be given a written specification and asked to draw a flowchart. Read the specification carefully — each step becomes one or more boxes in the flowchart.</p>
 
+      <h2 class="notes-h2">What is a pin?</h2>
+      <p class="notes-p">A microcontroller connects to the outside world through a number of <strong>pins</strong> along its edges — each one is a physical connection point that can be wired to an input device (like a switch) or an output device (like an LED). Every pin has its own number, such as <strong>D8</strong> or <strong>D2</strong>, so that a flowchart or program can refer to exactly the right connection. From here on, worked examples and questions will refer to specific pin numbers — always check the pin table given with a task to see which device is connected to which pin.</p>
+
       <h2 class="notes-h2">Method</h2>
       <ol class="notes-ol">
         <li>Read the full specification first</li>
@@ -436,9 +439,12 @@
         <div class="worked-example-title">Worked Example &mdash; Traffic Lights</div>
         <div class="spec-box">
           <div class="spec-box-title">&#x1F4CB; Specification — Pin table</div>
-          <ul style="list-style:none;padding:0;margin:0;">
-            <li>D8 = Red LED &nbsp;|&nbsp; D9 = Amber LED &nbsp;|&nbsp; D10 = Green LED</li>
-          </ul>
+          <table class="pin-table">
+            <tr><th>Pin</th><th>Direction</th><th>Device</th></tr>
+            <tr><td>D8</td><td class="pin-out">OUTPUT</td><td>Red LED</td></tr>
+            <tr><td>D9</td><td class="pin-out">OUTPUT</td><td>Amber LED</td></tr>
+            <tr><td>D10</td><td class="pin-out">OUTPUT</td><td>Green LED</td></tr>
+          </table>
         </div>
         <div class="spec-box" style="margin-top:8px;">
           <div class="spec-box-title">&#x1F4CB; Sequence</div>
@@ -496,11 +502,11 @@
       <!-- Simulator embed 1 — basic flowcharts -->
       <div class="sim-embed-section">
         <div class="sim-embed-header">
-          <div class="sim-embed-title"><span>&#x1F916;</span> NoSyntaxSim &mdash; build your first flowcharts</div>
+          <div class="sim-embed-title"><span>&#x1F916;</span> NoSyntaxSim &mdash; Simulate the Worked Examples</div>
           <a href="../../../../simulators/control.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
         </div>
         <div class="sim-instruction">
-          <strong>Getting started:</strong> Drag symbols from the left panel onto the canvas. Hover over a node to reveal anchor points — click and drag to connect them. Click a node to open the Properties Inspector on the right. Add pins using the + ADD button in the Hardware panel, then attach components (LED, buzzer, button). Click <strong>&#x25B6; RUN PROGRAMME</strong> to simulate.
+          <strong>Try it yourself:</strong> Before moving on to Task 4, use this workspace to build and run the two flowcharts above (flashing LED, then traffic lights) so you can see how a flowchart behaves once it's simulated. Drag symbols from the left panel onto the canvas, hover over a node to reveal anchor points, then click and drag to connect them. Add pins using the + ADD button in the Hardware panel, then attach components (LED, buzzer, button). Click <strong>&#x25B6; RUN PROGRAMME</strong> to simulate.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/control.html" title="NoSyntaxSim control systems simulator" loading="lazy"></iframe></div>
       </div>
@@ -508,7 +514,7 @@
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Drawing flowcharts from a specification</div></div>
         <div class="assignment-body">
-          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">For each task: draw the flowchart in your notes, then build and simulate it in NoSyntaxSim. Use the Export Image button to save your circuit for your portfolio.</p>
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">For each task: sketch your flowchart, then build and simulate it in NoSyntaxSim.</p>
 
           <div class="task-item">
             <div class="task-q">1. Design a system that makes a lamp (D8) flash on and off continuously. Each on and off period should last 0.5 s.</div>
@@ -517,13 +523,13 @@
           </div>
 
           <div class="task-item">
-            <div class="task-q">2. Draw a flowchart for the traffic lights sequence shown in the worked example. Pin table: D8 = Red, D9 = Amber, D10 = Green. The sequence must repeat continuously as a fixed loop.</div>
-            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-t4b">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t4b" data-placeholder="Sketch or describe your flowchart here..."></div>
+            <div class="task-q">2. Build and simulate the traffic lights sequence shown in the worked example above. Pin table: D8 = Red, D9 = Amber, D10 = Green. The sequence must repeat continuously as a fixed loop.</div>
+            <div class="answer-label">Simulation notes <span class="saved-indicator" id="ind-t4b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t4b" data-placeholder="Notes on your simulation, any issues found..."></div>
           </div>
 
           <div class="task-item">
-            <div class="task-q">3. A microwave oven operates with this sequence. Draw a flowchart and simulate it.</div>
+            <div class="task-q">3. A microcontroller is used to control a microwave oven using the sequence below. Complete a flowchart and then simulate the system. NoSyntaxSim has no magnetron or turntable component — represent the magnetron with an LED (D10) and the turntable motor with the standard motor component (D9).</div>
             <div class="spec-box">
               <div class="spec-box-title">&#x1F4CB; Microwave specification</div>
               <ol>
@@ -580,11 +586,11 @@
       <p class="notes-p">This is called a <strong>polling loop</strong> — the microcontroller keeps checking the input until it becomes active.</p>
 
       <h2 class="notes-h2">AND control — both inputs must be active</h2>
-      <p class="notes-p">When <strong>two conditions must both be true</strong> before continuing, two decision boxes are placed in series. The YES output of the first leads into the second decision. Only when both return YES does the program continue.</p>
+      <p class="notes-p">When <strong>two conditions must both be true</strong> before continuing, two decision boxes are placed in series. The YES output of the first leads into the second decision. Only when both return YES does the program continue — and if the second condition is not met, the flowchart loops all the way back to the <strong>first</strong> decision, not just the second. This matters: without looping back to the top, the two inputs could be triggered one after another (rather than together) and the program would still be allowed through.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
       <svg viewBox="0 0 400 402" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:288px;display:block;margin:16px auto;font-family:Arial,Helvetica,sans-serif;">
-        <title>AND control: Is D2 On? then Is D3 On?, each looping back on No, both must be Yes to continue</title>
+        <title>AND control: Is D2 On? then Is D3 On?, second decision's No loops back to the top of the first, both must be Yes to continue</title>
         <defs>
           <marker id="arrowAND" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
             <path d="M0 0L10 5L0 10z" fill="#000"/>
@@ -601,7 +607,7 @@
         <text x="138" y="204" text-anchor="end" font-size="15">Y</text>
         <polygon points="150,218 245,260 150,302 55,260" fill="#fff" stroke="#000" stroke-width="2"/>
         <text x="150" y="265.0" text-anchor="middle" font-size="13">Is D3 On?</text>
-        <path d="M245,260.0 L295,260.0 L295,198.0 L150,198.0" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowAND)"/>
+        <path d="M245,260.0 L345,260.0 L345,78.0 L150,78.0" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowAND)"/>
         <text x="249" y="250" font-size="15">N</text>
         <line x1="150" y1="302" x2="150" y2="338" stroke="#000" stroke-width="2" marker-end="url(#arrowAND)"/>
         <text x="158" y="324" font-size="15">Y</text>
@@ -664,13 +670,13 @@
         <div class="spec-box">
           <div class="spec-box-title">&#x1F4CB; Specification</div>
           <ol>
-            <li>Wait until pressure pad (D2) is ON</li>
+            <li>Wait until open button (D2) is pressed</li>
             <li>Turn motor (D8) ON — door opens</li>
-            <li>Wait until door limit switch (D3) is ON — door fully open</li>
+            <li>Wait until door-open button (D3) is pressed — door fully open</li>
             <li>Turn motor (D8) OFF</li>
             <li>Wait 3 s</li>
             <li>Close door — turn motor (D9) ON (reverse direction)</li>
-            <li>Wait until close limit switch (D4) is ON</li>
+            <li>Wait until door-closed button (D4) is pressed</li>
             <li>Turn motor (D9) OFF — STOP (or loop)</li>
           </ol>
         </div>
@@ -726,12 +732,16 @@
 
       <div class="worked-example">
         <div class="worked-example-title">Worked Example &mdash; Motor direction control</div>
-        <p class="notes-p" style="margin-bottom:10px;">Many control systems need to drive a motor in <strong>two directions</strong> — for example a conveyor belt that moves forwards then reverses. In NoSyntaxSim, two separate output pins control direction: one pin drives the motor forwards, the other drives it backwards. Only one should ever be ON at the same time.</p>
+        <p class="notes-p" style="margin-bottom:10px;">Many control systems need to drive a motor in <strong>two directions</strong> — for example a buggy that drives forwards then reverses. In NoSyntaxSim, two separate output pins control direction: one pin drives the motor forwards, the other drives it backwards. Only one should ever be ON at the same time.</p>
         <div class="spec-box">
           <div class="spec-box-title">&#x1F4CB; Specification — Pin table</div>
-          <ul style="list-style:none;padding:0;margin:0;">
-            <li>D2 = Forward button &nbsp;|&nbsp; D3 = Reverse button &nbsp;|&nbsp; D8 = Motor forwards &nbsp;|&nbsp; D9 = Motor backwards</li>
-          </ul>
+          <table class="pin-table">
+            <tr><th>Pin</th><th>Direction</th><th>Device</th></tr>
+            <tr><td>D2</td><td class="pin-in">INPUT</td><td>Forward button</td></tr>
+            <tr><td>D3</td><td class="pin-in">INPUT</td><td>Reverse button</td></tr>
+            <tr><td>D8</td><td class="pin-out">OUTPUT</td><td>Motor forwards</td></tr>
+            <tr><td>D9</td><td class="pin-out">OUTPUT</td><td>Motor backwards</td></tr>
+          </table>
         </div>
         <div class="spec-box" style="margin-top:8px;">
           <div class="spec-box-title">&#x1F4CB; Sequence</div>
@@ -809,11 +819,11 @@
       <!-- Simulator embed 2 — inputs and decisions -->
       <div class="sim-embed-section">
         <div class="sim-embed-header">
-          <div class="sim-embed-title"><span>&#x1F916;</span> NoSyntaxSim &mdash; inputs and decision boxes</div>
+          <div class="sim-embed-title"><span>&#x1F916;</span> NoSyntaxSim &mdash; Inputs and Decision Boxes</div>
           <a href="../../../../simulators/control.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
         </div>
         <div class="sim-instruction">
-          Add a <strong>Push Button</strong> as an input and an <strong>LED</strong> as an output. Use a <strong>Decision</strong> diamond to check "Is D2 ON?". Connect the NO branch back to the same decision box (polling loop). Connect the YES branch to turn the LED on. Run and click the button to test.
+          Add a <strong>Push Button</strong> as an input and an <strong>LED</strong> as an output. Use a <strong>Decision</strong> diamond to check "Is D2 ON?", matching the decision box diagram shown earlier in this section. Connect the NO branch back to the same decision box (polling loop). Connect the YES branch to turn the LED on. Run and click the button to test.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/control.html" title="NoSyntaxSim input decision simulator" loading="lazy"></iframe></div>
       </div>
@@ -827,7 +837,7 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t5a" data-placeholder="Sketch or describe your flowchart here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">2. A security door in a bank must only open when two buttons (D2 AND D3) are both pressed together. It must close when a third button (D4) is pressed. Design and simulate the system.</div>
+            <div class="task-q">2. A security door in a bank must only open when two buttons (D2 AND D3) are both pressed together. It must close when a third button (D4) is pressed. Use the motor component (D8) to simulate the door opening and closing. Design and simulate the system.</div>
             <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-t5b">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t5b" data-placeholder="Sketch or describe your flowchart here..."></div>
           </div>
@@ -837,7 +847,7 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t5c" data-placeholder="Sketch or describe your flowchart here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">4. A heater (D8) must switch on when the temperature drops (D2 = ON when cold). It must be switched off by a separate reset button (D3). Design and simulate the system.</div>
+            <div class="task-q">4. A heater (D8) must switch on when the temperature drops (D2 = ON when cold). It must be switched off by a separate reset button (D3). NoSyntaxSim has no heater component — use an LED (D8) to represent the heater. Design and simulate the system.</div>
             <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-t5d">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t5d" data-placeholder="Sketch or describe your flowchart here..."></div>
           </div>
@@ -851,7 +861,7 @@
 
       <p class="notes-p">A <strong>finite loop</strong> (also called a <strong>counted loop</strong> or <strong>for loop</strong>) repeats a sequence a <strong>fixed number of times</strong> before stopping. This is different from a fixed loop, which repeats indefinitely.</p>
 
-      <div class="key-point">In programming and in the QS exam, this construct is called a <strong>for…next loop</strong>. The loop runs <strong>FOR</strong> a set number of times, carrying out its instructions each time, then moves on to the <strong>NEXT</strong> instruction after the loop. You must be able to recognise this term and construct a flowchart that represents it.</div>
+      <div class="key-point">In programming and in the QS exam, this construct is called a <strong>for…next loop</strong>. The loop runs <strong>FOR</strong> a set number of times; <strong>NEXT</strong> sends the program back to repeat the loop again, until the count condition is met — only then does the program move on to the instructions after the loop. You must be able to recognise this term and construct a flowchart that represents it.</div>
 
       <p class="notes-p">To create a for…next loop in a flowchart, a <strong>variable</strong> (e.g. <em>count</em>) is used to keep track of how many times the loop has run:</p>
 
@@ -901,7 +911,7 @@
         <text x="170" y="485" text-anchor="middle" font-size="17">Stop</text>
       </svg>
 
-      <div class="key-point">In NoSyntaxSim, drag the <strong>For Loop (Macro)</strong> from the left panel — it automatically creates the three required blocks (initialise, increment, decision) formatted to QS standards.</div>
+      <div class="key-point">In NoSyntaxSim, drag the <strong>For Loop</strong> block from the left panel — it automatically creates the three required blocks (initialise, increment, decision) formatted to QS standards.</div>
 
       <div class="worked-example">
         <div class="worked-example-title">Worked Example &mdash; School bell sounds 5 times</div>
@@ -981,11 +991,11 @@
       <!-- Simulator embed 3 — finite loops -->
       <div class="sim-embed-section">
         <div class="sim-embed-header">
-          <div class="sim-embed-title"><span>&#x1F916;</span> NoSyntaxSim &mdash; finite loops</div>
+          <div class="sim-embed-title"><span>&#x1F916;</span> NoSyntaxSim &mdash; Finite Loops</div>
           <a href="../../../../simulators/control.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
         </div>
         <div class="sim-instruction">
-          Drag the <strong>For Loop (Macro)</strong> from the left panel — it places the three loop blocks automatically. Set the initial value to 0 and the condition to count &lt; 5. Place your repeating action (e.g. flash an LED) between the initialise and increment blocks. Run the simulation and watch the execution highlight move through the loop.
+          Build and simulate the <strong>School bell</strong> worked example above. Drag the <strong>For Loop</strong> block from the left panel — it places the three loop blocks automatically. Set the initial value to 0 and the condition to count &lt; 5. Place the buzzer ON/OFF and wait steps between the initialise and increment blocks. Run the simulation and watch the execution highlight move through the loop.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/control.html" title="NoSyntaxSim finite loop simulator" loading="lazy"></iframe></div>
       </div>
@@ -1075,7 +1085,7 @@
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Reading and correcting flowcharts</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <div class="task-q">1. A flowchart is designed to make a buzzer (D8) sound when a button (D2) is pressed. Study the flowchart shown in your teacher's handout and list any errors you can find. For each error, state what is wrong and how it should be corrected.</div>
+            <div class="task-q">1. A flowchart is designed to make a buzzer (D8) sound when a button (D2) is pressed. Study the flowchart shown in the worked example above and list any errors you can find. For each error, state what is wrong and how it should be corrected.</div>
             <div class="answer-label">Errors found and corrections <span class="saved-indicator" id="ind-t7a">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t7a" data-placeholder="Error 1: ... Correction: ... Error 2: ... Correction: ..."></div>
           </div>
@@ -1093,6 +1103,8 @@
       <h1 class="notes-h1">Section 8: Inputs, Outputs and Pin Numbers</h1>
 
       <p class="notes-p">The microcontroller used in NoSyntaxSim is based on the <strong>Arduino</strong> platform. Inputs and outputs connect to numbered <strong>digital pins</strong> (D2–D13). In the QS exam, you will always be given a <strong>pin table</strong> telling you which pin connects to which input or output device.</p>
+
+      <p class="notes-p">If you are using a <strong>PICAXE</strong> chip instead, pins are numbered slightly differently — as <strong>b.0</strong> to <strong>b.7</strong> rather than D2–D13. QS flowchart questions and answers only ever use plain pin numbers (like D8), regardless of which hardware a class happens to be using, so that's the numbering to use when answering questions.</p>
 
       <div class="key-point">In any flowchart you draw, you <strong>must</strong> use the correct pin numbers from the pin table. The QS specifically requires pin numbers in flowcharts — do not just write "switch" or "LED".</div>
 
@@ -1113,10 +1125,95 @@
       <h2 class="notes-h2">Digital inputs</h2>
       <p class="notes-p">A <strong>digital input</strong> can only be logic 1 (ON) or logic 0 (OFF). A push button is digital — it is either pressed or not. In a decision box in a flowchart, a digital input is checked as: <em>"Is D2 ON?"</em></p>
 
-      <h2 class="notes-h2">Analogue inputs</h2>
-      <p class="notes-p">An <strong>analogue input</strong> can be any value between a minimum and maximum (e.g. a thermistor produces a varying voltage as temperature changes). To use an analogue signal, the microcontroller must first convert it to a digital number using an <strong>Analogue-to-Digital Converter (ADC)</strong>. In NoSyntaxSim, analogue inputs appear as sliders.</p>
+      <p class="notes-p">Some inputs — like a thermistor or an LDR — can physically vary smoothly rather than switching cleanly between two states. At this level, you can still treat them as behaving digitally: they are simply LOW until a particular point is reached (e.g. a temperature or light level), then they become HIGH. In Yenka and in some tasks, this is exactly how these inputs are controlled and checked in a flowchart.</p>
 
-      <h2 class="notes-h2">Output drivers</h2>
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; Inputs, outputs and pin tables</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Using the example pin table above, identify which pin you would read in a flowchart to check if the pressure pad is activated.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t2a" data-placeholder="Pin number and reason..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Explain the difference between a digital input and an analogue input. Give one example of each.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="cs-t2c" data-placeholder="Digital: ... Analogue: ..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 9: Generating Code</h1>
+
+      <p class="notes-p">One of the most powerful features of NoSyntaxSim is that it can automatically convert your flowchart into real code — either <strong>Arduino C++</strong> or <strong>pBASIC</strong> (the language used by PICAXE chips), depending on which target you choose. This is the actual code that would run on a physical microcontroller.</p>
+
+      <p class="notes-p">While you do not need to write or memorise code for the N5 exam, you may be asked to <strong>read a short piece of code and correct an error in it</strong>, so understanding the connection between a flowchart and the code it produces is useful preparation.</p>
+
+      <div class="key-point">After building and testing your flowchart in NoSyntaxSim, click <strong>GENERATE CODE</strong> on the hardware panel. The code appears in a window, with a language selector for Arduino C++ or pBASIC — you can copy it and paste it directly into the Arduino IDE or PICAXE editor to run on real hardware.</div>
+
+      <!-- DIAGRAM PLACEHOLDER -->
+      <img src="images/nosyntax-code-export.png" alt="Screenshot of NoSyntaxSim Generate Code button and example Arduino code output for a flashing LED" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;">
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 9 &mdash; From flowchart to code</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Build the flashing LED flowchart shown below (the same one from the Flashing LED worked example) in NoSyntaxSim. Click GENERATE CODE. Look at the generated code and answer the following:</div>
+            <!-- DIAGRAM PLACEHOLDER -->
+            <svg viewBox="0 0 340 464" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:245px;display:block;margin:12px auto;font-family:Arial,Helvetica,sans-serif;">
+            <title>Flowchart for a flashing LED: Start, Turn D8 ON, Wait 500 ms, Turn D8 OFF, Wait 500 ms, looping back to Turn D8 ON</title>
+            <defs>
+              <marker id="arrowFL2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                <path d="M0 0L10 5L0 10z" fill="#000"/>
+              </marker>
+            </defs>
+            <rect x="80.0" y="10" width="140" height="44" rx="22" fill="#fff" stroke="#000" stroke-width="2"/>
+            <text x="150" y="37.0" text-anchor="middle" font-size="17">Start</text>
+            <line x1="150" y1="54" x2="150" y2="98" stroke="#000" stroke-width="2" marker-end="url(#arrowFL2)"/>
+            <polygon points="60.0,98 260.0,98 240.0,142 40.0,142" fill="#fff" stroke="#000" stroke-width="2"/>
+            <text x="150" y="125.0" text-anchor="middle" font-size="14">Turn D8 ON</text>
+            <line x1="150" y1="142" x2="150" y2="182" stroke="#000" stroke-width="2" marker-end="url(#arrowFL2)"/>
+            <rect x="50.0" y="182" width="200" height="44" fill="#fff" stroke="#000" stroke-width="2"/>
+            <text x="150" y="209.0" text-anchor="middle" font-size="14">Wait 500 ms</text>
+            <line x1="150" y1="226" x2="150" y2="266" stroke="#000" stroke-width="2" marker-end="url(#arrowFL2)"/>
+            <polygon points="60.0,266 260.0,266 240.0,310 40.0,310" fill="#fff" stroke="#000" stroke-width="2"/>
+            <text x="150" y="293.0" text-anchor="middle" font-size="14">Turn D8 OFF</text>
+            <line x1="150" y1="310" x2="150" y2="350" stroke="#000" stroke-width="2" marker-end="url(#arrowFL2)"/>
+            <rect x="50.0" y="350" width="200" height="44" fill="#fff" stroke="#000" stroke-width="2"/>
+            <text x="150" y="377.0" text-anchor="middle" font-size="14">Wait 500 ms</text>
+            <path d="M150,394 L150,434 L290,434 L290,73 L150,73" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowFL2)"/>
+          </svg>
+            <div class="task-q-sub">a) What command or function does the generated code use to turn an output ON or OFF? (Note this is different in Arduino C++ and pBASIC.)</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t8a" data-placeholder="Function/command name..."></div>
+            <div class="task-q-sub">b) What command or function is used to create a time delay?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t8b" data-placeholder="Function/command name..."></div>
+            <div class="task-q-sub">c) What part of the code makes the sequence repeat continuously? (In Arduino C++ this is the loop() function; in pBASIC this is the "main:" / "goto main" structure.)</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t8c" data-placeholder="Explain what makes it repeat..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Explain in your own words why being able to generate code from a flowchart is useful for an engineer.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8d">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="cs-t8d" data-placeholder="Explain the benefit..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. The code below is supposed to flash an LED on D8, waiting 500 ms between each change. Find and correct the error.<br><code style="display:block;background:#0f172a;color:#7dd3fc;padding:10px 14px;border-radius:6px;margin-top:6px;font-size:13px;">void loop() {<br>&nbsp;&nbsp;digitalWrite(8, HIGH);<br>&nbsp;&nbsp;digitalWrite(8, LOW);<br>&nbsp;&nbsp;delay(500);<br>}</code></div>
+            <div class="answer-label">Error and correction <span class="saved-indicator" id="ind-t9e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t9e" data-placeholder="What is wrong and how to fix it..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Output Drivers</h1>
+
       <p class="notes-p">A microcontroller pin can only supply a small current — not enough to directly drive a motor or solenoid. An <strong>output driver</strong> (typically a transistor or relay) amplifies the signal to power the output device. In exam circuits, a <strong>transistor driver circuit</strong> is commonly shown between the microcontroller output pin and the output device.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
@@ -1125,64 +1222,12 @@
       <p class="notes-p">This circuit uses three outputs. <strong>Output5</strong> (LED) and <strong>Output6</strong> (buzzer) both draw very little current, so they run directly from the microcontroller's own supply. <strong>Output7</strong> drives a transistor, which switches a relay coil — the relay's separate contacts then control a motor circuit running from a much higher voltage (24&nbsp;V), since that's more current and voltage than the microcontroller or transistor could handle directly. The diode across the coil protects the transistor from the voltage spike produced when the relay switches off.</p>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Inputs, outputs and pin tables</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Output drivers — check your understanding</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <div class="task-q">1. Using the example pin table above, identify which pin you would read in a flowchart to check if the pressure pad is activated.</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2a">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t2a" data-placeholder="Pin number and reason..."></div>
-          </div>
-          <div class="task-item">
-            <div class="task-q">2. Explain why a transistor driver is needed between the microcontroller and a motor output.</div>
+            <div class="task-q">1. Explain why a transistor driver is needed between the microcontroller and a motor output.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="cs-t2b" data-placeholder="Explain why a driver is needed..."></div>
-          </div>
-          <div class="task-item">
-            <div class="task-q">3. Explain the difference between a digital input and an analogue input. Give one example of each.</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2c">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="cs-t2c" data-placeholder="Digital: ... Analogue: ..."></div>
-          </div>
-          <div class="task-item">
-            <div class="task-q">4. Why does an analogue input need an ADC before the microcontroller can use it?</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2d">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t2d" data-placeholder="Explain the need for ADC..."></div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="divider">
-
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 9: Generating Arduino Code</h1>
-
-      <p class="notes-p">One of the most powerful features of NoSyntaxSim is that it can automatically convert your flowchart into real <strong>Arduino C++ code</strong>. This is the actual code that would run on a physical microcontroller.</p>
-
-      <p class="notes-p">While you do not need to write or memorise code for the N5 exam, understanding the connection between a flowchart and the code it produces helps to show how real engineering systems work.</p>
-
-      <div class="key-point">After building and testing your flowchart in NoSyntaxSim, click <strong>GENERATE CODE</strong> on the hardware panel. The code appears in a window — you can copy it and paste it directly into the Arduino IDE to run on real hardware.</div>
-
-      <!-- DIAGRAM PLACEHOLDER -->
-      <img src="images/nosyntax-code-export.png" alt="Screenshot of NoSyntaxSim Generate Code button and example Arduino code output for a flashing LED" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;">
-
-      <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; From flowchart to code</div></div>
-        <div class="assignment-body">
-          <div class="task-item">
-            <div class="task-q">1. Build the flashing LED flowchart from Task 4 in NoSyntaxSim. Click GENERATE CODE. Look at the generated code and answer the following:</div>
-            <div class="task-q-sub">a) What function does the code use to turn an output ON or OFF?</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8a">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t8a" data-placeholder="Function name..."></div>
-            <div class="task-q-sub">b) What function is used to create a time delay?</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8b">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t8b" data-placeholder="Function name..."></div>
-            <div class="task-q-sub">c) What does the main loop() function in Arduino code do?</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8c">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t8c" data-placeholder="Explain what loop() does..."></div>
-          </div>
-          <div class="task-item">
-            <div class="task-q">2. Explain in your own words why being able to generate code from a flowchart is useful for an engineer.</div>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8d">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="cs-t8d" data-placeholder="Explain the benefit..."></div>
           </div>
         </div>
       </div>
@@ -1192,16 +1237,16 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 10: Design Challenges</h1>
 
-      <p class="notes-p">For each challenge below, follow the full engineering process: read the specification carefully, draw a flowchart in your notes, then build and simulate it in NoSyntaxSim. Use the <strong>Export Image</strong> button to save your work.</p>
+      <p class="notes-p">For each challenge below, follow the full engineering process: read the specification carefully, draw a flowchart, then build and simulate it in NoSyntaxSim. Once it's working, export your solution and paste it into your notes as a record of your finished system.</p>
 
       <!-- Final simulator embed — open workspace -->
       <div class="sim-embed-section">
         <div class="sim-embed-header">
-          <div class="sim-embed-title"><span>&#x1F916;</span> NoSyntaxSim &mdash; design challenge workspace</div>
+          <div class="sim-embed-title"><span>&#x1F916;</span> NoSyntaxSim &mdash; Design Challenge Workspace</div>
           <a href="../../../../simulators/control.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
         </div>
         <div class="sim-instruction">
-          Use this workspace for all the design challenges below. Remember to use the <strong>Export Image</strong> button (camera icon) to save a clean PNG of your flowchart and hardware panel for your portfolio. Use the speed slider to slow down execution if debugging.
+          Use this workspace for all the design challenges below. Once your system is working, export it and paste the image into your notes as your finished solution. Use the speed slider to slow down execution if debugging.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/control.html" title="NoSyntaxSim design challenge workspace" loading="lazy"></iframe></div>
       </div>
@@ -1211,8 +1256,48 @@
         <div class="assignment-body">
 
           <div class="task-item">
-            <div class="task-q"><strong>Challenge 1 &mdash; Museum people counter</strong></div>
-            <p style="font-size:13px;color:var(--gray-500);margin:4px 0 8px;">This challenge combines decision boxes, a counted variable and two inputs — exactly the kind of multi-part problem that appears in the N5 exam.</p>
+            <div class="task-q"><strong>Challenge 1 &mdash; Fire alarm system</strong></div>
+            <div class="spec-box">
+              <div class="spec-box-title">&#x1F4CB; Specification</div>
+              <ul>
+                <li>A master switch (D2) must be pressed to arm the system</li>
+                <li>If a heat sensor (D3) is activated OR a manual alarm button (D4) is pressed, the alarm (D8) sounds</li>
+                <li>The alarm continues to sound until a reset switch (D5) is pressed</li>
+                <li>After reset, the system returns to waiting (armed state)</li>
+              </ul>
+            </div>
+            <div class="answer-label">Image of final working system <span class="saved-indicator" id="ind-dc3">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc3" data-placeholder="Sketch or describe your flowchart here..."></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q"><strong>Challenge 2 &mdash; Starting signal for a race (exam-style)</strong></div>
+            <div class="spec-box">
+              <div class="spec-box-title">&#x1F4CB; Specification — Pin table</div>
+              <ul style="list-style:none;padding:0;margin:0;">
+                <li>D2 = Start button &nbsp;|&nbsp; D8 = Red LED &nbsp;|&nbsp; D9 = Amber LED &nbsp;|&nbsp; D10 = Green LED &nbsp;|&nbsp; D11 = Buzzer</li>
+              </ul>
+            </div>
+            <div class="spec-box" style="margin-top:8px;">
+              <div class="spec-box-title">&#x1F4CB; Sequence</div>
+              <ol>
+                <li>Wait until start button (D2) is pressed</li>
+                <li>Red LED (D8) ON — Wait 3 s</li>
+                <li>Red (D8) OFF, Amber (D9) ON — Wait 1 s</li>
+                <li>Amber (D9) OFF, Green (D10) ON, Buzzer (D11) ON — Wait 0.5 s</li>
+                <li>Buzzer (D11) OFF — Green LED stays ON</li>
+                <li>System waits for the next race (fixed loop back to wait for button)</li>
+              </ol>
+            </div>
+            <div class="answer-label">Image of final working system <span class="saved-indicator" id="ind-dc4">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc4" data-placeholder="Sketch or describe your flowchart here..."></div>
+          </div>
+
+          <div class="key-point">&#x1F393; <strong>Higher-level content:</strong> Challenges 3 and 4 below involve arithmetic on a variable (adding and subtracting values), which goes beyond the N5 course specification. They're included as stretch challenges — if you're working towards N5, you don't need to complete these to achieve your award, though most students are capable of having a go with some support.</div>
+
+          <div class="task-item">
+            <div class="task-q"><strong>Challenge 3 &mdash; Museum people counter</strong></div>
+            <p style="font-size:13px;color:var(--gray-500);margin:4px 0 8px;">This challenge combines decision boxes, a counted variable and two inputs.</p>
             <div class="spec-box">
               <div class="spec-box-title">&#x1F4CB; Specification — Pin table</div>
               <ul style="list-style:none;padding:0;margin:0 0 6px;">
@@ -1226,18 +1311,18 @@
                 <li>Set count = 0</li>
                 <li>Check entry sensor (D2) — if ON, add 1 to count</li>
                 <li>Check exit sensor (D3) — if ON, subtract 1 from count</li>
-                <li>If count &gt; 50 (museum full), turn alarm (D9) ON, otherwise turn alarm OFF</li>
+                <li>If count &gt; 10 (museum full), turn alarm (D9) ON, otherwise turn alarm OFF</li>
                 <li>Output count value to display (D8)</li>
                 <li>Repeat continuously</li>
               </ol>
             </div>
-            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-dc1">&#x2713; Saved</span></div>
+            <div class="answer-label">Image of final working system <span class="saved-indicator" id="ind-dc1">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc1" data-placeholder="Sketch or describe your flowchart here..."></div>
           </div>
 
           <div class="task-item">
-            <div class="task-q"><strong>Challenge 2 &mdash; Coin-operated can dispenser</strong></div>
-            <p style="font-size:13px;color:var(--gray-500);margin:4px 0 8px;">This challenge combines a for…next counted loop with multiple inputs and a sequenced output — a common exam question format.</p>
+            <div class="task-q"><strong>Challenge 4 &mdash; Coin-operated can dispenser</strong></div>
+            <p style="font-size:13px;color:var(--gray-500);margin:4px 0 8px;">This challenge combines a for…next counted loop with multiple inputs and a sequenced output.</p>
             <div class="spec-box">
               <div class="spec-box-title">&#x1F4CB; Specification — Pin table</div>
               <ul style="list-style:none;padding:0;margin:0 0 6px;">
@@ -1256,46 +1341,8 @@
                 <li>Reset total to 0 and repeat</li>
               </ol>
             </div>
-            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-dc2">&#x2713; Saved</span></div>
+            <div class="answer-label">Image of final working system <span class="saved-indicator" id="ind-dc2">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc2" data-placeholder="Sketch or describe your flowchart here..."></div>
-          </div>
-
-          <div class="task-item">
-            <div class="task-q"><strong>Challenge 3 &mdash; Fire alarm system</strong></div>
-            <div class="spec-box">
-              <div class="spec-box-title">&#x1F4CB; Specification</div>
-              <ul>
-                <li>A master switch (D2) must be pressed to arm the system</li>
-                <li>If a heat sensor (D3) is activated OR a manual alarm button (D4) is pressed, the alarm (D8) sounds</li>
-                <li>The alarm continues to sound until a reset switch (D5) is pressed</li>
-                <li>After reset, the system returns to waiting (armed state)</li>
-              </ul>
-            </div>
-            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-dc3">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc3" data-placeholder="Sketch or describe your flowchart here..."></div>
-          </div>
-
-          <div class="task-item">
-            <div class="task-q"><strong>Challenge 4 &mdash; Starting signal for a race (exam-style)</strong></div>
-            <div class="spec-box">
-              <div class="spec-box-title">&#x1F4CB; Specification — Pin table</div>
-              <ul style="list-style:none;padding:0;margin:0;">
-                <li>D2 = Start button &nbsp;|&nbsp; D8 = Red LED &nbsp;|&nbsp; D9 = Amber LED &nbsp;|&nbsp; D10 = Green LED &nbsp;|&nbsp; D11 = Buzzer</li>
-              </ul>
-            </div>
-            <div class="spec-box" style="margin-top:8px;">
-              <div class="spec-box-title">&#x1F4CB; Sequence</div>
-              <ol>
-                <li>Wait until start button (D2) is pressed</li>
-                <li>Red LED (D8) ON — Wait 3 s</li>
-                <li>Red (D8) OFF, Amber (D9) ON — Wait 1 s</li>
-                <li>Amber (D9) OFF, Green (D10) ON, Buzzer (D11) ON — Wait 0.5 s</li>
-                <li>Buzzer (D11) OFF — Green LED stays ON</li>
-                <li>System waits for the next race (fixed loop back to wait for button)</li>
-              </ol>
-            </div>
-            <div class="answer-label">Flowchart sketch <span class="saved-indicator" id="ind-dc4">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc4" data-placeholder="Sketch or describe your flowchart here..."></div>
           </div>
 
         </div>
