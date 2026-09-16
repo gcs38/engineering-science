@@ -1105,9 +1105,65 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t7a" data-placeholder="Error 1: ... Correction: ... Error 2: ... Correction: ..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">2. A student designs a flowchart for a fire alarm system with this specification: (a) a switch (D2) must be pressed to arm the system; (b) if a heat sensor (D3) is activated OR a button (D4) is pressed, the alarm (D8) sounds; (c) the alarm continues until a reset switch (D5) is pressed. The student's flowchart has the reset check placed BEFORE the alarm is switched on. Explain why this is wrong and draw the corrected sequence.</div>
-            <div class="answer-label">Explanation and corrected sequence <span class="saved-indicator" id="ind-t7b">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t7b" data-placeholder="Why it is wrong: ... Corrected sequence: ..."></div>
+            <div class="task-q">2. A student designs a flowchart for a fire alarm system: a switch (D2) must be pressed to arm the system; if a heat sensor (D3) is activated OR a button (D4) is pressed, the alarm (D8) sounds; the alarm should continue until a reset switch (D5) is pressed. The student's flowchart is shown below. Find the error, explain why it is wrong, and describe the corrected sequence.</div>
+            <!-- DIAGRAM PLACEHOLDER -->
+            <svg viewBox="0 0 580 760" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:417px;display:block;margin:12px auto;font-family:Arial,Helvetica,sans-serif;">
+  <title>Flowchart for a fire alarm system — contains a deliberate error in where the reset check is placed</title>
+  <defs>
+    <marker id="arrowT7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0 0L10 5L0 10z" fill="#000"/>
+    </marker>
+  </defs>
+
+  <!-- Start -->
+  <rect x="110" y="10" width="140" height="44" rx="22" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="180" y="37" text-anchor="middle" font-size="17">Start</text>
+  <line x1="180" y1="54" x2="180" y2="98" stroke="#000" stroke-width="2" marker-end="url(#arrowT7)"/>
+
+  <!-- Decision 1: Is D2 On? (armed) -->
+  <polygon points="180,98 275,140 180,182 85,140" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="180" y="145" text-anchor="middle" font-size="13">Is D2 On?</text>
+  <path d="M275,140 L325,140 L325,78 L180,78" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowT7)"/>
+  <text x="279" y="130" font-size="15">N</text>
+  <line x1="180" y1="182" x2="180" y2="218" stroke="#000" stroke-width="2" marker-end="url(#arrowT7)"/>
+  <text x="188" y="204" font-size="15">Y</text>
+
+  <!-- Decision 2: Is D3 On? -->
+  <polygon points="180,218 275,260 180,302 85,260" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="180" y="265" text-anchor="middle" font-size="13">Is D3 On?</text>
+  <path d="M275,260 L400,260 L400,470" fill="none" stroke="#000" stroke-width="2"/>
+  <text x="279" y="250" font-size="15">Y</text>
+  <line x1="180" y1="302" x2="180" y2="338" stroke="#000" stroke-width="2" marker-end="url(#arrowT7)"/>
+  <text x="188" y="324" font-size="15">N</text>
+
+  <!-- Decision 3: Is D4 On? -->
+  <polygon points="180,338 275,380 180,422 85,380" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="180" y="385" text-anchor="middle" font-size="13">Is D4 On?</text>
+  <line x1="275" y1="380" x2="400" y2="380" stroke="#000" stroke-width="2"/>
+  <text x="279" y="370" font-size="15">Y</text>
+  <path d="M85,380 L20,380 L20,78 L180,78" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowT7)"/>
+  <text x="78" y="370" text-anchor="end" font-size="15">N</text>
+
+  <!-- merged OR result feeds into the reset check -->
+  <path d="M400,470 L180,470 L180,498" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowT7)"/>
+
+  <!-- Decision 4: Is D5 On? (reset — checked here, before the alarm is ever switched on) -->
+  <polygon points="180,498 275,540 180,582 85,540" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="180" y="545" text-anchor="middle" font-size="13">Is D5 On?</text>
+  <path d="M275,540 L450,540 L450,78 L180,78" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowT7)"/>
+  <text x="279" y="530" font-size="15">Y</text>
+  <line x1="180" y1="582" x2="180" y2="618" stroke="#000" stroke-width="2" marker-end="url(#arrowT7)"/>
+  <text x="188" y="604" font-size="15">N</text>
+
+  <!-- Turn D8 ON (alarm) -->
+  <polygon points="95,618 265,618 245,662 75,662" fill="#fff" stroke="#000" stroke-width="2"/>
+  <text x="170" y="645" text-anchor="middle" font-size="14">Turn D8 ON</text>
+
+  <!-- return to the top to recheck D2 -->
+  <path d="M180,662 L180,692 L500,692 L500,78 L180,78" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowT7)"/>
+</svg>
+            <div class="answer-label">Error found, explanation and corrected sequence <span class="saved-indicator" id="ind-t7b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t7b" data-placeholder="Error found: ... Why it is wrong: ... Corrected sequence: ..."></div>
           </div>
         </div>
       </div>
