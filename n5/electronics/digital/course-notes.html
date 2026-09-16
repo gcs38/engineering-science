@@ -113,6 +113,12 @@
     .expr-btn { min-width:36px; padding:6px 10px; font-size:14px; background:white; border:1px solid var(--gray-200); border-radius:6px; cursor:pointer; color:var(--gray-700); }
     .expr-btn:hover { background:var(--teal-50); border-color:var(--teal-100); }
     .expr-btn-warn { color:#b91c1c; border-color:#fecaca; }
+    .info-toggle { display:inline-block; margin:4px 0 8px; font-size:13px; color:var(--teal-800); background:var(--teal-50); border:1px solid var(--teal-100); border-radius:6px; padding:6px 14px; cursor:pointer; }
+    .info-toggle:hover { background:var(--teal-100); }
+    .info-panel { display:none; margin:0 0 16px; padding:16px 18px; background:#f8faff; border:1px solid #c7d7f5; border-radius:10px; font-size:14px; color:var(--gray-700); line-height:1.7; }
+    .info-panel.open { display:block; }
+    .info-panel p { margin-bottom:10px; }
+    .info-panel table.truth-table { margin:10px 0; }
 
     .controls-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:32px 0 8px; padding:12px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; }
     .controls-label { font-size:12px; color:var(--gray-500); font-weight:600; flex:1; min-width:140px; }
@@ -156,7 +162,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 16 September 2026 at 13:52</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 16 September 2026 14:05</div>
       <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Digital Electronics</div>
       <h1 class="hero-title">Digital Electronics &mdash; Course Notes</h1>
       <p class="hero-sub">NOT, AND and OR gates &mdash; truth tables, Boolean algebra, combinational circuits and real-world applications</p>
@@ -361,7 +367,33 @@
         <tr><td>4</td><td>16</td></tr>
       </table>
 
-      <div class="key-point">The inputs are always listed in binary counting order — start from all 0s and count up in binary to all 1s. This ensures every combination is covered exactly once. There's a standard pattern to how the columns are filled in: the right-most column alternates every row (0, 1, 0, 1...), the column to its left alternates every 2 rows, the column after that every 4 rows, and so on. Each column added to the left doubles the pattern length — 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024... These are the same numbers you'll recognise from phone, computer and flash drive storage sizes — it's all built on the same binary counting system.</div>
+      <div class="key-point">The inputs are always listed in binary counting order — start from all 0s and count up in binary to all 1s. This ensures every combination is covered exactly once.</div>
+
+      <button type="button" class="info-toggle" onclick="toggleInfoPanel('binary-order')">Why does binary counting order work this way? (click to expand)</button>
+      <div class="info-panel" id="info-panel-binary-order">
+        <p>Just as each column in a decimal number represents a power of 10 (units, tens, hundreds...), each column in a binary number represents a power of 2. Reading from the right: the 1s column, then the 2s column, then 4s, then 8s — each column worth double the one before it.</p>
+        <p>There's a standard pattern to how the columns fill in as you count: the right-most column alternates every row (0, 1, 0, 1...), the column to its left alternates every 2 rows, the column after that every 4 rows, and so on. Each column added to the left doubles the pattern length — 2, 4, 8, 16, 32, 64, 128, 256, 512, 1024... These are the same numbers you'll recognise from phone, computer and flash drive storage sizes — it's all built on the same binary counting system.</p>
+        <p>Here's decimal 0&ndash;15 built up from those column values:</p>
+        <table class="truth-table">
+          <tr><th>Decimal</th><th>8s</th><th>4s</th><th>2s</th><th>1s</th><th>Binary</th></tr>
+          <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td><strong>0000</strong></td></tr>
+          <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td><td><strong>0001</strong></td></tr>
+          <tr><td>2</td><td>0</td><td>0</td><td>1</td><td>0</td><td><strong>0010</strong></td></tr>
+          <tr><td>3</td><td>0</td><td>0</td><td>1</td><td>1</td><td><strong>0011</strong></td></tr>
+          <tr><td>4</td><td>0</td><td>1</td><td>0</td><td>0</td><td><strong>0100</strong></td></tr>
+          <tr><td>5</td><td>0</td><td>1</td><td>0</td><td>1</td><td><strong>0101</strong></td></tr>
+          <tr><td>6</td><td>0</td><td>1</td><td>1</td><td>0</td><td><strong>0110</strong></td></tr>
+          <tr><td>7</td><td>0</td><td>1</td><td>1</td><td>1</td><td><strong>0111</strong></td></tr>
+          <tr><td>8</td><td>1</td><td>0</td><td>0</td><td>0</td><td><strong>1000</strong></td></tr>
+          <tr><td>9</td><td>1</td><td>0</td><td>0</td><td>1</td><td><strong>1001</strong></td></tr>
+          <tr><td>10</td><td>1</td><td>0</td><td>1</td><td>0</td><td><strong>1010</strong></td></tr>
+          <tr><td>11</td><td>1</td><td>0</td><td>1</td><td>1</td><td><strong>1011</strong></td></tr>
+          <tr><td>12</td><td>1</td><td>1</td><td>0</td><td>0</td><td><strong>1100</strong></td></tr>
+          <tr><td>13</td><td>1</td><td>1</td><td>0</td><td>1</td><td><strong>1101</strong></td></tr>
+          <tr><td>14</td><td>1</td><td>1</td><td>1</td><td>0</td><td><strong>1110</strong></td></tr>
+          <tr><td>15</td><td>1</td><td>1</td><td>1</td><td>1</td><td><strong>1111</strong></td></tr>
+        </table>
+      </div>
 
       <h2 class="notes-h2">Method for completing a truth table from a circuit</h2>
       <p class="notes-p">Label the output of each intermediate gate with a letter (D, E, F etc.). Then fill in one column at a time, working left to right through the circuit.</p>
@@ -1073,6 +1105,7 @@ function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? Th
 function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
 function placeCaretAtEnd(el){el.focus();if(typeof window.getSelection!=='undefined'&&typeof document.createRange!=='undefined'){var range=document.createRange();range.selectNodeContents(el);range.collapse(false);var sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);}}
 function toggleExprBuilder(key){var panel=document.getElementById('expr-panel-'+key);if(!panel)return;panel.classList.toggle('open');}
+function toggleInfoPanel(id){var panel=document.getElementById('info-panel-'+id);if(!panel)return;panel.classList.toggle('open');}
 function exprCommit(key,box){saveValue(key,box.innerHTML);showSaved(key);}
 function exprAppend(key,kind,value){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;if(kind==='ov'){var span=document.createElement('span');span.style.textDecoration='overline';span.textContent=value;box.appendChild(span);}else{box.appendChild(document.createTextNode(value));}placeCaretAtEnd(box);exprCommit(key,box);}
 function exprBackspace(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var last=box.lastChild;if(!last)return;if(last.nodeType===3){if(last.textContent.length>1){last.textContent=last.textContent.slice(0,-1);}else{box.removeChild(last);}}else{box.removeChild(last);}placeCaretAtEnd(box);exprCommit(key,box);}
