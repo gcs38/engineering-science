@@ -133,7 +133,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 16th September 2026 at 14:23</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 16 September 2026, 14:43</div>
       <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Control Systems</div>
       <h1 class="hero-title">&#x1F916; Control Systems &mdash; Course Notes</h1>
       <p class="hero-sub">Microcontrollers, flowcharts, inputs, outputs and programmed control sequences</p>
@@ -156,8 +156,22 @@
 
       <p class="notes-p">Any electronic control system can be broken down into three parts:</p>
 
-      <div class="key-point" style="text-align:center; font-size:16px; letter-spacing:0.05em;">
-        INPUT &nbsp;&rarr;&nbsp; PROCESS &nbsp;&rarr;&nbsp; OUTPUT
+      <div style="margin:14px 0;text-align:center;">
+        <svg viewBox="0 0 520 80" xmlns="http://www.w3.org/2000/svg" style="max-width:520px;width:100%;display:block;margin:0 auto;">
+          <!-- INPUT plain text -->
+          <text x="70" y="45" text-anchor="middle" font-family="Arial" font-size="13" font-weight="700" fill="#0f766e">INPUT</text>
+          <!-- arrow 1 -->
+          <line x1="115" y1="40" x2="188" y2="40" stroke="#0f766e" stroke-width="2.5"/>
+          <polygon points="188,34 200,40 188,46" fill="#0f766e"/>
+          <!-- PROCESS box -->
+          <rect x="200" y="18" width="120" height="44" rx="6" fill="#0f766e" stroke="#0f766e" stroke-width="2"/>
+          <text x="260" y="45" text-anchor="middle" font-family="Arial" font-size="13" font-weight="700" fill="white">PROCESS</text>
+          <!-- arrow 2 -->
+          <line x1="320" y1="40" x2="393" y2="40" stroke="#0f766e" stroke-width="2.5"/>
+          <polygon points="393,34 405,40 393,46" fill="#0f766e"/>
+          <!-- OUTPUT plain text -->
+          <text x="460" y="45" text-anchor="middle" font-family="Arial" font-size="13" font-weight="700" fill="#0f766e">OUTPUT</text>
+        </svg>
       </div>
 
       <p class="notes-p">Devices that combine <strong>electronic control</strong> with <strong>moving mechanisms</strong> are called <strong>mechatronic</strong> systems. A washing machine, robot arm or delivery drone are all mechatronic — electronics tells the mechanisms what to do.</p>
@@ -264,7 +278,8 @@
 
       <!-- DIAGRAM PLACEHOLDER -->
       <img src="images/flowchart-symbols.png" alt="QS standard flowchart symbols: terminal, process, input/output parallelogram, decision diamond" style="width:100%;max-width:490px;display:block;margin:16px auto;border-radius:8px;">
-      <p style="font-size:12px;color:var(--gray-500);text-align:center;margin:-8px 0 24px;">These symbols are taken from the QS data booklet.</p>
+      <p style="font-size:12px;color:var(--gray-500);text-align:center;margin:-8px 0 4px;">These symbols are taken from the QS data booklet.</p>
+      <p style="font-size:12px;color:var(--gray-500);text-align:center;margin:0 0 24px;">(although the sub procedure symbol is not assessed at National 5 level)</p>
 
       <p class="notes-p">A flowchart could simply be a single run of commands from start to finish, ending once the last instruction has been carried out. The example below starts the program, turns an output ON, waits for a set time, then turns the output OFF before stopping.</p>
 
@@ -308,7 +323,7 @@
 
       <div class="key-point">Note that a delay must always include its units. Wait 2 seconds, Wait 2s, Wait 2000 milliseconds or Wait 2000ms would be acceptable in the example above. Remember 1 second = 1000 milliseconds.</div>
 
-      <p class="notes-p">However, a flowchart like this would only run through once before stopping. In practice, it is far more common for microcontroller programs to run continuously — repeating the same sequence over and over. This is called a <strong>fixed loop</strong>. The example below shows this using the flow line symbol, which loops back to an earlier point in the sequence instead of reaching STOP, so the sequence repeats indefinitely.</p>
+      <p class="notes-p">However, a flowchart like this would only run through once before stopping. In practice, it is far more common for microcontroller programs to run continuously — repeating the same sequence over and over. This is called a <strong>continuous loop</strong>. The example below shows this using the flow line symbol, which loops back to an earlier point in the sequence instead of reaching STOP, so the sequence repeats indefinitely.</p>
 
       <!-- DIAGRAM PLACEHOLDER -->
       <svg viewBox="0 0 340 460" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:245px;display:block;margin:16px auto;font-family:Arial,Helvetica,sans-serif;">
@@ -393,7 +408,7 @@
         <li>Use Decision boxes for any "wait until…" or "if… then…" conditions</li>
         <li>Use Process boxes for all delays (with units)</li>
         <li>Use In/Out parallelograms to turn outputs ON or OFF</li>
-        <li>Add a fixed loop arrow back to the start if the sequence repeats</li>
+        <li>Add a continuous loop arrow back to the start if the sequence repeats</li>
       </ol>
 
       <div class="worked-example">
@@ -432,7 +447,7 @@
         <text x="150" y="377.0" text-anchor="middle" font-size="14">Wait 500 ms</text>
         <path d="M150,394 L150,434 L290,434 L290,73 L150,73" fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowFL)"/>
       </svg>
-        <p style="font-size:13px;color:var(--gray-600);text-align:center;margin-top:6px;">Note the fixed loop arrow returning from the last box to the "Turn D8 ON" step.</p>
+        <p style="font-size:13px;color:var(--gray-600);text-align:center;margin-top:6px;">Note the continuous loop arrow returning from the last box to the "Turn D8 ON" step.</p>
       </div>
 
       <div class="worked-example">
@@ -523,7 +538,7 @@
           </div>
 
           <div class="task-item">
-            <div class="task-q">2. Build and simulate the traffic lights sequence shown in the worked example above. Pin table: D8 = Red, D9 = Amber, D10 = Green. The sequence must repeat continuously as a fixed loop.</div>
+            <div class="task-q">2. Build and simulate the traffic lights sequence shown in the worked example above. Pin table: D8 = Red, D9 = Amber, D10 = Green. The sequence must repeat as a continuous loop, not stop after one cycle.</div>
             <div class="answer-label">Simulation notes <span class="saved-indicator" id="ind-t4b">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t4b" data-placeholder="Notes on your simulation, any issues found..."></div>
           </div>
@@ -749,7 +764,7 @@
             <li>Wait until forward button (D2) OR reverse button (D3) is pressed</li>
             <li>If D2 is pressed → turn D8 ON (motor forwards) — Wait 2 s — turn D8 OFF</li>
             <li>If D3 is pressed → turn D9 ON (motor backwards) — Wait 2 s — turn D9 OFF</li>
-            <li>Repeat (fixed loop)</li>
+            <li>Repeat (continuous loop)</li>
           </ol>
         </div>
         <div class="warning">&#x26A0;&#xFE0F; <strong>Important:</strong> Never turn D8 and D9 ON at the same time — this would cause a short circuit in a real motor driver. The flowchart must always turn one OFF before turning the other ON.</div>
@@ -791,7 +806,7 @@
         <polygon points="390,278 550,278 530,322 370,322" fill="#fff" stroke="#000" stroke-width="2"/>
         <text x="460" y="305" text-anchor="middle" font-size="14">D8 OFF</text>
 
-        <!-- Branch A return to trunk (fixed loop / repeat) -->
+        <!-- Branch A return to trunk (continuous loop / repeat) -->
         <path d="M460,322 L460,352 L600,352 L600,78 L180,78"
               fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowMD)"/>
 
@@ -806,7 +821,7 @@
         <polygon points="390,522 550,522 530,566 370,566" fill="#fff" stroke="#000" stroke-width="2"/>
         <text x="460" y="549" text-anchor="middle" font-size="14">D9 OFF</text>
 
-        <!-- Branch B return to trunk (fixed loop / repeat) -->
+        <!-- Branch B return to trunk (continuous loop / repeat) -->
         <path d="M460,566 L460,596 L600,596 L600,78 L180,78"
               fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowMD)"/>
 
@@ -859,9 +874,9 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 6: Finite (Counted) Loops</h1>
 
-      <p class="notes-p">A <strong>finite loop</strong> (also called a <strong>counted loop</strong> or <strong>for loop</strong>) repeats a sequence a <strong>fixed number of times</strong> before stopping. This is different from a fixed loop, which repeats indefinitely.</p>
+      <p class="notes-p">A <strong>finite loop</strong> — also called a <strong>fixed loop</strong>, a <strong>counted loop</strong>, or a <strong>for loop</strong> — repeats a sequence a set, predetermined number of times decided in advance, then stops and moves on. This is different from a continuous loop, which has no predetermined end and repeats indefinitely.</p>
 
-      <div class="key-point">In programming and in the QS exam, this construct is called a <strong>for…next loop</strong>. The loop runs <strong>FOR</strong> a set number of times; <strong>NEXT</strong> sends the program back to repeat the loop again, until the count condition is met — only then does the program move on to the instructions after the loop. You must be able to recognise this term and construct a flowchart that represents it.</div>
+      <div class="key-point">In programming and in the QS exam, this construct is called a <strong>for…next loop</strong>, but you may also see it called a <strong>fixed loop</strong> — both describe the same thing: a loop that runs for a set number of repeats, decided in advance. The loop runs <strong>FOR</strong> a set number of times; <strong>NEXT</strong> sends the program back to repeat the loop again, until the count condition is met — only then does the program move on to the instructions after the loop. You must be able to recognise these terms and construct a flowchart that represents them.</div>
 
       <p class="notes-p">To create a for…next loop in a flowchart, a <strong>variable</strong> (e.g. <em>count</em>) is used to keep track of how many times the loop has run:</p>
 
@@ -1286,7 +1301,7 @@
                 <li>Red (D8) OFF, Amber (D9) ON — Wait 1 s</li>
                 <li>Amber (D9) OFF, Green (D10) ON, Buzzer (D11) ON — Wait 0.5 s</li>
                 <li>Buzzer (D11) OFF — Green LED stays ON</li>
-                <li>System waits for the next race (fixed loop back to wait for button)</li>
+                <li>System waits for the next race (continuous loop back to wait for button)</li>
               </ol>
             </div>
             <div class="answer-label">Image of final working system <span class="saved-indicator" id="ind-dc4">&#x2713; Saved</span></div>
