@@ -104,6 +104,15 @@
     .tt-answer td { padding:0; border:1px solid var(--gray-200); text-align:center; }
     .tt-answer td.input { padding:6px 20px; color:var(--gray-700); }
     .tt-answer td.blank { width:60px; height:36px; background:#f8faff; border:1px solid #c7d7f5; }
+    .expr-builder-toggle { display:inline-block; margin-top:6px; font-size:12px; color:var(--teal-800); background:var(--teal-50); border:1px solid var(--teal-100); border-radius:6px; padding:4px 10px; cursor:pointer; }
+    .expr-builder-toggle:hover { background:var(--teal-100); }
+    .expr-builder-panel { display:none; margin-top:8px; padding:12px; background:#f8faff; border:1px solid #c7d7f5; border-radius:8px; }
+    .expr-builder-panel.open { display:block; }
+    .expr-btn-row { display:flex; flex-wrap:wrap; gap:6px; }
+    .expr-btn-row + .expr-btn-row { margin-top:6px; }
+    .expr-btn { min-width:36px; padding:6px 10px; font-size:14px; background:white; border:1px solid var(--gray-200); border-radius:6px; cursor:pointer; color:var(--gray-700); }
+    .expr-btn:hover { background:var(--teal-50); border-color:var(--teal-100); }
+    .expr-btn-warn { color:#b91c1c; border-color:#fecaca; }
 
     .controls-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:32px 0 8px; padding:12px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; }
     .controls-label { font-size:12px; color:var(--gray-500); font-weight:600; flex:1; min-width:140px; }
@@ -541,7 +550,7 @@
         <img src="images/boolean-circuit-not-example.png" alt="Circuit with two inputs A and B feeding an OR gate, whose output feeds a NOT gate (output Z)" style="width:100%;max-width:300px;display:block;margin:12px auto;border-radius:8px;">
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Label the output of the OR gate (A, B):</strong> A+B</div></div>
         <div class="step"><div class="step-num">2</div><div class="step-content"><strong>The NOT gate inverts the whole OR output</strong> — so the overline goes over the entire expression it's inverting, not just one letter: Z = <span style="text-decoration:overline;">A+B</span></div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Complete expression:</strong> Z = <span style="text-decoration:overline;">A+B</span> — "Z is ON only when neither A nor B is ON". (This OR-then-NOT combination is called a NOR gate.)</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Complete expression:</strong> Z = <span style="text-decoration:overline;">A+B</span> — "Z is ON only when neither A nor B is ON"</div></div>
       </div>
 
       <h2 class="notes-h2">From circuit to truth table</h2>
@@ -571,6 +580,16 @@
             <div class="answer-box" contenteditable="true" data-key="de-t3a" data-placeholder="Draw and complete the 8-row truth table here."></div>
             <div class="answer-label">Boolean expression <span class="saved-indicator" id="ind-t3a-expr">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t3a-expr" data-placeholder="Z = ..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('de-t3a-expr')">Boolean expression builder</button>
+            <div class="expr-builder-panel" id="expr-panel-de-t3a-expr">
+              <div class="expr-btn-row">
+                <button type="button" class="expr-btn" onclick="exprAppend('de-t3a-expr','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3a-expr','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3a-expr','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3a-expr','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3a-expr','ch','C')">C</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3a-expr','ov','C')"><span style="text-decoration:overline;">C</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3a-expr','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3a-expr','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3a-expr','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3a-expr','ch',')')">)</button>
+              </div>
+              <div class="expr-btn-row">
+                <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('de-t3a-expr')">Backspace</button>
+                <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('de-t3a-expr')">Clear all</button>
+              </div>
+            </div>
           </div>
           <div class="task-item">
             <!-- DIAGRAM PLACEHOLDER -->
@@ -580,6 +599,16 @@
             <div class="answer-box" contenteditable="true" data-key="de-t3b" data-placeholder="Draw and complete the 8-row truth table here."></div>
             <div class="answer-label">Boolean expression <span class="saved-indicator" id="ind-t3b-expr">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t3b-expr" data-placeholder="Z = ..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('de-t3b-expr')">Boolean expression builder</button>
+            <div class="expr-builder-panel" id="expr-panel-de-t3b-expr">
+              <div class="expr-btn-row">
+                <button type="button" class="expr-btn" onclick="exprAppend('de-t3b-expr','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3b-expr','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3b-expr','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3b-expr','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3b-expr','ch','C')">C</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3b-expr','ov','C')"><span style="text-decoration:overline;">C</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3b-expr','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3b-expr','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3b-expr','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3b-expr','ch',')')">)</button>
+              </div>
+              <div class="expr-btn-row">
+                <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('de-t3b-expr')">Backspace</button>
+                <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('de-t3b-expr')">Clear all</button>
+              </div>
+            </div>
           </div>
           <div class="task-item">
             <!-- DIAGRAM PLACEHOLDER -->
@@ -589,6 +618,16 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t3c" data-placeholder="Draw and complete the 8-row truth table here."></div>
             <div class="answer-label">Boolean expression <span class="saved-indicator" id="ind-t3c-expr">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t3c-expr" data-placeholder="Z = ..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('de-t3c-expr')">Boolean expression builder</button>
+            <div class="expr-builder-panel" id="expr-panel-de-t3c-expr">
+              <div class="expr-btn-row">
+                <button type="button" class="expr-btn" onclick="exprAppend('de-t3c-expr','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3c-expr','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3c-expr','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3c-expr','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3c-expr','ch','C')">C</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3c-expr','ov','C')"><span style="text-decoration:overline;">C</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3c-expr','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3c-expr','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3c-expr','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3c-expr','ch',')')">)</button>
+              </div>
+              <div class="expr-btn-row">
+                <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('de-t3c-expr')">Backspace</button>
+                <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('de-t3c-expr')">Clear all</button>
+              </div>
+            </div>
           </div>
           <div class="task-item">
             <!-- DIAGRAM PLACEHOLDER -->
@@ -598,6 +637,16 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t3d" data-placeholder="Draw and complete the 8-row truth table here."></div>
             <div class="answer-label">Boolean expression <span class="saved-indicator" id="ind-t3d-expr">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t3d-expr" data-placeholder="Z = ..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('de-t3d-expr')">Boolean expression builder</button>
+            <div class="expr-builder-panel" id="expr-panel-de-t3d-expr">
+              <div class="expr-btn-row">
+                <button type="button" class="expr-btn" onclick="exprAppend('de-t3d-expr','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3d-expr','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3d-expr','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3d-expr','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3d-expr','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3d-expr','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3d-expr','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t3d-expr','ch',')')">)</button>
+              </div>
+              <div class="expr-btn-row">
+                <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('de-t3d-expr')">Backspace</button>
+                <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('de-t3d-expr')">Clear all</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -652,6 +701,16 @@
             </table>
             <div class="answer-label">Boolean expression and circuit sketch <span class="saved-indicator" id="ind-t5a">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="de-t5a" data-placeholder="Z = ..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('de-t5a')">Boolean expression builder</button>
+            <div class="expr-builder-panel" id="expr-panel-de-t5a">
+              <div class="expr-btn-row">
+                <button type="button" class="expr-btn" onclick="exprAppend('de-t5a','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5a','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5a','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5a','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5a','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5a','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5a','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5a','ch',')')">)</button>
+              </div>
+              <div class="expr-btn-row">
+                <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('de-t5a')">Backspace</button>
+                <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('de-t5a')">Clear all</button>
+              </div>
+            </div>
           </div>
 
           <div class="task-item">
@@ -665,6 +724,16 @@
             </table>
             <div class="answer-label">Boolean expression and circuit sketch <span class="saved-indicator" id="ind-t5b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="de-t5b" data-placeholder="Z = ..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('de-t5b')">Boolean expression builder</button>
+            <div class="expr-builder-panel" id="expr-panel-de-t5b">
+              <div class="expr-btn-row">
+                <button type="button" class="expr-btn" onclick="exprAppend('de-t5b','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5b','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5b','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5b','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5b','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5b','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5b','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5b','ch',')')">)</button>
+              </div>
+              <div class="expr-btn-row">
+                <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('de-t5b')">Backspace</button>
+                <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('de-t5b')">Clear all</button>
+              </div>
+            </div>
           </div>
 
           <div class="task-item">
@@ -682,6 +751,16 @@
             </table>
             <div class="answer-label">Boolean expression and circuit sketch <span class="saved-indicator" id="ind-t5c">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="de-t5c" data-placeholder="Z = ..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('de-t5c')">Boolean expression builder</button>
+            <div class="expr-builder-panel" id="expr-panel-de-t5c">
+              <div class="expr-btn-row">
+                <button type="button" class="expr-btn" onclick="exprAppend('de-t5c','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5c','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5c','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5c','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5c','ch','C')">C</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5c','ov','C')"><span style="text-decoration:overline;">C</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5c','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5c','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5c','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t5c','ch',')')">)</button>
+              </div>
+              <div class="expr-btn-row">
+                <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('de-t5c')">Backspace</button>
+                <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('de-t5c')">Clear all</button>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -870,6 +949,16 @@
             <div class="task-q-sub">b) Write the Boolean expression for Z.</div>
             <div class="answer-label">Boolean expression <span class="saved-indicator" id="ind-t8b">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t8b" data-placeholder="Z = ..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('de-t8b')">Boolean expression builder</button>
+            <div class="expr-builder-panel" id="expr-panel-de-t8b">
+              <div class="expr-btn-row">
+                <button type="button" class="expr-btn" onclick="exprAppend('de-t8b','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t8b','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t8b','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t8b','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('de-t8b','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t8b','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t8b','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('de-t8b','ch',')')">)</button>
+              </div>
+              <div class="expr-btn-row">
+                <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('de-t8b')">Backspace</button>
+                <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('de-t8b')">Clear all</button>
+              </div>
+            </div>
             <div class="task-q-sub">c) Draw the circuit diagram and complete the truth table. Verify using NoNANDSense.</div>
             <div class="answer-label">Circuit and truth table <span class="saved-indicator" id="ind-t8c">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t8c" data-placeholder="Describe or sketch your circuit and truth table here..."></div>
@@ -930,6 +1019,12 @@ function updateStatusBar(){var el=document.getElementById('storage-status');if(e
 function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
 function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box, .tt-answer td.blank[contenteditable="true"]').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
 function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
+function placeCaretAtEnd(el){el.focus();if(typeof window.getSelection!=='undefined'&&typeof document.createRange!=='undefined'){var range=document.createRange();range.selectNodeContents(el);range.collapse(false);var sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);}}
+function toggleExprBuilder(key){var panel=document.getElementById('expr-panel-'+key);if(!panel)return;panel.classList.toggle('open');}
+function exprCommit(key,box){saveValue(key,box.innerHTML);showSaved(key);}
+function exprAppend(key,kind,value){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;if(kind==='ov'){var span=document.createElement('span');span.style.textDecoration='overline';span.textContent=value;box.appendChild(span);}else{box.appendChild(document.createTextNode(value));}placeCaretAtEnd(box);exprCommit(key,box);}
+function exprBackspace(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var last=box.lastChild;if(!last)return;if(last.nodeType===3){if(last.textContent.length>1){last.textContent=last.textContent.slice(0,-1);}else{box.removeChild(last);}}else{box.removeChild(last);}placeCaretAtEnd(box);exprCommit(key,box);}
+function exprClear(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;box.innerHTML='';exprCommit(key,box);}
 document.addEventListener('DOMContentLoaded',function(){
   document.querySelectorAll('.answer-box, .tt-answer td.blank[contenteditable="true"]').forEach(function(box){
     var key=box.dataset.key;if(!key)return;
