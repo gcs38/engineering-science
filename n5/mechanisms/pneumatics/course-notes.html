@@ -117,7 +117,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 17 September 2026, 16:12</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 17 September 2026, 18:14</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Pneumatics</div>
       <h1 class="hero-title">&#x1F4A8; Pneumatics &mdash; Course Notes</h1>
       <p class="hero-sub">Pneumatic components, circuit diagrams, SAC and DAC circuits, speed control, and automatic circuits</p>
@@ -229,6 +229,11 @@
           <img src="images/actuator-push-button.png" alt="Push-button actuator symbol" style="height:48px;">
           <div class="comp-name">Push-button</div>
           <div class="comp-unit">Pressed by hand</div>
+        </div>
+        <div class="comp-card-sym">
+          <img src="images/actuator-spring.png" alt="Spring return symbol" style="height:48px;">
+          <div class="comp-name">Spring Return</div>
+          <div class="comp-unit">Returns the valve to normal</div>
         </div>
         <div class="comp-card-sym">
           <img src="images/actuator-roller.png" alt="Roller actuator symbol" style="height:48px;">
@@ -744,44 +749,47 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 12: Calculating Cylinder Force</h1>
 
-      <p class="notes-p">The force a pneumatic cylinder can produce depends on two things: the <strong>air pressure</strong> in the circuit, and the <strong>effective area</strong> of the piston that the pressure is acting on.</p>
+      <p class="notes-p">The force a pneumatic cylinder can produce depends on two things: the <strong>air pressure</strong> in the circuit, and the <strong>area</strong> of the piston that the pressure is acting on.</p>
 
       <div class="formula-box">
-        <strong style="font-size:16px;">F = P &times; A</strong><br>
-        <span style="font-size:13px;color:var(--gray-600);">Force (N) = Pressure (Pa) &times; Area (m&sup2;)</span>
+        <div class="formula">F = P &times; A</div>
+        <div class="formula-sub">Force (N) = Pressure (Pa) &times; Area (m&sup2;)</div>
       </div>
 
-      <div class="key-point">
-        <strong>Watch your units:</strong> Pressure is often quoted in <strong>bar</strong> (1 bar = 100,000 Pa) and bore diameters in <strong>mm</strong>. Convert pressure to pascals and diameters to metres before calculating area (A = &pi;D&sup2; &divide; 4) — otherwise your force answer will be out by several orders of magnitude.
+      <p class="notes-p">You can rearrange this formula to find any of the three quantities. The <strong>FPA triangle</strong> is a useful memory aid:</p>
+
+      <div style="text-align:center;margin:16px 0;">
+        <svg width="200" height="150" viewBox="0 0 200 150">
+          <polygon points="100,30 163,120 37,120" fill="var(--teal-50)" stroke="var(--teal-400)" stroke-width="2"/>
+          <line x1="62.2" y1="84" x2="137.8" y2="84" stroke="var(--teal-400)" stroke-width="2"/>
+          <line x1="100" y1="84" x2="100" y2="120" stroke="var(--teal-400)" stroke-width="2"/>
+          <text x="100" y="71" text-anchor="middle" font-size="22" font-weight="900" fill="var(--teal-800)" font-family="monospace">F</text>
+          <text x="75" y="109" text-anchor="middle" font-size="22" font-weight="900" fill="var(--teal-800)" font-family="monospace">P</text>
+          <text x="125" y="109" text-anchor="middle" font-size="22" font-weight="900" fill="var(--teal-800)" font-family="monospace">A</text>
+        </svg>
+        <p style="font-size:12px;color:var(--gray-400);margin-top:8px;">Cover the quantity you want to find &mdash; the other two show how to calculate it.</p>
       </div>
 
-      <h2 class="notes-h2">Force in a SAC</h2>
-      <p class="notes-p">A single acting cylinder only has main air pushing on <strong>one</strong> side of the piston (the outstroke). The full circular face of the piston is available to push against, so the effective area is simply the bore area.</p>
-
-      <div style="display:flex; justify-content:center; margin:16px 0;">
-        <div style="text-align:center; max-width:260px;">
-          <svg viewBox="0 0 200 200" width="180" height="180" style="margin:0 auto;display:block;">
-            <circle cx="100" cy="100" r="80" fill="var(--teal-50)" stroke="var(--teal-600)" stroke-width="4"/>
-            <text x="100" y="106" text-anchor="middle" font-size="18" font-weight="700" fill="var(--teal-800)">A</text>
-            <line x1="20" y1="100" x2="180" y2="100" stroke="var(--gray-400)" stroke-width="1" stroke-dasharray="4 4"/>
-            <line x1="20" y1="95" x2="20" y2="105" stroke="var(--gray-400)" stroke-width="1"/>
-            <line x1="180" y1="95" x2="180" y2="105" stroke="var(--gray-400)" stroke-width="1"/>
-            <text x="100" y="120" text-anchor="middle" font-size="12" fill="var(--gray-600)">Bore diameter D</text>
-          </svg>
-          <div style="font-size:13px;font-weight:700;margin-top:4px;">Full bore area</div>
-          <div style="font-size:12px;color:var(--gray-500);">A = &pi;D&sup2; &divide; 4</div>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin:12px 0 16px;">
+        <div class="formula-box" style="flex:1;min-width:140px;margin:0;">
+          <div class="formula">F = P &times; A</div>
+        </div>
+        <div class="formula-box" style="flex:1;min-width:140px;margin:0;">
+          <div class="formula">P = F / A</div>
+        </div>
+        <div class="formula-box" style="flex:1;min-width:140px;margin:0;">
+          <div class="formula">A = F / P</div>
         </div>
       </div>
 
-      <div class="worked-example">
-        <div class="worked-example-title">Worked Example &mdash; SAC outstroke force</div>
-        <div class="step"><div class="step-num">1</div><div class="step-content">A SAC has a bore diameter of 25 mm, supplied at 6 bar. Convert: D = 0.025 m, P = 6 &times; 100,000 = 600,000 Pa.</div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content">Calculate the bore area: A = &pi; &times; 0.025&sup2; &divide; 4 = 4.91 &times; 10<sup>-4</sup> m&sup2;.</div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content">Calculate the force: F = P &times; A = 600,000 &times; 4.91 &times; 10<sup>-4</sup> = <strong>294.5 N</strong>.</div></div>
+      <div class="key-point">
+        <strong>Watch your units:</strong> Pressure is often quoted in <strong>bar</strong> (1 bar = 100,000 Pa) and diameters in <strong>mm</strong>. Convert pressure to pascals and diameters to metres before calculating area — otherwise your force answer will be out by several orders of magnitude.
       </div>
 
-      <h2 class="notes-h2">Force in a DAC — outstroke vs instroke</h2>
-      <p class="notes-p">A double acting cylinder has main air pushing on <strong>both</strong> sides of the piston, one side at a time. On the outstroke, the full bore area is available — exactly like a SAC. On the instroke, main air acts on the other side of the piston, but the <strong>piston rod</strong> takes up part of that face, so the effective area is smaller.</p>
+      <h2 class="notes-h2">Piston area and rod area</h2>
+      <p class="notes-p">A single acting cylinder only has main air pushing on <strong>one</strong> side of the piston (the outstroke). The full circular face of the piston is available to push against, so the effective area is simply the <strong>piston area</strong>: A = &pi; &times; D&sup2; / 4, where D is the piston diameter.</p>
+
+      <p class="notes-p">A double acting cylinder has main air pushing on <strong>both</strong> sides of the piston, one side at a time. On the outstroke, the full piston area is available — exactly like a SAC. On the instroke, main air acts on the other side of the piston, but the <strong>piston rod</strong> takes up part of that face, so the effective area is the piston area <strong>minus the rod area</strong>.</p>
 
       <div style="display:flex; gap:24px; justify-content:center; flex-wrap:wrap; margin:20px 0;">
         <div style="text-align:center; max-width:260px;">
@@ -789,8 +797,8 @@
             <circle cx="100" cy="100" r="80" fill="var(--teal-50)" stroke="var(--teal-600)" stroke-width="4"/>
             <text x="100" y="106" text-anchor="middle" font-size="18" font-weight="700" fill="var(--teal-800)">A</text>
           </svg>
-          <div style="font-size:13px;font-weight:700;margin-top:4px;">Outstroke &mdash; full bore area</div>
-          <div style="font-size:12px;color:var(--gray-500);">Main air pushes on the whole piston face: A = &pi;D&sup2; &divide; 4</div>
+          <div style="font-size:13px;font-weight:700;margin-top:4px;">Outstroke &mdash; full piston area</div>
+          <div style="font-size:12px;color:var(--gray-500);">Main air pushes on the whole piston face: piston area = &pi; &times; D&sup2; / 4</div>
         </div>
         <div style="text-align:center; max-width:260px;">
           <svg viewBox="0 0 200 200" width="180" height="180" style="margin:0 auto;display:block;">
@@ -799,48 +807,63 @@
             <text x="100" y="66" text-anchor="middle" font-size="11" fill="var(--gray-600)">rod, d</text>
             <text x="145" y="106" text-anchor="middle" font-size="14" font-weight="700" fill="var(--teal-800)">A&minus;a</text>
           </svg>
-          <div style="font-size:13px;font-weight:700;margin-top:4px;">Instroke &mdash; annular (ring) area</div>
-          <div style="font-size:12px;color:var(--gray-500);">The rod reduces the area: effective area = &pi;(D&sup2; &minus; d&sup2;) &divide; 4</div>
+          <div style="font-size:13px;font-weight:700;margin-top:4px;">Instroke &mdash; piston area minus rod area</div>
+          <div style="font-size:12px;color:var(--gray-500);">rod area = &pi; &times; d&sup2; / 4 &nbsp;&mdash;&nbsp; effective area = piston area &minus; rod area</div>
         </div>
       </div>
 
       <div class="key-point">
-        <strong>Key point:</strong> Because the instroke effective area is smaller than the outstroke area, a DAC always produces <strong>less force on the instroke</strong> than on the outstroke, for the same supply pressure.
+        <strong>Key point:</strong> Because the effective area on the instroke (piston area minus rod area) is smaller than the piston area used on the outstroke, a DAC always produces <strong>less force on the instroke</strong> than on the outstroke, for the same supply pressure.
+      </div>
+
+      <h2 class="notes-h2">Worked Example &mdash; outstroking and instroking force</h2>
+
+      <img src="images/diagram-dac-piston-areas.png" alt="Diagram of a DAC piston showing a 70mm piston diameter and a 10mm piston rod diameter, with a cross-section view and an isometric view of the cylinder" style="width:100%;max-width:680px;display:block;margin:10px auto 16px;border-radius:8px;border:1px solid var(--gray-200);"
+           onerror="this.style.display='none'">
+
+      <p class="notes-p">The cylinder above has a piston diameter of 70 mm and a piston rod diameter of 10 mm. It is supplied at 5 bar (500,000 Pa). Calculate the outstroking force and the instroking force.</p>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Outstroking force</div>
+        <div class="step"><div class="step-num">1</div><div class="step-content">Convert units: D = 70 mm = 0.070 m, P = 5 bar = 500,000 Pa.</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">Piston area: A = &pi; &times; 0.070&sup2; / 4 = 3.85 &times; 10<sup>-3</sup> m&sup2;.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content">Force: F = P &times; A = 500,000 &times; 3.85 &times; 10<sup>-3</sup> = <strong>1924 N</strong>.</div></div>
       </div>
 
       <div class="worked-example">
-        <div class="worked-example-title">Worked Example &mdash; DAC outstroke vs instroke force</div>
-        <div class="step"><div class="step-num">1</div><div class="step-content">A DAC has a bore diameter of 32 mm and a rod diameter of 10 mm, supplied at 5 bar (P = 500,000 Pa).</div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Outstroke:</strong> A = &pi; &times; 0.032&sup2; &divide; 4 = 8.04 &times; 10<sup>-4</sup> m&sup2;. F = 500,000 &times; 8.04 &times; 10<sup>-4</sup> = <strong>402 N</strong>.</div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Instroke:</strong> effective area = &pi;(0.032&sup2; &minus; 0.010&sup2;) &divide; 4 = 7.26 &times; 10<sup>-4</sup> m&sup2;. F = 500,000 &times; 7.26 &times; 10<sup>-4</sup> = <strong>363 N</strong>.</div></div>
-        <div class="step"><div class="step-num">4</div><div class="step-content">The instroke force (363 N) is lower than the outstroke force (402 N) — a difference of 39 N caused entirely by the rod reducing the effective area.</div></div>
+        <div class="worked-example-title">Instroking force</div>
+        <div class="step"><div class="step-num">1</div><div class="step-content">Convert units: d = 10 mm = 0.010 m (piston rod diameter).</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">Rod area: a = &pi; &times; 0.010&sup2; / 4 = 7.85 &times; 10<sup>-5</sup> m&sup2;.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content">Effective area: piston area &minus; rod area = 3.85 &times; 10<sup>-3</sup> &minus; 7.85 &times; 10<sup>-5</sup> = 3.77 &times; 10<sup>-3</sup> m&sup2;.</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content">Force: F = P &times; A = 500,000 &times; 3.77 &times; 10<sup>-3</sup> = <strong>1885 N</strong>.</div></div>
       </div>
 
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 12 &mdash; Force calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <p class="task-q">12a. A SAC has a bore diameter of 20 mm and is supplied at 4 bar. Calculate the outstroke force in newtons. Show your working, converting units before you calculate.</p>
+            <p class="task-q">12a. A SAC has a piston diameter of 20 mm and is supplied at 4 bar. Calculate the outstroke force in newtons. Show your working, converting units before you calculate.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t13a">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t13a" data-placeholder="Type your working and answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">12b. A DAC has a bore diameter of 40 mm and a rod diameter of 12 mm, supplied at 6 bar. Calculate (i) the outstroke force and (ii) the instroke force. Show your working for both.</p>
+            <p class="task-q">12b. A DAC has a piston diameter of 40 mm and a piston rod diameter of 12 mm, supplied at 6 bar. Calculate (i) the outstroking force and (ii) the instroking force. Show your working for both, including the piston area and the rod area.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t13b">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t13b" data-placeholder="Type your working and answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">12c. Explain, in terms of effective area, why a DAC's instroke force is always lower than its outstroke force at the same supply pressure.</p>
+            <p class="task-q">12c. Explain, in terms of piston area and rod area, why a DAC's instroking force is always lower than its outstroking force at the same supply pressure.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t13c">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t13c" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">12d. &#x270F;&#xFE0F; Draw two labelled cross-section diagrams of a DAC piston: one showing the full bore area used on the outstroke, and one showing the smaller annular area used on the instroke (with the rod diameter marked). Draw by hand and paste a photo of your drawing here.</p>
+            <p class="task-q">12d. &#x270F;&#xFE0F; Draw two labelled cross-section diagrams of a DAC piston: one showing the full piston area used on the outstroke, and one showing the smaller area (piston area minus rod area) used on the instroke, with the rod diameter marked. Draw by hand and paste a photo of your drawing here.</p>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t13d">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t13d" data-placeholder="Paste your drawing here…"></div>
           </div>
         </div>
       </div>
+
 
       <div class="controls-bar">
         <span class="controls-label">&#x1F4BE; Your answers are saved automatically in this browser</span>
