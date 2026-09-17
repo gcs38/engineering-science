@@ -111,7 +111,8 @@
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
-    <div class="hero">
+    <div class="hero" id="top" style="position:relative;">
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 17 September 2026, 10:05</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Pneumatics</div>
       <h1 class="hero-title">&#x1F4A8; Pneumatics &mdash; Course Notes</h1>
       <p class="hero-sub">Pneumatic components, circuit diagrams, SAC and DAC circuits, speed control, and automatic circuits</p>
@@ -126,6 +127,11 @@
     <div class="content">
     <div class="notes-wrap">
       <a href="index.html" class="back-link">&larr; Back to Pneumatics</a>
+
+
+      <div class="key-point">
+        <strong>Before you start &mdash; schematic drawing:</strong> In your assessment you will need to <strong>draw</strong> pneumatic component symbols and full circuit diagrams from memory, not just recognise them. Throughout these notes you'll meet drawing tasks marked &#x270F;&#xFE0F;. For these, <strong>sketch your answer by hand on paper</strong>, then photograph or scan it and <strong>paste the image directly into the answer box</strong> (click inside the box, then paste as you would with text). Practising the physical act of drawing the symbols is the best way to remember them.
+      </div>
 
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 1: What are Pneumatics?</h1>
@@ -167,77 +173,15 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 2: Pneumatic Components and Symbols</h1>
+      <h1 class="notes-h1">Section 2: Pneumatic Components — an Overview</h1>
 
-      <p class="notes-p">All pneumatic circuits are drawn using standard symbols. You need to be able to recognise each component symbol, know its function, and identify how it is connected in a circuit. The <strong>No Pressure</strong> simulator will be very useful to support you in doing this &mdash; use it alongside these notes to see each component in action.</p>
+      <p class="notes-p">Every pneumatic circuit diagram is built from the same handful of standard symbols. Rather than learning every symbol in isolation, you'll meet each one <strong>in context</strong> as we work through real circuits over the next few sections — using the <strong>No Pressure</strong> simulator to see exactly how it behaves before we pick apart the detail. This section just covers the two ideas that apply to every circuit: the air supply itself, and the two families of cylinder.</p>
 
       <h2 class="notes-h2">Main air supply and exhaust</h2>
-      <p class="notes-p">Every pneumatic circuit needs a <strong>main air supply</strong> — the pressurised air from the compressor. In circuit diagrams this is shown as a circle with a dot in the centre. <strong>Exhaust</strong> is where used air vents to atmosphere after passing through the circuit; it is shown as an open triangle pointing away from the circuit.</p>
-
-      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:16px 0 20px;">
-        <div class="symbol-card" style="width:175px;">
-          <img src="images/symbol-mains-air.png" alt="Main air supply symbol">
-          <div class="symbol-card-name">Main air supply</div>
-          <div class="symbol-card-desc">Pressurised air entering the circuit. Always connects to port 1 of a valve.</div>
-        </div>
-        <div class="symbol-card" style="width:175px;">
-          <img src="images/symbol-exhaust.png" alt="Exhaust symbol">
-          <div class="symbol-card-name">Exhaust</div>
-          <div class="symbol-card-desc">Used air venting to atmosphere. Always on ports 3 and 5 of a valve.</div>
-        </div>
-      </div>
+      <p class="notes-p">Every pneumatic circuit needs a <strong>main air supply</strong> — the pressurised air from the compressor, drawn into port 1 of a valve. <strong>Exhaust</strong> is where used air vents to atmosphere after passing through the circuit, shown in diagrams as an open triangle. You'll see both symbols live on screen in every simulator from Section 3 onwards — watch for main air flowing in and exhaust venting out as each circuit operates.</p>
 
       <div class="key-point">
-        <strong>Reading a circuit diagram:</strong> Main air always enters at port 1 (the bottom of a valve symbol). Exhaust ports vent used air to atmosphere — look for the open triangle. When a valve switches, the main air path changes and the opposite side of the cylinder exhausts.
-      </div>
-
-      <h2 class="notes-h2">Directional control valves</h2>
-      <p class="notes-p">Directional control valves direct main air to different parts of the circuit. They are described by the number of <strong>ports</strong> (connections) and the number of <strong>states</strong> (positions the valve can be in).</p>
-
-      <p class="notes-p">The best way to understand valves is to experiment with one in the simulator below — operate it and watch what happens to the air flow. The explanation of how to read the symbol will make much more sense once you have seen it in action.</p>
-
-      <h3 class="notes-h3">3/2 valve — used with single acting cylinders</h3>
-      <p class="notes-p">A <strong>3/2 valve</strong> has 3 ports and 2 states. Port 1 = main air in; port 2 = air to/from cylinder; port 3 = exhaust. In the normal state, the cylinder is connected to exhaust. When actuated, main air flows through to the cylinder.</p>
-
-      <div class="key-point">
-        <strong>Note:</strong> 3/2 valve symbols are usually drawn vertically in circuit diagrams. Port 1 (main air) is at the bottom, port 2 (cylinder) at the top, and port 3 (exhaust) at the side.
-      </div>
-
-      <div class="valve-states">
-        <div class="valve-state-card">
-          <div class="valve-state-header normal">Normal position — at rest</div>
-          <div class="valve-state-body">
-            <img src="images/valve-32-normal.png" alt="3/2 valve normal position">
-            <div class="valve-state-desc">Port 2 (cylinder) connects to port 3 (exhaust). Main air at port 1 is blocked. The cylinder spring holds the rod retracted.</div>
-          </div>
-        </div>
-        <div class="valve-state-card">
-          <div class="valve-state-header actuated">Actuated — button pressed</div>
-          <div class="valve-state-body">
-            <img src="images/valve-32-actuated.png" alt="3/2 valve actuated position">
-            <div class="valve-state-desc">Main air at port 1 connects to port 2 (cylinder). Port 3 (exhaust) is blocked. Pressurised air extends the cylinder piston.</div>
-          </div>
-        </div>
-      </div>
-
-      <h3 class="notes-h3">5/2 valve — used with double acting cylinders</h3>
-      <p class="notes-p">A <strong>5/2 valve</strong> has 5 ports and 2 states. Port 1 = main air; port 2 = outstroke side of cylinder; port 3 = exhaust (outstroke side); port 4 = instroke side of cylinder; port 5 = exhaust (instroke side). Switching the valve reverses which side of the cylinder receives main air.</p>
-
-      <div class="valve-states">
-        <div class="valve-state-card">
-          <div class="valve-state-header normal">Normal position — at rest</div>
-          <div class="valve-state-body">
-            <img src="images/valve-52-normal.png" alt="5/2 valve normal position">
-            <div class="valve-state-desc">Main air (port 1) flows to port 4 (instroke side). Port 2 (outstroke side) exhausts through port 3. Cylinder rod is held instroked.</div>
-          </div>
-        </div>
-        <div class="valve-state-card">
-          <div class="valve-state-header actuated">Actuated position</div>
-          <div class="valve-state-body">
-            <img src="images/valve-52-actuated.png" alt="5/2 valve actuated position">
-            <div class="valve-state-desc">Main air (port 1) flows to port 2 (outstroke side). Port 4 (instroke side) exhausts through port 5. Cylinder rod outstrokes.</div>
-          </div>
-        </div>
+        <strong>Reading a circuit diagram:</strong> Main air always enters at port 1 (the bottom of a valve symbol). Exhaust ports vent used air to atmosphere. When a valve switches, the main air path changes and the opposite side of the cylinder exhausts.
       </div>
 
       <h2 class="notes-h2">Cylinders</h2>
@@ -249,32 +193,19 @@
 
       <img src="images/symbol-cylinders.png" alt="Symbols for single and double acting cylinders" style="width:100%;max-width:600px;display:block;margin:16px auto;border-radius:8px;">
 
-      <h2 class="notes-h2">Valve actuators</h2>
-      <p class="notes-p">A valve can be switched into its actuated state in different ways. You need to know the following types:</p>
+      <h2 class="notes-h2">Valve actuators — a preview</h2>
+      <p class="notes-p">A valve can be switched into its actuated state in different ways. You'll meet each of these properly, with its symbol on screen, in the section where it's actually used:</p>
       <ul class="notes-ul">
-        <li><strong>Push-button:</strong> The operator presses a button to switch the valve manually.</li>
-        <li><strong>Roller:</strong> A roller on the end of the valve is tripped by the cylinder rod or a moving part. Used as a limit valve to detect when a cylinder has reached the end of its stroke.
+        <li><strong>Push-button:</strong> the operator presses a button to switch the valve manually (Sections 3 &amp; 4).</li>
+        <li><strong>Roller:</strong> tripped by a moving part such as a cylinder rod — used as a limit valve (Sections 9 &amp; 10).
           <img src="images/photo-roller-32-valve.jpg" alt="Photograph of a roller trip actuated 3/2 valve" style="width:100%;max-width:320px;display:block;margin:10px 0 6px;border-radius:8px;border:1px solid var(--gray-200);">
         </li>
-        <li><strong>Lever:</strong> A lever arm trips the valve — similar to a roller but operated by a flat surface rather than a roller.</li>
-        <li><strong>Plunger:</strong> A flat-ended plunger is pushed to switch the valve — often used as a limit valve.</li>
-        <li><strong>Pilot (main air):</strong> A main air pressure signal from another part of the circuit acts on the valve to switch it. Used in semi-automatic and automatic circuits where one valve triggers another. <em>Note: this requires main air pressure to operate.</em></li>
-        <li><strong>Diaphragm:</strong> Works on a similar principle to a pilot actuator but operates on much smaller changes in pressure — a low-pressure signal is enough to switch the valve.</li>
-        <li><strong>Solenoid:</strong> An electrical signal energises a coil which switches the valve. This allows electronic systems and microcontrollers to control pneumatic circuits.</li>
+        <li><strong>Lever:</strong> similar to a roller but tripped by a flat surface rather than a wheel.</li>
+        <li><strong>Plunger:</strong> a flat-ended plunger is pushed to switch the valve — often used as a limit valve.</li>
+        <li><strong>Pilot (main air):</strong> a main air pressure signal from elsewhere in the circuit switches the valve — used in semi-automatic and fully automatic circuits (Sections 9 &amp; 10).</li>
+        <li><strong>Diaphragm:</strong> works like a pilot actuator, but a much smaller pressure change is enough to switch it (Section 7).</li>
+        <li><strong>Solenoid:</strong> an electrical signal energises a coil which switches the valve, letting electronic systems and microcontrollers control a pneumatic circuit — see below.</li>
       </ul>
-
-      <div class="symbol-grid">
-        <div class="symbol-card">
-          <img src="images/symbol-diaphragm-actuator.png" alt="Diaphragm actuator symbol">
-          <div class="symbol-card-name">Diaphragm actuator</div>
-          <div class="symbol-card-desc">Low-pressure pneumatic signal switches the valve</div>
-        </div>
-        <div class="symbol-card">
-          <img src="images/symbol-solenoid-actuator.png" alt="Solenoid actuator symbol">
-          <div class="symbol-card-name">Solenoid actuator</div>
-          <div class="symbol-card-desc">Electrical signal switches the valve — used in electronically controlled systems</div>
-        </div>
-      </div>
 
       <h2 class="notes-h2">Solenoid circuit example</h2>
       <p class="notes-p">A solenoid-actuated valve is connected to an electrical control system (such as a microcontroller or PLC). When the control system sends an electrical signal to the solenoid, it switches the valve and main air flows to the cylinder. When the electrical signal is removed, the spring returns the valve to its normal state and the cylinder instrokes. This allows a pneumatic circuit to be controlled entirely by software or by electronic sensors such as light gates or pressure switches.</p>
@@ -282,54 +213,23 @@
       <img src="images/circuit-solenoid.png" alt="Solenoid-controlled SAC circuit diagram showing electrical signal triggering a solenoid valve which causes the cylinder to outstroke" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;"
            onerror="this.style.display='none'">
 
-      <h2 class="notes-h2">Restrictors</h2>
-      <p class="notes-p">Restrictors limit the flow rate of air, controlling the <strong>speed</strong> of a cylinder. There are two types:</p>
-      <p class="notes-p"><strong>Restrictor:</strong> Reduces flow equally in both directions — slows the cylinder on both outstroke and instroke.</p>
-      <p class="notes-p"><strong>Uni-directional restrictor (UDR):</strong> Allows free flow in one direction and restricted flow in the other — so outstroke and instroke speeds can be controlled independently.</p>
-
-      <div class="symbol-grid">
-        <div class="symbol-card">
-          <img src="images/symbol-restrictor.png" alt="Restrictor symbol">
-          <div class="symbol-card-name">Restrictor</div>
-          <div class="symbol-card-desc">Reduces flow in both directions equally</div>
-        </div>
-        <div class="symbol-card">
-          <img src="images/symbol-unidirectional-restrictor.png" alt="Uni-directional restrictor symbol">
-          <div class="symbol-card-name">Uni-directional restrictor</div>
-          <div class="symbol-card-desc">Free flow one way, restricted flow the other</div>
-        </div>
-      </div>
-
-      <h2 class="notes-h2">Shuttle valve</h2>
-      <p class="notes-p">A shuttle valve has two inlets and one outlet. Main air entering either inlet pushes the ball across to seal the other inlet and passes through to the outlet. This means main air passes through if input A <em>or</em> input B is pressurised. If main air enters both inlets simultaneously, the ball remains in its current position and main air still passes through to the outlet.</p>
-
-      <img src="images/symbol-shuttle-valve.png" alt="Symbol for a shuttle valve" style="width:100%;max-width:340px;display:block;margin:16px auto;border-radius:8px;">
-
-      <h2 class="notes-h2">T-piece (air supply splitter)</h2>
-      <p class="notes-p">A T-piece splits one main air supply into two branches, allowing the same supply to feed two different parts of a circuit simultaneously.</p>
-
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Component knowledge</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <p class="task-q">2a. Use the No Pressure simulator or physical components to connect a 3/2 push-button valve and a single acting cylinder. Operate the valve and observe how main air and exhaust flow through the circuit. Describe what you observe.</p>
-            <div class="answer-label">Observations <span class="saved-indicator" id="ind-t2a">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="pneu-t2a" data-placeholder="Describe what you observed…"></div>
+            <p class="task-q">2a. Explain the difference between a single acting cylinder (SAC) and a double acting cylinder (DAC). Give one application where you would choose each type.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t2a" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">2b. Describe what happens to the flow paths inside a 5/2 valve when it changes state. Which ports carry main air and which become exhausts in each state?</p>
+            <p class="task-q">2b. Explain the difference between a pilot actuator and a solenoid actuator on a valve. In which type of circuit would each be used?</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t2b" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">2c. Explain the difference between a pilot actuator and a solenoid actuator on a valve. In which type of circuit would each be used?</p>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2c">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="pneu-t2c" data-placeholder="Type your answer here…"></div>
-          </div>
-          <div class="task-item">
-            <p class="task-q">2d. Explain the difference between a restrictor and a uni-directional restrictor (UDR). Give an example of when you would use each type.</p>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2d">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="pneu-t2d" data-placeholder="Type your answer here…"></div>
+            <p class="task-q">2c. &#x270F;&#xFE0F; Draw the circuit symbols for a single acting cylinder and a double acting cylinder side by side, labelling the ports on each. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t2c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t2c" data-placeholder="Paste your drawing here…"></div>
           </div>
         </div>
       </div>
@@ -339,14 +239,7 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 3: Single Acting Cylinder Circuit</h1>
 
-      <p class="notes-p">The simplest pneumatic circuit uses a <strong>single acting cylinder (SAC)</strong> controlled by a 3/2 push-button valve. When the button is pressed, main air flows to cause the outstroke. When released, the spring in the valve returns it to its normal state, exhausting the cylinder so the cylinder spring can instroke the rod.</p>
-
-      <div class="worked-example">
-        <div class="worked-example-title">Worked Example &mdash; How the SAC circuit operates</div>
-        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>At rest:</strong> The 3/2 valve is in its normal (spring-return) state. Port 1 (main air) is blocked; port 2 (cylinder) is connected to port 3 (exhaust). The cylinder spring holds the rod instroked.</div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Button pressed:</strong> The valve shifts to its actuated state. Main air at port 1 now connects to port 2 (cylinder). Port 3 (exhaust) is blocked. Pressurised air causes the outstroke against the spring.</div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Button released:</strong> The valve spring returns it to its normal state. Port 2 connects back to port 3 (exhaust). Air vents to atmosphere and the cylinder spring instrokes the rod.</div></div>
-      </div>
+      <p class="notes-p">The simplest pneumatic circuit uses a <strong>single acting cylinder (SAC)</strong> controlled by a 3/2 push-button valve. Try it in the simulator below before reading how it works.</p>
 
       <div class="sim-embed-section">
         <div class="sim-embed-header">
@@ -354,9 +247,18 @@
           <a href="../../../../simulators/pneu-sac.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
         </div>
         <div class="sim-instruction">
-          Click the <strong>push-button valve</strong> to cause the outstroke, then release it to instroke. Observe how main air enters at port 1 and how the cylinder exhausts through port 3 on the instroke.
+          Click the <strong>push-button valve</strong> to cause the outstroke, then release it to instroke. Watch how main air enters at port 1, and how the cylinder exhausts through port 3 on the instroke.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-sac.html" title="No Pressure Sim — SAC circuit" loading="lazy"></iframe></div>
+      </div>
+
+      <p class="notes-p">Here's what's actually happening inside the valve as you operate it. When the button is pressed, main air flows to cause the outstroke. When released, the spring in the valve returns it to its normal state, exhausting the cylinder so the cylinder's own spring can instroke the rod.</p>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; How the SAC circuit operates</div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>At rest:</strong> The 3/2 valve is in its normal (spring-return) state. Port 1 (main air) is blocked; port 2 (cylinder) is connected to port 3 (exhaust). The cylinder spring holds the rod instroked.</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Button pressed:</strong> The valve shifts to its actuated state. Main air at port 1 now connects to port 2 (cylinder). Port 3 (exhaust) is blocked. Pressurised air causes the outstroke against the spring.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Button released:</strong> The valve spring returns it to its normal state. Port 2 connects back to port 3 (exhaust). Air vents to atmosphere and the cylinder spring instrokes the rod.</div></div>
       </div>
 
       <div class="assignment">
@@ -372,6 +274,11 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t3b">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t3b" data-placeholder="Type your answer here…"></div>
           </div>
+          <div class="task-item">
+            <p class="task-q">3c. &#x270F;&#xFE0F; Draw the full circuit diagram for the SAC circuit: a 3/2 push-button valve (normal position) connected to a single acting cylinder, with main air and exhaust labelled. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t3c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t3c" data-placeholder="Paste your drawing here…"></div>
+          </div>
         </div>
       </div>
 
@@ -380,11 +287,7 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 4: Double Acting Cylinder Circuit</h1>
 
-      <p class="notes-p">A double acting cylinder (DAC) requires main air to be directed to <strong>either side</strong> of the piston, while the opposite side exhausts. This is controlled by a <strong>5/2 directional control valve</strong>. Changing the state of the valve reverses the direction of the cylinder.</p>
-
-      <div class="key-point">
-        <strong>DAC advantage over SAC:</strong> Because main air actively drives the instroke as well as the outstroke, a DAC can produce a pushing force in both directions. The instroke force is slightly less than the outstroke force because the piston rod reduces the effective area on the instroke side.
-      </div>
+      <p class="notes-p">A double acting cylinder (DAC) needs main air directed to <strong>either side</strong> of the piston, controlled by a <strong>5/2 directional control valve</strong>. Try both directions in the simulator before reading how it works.</p>
 
       <div class="sim-embed-section">
         <div class="sim-embed-header">
@@ -395,6 +298,12 @@
           Operate the <strong>5/2 valve</strong> in each direction. Notice that main air drives both the outstroke and instroke, and that the opposite side of the cylinder exhausts each time the valve changes state.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-dac.html" title="No Pressure Sim — DAC circuit" loading="lazy"></iframe></div>
+      </div>
+
+      <p class="notes-p">A 5/2 valve has five ports and two states. In one state, port 1 (main air) connects to port 2 (outstroke side) while port 4 (instroke side) exhausts through port 5. Switching the valve reverses this: port 1 now connects to port 4, while port 2 exhausts through port 3. Changing the state of the valve therefore reverses the direction of the cylinder.</p>
+
+      <div class="key-point">
+        <strong>DAC advantage over SAC:</strong> Because main air actively drives the instroke as well as the outstroke, a DAC can produce a pushing force in both directions. The instroke force is slightly less than the outstroke force because the piston rod reduces the effective area on the instroke side.
       </div>
 
       <div class="assignment">
@@ -410,6 +319,11 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t4b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t4b" data-placeholder="Type your answer here…"></div>
           </div>
+          <div class="task-item">
+            <p class="task-q">4c. &#x270F;&#xFE0F; Draw the full circuit diagram for the DAC circuit: a 5/2 push-button valve connected to a double acting cylinder, with the ports numbered. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t4c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t4c" data-placeholder="Paste your drawing here…"></div>
+          </div>
         </div>
       </div>
 
@@ -418,7 +332,7 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 5: T-Piece — Splitting the Air Supply</h1>
 
-      <p class="notes-p">A <strong>T-piece connector</strong> allows one main air supply to feed two or more separate branches of a circuit simultaneously. Both branches receive the same supply pressure. T-pieces are used when a single air source needs to power multiple cylinders or valves at the same time.</p>
+      <p class="notes-p">A <strong>T-piece connector</strong> lets one main air supply feed two or more branches of a circuit at once. See it in action below.</p>
 
       <div class="sim-embed-section">
         <div class="sim-embed-header">
@@ -430,6 +344,8 @@
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-tpiece.html" title="No Pressure Sim — T-Piece circuit" loading="lazy"></iframe></div>
       </div>
+
+      <p class="notes-p">Both branches receive the same supply pressure. T-pieces are used when a single air source needs to power multiple cylinders or valves at the same time.</p>
 
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; T-piece</div></div>
@@ -444,6 +360,11 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t5b">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t5b" data-placeholder="Type your answer here…"></div>
           </div>
+          <div class="task-item">
+            <p class="task-q">5c. &#x270F;&#xFE0F; Draw a circuit diagram showing one push-button valve, a T-piece, and two single acting cylinders both fed from the T-piece. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t5c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t5c" data-placeholder="Paste your drawing here…"></div>
+          </div>
         </div>
       </div>
 
@@ -452,13 +373,7 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 6: Shuttle Valve</h1>
 
-      <p class="notes-p">A <strong>shuttle valve</strong> allows a cylinder to be operated from two separate control valves — main air from either valve can cause the outstroke. This is useful when a machine needs to be operated from two different locations.</p>
-
-      <p class="notes-p">Inside the shuttle valve is a small ball. When main air enters from one inlet, it pushes the ball to seal the other inlet and passes through to the outlet. If main air enters the other inlet instead, the ball moves across and the same thing happens. If main air enters both inlets at the same time, the ball remains in its current position and main air still passes through to the outlet.</p>
-
-      <div class="key-point">
-        <strong>Key point:</strong> A shuttle valve allows the cylinder to outstroke if valve A <em>or</em> valve B supplies main air. This is useful for two-handed operation or operating a machine from two different locations.
-      </div>
+      <p class="notes-p">A <strong>shuttle valve</strong> lets a cylinder be operated from two separate control valves. Try both push-buttons in the simulator below.</p>
 
       <div class="sim-embed-section">
         <div class="sim-embed-header">
@@ -469,6 +384,12 @@
           Operate each push-button valve independently. Either valve can supply main air to cause the outstroke. Try pressing both valves at the same time and observe where the ball sits.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-shuttle.html" title="No Pressure Sim — Shuttle valve circuit" loading="lazy"></iframe></div>
+      </div>
+
+      <p class="notes-p">Inside the shuttle valve is a small ball. When main air enters from one inlet, it pushes the ball across to seal the other inlet and passes through to the outlet. If main air enters the other inlet instead, the ball moves the other way and the same thing happens. If main air enters both inlets at the same time, the ball stays where it is and main air still passes through to the outlet.</p>
+
+      <div class="key-point">
+        <strong>Key point:</strong> A shuttle valve lets the cylinder outstroke if valve A <em>or</em> valve B supplies main air. This is useful for two-handed operation or operating a machine from two different locations.
       </div>
 
       <div class="assignment">
@@ -484,27 +405,41 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t6b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t6b" data-placeholder="Type your answer here…"></div>
           </div>
+          <div class="task-item">
+            <p class="task-q">6c. &#x270F;&#xFE0F; Draw the circuit symbol for a shuttle valve, clearly showing its two inlets and single outlet. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t6c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t6c" data-placeholder="Paste your drawing here…"></div>
+          </div>
         </div>
       </div>
-
-      <hr class="divider">
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 7: Air Bleed (Diaphragm) Circuit</h1>
 
-      <p class="notes-p">An <strong>air bleed circuit</strong> uses a diaphragm-actuated 3/2 valve and works differently from all the circuits you have seen so far &mdash; instead of pressing a valve to supply air, this circuit works by <strong>blocking</strong> a small continuous flow of air.</p>
+      <p class="notes-p">An <strong>air bleed circuit</strong> works differently from every circuit so far — instead of pressing a valve to supply air, it works by <strong>blocking</strong> a small continuous flow of air. Try it in the simulator before reading the detail.</p>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Air Bleed Circuit</div>
+          <a href="../../../../simulators/pneu-air-bleed.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Click on the bleed point to cover it. Watch how pressure builds behind the diaphragm and triggers the cylinder outstroke. Release to see the cylinder instroke automatically.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-air-bleed.html" title="No Pressure Sim — Air bleed circuit" loading="lazy"></iframe></div>
+      </div>
 
       <h2 class="notes-h2">How it works</h2>
-      <p class="notes-p">In the normal state, main air constantly bleeds to atmosphere through a small hole in the circuit (the bleed point). Because this air is always escaping, there is never enough pressure to act on the diaphragm &mdash; the valve stays in its normal state and the cylinder remains instroked.</p>
+      <p class="notes-p">The circuit uses a <strong>diaphragm-actuated</strong> 3/2 valve. In the normal state, main air constantly bleeds to atmosphere through a small hole in the circuit (the bleed point). Because this air is always escaping, there is never enough pressure to act on the diaphragm — the valve stays in its normal state and the cylinder remains instroked.</p>
 
       <p class="notes-p">When an object or a finger <strong>covers the bleed hole</strong>, the escaping air is blocked. Pressure immediately builds up behind the diaphragm. Once it reaches the switching threshold, the diaphragm switches the 3/2 valve, main air flows to the cylinder, and the cylinder outstrokes.</p>
 
-      <p class="notes-p">As soon as the obstruction is removed, air bleeds away again, pressure drops, the diaphragm releases, and the valve spring returns it to its normal state &mdash; causing the cylinder to instroke.</p>
+      <p class="notes-p">As soon as the obstruction is removed, air bleeds away again, pressure drops, the diaphragm releases, and the valve spring returns it to its normal state — causing the cylinder to instroke.</p>
 
       <div class="key-point">
-        <strong>Key point:</strong> The air bleed circuit is a <strong>proximity/presence detection</strong> circuit. No electrical signal is needed &mdash; physical contact or proximity blocking the bleed hole is enough to trigger the cylinder. This makes it useful for detecting products on a conveyor, detecting when a hand is near a machine, or triggering an action when a part arrives at a station.
+        <strong>Key point:</strong> The air bleed circuit is a <strong>proximity/presence detection</strong> circuit. No electrical signal is needed — physical contact or proximity blocking the bleed hole is enough to trigger the cylinder. This makes it useful for detecting products on a conveyor, detecting when a hand is near a machine, or triggering an action when a part arrives at a station.
       </div>
 
       <div class="worked-example">
@@ -517,17 +452,6 @@
 
       <img src="images/circuit-air-bleed.png" alt="Air bleed circuit diagram showing a diaphragm-actuated 3/2 valve and SAC" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;"
            onerror="this.style.display='none'">
-
-      <div class="sim-embed-section">
-        <div class="sim-embed-header">
-          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Air Bleed Circuit</div>
-          <a href="../../../../simulators/pneu-air-bleed.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
-        </div>
-        <div class="sim-instruction">
-          Click on the bleed point to cover it. Watch how pressure builds behind the diaphragm and triggers the cylinder outstroke. Release to see the cylinder instroke automatically.
-        </div>
-        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-air-bleed.html" title="No Pressure Sim — Air bleed circuit" loading="lazy"></iframe></div>
-      </div>
 
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Air bleed circuit</div></div>
@@ -547,20 +471,20 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7c">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t7c" data-placeholder="Type your answer here&hellip;"></div>
           </div>
+          <div class="task-item">
+            <p class="task-q">7d. &#x270F;&#xFE0F; Without looking back at the diagram above, draw the full air bleed circuit from memory: the diaphragm-actuated 3/2 valve, the bleed point, main air, exhaust, and the single acting cylinder. Draw by hand and paste a photo of your drawing here — then check it against the diagram above.</p>
+            <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t7d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t7d" data-placeholder="Paste your drawing here…"></div>
+          </div>
         </div>
       </div>
+
+      <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 8: Speed Control — Restrictors</h1>
 
-      <p class="notes-p">The speed of a pneumatic cylinder can be controlled by limiting the <strong>flow rate</strong> of air using a uni-directional restrictor (UDR).</p>
-
-      <p class="notes-p"><strong>Meter-in:</strong> The restrictor is placed on the main air supply side. It limits the main air flowing <em>into</em> the cylinder, slowing the stroke.</p>
-      <p class="notes-p"><strong>Meter-out:</strong> The restrictor is placed on the exhaust side. It limits the air flowing <em>out</em> to exhaust. This gives smoother speed control and is preferred because the back-pressure helps support the load.</p>
-
-      <div class="warning">
-        <strong>Exam rule:</strong> In pneumatics, we never restrict the main air input to a cylinder — only the exhaust air should be restricted. This ensures the cylinder always has smooth, controlled movement. Meter-out is therefore the correct method and is the one you will need to apply in exam questions.
-      </div>
+      <p class="notes-p">The speed of a pneumatic cylinder can be controlled by limiting the <strong>flow rate</strong> of air using a uni-directional restrictor (UDR). Try adjusting the restrictors in the simulator before reading the theory.</p>
 
       <div class="sim-embed-section">
         <div class="sim-embed-header">
@@ -571,6 +495,13 @@
           Observe how the uni-directional restrictors (UDRs) slow the cylinder. Main air flows freely in one direction but exhaust air is restricted in the other — controlling outstroke and instroke speed independently.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-restrictors.html" title="No Pressure Sim — SAC with restrictors" loading="lazy"></iframe></div>
+      </div>
+
+      <p class="notes-p"><strong>Meter-in:</strong> The restrictor is placed on the main air supply side. It limits the main air flowing <em>into</em> the cylinder, slowing the stroke.</p>
+      <p class="notes-p"><strong>Meter-out:</strong> The restrictor is placed on the exhaust side. It limits the air flowing <em>out</em> to exhaust. This gives smoother speed control and is preferred because the back-pressure helps support the load.</p>
+
+      <div class="warning">
+        <strong>Exam rule:</strong> In pneumatics, we never restrict the main air input to a cylinder — only the exhaust air should be restricted. This ensures the cylinder always has smooth, controlled movement. Meter-out is therefore the correct method and is the one you will need to apply in exam questions.
       </div>
 
       <div class="assignment">
@@ -586,6 +517,11 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t8b" data-placeholder="Type your answer here…"></div>
           </div>
+          <div class="task-item">
+            <p class="task-q">8c. &#x270F;&#xFE0F; Draw a SAC circuit with a uni-directional restrictor correctly positioned and oriented for meter-out speed control on the exhaust. Label the direction of free flow and restricted flow. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t8c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t8c" data-placeholder="Paste your drawing here…"></div>
+          </div>
         </div>
       </div>
 
@@ -594,16 +530,7 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 9: Semi-Automatic Circuit</h1>
 
-      <p class="notes-p">A <strong>semi-automatic circuit</strong> requires a manual input to start each cycle, but part of the operation happens automatically. A typical arrangement uses a DAC, a 5/2 valve with <strong>pilot actuators</strong>, and a roller spring-return valve triggered by the cylinder rod at the end of its outstroke.</p>
-
-      <p class="notes-p">The operator presses a start button which sends a pilot signal (main air pressure) to change the state of the 5/2 valve. Main air causes the DAC to outstroke. At the end of the outstroke the rod actuates a roller spring-return valve, which sends a pilot signal to return the 5/2 valve to its normal state. Main air now drives the instroke while the outstroke side exhausts. The circuit then waits for the next button press.</p>
-
-      <div class="worked-example">
-        <div class="worked-example-title">Worked Example &mdash; Semi-automatic cycle</div>
-        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Start:</strong> Operator presses push-button &rarr; a pilot signal is sent to the 5/2 valve which causes it to change to its actuated state &rarr; main air flows to the outstroke side (port 2) of the DAC &rarr; cylinder outstroke begins.</div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>End of outstroke:</strong> Rod actuates the 3/2 roller spring-return valve &rarr; a pilot signal is sent to the 5/2 valve and it returns to its normal state &rarr; main air causes the DAC to instroke &rarr; outstroke side exhausts through port 3.</div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Wait:</strong> Cylinder fully instroked. Circuit waits for operator to press button again to start the next cycle.</div></div>
-      </div>
+      <p class="notes-p">A <strong>semi-automatic circuit</strong> needs a manual input to start each cycle, but part of the operation happens automatically. Press start in the simulator and watch the full cycle before reading how it works.</p>
 
       <div class="sim-embed-section">
         <div class="sim-embed-header">
@@ -614,6 +541,15 @@
           Press the start button to begin the cycle. The cylinder extends (outstroke), then automatically retracts (instroke) when it reaches the end stop. The circuit then waits for your next button press.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-semi-auto.html" title="No Pressure Sim — Semi-automatic circuit" loading="lazy"></iframe></div>
+      </div>
+
+      <p class="notes-p">A typical arrangement uses a DAC, a 5/2 valve with <strong>pilot actuators</strong>, and a roller spring-return valve triggered by the cylinder rod at the end of its outstroke. The operator presses a start button which sends a pilot signal (main air pressure) to change the state of the 5/2 valve. Main air causes the DAC to outstroke. At the end of the outstroke the rod actuates the roller spring-return valve, which sends a pilot signal to return the 5/2 valve to its normal state. Main air now drives the instroke while the outstroke side exhausts. The circuit then waits for the next button press.</p>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Semi-automatic cycle</div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Start:</strong> Operator presses push-button &rarr; a pilot signal is sent to the 5/2 valve which causes it to change to its actuated state &rarr; main air flows to the outstroke side (port 2) of the DAC &rarr; cylinder outstroke begins.</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>End of outstroke:</strong> Rod actuates the 3/2 roller spring-return valve &rarr; a pilot signal is sent to the 5/2 valve and it returns to its normal state &rarr; main air causes the DAC to instroke &rarr; outstroke side exhausts through port 3.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Wait:</strong> Cylinder fully instroked. Circuit waits for operator to press button again to start the next cycle.</div></div>
       </div>
 
       <div class="assignment">
@@ -629,6 +565,11 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t9b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t9b" data-placeholder="Type your answer here…"></div>
           </div>
+          <div class="task-item">
+            <p class="task-q">9c. &#x270F;&#xFE0F; Draw the full semi-automatic circuit diagram: a push-button start valve, a pilot-actuated 5/2 valve, a DAC, and a roller-actuated spring-return valve positioned to be tripped at the end of the outstroke. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t9c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t9c" data-placeholder="Paste your drawing here…"></div>
+          </div>
         </div>
       </div>
 
@@ -637,11 +578,7 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 10: Fully Automatic Circuit</h1>
 
-      <p class="notes-p">A <strong>fully automatic circuit</strong> repeats its cycle continuously without any manual input after the initial start signal. A second limit valve at the instroked position sends a pilot signal to trigger the next outstroke automatically, so the cylinder cycles back and forth until the main air supply is cut off.</p>
-
-      <div class="key-point">
-        <strong>Fully automatic vs semi-automatic:</strong> In a semi-automatic circuit, only one limit valve is used so the cylinder stops and waits at the instroked position. In a fully automatic circuit, a second limit valve at the instroked end immediately sends a pilot signal to trigger the next outstroke.
-      </div>
+      <p class="notes-p">A <strong>fully automatic circuit</strong> repeats its cycle continuously without any manual input after the initial start signal. Press start in the simulator and watch it run.</p>
 
       <div class="sim-embed-section">
         <div class="sim-embed-header">
@@ -652,6 +589,12 @@
           Press the start button and watch the cylinder cycle continuously. Each limit valve sends a pilot signal to trigger the next stroke — the circuit repeats without further operator input.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-fully-auto.html" title="No Pressure Sim — Fully automatic circuit" loading="lazy"></iframe></div>
+      </div>
+
+      <p class="notes-p">A second limit valve at the instroked position sends a pilot signal to trigger the next outstroke automatically, so the cylinder cycles back and forth until the main air supply is cut off.</p>
+
+      <div class="key-point">
+        <strong>Fully automatic vs semi-automatic:</strong> In a semi-automatic circuit, only one limit valve is used so the cylinder stops and waits at the instroked position. In a fully automatic circuit, a second limit valve at the instroked end immediately sends a pilot signal to trigger the next outstroke.
       </div>
 
       <div class="assignment">
@@ -667,6 +610,11 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t10b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t10b" data-placeholder="Type your answer here…"></div>
           </div>
+          <div class="task-item">
+            <p class="task-q">10c. &#x270F;&#xFE0F; Draw the full fully automatic circuit diagram, including both limit valves in their correct positions at each end of the cylinder's stroke. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t10c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t10c" data-placeholder="Paste your drawing here…"></div>
+          </div>
         </div>
       </div>
 
@@ -675,17 +623,7 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 11: Time Delay Circuit</h1>
 
-      <p class="notes-p">A <strong>time delay valve</strong> introduces a controllable delay between an input signal and an output action. It consists of a uni-directional restrictor feeding a <strong>reservoir</strong>, which builds up main air pressure slowly until it is high enough to pilot (switch) a 3/2 output valve.</p>
-
-      <p class="notes-p">By adjusting the restrictor, the fill time of the reservoir — and therefore the length of the delay — can be changed. Increasing the size of the reservoir will also increase the delay time, as more volume must be filled before the pilot threshold is reached. When the input signal is removed, the reservoir vents quickly back through the UDR and the timer resets immediately.</p>
-
-      <div class="worked-example">
-        <div class="worked-example-title">Worked Example &mdash; Time delay operation</div>
-        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Input signal received:</strong> Main air flows slowly through the restrictor, gradually filling the reservoir.</div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>During delay:</strong> Reservoir pressure is below the pilot threshold — the 3/2 output valve stays in its normal position. No main air reaches the actuator yet.</div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Delay complete:</strong> Reservoir pressure reaches the pilot threshold — the 3/2 valve switches and main air flows through to the actuator.</div></div>
-        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Reset:</strong> When the input signal is removed, the reservoir vents quickly through the check valve and the timer resets ready for the next cycle.</div></div>
-      </div>
+      <p class="notes-p">A <strong>time delay valve</strong> introduces a controllable delay between an input signal and an output action. Operate the input in the simulator and watch the delay before reading how it's produced.</p>
 
       <div class="sim-embed-section">
         <div class="sim-embed-header">
@@ -698,28 +636,43 @@
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-time-delay.html" title="No Pressure Sim — Time delay circuit" loading="lazy"></iframe></div>
       </div>
 
+      <p class="notes-p">The circuit consists of a uni-directional restrictor feeding a <strong>reservoir</strong>, which builds up main air pressure slowly until it is high enough to pilot (switch) a 3/2 output valve. By adjusting the restrictor, the fill time of the reservoir — and therefore the length of the delay — can be changed. Increasing the size of the reservoir will also increase the delay time, as more volume must be filled before the pilot threshold is reached. When the input signal is removed, the reservoir vents quickly back through the UDR and the timer resets immediately.</p>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; Time delay operation</div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Input signal received:</strong> Main air flows slowly through the restrictor, gradually filling the reservoir.</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>During delay:</strong> Reservoir pressure is below the pilot threshold — the 3/2 output valve stays in its normal position. No main air reaches the actuator yet.</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Delay complete:</strong> Reservoir pressure reaches the pilot threshold — the 3/2 valve switches and main air flows through to the actuator.</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Reset:</strong> When the input signal is removed, the reservoir vents quickly through the check valve and the timer resets ready for the next cycle.</div></div>
+      </div>
+
       <div class="assignment">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 11 &mdash; Time delay circuit</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <p class="task-q">11a. Describe how a pneumatic time delay circuit produces a time delay. Include reference to the restrictor, reservoir, and pilot-operated output valve.</p>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t10a">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t10a" data-placeholder="Type your answer here…"></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t11a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t11a" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
             <p class="task-q">11b. A time delay circuit is set to delay for 3 seconds. An engineer wants to increase the delay to 8 seconds. Explain two ways this could be achieved.</p>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t10b">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t10b" data-placeholder="Type your answer here…"></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t11b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t11b" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
             <p class="task-q">11c. Use the simulator or physical components to build a time delay circuit. Adjust the UDR to make the delay longer and shorter. Describe what you observe and explain why adjusting the restrictor changes the delay time.</p>
-            <div class="answer-label">Observations <span class="saved-indicator" id="ind-t10c">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="pneu-t10c" data-placeholder="Describe what you observed…"></div>
+            <div class="answer-label">Observations <span class="saved-indicator" id="ind-t11c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t11c" data-placeholder="Describe what you observed…"></div>
           </div>
           <div class="task-item">
             <p class="task-q">11d. Describe one practical application of a time delay circuit in an industrial or domestic context. Explain what the delay achieves in your chosen example.</p>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t10d">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="pneu-t10d" data-placeholder="Type your answer here…"></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t11d">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t11d" data-placeholder="Type your answer here…"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">11e. &#x270F;&#xFE0F; Draw the full time delay circuit diagram: input valve, uni-directional restrictor, reservoir, and pilot-actuated 3/2 output valve. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t11e">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t11e" data-placeholder="Paste your drawing here…"></div>
           </div>
         </div>
       </div>
@@ -730,6 +683,12 @@
         <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
       </div>
       <div class="storage-status" id="storage-status">Last saved: never</div>
+
+      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
+        <button class="ctrl-btn ctrl-btn-print" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});">&#x2B06;&#xFE0F; Back to top</button>
+        <a href="index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">&#x2302; Main menu</a>
+        <a href="../structures-forces/course-notes.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">Next section &#x2192;</a>
+      </div>
 
     </div>
     </div>
