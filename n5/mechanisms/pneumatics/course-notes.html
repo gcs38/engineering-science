@@ -117,7 +117,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 18 September 2026, 09:53</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 18 September 2026, 10:18</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Pneumatics</div>
       <h1 class="hero-title">&#x1F4A8; Pneumatics &mdash; Course Notes</h1>
       <p class="hero-sub">Pneumatic components, circuit diagrams, SAC and DAC circuits, speed control, and automatic circuits</p>
@@ -279,7 +279,7 @@
       <h2 class="notes-h2">Single acting cylinder (SAC)</h2>
       <p class="notes-p">The cylinder in the simulation is a <strong>single acting cylinder (SAC)</strong>. Main air causes the outstroke (extension of the piston rod); a spring returns it when the pressure is released. SACs are used where force is only needed in one direction.</p>
 
-      <img src="images/photo-sac.png" alt="Photograph of a single acting cylinder, labelled: single air port — compressed air entry from a valve to out-stroke the piston" style="width:100%;max-width:360px;display:block;margin:10px auto 16px;border-radius:8px;border:1px solid var(--gray-200);">
+      <img src="images/photo-sac.png" alt="Photograph of a single acting cylinder, labelled: single air port — compressed air entry from a valve to out-stroke the piston" style="width:100%;max-width:360px;display:block;margin:28px auto;border-radius:8px;border:1px solid var(--gray-200);">
 
       <div class="key-point">
         <strong>Schematic drawing:</strong> You've just met your first valve and cylinder — and in your assessment you will need to <strong>draw</strong> components and full circuit diagrams like this one from memory, not just recognise them. Throughout the rest of these notes you'll meet drawing tasks marked &#x270F;&#xFE0F;. For these, <strong>sketch your answer by hand on paper</strong>, then photograph or scan it and <strong>paste the image directly into the answer box</strong> (click inside the box, then paste as you would with text). Practising the physical act of drawing the symbols is the best way to remember them.
@@ -327,7 +327,7 @@
 
       <p class="notes-p">Unlike the single acting cylinder you met in Section 2, main air here drives both the outstroke and the instroke.</p>
 
-      <img src="images/photo-dac.png" alt="Photograph of a double acting cylinder" style="width:100%;max-width:360px;display:block;margin:10px auto 16px;border-radius:8px;border:1px solid var(--gray-200);">
+      <img src="images/photo-dac.png" alt="Photograph of a double acting cylinder" style="width:100%;max-width:360px;display:block;margin:28px auto;border-radius:8px;border:1px solid var(--gray-200);">
 
 
       <p class="notes-p">A 5/2 valve has five ports and two states. In one state, port 1 (main air) connects to port 2 (outstroke side) while port 4 (instroke side) exhausts through port 5. Switching the valve reverses this: port 1 now connects to port 4, while port 2 exhausts through port 3. Changing the state of the valve therefore reverses the direction of the cylinder.</p>
@@ -786,7 +786,12 @@
       </div>
 
       <h2 class="notes-h2">Piston area and rod area</h2>
-      <p class="notes-p">A single acting cylinder only has main air pushing on <strong>one</strong> side of the piston (the outstroke). The full circular face of the piston is available to push against, so the effective area is simply the <strong>piston area</strong>: A = &pi; &times; D&sup2; / 4, where D is the piston diameter.</p>
+      <p class="notes-p">A single acting cylinder only has main air pushing on <strong>one</strong> side of the piston (the outstroke). The full circular face of the piston is available to push against, so the effective area is simply the <strong>piston area</strong>:</p>
+
+      <div class="formula-box">
+        <div class="formula">A = &pi; &times; D&sup2; / 4</div>
+        <div class="formula-sub">where D is the diameter of the piston</div>
+      </div>
 
       <p class="notes-p">A double acting cylinder has main air pushing on <strong>both</strong> sides of the piston, one side at a time. On the outstroke, the full piston area is available — exactly like a SAC. On the instroke, main air acts on the other side of the piston, but the <strong>piston rod</strong> takes up part of that face, so the effective area is the piston area <strong>minus the rod area</strong>.</p>
 
@@ -803,18 +808,29 @@
             <text x="100" y="106" text-anchor="middle" font-size="18" font-weight="700" fill="var(--teal-800)">A</text>
           </svg>
           <div style="font-size:13px;font-weight:700;margin-top:4px;">Outstroke &mdash; full piston area</div>
-          <div style="font-size:12px;color:var(--gray-500);">Main air pushes on the whole piston face: piston area = &pi; &times; D&sup2; / 4</div>
+          <div style="font-size:12px;color:var(--gray-500);">Main air pushes on the whole piston face:</div>
+          <div style="font-size:12px;color:var(--gray-500);">piston area = &pi; &times; D&sup2; / 4</div>
         </div>
         <div style="text-align:center; max-width:260px;">
           <svg viewBox="0 0 200 200" width="180" height="180" style="margin:0 auto;display:block;">
             <circle cx="100" cy="100" r="80" fill="url(#crosshatchGreen)" stroke="var(--teal-600)" stroke-width="4"/>
-            <circle cx="100" cy="100" r="26" fill="white" stroke="var(--gray-700)" stroke-width="3"/>
+            <circle cx="100" cy="100" r="26" fill="white" stroke="#166534" stroke-width="2"/>
             <text x="100" y="66" text-anchor="middle" font-size="11" fill="var(--gray-600)">rod, d</text>
             <text x="145" y="106" text-anchor="middle" font-size="14" font-weight="700" fill="var(--teal-800)">A&minus;a</text>
           </svg>
           <div style="font-size:13px;font-weight:700;margin-top:4px;">Instroke &mdash; piston area minus rod area</div>
           <div style="font-size:12px;color:var(--gray-500);">rod area = &pi; &times; d&sup2; / 4</div>
           <div style="font-size:12px;color:var(--gray-500);">effective area = piston area &minus; rod area</div>
+        </div>
+      </div>
+
+      <div class="formula-box" style="text-align:left;padding:20px 28px;">
+        <div style="font-size:14px;font-weight:700;color:var(--teal-800);margin-bottom:12px;text-align:center;">What each letter means</div>
+        <div style="display:grid; grid-template-columns:auto 1fr; gap:10px 14px; font-size:14px; color:var(--gray-700); max-width:420px; margin:0 auto;">
+          <div class="formula" style="font-size:16px;">D</div><div>diameter of the <strong>piston</strong></div>
+          <div class="formula" style="font-size:16px;">d</div><div>diameter of the <strong>rod</strong></div>
+          <div class="formula" style="font-size:16px;">A</div><div><strong>piston area</strong> &mdash; the full circular face of the piston</div>
+          <div class="formula" style="font-size:16px;">a</div><div><strong>rod area</strong> &mdash; the cross-section of the piston rod</div>
         </div>
       </div>
 
