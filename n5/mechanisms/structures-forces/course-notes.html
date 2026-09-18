@@ -24,7 +24,8 @@
     /* Force type cards */
     .force-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(155px,1fr)); gap:12px; margin:16px 0 20px; }
     .force-card { background:white; border:1px solid var(--gray-200); border-radius:10px; padding:14px 12px; text-align:center; }
-    .force-card-icon { font-size:28px; margin-bottom:6px; }
+    .force-card-icon { margin-bottom:6px; }
+    .force-card-icon svg { width:100%; max-width:70px; height:auto; }
     .force-card-name { font-size:13px; font-weight:700; color:var(--gray-900); margin-bottom:4px; }
     .force-card-desc { font-size:11px; color:var(--gray-500); line-height:1.4; }
 
@@ -81,6 +82,14 @@
 
     .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
 
+    /* Stacked fraction (used instead of the divide symbol) */
+    .frac { display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; margin:0 4px; line-height:1.15; }
+    .frac-num, .frac-den { padding:0 2px; }
+    .frac-line { width:100%; border-top:1.5px solid currentColor; margin:1px 0; }
+
+    /* Simple block-and-arrow force type diagrams */
+    .force-diagram { width:100%; height:auto; margin-bottom:4px; }
+
     @media print {
       .topbar, .sidebar, .footer, .controls-bar, .storage-status { display:none !important; }
       .layout { display:block !important; }
@@ -113,10 +122,10 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 16th September 2026 at 16:35</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 18th September 2026 at 17:36</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Structures and Forces</div>
       <h1 class="hero-title">&#x1F3D7;&#xFE0F; Structures and Forces &mdash; Course Notes</h1>
-      <p class="hero-sub">Forces, levers, moments, beams, reactions and vectors</p>
+      <p class="hero-sub">Forces, free-body diagrams, levers, moments, beams, reactions and vectors</p>
       <div class="breadcrumb">
         <a href="../../../../index.html">Home</a> &rsaquo;
         <a href="../index.html">Mechanisms and Structures</a> &rsaquo;
@@ -140,27 +149,67 @@
 
       <div class="force-grid">
         <div class="force-card">
-          <div class="force-card-icon">&#x1F4A5;</div>
+          <div class="force-card-icon">
+            <svg viewBox="0 0 90 40" xmlns="http://www.w3.org/2000/svg">
+              <rect x="30" y="6" width="30" height="28" fill="#0d9488" rx="2"/>
+              <line x1="4" y1="20" x2="20" y2="20" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+              <polygon points="28,20 18,14 18,26" fill="#ef4444"/>
+              <line x1="86" y1="20" x2="70" y2="20" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+              <polygon points="62,20 72,14 72,26" fill="#ef4444"/>
+            </svg>
+          </div>
           <div class="force-card-name">Compression</div>
           <div class="force-card-desc">Forces acting to squash or shorten a structure — pushing inwards from both ends</div>
         </div>
         <div class="force-card">
-          <div class="force-card-icon">&#x1F9F5;</div>
+          <div class="force-card-icon">
+            <svg viewBox="0 0 90 40" xmlns="http://www.w3.org/2000/svg">
+              <rect x="30" y="6" width="30" height="28" fill="#0d9488" rx="2"/>
+              <line x1="26" y1="20" x2="12" y2="20" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+              <polygon points="4,20 14,14 14,26" fill="#ef4444"/>
+              <line x1="64" y1="20" x2="78" y2="20" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+              <polygon points="86,20 76,14 76,26" fill="#ef4444"/>
+            </svg>
+          </div>
           <div class="force-card-name">Tension</div>
           <div class="force-card-desc">Forces acting to stretch or lengthen a structure — pulling outwards from both ends</div>
         </div>
         <div class="force-card">
-          <div class="force-card-icon">&#x1F4CF;</div>
+          <div class="force-card-icon">
+            <svg viewBox="0 0 90 46" xmlns="http://www.w3.org/2000/svg">
+              <rect x="10" y="20" width="70" height="6" fill="#0d9488" rx="1"/>
+              <polygon points="20,26 14,38 26,38" fill="#111827"/>
+              <polygon points="70,26 64,38 76,38" fill="#111827"/>
+              <line x1="45" y1="4" x2="45" y2="16" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+              <polygon points="45,20 39,10 51,10" fill="#ef4444"/>
+            </svg>
+          </div>
           <div class="force-card-name">Bending</div>
           <div class="force-card-desc">Forces acting across the length of a structure causing it to bend or deflect</div>
         </div>
         <div class="force-card">
-          <div class="force-card-icon">&#x2702;&#xFE0F;</div>
+          <div class="force-card-icon">
+            <svg viewBox="0 0 90 46" xmlns="http://www.w3.org/2000/svg">
+              <rect x="15" y="6" width="60" height="14" fill="#0d9488" rx="1"/>
+              <rect x="15" y="24" width="60" height="14" fill="#5eead4" rx="1"/>
+              <line x1="20" y1="13" x2="36" y2="13" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+              <polygon points="46,13 36,7 36,19" fill="#ef4444"/>
+              <line x1="70" y1="31" x2="54" y2="31" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+              <polygon points="44,31 54,25 54,37" fill="#ef4444"/>
+            </svg>
+          </div>
           <div class="force-card-name">Shear</div>
           <div class="force-card-desc">Forces acting in opposite directions across a section — like cutting or tearing</div>
         </div>
         <div class="force-card">
-          <div class="force-card-icon">&#x1F300;</div>
+          <div class="force-card-icon">
+            <svg viewBox="0 0 90 46" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="17" width="10" height="12" fill="#111827"/>
+              <line x1="18" y1="23" x2="66" y2="23" stroke="#0d9488" stroke-width="6" stroke-linecap="round"/>
+              <path d="M62 10 A13 13 0 1 1 62 36" fill="none" stroke="#ef4444" stroke-width="3"/>
+              <polygon points="62,36 53,32 60,25" fill="#ef4444"/>
+            </svg>
+          </div>
           <div class="force-card-name">Torsion</div>
           <div class="force-card-desc">Forces that twist or turn a structure about its own axis</div>
         </div>
@@ -203,24 +252,173 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 2: Levers</h1>
+      <h1 class="notes-h1">Section 2: Free-Body Diagrams</h1>
 
-      <p class="notes-p">A lever is a simple machine that can <strong>amplify force</strong>. By using a pivot point (called a <strong>fulcrum</strong>) and a rigid bar, a small effort force can move a large load. The further from the fulcrum the effort is applied, the easier it is to move the load.</p>
+      <p class="notes-p">Before working through levers, moments and beams, it helps to have one tool that will be used again and again: the <strong>free-body diagram</strong>. It is simply a simplified sketch that shows all the forces acting on a structure or body, with everything else stripped away. It isolates the object from its surroundings and replaces real components (hinges, supports, ropes, the ground) with arrows representing the forces they exert.</p>
 
-      <p class="notes-p">A lever system changes an input force and input motion into an output force and output motion:</p>
+      <p class="notes-p">To draw a free-body diagram:</p>
+      <ol class="notes-ol">
+        <li>Draw a simple outline of the structure (or just a line or box)</li>
+        <li>Replace all connections and supports with arrows showing the force they exert</li>
+        <li>Label each force with a letter or value</li>
+        <li>Show downward forces (loads, weight) acting through their point of application</li>
+        <li>Show upward reaction forces at support points</li>
+      </ol>
 
-      <div class="key-point">
-        <strong>Effort</strong> = the input force applied to the lever<br>
-        <strong>Load</strong> = the output force (what you are trying to move)<br>
-        <strong>Fulcrum</strong> = the pivot point the lever rotates about
+      <div class="key-point">Free-body diagrams make it easier to see and calculate all the forces acting on a structure. Every force must be accounted for — including the weight of the structure itself if stated.</div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Worked Example &mdash; A crate resting on the ground</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A crate sits still on flat ground. Two forces act on it: its own <strong>weight</strong> (W), pulling straight down, and the <strong>reaction</strong> from the ground (R), pushing straight up. Because the crate is not moving, these two forces must be equal and opposite.</p>
+        <div style="text-align:center; margin:14px 0;">
+          <svg viewBox="0 0 300 190" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:300px;height:auto;">
+            <line x1="20" y1="150" x2="280" y2="150" stroke="#111827" stroke-width="2"/>
+            <line x1="20" y1="150" x2="10" y2="162" stroke="#111827" stroke-width="1.5"/>
+            <line x1="60" y1="150" x2="50" y2="162" stroke="#111827" stroke-width="1.5"/>
+            <line x1="100" y1="150" x2="90" y2="162" stroke="#111827" stroke-width="1.5"/>
+            <line x1="200" y1="150" x2="190" y2="162" stroke="#111827" stroke-width="1.5"/>
+            <line x1="240" y1="150" x2="230" y2="162" stroke="#111827" stroke-width="1.5"/>
+            <line x1="280" y1="150" x2="270" y2="162" stroke="#111827" stroke-width="1.5"/>
+            <rect x="110" y="70" width="80" height="60" fill="#0d9488" rx="4"/>
+            <line x1="150" y1="38" x2="150" y2="66" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+            <polygon points="150,68 143,54 157,54" fill="#ef4444"/>
+            <text x="150" y="28" text-anchor="middle" fill="#ef4444" font-size="14" font-weight="700">W</text>
+            <line x1="150" y1="150" x2="150" y2="136" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+            <polygon points="150,132 143,146 157,146" fill="#ef4444"/>
+            <text x="150" y="172" text-anchor="middle" fill="#ef4444" font-size="14" font-weight="700">R</text>
+          </svg>
+        </div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Isolate the crate</strong> and remove the ground — draw a box in its place</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Add the weight</strong> as an arrow pointing straight down from the middle of the crate, labelled W</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Add the reaction</strong> as an arrow pointing straight up from the base of the crate, labelled R</div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content">Because the crate is staying still, <strong>R = W</strong> — the two forces balance</div></div>
       </div>
 
-      <p class="notes-p">When a counterbalance weight is attached to one side of a lever to assist the user, it is known as a <strong>counterbalance</strong>. Cranes and diggers use counterbalances to prevent them toppling over.</p>
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Free-body diagrams</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Draw a free-body diagram of a car resting on flat ground. Show the downward forces (weight acting through the centre of mass) and the reaction forces at each axle. Use suitable letter labels.</div>
+            <div class="answer-label">Sketch and labels <span class="saved-indicator" id="ind-t3a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t3a" data-placeholder="Describe or sketch your free-body diagram here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A bridge is supported at two ends. A bus sits on the bridge. Draw and label the free-body diagram showing all forces including the bridge's own weight.</div>
+            <div class="answer-label">Sketch and labels <span class="saved-indicator" id="ind-t3b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t3b" data-placeholder="Describe or sketch your free-body diagram here&hellip;"></div>
+          </div>
+        </div>
+      </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 3: Moments</h1>
+      <h1 class="notes-h1">Section 3: Levers</h1>
+
+      <p class="notes-p">A lever is a simple machine that can <strong>amplify force</strong>. It is made up of a rigid bar that turns about a pivot point called the <strong>fulcrum</strong>. Forces act on the lever at different points along its length, and the lever's job is to turn one of those forces into a bigger (or more useful) one somewhere else.</p>
+
+      <div class="key-point"><strong>Fulcrum</strong> = the pivot point that the lever turns about. Every lever has a fulcrum and at least two forces acting on it, on either side of, or at different distances from, that fulcrum.</div>
+
+      <p class="notes-p">You already know from free-body diagrams that every force acts <strong>at a specific point</strong>. With a lever, what matters most is not what each force is called, but <strong>where it acts relative to the fulcrum</strong>. Moving the fulcrum, or moving a force closer to or further from it, changes how the lever behaves — this is the idea you'll use again in the next section on moments.</p>
+
+      <h2 class="notes-h2">The fulcrum can sit in different places</h2>
+      <p class="notes-p">The fulcrum does not have to be positioned halfway between the two forces. Depending on where it sits, a lever can behave very differently. Here are three arrangements you will meet often — pay attention to the <strong>order</strong> the fulcrum and the two forces appear in, left to right.</p>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Arrangement 1 &mdash; Fulcrum between the two forces</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px;">The fulcrum sits in the middle, with one force acting on each side of it.</p>
+        <div style="text-align:center; margin:14px 0;">
+          <svg viewBox="0 0 480 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;height:auto;">
+            <rect x="60" y="70" width="360" height="12" rx="4" fill="#99f6e4" stroke="#5eead4" stroke-width="1"/>
+            <polygon points="240,82 222,118 258,118" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+            <text x="240" y="134" font-size="11" fill="#94a3b8" text-anchor="middle">fulcrum</text>
+            <line x1="100" y1="30" x2="100" y2="68" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+            <polygon points="100,70 93,56 107,56" fill="#ef4444"/>
+            <text x="100" y="20" font-size="12" font-weight="700" fill="#ef4444" text-anchor="middle">Force 1</text>
+            <line x1="380" y1="30" x2="380" y2="68" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+            <polygon points="380,70 373,56 387,56" fill="#ef4444"/>
+            <text x="380" y="20" font-size="12" font-weight="700" fill="#ef4444" text-anchor="middle">Force 2</text>
+          </svg>
+        </div>
+        <p style="font-size:13px;color:var(--gray-600);">Examples: a <strong>seesaw</strong> (a child sits at each end, the pivot block is in the middle); a pair of <strong>scissors</strong> (the pivot screw is between the finger holes and the blades); a <strong>crowbar</strong> resting over a fixed edge, lifting something on the other side.</p>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Arrangement 2 &mdash; Fulcrum at one end, one force in the middle</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px;">The fulcrum sits at one end. The force being moved acts somewhere in the middle, and the force you apply acts at the far end.</p>
+        <div style="text-align:center; margin:14px 0;">
+          <svg viewBox="0 0 480 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;height:auto;">
+            <rect x="60" y="70" width="360" height="12" rx="4" fill="#99f6e4" stroke="#5eead4" stroke-width="1"/>
+            <polygon points="80,82 62,118 98,118" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+            <text x="80" y="134" font-size="11" fill="#94a3b8" text-anchor="middle">fulcrum</text>
+            <line x1="220" y1="30" x2="220" y2="68" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+            <polygon points="220,70 213,56 227,56" fill="#ef4444"/>
+            <text x="220" y="20" font-size="12" font-weight="700" fill="#ef4444" text-anchor="middle">Force on the object</text>
+            <line x1="400" y1="30" x2="400" y2="68" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+            <polygon points="400,70 393,56 407,56" fill="#ef4444"/>
+            <text x="400" y="20" font-size="12" font-weight="700" fill="#ef4444" text-anchor="middle">Applied force</text>
+          </svg>
+        </div>
+        <p style="font-size:13px;color:var(--gray-600);">Examples: a <strong>wheelbarrow</strong> (fulcrum at the wheel, the weight of what's inside acts partway along, your hands apply force at the handles, furthest from the wheel); a <strong>bottle opener</strong> (fulcrum at the lip resting on the bottle rim, the force lifting the cap acts in the middle, your hand applies force at the far end); a <strong>nutcracker</strong>.</p>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">Arrangement 3 &mdash; Fulcrum at one end, the applied force in the middle</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px;">The fulcrum sits at one end. This time, the force you apply acts somewhere in the middle, and the force being moved acts at the far end.</p>
+        <div style="text-align:center; margin:14px 0;">
+          <svg viewBox="0 0 480 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;height:auto;">
+            <rect x="60" y="70" width="360" height="12" rx="4" fill="#99f6e4" stroke="#5eead4" stroke-width="1"/>
+            <polygon points="80,82 62,118 98,118" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+            <text x="80" y="134" font-size="11" fill="#94a3b8" text-anchor="middle">fulcrum</text>
+            <line x1="220" y1="30" x2="220" y2="68" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+            <polygon points="220,70 213,56 227,56" fill="#ef4444"/>
+            <text x="220" y="20" font-size="12" font-weight="700" fill="#ef4444" text-anchor="middle">Applied force</text>
+            <line x1="400" y1="30" x2="400" y2="68" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+            <polygon points="400,70 393,56 407,56" fill="#ef4444"/>
+            <text x="400" y="20" font-size="12" font-weight="700" fill="#ef4444" text-anchor="middle">Force on the object</text>
+          </svg>
+        </div>
+        <p style="font-size:13px;color:var(--gray-600);">Examples: a <strong>fishing rod</strong> (fulcrum at the hand nearest the reel, the other hand applies force further up the rod, the fish pulls at the tip — the furthest point away); a pair of <strong>tweezers</strong>; a <strong>broom</strong> (top hand acts as the fulcrum, the lower hand applies force, the bristles act at the far end).</p>
+      </div>
+
+      <h2 class="notes-h2">Levers in everyday objects</h2>
+      <p class="notes-p">A <strong>door</strong> is also a lever — the hinge is the fulcrum. Push near the hinge and the door is hard to move; push at the handle, as far from the hinge as possible, and it swings open easily with far less force. This is exactly the same idea you'll use in the next section: the further a force acts from the fulcrum, the bigger its turning effect.</p>
+
+      <div class="key-point">You do not need to remember special names for these arrangements. What matters is being able to look at a lever — in a diagram or in a photo — and identify: where the fulcrum is, and where each force acts.</div>
+
+      <p class="notes-p">When a counterbalance weight is attached to one side of a lever to assist the user, it is known as a <strong>counterbalance</strong>. Cranes and diggers use counterbalances to prevent them toppling over.</p>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Identifying the fulcrum</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">For each photograph provided (door handle, seesaw, wheelbarrow, fishing rod), identify: (a) where the fulcrum is, (b) where each force acts, and (c) which arrangement it matches — fulcrum in the middle, or fulcrum at one end with the object being moved or the applied force in the middle.</p>
+          <div class="task-item">
+            <div class="task-q">1. Door handle</div>
+            <div class="answer-label">Fulcrum, forces, and arrangement <span class="saved-indicator" id="ind-lev1">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sf-lev1" data-placeholder="Describe the fulcrum and forces&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Seesaw</div>
+            <div class="answer-label">Fulcrum, forces, and arrangement <span class="saved-indicator" id="ind-lev2">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sf-lev2" data-placeholder="Describe the fulcrum and forces&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Wheelbarrow</div>
+            <div class="answer-label">Fulcrum, forces, and arrangement <span class="saved-indicator" id="ind-lev3">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sf-lev3" data-placeholder="Describe the fulcrum and forces&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. Fishing rod</div>
+            <div class="answer-label">Fulcrum, forces, and arrangement <span class="saved-indicator" id="ind-lev4">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="sf-lev4" data-placeholder="Describe the fulcrum and forces&hellip;"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 4: Moments</h1>
 
       <p class="notes-p">A force does not always make an object move in a straight line — very often it makes the object <strong>turn</strong> instead. This turning effect is called a <strong>moment</strong>. Every moment acts around a fixed point called the <strong>pivot</strong> (sometimes called the fulcrum): the point about which the object is free to rotate. On a see-saw, the pivot is the block in the middle. On a spanner tightening a bolt, the pivot is the bolt itself. On a door, the pivot is the hinge. Moments are measured in <strong>Newton-metres (Nm)</strong>.</p>
 
@@ -235,12 +433,12 @@
         <div class="worked-example-title">Worked Example &mdash; Calculating a single moment</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">To open a heavy garden gate, a person pushes on the edge furthest from the hinge with a force of 25 N. The hinge (the pivot) is 0.6 m from where the force is applied, measured perpendicular to the push. Calculate the moment used to open the gate.</p>
         <div style="text-align:center; margin:14px 0;">
-          <svg viewBox="0 0 640 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:460px;height:auto;">
-            <rect x="40" y="90" width="560" height="20" rx="3" fill="#115e59"/>
-            <polygon points="160,110 122,175 198,175" fill="#111827"/>
-            <text x="160" y="192" font-size="12" fill="#6b7280" text-anchor="middle">pivot</text>
-            <line x1="420" y1="45" x2="420" y2="88" stroke="#ef4444" stroke-width="3"/>
-            <polygon points="420,90 413,76 427,76" fill="#ef4444"/>
+          <svg viewBox="0 0 640 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px;height:auto;">
+            <rect x="40" y="95" width="560" height="10" rx="2" fill="#99f6e4" stroke="#5eead4" stroke-width="1"/>
+            <polygon points="160,105 142,125 178,125" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+            <text x="160" y="139" font-size="11" fill="#94a3b8" text-anchor="middle">pivot</text>
+            <line x1="420" y1="45" x2="420" y2="93" stroke="#ef4444" stroke-width="3"/>
+            <polygon points="420,95 413,81 427,81" fill="#ef4444"/>
             <text x="420" y="36" font-size="14" font-weight="700" fill="#ef4444" text-anchor="middle">F = 25 N</text>
             <line x1="160" y1="118" x2="420" y2="118" stroke="#6b7280" stroke-width="1.5"/>
             <line x1="160" y1="112" x2="160" y2="124" stroke="#6b7280" stroke-width="1.5"/>
@@ -256,27 +454,44 @@
       <h2 class="notes-h2">Equilibrium and the Principle of Moments</h2>
       <p class="notes-p">When a system is in a steady, balanced state it is said to be in <strong>equilibrium</strong>. For a lever or beam to be in equilibrium, the clockwise moments must equal the anticlockwise moments — one side has no more turning effect than the other, so nothing rotates.</p>
 
-      <p class="notes-p">The <strong>Principle of Moments</strong> states:</p>
+      <div style="text-align:center; margin:16px 0;">
+        <svg viewBox="0 0 260 130" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:280px;height:auto;">
+          <path d="M 60 20 A 35 35 0 1 1 25 55" fill="none" stroke="#ef4444" stroke-width="4" stroke-linecap="round"/>
+          <polygon points="25,47 19,59 31,59" fill="#ef4444"/>
+          <text x="60" y="110" font-size="12" font-weight="700" fill="#4b5563" text-anchor="middle">Clockwise (CW)</text>
+          <g transform="translate(140,0)">
+            <path d="M 60 20 A 35 35 0 1 0 95 55" fill="none" stroke="#0d9488" stroke-width="4" stroke-linecap="round"/>
+            <polygon points="95,47 89,59 101,59" fill="#0d9488"/>
+            <text x="60" y="110" font-size="12" font-weight="700" fill="#4b5563" text-anchor="middle">Anticlockwise (ACW)</text>
+          </g>
+        </svg>
+      </div>
+
+      <p class="notes-p">Sometimes there is more than one force turning a beam in the same direction — for example, two children sitting on the same side of a see-saw. Rather than writing out every individual moment, we use the symbol <strong>&#x2211;</strong> (the Greek capital letter <strong>sigma</strong>). In maths and science, &#x2211; simply means <strong>"add up all of the following."</strong> So &#x2211;CWM means: add up every clockwise moment acting on the beam, however many there are, to get one total.</p>
+
+      <p class="notes-p">In words, the <strong>Principle of Moments</strong> says:</p>
+
+      <div class="key-point">The sum of the clockwise moments equals the sum of the anticlockwise moments.</div>
 
       <div class="formula-box">
         <div class="formula">&#x2211;CWM = &#x2211;ACWM</div>
-        <div class="formula-sub">Sum of Clockwise Moments = Sum of Anticlockwise Moments<br>F<sub>1</sub> &times; d<sub>1</sub> = F<sub>2</sub> &times; d<sub>2</sub></div>
+        <div class="formula-sub">F<sub>1</sub> &times; d<sub>1</sub> = F<sub>2</sub> &times; d<sub>2</sub> &hellip;<br>(the dots show that if more than one force acts on a side, you add all of their moments together first)</div>
       </div>
 
       <div class="worked-example">
         <div class="worked-example-title">Worked Example 1 &mdash; Is the lever in equilibrium?</div>
-        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A lever has a load of 400 N at 1 m from the fulcrum on the right, and an effort of 200 N at 2 m from the fulcrum on the left. Is the lever in equilibrium?</p>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A lever has a force of 400 N acting 1 m from the fulcrum on the right, and a force of 200 N acting 2 m from the fulcrum on the left. Is the lever in equilibrium?</p>
         <div style="text-align:center; margin:14px 0;">
-          <svg viewBox="0 0 640 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;height:auto;">
-            <rect x="40" y="90" width="560" height="20" rx="3" fill="#115e59"/>
-            <polygon points="320,110 282,175 358,175" fill="#111827"/>
-            <text x="320" y="192" font-size="12" fill="#6b7280" text-anchor="middle">pivot</text>
-            <line x1="140" y1="45" x2="140" y2="88" stroke="#0d9488" stroke-width="3"/>
-            <polygon points="140,90 133,76 147,76" fill="#0d9488"/>
-            <text x="140" y="36" font-size="13" font-weight="700" fill="#0d9488" text-anchor="middle">Effort 200 N</text>
-            <line x1="410" y1="45" x2="410" y2="88" stroke="#ef4444" stroke-width="3"/>
-            <polygon points="410,90 403,76 417,76" fill="#ef4444"/>
-            <text x="410" y="36" font-size="13" font-weight="700" fill="#ef4444" text-anchor="middle">Load 400 N</text>
+          <svg viewBox="0 0 640 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:460px;height:auto;">
+            <rect x="40" y="95" width="560" height="10" rx="2" fill="#99f6e4" stroke="#5eead4" stroke-width="1"/>
+            <polygon points="320,105 302,125 338,125" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+            <text x="320" y="139" font-size="11" fill="#94a3b8" text-anchor="middle">pivot</text>
+            <line x1="140" y1="45" x2="140" y2="93" stroke="#0d9488" stroke-width="3"/>
+            <polygon points="140,95 133,81 147,81" fill="#0d9488"/>
+            <text x="140" y="36" font-size="13" font-weight="700" fill="#0d9488" text-anchor="middle">Force A = 200 N</text>
+            <line x1="410" y1="45" x2="410" y2="93" stroke="#ef4444" stroke-width="3"/>
+            <polygon points="410,95 403,81 417,81" fill="#ef4444"/>
+            <text x="410" y="36" font-size="13" font-weight="700" fill="#ef4444" text-anchor="middle">Force B = 400 N</text>
             <line x1="140" y1="118" x2="320" y2="118" stroke="#6b7280" stroke-width="1.5"/>
             <line x1="140" y1="112" x2="140" y2="124" stroke="#6b7280" stroke-width="1.5"/>
             <line x1="320" y1="112" x2="320" y2="124" stroke="#6b7280" stroke-width="1.5"/>
@@ -286,33 +501,33 @@
             <text x="365" y="138" font-size="13" font-weight="600" fill="#4b5563" text-anchor="middle">1 m</text>
           </svg>
         </div>
-        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Calculate the clockwise moment:</strong> Load &times; distance = 400 N &times; 1 m = 400 Nm</div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Calculate the anticlockwise moment:</strong> Effort &times; distance = 200 N &times; 2 m = 400 Nm</div></div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Calculate the clockwise moment:</strong> Force B &times; distance = 400 N &times; 1 m = 400 Nm</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Calculate the anticlockwise moment:</strong> Force A &times; distance = 200 N &times; 2 m = 400 Nm</div></div>
         <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Compare:</strong> 400 Nm = 400 Nm &nbsp;&rArr;&nbsp; &#x2211;CWM = &#x2211;ACWM &nbsp;&rArr;&nbsp; <strong>The lever is in equilibrium.</strong></div></div>
       </div>
 
       <div class="worked-example">
-        <div class="worked-example-title">Worked Example 2 &mdash; Car footbrake (Class 2 lever)</div>
+        <div class="worked-example-title">Worked Example 2 &mdash; Car footbrake</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A car footbrake lever amplifies the driver's foot force. The driver applies 5000 N at 600 mm from the fulcrum. The braking system connects 100 mm from the fulcrum. Find the braking force.</p>
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Convert distances to metres:</strong> 600 mm = 0.6 m, 100 mm = 0.1 m</div></div>
         <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Apply the Principle of Moments:</strong> F<sub>1</sub> &times; d<sub>1</sub> = F<sub>2</sub> &times; d<sub>2</sub></div></div>
         <div class="step"><div class="step-num">3</div><div class="step-content">5000 N &times; 0.6 m = braking force &times; 0.1 m</div></div>
-        <div class="step"><div class="step-num">4</div><div class="step-content">Braking force = (5000 &times; 0.6) &divide; 0.1 = <strong>30 000 N = 30 kN</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content">Braking force = <span class="frac"><span class="frac-num">5000 &times; 0.6</span><span class="frac-line"></span><span class="frac-den">0.1</span></span> = <strong>30 000 N = 30 kN</strong></div></div>
       </div>
 
       <div class="worked-example">
         <div class="worked-example-title">Worked Example 3 &mdash; Finding an unknown distance</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A wooden plank is balanced across a fixed support so that it can pivot freely. A toolbox weighing 12 N is placed 2.4 m from the pivot. A tin of paint weighing 8 N is placed on the other side. How far from the pivot must the tin of paint be placed for the plank to balance?</p>
         <div style="text-align:center; margin:14px 0;">
-          <svg viewBox="0 0 640 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;height:auto;">
-            <rect x="40" y="90" width="560" height="20" rx="3" fill="#115e59"/>
-            <polygon points="320,110 282,175 358,175" fill="#111827"/>
-            <text x="320" y="192" font-size="12" fill="#6b7280" text-anchor="middle">pivot</text>
-            <line x1="200" y1="45" x2="200" y2="88" stroke="#ef4444" stroke-width="3"/>
-            <polygon points="200,90 193,76 207,76" fill="#ef4444"/>
+          <svg viewBox="0 0 640 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:460px;height:auto;">
+            <rect x="40" y="95" width="560" height="10" rx="2" fill="#99f6e4" stroke="#5eead4" stroke-width="1"/>
+            <polygon points="320,105 302,125 338,125" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+            <text x="320" y="139" font-size="11" fill="#94a3b8" text-anchor="middle">pivot</text>
+            <line x1="200" y1="45" x2="200" y2="93" stroke="#ef4444" stroke-width="3"/>
+            <polygon points="200,95 193,81 207,81" fill="#ef4444"/>
             <text x="200" y="36" font-size="13" font-weight="700" fill="#ef4444" text-anchor="middle">Toolbox 12 N</text>
-            <line x1="470" y1="45" x2="470" y2="88" stroke="#ef4444" stroke-width="3"/>
-            <polygon points="470,90 463,76 477,76" fill="#ef4444"/>
+            <line x1="470" y1="45" x2="470" y2="93" stroke="#ef4444" stroke-width="3"/>
+            <polygon points="470,95 463,81 477,81" fill="#ef4444"/>
             <text x="470" y="36" font-size="13" font-weight="700" fill="#ef4444" text-anchor="middle">Paint tin 8 N</text>
             <line x1="200" y1="118" x2="320" y2="118" stroke="#6b7280" stroke-width="1.5"/>
             <line x1="200" y1="112" x2="200" y2="124" stroke="#6b7280" stroke-width="1.5"/>
@@ -326,7 +541,7 @@
         </div>
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Apply the Principle of Moments:</strong> the toolbox's moment must equal the paint tin's moment</div></div>
         <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Calculate the toolbox's moment:</strong> M = F &times; d = 12 &times; 2.4 = 28.8 Nm</div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Rearrange to find the unknown distance:</strong> d = M &divide; F = 28.8 &divide; 8</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Rearrange to find the unknown distance:</strong> d = <span class="frac"><span class="frac-num">M</span><span class="frac-line"></span><span class="frac-den">F</span></span> = <span class="frac"><span class="frac-num">28.8</span><span class="frac-line"></span><span class="frac-den">8</span></span></div></div>
         <div class="step"><div class="step-num">4</div><div class="step-content">d = <strong>3.6 m</strong> &mdash; the paint tin must be placed 3.6 m from the pivot.</div></div>
       </div>
 
@@ -334,18 +549,18 @@
         <div class="worked-example-title">Worked Example 4 &mdash; Balancing several forces</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A see-saw is pivoted at its centre. On the right-hand side, one child applies a downward force of 300 N at 1 m from the pivot, and a second child applies 200 N at 2 m from the pivot. What downward force must an adult apply at 1.4 m from the pivot, on the left-hand side, to balance the see-saw?</p>
         <div style="text-align:center; margin:14px 0;">
-          <svg viewBox="0 0 640 215" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;height:auto;">
-            <rect x="40" y="90" width="560" height="20" rx="3" fill="#115e59"/>
-            <polygon points="320,110 282,175 358,175" fill="#111827"/>
-            <text x="320" y="192" font-size="12" fill="#6b7280" text-anchor="middle">pivot</text>
-            <line x1="194" y1="45" x2="194" y2="88" stroke="#111827" stroke-width="3" stroke-dasharray="5,4"/>
-            <polygon points="194,90 187,76 201,76" fill="#111827"/>
+          <svg viewBox="0 0 640 185" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:460px;height:auto;">
+            <rect x="40" y="95" width="560" height="10" rx="2" fill="#99f6e4" stroke="#5eead4" stroke-width="1"/>
+            <polygon points="320,105 302,125 338,125" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+            <text x="320" y="139" font-size="11" fill="#94a3b8" text-anchor="middle">pivot</text>
+            <line x1="194" y1="45" x2="194" y2="93" stroke="#111827" stroke-width="3" stroke-dasharray="5,4"/>
+            <polygon points="194,95 187,81 201,81" fill="#111827"/>
             <text x="194" y="36" font-size="13" font-weight="700" fill="#111827" text-anchor="middle">F = ?</text>
-            <line x1="410" y1="45" x2="410" y2="88" stroke="#ef4444" stroke-width="3"/>
-            <polygon points="410,90 403,76 417,76" fill="#ef4444"/>
+            <line x1="410" y1="45" x2="410" y2="93" stroke="#ef4444" stroke-width="3"/>
+            <polygon points="410,95 403,81 417,81" fill="#ef4444"/>
             <text x="410" y="36" font-size="12" font-weight="700" fill="#ef4444" text-anchor="middle">300 N</text>
-            <line x1="500" y1="45" x2="500" y2="88" stroke="#ef4444" stroke-width="3"/>
-            <polygon points="500,90 493,76 507,76" fill="#ef4444"/>
+            <line x1="500" y1="45" x2="500" y2="93" stroke="#ef4444" stroke-width="3"/>
+            <polygon points="500,95 493,81 507,81" fill="#ef4444"/>
             <text x="500" y="36" font-size="12" font-weight="700" fill="#ef4444" text-anchor="middle">200 N</text>
             <line x1="194" y1="118" x2="320" y2="118" stroke="#6b7280" stroke-width="1.5"/>
             <line x1="194" y1="112" x2="194" y2="124" stroke="#6b7280" stroke-width="1.5"/>
@@ -354,35 +569,35 @@
             <line x1="320" y1="118" x2="410" y2="118" stroke="#6b7280" stroke-width="1.5"/>
             <line x1="410" y1="112" x2="410" y2="124" stroke="#6b7280" stroke-width="1.5"/>
             <text x="365" y="138" font-size="12" font-weight="600" fill="#4b5563" text-anchor="middle">1 m</text>
-            <line x1="320" y1="150" x2="500" y2="150" stroke="#6b7280" stroke-width="1.5"/>
-            <line x1="320" y1="144" x2="320" y2="156" stroke="#6b7280" stroke-width="1.5"/>
-            <line x1="500" y1="144" x2="500" y2="156" stroke="#6b7280" stroke-width="1.5"/>
-            <text x="410" y="170" font-size="12" font-weight="600" fill="#4b5563" text-anchor="middle">2 m</text>
+            <line x1="320" y1="158" x2="500" y2="158" stroke="#6b7280" stroke-width="1.5"/>
+            <line x1="320" y1="152" x2="320" y2="164" stroke="#6b7280" stroke-width="1.5"/>
+            <line x1="500" y1="152" x2="500" y2="164" stroke="#6b7280" stroke-width="1.5"/>
+            <text x="410" y="178" font-size="12" font-weight="600" fill="#4b5563" text-anchor="middle">2 m</text>
           </svg>
         </div>
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Calculate the total clockwise moment</strong> (both children, right-hand side): (300 &times; 1) + (200 &times; 2) = 300 + 400 = 700 Nm</div></div>
         <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Apply the Principle of Moments:</strong> the adult's anticlockwise moment must also equal 700 Nm</div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Rearrange to find the force:</strong> F = M &divide; d = 700 &divide; 1.4</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Rearrange to find the force:</strong> F = <span class="frac"><span class="frac-num">M</span><span class="frac-line"></span><span class="frac-den">d</span></span> = <span class="frac"><span class="frac-num">700</span><span class="frac-line"></span><span class="frac-den">1.4</span></span></div></div>
         <div class="step"><div class="step-num">4</div><div class="step-content">F = <strong>500 N</strong></div></div>
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Moments calculations</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Moments calculations</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Use the Principle of Moments to find the missing force or distance in each problem. Show all working.</p>
 
           <div class="task-item">
-            <div class="task-q">1. A lever has an effort of 300 N applied 1.5 m from the fulcrum. A load is placed 0.5 m from the fulcrum on the other side. Calculate the load.</div>
+            <div class="task-q">1. A lever has a force of 300 N applied 1.5 m from the fulcrum. A second force acts 0.5 m from the fulcrum on the other side. Calculate the size of the second force needed for equilibrium.</div>
             <div class="answer-label">Working <span class="saved-indicator" id="ind-t2a">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t2a" data-placeholder="Show working here&hellip;"></div>
           </div>
           <div class="task-item">
-            <div class="task-q">2. A load of 600 N is placed 2 m from a fulcrum. Where must an effort of 400 N be applied to balance the lever?</div>
+            <div class="task-q">2. A downward force of 600 N acts 2 m from a fulcrum. Where must a force of 400 N be applied on the other side to balance the lever?</div>
             <div class="answer-label">Working <span class="saved-indicator" id="ind-t2b">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t2b" data-placeholder="Show working here&hellip;"></div>
           </div>
           <div class="task-item">
-            <div class="task-q">3. A lever has two loads: 200 N at 3 m and 400 N at 1.5 m on the right. An effort is applied 2 m to the left of the fulcrum. Calculate the effort needed for equilibrium.</div>
+            <div class="task-q">3. A lever has two forces on the right of the fulcrum: 200 N at 3 m and 400 N at 1.5 m. A force is applied 2 m to the left of the fulcrum. Calculate the force needed for equilibrium.</div>
             <div class="answer-label">Working <span class="saved-indicator" id="ind-t2c">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t2c" data-placeholder="Show working here&hellip;"></div>
           </div>
@@ -402,40 +617,6 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 4: Free-Body Diagrams</h1>
-
-      <p class="notes-p">A <strong>free-body diagram</strong> is a simplified diagram that shows all the forces acting on a structure or body. It isolates the structure from its surroundings and replaces real components with arrows representing the forces they exert.</p>
-
-      <p class="notes-p">To draw a free-body diagram:</p>
-      <ol class="notes-ol">
-        <li>Draw a simple outline of the structure (or just a line or box)</li>
-        <li>Replace all connections and supports with arrows showing the force they exert</li>
-        <li>Label each force with a letter or value</li>
-        <li>Show downward forces (loads, weight) acting through their point of application</li>
-        <li>Show upward reaction forces at support points</li>
-      </ol>
-
-      <div class="key-point">Free-body diagrams make it easier to see and calculate all the forces acting on a structure. Every force must be accounted for — including the weight of the structure itself if stated.</div>
-
-      <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Free-body diagrams</div></div>
-        <div class="assignment-body">
-          <div class="task-item">
-            <div class="task-q">1. Draw a free-body diagram of a car resting on flat ground. Show the downward forces (weight acting through the centre of mass) and the reaction forces at each axle. Use suitable letter labels.</div>
-            <div class="answer-label">Sketch and labels <span class="saved-indicator" id="ind-t3a">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t3a" data-placeholder="Describe or sketch your free-body diagram here&hellip;"></div>
-          </div>
-          <div class="task-item">
-            <div class="task-q">2. A bridge is supported at two ends. A bus sits on the bridge. Draw and label the free-body diagram showing all forces including the bridge's own weight.</div>
-            <div class="answer-label">Sketch and labels <span class="saved-indicator" id="ind-t3b">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t3b" data-placeholder="Describe or sketch your free-body diagram here&hellip;"></div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="divider">
-
-      <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1">Section 5: Beams and Reactions</h1>
 
       <p class="notes-p">A beam is a structural member that carries loads across its length. For a horizontal beam to be in <strong>equilibrium</strong>, two conditions must be satisfied simultaneously:</p>
@@ -447,7 +628,7 @@
         <div class="formula">&#x2211; clockwise moments = &#x2211; anticlockwise moments</div>
       </div>
 
-      <p class="notes-p">The upward forces at the support points are called <strong>reactions</strong> (R<sub>1</sub> and R<sub>2</sub>). To find both reactions, we use the Principle of Moments and the force balance equation together.</p>
+      <p class="notes-p">The upward forces at the support points are called <strong>reactions</strong> (R<sub>1</sub> and R<sub>2</sub>). To find both reactions, we use the Principle of Moments and the force balance equation together. A free-body diagram of the beam — showing every downward force and both reactions — is the best starting point for any of these problems.</p>
 
       <h2 class="notes-h2">Method for finding beam reactions</h2>
       <ol class="notes-ol">
@@ -459,6 +640,32 @@
       <div class="worked-example">
         <div class="worked-example-title">Worked Example &mdash; Simply supported beam with three loads</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A 5 m beam is supported at each end (R<sub>1</sub> at left, R<sub>2</sub> at right). Three downward loads are applied: 10 000 N at 2 m from R<sub>1</sub>, 500 N at 2.5 m, and 6 000 N at 4 m. Beam weight is ignored.</p>
+        <div style="text-align:center; margin:14px 0;">
+          <svg viewBox="0 0 640 195" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px;height:auto;">
+            <rect x="60" y="90" width="520" height="12" rx="2" fill="#99f6e4" stroke="#5eead4" stroke-width="1"/>
+            <polygon points="60,102 45,124 75,124" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+            <polygon points="580,102 565,124 595,124" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+            <line x1="38" y1="124" x2="82" y2="124" stroke="#94a3b8" stroke-width="1.5"/>
+            <line x1="563" y1="124" x2="597" y2="124" stroke="#94a3b8" stroke-width="1.5"/>
+            <text x="60" y="140" font-size="12" fill="#4b5563" text-anchor="middle" font-weight="700">R&#x2081;</text>
+            <text x="580" y="140" font-size="12" fill="#4b5563" text-anchor="middle" font-weight="700">R&#x2082;</text>
+            <line x1="268" y1="45" x2="268" y2="88" stroke="#ef4444" stroke-width="3"/>
+            <polygon points="268,90 261,76 275,76" fill="#ef4444"/>
+            <text x="268" y="36" font-size="12" font-weight="700" fill="#ef4444" text-anchor="middle">10 000 N</text>
+            <line x1="320" y1="45" x2="320" y2="88" stroke="#ef4444" stroke-width="3"/>
+            <polygon points="320,90 313,76 327,76" fill="#ef4444"/>
+            <text x="320" y="36" font-size="11" font-weight="700" fill="#ef4444" text-anchor="middle">500 N</text>
+            <line x1="476" y1="45" x2="476" y2="88" stroke="#ef4444" stroke-width="3"/>
+            <polygon points="476,90 469,76 483,76" fill="#ef4444"/>
+            <text x="476" y="36" font-size="12" font-weight="700" fill="#ef4444" text-anchor="middle">6 000 N</text>
+            <line x1="60" y1="158" x2="268" y2="158" stroke="#6b7280" stroke-width="1.5"/>
+            <line x1="60" y1="152" x2="60" y2="164" stroke="#6b7280" stroke-width="1.5"/>
+            <line x1="268" y1="152" x2="268" y2="164" stroke="#6b7280" stroke-width="1.5"/>
+            <text x="164" y="178" font-size="12" font-weight="600" fill="#4b5563" text-anchor="middle">2 m</text>
+            <line x1="60" y1="176" x2="320" y2="176" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3,3"/>
+            <text x="390" y="140" font-size="11" fill="#94a3b8" text-anchor="middle">2.5 m &amp; 4 m from R&#x2081; (not shown to scale)</text>
+          </svg>
+        </div>
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Take moments about R<sub>1</sub></strong> (so R<sub>1</sub> drops out):<br>&#x2211;CWM = &#x2211;ACWM<br>(10 000 &times; 2) + (500 &times; 2.5) + (6 000 &times; 4) = R<sub>2</sub> &times; 5</div></div>
         <div class="step"><div class="step-num">2</div><div class="step-content">20 000 + 1 250 + 24 000 = R<sub>2</sub> &times; 5<br>45 250 = R<sub>2</sub> &times; 5<br><strong>R<sub>2</sub> = 9 050 N</strong></div></div>
         <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Use force balance:</strong><br>R<sub>1</sub> + R<sub>2</sub> = 10 000 + 500 + 6 000 = 16 500 N<br>R<sub>1</sub> = 16 500 &minus; 9 050 = <strong>7 450 N</strong></div></div>
@@ -466,7 +673,7 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Beam reactions</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Beam reactions</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Show all working for each problem. Remember: take moments about one reaction first, then use the force balance to find the other.</p>
 
@@ -495,6 +702,36 @@
             <div class="answer-label">Working <span class="saved-indicator" id="ind-t4e">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t4e" data-placeholder="Show working here&hellip;"></div>
           </div>
+          <div class="task-item">
+            <div class="task-q">6. A road sign gantry spans 5.0 m between its two support posts, R<sub>A</sub> at the left and R<sub>B</sub> at the right. A sign produces a downward force of 4.5 kN, acting 2.0 m from R<sub>A</sub>. The gantry's own weight of 18 kN acts at 3.0 m from R<sub>A</sub>. Calculate the reaction force R<sub>B</sub> by taking moments about R<sub>A</sub>.</div>
+            <div style="text-align:center; margin:14px 0;">
+              <svg viewBox="0 0 640 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px;height:auto;">
+                <rect x="60" y="90" width="520" height="12" rx="2" fill="#99f6e4" stroke="#5eead4" stroke-width="1"/>
+                <polygon points="60,102 45,124 75,124" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+                <polygon points="580,102 565,124 595,124" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+                <line x1="38" y1="124" x2="82" y2="124" stroke="#94a3b8" stroke-width="1.5"/>
+                <line x1="563" y1="124" x2="597" y2="124" stroke="#94a3b8" stroke-width="1.5"/>
+                <text x="60" y="140" font-size="12" fill="#4b5563" text-anchor="middle" font-weight="700">R&#x2090;</text>
+                <text x="580" y="140" font-size="12" fill="#4b5563" text-anchor="middle" font-weight="700">R&#x1D66;</text>
+                <line x1="268" y1="45" x2="268" y2="88" stroke="#ef4444" stroke-width="3"/>
+                <polygon points="268,90 261,76 275,76" fill="#ef4444"/>
+                <text x="268" y="36" font-size="12" font-weight="700" fill="#ef4444" text-anchor="middle">4.5 kN</text>
+                <line x1="372" y1="45" x2="372" y2="88" stroke="#ef4444" stroke-width="3"/>
+                <polygon points="372,90 365,76 379,76" fill="#ef4444"/>
+                <text x="372" y="36" font-size="12" font-weight="700" fill="#ef4444" text-anchor="middle">18 kN</text>
+                <line x1="60" y1="158" x2="268" y2="158" stroke="#6b7280" stroke-width="1.5"/>
+                <line x1="60" y1="152" x2="60" y2="164" stroke="#6b7280" stroke-width="1.5"/>
+                <line x1="268" y1="152" x2="268" y2="164" stroke="#6b7280" stroke-width="1.5"/>
+                <text x="164" y="178" font-size="12" font-weight="600" fill="#4b5563" text-anchor="middle">2.0 m</text>
+                <line x1="60" y1="184" x2="372" y2="184" stroke="#6b7280" stroke-width="1.5"/>
+                <line x1="60" y1="178" x2="60" y2="190" stroke="#6b7280" stroke-width="1.5"/>
+                <line x1="372" y1="178" x2="372" y2="190" stroke="#6b7280" stroke-width="1.5"/>
+                <text x="216" y="204" font-size="12" font-weight="600" fill="#4b5563" text-anchor="middle">3.0 m</text>
+              </svg>
+            </div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-t4f">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t4f" data-placeholder="Show working here&hellip;"></div>
+          </div>
         </div>
       </div>
 
@@ -502,14 +739,49 @@
 
       <hr class="divider">
 
-      <h2 class="notes-h2">Vectors</h2>
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 6: Vectors and Equilibrium</h1>
+
       <p class="notes-p">Force is a <strong>vector quantity</strong> — it has both <strong>magnitude</strong> (size) and <strong>direction</strong>. Vectors can be represented as drawn lines where:</p>
       <ul class="notes-ul">
         <li>The <strong>length</strong> of the line (drawn to scale) represents the magnitude of the force</li>
         <li>The <strong>direction</strong> and arrowhead show the direction of the force</li>
       </ul>
 
+      <div style="text-align:center; margin:16px 0;">
+        <svg viewBox="0 0 320 120" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:340px;height:auto;">
+          <line x1="20" y1="60" x2="140" y2="60" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+          <polygon points="148,60 134,54 134,66" fill="#ef4444"/>
+          <text x="80" y="45" text-anchor="middle" fill="#ef4444" font-size="12" font-weight="700">300 N</text>
+          <line x1="20" y1="100" x2="260" y2="100" stroke="#0d9488" stroke-width="3" stroke-linecap="round"/>
+          <polygon points="268,100 254,94 254,106" fill="#0d9488"/>
+          <text x="140" y="118" text-anchor="middle" fill="#0d9488" font-size="12" font-weight="700">600 N</text>
+        </svg>
+      </div>
+      <p class="notes-p" style="text-align:center;font-size:12px;color:var(--gray-500);margin-top:-8px;">Drawn to the same scale, the 600 N vector is exactly twice the length of the 300 N vector.</p>
+
       <p class="notes-p">When multiple forces act along the same line, they can simply be added or subtracted. For example: a cyclist pedalling with 800 N, assisted by a tailwind of 400 N, but with 200 N road friction, has a net force of 800 + 400 &minus; 200 = <strong>1 000 N</strong>.</p>
+
+      <div style="text-align:center; margin:16px 0;">
+        <svg viewBox="0 0 400 180" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:400px;height:auto;">
+          <text x="30" y="24" font-size="11" fill="#0d9488" font-weight="700">Pedalling 800 N</text>
+          <line x1="30" y1="34" x2="190" y2="34" stroke="#0d9488" stroke-width="3" stroke-linecap="round"/>
+          <polygon points="198,34 184,28 184,40" fill="#0d9488"/>
+
+          <text x="30" y="64" font-size="11" fill="#0d9488" font-weight="700">Tailwind 400 N</text>
+          <line x1="30" y1="74" x2="110" y2="74" stroke="#0d9488" stroke-width="3" stroke-linecap="round"/>
+          <polygon points="118,74 104,68 104,80" fill="#0d9488"/>
+
+          <text x="30" y="104" font-size="11" fill="#ef4444" font-weight="700">Friction 200 N</text>
+          <line x1="110" y1="114" x2="70" y2="114" stroke="#ef4444" stroke-width="3" stroke-linecap="round"/>
+          <polygon points="62,114 76,108 76,120" fill="#ef4444"/>
+
+          <line x1="30" y1="140" x2="370" y2="140" stroke="#4b5563" stroke-width="1" stroke-dasharray="3,3"/>
+          <text x="30" y="160" font-size="12" fill="#111827" font-weight="700">Net force = 1 000 N</text>
+          <line x1="30" y1="170" x2="230" y2="170" stroke="#111827" stroke-width="4" stroke-linecap="round"/>
+          <polygon points="240,170 224,163 224,177" fill="#111827"/>
+        </svg>
+      </div>
 
       <h2 class="notes-h2">Resultant of two angled forces</h2>
       <p class="notes-p">When two forces act at an angle to each other, their combined effect is a single force called the <strong>resultant</strong>. The resultant can be found graphically using the <strong>parallelogram of forces</strong>:</p>
@@ -521,6 +793,30 @@
         <li>Measure the length of C to D and convert using your scale to find the magnitude</li>
         <li>Measure the angle to find the direction</li>
       </ol>
+
+      <div style="text-align:center; margin:16px 0;">
+        <svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:300px;height:auto;">
+          <line x1="150" y1="190" x2="220" y2="100" stroke="#0d9488" stroke-width="3"/>
+          <polygon points="0,-5 12,0 0,5" fill="#0d9488" transform="translate(220,100) rotate(-52.13)"/>
+          <text x="200" y="135" font-size="13" font-weight="700" fill="#0d9488">F1</text>
+
+          <line x1="150" y1="190" x2="80" y2="120" stroke="#ef4444" stroke-width="3"/>
+          <polygon points="0,-5 12,0 0,5" fill="#ef4444" transform="translate(80,120) rotate(-135)"/>
+          <text x="90" y="150" font-size="13" font-weight="700" fill="#ef4444">F2</text>
+
+          <line x1="220" y1="100" x2="150" y2="30" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+          <line x1="80" y1="120" x2="150" y2="30" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4,3"/>
+
+          <line x1="150" y1="190" x2="150" y2="30" stroke="#111827" stroke-width="3"/>
+          <polygon points="0,-5 12,0 0,5" fill="#111827" transform="translate(150,30) rotate(-90)"/>
+          <text x="165" y="60" font-size="13" font-weight="700" fill="#111827">Resultant</text>
+
+          <circle cx="150" cy="190" r="3" fill="#111827"/>
+          <text x="150" y="208" font-size="12" fill="#4b5563" text-anchor="middle">C</text>
+          <circle cx="150" cy="30" r="3" fill="#111827"/>
+          <text x="150" y="18" font-size="12" fill="#4b5563" text-anchor="middle">D</text>
+        </svg>
+      </div>
 
       <div class="key-point">The <strong>equilibrant</strong> is the single force that would exactly balance the resultant — it is equal in magnitude but opposite in direction to the resultant.</div>
 
@@ -544,8 +840,26 @@
         <li>Measure each side to find the forces (following arrowheads round the triangle indicates compression or tension)</li>
       </ol>
 
+      <div style="text-align:center; margin:16px 0;">
+        <svg viewBox="0 0 300 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:280px;height:auto;">
+          <line x1="150" y1="40" x2="150" y2="140" stroke="#ef4444" stroke-width="3"/>
+          <polygon points="0,-5 12,0 0,5" fill="#ef4444" transform="translate(150,140) rotate(90)"/>
+          <text x="168" y="95" font-size="13" font-weight="700" fill="#ef4444">W (known load)</text>
+
+          <line x1="150" y1="140" x2="230" y2="180" stroke="#0d9488" stroke-width="3"/>
+          <polygon points="0,-5 12,0 0,5" fill="#0d9488" transform="translate(230,180) rotate(26.57)"/>
+          <text x="205" y="168" font-size="13" font-weight="700" fill="#0d9488">F1</text>
+
+          <line x1="230" y1="180" x2="150" y2="40" stroke="#111827" stroke-width="3"/>
+          <polygon points="0,-5 12,0 0,5" fill="#111827" transform="translate(150,40) rotate(-119.7)"/>
+          <text x="90" y="95" font-size="13" font-weight="700" fill="#111827">F2</text>
+
+          <text x="150" y="30" font-size="11" fill="#4b5563" text-anchor="middle">joint</text>
+        </svg>
+      </div>
+
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Vectors and equilibrium</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Vectors and equilibrium</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1. State whether each of the following is TRUE or FALSE and explain your reasoning:</div>
@@ -581,6 +895,11 @@
             <div class="task-q">5. A weight of 2 000 N hangs from a rope attached to a roof hook. A second rope pulls horizontally until the first rope makes 30&deg; to the vertical. Determine the horizontal pull and the force on the hook.</div>
             <div class="answer-label">Working and answer <span class="saved-indicator" id="ind-t7h">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t7h" data-placeholder="Show working and results&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">6. A gondola cable car cabin hangs in equilibrium from a supporting cable. One section of cable pulls at 23 kN, the cabin and passengers weigh 12 kN, and a second cable section provides the balancing force F. Using a scale drawing (triangle of forces), determine the size of force F.</div>
+            <div class="answer-label">Sketch and answer <span class="saved-indicator" id="ind-t7i">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t7i" data-placeholder="Describe your construction and results&hellip;"></div>
           </div>
         </div>
       </div>
