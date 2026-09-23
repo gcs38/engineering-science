@@ -2569,12 +2569,15 @@ const preloadedLesson = `{
       "rot": 90,
       "lbl": "",
       "restrict": 0,
+      "capacity": 1,
       "capped": false,
       "manual": false,
       "flipV": false,
       "flipH": false,
       "startPos": false,
-      "normallyOpen": false
+      "normallyOpen": false,
+      "latching": false,
+      "mechId": ""
     },
     {
       "id": "ljt8fv98m",
@@ -2584,10 +2587,14 @@ const preloadedLesson = `{
       "rot": 0,
       "lbl": "",
       "restrict": 0,
+      "capacity": 1,
       "capped": false,
       "manual": false,
       "flipV": false,
-      "flipH": false
+      "flipH": false,
+      "pressure": 0.2,
+      "latching": false,
+      "mechId": ""
     },
     {
       "id": "zmt6xuteh",
@@ -2597,10 +2604,15 @@ const preloadedLesson = `{
       "rot": 0,
       "lbl": "",
       "restrict": 0,
+      "capacity": 1,
       "capped": false,
       "manual": false,
       "flipV": false,
-      "flipH": false
+      "flipH": false,
+      "boreDia": 12,
+      "rodDia": 5,
+      "latching": false,
+      "mechId": ""
     },
     {
       "id": "79vxb0ik8",
@@ -2610,23 +2622,46 @@ const preloadedLesson = `{
       "rot": 0,
       "lbl": "",
       "restrict": 0,
+      "capacity": 1,
       "capped": false,
       "manual": false,
       "flipV": false,
-      "flipH": false
+      "flipH": false,
+      "latching": false,
+      "mechId": ""
     },
     {
       "id": "4j5dj6878",
       "type": "supply",
-      "x": 265,
+      "x": 135,
       "y": 195,
       "rot": 0,
       "lbl": "",
       "restrict": 0,
+      "capacity": 1,
       "capped": false,
       "manual": false,
       "flipV": false,
-      "flipH": false
+      "flipH": false,
+      "pressure": 0.2,
+      "latching": false,
+      "mechId": ""
+    },
+    {
+      "id": "dd47evsdh",
+      "type": "unidir",
+      "x": 230,
+      "y": 195,
+      "rot": 0,
+      "lbl": "",
+      "restrict": 0.9,
+      "capacity": 1,
+      "capped": false,
+      "manual": false,
+      "flipV": false,
+      "flipH": false,
+      "latching": false,
+      "mechId": ""
     }
   ],
   "pipes": [
@@ -2647,14 +2682,6 @@ const preloadedLesson = `{
       "dashed": false
     },
     {
-      "p1_comp": "4j5dj6878",
-      "p1_idx": 0,
-      "p2_comp": "79vxb0ik8",
-      "p2_idx": 0,
-      "points": [],
-      "dashed": false
-    },
-    {
       "p1_comp": "1y0gca9lh",
       "p1_idx": 1,
       "p2_comp": "zmt6xuteh",
@@ -2666,9 +2693,25 @@ const preloadedLesson = `{
         }
       ],
       "dashed": false
+    },
+    {
+      "p1_comp": "79vxb0ik8",
+      "p1_idx": 0,
+      "p2_comp": "dd47evsdh",
+      "p2_idx": 1,
+      "points": [],
+      "dashed": false
+    },
+    {
+      "p1_comp": "dd47evsdh",
+      "p1_idx": 0,
+      "p2_comp": "4j5dj6878",
+      "p2_idx": 0,
+      "points": [],
+      "dashed": false
     }
   ],
-  "version": "V2.4"
+  "version": "V3.2.1"
 }`; 
 
 function renderSidebarIcons() {
