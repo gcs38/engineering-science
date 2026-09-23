@@ -274,7 +274,7 @@
           <img src="images/actuator-diaphragm.png" alt="Diaphragm actuator symbol" style="height:70px;">
           <div class="comp-name">Diaphragm</div>
           <div class="comp-unit">Switched by a small pressure change</div>
-          <div class="comp-unit">See Section 5</div>
+          <div class="comp-unit">See Section 6</div>
         </div>
         <div class="comp-card-sym">
           <img src="images/actuator-solenoid.png" alt="Solenoid actuator symbol" style="height:70px;">
@@ -363,15 +363,6 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t5b">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t5b" data-placeholder="Type your answer here…"></div>
           </div>
-          <div class="task-item">
-            <p class="task-q">3c. &#x270F;&#xFE0F; Draw a circuit diagram showing one push-button valve, a T-piece, and two single acting cylinders both fed from the T-piece. Draw by hand and paste a photo of your drawing here.</p>
-            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-3c.png')">
-              <img src="images/exemplar-3c.png" alt="Thumbnail of an exemplar answer for task 3c">
-              <span>&#x1F50D; Click to see an exemplar answer</span>
-            </div>
-            <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t5c">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t5c" data-placeholder="Paste your drawing here…"></div>
-          </div>
         </div>
       </div>
 
@@ -427,7 +418,74 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 5: Air Bleed (Diaphragm) Circuit</h1>
+      <h1 class="notes-h1">Section 5: Speed Control — Restrictors</h1>
+
+      <p class="notes-p">Under full pressure, a cylinder can move dangerously fast and hit the end of its stroke with a hard bang. We can slow it down using a <strong>flow control valve</strong>. Try adjusting the restrictors in the simulator before reading how they actually work.</p>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; SAC with Restrictors</div>
+          <a href="../../../../simulators/pneu-restrictors.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">
+          Observe how the restrictors slow the cylinder down.
+        </div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-restrictors.html" title="No Pressure Sim — SAC with restrictors" loading="lazy"></iframe></div>
+      </div>
+
+      <h2 class="notes-h2">The restrictor</h2>
+      <p class="notes-p">A <strong>restrictor</strong> (sometimes called a throttle valve) slows a cylinder down by reducing the amount of space the air can flow through — a small adjustable screw narrows the passage, so less air can get through per second. The narrower you make it, the slower the cylinder moves.</p>
+
+      <div class="key-point">
+        <strong>Problem with a plain restrictor:</strong> it narrows the passage in <em>both</em> directions at once. That slows the cylinder down whichever way it's moving — outstroke <em>and</em> instroke — when we usually only want to control one direction. It can also make the piston's movement jerky rather than smooth.
+      </div>
+
+      <h2 class="notes-h2">The uni-directional restrictor (UDR)</h2>
+      <p class="notes-p">A <strong>uni-directional restrictor</strong> solves this by combining the same adjustable restriction with a one-way <strong>bypass channel</strong> running alongside it. The bypass contains a small flap or ball that acts like a one-way valve:</p>
+
+      <ul class="notes-ul">
+        <li>In <strong>one direction</strong>, air pressure pushes the flap open, so air flows straight through the wide bypass channel, <strong>completely unrestricted</strong>.</li>
+        <li>In the <strong>other direction</strong>, that same pressure pushes the flap shut, sealing off the bypass. All the air is now forced through the narrow adjustable orifice instead — this is the direction that gets <strong>restricted</strong>.</li>
+      </ul>
+
+      <p class="notes-p">That's why it's called <em>uni</em>-directional: free flow one way, restricted flow the other — set by the single adjustable screw.</p>
+
+      <h2 class="notes-h2">Where to put it</h2>
+      <p class="notes-p">A UDR is placed so that it restricts the air <strong>leaving</strong> the cylinder (the exhaust side), not the air coming in. If you restrict the incoming air instead, the piston has to fight to build up enough pressure to move at all, while the opposite side empties out freely — this makes the motion hesitant and jerky. Restricting the exhaust instead means main air can still push in freely, and the piston is held back smoothly by air trapped behind it, controlled by how fast it's allowed to escape.</p>
+
+      <div class="warning">
+        <strong>Exam rule:</strong> In pneumatics, always restrict the exhaust air leaving a cylinder — never the main air going in. This is what gives smooth, controlled movement.
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Speed control</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <p class="task-q">5a. Use the simulator or physical components to build a circuit with a UDR. Adjust the restrictor and observe how the cylinder speed changes. Explain, using the idea of the bypass channel, why a UDR only restricts the airflow in one direction.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t8a" data-placeholder="Type your answer here…"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">5b. A packaging machine uses a SAC to push items along a conveyor. The operator wants the outstroke to be slow but the instroke to be quick. Explain where a uni-directional restrictor (UDR) should be placed and how it should be oriented to achieve this.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t8b" data-placeholder="Type your answer here…"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">5c. &#x270F;&#xFE0F; Draw a SAC circuit with a uni-directional restrictor correctly positioned on the exhaust to slow the outstroke. Label the direction of free flow and restricted flow. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-5c.png')">
+              <img src="images/exemplar-5c.png" alt="Thumbnail of an exemplar answer for task 5c">
+              <span>&#x1F50D; Click to see an exemplar answer</span>
+            </div>
+            <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t8c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t8c" data-placeholder="Paste your drawing here…"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 6: Air Bleed (Diaphragm) Circuit</h1>
 
       <p class="notes-p">An <strong>air bleed circuit</strong> works differently from every circuit so far — instead of pressing a valve to supply air, it works by <strong>blocking</strong> a small continuous flow of air. Try it in the simulator before reading the detail.</p>
 
@@ -465,81 +523,31 @@
            onerror="this.style.display='none'">
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Air bleed circuit</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Air bleed circuit</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <p class="task-q">5a. Explain how an air bleed circuit works. In your answer, describe what happens at the bleed point when it is open, and what happens when it is blocked.</p>
+            <p class="task-q">6a. Explain how an air bleed circuit works. In your answer, describe what happens at the bleed point when it is open, and what happens when it is blocked.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7a">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t7a" data-placeholder="Type your answer here&hellip;"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">5b. Describe one practical application of an air bleed circuit. Explain what causes the bleed to be blocked in your example and what action this triggers.</p>
+            <p class="task-q">6b. Describe one practical application of an air bleed circuit. Explain what causes the bleed to be blocked in your example and what action this triggers.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t7b" data-placeholder="Type your answer here&hellip;"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">5c. State one key difference between an air bleed circuit and a standard push-button SAC circuit.</p>
+            <p class="task-q">6c. State one key difference between an air bleed circuit and a standard push-button SAC circuit.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7c">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t7c" data-placeholder="Type your answer here&hellip;"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">5d. &#x270F;&#xFE0F; Without looking back at the diagram above, draw the full air bleed circuit from memory: the diaphragm-actuated 3/2 valve, the bleed point, main air, exhaust, and the single acting cylinder. Draw by hand and paste a photo of your drawing here — then check it against the diagram above.</p>
-            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-5d.png')">
-              <img src="images/exemplar-5d.png" alt="Thumbnail of an exemplar answer for task 5d">
+            <p class="task-q">6d. &#x270F;&#xFE0F; Without looking back at the diagram above, draw the full air bleed circuit from memory: the diaphragm-actuated 3/2 valve, the bleed point, main air, exhaust, and the single acting cylinder. Draw by hand and paste a photo of your drawing here — then check it against the diagram above.</p>
+            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-6d.png')">
+              <img src="images/exemplar-6d.png" alt="Thumbnail of an exemplar answer for task 6d">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t7d">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t7d" data-placeholder="Paste your drawing here…"></div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="divider">
-
-      <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 6: Speed Control — Restrictors</h1>
-
-      <p class="notes-p">The speed of a pneumatic cylinder can be controlled by limiting the <strong>flow rate</strong> of air using a uni-directional restrictor (UDR). Try adjusting the restrictors in the simulator before reading the theory.</p>
-
-      <div class="sim-embed-section">
-        <div class="sim-embed-header">
-          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; SAC with Restrictors</div>
-          <a href="../../../../simulators/pneu-restrictors.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
-        </div>
-        <div class="sim-instruction">
-          Observe how the uni-directional restrictors (UDRs) slow the cylinder. Main air flows freely in one direction but exhaust air is restricted in the other — controlling outstroke and instroke speed independently.
-        </div>
-        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-restrictors.html" title="No Pressure Sim — SAC with restrictors" loading="lazy"></iframe></div>
-      </div>
-
-      <p class="notes-p"><strong>Meter-in:</strong> The restrictor is placed on the main air supply side. It limits the main air flowing <em>into</em> the cylinder, slowing the stroke.</p>
-      <p class="notes-p"><strong>Meter-out:</strong> The restrictor is placed on the exhaust side. It limits the air flowing <em>out</em> to exhaust. This gives smoother speed control and is preferred because the back-pressure helps support the load.</p>
-
-      <div class="warning">
-        <strong>Exam rule:</strong> In pneumatics, we never restrict the main air input to a cylinder — only the exhaust air should be restricted. This ensures the cylinder always has smooth, controlled movement. Meter-out is therefore the correct method and is the one you will need to apply in exam questions.
-      </div>
-
-      <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Speed control</div></div>
-        <div class="assignment-body">
-          <div class="task-item">
-            <p class="task-q">6a. Use the simulator or physical components to build a circuit with a UDR. Adjust the restrictor and observe how the cylinder speed changes. Explain the difference between meter-in and meter-out speed control. Which method should always be used in pneumatics and why?</p>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8a">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="pneu-t8a" data-placeholder="Type your answer here…"></div>
-          </div>
-          <div class="task-item">
-            <p class="task-q">6b. A packaging machine uses a SAC to push items along a conveyor. The operator wants the outstroke to be slow but the instroke to be quick. Explain where a uni-directional restrictor (UDR) should be placed and how it should be oriented to achieve this.</p>
-            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8b">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="pneu-t8b" data-placeholder="Type your answer here…"></div>
-          </div>
-          <div class="task-item">
-            <p class="task-q">6c. &#x270F;&#xFE0F; Draw a SAC circuit with a uni-directional restrictor correctly positioned and oriented for meter-out speed control on the exhaust. Label the direction of free flow and restricted flow. Draw by hand and paste a photo of your drawing here.</p>
-            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-6c.png')">
-              <img src="images/exemplar-6c.png" alt="Thumbnail of an exemplar answer for task 6c">
-              <span>&#x1F50D; Click to see an exemplar answer</span>
-            </div>
-            <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t8c">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t8c" data-placeholder="Paste your drawing here…"></div>
           </div>
         </div>
       </div>
