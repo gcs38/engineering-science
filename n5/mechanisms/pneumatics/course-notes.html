@@ -127,7 +127,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 23 September 2026, 17:25</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 23 September 2026, 20:59</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Pneumatics</div>
       <h1 class="hero-title">&#x1F4A8; Pneumatics &mdash; Course Notes</h1>
       <p class="hero-sub">Pneumatic components, circuit diagrams, SAC and DAC circuits, speed control, and automatic circuits</p>
@@ -274,13 +274,13 @@
           <img src="images/actuator-diaphragm.png" alt="Diaphragm actuator symbol" style="height:70px;">
           <div class="comp-name">Diaphragm</div>
           <div class="comp-unit">Switched by a small pressure change</div>
-          <div class="comp-unit">See Section 6</div>
+          <div class="comp-unit">See Section 7</div>
         </div>
         <div class="comp-card-sym">
           <img src="images/actuator-solenoid.png" alt="Solenoid actuator symbol" style="height:70px;">
           <div class="comp-name">Solenoid</div>
           <div class="comp-unit">Switched electrically</div>
-          <div class="comp-unit">See Section 11</div>
+          <div class="comp-unit">See Section 12</div>
         </div>
       </div>
 
@@ -369,9 +369,9 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 4: Shuttle Valve</h1>
+      <h1 class="notes-h1">Section 4: Shuttle Valve (OR control)</h1>
 
-      <p class="notes-p">A <strong>shuttle valve</strong> lets a cylinder be operated from two separate control valves. Try both push-buttons in the simulator below.</p>
+      <p class="notes-p">A <strong>shuttle valve</strong> lets a cylinder be operated from two separate control valves — actuating either one, or both together, causes the outstroke. This is known as <strong>OR control</strong>.</p>
 
       <div class="sim-embed-section">
         <div class="sim-embed-header">
@@ -379,15 +379,17 @@
           <a href="../../../../simulators/pneu-shuttle.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
         </div>
         <div class="sim-instruction">
-          Operate each push-button valve independently. Either valve can supply main air to cause the outstroke. Try pressing both valves at the same time and observe where the ball sits.
+          One valve is a push-button, the other is a lever valve set to <strong>latch</strong>. Latch the lever valve on, then also press the push-button — notice the shuttle valve lets air through to the cylinder whether just one valve is actuated, or both are actuated at the same time.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-shuttle.html" title="No Pressure Sim — Shuttle valve circuit" loading="lazy" style="height:360px;"></iframe></div>
       </div>
 
       <p class="notes-p">Inside the shuttle valve is a small ball. When main air enters from one inlet, it pushes the ball across to seal the other inlet and passes through to the outlet. If main air enters the other inlet instead, the ball moves the other way and the same thing happens. If main air enters both inlets at the same time, the ball stays where it is and main air still passes through to the outlet.</p>
 
+      <p class="notes-p">You might wonder why a plain T-piece couldn't be used here instead, since it also joins two pipes together. A T-piece has no ball or seal inside it — it's just an open junction. If only <em>one</em> of the two valves were actuated, the main air would take the path of least resistance and simply escape out through the <strong>other valve's exhaust port</strong>, instead of reaching the cylinder. A shuttle valve prevents this by sealing off whichever inlet isn't currently supplying air.</p>
+
       <div class="key-point">
-        <strong>Key point:</strong> A shuttle valve lets the cylinder outstroke if valve A <em>or</em> valve B supplies main air. This is useful for two-handed operation or operating a machine from two different locations.
+        <strong>Key point:</strong> A shuttle valve lets the cylinder outstroke if valve A <em>or</em> valve B (or both together) supplies main air &mdash; this is called <strong>OR control</strong>. It's useful for two-handed operation or operating a machine from two different locations.
       </div>
 
       <div class="assignment">
@@ -418,7 +420,48 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 5: Speed Control — Restrictors</h1>
+      <h1 class="notes-h1">Section 5: AND Control</h1>
+
+      <p class="notes-p">Section 4 covered <strong>OR control</strong> — a cylinder that outstrokes if valve A <em>or</em> valve B is actuated. Sometimes you want the opposite: a cylinder that will only outstroke if <strong>two conditions are both satisfied at once</strong>. This is called <strong>AND control</strong>.</p>
+
+      <h2 class="notes-h2">Where AND control is used</h2>
+      <p class="notes-p">The classic example is a <strong>two-handed safety control</strong> on a machine like a guillotine or a press. If the machine only needed one button pressed, an operator could reach into the danger area with their free hand while pressing the button with the other. Wiring the machine so that <strong>both</strong> buttons — one for each hand — must be pressed at the same time guarantees both of the operator's hands are safely out of the way before the machine can move.</p>
+
+      <p class="notes-p">Other examples include a machine guard that must be closed <strong>and</strong> a start button pressed before a cylinder will move, or a security gate that needs a card swipe <strong>and</strong> a button press together.</p>
+
+      <div class="key-point">
+        <strong>Key point:</strong> Just like OR control didn't need any exotic new hardware — a shuttle valve is built from parts you already understand — AND control can be built using nothing more than <strong>two ordinary 3/2 valves</strong>, arranged the right way.
+      </div>
+
+      <div class="assignment">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Design an AND control circuit</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <p class="task-q">6a. &#x270F;&#xFE0F; Using two 3/2 push-button, spring-return valves and a single acting cylinder, design a circuit where the cylinder will only outstroke when <strong>both</strong> push-buttons are pressed at the same time. Pressing only one button (either one) must <strong>not</strong> cause the outstroke. <em>Clue: you only need one main air supply.</em> Draw your circuit by hand and paste a photo of it here.</p>
+            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-5a.png')">
+              <img src="images/exemplar-5a.png" alt="Thumbnail of an exemplar answer for task 5a">
+              <span>&#x1F50D; Try the design yourself first &mdash; then click here to compare against an exemplar answer</span>
+            </div>
+            <div class="answer-label">Design <span class="saved-indicator" id="ind-t3a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t3a" data-placeholder="Paste your design here…"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">6b. Build or simulate your design. Test what happens when you press only the first button, only the second button, and both together. Describe what you observed for each test.</p>
+            <div class="answer-label">Test evidence <span class="saved-indicator" id="ind-t3b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t3b" data-placeholder="Button 1 only:&#10;Button 2 only:&#10;Both together:"></div>
+          </div>
+          <div class="task-item">
+            <p class="task-q">6c. Explain, in terms of the path the main air has to take, why pressing only one of the two valves does not cause the cylinder to outstroke.</p>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-t3c">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="pneu-t3c" data-placeholder="Type your answer here…"></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1">Section 6: Speed Control — Restrictors</h1>
 
       <p class="notes-p">In many applications it is necessary to control the speed that the cylinder moves. This is achieved by restricting the flow of air.</p>
 
@@ -469,22 +512,22 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Speed control</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Speed control</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <p class="task-q">5a. Use the simulator or physical components to build a circuit with a UDR. Adjust the restrictor and observe how the cylinder speed changes. Explain, using the idea of the bypass channel, why a UDR only restricts the airflow in one direction.</p>
+            <p class="task-q">6a. Use the simulator or physical components to build a circuit with a UDR. Adjust the restrictor and observe how the cylinder speed changes. Explain, using the idea of the bypass channel, why a UDR only restricts the airflow in one direction.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8a">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t8a" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">5b. A packaging machine uses a SAC to push items along a conveyor. The operator wants the outstroke to be slow but the instroke to be quick. Explain where a uni-directional restrictor (UDR) should be placed and how it should be oriented to achieve this.</p>
+            <p class="task-q">6b. A packaging machine uses a SAC to push items along a conveyor. The operator wants the outstroke to be slow but the instroke to be quick. Explain where a uni-directional restrictor (UDR) should be placed and how it should be oriented to achieve this.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t8b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t8b" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">5c. &#x270F;&#xFE0F; Draw a SAC circuit with a uni-directional restrictor correctly positioned on the exhaust to slow the outstroke. Label the direction of free flow and restricted flow. Draw by hand and paste a photo of your drawing here.</p>
-            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-5c.png')">
-              <img src="images/exemplar-5c.png" alt="Thumbnail of an exemplar answer for task 5c">
+            <p class="task-q">6c. &#x270F;&#xFE0F; Draw a SAC circuit with a uni-directional restrictor correctly positioned on the exhaust to slow the outstroke. Label the direction of free flow and restricted flow. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-6c.png')">
+              <img src="images/exemplar-6c.png" alt="Thumbnail of an exemplar answer for task 5c">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t8c">&#x2713; Saved</span></div>
@@ -496,7 +539,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 6: Air Bleed (Diaphragm) Circuit</h1>
+      <h1 class="notes-h1">Section 7: Air Bleed (Diaphragm) Circuit</h1>
 
       <p class="notes-p">An <strong>air bleed circuit</strong> works differently from every circuit so far — instead of pressing a valve to supply air, it works by <strong>blocking</strong> a small continuous flow of air. Try it in the simulator before reading the detail.</p>
 
@@ -536,27 +579,27 @@
            onerror="this.style.display='none'">
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Air bleed circuit</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Air bleed circuit</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <p class="task-q">6a. Explain how an air bleed circuit works. In your answer, describe what happens at the bleed point when it is open, and what happens when it is blocked.</p>
+            <p class="task-q">7a. Explain how an air bleed circuit works. In your answer, describe what happens at the bleed point when it is open, and what happens when it is blocked.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7a">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t7a" data-placeholder="Type your answer here&hellip;"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">6b. Describe one practical application of an air bleed circuit. Explain what causes the bleed to be blocked in your example and what action this triggers.</p>
+            <p class="task-q">7b. Describe one practical application of an air bleed circuit. Explain what causes the bleed to be blocked in your example and what action this triggers.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t7b" data-placeholder="Type your answer here&hellip;"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">6c. State one key difference between an air bleed circuit and a standard push-button SAC circuit.</p>
+            <p class="task-q">7c. State one key difference between an air bleed circuit and a standard push-button SAC circuit.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t7c">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t7c" data-placeholder="Type your answer here&hellip;"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">6d. &#x270F;&#xFE0F; Without looking back at the diagram above, draw the full air bleed circuit from memory: the diaphragm-actuated 3/2 valve, the bleed point, main air, exhaust, and the single acting cylinder. Draw by hand and paste a photo of your drawing here — then check it against the diagram above.</p>
-            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-6d.png')">
-              <img src="images/exemplar-6d.png" alt="Thumbnail of an exemplar answer for task 6d">
+            <p class="task-q">7d. &#x270F;&#xFE0F; Without looking back at the diagram above, draw the full air bleed circuit from memory: the diaphragm-actuated 3/2 valve, the bleed point, main air, exhaust, and the single acting cylinder. Draw by hand and paste a photo of your drawing here — then check it against the diagram above.</p>
+            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-7d.png')">
+              <img src="images/exemplar-7d.png" alt="Thumbnail of an exemplar answer for task 6d">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t7d">&#x2713; Saved</span></div>
@@ -568,7 +611,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 7: Double Acting Cylinder Circuit</h1>
+      <h1 class="notes-h1">Section 8: Double Acting Cylinder Circuit</h1>
 
       <p class="notes-p">So far, every cylinder you've met has needed just one valve. A double acting cylinder (DAC) is different — main air needs to reach <strong>either side</strong> of the piston, depending on which way you want it to move. Before reaching for a new valve, let's see what happens if we just try to do this with two of the 3/2 valves you already know.</p>
 
@@ -603,22 +646,22 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; DAC circuit</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; DAC circuit</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <p class="task-q">7a. Use the No Pressure simulator or physical components to build the DAC circuit. Operate the 5/2 valve in both directions. Describe what you observe and explain how the DAC differs from the SAC circuit you built in Task 2.</p>
+            <p class="task-q">8a. Use the No Pressure simulator or physical components to build the DAC circuit. Operate the 5/2 valve in both directions. Describe what you observe and explain how the DAC differs from the SAC circuit you built in Task 2.</p>
             <div class="answer-label">Observations <span class="saved-indicator" id="ind-t4a">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t4a" data-placeholder="Describe what you observed…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">7b. A DAC circuit has its 5/2 valve in the normal state. Describe what the cylinder is doing. Explain what happens to the cylinder when the valve changes to its actuated state.</p>
+            <p class="task-q">8b. A DAC circuit has its 5/2 valve in the normal state. Describe what the cylinder is doing. Explain what happens to the cylinder when the valve changes to its actuated state.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t4b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t4b" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">7c. &#x270F;&#xFE0F; Draw the full circuit diagram for the DAC circuit: a 5/2 push-button valve connected to a double acting cylinder, with the ports numbered. Zoom into the symbols in the simulator above (or click on the exemplar below) to check the details of how to draw them. Draw by hand and paste a photo of your drawing here.</p>
-            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-7c.png')">
-              <img src="images/exemplar-7c.png" alt="Thumbnail of an exemplar answer for task 7c">
+            <p class="task-q">8c. &#x270F;&#xFE0F; Draw the full circuit diagram for the DAC circuit: a 5/2 push-button valve connected to a double acting cylinder, with the ports numbered. Zoom into the symbols in the simulator above (or click on the exemplar below) to check the details of how to draw them. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-8c.png')">
+              <img src="images/exemplar-8c.png" alt="Thumbnail of an exemplar answer for task 7c">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t4c">&#x2713; Saved</span></div>
@@ -630,7 +673,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 8: Semi-Automatic Circuit</h1>
+      <h1 class="notes-h1">Section 9: Semi-Automatic Circuit</h1>
 
       <p class="notes-p">A <strong>semi-automatic circuit</strong> needs a manual input to start each cycle, but part of the operation happens automatically. Press start in the simulator and watch the full cycle before reading how it works.</p>
 
@@ -655,22 +698,22 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; Semi-automatic circuit</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 9 &mdash; Semi-automatic circuit</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <p class="task-q">8a. Describe the complete operating cycle of a semi-automatic pneumatic circuit. Include reference to: the pilot signal, how main air causes the outstroke, what triggers the instroke, and what happens at the end of the cycle.</p>
+            <p class="task-q">9a. Describe the complete operating cycle of a semi-automatic pneumatic circuit. Include reference to: the pilot signal, how main air causes the outstroke, what triggers the instroke, and what happens at the end of the cycle.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t9a">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t9a" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">8b. Explain the difference between a manual circuit and a semi-automatic circuit. Give one advantage of using a semi-automatic circuit in a production environment.</p>
+            <p class="task-q">9b. Explain the difference between a manual circuit and a semi-automatic circuit. Give one advantage of using a semi-automatic circuit in a production environment.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t9b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t9b" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">8c. &#x270F;&#xFE0F; Draw the full semi-automatic circuit diagram: a push-button start valve, a pilot-actuated 5/2 valve, a DAC, and a roller-actuated spring-return valve positioned to be tripped at the end of the outstroke. Draw by hand and paste a photo of your drawing here.</p>
-            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-8c.png')">
-              <img src="images/exemplar-8c.png" alt="Thumbnail of an exemplar answer for task 8c">
+            <p class="task-q">9c. &#x270F;&#xFE0F; Draw the full semi-automatic circuit diagram: a push-button start valve, a pilot-actuated 5/2 valve, a DAC, and a roller-actuated spring-return valve positioned to be tripped at the end of the outstroke. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-9c.png')">
+              <img src="images/exemplar-9c.png" alt="Thumbnail of an exemplar answer for task 8c">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t9c">&#x2713; Saved</span></div>
@@ -682,7 +725,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 9: Fully Automatic Circuit</h1>
+      <h1 class="notes-h1">Section 10: Fully Automatic Circuit</h1>
 
       <p class="notes-p">A <strong>fully automatic circuit</strong> repeats its cycle continuously without any manual input after the initial start signal. Press start in the simulator and watch it run.</p>
 
@@ -704,22 +747,22 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 9 &mdash; Fully automatic circuit</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 10 &mdash; Fully automatic circuit</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <p class="task-q">9a. Explain the role of each limit valve in a fully automatic circuit. What would happen if the limit valve at the retracted position were removed?</p>
+            <p class="task-q">10a. Explain the role of each limit valve in a fully automatic circuit. What would happen if the limit valve at the retracted position were removed?</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t10a">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t10a" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">9b. A fully automatic circuit is used in a bottling plant to cap bottles on a conveyor. Describe how the circuit could be modified to allow an operator to stop the machine safely at the end of a cycle (not mid-stroke).</p>
+            <p class="task-q">10b. A fully automatic circuit is used in a bottling plant to cap bottles on a conveyor. Describe how the circuit could be modified to allow an operator to stop the machine safely at the end of a cycle (not mid-stroke).</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t10b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t10b" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">9c. &#x270F;&#xFE0F; Draw the full fully automatic circuit diagram, including both limit valves in their correct positions at each end of the cylinder's stroke. Draw by hand and paste a photo of your drawing here.</p>
-            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-9c.png')">
-              <img src="images/exemplar-9c.png" alt="Thumbnail of an exemplar answer for task 9c">
+            <p class="task-q">10c. &#x270F;&#xFE0F; Draw the full fully automatic circuit diagram, including both limit valves in their correct positions at each end of the cylinder's stroke. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-10c.png')">
+              <img src="images/exemplar-10c.png" alt="Thumbnail of an exemplar answer for task 9c">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t10c">&#x2713; Saved</span></div>
@@ -731,7 +774,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 10: Time Delay Circuit</h1>
+      <h1 class="notes-h1">Section 11: Time Delay Circuit</h1>
 
       <p class="notes-p">A <strong>time delay valve</strong> introduces a controllable delay between an input signal and an output action. Operate the input in the simulator and watch the delay before reading how it's produced.</p>
 
@@ -757,32 +800,32 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 10 &mdash; Time delay circuit</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 11 &mdash; Time delay circuit</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <p class="task-q">10a. Describe how a pneumatic time delay circuit produces a time delay. Include reference to the restrictor, reservoir, and pilot-operated output valve.</p>
+            <p class="task-q">11a. Describe how a pneumatic time delay circuit produces a time delay. Include reference to the restrictor, reservoir, and pilot-operated output valve.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t11a">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t11a" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">10b. A time delay circuit is set to delay for 3 seconds. An engineer wants to increase the delay to 8 seconds. Explain two ways this could be achieved.</p>
+            <p class="task-q">11b. A time delay circuit is set to delay for 3 seconds. An engineer wants to increase the delay to 8 seconds. Explain two ways this could be achieved.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t11b">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t11b" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">10c. Use the simulator or physical components to build a time delay circuit. Adjust the UDR to make the delay longer and shorter. Describe what you observe and explain why adjusting the restrictor changes the delay time.</p>
+            <p class="task-q">11c. Use the simulator or physical components to build a time delay circuit. Adjust the UDR to make the delay longer and shorter. Describe what you observe and explain why adjusting the restrictor changes the delay time.</p>
             <div class="answer-label">Observations <span class="saved-indicator" id="ind-t11c">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t11c" data-placeholder="Describe what you observed…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">10d. Describe one practical application of a time delay circuit in an industrial or domestic context. Explain what the delay achieves in your chosen example.</p>
+            <p class="task-q">11d. Describe one practical application of a time delay circuit in an industrial or domestic context. Explain what the delay achieves in your chosen example.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t11d">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t11d" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">10e. &#x270F;&#xFE0F; Draw the full time delay circuit diagram: input valve, uni-directional restrictor, reservoir, and pilot-actuated 3/2 output valve. Draw by hand and paste a photo of your drawing here.</p>
-            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-10e.png')">
-              <img src="images/exemplar-10e.png" alt="Thumbnail of an exemplar answer for task 10e">
+            <p class="task-q">11e. &#x270F;&#xFE0F; Draw the full time delay circuit diagram: input valve, uni-directional restrictor, reservoir, and pilot-actuated 3/2 output valve. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-11e.png')">
+              <img src="images/exemplar-11e.png" alt="Thumbnail of an exemplar answer for task 10e">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t11e">&#x2713; Saved</span></div>
@@ -794,7 +837,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 11: Electrical Control of Pneumatics</h1>
+      <h1 class="notes-h1">Section 12: Electrical Control of Pneumatics</h1>
 
       <p class="notes-p">Every circuit so far has been switched by hand, by a pilot air signal, or automatically by another part of the pneumatic circuit. A pneumatic valve can also be switched <strong>electrically</strong>, using a <strong>solenoid</strong> actuator — a coil that, when energised, moves the valve's spool. This is how pneumatic systems are controlled by microcontrollers, PLCs and other electronic systems.</p>
 
@@ -808,22 +851,22 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 11 &mdash; Electrical control</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 12 &mdash; Electrical control</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <p class="task-q">11a. Explain the difference between a pilot actuator and a solenoid actuator on a valve. In which type of circuit would each be used?</p>
+            <p class="task-q">12a. Explain the difference between a pilot actuator and a solenoid actuator on a valve. In which type of circuit would each be used?</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t12a">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t12a" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">11b. Give one example of a sensor that could be used to trigger a solenoid valve electrically, and describe the pneumatic action it would cause.</p>
+            <p class="task-q">12b. Give one example of a sensor that could be used to trigger a solenoid valve electrically, and describe the pneumatic action it would cause.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t12b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t12b" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">11c. &#x270F;&#xFE0F; Draw the full solenoid circuit diagram: a solenoid-actuated 3/2 valve connected to a single acting cylinder, labelling the electrical signal, main air and exhaust. Draw by hand and paste a photo of your drawing here.</p>
-            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-11c.png')">
-              <img src="images/exemplar-11c.png" alt="Thumbnail of an exemplar answer for task 11c">
+            <p class="task-q">12c. &#x270F;&#xFE0F; Draw the full solenoid circuit diagram: a solenoid-actuated 3/2 valve connected to a single acting cylinder, labelling the electrical signal, main air and exhaust. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-12c.png')">
+              <img src="images/exemplar-12c.png" alt="Thumbnail of an exemplar answer for task 11c">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t12c">&#x2713; Saved</span></div>
@@ -835,7 +878,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 12: Calculating Cylinder Force</h1>
+      <h1 class="notes-h1">Section 13: Calculating Cylinder Force</h1>
 
       <p class="notes-p">The force a pneumatic cylinder can produce depends on two things: the <strong>air pressure</strong> in the circuit, and the <strong>area</strong> of the piston that the pressure is acting on.</p>
 
@@ -952,27 +995,27 @@
       </div>
 
       <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 12 &mdash; Force calculations</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 13 &mdash; Force calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <p class="task-q">12a. A SAC has a piston diameter of 20 mm and is supplied at 4 bar. Calculate the outstroke force in newtons. Show your working, converting units before you calculate.</p>
+            <p class="task-q">13a. A SAC has a piston diameter of 20 mm and is supplied at 4 bar. Calculate the outstroke force in newtons. Show your working, converting units before you calculate.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t13a">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t13a" data-placeholder="Type your working and answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">12b. A DAC has a piston diameter of 40 mm and a piston rod diameter of 12 mm, supplied at 6 bar. Calculate (i) the outstroking force and (ii) the instroking force. Show your working for both, including the piston area and the rod area.</p>
+            <p class="task-q">13b. A DAC has a piston diameter of 40 mm and a piston rod diameter of 12 mm, supplied at 6 bar. Calculate (i) the outstroking force and (ii) the instroking force. Show your working for both, including the piston area and the rod area.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t13b">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t13b" data-placeholder="Type your working and answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">12c. Explain, in terms of piston area and rod area, why a DAC's instroking force is always lower than its outstroking force at the same supply pressure.</p>
+            <p class="task-q">13c. Explain, in terms of piston area and rod area, why a DAC's instroking force is always lower than its outstroking force at the same supply pressure.</p>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t13c">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t13c" data-placeholder="Type your answer here…"></div>
           </div>
           <div class="task-item">
-            <p class="task-q">12d. &#x270F;&#xFE0F; Draw two labelled cross-section diagrams of a DAC piston: one showing the full piston area used on the outstroke, and one showing the smaller area (piston area minus rod area) used on the instroke, with the rod diameter marked. Draw by hand and paste a photo of your drawing here.</p>
-            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-12d.png')">
-              <img src="images/exemplar-12d.png" alt="Thumbnail of an exemplar answer for task 12d">
+            <p class="task-q">13d. &#x270F;&#xFE0F; Draw two labelled cross-section diagrams of a DAC piston: one showing the full piston area used on the outstroke, and one showing the smaller area (piston area minus rod area) used on the instroke, with the rod diameter marked. Draw by hand and paste a photo of your drawing here.</p>
+            <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-13d.png')">
+              <img src="images/exemplar-13d.png" alt="Thumbnail of an exemplar answer for task 12d">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t13d">&#x2713; Saved</span></div>
@@ -985,7 +1028,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 13: Design Challenges</h1>
+      <h1 class="notes-h1">Section 14: Design Challenges</h1>
 
       <p class="notes-p">The questions in Sections 1&ndash;12 checked that you understand each circuit individually. The three challenges below work differently — each one gives you a real-world context and a written <strong>specification</strong>, the same way an assignment does. Nobody will show you the circuit first: you have to work out which components to use and how to connect them, then build or simulate your design and check it actually meets the spec.</p>
 
@@ -1068,7 +1111,7 @@
       </table>
 
       <div class="key-point">
-        <strong>Hint:</strong> think about how you detected "fully raised" in the semi-automatic and fully-automatic circuits in Sections 8 and 9, and how you produced a delay in Section 10 &mdash; this challenge combines both ideas.
+        <strong>Hint:</strong> think about how you detected "fully raised" in the semi-automatic and fully-automatic circuits in Sections 9 and 10, and how you produced a delay in Section 11 &mdash; this challenge combines both ideas.
       </div>
 
       <div class="assignment">
