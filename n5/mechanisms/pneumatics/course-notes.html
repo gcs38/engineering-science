@@ -95,6 +95,13 @@
       .main { margin:0!important; padding:0!important; }
       .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
     }
+    .exemplar-thumb { display:inline-flex; align-items:center; gap:10px; cursor:pointer; border:1px solid var(--teal-100); border-radius:10px; padding:8px 14px 8px 8px; background:var(--teal-50); margin:12px 0; font-size:13px; color:var(--teal-800); font-weight:600; transition:background .15s; }
+    .exemplar-thumb:hover { background:#e0f2ea; }
+    .exemplar-thumb img { width:64px; height:auto; border-radius:6px; display:block; border:1px solid var(--gray-200); background:white; }
+    .exemplar-modal { display:none; position:fixed; inset:0; background:rgba(15,23,42,.85); z-index:9999; align-items:center; justify-content:center; padding:28px; cursor:zoom-out; }
+    .exemplar-modal.open { display:flex; }
+    .exemplar-modal img { max-width:92vw; max-height:88vh; border-radius:10px; box-shadow:0 20px 50px rgba(0,0,0,.5); background:white; }
+    .exemplar-modal .exemplar-caption { position:absolute; bottom:24px; left:0; right:0; text-align:center; color:white; font-size:13px; }
   </style>
 </head>
 <body>
@@ -120,7 +127,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 23 September 2026, 13:15</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 23 September 2026, 14:57</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Pneumatics</div>
       <h1 class="hero-title">&#x1F4A8; Pneumatics &mdash; Course Notes</h1>
       <p class="hero-sub">Pneumatic components, circuit diagrams, SAC and DAC circuits, speed control, and automatic circuits</p>
@@ -144,11 +151,11 @@
       <img src="images/pneumatics-uses.png" alt="Infographic showing pneumatic systems found all around us — factory automation, bus door mechanisms, dental drills, road drills, and vehicle braking systems" style="width:100%;max-width:100%;display:block;margin:18px auto 6px;border-radius:10px;">
 
       <div class="key-point">
-        <strong>Key point:</strong> Pneumatic systems are widely used in industry because compressed air is safe, clean, and readily available. The compressor is the power source of every pneumatic system — without it, there is no supply of pressurised air to drive the circuit.
+        <strong>Key point:</strong> Pneumatic systems are widely used in industry because compressed air is safe, clean, and readily available.
       </div>
 
       <div class="warning">
-        <strong>Safety:</strong> Always ensure the air supply is isolated before connecting or disconnecting components. Never point a pneumatic line at yourself or others. Check all connections are secure before pressurising a circuit.
+        <strong>Safety:</strong> When using pneumatic equipment: Always ensure the air supply is isolated before connecting or disconnecting components. Never point a pneumatic line at yourself or others. Check all connections are secure before pressurising a circuit.
       </div>
 
       <h2 class="notes-h2">Advantages of pneumatic systems</h2>
@@ -194,7 +201,7 @@
       <p class="notes-p">Now let's look at what you just saw, piece by piece.</p>
 
       <h2 class="notes-h2">Main air supply and exhaust</h2>
-      <p class="notes-p">Every pneumatic circuit needs a <strong>main air supply</strong> — the pressurised air from the compressor, drawn into port 1 of a valve. That's the air you saw flowing in to push the cylinder out. <strong>Exhaust</strong> is where used air vents to atmosphere after passing through the circuit, shown in diagrams as an open triangle — that's the air you saw venting away when the cylinder instroked.</p>
+      <p class="notes-p">Every pneumatic circuit needs a <strong>main air supply</strong> — the pressurised air from the compressor, connected into port 1 of a valve. <strong>Exhaust</strong> is where used air vents to atmosphere after passing through the circuit, shown in diagrams as an open triangle. After air has been switched by a valve it is known as <strong>pilot air</strong>.</p>
 
       <div style="display:flex; align-items:flex-start; justify-content:center; gap:16px; margin:16px 0; flex-wrap:wrap;">
         <div class="comp-card-sym" style="width:288px;">
@@ -227,46 +234,53 @@
 
       <p class="notes-p">Here are the actuators you'll meet across these notes:</p>
 
-      <div class="comp-grid" style="grid-template-columns:repeat(4, 161px);justify-content:center;gap:14px;">
+      <div class="comp-grid" style="grid-template-columns:repeat(3, 193px);justify-content:center;gap:14px;">
         <div class="comp-card-sym">
-          <img src="images/actuator-push-button.png" alt="Push-button actuator symbol" style="height:58px;">
+          <img src="images/actuator-push-button.png" alt="Push-button actuator symbol" style="height:70px;">
           <div class="comp-name">Push-button</div>
           <div class="comp-unit">Pressed by hand</div>
         </div>
         <div class="comp-card-sym">
-          <img src="images/actuator-spring.png" alt="Spring return symbol" style="height:58px;">
+          <img src="images/actuator-spring.png" alt="Spring return symbol" style="height:70px;">
           <div class="comp-name">Spring Return</div>
           <div class="comp-unit">Returns the valve to normal</div>
         </div>
         <div class="comp-card-sym">
-          <img src="images/actuator-roller.png" alt="Roller actuator symbol" style="height:58px;">
+          <img src="images/actuator-roller.png" alt="Roller actuator symbol" style="height:70px;">
           <div class="comp-name">Roller</div>
-          <div class="comp-unit">Tripped by a moving part</div>
+          <div class="comp-unit">Actuated while a moving part presses on it</div>
         </div>
         <div class="comp-card-sym">
-          <img src="images/actuator-lever.png" alt="Lever actuator symbol" style="height:58px;">
+          <img src="images/actuator-roller-trip.png" alt="Roller trip actuator symbol" style="height:70px;">
+          <div class="comp-name">Roller Trip</div>
+          <div class="comp-unit">Actuated momentarily as a part passes over it</div>
+        </div>
+        <div class="comp-card-sym">
+          <img src="images/actuator-lever.png" alt="Lever actuator symbol" style="height:70px;">
           <div class="comp-name">Lever</div>
-          <div class="comp-unit">Tripped by a flat surface</div>
+          <div class="comp-unit">Operated by hand (or foot) and usually latches on</div>
         </div>
         <div class="comp-card-sym">
-          <img src="images/actuator-plunger.png" alt="Plunger actuator symbol" style="height:58px;">
+          <img src="images/actuator-plunger.png" alt="Plunger actuator symbol" style="height:70px;">
           <div class="comp-name">Plunger</div>
           <div class="comp-unit">Pushed end-on</div>
         </div>
         <div class="comp-card-sym">
-          <img src="images/actuator-pilot.png" alt="Pilot (main air) actuator symbol" style="height:58px;">
+          <img src="images/actuator-pilot.png" alt="Pilot (main air) actuator symbol" style="height:70px;">
           <div class="comp-name">Pilot</div>
           <div class="comp-unit">Switched by main air pressure</div>
         </div>
         <div class="comp-card-sym">
-          <img src="images/actuator-diaphragm.png" alt="Diaphragm actuator symbol" style="height:58px;">
+          <img src="images/actuator-diaphragm.png" alt="Diaphragm actuator symbol" style="height:70px;">
           <div class="comp-name">Diaphragm</div>
           <div class="comp-unit">Switched by a small pressure change</div>
+          <div class="comp-unit">See Section 5</div>
         </div>
         <div class="comp-card-sym">
-          <img src="images/actuator-solenoid.png" alt="Solenoid actuator symbol" style="height:58px;">
+          <img src="images/actuator-solenoid.png" alt="Solenoid actuator symbol" style="height:70px;">
           <div class="comp-name">Solenoid</div>
-          <div class="comp-unit">Switched electrically &mdash; Section 11</div>
+          <div class="comp-unit">Switched electrically</div>
+          <div class="comp-unit">See Section 11</div>
         </div>
       </div>
 
@@ -285,7 +299,7 @@
       <img src="images/photo-sac.png" alt="Photograph of a single acting cylinder, labelled: single air port — compressed air entry from a valve to out-stroke the piston" style="width:100%;max-width:360px;display:block;margin:28px auto;border-radius:8px;border:1px solid var(--gray-200);">
 
       <div class="key-point">
-        <strong>Schematic drawing:</strong> You've just met your first valve and cylinder. In your assessment, you're unlikely to be asked to draw a component completely from scratch — but you will be given circuit layout diagrams to read, and you'll often need to <strong>complete a partly-drawn circuit</strong>, for example adding in missing piping between components. To do that quickly and confidently, you need to instantly recognise every symbol and know how the pipes should connect — and the best way to build that recognition is to practise drawing the symbols yourself. That's why these notes include drawing tasks marked &#x270F;&#xFE0F; throughout. For these, <strong>sketch your answer by hand on paper</strong>, then photograph or scan it and <strong>paste the image directly into the answer box</strong> (click inside the box, then paste as you would with text).
+        <strong>Schematic drawing:</strong> You've just met your first valve and cylinder. In your assessment, you're unlikely to be asked to draw a component completely from scratch — but you will be given circuit layout diagrams to read, and you'll often need to <strong>complete a partly-drawn circuit</strong>, for example adding in missing piping between components. It is therefore useful to be able to recognise symbols and know how they are connected &mdash; and the best way to learn to do this is to practice drawing the symbols and circuits yourself. That's why these notes include drawing tasks marked &#x270F;&#xFE0F; throughout. For these, <strong>sketch your answer by hand on paper</strong>, then photograph or scan it and <strong>paste the image directly into the answer box</strong> (click inside the box, then paste as you would with text).
       </div>
 
 
@@ -1011,6 +1025,11 @@
         </div>
       </div>
 
+      <div class="exemplar-thumb" onclick="openExemplar('images/design-challenge-3.png')">
+        <img src="images/design-challenge-3.png" alt="Thumbnail of an exemplar answer for Design Challenge 3">
+        <span>&#x1F50D; Try the design yourself first &mdash; then click here to compare against an exemplar answer</span>
+      </div>
+
       <div class="controls-bar">
         <span class="controls-label">&#x1F4BE; Your answers are saved automatically in this browser</span>
         <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
@@ -1044,6 +1063,8 @@ function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatu
 function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
 function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
 function showSaved(key){var ind=document.getElementById('ind-'+key.replace('pneu-',''));if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function openExemplar(src){document.getElementById('exemplarModalImg').src=src;document.getElementById('exemplarModal').classList.add('open');}
+function closeExemplar(){document.getElementById('exemplarModal').classList.remove('open');}
 function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
 function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
 document.addEventListener('DOMContentLoaded',function(){
@@ -1056,6 +1077,11 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 });
 </script>
+
+    <div class="exemplar-modal" id="exemplarModal" onclick="closeExemplar()">
+      <img id="exemplarModalImg" src="" alt="Exemplar answer, enlarged">
+      <div class="exemplar-caption">Click anywhere to close</div>
+    </div>
 
 </body>
 
