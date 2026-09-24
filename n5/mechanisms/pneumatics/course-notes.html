@@ -93,6 +93,8 @@
     .ctrl-btn-clear:hover { background:#fee2e2; }
     .ctrl-btn-print { background:var(--teal-50); color:var(--teal-800); }
     .ctrl-btn-print:hover { background:var(--teal-100); }
+    .ctrl-btn-download-all { background:#eef2ff; color:#4338ca; }
+    .ctrl-btn-download-all:hover { background:#e0e7ff; }
     .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
     .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
     @media print {
@@ -127,7 +129,7 @@
     .toc-list a.toc-sub { padding-left:36px; font-size:13px; color:var(--gray-500); }
 
     /* Pupil name: floating button + small popup */
-    .name-fab { position:fixed; right:24px; bottom:132px; z-index:999999; display:flex; align-items:center; gap:8px; background:#4338ca; color:white; border:none; border-radius:999px; padding:12px 18px 12px 14px; font-size:14px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+    .name-fab { position:fixed; right:24px; bottom:132px; z-index:999999; display:flex; align-items:center; gap:8px; background:#4f46e5; color:white; border:none; border-radius:999px; padding:12px 16px 12px 13px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); }
     .name-fab:hover { background:#3730a3; }
     .name-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; align-items:center; justify-content:center; padding:20px; }
     .name-overlay.open { display:flex; }
@@ -167,7 +169,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 24 September 2026, 16:12</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 24 September 2026, 16:25</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Pneumatics</div>
       <h1 class="hero-title">&#x1F4A8; Pneumatics &mdash; Course Notes</h1>
       <p class="hero-sub">Pneumatic components, circuit diagrams, SAC and DAC circuits, speed control, and automatic circuits</p>
@@ -350,7 +352,7 @@
       </div>
 
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task2">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Main air, exhaust, the 3/2 valve and the SAC</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -372,6 +374,9 @@
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t2c">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t2c" data-placeholder="Paste your drawing here…"></div>
           </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task2', 'Task 2 — Main air, exhaust, the 3/2 valve and the SAC')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -395,7 +400,7 @@
 
       <p class="notes-p">Both branches receive the same supply pressure. T-pieces are used when a single air source needs to power multiple cylinders or valves at the same time.</p>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task3">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; T-piece</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -408,6 +413,9 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t5b">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t5b" data-placeholder="Type your answer here…"></div>
           </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task3', 'Task 3 — T-piece')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -437,7 +445,7 @@
         <strong>Key point:</strong> A shuttle valve lets the cylinder outstroke if valve A <em>or</em> valve B (or both together) supplies main air &mdash; this is called <strong>OR control</strong>. It's useful for two-handed operation or operating a machine from two different locations.
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task4">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Shuttle valve</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -460,6 +468,9 @@
             <div class="answer-box" contenteditable="true" data-key="pneu-t6c" data-placeholder="Paste your drawing here…"></div>
           </div>
         </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task4', 'Task 4 — Shuttle valve')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
       </div>
 
       <hr class="divider">
@@ -478,7 +489,7 @@
         <strong>Key point:</strong> OR control needs a specific component (a shuttle valve) but AND control can be built using two ordinary 3/2 valves, but they have to be arranged in a specific way.
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task5">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Design an AND control circuit</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -500,6 +511,9 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t3c">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t3c" data-placeholder="Type your answer here…"></div>
           </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task5', 'Task 5 — AND control')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -556,7 +570,7 @@
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-restrictors.html" title="No Pressure Sim — SAC with restrictors" loading="lazy"></iframe></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task6">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Speed control</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -578,6 +592,9 @@
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t8c">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t8c" data-placeholder="Paste your drawing here…"></div>
           </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task6', 'Task 6 — Speed control')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -615,7 +632,7 @@
       <img src="images/circuit-air-bleed.png" alt="Air bleed circuit diagram showing a diaphragm-actuated 3/2 valve and SAC" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;"
            onerror="this.style.display='none'">
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task7">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Air bleed circuit</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -642,6 +659,9 @@
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t7d">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t7d" data-placeholder="Paste your drawing here…"></div>
           </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task7', 'Task 7 — Air bleed circuit')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -682,7 +702,7 @@
         <strong>DAC advantage over SAC:</strong> Because main air actively drives the instroke as well as the outstroke, a DAC can produce a pushing force in both directions. The instroke force is slightly less than the outstroke force because the piston rod reduces the effective area on the instroke side (see Section 13).
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task8">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; DAC circuit</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -704,6 +724,9 @@
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t4c">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t4c" data-placeholder="Paste your drawing here…"></div>
           </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task8', 'Task 8 — DAC circuit')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -736,7 +759,7 @@
         <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Wait:</strong> Cylinder fully instroked. Circuit waits for operator to press button again to start the next cycle.</div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task9">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 9 &mdash; Semi-automatic circuit</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -749,6 +772,9 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t9b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t9b" data-placeholder="Type your answer here…"></div>
           </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task9', 'Task 9 — Semi-automatic circuit')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -776,7 +802,7 @@
         <strong>Fully automatic vs semi-automatic:</strong> In a semi-automatic circuit, only one limit valve is used so the cylinder stops and waits at the instroked position. In a fully automatic circuit, a second limit valve at the instroked end immediately sends a pilot signal to trigger the next outstroke.
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task10">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 10 &mdash; Fully automatic circuit</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -789,6 +815,9 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t10b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t10b" data-placeholder="Type your answer here…"></div>
           </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task10', 'Task 10 — Fully automatic circuit')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -812,7 +841,7 @@
 
       <p class="notes-p">The circuit consists of a uni-directional restrictor feeding a <strong>reservoir</strong>, which builds up main air pressure slowly until it is high enough to pilot (switch) a 3/2 output valve. By adjusting the restrictor, the fill time of the reservoir — and therefore the length of the delay — can be changed. Increasing the size of the reservoir will also increase the delay time, as more volume must be filled before the pilot threshold is reached. When the input signal is removed, the reservoir vents quickly back through the UDR and the timer resets immediately.</p>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task11">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 11 &mdash; Time delay circuit</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -845,6 +874,9 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t11e" data-placeholder="Paste your drawing here…"></div>
           </div>
         </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task11', 'Task 11 — Time delay circuit')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
       </div>
 
       <hr class="divider">
@@ -863,7 +895,7 @@
         <strong>Key point:</strong> A solenoid valve is the bridge between the electronic and pneumatic worlds. Everywhere you'd otherwise need a person to press a button or a mechanical pilot signal, a solenoid lets a microcontroller, sensor, or PLC do the switching instead.
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task12">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 12 &mdash; Electrical control</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -885,6 +917,9 @@
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t12c">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-t12c" data-placeholder="Paste your drawing here…"></div>
           </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task12', 'Task 12 — Electrical control')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -1005,7 +1040,7 @@
         <div class="step"><div class="step-num">3</div><div class="step-content">Force: F = P &times; A = 0.5 &times; 3770 = <strong>1885 N</strong>.</div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task13">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 13 &mdash; Force calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1023,6 +1058,9 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t13c">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="pneu-t13c" data-placeholder="Type your answer here…"></div>
           </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task13', 'Task 13 — Force calculations')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -1049,7 +1087,7 @@
         <tr><th><span class="data-badge">iii</span></th><td>The circuit must not restrict the main air supply into the cylinder at any point.</td></tr>
       </table>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-dc1">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Design Challenge 1</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1068,6 +1106,9 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-dc1c" data-placeholder="i: met / not met — because…&#10;ii: met / not met — because…&#10;iii: met / not met — because…"></div>
           </div>
         </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc1', 'Design Challenge 1')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
       </div>
 
       <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-dc1.png')">
@@ -1085,7 +1126,7 @@
         <tr><th><span class="data-badge">ii</span></th><td>The cylinder must instroke (close the vent) when a third push-button valve is actuated.</td></tr>
       </table>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-dc2">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Design Challenge 2</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1109,6 +1150,9 @@
             <div class="answer-box" contenteditable="true" data-key="pneu-dc2d" data-placeholder="Type your answer here…"></div>
           </div>
         </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc2', 'Design Challenge 2')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
       </div>
 
       <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-dc2.png')">
@@ -1131,7 +1175,7 @@
         <strong>Hint:</strong> think about how you detected "fully raised" in the semi-automatic and fully-automatic circuits in Sections 9 and 10, and how you produced a delay in Section 11 &mdash; this challenge combines both ideas.
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-dc3">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Design Challenge 3</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1150,6 +1194,9 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="pneu-dc3c" data-placeholder="i: met / not met — because…&#10;ii: met / not met — because…&#10;iii: met / not met — because…&#10;&#10;Improvement:"></div>
           </div>
         </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc3', 'Design Challenge 3')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
       </div>
 
       <div class="exemplar-thumb" onclick="openExemplar('images/design-challenge-3.png')">
@@ -1159,6 +1206,7 @@
 
       <div class="controls-bar">
         <span class="controls-label">&#x1F4BE; Your answers are saved automatically in this browser</span>
+        <button class="ctrl-btn ctrl-btn-download-all" id="downloadAllBtn" onclick="downloadAllAnswersPDF()">&#x2B07;&#xFE0F; Download ALL my answers (PDF)</button>
         <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
         <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
       </div>
@@ -1192,6 +1240,107 @@ function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}cat
 function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
 function showSaved(key){var ind=document.getElementById('ind-'+key.replace('pneu-',''));if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
 
+function pdfAddHeader(doc, state, taskLabel) {
+  doc.setFont('helvetica', 'bold');
+  doc.setFontSize(16);
+  doc.setTextColor(15, 90, 68);
+  doc.text('Engineering Science Scotland', state.margin, state.y);
+  state.y += 20;
+
+  doc.setFontSize(14);
+  doc.setTextColor(30, 30, 30);
+  doc.text(taskLabel, state.margin, state.y);
+  state.y += 22;
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(11);
+  doc.setTextColor(90, 90, 90);
+  var pupilName = getPupilName();
+  var todayStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  var nameLine = pupilName
+    ? ('Name: ' + pupilName + '      Date: ' + todayStr)
+    : ('Name: _________________________________      Date: _______________');
+  doc.text(nameLine, state.margin, state.y);
+  state.y += 20;
+  doc.setDrawColor(200, 200, 200);
+  doc.line(state.margin, state.y, state.pageWidth - state.margin, state.y);
+  state.y += 18;
+}
+
+function pdfEnsureSpace(doc, state, neededHeight) {
+  if (state.y + neededHeight > state.pageHeight - state.margin) {
+    doc.addPage();
+    state.y = state.margin;
+  }
+}
+
+function pdfRenderPanelItems(doc, state, panel) {
+  var items = panel.querySelectorAll('.task-item');
+  for (var i = 0; i < items.length; i++) {
+    var item = items[i];
+    var qEl = item.querySelector('.task-q');
+    var qText = qEl ? qEl.innerText.replace(/^\s*\u270F\uFE0F\s*/, '').trim() : '';
+    var answerBox = item.querySelector('.answer-box');
+
+    doc.setFont('helvetica', 'bold');
+    doc.setFontSize(11);
+    doc.setTextColor(15, 90, 68);
+    var qLines = doc.splitTextToSize(qText, state.usableWidth);
+    pdfEnsureSpace(doc, state, qLines.length * 14 + 6);
+    doc.text(qLines, state.margin, state.y);
+    state.y += qLines.length * 14 + 6;
+
+    var img = answerBox ? answerBox.querySelector('img') : null;
+    if (img && img.src) {
+      try {
+        var props = doc.getImageProperties(img.src);
+        var maxImgWidth = state.usableWidth;
+        var maxImgHeight = 260;
+        var ratio = Math.min(maxImgWidth / props.width, maxImgHeight / props.height, 1);
+        var imgW = props.width * ratio;
+        var imgH = props.height * ratio;
+        pdfEnsureSpace(doc, state, imgH + 14);
+        doc.addImage(img.src, props.fileType || 'PNG', state.margin, state.y, imgW, imgH);
+        state.y += imgH + 16;
+      } catch (e) {
+        doc.setFont('helvetica', 'italic');
+        doc.setTextColor(160, 60, 60);
+        pdfEnsureSpace(doc, state, 14);
+        doc.text('[Could not embed pasted image]', state.margin, state.y);
+        state.y += 18;
+      }
+    } else {
+      var answerText = answerBox ? answerBox.innerText.trim() : '';
+      doc.setFont('helvetica', 'normal');
+      doc.setTextColor(40, 40, 40);
+      if (!answerText) {
+        doc.setFont('helvetica', 'italic');
+        doc.setTextColor(160, 160, 160);
+        answerText = '(no answer entered yet)';
+      }
+      var aLines = doc.splitTextToSize(answerText, state.usableWidth);
+      for (var li = 0; li < aLines.length; li++) {
+        pdfEnsureSpace(doc, state, 14);
+        doc.text(aLines[li], state.margin, state.y);
+        state.y += 14;
+      }
+      state.y += 8;
+    }
+    state.y += 6;
+  }
+}
+
+function pdfAddFooters(doc, state) {
+  var pageCount = doc.internal.getNumberOfPages();
+  for (var p = 1; p <= pageCount; p++) {
+    doc.setPage(p);
+    doc.setFont('helvetica', 'normal');
+    doc.setFontSize(9);
+    doc.setTextColor(150, 150, 150);
+    doc.text('Page ' + p + ' of ' + pageCount + '  \u2014  engineeringsciencescotland.co.uk', state.margin, state.pageHeight - 24);
+  }
+}
+
 function downloadTaskPDF(panelId, taskLabel) {
   var panel = document.getElementById(panelId);
   if (!panel) return;
@@ -1203,109 +1352,89 @@ function downloadTaskPDF(panelId, taskLabel) {
     try {
       var jsPDFCtor = window.jspdf.jsPDF;
       var doc = new jsPDFCtor({ unit: 'pt', format: 'a4' });
-      var pageWidth = doc.internal.pageSize.getWidth();
-      var pageHeight = doc.internal.pageSize.getHeight();
-      var margin = 48;
-      var usableWidth = pageWidth - margin * 2;
-      var y = margin;
+      var state = {
+        margin: 48,
+        pageWidth: doc.internal.pageSize.getWidth(),
+        pageHeight: doc.internal.pageSize.getHeight()
+      };
+      state.usableWidth = state.pageWidth - state.margin * 2;
+      state.y = state.margin;
 
-      function ensureSpace(neededHeight) {
-        if (y + neededHeight > pageHeight - margin) {
-          doc.addPage();
-          y = margin;
-        }
-      }
-
-      doc.setFont('helvetica', 'bold');
-      doc.setFontSize(16);
-      doc.setTextColor(15, 90, 68);
-      doc.text('Engineering Science Scotland', margin, y);
-      y += 20;
-
-      doc.setFontSize(14);
-      doc.setTextColor(30, 30, 30);
-      doc.text(taskLabel, margin, y);
-      y += 22;
-
-      doc.setFont('helvetica', 'normal');
-      doc.setFontSize(11);
-      doc.setTextColor(90, 90, 90);
-      var pupilName = getPupilName();
-      var todayStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
-      var nameLine = pupilName
-        ? ('Name: ' + pupilName + '      Date: ' + todayStr)
-        : ('Name: _________________________________      Date: _______________');
-      doc.text(nameLine, margin, y);
-      y += 20;
-      doc.setDrawColor(200, 200, 200);
-      doc.line(margin, y, pageWidth - margin, y);
-      y += 18;
-
-      var items = panel.querySelectorAll('.task-item');
-      for (var i = 0; i < items.length; i++) {
-        var item = items[i];
-        var qEl = item.querySelector('.task-q');
-        var qText = qEl ? qEl.innerText.replace(/^\s*\u270F\uFE0F\s*/, '').trim() : '';
-        var answerBox = item.querySelector('.answer-box');
-
-        doc.setFont('helvetica', 'bold');
-        doc.setFontSize(11);
-        doc.setTextColor(15, 90, 68);
-        var qLines = doc.splitTextToSize(qText, usableWidth);
-        ensureSpace(qLines.length * 14 + 6);
-        doc.text(qLines, margin, y);
-        y += qLines.length * 14 + 6;
-
-        var img = answerBox ? answerBox.querySelector('img') : null;
-        if (img && img.src) {
-          try {
-            var props = doc.getImageProperties(img.src);
-            var maxImgWidth = usableWidth;
-            var maxImgHeight = 260;
-            var ratio = Math.min(maxImgWidth / props.width, maxImgHeight / props.height, 1);
-            var imgW = props.width * ratio;
-            var imgH = props.height * ratio;
-            ensureSpace(imgH + 14);
-            doc.addImage(img.src, props.fileType || 'PNG', margin, y, imgW, imgH);
-            y += imgH + 16;
-          } catch (e) {
-            doc.setFont('helvetica', 'italic');
-            doc.setTextColor(160, 60, 60);
-            ensureSpace(14);
-            doc.text('[Could not embed pasted image]', margin, y);
-            y += 18;
-          }
-        } else {
-          var answerText = answerBox ? answerBox.innerText.trim() : '';
-          doc.setFont('helvetica', 'normal');
-          doc.setTextColor(40, 40, 40);
-          if (!answerText) {
-            doc.setFont('helvetica', 'italic');
-            doc.setTextColor(160, 160, 160);
-            answerText = '(no answer entered yet)';
-          }
-          var aLines = doc.splitTextToSize(answerText, usableWidth);
-          for (var li = 0; li < aLines.length; li++) {
-            ensureSpace(14);
-            doc.text(aLines[li], margin, y);
-            y += 14;
-          }
-          y += 8;
-        }
-        y += 6;
-      }
-
-      var pageCount = doc.internal.getNumberOfPages();
-      for (var p = 1; p <= pageCount; p++) {
-        doc.setPage(p);
-        doc.setFont('helvetica', 'normal');
-        doc.setFontSize(9);
-        doc.setTextColor(150, 150, 150);
-        doc.text('Page ' + p + ' of ' + pageCount + '  \u2014  engineeringsciencescotland.co.uk', margin, pageHeight - 24);
-      }
+      pdfAddHeader(doc, state, taskLabel);
+      pdfRenderPanelItems(doc, state, panel);
+      pdfAddFooters(doc, state);
 
       var fileSafe = taskLabel.replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-');
       doc.save(fileSafe + '.pdf');
+    } catch (err) {
+      console.error(err);
+      alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.');
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = originalText; }
+    }
+  }, 30);
+}
+
+var ALL_TASK_PANELS = [
+  ['assignment-task1', 'Task 1 — Pneumatics in context'],
+  ['assignment-task2', 'Task 2 — Main air, exhaust, the 3/2 valve and the SAC'],
+  ['assignment-task3', 'Task 3 — T-piece'],
+  ['assignment-task4', 'Task 4 — Shuttle valve'],
+  ['assignment-task5', 'Task 5 — AND control'],
+  ['assignment-task6', 'Task 6 — Speed control'],
+  ['assignment-task7', 'Task 7 — Air bleed circuit'],
+  ['assignment-task8', 'Task 8 — DAC circuit'],
+  ['assignment-task9', 'Task 9 — Semi-automatic circuit'],
+  ['assignment-task10', 'Task 10 — Fully automatic circuit'],
+  ['assignment-task11', 'Task 11 — Time delay circuit'],
+  ['assignment-task12', 'Task 12 — Electrical control'],
+  ['assignment-task13', 'Task 13 — Force calculations'],
+  ['assignment-dc1', 'Design Challenge 1'],
+  ['assignment-dc2', 'Design Challenge 2'],
+  ['assignment-dc3', 'Design Challenge 3']
+];
+
+function downloadAllAnswersPDF() {
+  var btn = document.getElementById('downloadAllBtn');
+  var originalText = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = 'Building PDF&hellip;'; }
+
+  setTimeout(function () {
+    try {
+      var jsPDFCtor = window.jspdf.jsPDF;
+      var doc = new jsPDFCtor({ unit: 'pt', format: 'a4' });
+      var state = {
+        margin: 48,
+        pageWidth: doc.internal.pageSize.getWidth(),
+        pageHeight: doc.internal.pageSize.getHeight()
+      };
+      state.usableWidth = state.pageWidth - state.margin * 2;
+      state.y = state.margin;
+
+      pdfAddHeader(doc, state, 'Pneumatics — All my answers');
+
+      for (var i = 0; i < ALL_TASK_PANELS.length; i++) {
+        var panelId = ALL_TASK_PANELS[i][0];
+        var label = ALL_TASK_PANELS[i][1];
+        var panel = document.getElementById(panelId);
+        if (!panel) continue;
+
+        pdfEnsureSpace(doc, state, 26);
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(13);
+        doc.setTextColor(194, 65, 12);
+        doc.text(label, state.margin, state.y);
+        state.y += 8;
+        doc.setDrawColor(230, 200, 180);
+        doc.line(state.margin, state.y, state.pageWidth - state.margin, state.y);
+        state.y += 16;
+
+        pdfRenderPanelItems(doc, state, panel);
+        state.y += 10;
+      }
+
+      pdfAddFooters(doc, state);
+      doc.save('Pneumatics-All-My-Answers.pdf');
     } catch (err) {
       console.error(err);
       alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.');
