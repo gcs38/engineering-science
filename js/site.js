@@ -393,9 +393,10 @@ function renderTeacherDocs(topicKey, containerId) {
 
   var btnStyle = [
     'position:fixed', 'bottom:24px', 'right:24px', 'z-index:9999',
-    'display:inline-flex', 'align-items:center', 'gap:7px',
-    'background:#0f766e', 'color:white', 'font-size:13px', 'font-weight:600',
-    'font-family:inherit', 'padding:10px 16px', 'border-radius:999px',
+    'display:inline-flex', 'align-items:center', 'justify-content:center', 'gap:7px',
+    'width:120px', 'box-sizing:border-box',
+    'background:#0f766e', 'color:white', 'font-size:13px', 'font-weight:700',
+    'font-family:inherit', 'padding:12px 14px', 'border-radius:999px',
     'box-shadow:0 4px 14px rgba(0,0,0,0.18)', 'text-decoration:none',
     'transition:background 0.2s, transform 0.15s', 'cursor:pointer', 'border:none'
   ].join(';');
