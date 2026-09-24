@@ -321,14 +321,56 @@ function renderTeacherDocs(topicKey, containerId) {
 
 /* ============================================================
    SITEWIDE UI
-   Development banner and feedback button.
+   Development banner, feedback button, and pop-out feedback panel.
    Set SHOW_BANNER = false when the site is complete.
    ============================================================ */
 
 (function () {
 
   var SHOW_BANNER    = true;
-  var FEEDBACK_EMAIL = 'g.sanderson@gwc.org.uk';
+  var FEEDBACK_EMAIL = 'engineeringsciencescotland@gmail.com';
+
+  // ---- Pop-out feedback panel (shared by banner link and floating button) ----
+  function injectFeedbackPanel() {
+    if (document.getElementById('essfb-overlay')) return;
+
+    var style = document.createElement('style');
+    style.textContent =
+      '.essfb-overlay{display:none;position:fixed;inset:0;background:rgba(15,23,42,.5);z-index:100000;align-items:center;justify-content:center;padding:20px;}' +
+      '.essfb-overlay.open{display:flex;}' +
+      '.essfb-panel{background:#fff;border-radius:14px;max-width:420px;width:100%;padding:28px 26px 24px;box-shadow:0 20px 60px rgba(0,0,0,.35);position:relative;font-family:inherit;}' +
+      '.essfb-close{position:absolute;top:12px;right:14px;background:none;border:none;font-size:22px;line-height:1;color:#94a3b8;cursor:pointer;padding:4px 6px;}' +
+      '.essfb-close:hover{color:#334155;}' +
+      '.essfb-panel h3{margin:0 0 12px;font-size:18px;color:#0f766e;}' +
+      '.essfb-panel p{margin:0 0 18px;font-size:14px;line-height:1.6;color:#475569;}' +
+      '.essfb-email{display:flex;align-items:center;justify-content:center;gap:8px;background:#0f766e;color:#fff;font-size:14px;font-weight:700;padding:12px 18px;border-radius:9px;text-decoration:none;transition:background .15s;}' +
+      '.essfb-email:hover{background:#0d9488;}';
+    document.head.appendChild(style);
+
+    var overlay = document.createElement('div');
+    overlay.className = 'essfb-overlay';
+    overlay.id = 'essfb-overlay';
+    overlay.addEventListener('click', function(e){ if (e.target === overlay) closeFeedbackPanel(); });
+    overlay.innerHTML =
+      '<div class="essfb-panel">' +
+        '<button class="essfb-close" onclick="window.ESSFeedback.close()" aria-label="Close">&times;</button>' +
+        '<h3>Help us improve this site</h3>' +
+        '<p>Spotted a typo, a broken link, a confusing explanation, or an outright mistake? Every report &mdash; however small &mdash; helps us make these notes better for every pupil and teacher who uses them. We read every message.</p>' +
+        '<a class="essfb-email" href="mailto:' + FEEDBACK_EMAIL + '?subject=ESS%20Website%20Feedback">&#x2709;&#xFE0F; ' + FEEDBACK_EMAIL + '</a>' +
+      '</div>';
+    document.body.appendChild(overlay);
+  }
+
+  function openFeedbackPanel(e) {
+    if (e) e.preventDefault();
+    injectFeedbackPanel();
+    document.getElementById('essfb-overlay').classList.add('open');
+  }
+  function closeFeedbackPanel() {
+    var overlay = document.getElementById('essfb-overlay');
+    if (overlay) overlay.classList.remove('open');
+  }
+  window.ESSFeedback = { open: openFeedbackPanel, close: closeFeedbackPanel };
 
   if (SHOW_BANNER) {
     var bannerStyle = [
@@ -344,7 +386,7 @@ function renderTeacherDocs(topicKey, containerId) {
     banner.setAttribute('style', bannerStyle);
     banner.innerHTML =
       '<span>&#x1F6A7; This site is under active development &mdash; some resources are not yet available.</span>' +
-      '<a href="mailto:' + FEEDBACK_EMAIL + '?subject=ESS%20Website%20Feedback" style="' + linkStyle + '">Spotted an issue? Let us know.</a>';
+      '<a href="#" onclick="window.ESSFeedback.open(event)" style="' + linkStyle + '">Spotted an issue? Let us know.</a>';
     var main = document.querySelector('.main');
     if (main) main.insertBefore(banner, main.firstChild);
   }
@@ -359,7 +401,8 @@ function renderTeacherDocs(topicKey, containerId) {
   ].join(';');
 
   var feedbackBtn = document.createElement('a');
-  feedbackBtn.href = 'mailto:' + FEEDBACK_EMAIL + '?subject=ESS%20Website%20Feedback';
+  feedbackBtn.href = '#';
+  feedbackBtn.addEventListener('click', function(e){ window.ESSFeedback.open(e); });
   feedbackBtn.setAttribute('style', btnStyle);
   feedbackBtn.innerHTML = '&#x2709;&#xFE0F; Feedback';
   feedbackBtn.title = 'Report an issue or send feedback about this site';
