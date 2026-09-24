@@ -6,6 +6,7 @@
   <title>Pneumatics &mdash; Course Notes &mdash; Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
+    html { scroll-behavior: smooth; }
     .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
     .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
     .back-link:hover { color:var(--teal-800); }
@@ -90,18 +91,35 @@
     .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
     .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
     @media print {
-      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.sim-embed-section { display:none!important; }
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.sim-embed-section,.toc-fab,.toc-panel,.toc-overlay { display:none!important; }
       .layout { display:block!important; }
       .main { margin:0!important; padding:0!important; }
       .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
     }
     .exemplar-thumb { display:inline-flex; align-items:center; gap:10px; cursor:pointer; border:1px solid var(--teal-100); border-radius:10px; padding:8px 14px 8px 8px; background:var(--teal-50); margin:12px 0; font-size:13px; color:var(--teal-800); font-weight:600; transition:background .15s; }
     .exemplar-thumb:hover { background:#e0f2ea; }
-    .exemplar-thumb img { width:40px; height:auto; border-radius:6px; display:block; border:1px solid var(--gray-200); background:white; filter:blur(1.5px); }
+    .exemplar-thumb img { width:40px; height:40px; object-fit:cover; border-radius:6px; display:block; border:1px solid var(--gray-200); background:white; filter:blur(1.5px); }
     .exemplar-modal { display:none; position:fixed; inset:0; background:rgba(15,23,42,.85); z-index:9999; align-items:center; justify-content:center; padding:28px; cursor:zoom-out; }
     .exemplar-modal.open { display:flex; }
     .exemplar-modal img { max-width:92vw; max-height:88vh; border-radius:10px; box-shadow:0 20px 50px rgba(0,0,0,.5); background:white; }
     .exemplar-modal .exemplar-caption { position:absolute; bottom:24px; left:0; right:0; text-align:center; color:white; font-size:13px; }
+
+    /* Table of contents: floating button + slide-out panel */
+    .toc-fab { position:fixed; right:20px; bottom:20px; z-index:900; display:flex; align-items:center; gap:8px; background:var(--teal-800); color:white; border:none; border-radius:999px; padding:12px 18px 12px 14px; font-size:14px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+    .toc-fab:hover { background:var(--teal-900, #0d3b2e); }
+    .toc-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:998; }
+    .toc-overlay.open { display:block; }
+    .toc-panel { position:fixed; top:0; right:-340px; width:320px; max-width:85vw; height:100%; background:white; z-index:999; box-shadow:-8px 0 30px rgba(0,0,0,.2); transition:right .25s ease; display:flex; flex-direction:column; }
+    .toc-panel.open { right:0; }
+    .toc-panel-header { padding:18px 20px 14px; border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; }
+    .toc-panel-header h3 { margin:0; font-size:16px; color:var(--teal-800); }
+    .toc-panel-close { background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .toc-panel-close:hover { color:var(--gray-700); }
+    .toc-list { overflow-y:auto; padding:8px 0 20px; }
+    .toc-list a { display:block; padding:10px 20px; font-size:14px; color:var(--gray-700); text-decoration:none; border-left:3px solid transparent; }
+    .toc-list a:hover { background:var(--teal-50); color:var(--teal-800); }
+    .toc-list a.toc-active { border-left-color:var(--teal-500,var(--teal-600)); background:var(--teal-50); color:var(--teal-800); font-weight:700; }
+    .toc-list a.toc-sub { padding-left:36px; font-size:13px; color:var(--gray-500); }
   </style>
 </head>
 <body>
@@ -144,7 +162,7 @@
       <a href="index.html" class="back-link">&larr; Back to Pneumatics</a>
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 1: What are Pneumatics?</h1>
+      <h1 class="notes-h1" id="section-1">Section 1: What are Pneumatics?</h1>
 
       <p class="notes-p">Pneumatics is the use of <strong>pressurised air</strong> to do mechanical work. A <strong>compressor</strong> draws in air from the atmosphere and compresses it to a higher pressure. This compressed air is stored and then controlled to produce linear or rotary movement. Pneumatic systems are found all around us — in factory automation, bus door mechanisms, dental drills, road drills, and vehicle braking systems.</p>
 
@@ -183,7 +201,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 2: Pneumatic Components — Seeing it Work First</h1>
+      <h1 class="notes-h1" id="section-2">Section 2: Pneumatic Components — Seeing it Work First</h1>
 
       <p class="notes-p">Rather than starting with a large number of symbols to memorise, let's watch a real circuit working first. Seeing the simulation below will give you a feel for what's going on — the air flowing, the valve switching, the cylinder moving — before we break down exactly <em>why</em> it behaves that way and what each part is called.</p>
 
@@ -335,7 +353,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 3: T-Piece — Splitting the Air Supply</h1>
+      <h1 class="notes-h1" id="section-3">Section 3: T-Piece — Splitting the Air Supply</h1>
 
       <p class="notes-p">A <strong>T-piece connector</strong> lets one main air supply feed two or more branches of a circuit at once. See it in action below.</p>
 
@@ -371,7 +389,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 4: Shuttle Valve (OR control)</h1>
+      <h1 class="notes-h1" id="section-4">Section 4: Shuttle Valve (OR control)</h1>
 
       <p class="notes-p">A <strong>shuttle valve</strong> lets a cylinder be operated from two separate control valves — actuating either one, or both together, causes the outstroke. This is known as <strong>OR control</strong>.</p>
 
@@ -422,7 +440,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 5: AND Control</h1>
+      <h1 class="notes-h1" id="section-5">Section 5: AND Control</h1>
 
       <p class="notes-p">Section 4 covered <strong>OR control</strong> — where valve A or valve B (or both valves) are actuated to outstroke a cylinder. Sometimes you want a cylinder to only outstroke if <strong>two conditions are both satisfied at once</strong>. This is called <strong>AND control</strong>.</p>
 
@@ -463,7 +481,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 6: Speed Control — Restrictors</h1>
+      <h1 class="notes-h1" id="section-6">Section 6: Speed Control — Restrictors</h1>
 
       <p class="notes-p">In many applications it is necessary to control the speed that the cylinder moves. This is achieved by restricting the flow of air.</p>
 
@@ -529,7 +547,7 @@
           <div class="task-item">
             <p class="task-q">6c. &#x270F;&#xFE0F; Draw a SAC circuit with a uni-directional restrictor correctly positioned on the exhaust to slow the outstroke. Label the direction of free flow and restricted flow. Draw by hand and paste a photo of your drawing here.</p>
             <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-6c.png')">
-              <img src="images/exemplar-6c.png" alt="Thumbnail of an exemplar answer for task 5c">
+              <img src="images/exemplar-6c.png" alt="Thumbnail of an exemplar answer for task 6c">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t8c">&#x2713; Saved</span></div>
@@ -541,7 +559,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 7: Air Bleed (Diaphragm) Circuit</h1>
+      <h1 class="notes-h1" id="section-7">Section 7: Air Bleed (Diaphragm) Circuit</h1>
 
       <p class="notes-p">An <strong>air bleed circuit</strong> works differently from every circuit so far — instead of pressing a valve to supply air, it works by <strong>blocking</strong> a small continuous flow of air. Try it in the simulator before reading the detail.</p>
 
@@ -593,7 +611,7 @@
           <div class="task-item">
             <p class="task-q">7d. &#x270F;&#xFE0F; Draw the full air bleed circuit: including the diaphragm-actuated 3/2 valve, the bleed point, main air, exhaust, and the single acting cylinder. Try to do this as best you can from memory before you look at the simulator or solution below. Draw by hand and paste a photo of your drawing here — then check it against the diagram above.</p>
             <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-7d.png')">
-              <img src="images/exemplar-7d.png" alt="Thumbnail of an exemplar answer for task 6d">
+              <img src="images/exemplar-7d.png" alt="Thumbnail of an exemplar answer for task 7d">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t7d">&#x2713; Saved</span></div>
@@ -605,7 +623,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 8: Double Acting Cylinder Circuit</h1>
+      <h1 class="notes-h1" id="section-8">Section 8: Double Acting Cylinder Circuit</h1>
 
       <p class="notes-p">So far, we've been working with cylinders that only need to be controlled in one direction. A spring has returned the piston to where it started. However, we often need to control both the outstroke and instroke of a cylinder. To do this, we use a double acting cylinder (DAC) that has a port at each end. Let's consider using 3/2 valves to directly control the air going into each end of a DAC.</p>
 
@@ -655,7 +673,7 @@
           <div class="task-item">
             <p class="task-q">8c. &#x270F;&#xFE0F; Draw the full circuit diagram for the DAC circuit: a 5/2 push-button valve connected to a double acting cylinder, with the ports numbered. Zoom into the symbols in the simulator above (or click on the exemplar below) to check the details of how to draw them. Draw by hand and paste a photo of your drawing here.</p>
             <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-8c.png')">
-              <img src="images/exemplar-8c.png" alt="Thumbnail of an exemplar answer for task 7c">
+              <img src="images/exemplar-8c.png" alt="Thumbnail of an exemplar answer for task 8c">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t4c">&#x2713; Saved</span></div>
@@ -667,7 +685,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 9: Semi-Automatic Circuit</h1>
+      <h1 class="notes-h1" id="section-9">Section 9: Semi-Automatic Circuit</h1>
 
       <p class="notes-p">A <strong>semi-automatic circuit</strong> needs a manual input to start each cycle, but part of the operation happens automatically.</p>
 
@@ -709,7 +727,7 @@
           <div class="task-item">
             <p class="task-q">9c. &#x270F;&#xFE0F; Draw the full semi-automatic circuit diagram: a push-button start valve, a pilot-actuated 5/2 valve, a DAC, and a roller-actuated spring-return valve positioned to be tripped at the end of the outstroke. Draw by hand and paste a photo of your drawing here.</p>
             <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-9c.png')">
-              <img src="images/exemplar-9c.png" alt="Thumbnail of an exemplar answer for task 8c">
+              <img src="images/exemplar-9c.png" alt="Thumbnail of an exemplar answer for task 9c">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t9c">&#x2713; Saved</span></div>
@@ -721,7 +739,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 10: Fully Automatic Circuit</h1>
+      <h1 class="notes-h1" id="section-10">Section 10: Fully Automatic Circuit</h1>
 
       <p class="notes-p">A <strong>fully automatic circuit</strong> repeats its cycle continuously without any manual input after the initial start signal.</p>
 
@@ -758,7 +776,7 @@
           <div class="task-item">
             <p class="task-q">10c. &#x270F;&#xFE0F; Draw the full fully automatic circuit diagram, including both limit valves in their correct positions at each end of the cylinder's stroke. Draw by hand and paste a photo of your drawing here.</p>
             <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-10c.png')">
-              <img src="images/exemplar-10c.png" alt="Thumbnail of an exemplar answer for task 9c">
+              <img src="images/exemplar-10c.png" alt="Thumbnail of an exemplar answer for task 10c">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t10c">&#x2713; Saved</span></div>
@@ -770,7 +788,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 11: Time Delay Circuit</h1>
+      <h1 class="notes-h1" id="section-11">Section 11: Time Delay Circuit</h1>
 
       <p class="notes-p">A <strong>time delay valve</strong> introduces a controllable delay between an input signal and an output action.</p>
 
@@ -813,7 +831,7 @@
           <div class="task-item">
             <p class="task-q">11e. &#x270F;&#xFE0F; Draw the full time delay circuit diagram: input valve, uni-directional restrictor, reservoir, and pilot-actuated 3/2 output valve. Draw by hand and paste a photo of your drawing here.</p>
             <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-11e.png')">
-              <img src="images/exemplar-11e.png" alt="Thumbnail of an exemplar answer for task 10e">
+              <img src="images/exemplar-11e.png" alt="Thumbnail of an exemplar answer for task 11e">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t11e">&#x2713; Saved</span></div>
@@ -825,7 +843,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 12: Electrical Control of Pneumatics</h1>
+      <h1 class="notes-h1" id="section-12">Section 12: Electrical Control of Pneumatics</h1>
 
       <p class="notes-p">Every circuit so far has been switched by hand, by a pilot air signal, or automatically by another part of the pneumatic circuit. A pneumatic valve can also be switched <strong>electrically</strong>, using a <strong>solenoid</strong> actuator — a coil that, when energised, moves the valve's spool. This is how pneumatic systems are controlled by microcontrollers, Programmable Logic Controllers (PLCs) and other electronic systems.</p>
 
@@ -854,7 +872,7 @@
           <div class="task-item">
             <p class="task-q">12c. &#x270F;&#xFE0F; Draw the full solenoid circuit diagram: a solenoid-actuated 3/2 valve connected to a single acting cylinder, labelling the electrical signal, main air and exhaust. Draw by hand and paste a photo of your drawing here.</p>
             <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-12c.png')">
-              <img src="images/exemplar-12c.png" alt="Thumbnail of an exemplar answer for task 11c">
+              <img src="images/exemplar-12c.png" alt="Thumbnail of an exemplar answer for task 12c">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t12c">&#x2713; Saved</span></div>
@@ -866,7 +884,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 13: Calculating Cylinder Force</h1>
+      <h1 class="notes-h1" id="section-13">Section 13: Calculating Cylinder Force</h1>
 
       <p class="notes-p">The force a pneumatic cylinder can produce depends on two things: the <strong>air pressure</strong> in the circuit, and the <strong>area</strong> of the piston that the pressure is acting on.</p>
 
@@ -1001,7 +1019,7 @@
           <div class="task-item">
             <p class="task-q">13d. &#x270F;&#xFE0F; Draw two labelled cross-section diagrams of a DAC piston: one showing the full piston area used on the outstroke, and one showing the smaller area (piston area minus rod area) used on the instroke, with the rod diameter marked. Draw by hand and paste a photo of your drawing here.</p>
             <div class="exemplar-thumb" onclick="openExemplar('images/exemplar-13d.png')">
-              <img src="images/exemplar-13d.png" alt="Thumbnail of an exemplar answer for task 12d">
+              <img src="images/exemplar-13d.png" alt="Thumbnail of an exemplar answer for task 13d">
               <span>&#x1F50D; Click to see an exemplar answer</span>
             </div>
             <div class="answer-label">Drawing <span class="saved-indicator" id="ind-t13d">&#x2713; Saved</span></div>
@@ -1014,7 +1032,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 14: Design Challenges</h1>
+      <h1 class="notes-h1" id="section-14">Section 14: Design Challenges</h1>
 
       <p class="notes-p">The questions in Sections 1&ndash;12 checked that you understand each circuit individually. The three challenges below work differently — each one gives you a real-world context and a written <strong>specification</strong>, the same way an assignment does. Nobody will show you the circuit first: you have to work out which components to use and how to connect them, then build or simulate your design and check it actually meets the spec.</p>
 
@@ -1024,7 +1042,7 @@
 
       <hr class="divider">
 
-      <h2 class="notes-h2">Design Challenge 1 &mdash; Car wash spray arm</h2>
+      <h2 class="notes-h2" id="dc1">Design Challenge 1 &mdash; Car wash spray arm</h2>
       <p class="notes-p">A car wash has a spray arm, powered by a double acting cylinder, that swings out over each car. If the arm swings out too fast it splashes water everywhere, so it needs to move out slowly and under control. Once the wash is finished, the arm should retract quickly out of the way so the next car can pull in.</p>
 
       <table class="data-table">
@@ -1061,7 +1079,7 @@
 
       <hr class="divider">
 
-      <h2 class="notes-h2">Design Challenge 2 &mdash; Greenhouse roof vent</h2>
+      <h2 class="notes-h2" id="dc2">Design Challenge 2 &mdash; Greenhouse roof vent</h2>
       <p class="notes-p">A commercial greenhouse has a long roof vent, opened and closed by a double acting cylinder, that needs to be controlled from <strong>either end</strong> of the greenhouse — whichever member of staff is closest should be able to open it, without needing to know whether someone at the other end is also about to use it.</p>
 
       <table class="data-table">
@@ -1102,7 +1120,7 @@
 
       <hr class="divider">
 
-      <h2 class="notes-h2">Design Challenge 3 &mdash; Car park barrier</h2>
+      <h2 class="notes-h2" id="dc3">Design Challenge 3 &mdash; Car park barrier</h2>
       <p class="notes-p">An automatic barrier at a car park entrance is raised by a double acting cylinder. When a driver presses a button, the barrier should raise. Once fully raised, it should stay up just long enough for the car to pass, then lower automatically by itself &mdash; without the driver having to press anything else.</p>
 
       <table class="data-table">
@@ -1176,6 +1194,26 @@ function updateStatusBar(){var el=document.getElementById('storage-status');if(e
 function showSaved(key){var ind=document.getElementById('ind-'+key.replace('pneu-',''));if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
 function openExemplar(src){document.getElementById('exemplarModalImg').src=src;document.getElementById('exemplarModal').classList.add('open');}
 function closeExemplar(){document.getElementById('exemplarModal').classList.remove('open');}
+
+function openToc(){document.getElementById('tocPanel').classList.add('open');document.getElementById('tocOverlay').classList.add('open');}
+function closeToc(){document.getElementById('tocPanel').classList.remove('open');document.getElementById('tocOverlay').classList.remove('open');}
+
+(function(){
+  var links = Array.prototype.slice.call(document.querySelectorAll('.toc-list a'));
+  var targets = links.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); }).filter(Boolean);
+  if (!targets.length) return;
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      var link = document.querySelector('.toc-list a[href="#' + entry.target.id + '"]');
+      if (!link) return;
+      if (entry.isIntersecting) {
+        links.forEach(function(a){ a.classList.remove('toc-active'); });
+        link.classList.add('toc-active');
+      }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  targets.forEach(function(t){ observer.observe(t); });
+})();
 function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
 function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
 document.addEventListener('DOMContentLoaded',function(){
@@ -1188,6 +1226,35 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 });
 </script>
+
+    <button class="toc-fab" id="tocFab" onclick="openToc()">&#x2630; Contents</button>
+
+    <div class="toc-overlay" id="tocOverlay" onclick="closeToc()"></div>
+    <div class="toc-panel" id="tocPanel">
+      <div class="toc-panel-header">
+        <h3>Contents</h3>
+        <button class="toc-panel-close" onclick="closeToc()">&times;</button>
+      </div>
+      <nav class="toc-list" id="tocList">
+        <a href="#section-1" onclick="closeToc()">Section 1: What are Pneumatics?</a>
+        <a href="#section-2" onclick="closeToc()">Section 2: Pneumatic Components</a>
+        <a href="#section-3" onclick="closeToc()">Section 3: T-Piece</a>
+        <a href="#section-4" onclick="closeToc()">Section 4: Shuttle Valve (OR control)</a>
+        <a href="#section-5" onclick="closeToc()">Section 5: AND Control</a>
+        <a href="#section-6" onclick="closeToc()">Section 6: Speed Control — Restrictors</a>
+        <a href="#section-7" onclick="closeToc()">Section 7: Air Bleed (Diaphragm) Circuit</a>
+        <a href="#section-8" onclick="closeToc()">Section 8: Double Acting Cylinder Circuit</a>
+        <a href="#section-9" onclick="closeToc()">Section 9: Semi-Automatic Circuit</a>
+        <a href="#section-10" onclick="closeToc()">Section 10: Fully Automatic Circuit</a>
+        <a href="#section-11" onclick="closeToc()">Section 11: Time Delay Circuit</a>
+        <a href="#section-12" onclick="closeToc()">Section 12: Electrical Control</a>
+        <a href="#section-13" onclick="closeToc()">Section 13: Calculating Cylinder Force</a>
+        <a href="#section-14" onclick="closeToc()">Section 14: Design Challenges</a>
+        <a href="#dc1" class="toc-sub" onclick="closeToc()">Design Challenge 1 — Car wash spray arm</a>
+        <a href="#dc2" class="toc-sub" onclick="closeToc()">Design Challenge 2 — Greenhouse roof vent</a>
+        <a href="#dc3" class="toc-sub" onclick="closeToc()">Design Challenge 3 — Car park barrier</a>
+      </nav>
+    </div>
 
     <div class="exemplar-modal" id="exemplarModal" onclick="closeExemplar()">
       <img id="exemplarModalImg" src="" alt="Exemplar answer, enlarged">
