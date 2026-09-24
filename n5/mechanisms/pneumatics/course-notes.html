@@ -47,6 +47,10 @@
     .assignment-body { padding:18px 20px; }
     .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
     .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-download-row { background:var(--gray-50); border-top:1px solid var(--gray-200); padding:12px 20px; text-align:right; }
+    .task-download-btn { display:inline-flex; align-items:center; gap:8px; background:white; border:1.5px solid var(--teal-400); color:var(--teal-800); font-size:13px; font-weight:700; padding:9px 16px; border-radius:999px; cursor:pointer; transition:background .15s; }
+    .task-download-btn:hover { background:var(--teal-50); }
+    .task-download-btn:disabled { opacity:.6; cursor:wait; }
     .task-q { font-size:13px; color:var(--gray-900); margin-bottom:6px; font-weight:500; }
     .answer-label { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin:8px 0 3px; display:flex; align-items:center; gap:6px; }
     .saved-indicator { font-size:11px; color:#10b981; font-weight:600; opacity:0; transition:opacity .3s; text-transform:none; letter-spacing:0; }
@@ -146,7 +150,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 24 September 2026, 12:49</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 24 September 2026, 15:32</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Pneumatics</div>
       <h1 class="hero-title">&#x1F4A8; Pneumatics &mdash; Course Notes</h1>
       <p class="hero-sub">Pneumatic components, circuit diagrams, SAC and DAC circuits, speed control, and automatic circuits</p>
@@ -183,7 +187,7 @@
       <h2 class="notes-h2">Disadvantages</h2>
       <p class="notes-p">Air is compressible, so <strong>precise positioning</strong> can be difficult. Pneumatic systems can be noisy, and energy is lost as heat when air is compressed. A compressor and air supply are always required.</p>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task1">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Pneumatics in context</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -196,6 +200,9 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1b">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="pneu-t1b" data-placeholder="Type your answer here…"></div>
           </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task1', 'Task 1 — Pneumatics in context')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -1158,6 +1165,7 @@
 
 <script src="../../../../js/site.js"></script>
 <script src="../../../../js/nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
 
 <script>
@@ -1166,6 +1174,124 @@ function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatu
 function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
 function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
 function showSaved(key){var ind=document.getElementById('ind-'+key.replace('pneu-',''));if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+
+function downloadTaskPDF(panelId, taskLabel) {
+  var panel = document.getElementById(panelId);
+  if (!panel) return;
+  var btn = panel.querySelector('.task-download-btn');
+  var originalText = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = 'Building PDF&hellip;'; }
+
+  setTimeout(function () {
+    try {
+      var jsPDFCtor = window.jspdf.jsPDF;
+      var doc = new jsPDFCtor({ unit: 'pt', format: 'a4' });
+      var pageWidth = doc.internal.pageSize.getWidth();
+      var pageHeight = doc.internal.pageSize.getHeight();
+      var margin = 48;
+      var usableWidth = pageWidth - margin * 2;
+      var y = margin;
+
+      function ensureSpace(neededHeight) {
+        if (y + neededHeight > pageHeight - margin) {
+          doc.addPage();
+          y = margin;
+        }
+      }
+
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(16);
+      doc.setTextColor(15, 90, 68);
+      doc.text('Engineering Science Scotland', margin, y);
+      y += 20;
+
+      doc.setFontSize(14);
+      doc.setTextColor(30, 30, 30);
+      doc.text(taskLabel, margin, y);
+      y += 22;
+
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(11);
+      doc.setTextColor(90, 90, 90);
+      doc.text('Name: _________________________________      Date: _______________', margin, y);
+      y += 20;
+      doc.setDrawColor(200, 200, 200);
+      doc.line(margin, y, pageWidth - margin, y);
+      y += 18;
+
+      var items = panel.querySelectorAll('.task-item');
+      for (var i = 0; i < items.length; i++) {
+        var item = items[i];
+        var qEl = item.querySelector('.task-q');
+        var qText = qEl ? qEl.innerText.replace(/^\s*\u270F\uFE0F\s*/, '').trim() : '';
+        var answerBox = item.querySelector('.answer-box');
+
+        doc.setFont('helvetica', 'bold');
+        doc.setFontSize(11);
+        doc.setTextColor(15, 90, 68);
+        var qLines = doc.splitTextToSize(qText, usableWidth);
+        ensureSpace(qLines.length * 14 + 6);
+        doc.text(qLines, margin, y);
+        y += qLines.length * 14 + 6;
+
+        var img = answerBox ? answerBox.querySelector('img') : null;
+        if (img && img.src) {
+          try {
+            var props = doc.getImageProperties(img.src);
+            var maxImgWidth = usableWidth;
+            var maxImgHeight = 260;
+            var ratio = Math.min(maxImgWidth / props.width, maxImgHeight / props.height, 1);
+            var imgW = props.width * ratio;
+            var imgH = props.height * ratio;
+            ensureSpace(imgH + 14);
+            doc.addImage(img.src, props.fileType || 'PNG', margin, y, imgW, imgH);
+            y += imgH + 16;
+          } catch (e) {
+            doc.setFont('helvetica', 'italic');
+            doc.setTextColor(160, 60, 60);
+            ensureSpace(14);
+            doc.text('[Could not embed pasted image]', margin, y);
+            y += 18;
+          }
+        } else {
+          var answerText = answerBox ? answerBox.innerText.trim() : '';
+          doc.setFont('helvetica', 'normal');
+          doc.setTextColor(40, 40, 40);
+          if (!answerText) {
+            doc.setFont('helvetica', 'italic');
+            doc.setTextColor(160, 160, 160);
+            answerText = '(no answer entered yet)';
+          }
+          var aLines = doc.splitTextToSize(answerText, usableWidth);
+          for (var li = 0; li < aLines.length; li++) {
+            ensureSpace(14);
+            doc.text(aLines[li], margin, y);
+            y += 14;
+          }
+          y += 8;
+        }
+        y += 6;
+      }
+
+      var pageCount = doc.internal.getNumberOfPages();
+      for (var p = 1; p <= pageCount; p++) {
+        doc.setPage(p);
+        doc.setFont('helvetica', 'normal');
+        doc.setFontSize(9);
+        doc.setTextColor(150, 150, 150);
+        doc.text('Page ' + p + ' of ' + pageCount + '  \u2014  engineeringsciencescotland.co.uk', margin, pageHeight - 24);
+      }
+
+      var fileSafe = taskLabel.replace(/[^\w\- ]+/g, '').replace(/\s+/g, '-');
+      doc.save(fileSafe + '.pdf');
+    } catch (err) {
+      console.error(err);
+      alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.');
+    } finally {
+      if (btn) { btn.disabled = false; btn.innerHTML = originalText; }
+    }
+  }, 30);
+}
 function openExemplar(src){document.getElementById('exemplarModalImg').src=src;document.getElementById('exemplarModal').classList.add('open');}
 function closeExemplar(){document.getElementById('exemplarModal').classList.remove('open');}
 
