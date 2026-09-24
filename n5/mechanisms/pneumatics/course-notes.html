@@ -47,8 +47,8 @@
     .assignment-body { padding:18px 20px; }
     .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
     .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
-    .task-download-row { background:var(--gray-50); border-top:1px solid var(--gray-200); padding:12px 20px; text-align:right; }
-    .task-download-btn { display:inline-flex; align-items:center; gap:8px; background:white; border:1.5px solid var(--teal-400); color:var(--teal-800); font-size:13px; font-weight:700; padding:9px 16px; border-radius:999px; cursor:pointer; transition:background .15s; }
+    .task-download-row { background:var(--gray-50); border-top:1px solid var(--gray-200); padding:9px 20px; text-align:right; }
+    .task-download-btn { display:inline-flex; align-items:center; gap:6px; background:white; border:1.2px solid var(--teal-400); color:var(--teal-800); font-size:10px; font-weight:700; padding:7px 12px; border-radius:999px; cursor:pointer; transition:background .15s; }
     .task-download-btn:hover { background:var(--teal-50); }
     .task-download-btn:disabled { opacity:.6; cursor:wait; }
     .task-q { font-size:13px; color:var(--gray-900); margin-bottom:6px; font-weight:500; }
@@ -125,6 +125,23 @@
     .toc-list a:hover { background:var(--teal-50); color:var(--teal-800); }
     .toc-list a.toc-active { border-left-color:var(--teal-500,var(--teal-600)); background:var(--teal-50); color:var(--teal-800); font-weight:700; }
     .toc-list a.toc-sub { padding-left:36px; font-size:13px; color:var(--gray-500); }
+
+    /* Pupil name: floating button + small popup */
+    .name-fab { position:fixed; right:24px; bottom:132px; z-index:999999; display:flex; align-items:center; gap:8px; background:#4338ca; color:white; border:none; border-radius:999px; padding:12px 18px 12px 14px; font-size:14px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+    .name-fab:hover { background:#3730a3; }
+    .name-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; align-items:center; justify-content:center; padding:20px; }
+    .name-overlay.open { display:flex; }
+    .name-panel { background:white; border-radius:14px; max-width:360px; width:100%; padding:24px 24px 22px; box-shadow:0 20px 60px rgba(0,0,0,.35); position:relative; }
+    .name-panel-close { position:absolute; top:10px; right:12px; background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .name-panel-close:hover { color:var(--gray-700); }
+    .name-panel h3 { margin:0 0 8px; font-size:16px; color:#4338ca; }
+    .name-panel p { margin:0 0 14px; font-size:13px; line-height:1.5; color:var(--gray-600); }
+    .name-panel input { width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid var(--gray-200); border-radius:8px; font-size:14px; margin-bottom:12px; }
+    .name-panel input:focus { outline:none; border-color:#4338ca; }
+    .name-panel-save { width:100%; background:#4338ca; color:white; border:none; border-radius:8px; padding:10px; font-size:14px; font-weight:700; cursor:pointer; }
+    .name-panel-save:hover { background:#3730a3; }
+    .name-panel-saved-msg { font-size:12px; color:#16a34a; margin-top:8px; text-align:center; display:none; }
+    .name-panel-saved-msg.show { display:block; }
   </style>
 </head>
 <body>
@@ -150,7 +167,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 24 September 2026, 15:32</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 24 September 2026, 16:12</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Pneumatics</div>
       <h1 class="hero-title">&#x1F4A8; Pneumatics &mdash; Course Notes</h1>
       <p class="hero-sub">Pneumatic components, circuit diagrams, SAC and DAC circuits, speed control, and automatic circuits</p>
@@ -1213,7 +1230,12 @@ function downloadTaskPDF(panelId, taskLabel) {
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(11);
       doc.setTextColor(90, 90, 90);
-      doc.text('Name: _________________________________      Date: _______________', margin, y);
+      var pupilName = getPupilName();
+      var todayStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+      var nameLine = pupilName
+        ? ('Name: ' + pupilName + '      Date: ' + todayStr)
+        : ('Name: _________________________________      Date: _______________');
+      doc.text(nameLine, margin, y);
       y += 20;
       doc.setDrawColor(200, 200, 200);
       doc.line(margin, y, pageWidth - margin, y);
@@ -1298,6 +1320,47 @@ function closeExemplar(){document.getElementById('exemplarModal').classList.remo
 function openToc(){document.getElementById('tocPanel').classList.add('open');document.getElementById('tocOverlay').classList.add('open');}
 function closeToc(){document.getElementById('tocPanel').classList.remove('open');document.getElementById('tocOverlay').classList.remove('open');}
 
+var PUPIL_NAME_KEY = 'pneu-pupil-name';
+
+function getPupilName() {
+  try { return localStorage.getItem(PUPIL_NAME_KEY) || ''; } catch (e) { return ''; }
+}
+
+function updateNameFabLabel() {
+  var label = document.getElementById('nameFabLabel');
+  if (!label) return;
+  var name = getPupilName();
+  label.textContent = name ? name : 'My Name';
+}
+
+function openNamePanel() {
+  var input = document.getElementById('nameInput');
+  if (input) input.value = getPupilName();
+  var msg = document.getElementById('nameSavedMsg');
+  if (msg) msg.classList.remove('show');
+  document.getElementById('nameOverlay').classList.add('open');
+  if (input) setTimeout(function(){ input.focus(); }, 50);
+}
+function closeNamePanel() {
+  document.getElementById('nameOverlay').classList.remove('open');
+}
+function closeNameOverlayClick(e) {
+  if (e.target.id === 'nameOverlay') closeNamePanel();
+}
+function saveNameInput() {
+  var input = document.getElementById('nameInput');
+  var name = input ? input.value.trim() : '';
+  try { localStorage.setItem(PUPIL_NAME_KEY, name); } catch (e) {}
+  updateNameFabLabel();
+  var msg = document.getElementById('nameSavedMsg');
+  if (msg) msg.classList.add('show');
+}
+document.addEventListener('DOMContentLoaded', updateNameFabLabel);
+var nameInputEl = document.getElementById('nameInput');
+if (nameInputEl) {
+  nameInputEl.addEventListener('keydown', function(e){ if (e.key === 'Enter') saveNameInput(); });
+}
+
 (function(){
   var links = Array.prototype.slice.call(document.querySelectorAll('.toc-list a'));
   var targets = links.map(function(a){ return document.getElementById(a.getAttribute('href').slice(1)); }).filter(Boolean);
@@ -1328,6 +1391,19 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 
     <button class="toc-fab" id="tocFab" onclick="openToc()">&#x2630; Contents</button>
+
+    <button class="name-fab" id="nameFab" onclick="openNamePanel()">&#x1F464; <span id="nameFabLabel">My Name</span></button>
+
+    <div class="name-overlay" id="nameOverlay" onclick="closeNameOverlayClick(event)">
+      <div class="name-panel">
+        <button class="name-panel-close" onclick="closeNamePanel()" aria-label="Close">&times;</button>
+        <h3>Your name</h3>
+        <p>Enter your name once and it'll be added to the top of every task's downloaded PDF &mdash; no need to write it in by hand each time.</p>
+        <input type="text" id="nameInput" placeholder="e.g. Jamie Smith" maxlength="60">
+        <button class="name-panel-save" onclick="saveNameInput()">Save name</button>
+        <div class="name-panel-saved-msg" id="nameSavedMsg">&#x2713; Saved &mdash; it'll now appear on your PDFs</div>
+      </div>
+    </div>
 
     <div class="toc-overlay" id="tocOverlay" onclick="closeToc()"></div>
     <div class="toc-panel" id="tocPanel">
