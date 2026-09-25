@@ -171,9 +171,16 @@
     .cw-pair { display:flex; flex-wrap:wrap; justify-content:center; gap:16px; margin:16px 0; }
     .cw-pair svg { width:100%; max-width:330px; height:auto; }
 
+    /* Graph paper button */
+    .graph-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:4px 0 12px; }
+    .graph-row span { font-size:12px; color:var(--gray-500); flex:1; min-width:200px; }
+    .graph-btn { display:inline-flex; align-items:center; gap:6px; padding:8px 14px; border-radius:7px; font-size:13px; font-weight:600; cursor:pointer; border:1px solid #fed7aa; background:#fff7ed; color:#9a3412; font-family:inherit; }
+    .graph-btn:hover { background:#ffedd5; }
+    .graph-btn:focus-visible { outline:3px solid #fb923c; outline-offset:2px; }
+
     @media print {
       .topbar, .sidebar, .footer, .controls-bar, .storage-status { display:none !important; }
-      .float-btn, .toc-panel, .name-pop, .lightbox, .assignment-footer, .exemplar-row { display:none !important; }
+      .float-btn, .toc-panel, .name-pop, .lightbox, .assignment-footer, .exemplar-row, .graph-row { display:none !important; }
       .layout { display:block !important; }
       .main { margin:0 !important; padding:0 !important; }
       .answer-box { border:1.5px solid #94a3b8 !important; background:white !important; }
@@ -204,7 +211,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 25th September 2026 at 13:02</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 25th September 2026 at 14:37</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Structures and Forces</div>
       <h1 class="hero-title">&#x1F3D7;&#xFE0F; Structures and Forces &mdash; Course Notes</h1>
       <p class="hero-sub">Forces, free-body diagrams, levers, moments, beams, reactions and vectors</p>
@@ -828,7 +835,27 @@
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Show all working for each problem. Remember: take moments about one reaction first, then use the force balance to find the other.</p>
 
           <div class="task-item">
-            <div class="task-q">1. A 4 m beam is simply supported at each end. A single load of 8 000 N acts 1 m from the left support. Determine both reactions.</div>
+            <div class="task-q">1. A 4 m beam is simply supported at each end, R<sub>A</sub> at the left and R<sub>B</sub> at the right. A single load of 8 000 N acts 1 m from R<sub>A</sub>. Determine both reactions.</div>
+            <div style="text-align:center; margin:14px 0;">
+              <svg viewBox="0 0 480 236" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;height:auto;" role="img" aria-label="Beam 4 m long with an 8000 newton load 1 metre from support A">
+                <rect x="60" y="70" width="360" height="12" rx="4" fill="#99f6e4" stroke="#5eead4" stroke-width="1"/>
+                <polygon points="60,82 42,118 78,118" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+                <text x="60" y="138" font-size="14" font-weight="700" fill="#475569" text-anchor="middle">R<tspan baseline-shift="sub" font-size="11">A</tspan></text>
+                <polygon points="420,82 402,118 438,118" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+                <text x="420" y="138" font-size="14" font-weight="700" fill="#475569" text-anchor="middle">R<tspan baseline-shift="sub" font-size="11">B</tspan></text>
+                <line x1="150" y1="30" x2="150" y2="58" stroke="#ef4444" stroke-width="3"/>
+                <polygon points="150,70 143,56 157,56" fill="#ef4444"/>
+                <text x="150" y="20" font-size="15" font-weight="700" fill="#ef4444" text-anchor="middle">8 000 N</text>
+                <line x1="60" y1="162" x2="150" y2="162" stroke="#6b7280" stroke-width="1.5"/>
+                <line x1="60" y1="156" x2="60" y2="168" stroke="#6b7280" stroke-width="1.5"/>
+                <line x1="150" y1="156" x2="150" y2="168" stroke="#6b7280" stroke-width="1.5"/>
+                <text x="105" y="181" font-size="14" font-weight="600" fill="#4b5563" text-anchor="middle">1 m</text>
+                <line x1="60" y1="198" x2="420" y2="198" stroke="#6b7280" stroke-width="1.5"/>
+                <line x1="60" y1="192" x2="60" y2="204" stroke="#6b7280" stroke-width="1.5"/>
+                <line x1="420" y1="192" x2="420" y2="204" stroke="#6b7280" stroke-width="1.5"/>
+                <text x="240" y="217" font-size="14" font-weight="600" fill="#4b5563" text-anchor="middle">4 m</text>
+              </svg>
+            </div>
             <div class="answer-label">Working <span class="saved-indicator" id="ind-t4a">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t4a" data-placeholder="Show working here&hellip;"></div>
           </div>
@@ -855,28 +882,30 @@
           <div class="task-item">
             <div class="task-q">6. A road sign gantry spans 5.0 m between its two support posts, R<sub>A</sub> at the left and R<sub>B</sub> at the right. A sign produces a downward force of 4.5 kN, acting 2.0 m from R<sub>A</sub>. The gantry's own weight of 18 kN acts at 3.0 m from R<sub>A</sub>. Calculate the reaction force R<sub>B</sub> by taking moments about R<sub>A</sub>.</div>
             <div style="text-align:center; margin:14px 0;">
-              <svg viewBox="0 0 640 210" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px;height:auto;">
-                <rect x="60" y="90" width="520" height="12" rx="2" fill="#99f6e4" stroke="#5eead4" stroke-width="1"/>
-                <polygon points="60,102 45,124 75,124" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
-                <polygon points="580,102 565,124 595,124" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
-                <line x1="38" y1="124" x2="82" y2="124" stroke="#94a3b8" stroke-width="1.5"/>
-                <line x1="563" y1="124" x2="597" y2="124" stroke="#94a3b8" stroke-width="1.5"/>
-                <text x="60" y="140" font-size="12" fill="#4b5563" text-anchor="middle" font-weight="700">R&#x2090;</text>
-                <text x="580" y="140" font-size="12" fill="#4b5563" text-anchor="middle" font-weight="700">R&#x1D66;</text>
-                <line x1="268" y1="45" x2="268" y2="88" stroke="#ef4444" stroke-width="3"/>
-                <polygon points="268,90 261,76 275,76" fill="#ef4444"/>
-                <text x="268" y="36" font-size="12" font-weight="700" fill="#ef4444" text-anchor="middle">4.5 kN</text>
-                <line x1="372" y1="45" x2="372" y2="88" stroke="#ef4444" stroke-width="3"/>
-                <polygon points="372,90 365,76 379,76" fill="#ef4444"/>
-                <text x="372" y="36" font-size="12" font-weight="700" fill="#ef4444" text-anchor="middle">18 kN</text>
-                <line x1="60" y1="158" x2="268" y2="158" stroke="#6b7280" stroke-width="1.5"/>
-                <line x1="60" y1="152" x2="60" y2="164" stroke="#6b7280" stroke-width="1.5"/>
-                <line x1="268" y1="152" x2="268" y2="164" stroke="#6b7280" stroke-width="1.5"/>
-                <text x="164" y="178" font-size="12" font-weight="600" fill="#4b5563" text-anchor="middle">2.0 m</text>
-                <line x1="60" y1="184" x2="372" y2="184" stroke="#6b7280" stroke-width="1.5"/>
-                <line x1="60" y1="178" x2="60" y2="190" stroke="#6b7280" stroke-width="1.5"/>
-                <line x1="372" y1="178" x2="372" y2="190" stroke="#6b7280" stroke-width="1.5"/>
-                <text x="216" y="204" font-size="12" font-weight="600" fill="#4b5563" text-anchor="middle">3.0 m</text>
+              <svg viewBox="0 0 480 272" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:420px;height:auto;" role="img" aria-label="Gantry 5 metres long with loads of 4.5 kilonewtons and 18 kilonewtons">
+                <rect x="60" y="70" width="360" height="12" rx="4" fill="#99f6e4" stroke="#5eead4" stroke-width="1"/>
+                <polygon points="60,82 42,118 78,118" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+                <text x="60" y="138" font-size="14" font-weight="700" fill="#475569" text-anchor="middle">R<tspan baseline-shift="sub" font-size="11">A</tspan></text>
+                <polygon points="420,82 402,118 438,118" fill="#cbd5e1" stroke="#94a3b8" stroke-width="1"/>
+                <text x="420" y="138" font-size="14" font-weight="700" fill="#475569" text-anchor="middle">R<tspan baseline-shift="sub" font-size="11">B</tspan></text>
+                <line x1="204" y1="30" x2="204" y2="58" stroke="#ef4444" stroke-width="3"/>
+                <polygon points="204,70 197,56 211,56" fill="#ef4444"/>
+                <text x="204" y="20" font-size="15" font-weight="700" fill="#ef4444" text-anchor="middle">4.5 kN</text>
+                <line x1="276" y1="30" x2="276" y2="58" stroke="#ef4444" stroke-width="3"/>
+                <polygon points="276,70 269,56 283,56" fill="#ef4444"/>
+                <text x="276" y="20" font-size="15" font-weight="700" fill="#ef4444" text-anchor="middle">18 kN</text>
+                <line x1="60" y1="162" x2="204" y2="162" stroke="#6b7280" stroke-width="1.5"/>
+                <line x1="60" y1="156" x2="60" y2="168" stroke="#6b7280" stroke-width="1.5"/>
+                <line x1="204" y1="156" x2="204" y2="168" stroke="#6b7280" stroke-width="1.5"/>
+                <text x="132" y="181" font-size="14" font-weight="600" fill="#4b5563" text-anchor="middle">2.0 m</text>
+                <line x1="60" y1="198" x2="276" y2="198" stroke="#6b7280" stroke-width="1.5"/>
+                <line x1="60" y1="192" x2="60" y2="204" stroke="#6b7280" stroke-width="1.5"/>
+                <line x1="276" y1="192" x2="276" y2="204" stroke="#6b7280" stroke-width="1.5"/>
+                <text x="168" y="217" font-size="14" font-weight="600" fill="#4b5563" text-anchor="middle">3.0 m</text>
+                <line x1="60" y1="234" x2="420" y2="234" stroke="#6b7280" stroke-width="1.5"/>
+                <line x1="60" y1="228" x2="60" y2="240" stroke="#6b7280" stroke-width="1.5"/>
+                <line x1="420" y1="228" x2="420" y2="240" stroke="#6b7280" stroke-width="1.5"/>
+                <text x="240" y="253" font-size="14" font-weight="600" fill="#4b5563" text-anchor="middle">5.0 m</text>
               </svg>
             </div>
             <div class="answer-label">Working <span class="saved-indicator" id="ind-t4f">&#x2713; Saved</span></div>
@@ -1057,21 +1086,88 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t7e" data-placeholder="Describe the three conditions&hellip;"></div>
           </div>
           <div class="task-item">
-            <div class="task-q">3. A crane fixed to a wall supports a load of 1 000 N. Using a graphical method (triangle of forces), find the forces in the compression and tension members. Use a scale of 10 mm = 200 N and sketch your triangle.</div>
-            <div class="answer-label">Sketch and answer <span class="saved-indicator" id="ind-t7f">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t7f" data-placeholder="Describe your construction and results&hellip;"></div>
-            <div class="exemplar-row"><button type="button" class="exemplar-thumb" data-label="Task 6, question 3"><img src="exemplars/sf-task6-q3.png" alt="Exemplar triangle of forces for a wall crane" data-placeholder-label="Task 6, question 3"><span>&#x1F50D; Click to see an exemplar answer<small>Have a go yourself first, then compare</small></span></button></div>
+            <div class="task-q">3. A small crane on a fishing trawler is used to lift cases of fish on to the dock. The crane is fixed to a vertical wall, with its upper member at 60&deg; to the wall and its lower member at 30&deg; to the wall. The load being lifted weighs 1 200 N. Using a scale of 10 mm = 200 N, draw a triangle of forces to find the size of the force in each crane member, and state whether each member is in tension or compression.</div>
+            <div style="text-align:center; margin:14px 0;">
+              <svg viewBox="0 0 340 323" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:300px;height:auto;" role="img" aria-label="Wall crane: upper member at 60 degrees to the wall, lower member at 30 degrees to the wall, 1200 newton load hanging from the joint">
+                <line x1="100" y1="14" x2="100" y2="315" stroke="#111827" stroke-width="2.5"/><line x1="100" y1="18" x2="92" y2="26" stroke="#111827" stroke-width="1"/><line x1="100" y1="30" x2="92" y2="38" stroke="#111827" stroke-width="1"/><line x1="100" y1="42" x2="92" y2="50" stroke="#111827" stroke-width="1"/><line x1="100" y1="54" x2="92" y2="62" stroke="#111827" stroke-width="1"/><line x1="100" y1="66" x2="92" y2="74" stroke="#111827" stroke-width="1"/><line x1="100" y1="78" x2="92" y2="86" stroke="#111827" stroke-width="1"/><line x1="100" y1="90" x2="92" y2="98" stroke="#111827" stroke-width="1"/><line x1="100" y1="102" x2="92" y2="110" stroke="#111827" stroke-width="1"/><line x1="100" y1="114" x2="92" y2="122" stroke="#111827" stroke-width="1"/><line x1="100" y1="126" x2="92" y2="134" stroke="#111827" stroke-width="1"/><line x1="100" y1="138" x2="92" y2="146" stroke="#111827" stroke-width="1"/><line x1="100" y1="150" x2="92" y2="158" stroke="#111827" stroke-width="1"/><line x1="100" y1="162" x2="92" y2="170" stroke="#111827" stroke-width="1"/><line x1="100" y1="174" x2="92" y2="182" stroke="#111827" stroke-width="1"/><line x1="100" y1="186" x2="92" y2="194" stroke="#111827" stroke-width="1"/><line x1="100" y1="198" x2="92" y2="206" stroke="#111827" stroke-width="1"/><line x1="100" y1="210" x2="92" y2="218" stroke="#111827" stroke-width="1"/><line x1="100" y1="222" x2="92" y2="230" stroke="#111827" stroke-width="1"/><line x1="100" y1="234" x2="92" y2="242" stroke="#111827" stroke-width="1"/><line x1="100" y1="246" x2="92" y2="254" stroke="#111827" stroke-width="1"/><line x1="100" y1="258" x2="92" y2="266" stroke="#111827" stroke-width="1"/><line x1="100" y1="270" x2="92" y2="278" stroke="#111827" stroke-width="1"/><line x1="100" y1="282" x2="92" y2="290" stroke="#111827" stroke-width="1"/><line x1="100" y1="294" x2="92" y2="302" stroke="#111827" stroke-width="1"/><line x1="100" y1="306" x2="92" y2="314" stroke="#111827" stroke-width="1"/>
+                <line x1="100" y1="126.6" x2="250" y2="40" stroke="#0f766e" stroke-width="4" stroke-linecap="round"/>
+                <line x1="100" y1="299.8" x2="250" y2="40" stroke="#0f766e" stroke-width="4" stroke-linecap="round"/>
+                <circle cx="250" cy="40" r="4" fill="#111827"/><circle cx="100" cy="126.6" r="4" fill="#111827"/><circle cx="100" cy="299.8" r="4" fill="#111827"/>
+                <path d="M 100.0 96.6 A 30 30 0 0 1 126.0 111.6" fill="none" stroke="#475569" stroke-width="1.5"/>
+                <text x="117" y="93" font-size="13" fill="#475569" font-weight="600">60&#xB0;</text>
+                <path d="M 100.0 255.8 A 44 44 0 0 1 122.0 261.7" fill="none" stroke="#475569" stroke-width="1.5"/>
+                <text x="108" y="248" font-size="13" fill="#475569" font-weight="600">30&#xB0;</text>
+                <text x="205" y="52" font-size="12" fill="#0f766e" font-weight="700" text-anchor="middle" transform="rotate(-30 205 52)">upper member</text>
+                <text x="187" y="176" font-size="12" fill="#0f766e" font-weight="700">lower member</text>
+                <line x1="250" y1="40" x2="250" y2="98" stroke="#ef4444" stroke-width="3"/>
+                <polygon points="0,-5.9 13,0 0,5.9" fill="#ef4444" transform="translate(250.0,98.0) rotate(90)"/>
+                <rect x="220" y="111" width="60" height="26" rx="3" fill="#fef2f2" stroke="#ef4444" stroke-width="1.5"/>
+                <text x="250" y="129" font-size="13" font-weight="700" fill="#ef4444" text-anchor="middle">1 200 N</text>
+              </svg>
+            </div>
+            <div class="graph-row"><button type="button" class="graph-btn" onclick="openGraphPaper('Task 6, Q3: trawler crane', 'Scale: 10 mm = 200 N')">&#x1F4D0; Open graph paper (PDF)</button><span>Print it, draw your scale diagram, then photograph it and paste the photo into the box below.</span></div>
+            <div class="answer-label">Scale drawing and answers <span class="saved-indicator" id="ind-t7f3">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t7f3" data-placeholder="Upper member = ___ N (tension or compression?)   Lower member = ___ N (tension or compression?)"></div>
+            <div class="exemplar-row"><button type="button" class="exemplar-thumb" data-label="Task 6, question 3"><img src="exemplars/sf-task6-q3.png" alt="Exemplar triangle of forces for the trawler crane" data-placeholder-label="Task 6, question 3"><span>&#x1F50D; Click to see an exemplar answer<small>Have a go yourself first, then compare</small></span></button></div>
           </div>
           <div class="task-item">
-            <div class="task-q">4. A small crane on a fishing trawler lifts cases of fish. The lift weighs 1 200 N. Using a scale of 10 mm = 200 N, determine the size and direction of the forces in each crane member.</div>
-            <div class="answer-label">Working and answer <span class="saved-indicator" id="ind-t7g">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t7g" data-placeholder="Show working and results&hellip;"></div>
-            <div class="exemplar-row"><button type="button" class="exemplar-thumb" data-label="Task 6, question 4"><img src="exemplars/sf-task6-q4.png" alt="Exemplar triangle of forces for a trawler crane" data-placeholder-label="Task 6, question 4"><span>&#x1F50D; Click to see an exemplar answer<small>Have a go yourself first, then compare</small></span></button></div>
+            <div class="task-q">4. A weight of 2 000 N hangs from a rope tied to a hook that is fixed firmly to a roof joist. A second rope is tied to the hanging rope and pulled horizontally until the upper part of the hanging rope sits at 30&deg; to the vertical. Using a suitable scale (for example 10 mm = 200 N), draw a triangle of forces to find the horizontal pull on the second rope and the force on the hook.</div>
+            <div style="text-align:center; margin:14px 0;">
+              <svg viewBox="0 0 360 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:320px;height:auto;" role="img" aria-label="A 2000 newton weight hangs from a rope; the upper rope to the roof hook is at 30 degrees to the vertical and a second rope pulls horizontally">
+                <line x1="40" y1="35" x2="200" y2="35" stroke="#111827" stroke-width="2.5"/>
+                <line x1="46" y1="35" x2="54" y2="27" stroke="#111827" stroke-width="1"/><line x1="58" y1="35" x2="66" y2="27" stroke="#111827" stroke-width="1"/><line x1="70" y1="35" x2="78" y2="27" stroke="#111827" stroke-width="1"/><line x1="82" y1="35" x2="90" y2="27" stroke="#111827" stroke-width="1"/><line x1="94" y1="35" x2="102" y2="27" stroke="#111827" stroke-width="1"/><line x1="106" y1="35" x2="114" y2="27" stroke="#111827" stroke-width="1"/><line x1="118" y1="35" x2="126" y2="27" stroke="#111827" stroke-width="1"/><line x1="130" y1="35" x2="138" y2="27" stroke="#111827" stroke-width="1"/><line x1="142" y1="35" x2="150" y2="27" stroke="#111827" stroke-width="1"/><line x1="154" y1="35" x2="162" y2="27" stroke="#111827" stroke-width="1"/><line x1="166" y1="35" x2="174" y2="27" stroke="#111827" stroke-width="1"/><line x1="178" y1="35" x2="186" y2="27" stroke="#111827" stroke-width="1"/><line x1="190" y1="35" x2="198" y2="27" stroke="#111827" stroke-width="1"/>
+                <path d="M 115.0 34.7 v 4 a 5 5 0 1 0 5 5" fill="none" stroke="#111827" stroke-width="2"/>
+                <text x="103" y="51" font-size="12" font-weight="700" fill="#475569" text-anchor="end">HOOK</text>
+                <line x1="170" y1="140" x2="170" y2="45" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="4,3"/>
+                <line x1="170" y1="140" x2="117.0" y2="47.7" stroke="#111827" stroke-width="3"/>
+                <path d="M 147.0 100.2 A 46 46 0 0 1 170.0 94.0" fill="none" stroke="#475569" stroke-width="1.5"/>
+                <text x="160" y="86" font-size="13" font-weight="600" fill="#475569" text-anchor="end">30&#xB0;</text>
+                <line x1="170" y1="140" x2="295" y2="140" stroke="#0d9488" stroke-width="3"/>
+                <polygon points="0,-5.9 13,0 0,5.9" fill="#0d9488" transform="translate(295.0,140.0) rotate(0)"/>
+                <text x="240" y="130" font-size="12" font-weight="700" fill="#0d9488" text-anchor="middle">PULLING ROPE</text>
+                <line x1="170" y1="140" x2="170" y2="212" stroke="#ef4444" stroke-width="3"/>
+                <polygon points="0,-5.9 13,0 0,5.9" fill="#ef4444" transform="translate(170.0,212.0) rotate(90)"/>
+                <text x="182" y="222" font-size="14" font-weight="700" fill="#ef4444">2 000 N</text>
+                <circle cx="170" cy="140" r="3.5" fill="#111827"/>
+              </svg>
+            </div>
+            <div class="graph-row"><button type="button" class="graph-btn" onclick="openGraphPaper('Task 6, Q4: rope and hook', 'Suggested scale: 10 mm = 200 N')">&#x1F4D0; Open graph paper (PDF)</button><span>Print it, draw your scale diagram, then photograph it and paste the photo into the box below.</span></div>
+            <div class="answer-label">Scale drawing and answers <span class="saved-indicator" id="ind-t7g4">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t7g4" data-placeholder="Horizontal pull = ___ N   Force on the hook = ___ N"></div>
+            <div class="exemplar-row"><button type="button" class="exemplar-thumb" data-label="Task 6, question 4"><img src="exemplars/sf-task6-q4.png" alt="Exemplar triangle of forces for the rope and hook" data-placeholder-label="Task 6, question 4"><span>&#x1F50D; Click to see an exemplar answer<small>Have a go yourself first, then compare</small></span></button></div>
           </div>
           <div class="task-item">
-            <div class="task-q">5. A weight of 2 000 N hangs from a rope attached to a roof hook. A second rope pulls horizontally until the first rope makes 30&deg; to the vertical. Determine the horizontal pull and the force on the hook.</div>
-            <div class="answer-label">Working and answer <span class="saved-indicator" id="ind-t7h">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t7h" data-placeholder="Show working and results&hellip;"></div>
+            <div class="task-q">5. The diagram shows a cranked lever from a gear-change mechanism. A horizontal force of 750 N acts at the top pin and a vertical force of 600 N acts at the right-hand pin. Using a scale of 10 mm = 100 N, draw the two forces tip to tail to find the resultant force F<sub>R</sub> acting on the hinge pivot and the angle &theta; it makes with the vertical.</div>
+            <div style="text-align:center; margin:14px 0;">
+              <svg viewBox="0 0 380 290" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:340px;height:auto;" role="img" aria-label="Cranked lever with a hinge pivot; 750 newtons acts horizontally at the top pin and 600 newtons acts downwards at the right-hand pin; the resultant F R acts at angle theta to the vertical">
+                <path d="M 96 60 L 124 60 L 136 188 Q 138 196 150 196 L 290 198 L 290 222 L 110 234 Z" fill="#e2e8f0" stroke="#475569" stroke-width="1.5" stroke-linejoin="round"/>
+                <path d="M 96 60 L 86 206" fill="none" stroke="#475569" stroke-width="1.5"/>
+                <circle cx="110" cy="60" r="15" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/><circle cx="110" cy="60" r="4" fill="white" stroke="#475569" stroke-width="1.5"/>
+                <circle cx="110" cy="210" r="25" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/><circle cx="110" cy="210" r="5" fill="white" stroke="#475569" stroke-width="1.5"/>
+                <circle cx="290" cy="210" r="15" fill="#e2e8f0" stroke="#475569" stroke-width="1.5"/><circle cx="290" cy="210" r="4" fill="white" stroke="#475569" stroke-width="1.5"/>
+                <g stroke="#64748b" stroke-width="1" stroke-dasharray="10,3,2,3" fill="none">
+                  <line x1="110" y1="30" x2="110" y2="250"/><line x1="70" y1="210" x2="320" y2="210"/>
+                  <line x1="110" y1="60" x2="290" y2="60"/><line x1="290" y1="60" x2="290" y2="210"/>
+                </g>
+                <line x1="95" y1="60" x2="42" y2="60" stroke="#ef4444" stroke-width="3"/>
+                <polygon points="0,-5.9 13,0 0,5.9" fill="#ef4444" transform="translate(40.0,60.0) rotate(180)"/>
+                <text x="62" y="50" font-size="14" font-weight="700" fill="#ef4444" text-anchor="middle">750 N</text>
+                <line x1="290" y1="225" x2="290" y2="262" stroke="#ef4444" stroke-width="3"/>
+                <polygon points="0,-5.9 13,0 0,5.9" fill="#ef4444" transform="translate(290.0,264.0) rotate(90)"/>
+                <text x="302" y="262" font-size="14" font-weight="700" fill="#ef4444">600 N</text>
+                <line x1="290" y1="60" x2="225.3" y2="124.7" stroke="#111827" stroke-width="2.5"/>
+                <polygon points="0,-5.9 13,0 0,5.9" fill="#111827" transform="translate(219.3,130.7) rotate(135)"/>
+                <text x="215" y="151" font-size="14" font-weight="700" fill="#111827" text-anchor="middle">F<tspan baseline-shift="sub" font-size="10">R</tspan></text>
+                <path d="M 290.0 94.0 A 34 34 0 0 1 266.0 84.0" fill="none" stroke="#475569" stroke-width="1.5"/>
+                <text x="280" y="112" font-size="14" font-style="italic" fill="#475569">&#x3B8;</text>
+                <text x="140" y="258" font-size="11" font-weight="700" fill="#475569">HINGE PIVOT</text>
+                <line x1="138" y1="250" x2="124" y2="230" stroke="#475569" stroke-width="1"/>
+              </svg>
+            </div>
+            <div class="graph-row"><button type="button" class="graph-btn" onclick="openGraphPaper('Task 6, Q5: cranked lever', 'Scale: 10 mm = 100 N')">&#x1F4D0; Open graph paper (PDF)</button><span>Print it, draw your scale diagram, then photograph it and paste the photo into the box below.</span></div>
+            <div class="answer-label">Scale drawing and answers <span class="saved-indicator" id="ind-t7h5">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t7h5" data-placeholder="Resultant FR = ___ N   Angle &theta; = ___&deg;"></div>
+            <div class="exemplar-row"><button type="button" class="exemplar-thumb" data-label="Task 6, question 5"><img src="exemplars/sf-task6-q5.png" alt="Exemplar vector diagram for the cranked lever" data-placeholder-label="Task 6, question 5"><span>&#x1F50D; Click to see an exemplar answer<small>Have a go yourself first, then compare</small></span></button></div>
           </div>
           <div class="task-item">
             <div class="task-q">6. A gondola cable car cabin hangs in equilibrium from a supporting cable. One section of cable pulls at 23 kN, the cabin and passengers weigh 12 kN, and a second cable section provides the balancing force F. Using a scale drawing (triangle of forces), determine the size of force F.</div>
@@ -1385,6 +1481,36 @@ function downloadTaskPdf(panelId){
   writeTask(w, panel);
   const name = getPupilName();
   w.finish(fileSafe(`${PAGE_TITLE} ${label.split('\u2014')[0]} ${name}`) + '.pdf');
+}
+
+/* ---------- Graph paper (A4, 1 mm / 5 mm / 10 mm grid) ---------- */
+function openGraphPaper(title, scale){
+  if (!pdfReady()) return;
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit:'mm', format:'a4' });
+  const M = 15, W = 210, top = 38, gw = 180, gh = 240;
+  doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(13,148,136);
+  doc.text('Engineering Science Scotland', M, 14);
+  doc.setFontSize(13); doc.setTextColor(17,24,39); doc.text(pdfClean(title), M, 21);
+  doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(55,65,81);
+  const name = getPupilName();
+  const today = new Date().toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
+  doc.text(pdfClean(name ? `Name: ${name}      Date: ${today}` : 'Name: ______________________      Date: ______________', '?'), M, 28);
+  doc.text(pdfClean(scale), W - M, 28, {align:'right'});
+  const lines = (step, col, lw) => {
+    doc.setDrawColor.apply(doc, col); doc.setLineWidth(lw);
+    for (let x = 0; x <= gw + 0.01; x += step) doc.line(M + x, top, M + x, top + gh);
+    for (let y = 0; y <= gh + 0.01; y += step) doc.line(M, top + y, M + gw, top + y);
+  };
+  lines(1, [214,240,236], 0.08);
+  lines(5, [153,214,205], 0.18);
+  lines(10, [45,160,145], 0.3);
+  doc.setFontSize(8); doc.setTextColor(148,163,184);
+  doc.text(SITE_URL, M, 290); doc.text('Print at 100% (actual size) so 10 mm squares measure 10 mm', W - M, 290, {align:'right'});
+  const file = fileSafe(`Graph paper ${title}`) + '.pdf';
+  let opened = null;
+  try { opened = window.open(doc.output('bloburl'), '_blank'); } catch(e) {}
+  if (!opened) doc.save(file);
 }
 
 function downloadAllPdf(){
