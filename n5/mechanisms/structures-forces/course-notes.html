@@ -6,8 +6,8 @@
   <title>Structures and Forces &mdash; Course Notes &mdash; Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
-    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 14px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:6px; }
     .back-link:hover { color:var(--teal-800); }
 
     .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
@@ -90,8 +90,71 @@
     /* Simple block-and-arrow force type diagrams */
     .force-diagram { width:100%; height:auto; margin-bottom:4px; }
 
+    /* Jump targets clear the sticky "under active development" banner */
+    .notes-h1, .notes-h2, .assignment { scroll-margin-top:100px; }
+
+    /* Per-task footer strip with PDF button */
+    .assignment-footer { display:flex; justify-content:flex-end; padding:10px 16px; background:var(--gray-50); border-top:1px solid var(--gray-100); }
+    .pdf-btn { display:inline-flex; align-items:center; gap:6px; padding:7px 14px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; border:1px solid var(--teal-100); background:white; color:var(--teal-800); font-family:inherit; transition:background .15s; }
+    .pdf-btn:hover { background:var(--teal-50); }
+    .pdf-btn:disabled { opacity:.6; cursor:progress; }
+    .ctrl-btn-pdf { background:var(--teal-400); color:white; }
+    .ctrl-btn-pdf:hover { background:var(--teal-600); }
+
+    /* Formula triangle (MFd) */
+    .triangle-box { display:flex; gap:22px; align-items:center; background:white; border:1px solid var(--gray-200); border-radius:10px; padding:16px 20px; margin:0 0 18px; }
+    .formula-triangle { width:130px; height:auto; flex-shrink:0; }
+    .triangle-text { flex:1; min-width:0; }
+    @media (max-width:560px) { .triangle-box { flex-direction:column; align-items:flex-start; } }
+
+    /* Exemplar thumbnails + lightbox */
+    .exemplar-row { margin-top:10px; }
+    .exemplar-thumb { display:inline-flex; align-items:center; gap:12px; padding:6px 12px 6px 6px; background:white; border:1px solid var(--gray-200); border-radius:8px; cursor:zoom-in; font-family:inherit; text-align:left; }
+    .exemplar-thumb:hover { border-color:var(--teal-400); }
+    .exemplar-thumb img { width:96px; height:64px; object-fit:cover; border-radius:5px; filter:blur(1.5px); background:var(--gray-50); flex-shrink:0; }
+    .exemplar-thumb span { font-size:12px; font-weight:600; color:var(--teal-800); display:flex; flex-direction:column; gap:2px; }
+    .exemplar-thumb small { font-size:11px; font-weight:400; color:var(--gray-500); }
+    .lightbox { position:fixed; inset:0; background:rgba(15,23,42,.86); display:none; align-items:center; justify-content:center; flex-direction:column; gap:12px; padding:24px; z-index:2000; cursor:zoom-out; }
+    .lightbox.open { display:flex; }
+    .lightbox img { max-width:92vw; max-height:82vh; border-radius:8px; background:white; box-shadow:0 10px 40px rgba(0,0,0,.4); }
+    .lightbox-caption { color:#e2e8f0; font-size:13px; }
+    .lightbox-close { position:absolute; top:16px; right:20px; background:rgba(255,255,255,.12); color:white; border:none; border-radius:999px; width:36px; height:36px; font-size:20px; cursor:pointer; }
+
+    /* Floating buttons: Contents (24px) / My Name (76px) / Feedback (132px, from site.js) */
+    .float-btn { position:fixed; right:24px; width:120px; padding:12px 14px; font-size:13px; font-weight:600; border-radius:999px; border:none; color:white; display:flex; align-items:center; justify-content:center; gap:6px; cursor:pointer; font-family:inherit; box-shadow:0 4px 14px rgba(15,23,42,.18); z-index:900; }
+    .float-btn:focus-visible, .pdf-btn:focus-visible, .exemplar-thumb:focus-visible, .toc-panel a:focus-visible { outline:3px solid var(--teal-400); outline-offset:2px; }
+    .toc-btn { bottom:24px; background:var(--teal-800); }
+    .name-btn { bottom:76px; background:var(--teal-600); }
+    .name-btn .name-text { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+
+    /* Contents slide-out panel */
+    .toc-panel { position:fixed; top:0; right:0; bottom:0; width:300px; max-width:88vw; background:white; border-left:1px solid var(--gray-200); box-shadow:-8px 0 30px rgba(15,23,42,.12); transform:translateX(100%); transition:transform .25s ease; z-index:1000; display:flex; flex-direction:column; visibility:hidden; }
+    .toc-panel.open { transform:translateX(0); visibility:visible; }
+    .toc-head { display:flex; justify-content:space-between; align-items:center; padding:18px 20px 12px; border-bottom:1px solid var(--gray-100); }
+    .toc-head h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-800); margin:0; font-weight:400; }
+    .toc-close { background:none; border:none; font-size:22px; color:var(--gray-500); cursor:pointer; line-height:1; }
+    .toc-panel nav { overflow-y:auto; padding:10px 12px 24px; }
+    .toc-panel ol { list-style:none; margin:0; padding:0; }
+    .toc-panel li { margin:0; }
+    .toc-panel a { display:block; padding:8px 10px; border-radius:6px; font-size:14px; color:var(--gray-700); text-decoration:none; border-left:3px solid transparent; }
+    .toc-panel a:hover { background:var(--gray-50); }
+    .toc-panel a.toc-sub { font-size:12.5px; color:var(--gray-500); padding:5px 10px 5px 24px; }
+    .toc-panel a.active { background:var(--teal-50); color:var(--teal-800); font-weight:600; border-left-color:var(--teal-400); }
+    @media (prefers-reduced-motion:reduce) { .toc-panel { transition:none; } }
+
+    /* My Name popup */
+    .name-pop { position:fixed; right:156px; bottom:24px; width:270px; max-width:calc(100vw - 48px); background:white; border:1px solid var(--gray-200); border-radius:12px; box-shadow:0 10px 30px rgba(15,23,42,.18); padding:16px; z-index:1001; display:none; }
+    .name-pop.open { display:block; }
+    .name-pop label { display:block; font-size:13px; font-weight:600; color:var(--gray-900); margin-bottom:4px; }
+    .name-pop p { font-size:12px; color:var(--gray-500); line-height:1.5; margin:0 0 10px; }
+    .name-pop input { width:100%; box-sizing:border-box; padding:8px 10px; border:2px solid #c7d7f5; border-radius:7px; font-size:14px; font-family:inherit; }
+    .name-pop input:focus { outline:none; border-color:var(--teal-400); }
+    .name-pop-actions { display:flex; justify-content:flex-end; gap:8px; margin-top:12px; }
+    @media (max-width:560px) { .name-pop { right:24px; bottom:128px; } }
+
     @media print {
       .topbar, .sidebar, .footer, .controls-bar, .storage-status { display:none !important; }
+      .float-btn, .toc-panel, .name-pop, .lightbox, .assignment-footer, .exemplar-row { display:none !important; }
       .layout { display:block !important; }
       .main { margin:0 !important; padding:0 !important; }
       .answer-box { border:1.5px solid #94a3b8 !important; background:white !important; }
@@ -122,7 +185,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 18th September 2026 at 17:36</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 25th September 2026 at 11:10</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Structures and Forces</div>
       <h1 class="hero-title">&#x1F3D7;&#xFE0F; Structures and Forces &mdash; Course Notes</h1>
       <p class="hero-sub">Forces, free-body diagrams, levers, moments, beams, reactions and vectors</p>
@@ -139,7 +202,7 @@
       <a href="index.html" class="back-link">&larr; Back to Structures and Forces</a>
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 1: Types of Force</h1>
+      <h1 class="notes-h1" id="section-1">Section 1: Types of Force</h1>
 
       <p class="notes-p">Forces impact structures in a variety of different ways depending on how they are applied. Forces can move a structure slightly or cause damage by changing its shape. Sometimes the changes are almost impossible to see — for example, a bridge will sag slightly when a vehicle drives over it. Forces can also make an object move or change direction.</p>
 
@@ -230,7 +293,7 @@
       <h2 class="notes-h2">Torsion</h2>
       <p class="notes-p"><strong>Torsion</strong> (also called torque) forces twist or turn a structure. A screwdriver being twisted to drive a screw applies torsion to the screw. A spanner turning a bolt applies torsion to the bolt.</p>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task1">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Types of force</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -247,12 +310,13 @@
             <div class="answer-box" contenteditable="true" data-key="sf-t1e" data-placeholder="Two examples of torsion&hellip;"></div>
           </div>
         </div>
+        <div class="assignment-footer"><button type="button" class="pdf-btn" onclick="downloadTaskPdf('assignment-task1')">&#x2B07;&#xFE0F; Download my answers (PDF)</button></div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 2: Free-Body Diagrams</h1>
+      <h1 class="notes-h1" id="section-2">Section 2: Free-Body Diagrams</h1>
 
       <p class="notes-p">Before working through levers, moments and beams, it helps to have one tool that will be used again and again: the <strong>free-body diagram</strong>. It is simply a simplified sketch that shows all the forces acting on a structure or body, with everything else stripped away. It isolates the object from its surroundings and replaces real components (hinges, supports, ropes, the ground) with arrows representing the forces they exert.</p>
 
@@ -294,26 +358,29 @@
         <div class="step"><div class="step-num">4</div><div class="step-content">Because the crate is staying still, <strong>R = W</strong> — the two forces balance</div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task2">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Free-body diagrams</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1. Draw a free-body diagram of a car resting on flat ground. Show the downward forces (weight acting through the centre of mass) and the reaction forces at each axle. Use suitable letter labels.</div>
             <div class="answer-label">Sketch and labels <span class="saved-indicator" id="ind-t3a">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t3a" data-placeholder="Describe or sketch your free-body diagram here&hellip;"></div>
+            <div class="exemplar-row"><button type="button" class="exemplar-thumb" data-label="Task 2, question 1"><img src="exemplars/sf-task2-q1.png" alt="Exemplar free-body diagram of a car on flat ground" data-placeholder-label="Task 2, question 1"><span>&#x1F50D; Click to see an exemplar answer<small>Have a go yourself first, then compare</small></span></button></div>
           </div>
           <div class="task-item">
             <div class="task-q">2. A bridge is supported at two ends. A bus sits on the bridge. Draw and label the free-body diagram showing all forces including the bridge's own weight.</div>
             <div class="answer-label">Sketch and labels <span class="saved-indicator" id="ind-t3b">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t3b" data-placeholder="Describe or sketch your free-body diagram here&hellip;"></div>
+            <div class="exemplar-row"><button type="button" class="exemplar-thumb" data-label="Task 2, question 2"><img src="exemplars/sf-task2-q2.png" alt="Exemplar free-body diagram of a bus on a bridge" data-placeholder-label="Task 2, question 2"><span>&#x1F50D; Click to see an exemplar answer<small>Have a go yourself first, then compare</small></span></button></div>
           </div>
         </div>
+        <div class="assignment-footer"><button type="button" class="pdf-btn" onclick="downloadTaskPdf('assignment-task2')">&#x2B07;&#xFE0F; Download my answers (PDF)</button></div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 3: Levers</h1>
+      <h1 class="notes-h1" id="section-3">Section 3: Levers</h1>
 
       <p class="notes-p">A lever is a simple machine that can <strong>amplify force</strong>. It is made up of a rigid bar that turns about a pivot point called the <strong>fulcrum</strong>. Forces act on the lever at different points along its length, and the lever's job is to turn one of those forces into a bigger (or more useful) one somewhere else.</p>
 
@@ -388,7 +455,7 @@
 
       <p class="notes-p">When a counterbalance weight is attached to one side of a lever to assist the user, it is known as a <strong>counterbalance</strong>. Cranes and diggers use counterbalances to prevent them toppling over.</p>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task3">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Identifying the fulcrum</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">For each photograph provided (door handle, seesaw, wheelbarrow, fishing rod), identify: (a) where the fulcrum is, (b) where each force acts, and (c) which arrangement it matches — fulcrum in the middle, or fulcrum at one end with the object being moved or the applied force in the middle.</p>
@@ -413,12 +480,13 @@
             <div class="answer-box" contenteditable="true" data-key="sf-lev4" data-placeholder="Describe the fulcrum and forces&hellip;"></div>
           </div>
         </div>
+        <div class="assignment-footer"><button type="button" class="pdf-btn" onclick="downloadTaskPdf('assignment-task3')">&#x2B07;&#xFE0F; Download my answers (PDF)</button></div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 4: Moments</h1>
+      <h1 class="notes-h1" id="section-4">Section 4: Moments</h1>
 
       <p class="notes-p">A force does not always make an object move in a straight line — very often it makes the object <strong>turn</strong> instead. This turning effect is called a <strong>moment</strong>. Every moment acts around a fixed point called the <strong>pivot</strong> (sometimes called the fulcrum): the point about which the object is free to rotate. On a see-saw, the pivot is the block in the middle. On a spanner tightening a bolt, the pivot is the bolt itself. On a door, the pivot is the hinge. Moments are measured in <strong>Newton-metres (Nm)</strong>.</p>
 
@@ -427,6 +495,25 @@
       <div class="formula-box">
         <div class="formula">Moment (Nm) = Force (N) &times; Distance (m)</div>
         <div class="formula-sub">Distance is measured at right angles from the line of action of the force to the pivot</div>
+      </div>
+
+      <div class="triangle-box">
+        <svg viewBox="0 0 160 130" xmlns="http://www.w3.org/2000/svg" class="formula-triangle" role="img" aria-label="Formula triangle with M on top and F and d along the bottom">
+          <polygon points="80,8 152,122 8,122" fill="#f0fdfa" stroke="#0d9488" stroke-width="2.5" stroke-linejoin="round"/>
+          <line x1="44" y1="70" x2="116" y2="70" stroke="#0d9488" stroke-width="2"/>
+          <line x1="80" y1="70" x2="80" y2="122" stroke="#0d9488" stroke-width="2"/>
+          <text x="80" y="58" text-anchor="middle" font-size="24" font-weight="700" fill="#115e59" font-family="DM Sans, sans-serif">M</text>
+          <text x="58" y="108" text-anchor="middle" font-size="24" font-weight="700" fill="#115e59" font-family="DM Sans, sans-serif">F</text>
+          <text x="102" y="108" text-anchor="middle" font-size="24" font-weight="700" fill="#115e59" font-family="DM Sans, sans-serif">d</text>
+        </svg>
+        <div class="triangle-text">
+          <p class="notes-p" style="margin-bottom:8px;"><strong>The MFd triangle.</strong> Cover up the quantity you want to find, and what is left shows you how to work it out.</p>
+          <ul class="notes-ul" style="margin-bottom:0;">
+            <li>Cover <strong>M</strong>: F and d sit side by side, so <strong>M = F &times; d</strong></li>
+            <li>Cover <strong>F</strong>: M sits over d, so <strong>F = <span class="frac"><span class="frac-num">M</span><span class="frac-line"></span><span class="frac-den">d</span></span></strong></li>
+            <li>Cover <strong>d</strong>: M sits over F, so <strong>d = <span class="frac"><span class="frac-num">M</span><span class="frac-line"></span><span class="frac-den">F</span></span></strong></li>
+          </ul>
+        </div>
       </div>
 
       <div class="worked-example">
@@ -581,7 +668,7 @@
         <div class="step"><div class="step-num">4</div><div class="step-content">F = <strong>500 N</strong></div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task4">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Moments calculations</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Use the Principle of Moments to find the missing force or distance in each problem. Show all working.</p>
@@ -612,12 +699,13 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t2e" data-placeholder="Show working here&hellip;"></div>
           </div>
         </div>
+        <div class="assignment-footer"><button type="button" class="pdf-btn" onclick="downloadTaskPdf('assignment-task4')">&#x2B07;&#xFE0F; Download my answers (PDF)</button></div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 5: Beams and Reactions</h1>
+      <h1 class="notes-h1" id="section-5">Section 5: Beams and Reactions</h1>
 
       <p class="notes-p">A beam is a structural member that carries loads across its length. For a horizontal beam to be in <strong>equilibrium</strong>, two conditions must be satisfied simultaneously:</p>
 
@@ -672,7 +760,7 @@
         <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Check:</strong> 7 450 + 9 050 = 16 500 N &#x2713;</div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task5">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Beam reactions</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Show all working for each problem. Remember: take moments about one reaction first, then use the force balance to find the other.</p>
@@ -733,6 +821,7 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t4f" data-placeholder="Show working here&hellip;"></div>
           </div>
         </div>
+        <div class="assignment-footer"><button type="button" class="pdf-btn" onclick="downloadTaskPdf('assignment-task5')">&#x2B07;&#xFE0F; Download my answers (PDF)</button></div>
       </div>
 
       <div class="key-point">&#x1F4D6; Once you can calculate the forces in structural members, the next step is to check whether the <strong>material</strong> chosen can withstand those forces. Stress and strain calculations are covered in the <strong>Materials</strong> course notes.</div>
@@ -740,7 +829,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 6: Vectors and Equilibrium</h1>
+      <h1 class="notes-h1" id="section-6">Section 6: Vectors and Equilibrium</h1>
 
       <p class="notes-p">Force is a <strong>vector quantity</strong> — it has both <strong>magnitude</strong> (size) and <strong>direction</strong>. Vectors can be represented as drawn lines where:</p>
       <ul class="notes-ul">
@@ -858,7 +947,7 @@
         </svg>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task6">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Vectors and equilibrium</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -885,11 +974,13 @@
             <div class="task-q">3. A crane fixed to a wall supports a load of 1 000 N. Using a graphical method (triangle of forces), find the forces in the compression and tension members. Use a scale of 10 mm = 200 N and sketch your triangle.</div>
             <div class="answer-label">Sketch and answer <span class="saved-indicator" id="ind-t7f">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t7f" data-placeholder="Describe your construction and results&hellip;"></div>
+            <div class="exemplar-row"><button type="button" class="exemplar-thumb" data-label="Task 6, question 3"><img src="exemplars/sf-task6-q3.png" alt="Exemplar triangle of forces for a wall crane" data-placeholder-label="Task 6, question 3"><span>&#x1F50D; Click to see an exemplar answer<small>Have a go yourself first, then compare</small></span></button></div>
           </div>
           <div class="task-item">
             <div class="task-q">4. A small crane on a fishing trawler lifts cases of fish. The lift weighs 1 200 N. Using a scale of 10 mm = 200 N, determine the size and direction of the forces in each crane member.</div>
             <div class="answer-label">Working and answer <span class="saved-indicator" id="ind-t7g">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t7g" data-placeholder="Show working and results&hellip;"></div>
+            <div class="exemplar-row"><button type="button" class="exemplar-thumb" data-label="Task 6, question 4"><img src="exemplars/sf-task6-q4.png" alt="Exemplar triangle of forces for a trawler crane" data-placeholder-label="Task 6, question 4"><span>&#x1F50D; Click to see an exemplar answer<small>Have a go yourself first, then compare</small></span></button></div>
           </div>
           <div class="task-item">
             <div class="task-q">5. A weight of 2 000 N hangs from a rope attached to a roof hook. A second rope pulls horizontally until the first rope makes 30&deg; to the vertical. Determine the horizontal pull and the force on the hook.</div>
@@ -900,13 +991,16 @@
             <div class="task-q">6. A gondola cable car cabin hangs in equilibrium from a supporting cable. One section of cable pulls at 23 kN, the cabin and passengers weigh 12 kN, and a second cable section provides the balancing force F. Using a scale drawing (triangle of forces), determine the size of force F.</div>
             <div class="answer-label">Sketch and answer <span class="saved-indicator" id="ind-t7i">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sf-t7i" data-placeholder="Describe your construction and results&hellip;"></div>
+            <div class="exemplar-row"><button type="button" class="exemplar-thumb" data-label="Task 6, question 6"><img src="exemplars/sf-task6-q6.png" alt="Exemplar triangle of forces for a cable car cabin" data-placeholder-label="Task 6, question 6"><span>&#x1F50D; Click to see an exemplar answer<small>Have a go yourself first, then compare</small></span></button></div>
           </div>
         </div>
+        <div class="assignment-footer"><button type="button" class="pdf-btn" onclick="downloadTaskPdf('assignment-task6')">&#x2B07;&#xFE0F; Download my answers (PDF)</button></div>
       </div>
 
       <!-- Controls -->
       <div class="controls-bar">
         <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-pdf" onclick="downloadAllPdf()">&#x2B07;&#xFE0F; Download ALL my answers (PDF)</button>
         <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
         <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
       </div>
@@ -921,6 +1015,40 @@
     </div>
     </div>
   </div>
+</div>
+
+<!-- Floating tools: Contents, My Name, exemplar lightbox -->
+<button type="button" class="float-btn toc-btn" id="toc-btn" aria-expanded="false" aria-controls="toc-panel">&#x2630; Contents</button>
+<button type="button" class="float-btn name-btn" id="name-btn" aria-expanded="false" aria-controls="name-pop"><span aria-hidden="true">&#x1F464;</span><span class="name-text" id="name-btn-text">My name</span></button>
+
+<aside class="toc-panel" id="toc-panel" aria-label="Contents">
+  <div class="toc-head"><h2>Contents</h2><button type="button" class="toc-close" id="toc-close" aria-label="Close contents">&times;</button></div>
+  <nav>
+    <ol>
+      <li><a href="#section-1" data-spy="section-1">1. Types of Force</a><a href="#assignment-task1" class="toc-sub">Task 1 &mdash; Types of force</a></li>
+      <li><a href="#section-2" data-spy="section-2">2. Free-Body Diagrams</a><a href="#assignment-task2" class="toc-sub">Task 2 &mdash; Free-body diagrams</a></li>
+      <li><a href="#section-3" data-spy="section-3">3. Levers</a><a href="#assignment-task3" class="toc-sub">Task 3 &mdash; Identifying the fulcrum</a></li>
+      <li><a href="#section-4" data-spy="section-4">4. Moments</a><a href="#assignment-task4" class="toc-sub">Task 4 &mdash; Moments calculations</a></li>
+      <li><a href="#section-5" data-spy="section-5">5. Beams and Reactions</a><a href="#assignment-task5" class="toc-sub">Task 5 &mdash; Beam reactions</a></li>
+      <li><a href="#section-6" data-spy="section-6">6. Vectors and Equilibrium</a><a href="#assignment-task6" class="toc-sub">Task 6 &mdash; Vectors and equilibrium</a></li>
+    </ol>
+  </nav>
+</aside>
+
+<div class="name-pop" id="name-pop" role="dialog" aria-label="Your name">
+  <label for="name-input">Your name</label>
+  <p>Saved in this browser and added to the top of every PDF you download from this page.</p>
+  <input type="text" id="name-input" maxlength="60" autocomplete="name">
+  <div class="name-pop-actions">
+    <button type="button" class="ctrl-btn ctrl-btn-clear" id="name-clear">Clear</button>
+    <button type="button" class="ctrl-btn ctrl-btn-pdf" id="name-save">Save name</button>
+  </div>
+</div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-label="Exemplar answer">
+  <button type="button" class="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" alt="">
+  <div class="lightbox-caption" id="lightbox-caption"></div>
 </div>
 
 <footer class="footer">
@@ -950,6 +1078,238 @@ document.addEventListener('DOMContentLoaded',function(){
   });
 });
 </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* ═══ Course-notes tools: Contents, My Name, exemplar lightbox, PDF export ═══ */
+const SF_NAME_KEY = 'sf-pupil-name';          // subject-specific: don't reuse across pages
+const PAGE_TITLE  = 'Structures and Forces';
+const SITE_URL    = 'engineeringsciencescotland.co.uk';
+
+// Keep in sync with the task panels on the page (order = order in the combined PDF)
+const ALL_TASK_PANELS = [
+  { id: 'assignment-task1', label: 'Task 1 \u2014 Types of force' },
+  { id: 'assignment-task2', label: 'Task 2 \u2014 Free-body diagrams' },
+  { id: 'assignment-task3', label: 'Task 3 \u2014 Identifying the fulcrum' },
+  { id: 'assignment-task4', label: 'Task 4 \u2014 Moments calculations' },
+  { id: 'assignment-task5', label: 'Task 5 \u2014 Beam reactions' },
+  { id: 'assignment-task6', label: 'Task 6 \u2014 Vectors and equilibrium' }
+];
+
+/* ---------- Contents panel + scroll-spy ---------- */
+(function(){
+  const btn = document.getElementById('toc-btn'), panel = document.getElementById('toc-panel');
+  function setOpen(o){ panel.classList.toggle('open', o); btn.setAttribute('aria-expanded', o); if (o) panel.querySelector('a').focus({preventScroll:true}); }
+  btn.addEventListener('click', () => setOpen(!panel.classList.contains('open')));
+  document.getElementById('toc-close').addEventListener('click', () => { setOpen(false); btn.focus(); });
+  panel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('click', e => { if (panel.classList.contains('open') && !panel.contains(e.target) && e.target !== btn && !btn.contains(e.target)) setOpen(false); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && panel.classList.contains('open')) { setOpen(false); btn.focus(); } });
+
+  const links = [...panel.querySelectorAll('a[data-spy]')];
+  const heads = links.map(a => document.getElementById(a.dataset.spy));
+  let ticking = false;
+  function spy(){
+    ticking = false;
+    let current = 0;
+    heads.forEach((h, i) => { if (h && h.getBoundingClientRect().top < 140) current = i; });
+    links.forEach((a, i) => a.classList.toggle('active', i === current));
+  }
+  window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(spy); } }, {passive:true});
+  spy();
+})();
+
+/* ---------- My Name ---------- */
+function getPupilName(){ try { return (localStorage.getItem(SF_NAME_KEY) || '').trim(); } catch(e){ return ''; } }
+(function(){
+  const btn = document.getElementById('name-btn'), txt = document.getElementById('name-btn-text');
+  const pop = document.getElementById('name-pop'), input = document.getElementById('name-input');
+  function refresh(){ const n = getPupilName(); txt.textContent = n || 'My name'; btn.title = n ? 'Name: ' + n : 'Add your name'; }
+  function setOpen(o){ pop.classList.toggle('open', o); btn.setAttribute('aria-expanded', o); if (o){ input.value = getPupilName(); input.focus(); input.select(); } }
+  btn.addEventListener('click', () => setOpen(!pop.classList.contains('open')));
+  document.getElementById('name-save').addEventListener('click', () => {
+    try { const v = input.value.trim(); v ? localStorage.setItem(SF_NAME_KEY, v) : localStorage.removeItem(SF_NAME_KEY); } catch(e){}
+    refresh(); setOpen(false); btn.focus();
+  });
+  document.getElementById('name-clear').addEventListener('click', () => { input.value = ''; try { localStorage.removeItem(SF_NAME_KEY); } catch(e){} refresh(); input.focus(); });
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') document.getElementById('name-save').click(); if (e.key === 'Escape'){ setOpen(false); btn.focus(); } });
+  document.addEventListener('click', e => { if (pop.classList.contains('open') && !pop.contains(e.target) && !btn.contains(e.target)) setOpen(false); });
+  refresh();
+})();
+
+/* ---------- Exemplar thumbnails: placeholder fallback + lightbox ---------- */
+function placeholderSrc(label){
+  const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
+    <rect width="900" height="600" fill="#f0fdf4"/>
+    <rect x="20" y="20" width="860" height="560" rx="18" fill="none" stroke="#4ade80" stroke-width="6" stroke-dasharray="22 14"/>
+    <g transform="translate(450 225) rotate(-35)" fill="none" stroke="#16a34a" stroke-width="10" stroke-linejoin="round">
+      <rect x="-110" y="-26" width="180" height="52" rx="6" fill="#bbf7d0"/><polygon points="70,-26 130,0 70,26" fill="#fef3c7"/><polygon points="112,-8 130,0 112,8" fill="#16a34a"/><rect x="-140" y="-26" width="30" height="52" rx="6" fill="#fda4af"/></g>
+    <text x="450" y="390" text-anchor="middle" font-family="Arial, sans-serif" font-size="40" font-weight="700" fill="#166534">${esc(label)}</text>
+    <text x="450" y="445" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" fill="#15803d">Placeholder: drop in the real exemplar image later</text></svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+(function(){
+  document.querySelectorAll('.exemplar-thumb img').forEach(img => {
+    const use = () => { if (!img.dataset.fallback){ img.dataset.fallback = '1'; img.src = placeholderSrc(img.dataset.placeholderLabel || 'Exemplar'); } };
+    img.addEventListener('error', use);
+    if (img.complete && img.naturalWidth === 0) use();
+  });
+  const lb = document.getElementById('lightbox'), lbImg = document.getElementById('lightbox-img'), cap = document.getElementById('lightbox-caption');
+  let opener = null;
+  document.querySelectorAll('.exemplar-thumb').forEach(b => b.addEventListener('click', () => {
+    const img = b.querySelector('img'); opener = b;
+    lbImg.src = img.currentSrc || img.src; lbImg.alt = img.alt;
+    cap.textContent = 'Exemplar answer: ' + (b.dataset.label || '');
+    lb.classList.add('open'); lb.querySelector('.lightbox-close').focus();
+  }));
+  const close = () => { lb.classList.remove('open'); if (opener) opener.focus(); };
+  lb.addEventListener('click', close);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape' && lb.classList.contains('open')) close(); });
+})();
+
+/* ---------- PDF export (jsPDF, real selectable text) ---------- */
+const PDF_CHAR_MAP = {'\u2211':'Sum ','\u2212':'-','\u2013':'-','\u2014':'-','\u2018':"'",'\u2019':"'",'\u201C':'"','\u201D':'"',
+  '\u2026':'...','\u2022':'-','\u21D2':'=>','\u2192':'->','\u2190':'<-','\u2713':'(tick)','\u2248':'~','\u2260':'!=','\u2264':'<=','\u2265':'>=',
+  '\u00A0':' ','\u2009':' ','\u202F':' ','\u200B':''};
+function pdfClean(str, unknown){
+  return String(str).replace(/[\u2211\u2212\u2013\u2014\u2018\u2019\u201C\u201D\u2026\u2022\u21D2\u2192\u2190\u2713\u2248\u2260\u2264\u2265\u00A0\u2009\u202F\u200B]/g, c => PDF_CHAR_MAP[c])
+    .replace(/[\uFE0F\u200D]/g, '')
+    .replace(/[^\n\x20-\x7E\u00A1-\u00FF]/gu, unknown || '');
+}
+function flatText(el){ return (el.textContent || '').replace(/\s+/g, ' ').trim(); }
+
+// Turn an answer box's HTML into ordered text and image segments
+function answerSegments(box){
+  const segs = []; let buf = '';
+  const flush = () => { const t = buf.replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n').trim(); if (t) segs.push({type:'text', text:t}); buf = ''; };
+  (function walk(node){
+    node.childNodes.forEach(n => {
+      if (n.nodeType === 3) { buf += n.nodeValue.replace(/\s+/g, ' '); return; }
+      if (n.nodeType !== 1) return;
+      const tag = n.tagName;
+      if (tag === 'IMG') { flush(); segs.push({type:'img', el:n}); return; }
+      if (tag === 'BR') { buf += '\n'; return; }
+      const block = /^(DIV|P|LI|H[1-6]|TR|UL|OL|TABLE)$/.test(tag);
+      if (block && buf && !buf.endsWith('\n')) buf += '\n';
+      if (tag === 'LI') buf += '- ';
+      walk(n);
+      if (block && !buf.endsWith('\n')) buf += '\n';
+    });
+  })(box);
+  flush();
+  return segs;
+}
+
+function imageData(img){
+  try {
+    const w = img.naturalWidth, h = img.naturalHeight; if (!w || !h) return null;
+    const c = document.createElement('canvas'); c.width = w; c.height = h;
+    const ctx = c.getContext('2d'); ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h); ctx.drawImage(img, 0, 0);
+    return { data: c.toDataURL('image/jpeg', 0.92), w, h };
+  } catch(e){ return null; }
+}
+
+function makeWriter(){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit:'mm', format:'a4' });
+  const W = 210, H = 297, M = 18, BOTTOM = H - 16, CW = W - 2*M;
+  const w = { doc, y: M };
+  w.ensure = h => { if (w.y + h > BOTTOM) { doc.addPage(); w.y = M; } };
+  w.gap = mm => { w.y += mm; };
+  w.text = (str, o = {}) => {
+    const size = o.size || 10.5, indent = o.indent || 0, lh = size * 0.3528 * 1.4;
+    doc.setFont('helvetica', o.style || 'normal'); doc.setFontSize(size); doc.setTextColor.apply(doc, o.color || [31,41,55]);
+    doc.splitTextToSize(pdfClean(str, o.unknown), CW - indent).forEach(line => {
+      w.ensure(lh); doc.text(line, M + indent, w.y + size * 0.3528); w.y += lh;
+    });
+  };
+  w.image = (img, indent = 0) => {
+    const d = imageData(img);
+    if (!d) { w.text('[A pasted image could not be added to the PDF]', {size:9.5, style:'italic', color:[148,163,184], indent}); return; }
+    const maxW = CW - indent, maxH = 110;
+    let iw = maxW, ih = d.h * (maxW / d.w);
+    if (d.w * 0.2646 < iw) { iw = d.w * 0.2646; ih = d.h * 0.2646; }   // don't upscale small images past ~96 dpi
+    if (ih > maxH) { iw = iw * (maxH / ih); ih = maxH; }
+    w.ensure(ih + 2); doc.addImage(d.data, 'JPEG', M + indent, w.y + 1, iw, ih); w.y += ih + 3;
+  };
+  w.rule = (color = [204,251,241]) => { w.ensure(3); doc.setDrawColor.apply(doc, color); doc.setLineWidth(0.5); doc.line(M, w.y + 1, W - M, w.y + 1); w.y += 4; };
+  w.band = label => {
+    w.ensure(30); w.y += 2;
+    doc.setFillColor(13,148,136); doc.roundedRect(M, w.y, CW, 9, 1.5, 1.5, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(11.5); doc.setTextColor(255,255,255);
+    doc.text(pdfClean(label), M + 4, w.y + 6.1); w.y += 13;
+  };
+  w.header = title => {
+    w.text('Engineering Science Scotland', {size:9, style:'bold', color:[13,148,136]});
+    w.gap(1);
+    w.text(title, {size:15, style:'bold', color:[17,24,39]});
+    w.gap(2);
+    const name = getPupilName();
+    const today = new Date().toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
+    w.text(name ? `Name: ${name}        Date: ${today}` : 'Name: ________________________________        Date: ________________', {size:10.5, color:[55,65,81], unknown:'?'});
+    w.gap(1); w.rule(); w.gap(2);
+  };
+  w.finish = filename => {
+    const n = doc.getNumberOfPages();
+    for (let i = 1; i <= n; i++) {
+      doc.setPage(i); doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(148,163,184);
+      doc.text(SITE_URL, M, H - 9); doc.text(`Page ${i} of ${n}`, W - M, H - 9, {align:'right'});
+    }
+    doc.save(filename);
+  };
+  return w;
+}
+
+// Write one task panel's questions and answers
+function writeTask(w, panel){
+  panel.querySelectorAll('.assignment-body > p, .task-q, .task-q-sub, .answer-label, .answer-box').forEach(el => {
+    if (el.classList.contains('answer-box')) {
+      const segs = answerSegments(el);
+      if (!segs.length) { w.text('(no answer entered yet)', {size:10, style:'italic', color:[148,163,184], indent:4}); }
+      else segs.forEach(s => s.type === 'img' ? w.image(s.el, 4) : w.text(s.text, {size:10.5, indent:4, unknown:'?'}));
+      w.gap(3);
+    } else if (el.classList.contains('answer-label')) {
+      const c = el.cloneNode(true); c.querySelectorAll('.saved-indicator').forEach(x => x.remove());
+      w.text(flatText(c).toUpperCase(), {size:8, style:'bold', color:[13,148,136], indent:4}); w.gap(0.5);
+    } else if (el.classList.contains('task-q-sub')) {
+      w.text(flatText(el), {size:10.5, style:'bold', indent:4}); w.gap(1);
+    } else if (el.classList.contains('task-q')) {
+      w.gap(1); w.text(flatText(el), {size:11, style:'bold'}); w.gap(1.5);
+    } else {
+      w.text(flatText(el), {size:9.5, style:'italic', color:[100,116,139]}); w.gap(2);
+    }
+  });
+}
+
+function pdfReady(){
+  if (window.jspdf && window.jspdf.jsPDF) return true;
+  alert("The PDF tool hasn't loaded. Check your internet connection, reload the page, then try again. Your answers are still saved.");
+  return false;
+}
+function fileSafe(s){ return pdfClean(s).replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+
+function downloadTaskPdf(panelId){
+  if (!pdfReady()) return;
+  const panel = document.getElementById(panelId); if (!panel) return;
+  const entry = ALL_TASK_PANELS.find(t => t.id === panelId);
+  const label = entry ? entry.label : flatText(panel.querySelector('.assignment-title'));
+  const w = makeWriter();
+  w.header(`${PAGE_TITLE}: ${label}`);
+  writeTask(w, panel);
+  const name = getPupilName();
+  w.finish(fileSafe(`${PAGE_TITLE} ${label.split('\u2014')[0]} ${name}`) + '.pdf');
+}
+
+function downloadAllPdf(){
+  if (!pdfReady()) return;
+  const w = makeWriter();
+  w.header(`${PAGE_TITLE}: all my answers`);
+  ALL_TASK_PANELS.forEach(t => { const p = document.getElementById(t.id); if (!p) return; w.band(t.label); writeTask(w, p); });
+  w.finish(fileSafe(`${PAGE_TITLE} all answers ${getPupilName()}`) + '.pdf');
+}
+</script>
+
 
 </body>
 </html>
