@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- 
-    NOGRIND SIMULATOR V1.4.1
+    NOGRIND SIMULATOR V1.4.2
     ---------------------------------------------------
     This is intended for educational use only and is not to be sold for profit
     developed by Peter Strain with Gemini.
@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoGrind Sim V1.4.1</title>
+    <title>NoGrind Sim V1.4.2</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <!-- Three.js Library -->
@@ -97,13 +97,13 @@
 <body class="flex h-screen flex-col text-slate-800 bg-[#f0f4f9]">
 
     <!-- Fixed Top Toolbar -->
-    <div class="h-16 bg-white z-50 flex items-center justify-between px-6 shadow-sm border-b border-slate-200 shrink-0">
+    <div id="topToolbar" class="h-16 bg-white z-50 flex items-center justify-between px-6 shadow-sm border-b border-slate-200 shrink-0">
         <div class="flex items-center gap-4">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-pink-500 text-white rounded-xl flex items-center justify-center shadow-lg hover:scale-105 transition-transform cursor-pointer">
                     <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                 </div>
-                <h1 class="text-xl font-bold text-slate-700 tracking-tight leading-none">NoGrind<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500">Sim</span> <span class="text-xs text-slate-400 font-mono ml-1">V1.4.1</span></h1>
+                <h1 class="text-xl font-bold text-slate-700 tracking-tight leading-none">NoGrind<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500">Sim</span> <span class="text-xs text-slate-400 font-mono ml-1">V1.4.2</span></h1>
             </div>
             
             <div class="h-8 w-px bg-slate-200 mx-2 rounded-full"></div>
@@ -237,7 +237,7 @@
         </div>
 
         <!-- 3D Canvas Area -->
-        <div class="flex-1 relative bg-white rounded-3xl shadow-sm border border-white overflow-hidden" id="canvasContainer">
+        <div class="flex-1 relative bg-white rounded-3xl shadow-sm border border-white overflow-hidden transition-all duration-300" id="canvasContainer">
             <div id="three-container" class="absolute inset-0 w-full h-full"></div>
             <svg id="svg-overlay" class="absolute inset-0 w-full h-full pointer-events-none z-10"></svg>
             <div id="labels-container" class="absolute inset-0 pointer-events-none z-20 overflow-hidden"></div>
@@ -340,12 +340,12 @@
                 c.style.width = '18rem';
                 content.style.opacity = '1';
                 content.style.pointerEvents = 'auto';
-                icon.style.transform = '';
+                if (icon) icon.style.transform = '';
             } else {
                 c.style.width = '0';
                 content.style.opacity = '0';
                 content.style.pointerEvents = 'none';
-                icon.style.transform = 'rotate(180deg)';
+                if (icon) icon.style.transform = 'rotate(180deg)';
             }
             setTimeout(resize, 300); 
         }
@@ -451,7 +451,7 @@
         const scene = new THREE.Scene();
 
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 3000);
-        camera.position.set(60, 135, 150);
+        camera.position.set(0, 60, 160);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -519,7 +519,7 @@
         function centerCamera() {
             if (nodes.length === 0) {
                 controls.target.set(0, 0, 0);
-                camera.position.set(60, 135, 150);
+                camera.position.set(0, 60, 160);
                 controls.update();
                 return;
             }
@@ -530,9 +530,9 @@
             const maxDim = Math.max(size.x, size.y, size.z);
             const fov = camera.fov * (Math.PI / 180);
             let cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
-            cameraZ = Math.max(cameraZ * 1.0, 100);
+            cameraZ = Math.max(cameraZ * 1.5, 100);
             controls.target.copy(center);
-            camera.position.set(center.x + cameraZ * 0.375, center.y + cameraZ * 0.825, center.z + cameraZ * 0.85);
+            camera.position.set(center.x, center.y + cameraZ * 0.3, center.z + cameraZ);
             controls.update();
         }
 
@@ -1166,9 +1166,14 @@
                         marker.position.z = 0.75; 
                         this.rotGroup.add(marker);
                     } else if (this.type !== 'worm' && this.type !== 'cassette') {
-                        const markerGeo = new THREE.BoxGeometry(this.radius, 1.5, (this.type === 'pulley' || this.type === 'worm_wheel' ? 6 : 4.2));
+                        let mDepth = 4.5;
+                        if (this.type === 'pulley') mDepth = 9.0;
+                        else if (this.type === 'worm_wheel') mDepth = 7.5;
+                        else if (this.type === 'sprocket') mDepth = 3.0;
+
+                        const markerGeo = new THREE.BoxGeometry(this.radius - 1, 1.5, mDepth);
                         const marker = new THREE.Mesh(markerGeo, new THREE.MeshBasicMaterial({color: 0xffffff}));
-                        marker.position.x = this.radius/2;
+                        marker.position.x = (this.radius - 1) / 2;
                         marker.userData = { node: this };
                         this.rotGroup.add(marker);
                     }
@@ -2301,15 +2306,15 @@
                         const distCam = camera.position.distanceTo(n.meshGroup.position);
                         const heightWorld = 2 * distCam * Math.tan(camera.fov * Math.PI / 360);
                         const pixelPerUnit = height / heightWorld;
-                        let pixelRadius23 = (n.radius || 0) * 0.666 * pixelPerUnit;
+                        let pixelRadius34 = (n.radius || 0) * 0.75 * pixelPerUnit;
                         
-                        pixelRadius23 = Math.min(pixelRadius23, distToLabel - 10);
+                        pixelRadius34 = Math.min(pixelRadius34, distToLabel - 10);
                         
                         const dirX = (lx - px) / distToLabel;
                         const dirY = (ly - py) / distToLabel;
                         
-                        originX = px + dirX * pixelRadius23;
-                        originY = py + dirY * pixelRadius23;
+                        originX = px + dirX * pixelRadius34;
+                        originY = py + dirY * pixelRadius34;
                     }
                     
                     const spx = originX * scaleFactor;
@@ -2516,7 +2521,7 @@
                     n.labelEl.style.top = `${ly}px`;
                 }
 
-                // Calculate 2/3rds line origin
+                // Calculate 3/4ths line origin
                 let originX = px;
                 let originY = py;
                 const distToLabel = Math.hypot(lx - px, ly - py);
@@ -2525,16 +2530,16 @@
                     const distCam = camera.position.distanceTo(n.meshGroup.position);
                     const heightWorld = 2 * distCam * Math.tan(camera.fov * Math.PI / 360);
                     const pixelPerUnit = container.clientHeight / heightWorld;
-                    let pixelRadius23 = (n.radius || 0) * 0.666 * pixelPerUnit;
+                    let pixelRadius34 = (n.radius || 0) * 0.75 * pixelPerUnit;
                     
                     // Cap it to slightly less than the distance to the label to prevent crossover
-                    pixelRadius23 = Math.min(pixelRadius23, distToLabel - 10);
+                    pixelRadius34 = Math.min(pixelRadius34, distToLabel - 10);
                     
                     const dirX = (lx - px) / distToLabel;
                     const dirY = (ly - py) / distToLabel;
                     
-                    originX = px + dirX * pixelRadius23;
-                    originY = py + dirY * pixelRadius23;
+                    originX = px + dirX * pixelRadius34;
+                    originY = py + dirY * pixelRadius34;
                 }
 
                 if(n.lineEl) {
@@ -2637,22 +2642,32 @@
             makeDraggable(document.getElementById('panel-inspect'), document.getElementById('panel-inspect-header'), false);
 
             // === 1. PASTE YOUR SAVED JSON STRING INSIDE THE BACKTICKS BELOW ===
-            const preloadedLesson = `{"nodes":[{"id":"5mks37ub8","type":"motor","param":20,"label":"Input Motor","showLabel":false,"axis":"z","labelOffset":{"x":0,"y":-60},"linearPosition":0,"parentId":null,"linkType":null,"linkDir":null},{"id":"8t9w0fz66","type":"worm","param":20,"label":"","showLabel":true,"axis":"z","labelOffset":{"x":16,"y":140},"linearPosition":0,"parentId":"5mks37ub8","linkType":"axle","linkDir":"f"},{"id":"x4o2n18fx","type":"worm_wheel","param":50,"label":"","showLabel":true,"axis":"x","labelOffset":{"x":-253,"y":-4},"linearPosition":0,"parentId":"8t9w0fz66","linkType":"worm_mesh","linkDir":"u"}],"motorSpeed":60,"motorDir":-1,"camera":{"pos":{"x":125.49217554373053,"y":40.09564515340092,"z":43.68018264372413},"target":{"x":-8.472441889801388,"y":8.110440413063907,"z":6.213571877462132}}}`; 
+            const preloadedLesson = `{"nodes":[{"id":"piifm6fo2","type":"motor","param":20,"label":"Input Motor","showLabel":false,"axis":"z","labelOffset":{"x":0,"y":-60},"linearPosition":0,"parentId":null,"linkType":null,"linkDir":null},{"id":"10jhyxiul","type":"worm","param":20,"label":"","showLabel":true,"axis":"z","labelOffset":{"x":-56,"y":115},"linearPosition":0,"parentId":"piifm6fo2","linkType":"axle","linkDir":"f"},{"id":"kcg86oyeh","type":"worm_wheel","param":40,"label":"","showLabel":true,"axis":"x","labelOffset":{"x":-221,"y":-111},"linearPosition":0,"parentId":"10jhyxiul","linkType":"worm_mesh","linkDir":"u"}],"motorSpeed":120,"motorDir":1,"camera":{"pos":{"x":150.02421346265834,"y":29.197685298325858,"z":50.64026278913474},"target":{"x":13.980880429585094,"y":1.214629693298965,"z":17.739212578495046}}}`; 
 
             // === 2. AUTO-LOAD LOGIC ===
             if (preloadedLesson.trim().length > 10) {
-                // If a lesson is pasted above, load it immediately!
+                // 1. Load the saved JSON circuit
                 loadStateJSON(preloadedLesson);
+                recordState();
                 
-                // Automatically close the left sidebar for a cleaner "presentation" view
-                if (sidebarOpen) toggleSidebar(); 
+                // 2. KIOSK MODE: Completely hide the top and side menus
+                const sidebar = document.getElementById('sidebarContainer');
+                if(sidebar) sidebar.style.display = 'none';
                 
-                // Automatically adjust view and start the simulation!
+                const topToolbar = document.getElementById('topToolbar');
+                if(topToolbar) topToolbar.style.display = 'none';
+                
+                // Adjust container to remove padding for full immersion
+                const appContainer = document.getElementById('appContainer');
+                if(appContainer) appContainer.classList.remove('p-4', 'gap-4');
+                const canvasContainer = document.getElementById('canvasContainer');
+                if(canvasContainer) canvasContainer.classList.remove('rounded-3xl', 'border');
+
+                // 3. Start the live simulation automatically
                 setTimeout(() => {
                     resize();
-                    // Notice centerCamera() is NOT called here because loadStateJSON applies the saved camera
                     document.getElementById('btnSim')?.click();
-                }, 350); // Wait 350ms for the sidebar to finish animating
+                }, 50); // Reduced delay since there is no sidebar animation
                 
             } else {
                 // If no lesson is pasted, just do the normal empty startup

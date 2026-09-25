@@ -6,11 +6,12 @@
   <title>Drive Systems &mdash; Course Notes &mdash; Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
-    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 12px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:6px; }
     .back-link:hover { color:var(--teal-800); }
     .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
     .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h1, .notes-h2 { scroll-margin-top:100px; }
     .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:16px 0 8px; }
     .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
     .notes-p strong { color:var(--gray-900); }
@@ -115,12 +116,83 @@
 
     .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
 
+    /* ── Floating buttons (Contents / My name) — Feedback lives in site.js ── */
+    .float-btn { position:fixed; right:24px; width:120px; padding:12px 14px; font-size:13px; font-weight:600; font-family:inherit; line-height:1.2; border-radius:999px; border:none; color:white; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-sizing:border-box; box-shadow:0 4px 14px rgba(15,23,42,.18); z-index:900; transition:filter .15s; }
+    .float-btn:hover { filter:brightness(1.1); }
+    .float-btn:focus-visible { outline:3px solid #fbbf24; outline-offset:2px; }
+    .float-btn-icon { flex:none; }
+    .float-btn-label { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+    #toc-btn { bottom:24px; background:var(--teal-800); }
+    #name-btn { bottom:76px; background:#4f46e5; }
+
+    /* Contents slide-out panel */
+    .toc-backdrop { position:fixed; inset:0; background:rgba(15,23,42,.25); opacity:0; pointer-events:none; transition:opacity .2s; z-index:950; }
+    .toc-backdrop.open { opacity:1; pointer-events:auto; }
+    .toc-panel { position:fixed; top:0; right:0; bottom:0; width:310px; max-width:88vw; background:white; box-shadow:-6px 0 24px rgba(15,23,42,.15); transform:translateX(100%); transition:transform .25s ease; z-index:960; display:flex; flex-direction:column; }
+    .toc-panel.open { transform:translateX(0); }
+    .toc-head { display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid var(--gray-200); }
+    .toc-title { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-800); }
+    .toc-close { background:none; border:none; font-size:22px; line-height:1; color:var(--gray-500); cursor:pointer; padding:4px 8px; border-radius:6px; }
+    .toc-close:hover { background:var(--gray-100); }
+    .toc-list { overflow-y:auto; padding:10px 10px 24px; }
+    .toc-link { display:block; padding:8px 10px; border-radius:7px; font-size:13px; color:var(--gray-600); text-decoration:none; border-left:3px solid transparent; line-height:1.35; }
+    .toc-link:hover { background:var(--teal-50); color:var(--teal-800); }
+    .toc-link.toc-sub { padding-left:26px; font-size:12px; }
+    .toc-link.active { background:var(--teal-50); color:var(--teal-800); font-weight:600; border-left-color:var(--teal-400); }
+
+    /* My name popup */
+    .name-popup { position:fixed; right:156px; bottom:76px; width:260px; background:white; border:1px solid var(--gray-200); border-radius:12px; box-shadow:0 10px 30px rgba(15,23,42,.18); padding:16px; z-index:970; display:none; }
+    .name-popup.open { display:block; }
+    .name-popup h3 { font-size:14px; font-weight:700; color:var(--gray-900); margin:0 0 4px; }
+    .name-popup p { font-size:12px; color:var(--gray-500); line-height:1.5; margin:0 0 10px; }
+    .name-popup input { width:100%; box-sizing:border-box; padding:8px 10px; border:2px solid #c7d7f5; border-radius:8px; font-size:14px; font-family:inherit; outline:none; }
+    .name-popup input:focus { border-color:var(--teal-400); }
+    .name-popup-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:10px; }
+    @media (max-width:560px) { .name-popup { right:16px; bottom:132px; } }
+
+    /* Per-task PDF footer strip */
+    .assignment-footer { display:flex; justify-content:flex-end; align-items:center; gap:10px; padding:10px 18px; background:var(--gray-50); border-top:1px solid var(--gray-100); }
+    .ctrl-btn:disabled { opacity:.6; cursor:wait; }
+
+    /* Exemplar thumbnail + lightbox */
+    .exemplar-thumb { display:inline-flex; align-items:center; gap:10px; margin:10px 0 2px; padding:6px 14px 6px 6px; background:var(--teal-50); border:1px solid var(--teal-100); border-radius:8px; cursor:pointer; font-size:12px; font-weight:600; font-family:inherit; color:var(--teal-800); text-align:left; }
+    .exemplar-thumb:hover { background:var(--teal-100); }
+    .exemplar-thumb img { width:96px; height:60px; object-fit:cover; border-radius:5px; filter:blur(1.5px); display:block; flex:none; background:white; }
+    .lightbox { position:fixed; inset:0; background:rgba(15,23,42,.88); display:none; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:24px; z-index:1100; cursor:zoom-out; }
+    .lightbox.open { display:flex; }
+    .lightbox img { max-width:min(960px,100%); max-height:82vh; border-radius:8px; background:white; box-shadow:0 12px 40px rgba(0,0,0,.4); }
+    .lightbox-caption { color:#e2e8f0; font-size:13px; text-align:center; }
+    .lightbox-close { position:absolute; top:14px; right:18px; background:rgba(255,255,255,.12); color:white; border:none; font-size:24px; width:40px; height:40px; border-radius:50%; cursor:pointer; }
+
+    /* Specification tables (Design Challenges) */
+    .spec-table { width:100%; border-collapse:collapse; margin:10px 0 18px; font-size:13px; }
+    .spec-table td { padding:8px 10px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; line-height:1.5; }
+    .spec-table td:first-child { width:36px; padding-right:0; }
+    .data-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:var(--teal-100); color:var(--teal-800); font-size:11px; font-weight:700; font-style:normal; }
+    .dc-context { background:white; border:1px solid var(--gray-200); border-radius:10px; padding:14px 18px; margin:12px 0 4px; }
+
+    /* Mechanism symbols + friction diagram */
+    .symbol-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:12px; margin:16px 0 8px; }
+    .symbol-card { background:white; border:1px solid var(--gray-200); border-radius:10px; padding:12px; text-align:center; }
+    .symbol-card svg { width:100%; max-width:170px; height:auto; display:block; margin:0 auto 6px; }
+    .symbol-card svg circle, .symbol-card svg line { fill:none; stroke:var(--teal-800); stroke-width:2.2; }
+    .symbol-card svg .sym-dot { fill:var(--teal-800); stroke:none; }
+    .symbol-card svg .sym-chain { stroke-dasharray:7 5; }
+    .symbol-name { font-size:13px; font-weight:700; color:var(--gray-900); margin-bottom:3px; }
+    .symbol-desc { font-size:12px; color:var(--gray-500); line-height:1.4; }
+    .friction-diagram { background:white; border:1px solid var(--gray-200); border-radius:10px; padding:14px; margin:14px 0; overflow-x:auto; }
+    .friction-diagram svg { width:100%; max-width:640px; margin:0 auto; min-width:520px; height:auto; display:block; }
+    .flow-in { fill:#99f6e4; } .flow-out { fill:#2dd4bf; } .flow-loss { fill:#fdba74; }
+    .flow-label { font-size:14px; font-weight:600; fill:#134e4a; font-family:inherit; }
+    .flow-label-loss { fill:#9a3412; }
+
     @media print {
       .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.sim-embed-section { display:none!important; }
       .layout { display:block!important; }
       .main { margin:0!important; padding:0!important; }
       .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
       .diagram-placeholder { border:1.5px solid #7dd3fc!important; }
+      .float-btn,.toc-panel,.toc-backdrop,.name-popup,.assignment-footer,.lightbox,.exemplar-thumb,.dl-all-btn { display:none!important; }
     }
   </style>
 </head>
@@ -147,7 +219,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 17 September 2026, 10:05</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 25 September 2026, 16:32</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Drive Systems</div>
       <h1 class="hero-title">&#x2699;&#xFE0F; Drive Systems &mdash; Course Notes</h1>
       <p class="hero-sub">Gear trains, belt drives, chain drives, velocity ratio and motion conversion</p>
@@ -164,7 +236,7 @@
       <a href="index.html" class="back-link">&larr; Back to Drive Systems</a>
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 1: Introduction to Mechanisms</h1>
+      <h1 class="notes-h1" id="section-1">Section 1: Introduction to Mechanisms</h1>
 
       <p class="notes-p">Mechanisms are devices that <strong>convert one motion or force into another</strong>. They can be simple — like door handles, scissors and light switches — or complex, as used in industrial robots, cars and bikes.</p>
 
@@ -213,7 +285,7 @@
         </div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task1">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Types of motion</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -282,17 +354,86 @@
         </div>
       </div>
 
+      <h2 class="notes-h2" id="section-1a" data-toc-sub>Standard symbols for mechanisms</h2>
+      <p class="notes-p">Engineers usually draw mechanisms using simple <strong>standard symbols</strong> rather than realistic pictures. Because everyone uses the same symbols (set out in British Standards), a drawing made by one engineer can be read correctly by any other engineer, anywhere, without extra explanation. Symbols are also much quicker to draw than a realistic sketch, they leave no doubt about which component is meant, and they make it easy to see how motion passes through a system.</p>
+      <div class="key-point">In the exam you are much more likely to be asked to <strong>read</strong> a diagram drawn with these symbols, or <strong>complete</strong> one that is partly drawn, than to draw a whole system from memory.</div>
+
+      <div class="symbol-grid">
+        <div class="symbol-card">
+          <svg viewBox="0 0 160 80" role="img" aria-label="Simple gear train symbol: two touching circles">
+            <circle cx="52" cy="40" r="26"/><circle cx="93" cy="40" r="15"/>
+            <circle class="sym-dot" cx="52" cy="40" r="2.5"/><circle class="sym-dot" cx="93" cy="40" r="2.5"/>
+          </svg>
+          <div class="symbol-name">Simple gear train</div>
+          <div class="symbol-desc">Two circles that <strong>touch</strong>: the gears mesh directly.</div>
+        </div>
+        <div class="symbol-card">
+          <svg viewBox="0 0 160 80" role="img" aria-label="Belt drive symbol: two circles joined by two solid lines">
+            <circle cx="40" cy="40" r="26"/><circle cx="122" cy="40" r="15"/>
+            <line x1="43.5" y1="14.2" x2="124" y2="25.1"/><line x1="43.5" y1="65.8" x2="124" y2="54.9"/>
+            <circle class="sym-dot" cx="40" cy="40" r="2.5"/><circle class="sym-dot" cx="122" cy="40" r="2.5"/>
+          </svg>
+          <div class="symbol-name">Belt drive</div>
+          <div class="symbol-desc">Two pulleys apart, joined by <strong>solid</strong> lines for the belt.</div>
+        </div>
+        <div class="symbol-card">
+          <svg viewBox="0 0 160 80" role="img" aria-label="Chain drive symbol: two circles joined by two dashed lines">
+            <circle cx="40" cy="40" r="26"/><circle cx="122" cy="40" r="15"/>
+            <line class="sym-chain" x1="43.5" y1="14.2" x2="124" y2="25.1"/><line class="sym-chain" x1="43.5" y1="65.8" x2="124" y2="54.9"/>
+            <circle class="sym-dot" cx="40" cy="40" r="2.5"/><circle class="sym-dot" cx="122" cy="40" r="2.5"/>
+          </svg>
+          <div class="symbol-name">Chain drive</div>
+          <div class="symbol-desc">Two sprockets apart, joined by <strong>dashed</strong> lines for the chain.</div>
+        </div>
+        <div class="symbol-card">
+          <svg viewBox="0 0 160 80" role="img" aria-label="Rack and pinion symbol: a circle touching a straight line">
+            <circle cx="80" cy="32" r="22"/><circle class="sym-dot" cx="80" cy="32" r="2.5"/>
+            <line x1="14" y1="54" x2="146" y2="54"/>
+          </svg>
+          <div class="symbol-name">Rack and pinion</div>
+          <div class="symbol-desc">A circle (pinion) touching a straight line (rack).</div>
+        </div>
+      </div>
+      <p class="notes-p" style="font-size:12px;">In each symbol the dot marks the shaft, which you are looking at end-on.</p>
+
+      <h2 class="notes-h2" id="section-1b" data-toc-sub>Friction in drive systems</h2>
+      <p class="notes-p">Wherever parts of a drive system rub or slide against each other, there is <strong>friction</strong>. This happens where gear teeth mesh, where shafts turn in their bearings, and where a belt or chain wraps round a pulley or sprocket. Friction turns some of the energy put into the system into forms that are not useful, so <strong>less energy reaches the output</strong> than was put in.</p>
+
+      <div class="motion-grid">
+        <div class="motion-card"><div class="motion-card-icon">&#x1F525;</div><div class="motion-card-name">Heat</div><div class="motion-card-desc">Rubbing surfaces warm up. Some of the input energy is lost as heat.</div></div>
+        <div class="motion-card"><div class="motion-card-icon">&#x1F50A;</div><div class="motion-card-name">Noise</div><div class="motion-card-desc">Meshing teeth and running chains make sound, which is also wasted energy.</div></div>
+        <div class="motion-card"><div class="motion-card-icon">&#x2699;&#xFE0F;</div><div class="motion-card-name">Wear</div><div class="motion-card-desc">Surfaces slowly wear away, so teeth, belts and chains need replacing.</div></div>
+        <div class="motion-card"><div class="motion-card-icon">&#x1F4C9;</div><div class="motion-card-name">Lower efficiency</div><div class="motion-card-desc">Less useful energy out means the system is less efficient.</div></div>
+      </div>
+
+      <div class="friction-diagram">
+        <svg viewBox="0 0 640 230" role="img" aria-label="Energy flow diagram: energy in from the motor splits into useful energy out and energy wasted as heat and sound">
+          <path class="flow-in" d="M20 40 H300 V120 H20 Z"/>
+          <path class="flow-out" d="M300 40 H560 V104 H300 Z"/>
+          <path class="flow-out" d="M560 26 L610 72 L560 118 Z"/>
+          <path class="flow-loss" d="M300 104 H360 V180 H300 Z"/>
+          <path class="flow-loss" d="M284 180 L330 220 L376 180 Z"/>
+          <text x="36" y="86" class="flow-label">Energy in (from motor)</text>
+          <text x="340" y="78" class="flow-label">Useful energy out (to driven shaft)</text>
+          <text x="392" y="150" class="flow-label flow-label-loss">Wasted as heat and sound</text>
+          <text x="392" y="170" class="flow-label flow-label-loss" style="font-weight:400;">(caused by friction)</text>
+        </svg>
+      </div>
+      <p class="notes-p">You met <strong>efficiency</strong> in Energy and Efficiency: efficiency compares the useful energy out with the energy put in. The more friction there is in a drive system, the lower its efficiency.</p>
+      <p class="notes-p"><strong>Reducing friction:</strong> engineers <strong>lubricate</strong> gears and chains with oil or grease, support shafts in <strong>bearings</strong>, and keep parts clean and correctly lined up. This keeps parts cooler, makes them last longer and wastes less energy.</p>
+      <div class="key-point">Friction is not always a problem. A belt drive <strong>needs</strong> friction between the belt and the pulleys to grip, which is why belts must be kept tight. If there is too little friction, the belt slips.</div>
+
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 2: Gears</h1>
+      <h1 class="notes-h1" id="section-2">Section 2: Gears</h1>
 
       <p class="notes-p">Gears are <strong>toothed wheels</strong> designed to transmit rotary motion and power from one part of a mechanism to another. They are used to increase or decrease output speed, and can also change the direction of rotation. The most common type is the <strong>spur gear</strong>.</p>
 
-      <p class="notes-p"><strong>Real-life example:</strong> The gears inside a bicycle's rear hub, an electric screwdriver, or a mechanical clock all use spur gears to change speed and direction.</p>
+      <p class="notes-p"><strong>Real-life examples:</strong> The gearbox inside a cordless drill or electric screwdriver, a food mixer and a mechanical clock all use spur gears to change speed and direction.</p>
 
       <img src="images/gear-real-life-examples.png"
-           alt="Real-life examples of gears — bicycle hub, electric screwdriver, clock mechanism"
+           alt="Real-life examples of spur gears"
            style="width:100%;max-width:442px;display:block;margin:16px auto;border-radius:8px;"
            onerror="this.onerror=null;this.style.display='none';this.nextElementSibling.style.display='block';">
       <div class="diagram-placeholder" style="display:none;">
@@ -315,17 +456,24 @@
           Click <strong>▶ RUN SIM</strong> to start. The sim shows a 24-tooth driver meshed with a 12-tooth driven gear. Notice the driven gear rotates in the <strong>opposite direction</strong> and at <strong>twice the speed</strong> of the driver. The floating labels show RPM and direction for each gear.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" id="sim-gears-intro" src="simple-gear-sim.html" title="NoGrind simple gear train simulator" loading="lazy"></iframe></div>
-        <div class="sim-credit">NoGrind Sim V1.2 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
       <p class="notes-p">If gear A (driver) has 24 teeth and makes one full revolution, its 24 teeth pass the contact point. This pushes gear B around — and because gear B only has 12 teeth, it makes <strong>two</strong> complete revolutions for every one of gear A.</p>
 
-      <h2 class="notes-h2">The gear equation</h2>
+      <h2 class="notes-h2">Gear equations</h2>
 
+      <p class="notes-p">The data booklet gives this equation for drive systems:</p>
+      <div class="formula-box">
+        <div class="formula">Input speed &times; input size = output speed &times; output size</div>
+        <div class="formula-sub">From the data booklet. For gears, the <strong>size</strong> is the <strong>number of teeth</strong>.</div>
+      </div>
+
+      <p class="notes-p">For gears, a memorable way of writing the same equation is <strong>teeth times turns</strong>: the number of teeth multiplied by the number of turns is the same for the input gear and the output gear.</p>
       <div class="formula-box">
         <div class="formula">Teeth<sub>In</sub> &times; Turns<sub>In</sub> = Teeth<sub>Out</sub> &times; Turns<sub>Out</sub></div>
         <div class="formula-sub">Turns can be revolutions per second (rev s<sup>&minus;1</sup>) or per minute (rev min<sup>&minus;1</sup>)</div>
       </div>
+      <p class="notes-p">This works because every tooth on the driver that passes the meshing point pushes one tooth on the driven gear past it. The number of teeth that pass must be the same for both gears.</p>
 
       <div class="worked-example">
         <div class="worked-example-title">Worked Example 1 &mdash; Calculate the output speed</div>
@@ -342,7 +490,7 @@
         <div class="step"><div class="step-num">2</div><div class="step-content">T<sub>Out</sub> = <span class="frac"><span class="frac-num">36 &times; 380</span><span class="frac-den">152</span></span> = <strong>90 teeth</strong></div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task2">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Simple gear train calculations</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Calculate the missing quantity in each gear train. Build them in NoGrind to check your answers.</p>
@@ -362,13 +510,19 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 3: Velocity Ratio in Gears</h1>
+      <h1 class="notes-h1" id="section-3">Section 3: Velocity Ratio in Gears</h1>
 
-      <p class="notes-p">The <strong>velocity ratio (VR)</strong> describes how much the speed changes between the driver and driven gear. It is calculated using the number of teeth:</p>
+      <p class="notes-p">The <strong>velocity ratio (VR)</strong> describes how much the speed changes between the driver and the driven gear. The data booklet gives it in terms of speed:</p>
 
       <div class="formula-box">
-        <div class="formula">VR = <span class="frac"><span class="frac-num">Teeth<sub>Out</sub></span><span class="frac-den">Teeth<sub>In</sub></span></span> = <span class="frac"><span class="frac-num">Speed<sub>In</sub></span><span class="frac-den">Speed<sub>Out</sub></span></span></div>
-        <div class="formula-sub">Remember: the teeth equation is the opposite way up to the speed equation.<br>Think: <span class="frac"><span class="frac-num"><em>Driven (passenger's teeth)</em></span><span class="frac-den"><em>Driver (bus driver's teeth)</em></span></span></div>
+        <div class="formula">VR = <span class="frac"><span class="frac-num">speed of input</span><span class="frac-den">speed of output</span></span></div>
+        <div class="formula-sub">From the data booklet.</div>
+      </div>
+
+      <p class="notes-p">For gears, VR can also be found from the number of teeth:</p>
+      <div class="formula-box">
+        <div class="formula">VR = <span class="frac"><span class="frac-num">Teeth<sub>Out</sub></span><span class="frac-den">Teeth<sub>In</sub></span></span></div>
+        <div class="formula-sub">The teeth version is the other way up from the speed version. A driven gear with <strong>more</strong> teeth turns <strong>more slowly</strong>, so VR is greater than 1.</div>
       </div>
 
       <div class="worked-example">
@@ -403,7 +557,7 @@
         <div class="step"><div class="step-num">2</div><div class="step-content">If gear A rotates at 90 rev min<sup>&minus;1</sup> CW, gear B rotates at 30 rev min<sup>&minus;1</sup> <strong>ACW</strong>.</div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task3">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Velocity ratio calculations</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">For each gear train, calculate the missing value and the velocity ratio.</p>
@@ -441,14 +595,10 @@
           <div class="sim-embed-title"><span>&#x2699;&#xFE0F;</span> NoGrind Simulator &mdash; simple and idler gear trains</div>
           <a href="idler-gear-sim.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
         </div>
-        <div class="sim-instruction">
-          Click <strong>▶ RUN SIM</strong> to start. The sim loads with a prebuilt idler gear train. The floating labels show RPM and direction (CW/CCW) for each gear. Use the Components panel to modify the gear train.
-        </div>
         <div class="sim-wrap"><iframe class="sim-iframe" id="sim-gears-simple" src="idler-gear-sim.html" title="NoGrind idler gear train simulator" loading="lazy"></iframe></div>
-        <div class="sim-credit">NoGrind Sim V1.2 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-inv1">
         <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation &mdash; Simple gear train challenge</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Using the NoGrind simulator with gears of approximately 8, 16, 24 and 40 teeth:</p>
@@ -473,7 +623,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 4: Idler Gears</h1>
+      <h1 class="notes-h1" id="section-4">Section 4: Idler Gears</h1>
 
       <p class="notes-p">To make the driven gear rotate in the <strong>same direction</strong> as the driver, a third gear — called an <strong>idler gear</strong> — is inserted between them.</p>
 
@@ -493,7 +643,7 @@
 
       <p class="notes-p">In the diagram above, gears A and C rotate in the <strong>same direction</strong>. The VR is still calculated from driver A to driven C only — the idler is ignored: VR = <span class="frac"><span class="frac-num">12</span><span class="frac-den">24</span></span> = 0.5.</p>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task4">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Idler gear calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -530,7 +680,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 5: Compound Gear Trains</h1>
+      <h1 class="notes-h1" id="section-5">Section 5: Compound Gear Trains</h1>
 
       <p class="notes-p">Simple gear trains are limited in the velocity ratio they can produce — very large or very small speed changes require impractically large gears. A <strong>compound gear train</strong> solves this by mounting pairs of gears on the same shaft (the <strong>intermediate shaft</strong>), multiplying the gearing effect in a much smaller space.</p>
 
@@ -585,10 +735,9 @@
           The sim loads with the compound gear train from the worked example — a 20T driver, an 80T/10T intermediate pair, and a 60T output. Click <strong>▶ RUN SIM</strong> and watch how the two stages of gearing <strong>multiply</strong> the speed reduction: the first pair gives VR&nbsp;=&nbsp;4, the second gives VR&nbsp;=&nbsp;6, and the overall result is VR&nbsp;=&nbsp;24. Try replacing individual gears with different sizes to see how the total VR changes.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" id="sim-compound" src="compound-gear-sim.html" title="NoGrind compound gear simulator" loading="lazy"></iframe></div>
-        <div class="sim-credit">NoGrind Sim V1.2 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task5">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Compound gear calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -620,7 +769,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 6: Worm and Wheel</h1>
+      <h1 class="notes-h1" id="section-6">Section 6: Worm and Wheel</h1>
 
       <div class="warning" style="background:#f0fdf4;border-left-color:#22c55e;color:#166534;">
         <strong>&#x1F4DA; Interesting — but not examined:</strong> This section does not appear in the N5 course specification or QS exams. It gives useful real-world context but you do not need to learn it for assessment.
@@ -670,13 +819,12 @@
           Click <strong>▶ RUN SIM</strong> to start. The sim loads with a prebuilt worm and wheel. Observe how one full rotation of the worm advances the wheel by exactly one tooth. Adjust the number of teeth on the worm wheel and observe the effect on output speed.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" id="sim-worm" src="worm-wheel-sim.html" title="NoGrind worm and wheel simulator" loading="lazy"></iframe></div>
-        <div class="sim-credit">NoGrind Sim V1.4.1 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 7: Belt Drives</h1>
+      <h1 class="notes-h1" id="section-7">Section 7: Belt Drives</h1>
 
       <div class="warning" style="background:#f0fdf4;border-left-color:#22c55e;color:#166534;">
         <strong>&#x1F4DA; Interesting — but not examined:</strong> This section does not appear in the N5 course specification or QS exams. It gives useful real-world context but you do not need to learn it for assessment.
@@ -814,7 +962,7 @@
         <div class="diagram-placeholder-sub">Add this file to the images/ folder to display it here.</div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task6">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Belt drive calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -838,6 +986,7 @@
             <div class="task-q">Sketch or describe a belt drive system that produces a <strong>decrease</strong> in speed with a <strong>change in direction</strong> of the driven pulley.</div>
             <div class="answer-label">Design sketch / description <span class="saved-indicator" id="ind-t6e">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="ds-t6e" data-placeholder="Describe your design here&hellip;"></div>
+            <button type="button" class="exemplar-thumb" onclick="openLightbox('images/task6e-exemplar.png','Task 6e — exemplar answer')"><img src="images/task6e-exemplar.png" alt="" loading="lazy"><span>&#x1F50D; Try it yourself first &mdash; then click to see an exemplar answer</span></button>
           </div>
         </div>
       </div>
@@ -851,13 +1000,12 @@
           In the Components panel, open <strong>Chain Drive &amp; Belt Drive</strong> and click <strong>Add Belt Drive</strong>. The belt snaps to an existing axle and generates a second pulley automatically. Select each pulley and adjust its diameter in the Properties panel. Run the simulation to see the speed and direction labels.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" id="sim-belt" src="../../../../simulators/drive-systems.html" title="NoGrind belt drive simulator" loading="lazy"></iframe></div>
-        <div class="sim-credit">NoGrind Sim V1.2 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 8: Chain Drives</h1>
+      <h1 class="notes-h1" id="section-8">Section 8: Chain Drives</h1>
 
       <div class="warning" style="background:#f0fdf4;border-left-color:#22c55e;color:#166534;">
         <strong>&#x1F4DA; Interesting — but not examined:</strong> This section does not appear in the N5 course specification or  exams. It gives useful real-world context but you do not need to learn it for assessment.
@@ -936,7 +1084,7 @@
               <div class="diagram-placeholder-sub">Add this file to the images/ folder to display it here.</div>
             </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task7">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Chain drive calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -966,13 +1114,12 @@
           In the Components panel, open <strong>Chain Drive &amp; Belt Drive</strong> and click <strong>Add Chain Drive</strong>. Adjust the number of teeth on each sprocket in the Properties panel. Run the simulation and compare the speed labels for different sprocket sizes.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" id="sim-chain" src="../../../../simulators/drive-systems.html" title="NoGrind chain drive simulator" loading="lazy"></iframe></div>
-        <div class="sim-credit">NoGrind Sim V1.2 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 9: Converting Motion</h1>
+      <h1 class="notes-h1" id="section-9">Section 9: Converting Motion</h1>
 
       <p class="notes-p">Many mechanisms involve changing one type of motion into another. For example, the <strong>rotary</strong> motion of a pillar-drill handle is changed to the <strong>linear</strong> motion of the drill bit moving down.</p>
 
@@ -1026,7 +1173,7 @@
         <li><strong>Stroke</strong> — the distance between the crown and heel (= the distance the valve opens)</li>
       </ul>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task8">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; Cams</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1045,7 +1192,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 10: Crank and Slider</h1>
+      <h1 class="notes-h1" id="section-10">Section 10: Crank and Slider</h1>
 
       <div class="warning" style="background:#f0fdf4;border-left-color:#22c55e;color:#166534;">
         <strong>&#x1F4DA; Interesting — but not examined:</strong> This section does not appear in the N5 course specification or QS exams. It gives useful real-world context but you do not need to learn it for assessment.
@@ -1073,7 +1220,7 @@
         <li><strong>Rotary &rarr; Reciprocating:</strong> Power hacksaw — a motor drives a crank connected to a saw frame that slides back and forth on an arm.</li>
       </ul>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task9">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 9 &mdash; Crank and slider</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1091,7 +1238,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 11: Rack and Pinion</h1>
+      <h1 class="notes-h1" id="section-11">Section 11: Rack and Pinion</h1>
 
       <div class="warning" style="background:#f0fdf4;border-left-color:#22c55e;color:#166534;">
         <strong>&#x1F4DA; Interesting — but not examined:</strong> This section does not appear in the N5 course specification or QS exams. It gives useful real-world context but you do not need to learn it for assessment.
@@ -1129,10 +1276,9 @@
           In the Components panel, open <strong>Rack and Pinion</strong> and click <strong>Add Rack &amp; Pinion</strong>. The rack snaps to an existing axle. Run the simulation — the rack physically moves left and right. Note that a <strong>Safety Cutoff</strong> triggers when the rack reaches its limit; reverse the motor to continue.
         </div>
         <div class="sim-wrap"><iframe class="sim-iframe" id="sim-rack" src="../../../../simulators/drive-systems.html" title="NoGrind rack and pinion simulator" loading="lazy"></iframe></div>
-        <div class="sim-credit">NoGrind Sim V1.2 &mdash; Peter Strain, Bearsden Academy</div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task10">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 10 &mdash; Rack and pinion</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1145,16 +1291,141 @@
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-t10b" data-placeholder="Show working here&hellip;"></div>
           </div>
           <div class="task-item">
-            <div class="task-q">Draw the symbols for the following mechanisms: simple gear train, belt drive, chain drive, rack and pinion.</div>
+            <div class="task-q">Without looking back at Section 1, draw the standard symbols for the following mechanisms: simple gear train, belt drive, chain drive, rack and pinion.</div>
             <div class="answer-label">Sketches <span class="saved-indicator" id="ind-t10c">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="ds-t10c" data-placeholder="Sketch or describe each symbol here&hellip;"></div>
+            <button type="button" class="exemplar-thumb" onclick="openLightbox('images/task10c-exemplar.png','Task 10c — exemplar answer')"><img src="images/task10c-exemplar.png" alt="" loading="lazy"><span>&#x1F50D; Try it yourself first &mdash; then click to see an exemplar answer</span></button>
           </div>
         </div>
       </div>
 
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-12">Section 12: Design Challenges</h1>
+
+      <p class="notes-p">These are original design problems, set out the same way as a practical assignment: a <strong>context</strong>, a numbered <strong>specification</strong>, then <strong>design, build, test and evaluate</strong> tasks. They only use the gear content you need for the exam (simple gear trains, idler gears and compound gear trains).</p>
+      <div class="key-point">Work through each challenge on your own first. Use the NoGrind simulators from Sections 2&ndash;5 to build and test your design, then compare with the model solution.</div>
+
+      <!-- Design Challenge 1 -->
+      <h2 class="notes-h2" id="section-12a" data-toc-sub>Design Challenge 1: Hand-cranked whisk</h2>
+      <div class="dc-context">
+        <p class="notes-p"><strong>Context:</strong> A S1 class is building hand-cranked kitchen whisks for a charity bake sale. Pupils can turn the handle comfortably at about 60 rev/min, but the whisk needs to spin much faster to work well. Testing showed that pupils find the whisk confusing to use if it spins the opposite way to the handle.</p>
+        <table class="spec-table">
+          <tr><td><span class="data-badge">i</span></td><td>The handle is turned at 60 rev/min.</td></tr>
+          <tr><td><span class="data-badge">ii</span></td><td>The whisk must turn at 180 rev/min.</td></tr>
+          <tr><td><span class="data-badge">iii</span></td><td>The whisk must turn in the <strong>same direction</strong> as the handle.</td></tr>
+          <tr><td><span class="data-badge">iv</span></td><td>Only spur gears with 8, 16, 24 or 40 teeth can be used, and no more than three gears in total.</td></tr>
+        </table>
+      </div>
+      <div class="assignment" id="assignment-dc1">
+        <div class="assignment-header"><div class="assignment-title">&#x1F6E0;&#xFE0F; Design Challenge 1 &mdash; Hand-cranked whisk</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) Calculate the velocity ratio the gear train must have.</div>
+            <div class="answer-label">Working <span class="saved-indicator">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-dc1a" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Design: sketch or describe a gear train that meets every point of the specification. Label the driver, the driven gear and any other gears, with their number of teeth.</div>
+            <div class="answer-label">Design <span class="saved-indicator">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="ds-dc1b" data-placeholder="Sketch (paste a drawing) or describe your gear train here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) Build and test: build your design in the NoGrind idler gear simulator (Section 3). Record the output speed and the direction of the whisk gear.</div>
+            <div class="answer-label">Test results <span class="saved-indicator">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-dc1c" data-placeholder="Output speed = &hellip; rev/min. Direction: &hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) Evaluate: for each specification point (i&ndash;iv), state whether your design meets it and give evidence from your calculations or testing.</div>
+            <div class="answer-label">Evaluation <span class="saved-indicator">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-dc1d" data-placeholder="i) &hellip; ii) &hellip; iii) &hellip; iv) &hellip;"></div>
+            <button type="button" class="exemplar-thumb" onclick="openLightbox('images/dc1-exemplar.png','Design Challenge 1 &mdash; model solution')"><img src="images/dc1-exemplar.png" alt="" loading="lazy"><span>&#x1F50D; Try the design yourself first &mdash; then click here to compare</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Design Challenge 2 -->
+      <h2 class="notes-h2" id="section-12b" data-toc-sub>Design Challenge 2: Stage scenery winch</h2>
+      <div class="dc-context">
+        <p class="notes-p"><strong>Context:</strong> The school drama department wants a small motorised winch to raise and lower a lightweight backdrop. The motor they have runs far too fast to drive the winch drum directly, so a gearbox is needed. To keep the wiring simple, the drum must wind in the same direction as the motor turns.</p>
+        <table class="spec-table">
+          <tr><td><span class="data-badge">i</span></td><td>The motor turns at 1500 rev/min.</td></tr>
+          <tr><td><span class="data-badge">ii</span></td><td>The winch drum must turn at 60 rev/min.</td></tr>
+          <tr><td><span class="data-badge">iii</span></td><td>The drum must turn in the <strong>same direction</strong> as the motor.</td></tr>
+          <tr><td><span class="data-badge">iv</span></td><td>Only spur gears with 8, 16, 24 or 40 teeth can be used, and no more than four gears in total.</td></tr>
+        </table>
+      </div>
+      <div class="assignment" id="assignment-dc2">
+        <div class="assignment-header"><div class="assignment-title">&#x1F6E0;&#xFE0F; Design Challenge 2 &mdash; Stage scenery winch</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) Calculate the velocity ratio the gearbox must have. Explain why a simple gear train of two gears cannot meet specification point iv.</div>
+            <div class="answer-label">Working <span class="saved-indicator">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-dc2a" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Design: sketch or describe a compound gear train that meets every point of the specification. Show which gears share a shaft, and show that your total VR is correct.</div>
+            <div class="answer-label">Design <span class="saved-indicator">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="ds-dc2b" data-placeholder="Sketch (paste a drawing) or describe your gear train here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) Build and test: build your design in the NoGrind compound gear simulator (Section 5). Record the drum speed and direction.</div>
+            <div class="answer-label">Test results <span class="saved-indicator">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-dc2c" data-placeholder="Drum speed = &hellip; rev/min. Direction: &hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) Evaluate: for each specification point (i&ndash;iv), state whether your design meets it and give evidence. Explain why your drum turns the same way as the motor.</div>
+            <div class="answer-label">Evaluation <span class="saved-indicator">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-dc2d" data-placeholder="i) &hellip; ii) &hellip; iii) &hellip; iv) &hellip;"></div>
+            <button type="button" class="exemplar-thumb" onclick="openLightbox('images/dc2-exemplar.png','Design Challenge 2 &mdash; model solution')"><img src="images/dc2-exemplar.png" alt="" loading="lazy"><span>&#x1F50D; Try the design yourself first &mdash; then click here to compare</span></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Design Challenge 3 -->
+      <h2 class="notes-h2" id="section-12c" data-toc-sub>Design Challenge 3: Model wind turbine</h2>
+      <div class="dc-context">
+        <p class="notes-p"><strong>Context:</strong> A community energy group on a Scottish island is building a model wind turbine for a school open day. In a steady breeze the rotor blades turn slowly, but the small generator only produces a useful voltage when it spins quickly. A gearbox is needed between the rotor and the generator.</p>
+        <table class="spec-table">
+          <tr><td><span class="data-badge">i</span></td><td>In a steady breeze the rotor turns at 40 rev/min.</td></tr>
+          <tr><td><span class="data-badge">ii</span></td><td>The generator must turn at 600 rev/min.</td></tr>
+          <tr><td><span class="data-badge">iii</span></td><td>The generator must turn in the <strong>same direction</strong> as the rotor.</td></tr>
+          <tr><td><span class="data-badge">iv</span></td><td>Only spur gears with 8, 16, 24 or 40 teeth can be used, and no more than four gears in total.</td></tr>
+        </table>
+      </div>
+      <div class="assignment" id="assignment-dc3">
+        <div class="assignment-header"><div class="assignment-title">&#x1F6E0;&#xFE0F; Design Challenge 3 &mdash; Model wind turbine</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) Calculate the velocity ratio the gearbox must have. Is this a speed increase or a speed decrease?</div>
+            <div class="answer-label">Working <span class="saved-indicator">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-dc3a" data-placeholder="Show working here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Design: sketch or describe a gear train that meets every point of the specification. Label the driver (on the rotor shaft), the driven gear (on the generator shaft) and the teeth on every gear.</div>
+            <div class="answer-label">Design <span class="saved-indicator">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="ds-dc3b" data-placeholder="Sketch (paste a drawing) or describe your gear train here&hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) Build and test: build your design in the NoGrind compound gear simulator (Section 5), with the input set to 40 rev/min. Record the generator speed and direction.</div>
+            <div class="answer-label">Test results <span class="saved-indicator">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ds-dc3c" data-placeholder="Generator speed = &hellip; rev/min. Direction: &hellip;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) Evaluate: for each specification point (i&ndash;iv), state whether your design meets it. Then suggest what would happen to the generator speed if the wind got stronger.</div>
+            <div class="answer-label">Evaluation <span class="saved-indicator">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="ds-dc3d" data-placeholder="i) &hellip; ii) &hellip; iii) &hellip; iv) &hellip;"></div>
+            <button type="button" class="exemplar-thumb" onclick="openLightbox('images/dc3-exemplar.png','Design Challenge 3 &mdash; model solution')"><img src="images/dc3-exemplar.png" alt="" loading="lazy"><span>&#x1F50D; Try the design yourself first &mdash; then click here to compare</span></button>
+          </div>
+        </div>
+      </div>
+
+
       <!-- Controls bar -->
       <div class="controls-bar">
         <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-print dl-all-btn" id="dl-all-btn" onclick="downloadAllPdf(this)">&#x2B07;&#xFE0F; Download ALL my answers (PDF)</button>
         <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
         <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
       </div>
@@ -1175,6 +1446,35 @@
   <span>Engineering Science Scotland &middot; Aligned to QS course specifications</span>
   <a href="../../../../teacher/login.html">Teacher area</a>
 </footer>
+
+<!-- ── Floating buttons: My name + Contents (Feedback button comes from site.js) ── -->
+<button type="button" class="float-btn" id="name-btn" onclick="toggleNamePopup()" aria-haspopup="dialog" aria-controls="name-popup"><span class="float-btn-icon">&#x1F464;</span><span class="float-btn-label" id="name-btn-label">My name</span></button>
+<button type="button" class="float-btn" id="toc-btn" onclick="toggleToc()" aria-controls="toc-panel" aria-expanded="false"><span class="float-btn-icon">&#x2630;</span><span class="float-btn-label">Contents</span></button>
+
+<div class="name-popup" id="name-popup" role="dialog" aria-labelledby="name-popup-title">
+  <h3 id="name-popup-title">Your name</h3>
+  <p>Type it once and it will appear on every PDF you download from this page. It is only saved in this browser.</p>
+  <input type="text" id="name-input" maxlength="60" placeholder="e.g. Jamie Smith" autocomplete="name">
+  <div class="name-popup-actions">
+    <button type="button" class="ctrl-btn ctrl-btn-clear" onclick="clearPupilName()">Clear</button>
+    <button type="button" class="ctrl-btn ctrl-btn-print" onclick="savePupilName()">Save</button>
+  </div>
+</div>
+
+<div class="toc-backdrop" id="toc-backdrop" onclick="closeToc()"></div>
+<aside class="toc-panel" id="toc-panel" aria-label="Contents" aria-hidden="true">
+  <div class="toc-head">
+    <div class="toc-title">Contents</div>
+    <button type="button" class="toc-close" onclick="closeToc()" aria-label="Close contents">&times;</button>
+  </div>
+  <nav class="toc-list" id="toc-list"></nav>
+</aside>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()" role="dialog" aria-label="Exemplar answer">
+  <button type="button" class="lightbox-close" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+  <div class="lightbox-caption" id="lightbox-caption"></div>
+</div>
 
 <script src="../../../../js/site.js"></script>
 <script src="../../../../js/nav.js"></script>
@@ -1219,6 +1519,312 @@ document.addEventListener('DOMContentLoaded',function(){
     if(loadValue(key)==='1'){cell.classList.add('ticked');cell.textContent='✓';}
   });
 });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* ════════════════════════════════════════════════════════════════
+   Contents panel, My name, PDF downloads, exemplar lightbox
+   ════════════════════════════════════════════════════════════════ */
+var PAGE_TITLE = 'Drive Systems - Course Notes';
+var PDF_FILE_PREFIX = 'drive-systems';
+var NAME_KEY = 'ds-pupil-name';   // subject-specific so names don't leak between course pages
+
+/* ── Contents ───────────────────────────────────────────────────
+   Built automatically from every .notes-h1 with an id, plus any
+   heading with data-toc-sub (shown indented). Renumbering a section
+   only needs the heading text changing - the list follows. */
+var tocHeads = [], tocLinks = [];
+function buildToc(){
+  var list = document.getElementById('toc-list'); if(!list) return;
+  tocHeads = Array.prototype.slice.call(document.querySelectorAll('.notes-h1[id], [data-toc-sub][id]'));
+  tocHeads.forEach(function(h){
+    var a = document.createElement('a');
+    a.href = '#' + h.id;
+    a.textContent = h.getAttribute('data-toc-label') || h.textContent.trim();
+    a.className = 'toc-link' + (h.hasAttribute('data-toc-sub') ? ' toc-sub' : '');
+    a.addEventListener('click', function(e){
+      e.preventDefault(); closeToc();
+      h.scrollIntoView({behavior:'smooth'});
+      try { history.replaceState(null, '', '#' + h.id); } catch(err){}
+    });
+    list.appendChild(a); tocLinks.push(a);
+  });
+  updateTocActive();
+}
+function updateTocActive(){
+  var current = -1;
+  for (var i = 0; i < tocHeads.length; i++){
+    if (tocHeads[i].getBoundingClientRect().top <= 130) current = i; else break;
+  }
+  tocLinks.forEach(function(a, i){ a.classList.toggle('active', i === current); });
+}
+var tocTicking = false;
+window.addEventListener('scroll', function(){
+  if (tocTicking) return; tocTicking = true;
+  requestAnimationFrame(function(){ updateTocActive(); tocTicking = false; });
+}, {passive:true});
+function toggleToc(){
+  var p = document.getElementById('toc-panel');
+  if (p.classList.contains('open')) closeToc(); else openToc();
+}
+function openToc(){
+  closeNamePopup();
+  document.getElementById('toc-panel').classList.add('open');
+  document.getElementById('toc-panel').setAttribute('aria-hidden','false');
+  document.getElementById('toc-backdrop').classList.add('open');
+  document.getElementById('toc-btn').setAttribute('aria-expanded','true');
+  var act = document.querySelector('.toc-link.active');
+  if (act) act.scrollIntoView({block:'nearest'});
+}
+function closeToc(){
+  var p = document.getElementById('toc-panel'); if(!p) return;
+  p.classList.remove('open'); p.setAttribute('aria-hidden','true');
+  document.getElementById('toc-backdrop').classList.remove('open');
+  document.getElementById('toc-btn').setAttribute('aria-expanded','false');
+}
+
+/* ── My name ─────────────────────────────────────────────────── */
+function getPupilName(){ try { return (localStorage.getItem(NAME_KEY) || '').trim(); } catch(e){ return ''; } }
+function refreshNameBtn(){
+  var n = getPupilName();
+  var lbl = document.getElementById('name-btn-label'); if(!lbl) return;
+  lbl.textContent = n || 'My name';
+  document.getElementById('name-btn').title = n ? ('Name on PDFs: ' + n + ' (click to change)') : 'Add your name for your PDFs';
+}
+function toggleNamePopup(){
+  var p = document.getElementById('name-popup');
+  if (p.classList.contains('open')) { closeNamePopup(); return; }
+  closeToc();
+  var inp = document.getElementById('name-input');
+  inp.value = getPupilName();
+  p.classList.add('open');
+  setTimeout(function(){ inp.focus(); inp.select(); }, 30);
+}
+function closeNamePopup(){ var p = document.getElementById('name-popup'); if(p) p.classList.remove('open'); }
+function savePupilName(){
+  var v = document.getElementById('name-input').value.trim();
+  try { if (v) localStorage.setItem(NAME_KEY, v); else localStorage.removeItem(NAME_KEY); } catch(e){}
+  refreshNameBtn(); closeNamePopup();
+}
+function clearPupilName(){
+  try { localStorage.removeItem(NAME_KEY); } catch(e){}
+  document.getElementById('name-input').value = '';
+  refreshNameBtn(); closeNamePopup();
+}
+
+/* ── Exemplar lightbox ──────────────────────────────────────── */
+function openLightbox(src, caption){
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox-img').alt = caption || '';
+  document.getElementById('lightbox-caption').textContent = (caption || '') + '  (click anywhere to close)';
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('open'); }
+
+document.addEventListener('keydown', function(e){
+  if (e.key === 'Escape'){ closeToc(); closeNamePopup(); closeLightbox(); }
+  if (e.key === 'Enter' && document.activeElement && document.activeElement.id === 'name-input'){ e.preventDefault(); savePupilName(); }
+});
+document.addEventListener('click', function(e){
+  var p = document.getElementById('name-popup');
+  if (p && p.classList.contains('open') && !p.contains(e.target) && !document.getElementById('name-btn').contains(e.target)) closeNamePopup();
+});
+
+/* ── PDF downloads (jsPDF - real, selectable text) ───────────────
+   ALL_TASK_PANELS is built automatically from every .assignment
+   with an id, in page order, so adding/reordering tasks needs no
+   list to be kept in sync. */
+var ALL_TASK_PANELS = [];
+function panelLabel(panel){
+  var t = panel.querySelector('.assignment-title');
+  return t ? t.textContent.trim() : panel.id;
+}
+
+var PDF_CHAR_MAP = { '\u2212':'-', '\u2013':'-', '\u2014':' - ', '\u2012':'-', '\u00d7':'x', '\u00f7':'/', '\u2192':'->', '\u2190':'<-',
+  '\u2018':"'", '\u2019':"'", '\u201c':'"', '\u201d':'"', '\u2026':'...', '\u2713':'(tick)', '\u2022':'-', '\u00a0':' ', '\u2009':' ', '\u2248':'~' };
+function pdfClean(str){
+  str = (str || '').replace(/[\uD800-\uDFFF]/g, '').replace(/[\uFE0F\u200D]/g, '').replace(/[\u2600-\u27BF\u2B00-\u2BFF]/g, function(c){ return PDF_CHAR_MAP[c] || ''; });
+  str = str.replace(/[^\u0000-\u00ff]/g, function(c){ return PDF_CHAR_MAP[c] !== undefined ? PDF_CHAR_MAP[c] : ''; });
+  return str.replace(/[ \t]+/g, ' ').replace(/ *\n */g, '\n').trim();
+}
+// Question text, with superscripts written as ^ (e.g. rev min^-1)
+function questionText(el){
+  var c = el.cloneNode(true);
+  c.querySelectorAll('sup').forEach(function(s){ s.textContent = '^' + s.textContent; });
+  c.querySelectorAll('sub').forEach(function(s){ s.textContent = '_' + s.textContent; });
+  return pdfClean(c.textContent);
+}
+// Answer box → ordered list of text and image parts
+function answerParts(box){
+  var parts = [], buf = '';
+  function flush(){ var t = buf.replace(/\n{3,}/g, '\n\n').trim(); if (t) parts.push({type:'text', text:t}); buf = ''; }
+  function walk(n){
+    if (n.nodeType === 3){ buf += n.nodeValue; return; }
+    if (n.nodeType !== 1) return;
+    var tag = n.tagName;
+    if (tag === 'IMG'){ flush(); parts.push({type:'img', el:n}); return; }
+    if (tag === 'BR'){ buf += '\n'; return; }
+    var block = /^(DIV|P|LI|H[1-6]|TR|UL|OL)$/.test(tag);
+    if (block && buf && !/\n$/.test(buf)) buf += '\n';
+    if (tag === 'LI') buf += '- ';
+    for (var ch = n.firstChild; ch; ch = ch.nextSibling) walk(ch);
+    if (block && !/\n$/.test(buf)) buf += '\n';
+  }
+  for (var ch = box.firstChild; ch; ch = ch.nextSibling) walk(ch);
+  flush();
+  return parts;
+}
+// Click-to-tick tables → one line per row
+function tableRows(tbl){
+  var rows = tbl.querySelectorAll('tr'); if (!rows.length) return [];
+  var heads = Array.prototype.map.call(rows[0].children, function(th){ return th.textContent.trim(); });
+  var out = [];
+  for (var r = 1; r < rows.length; r++){
+    var cells = rows[r].children, ticked = [];
+    for (var c = 1; c < cells.length; c++){ var tc = cells[c].querySelector('.toggle-cell'); if (tc && tc.classList.contains('ticked')) ticked.push(heads[c]); }
+    out.push({label: cells[0].textContent.trim(), value: ticked.join(', ')});
+  }
+  return out;
+}
+function collectPanel(panel){
+  var items = [];
+  panel.querySelectorAll('.assignment-body .task-q, .assignment-body .task-q-sub, .assignment-body .answer-box, .assignment-body table.motion-toggle-table').forEach(function(el){
+    if (el.classList.contains('task-q')) items.push({type:'q', text:questionText(el)});
+    else if (el.classList.contains('task-q-sub')) items.push({type:'sub', text:questionText(el)});
+    else if (el.classList.contains('answer-box')) items.push({type:'answer', parts:answerParts(el)});
+    else items.push({type:'table', rows:tableRows(el)});
+  });
+  return items;
+}
+function imgToData(img){
+  return new Promise(function(resolve){
+    function go(){
+      try {
+        var w = img.naturalWidth, h = img.naturalHeight; if (!w || !h) return resolve(null);
+        var sc = Math.min(1, 1600 / w), cv = document.createElement('canvas');
+        cv.width = Math.round(w * sc); cv.height = Math.round(h * sc);
+        var ctx = cv.getContext('2d'); ctx.fillStyle = '#ffffff'; ctx.fillRect(0, 0, cv.width, cv.height);
+        ctx.drawImage(img, 0, 0, cv.width, cv.height);
+        resolve({data: cv.toDataURL('image/jpeg', 0.9), w: cv.width, h: cv.height});
+      } catch(e){ resolve(null); }
+    }
+    if (img.complete && img.naturalWidth) go();
+    else { img.addEventListener('load', go, {once:true}); img.addEventListener('error', function(){ resolve(null); }, {once:true}); }
+  });
+}
+function slug(s){ return (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, ''); }
+
+async function buildAnswersPdf(panelIds, opts){
+  if (!window.jspdf || !window.jspdf.jsPDF){
+    alert('The PDF tool has not loaded yet. Check you are online, then try again.');
+    return;
+  }
+  var doc = new window.jspdf.jsPDF({unit:'mm', format:'a4'});
+  var PW = 210, PH = 297, M = 18, W = PW - 2 * M, BOTTOM = PH - 20, y = M;
+  var TEAL = [15, 118, 110], DARK = [17, 24, 39], BODY = [55, 65, 81], GREY = [148, 163, 184];
+  function ensure(h){ if (y + h > BOTTOM){ doc.addPage(); y = M + 2; } }
+  function lines(text, size, style, color, indent, lh){
+    doc.setFont('helvetica', style); doc.setFontSize(size); doc.setTextColor.apply(doc, color);
+    var ls = doc.splitTextToSize(text, W - (indent || 0));
+    ls.forEach(function(l){ ensure(lh); doc.text(l, M + (indent || 0), y); y += lh; });
+  }
+
+  // Header
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor.apply(doc, TEAL);
+  doc.text('Engineering Science Scotland', M, y); y += 7;
+  lines(pdfClean(opts.title), 15, 'bold', DARK, 0, 6.5);
+  lines(PAGE_TITLE, 10, 'normal', BODY, 0, 5);
+  y += 2;
+  var name = pdfClean(getPupilName());
+  var today = new Date().toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(10.5); doc.setTextColor.apply(doc, DARK);
+  doc.text(name ? ('Name: ' + name + '        Date: ' + today) : 'Name: ______________________________        Date: ________________', M, y);
+  y += 4; doc.setDrawColor(204, 251, 241); doc.setLineWidth(0.6); doc.line(M, y, PW - M, y); y += 8;
+
+  for (var p = 0; p < panelIds.length; p++){
+    var panel = document.getElementById(panelIds[p]); if (!panel) continue;
+    if (opts.combined){
+      ensure(16);
+      if (p > 0) y += 4;
+      lines(pdfClean(panelLabel(panel)), 12.5, 'bold', TEAL, 0, 6);
+      doc.setDrawColor(204, 251, 241); doc.setLineWidth(0.4); doc.line(M, y - 3, M + 60, y - 3); y += 3;
+    }
+    var items = collectPanel(panel);
+    for (var i = 0; i < items.length; i++){
+      var it = items[i];
+      if (it.type === 'q'){ y += 1; lines(it.text, 10.5, 'bold', DARK, 0, 5); y += 1; }
+      else if (it.type === 'sub'){ lines(it.text, 10, 'bold', DARK, 4, 5); y += 0.5; }
+      else if (it.type === 'table'){
+        it.rows.forEach(function(r){
+          lines(pdfClean(r.label) + ':  ' + (r.value || '(nothing ticked yet)'), 10, 'normal', r.value ? BODY : GREY, 4, 5);
+        });
+        y += 3;
+      }
+      else if (it.type === 'answer'){
+        if (!it.parts.length){ lines('(no answer entered yet)', 10, 'italic', GREY, 4, 5); }
+        for (var k = 0; k < it.parts.length; k++){
+          var part = it.parts[k];
+          if (part.type === 'text'){ lines(pdfClean(part.text), 10, 'normal', BODY, 4, 5); }
+          else {
+            var im = await imgToData(part.el);
+            if (!im){ lines('(a pasted image could not be added to the PDF)', 10, 'italic', GREY, 4, 5); continue; }
+            var iw = Math.min(W - 8, im.w * 0.2), ih = iw * im.h / im.w;
+            if (ih > 120){ ih = 120; iw = ih * im.w / im.h; }
+            ensure(ih + 4); y += 1;
+            doc.addImage(im.data, 'JPEG', M + 4, y, iw, ih); y += ih + 3;
+          }
+        }
+        y += 4;
+      }
+    }
+  }
+
+  // Footer on every page
+  var n = doc.internal.getNumberOfPages();
+  for (var pg = 1; pg <= n; pg++){
+    doc.setPage(pg);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor.apply(doc, GREY);
+    doc.text('Page ' + pg + ' of ' + n, M, PH - 10);
+    doc.text('engineeringsciencescotland.co.uk', PW - M, PH - 10, {align:'right'});
+  }
+  doc.save(opts.filename);
+}
+
+async function withBusy(btn, fn){
+  var old = btn ? btn.innerHTML : '';
+  if (btn){ btn.disabled = true; btn.innerHTML = '&#x23F3; Making PDF&hellip;'; }
+  try { await fn(); } catch(e){ console.error(e); alert('Sorry - the PDF could not be made. Please try again.'); }
+  if (btn){ btn.disabled = false; btn.innerHTML = old; }
+}
+function downloadTaskPdf(id, btn){
+  var panel = document.getElementById(id); if (!panel) return;
+  var label = panelLabel(panel), n = getPupilName();
+  withBusy(btn, function(){
+    return buildAnswersPdf([id], { title: label, filename: PDF_FILE_PREFIX + '-' + slug(pdfClean(label)) + (n ? '-' + slug(n) : '') + '.pdf' });
+  });
+}
+function downloadAllPdf(btn){
+  var n = getPupilName();
+  withBusy(btn, function(){
+    return buildAnswersPdf(ALL_TASK_PANELS.map(function(t){ return t.id; }),
+      { title: 'All my answers', combined: true, filename: PDF_FILE_PREFIX + '-all-answers' + (n ? '-' + slug(n) : '') + '.pdf' });
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  buildToc();
+  refreshNameBtn();
+  document.querySelectorAll('.assignment[id]').forEach(function(panel){
+    ALL_TASK_PANELS.push({ id: panel.id, label: panelLabel(panel) });
+    var f = document.createElement('div');
+    f.className = 'assignment-footer';
+    f.innerHTML = '<button type="button" class="ctrl-btn ctrl-btn-print">&#x2B07;&#xFE0F; Download my answers (PDF)</button>';
+    f.firstChild.addEventListener('click', function(){ downloadTaskPdf(panel.id, this); });
+    panel.appendChild(f);
+  });
+});
+
 </script>
 
 </body>
