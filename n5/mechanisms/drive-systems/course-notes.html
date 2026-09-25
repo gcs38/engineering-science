@@ -117,18 +117,19 @@
     .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
 
     /* ── Floating buttons (Contents / My name) — Feedback lives in site.js ── */
-    .float-btn { position:fixed; right:24px; width:120px; padding:12px 14px; font-size:13px; font-weight:600; font-family:inherit; line-height:1.2; border-radius:999px; border:none; color:white; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-sizing:border-box; box-shadow:0 4px 14px rgba(15,23,42,.18); z-index:900; transition:filter .15s; }
+    .float-btn { position:fixed; right:24px; width:120px; padding:12px 14px; font-size:13px; font-weight:600; font-family:inherit; line-height:1.2; border-radius:999px; border:none; color:white; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-sizing:border-box; box-shadow:0 6px 18px rgba(0,0,0,.25); z-index:999999; font-weight:700; transition:filter .15s; }
     .float-btn:hover { filter:brightness(1.1); }
     .float-btn:focus-visible { outline:3px solid #fbbf24; outline-offset:2px; }
     .float-btn-icon { flex:none; }
     .float-btn-label { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
-    #toc-btn { bottom:24px; background:var(--teal-800); }
-    #name-btn { bottom:76px; background:#4f46e5; }
+    #toc-btn { bottom:76px; background:#c2410c; }
+    #toc-btn:hover { background:#9a3412; filter:none; }
+    #name-btn { bottom:132px; background:#4f46e5; }
 
     /* Contents slide-out panel */
-    .toc-backdrop { position:fixed; inset:0; background:rgba(15,23,42,.25); opacity:0; pointer-events:none; transition:opacity .2s; z-index:950; }
+    .toc-backdrop { position:fixed; inset:0; background:rgba(15,23,42,.25); opacity:0; pointer-events:none; transition:opacity .2s; z-index:999997; }
     .toc-backdrop.open { opacity:1; pointer-events:auto; }
-    .toc-panel { position:fixed; top:0; right:0; bottom:0; width:310px; max-width:88vw; background:white; box-shadow:-6px 0 24px rgba(15,23,42,.15); transform:translateX(100%); transition:transform .25s ease; z-index:960; display:flex; flex-direction:column; }
+    .toc-panel { position:fixed; top:0; right:0; bottom:0; width:310px; max-width:88vw; background:white; box-shadow:-6px 0 24px rgba(15,23,42,.15); transform:translateX(100%); transition:transform .25s ease; z-index:999998; display:flex; flex-direction:column; }
     .toc-panel.open { transform:translateX(0); }
     .toc-head { display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid var(--gray-200); }
     .toc-title { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-800); }
@@ -141,14 +142,14 @@
     .toc-link.active { background:var(--teal-50); color:var(--teal-800); font-weight:600; border-left-color:var(--teal-400); }
 
     /* My name popup */
-    .name-popup { position:fixed; right:156px; bottom:76px; width:260px; background:white; border:1px solid var(--gray-200); border-radius:12px; box-shadow:0 10px 30px rgba(15,23,42,.18); padding:16px; z-index:970; display:none; }
+    .name-popup { position:fixed; right:156px; bottom:132px; width:260px; background:white; border:1px solid var(--gray-200); border-radius:12px; box-shadow:0 10px 30px rgba(15,23,42,.18); padding:16px; z-index:1000000; display:none; }
     .name-popup.open { display:block; }
     .name-popup h3 { font-size:14px; font-weight:700; color:var(--gray-900); margin:0 0 4px; }
     .name-popup p { font-size:12px; color:var(--gray-500); line-height:1.5; margin:0 0 10px; }
     .name-popup input { width:100%; box-sizing:border-box; padding:8px 10px; border:2px solid #c7d7f5; border-radius:8px; font-size:14px; font-family:inherit; outline:none; }
     .name-popup input:focus { border-color:var(--teal-400); }
     .name-popup-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:10px; }
-    @media (max-width:560px) { .name-popup { right:16px; bottom:132px; } }
+    @media (max-width:560px) { .name-popup { right:16px; bottom:188px; } }
 
     /* Per-task PDF footer strip */
     .assignment-footer { display:flex; justify-content:flex-end; align-items:center; gap:10px; padding:10px 18px; background:var(--gray-50); border-top:1px solid var(--gray-100); }
@@ -158,7 +159,7 @@
     .exemplar-thumb { display:inline-flex; align-items:center; gap:10px; margin:10px 0 2px; padding:6px 14px 6px 6px; background:var(--teal-50); border:1px solid var(--teal-100); border-radius:8px; cursor:pointer; font-size:12px; font-weight:600; font-family:inherit; color:var(--teal-800); text-align:left; }
     .exemplar-thumb:hover { background:var(--teal-100); }
     .exemplar-thumb img { width:96px; height:60px; object-fit:cover; border-radius:5px; filter:blur(1.5px); display:block; flex:none; background:white; }
-    .lightbox { position:fixed; inset:0; background:rgba(15,23,42,.88); display:none; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:24px; z-index:1100; cursor:zoom-out; }
+    .lightbox { position:fixed; inset:0; background:rgba(15,23,42,.88); display:none; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:24px; z-index:1000001; cursor:zoom-out; }
     .lightbox.open { display:flex; }
     .lightbox img { max-width:min(960px,100%); max-height:82vh; border-radius:8px; background:white; box-shadow:0 12px 40px rgba(0,0,0,.4); }
     .lightbox-caption { color:#e2e8f0; font-size:13px; text-align:center; }
@@ -219,7 +220,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 25 September 2026, 16:32</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 25 September 2026, 16:52</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Drive Systems</div>
       <h1 class="hero-title">&#x2699;&#xFE0F; Drive Systems &mdash; Course Notes</h1>
       <p class="hero-sub">Gear trains, belt drives, chain drives, velocity ratio and motion conversion</p>
@@ -1448,7 +1449,7 @@
 </footer>
 
 <!-- ── Floating buttons: My name + Contents (Feedback button comes from site.js) ── -->
-<button type="button" class="float-btn" id="name-btn" onclick="toggleNamePopup()" aria-haspopup="dialog" aria-controls="name-popup"><span class="float-btn-icon">&#x1F464;</span><span class="float-btn-label" id="name-btn-label">My name</span></button>
+<button type="button" class="float-btn" id="name-btn" onclick="toggleNamePopup()" aria-haspopup="dialog" aria-controls="name-popup"><span class="float-btn-icon">&#x1F464;</span><span class="float-btn-label" id="name-btn-label">My Name</span></button>
 <button type="button" class="float-btn" id="toc-btn" onclick="toggleToc()" aria-controls="toc-panel" aria-expanded="false"><span class="float-btn-icon">&#x2630;</span><span class="float-btn-label">Contents</span></button>
 
 <div class="name-popup" id="name-popup" role="dialog" aria-labelledby="name-popup-title">
@@ -1589,7 +1590,7 @@ function getPupilName(){ try { return (localStorage.getItem(NAME_KEY) || '').tri
 function refreshNameBtn(){
   var n = getPupilName();
   var lbl = document.getElementById('name-btn-label'); if(!lbl) return;
-  lbl.textContent = n || 'My name';
+  lbl.textContent = n || 'My Name';
   document.getElementById('name-btn').title = n ? ('Name on PDFs: ' + n + ' (click to change)') : 'Add your name for your PDFs';
 }
 function toggleNamePopup(){
