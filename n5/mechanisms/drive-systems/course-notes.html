@@ -183,9 +183,11 @@
     .symbol-desc { font-size:12px; color:var(--gray-500); line-height:1.4; }
     .friction-diagram { background:white; border:1px solid var(--gray-200); border-radius:10px; padding:14px; margin:14px 0; overflow-x:auto; }
     .friction-diagram svg { width:100%; max-width:640px; margin:0 auto; min-width:520px; height:auto; display:block; }
-    .flow-in { fill:#99f6e4; } .flow-out { fill:#2dd4bf; } .flow-loss { fill:#fdba74; }
-    .flow-label { font-size:14px; font-weight:600; fill:#134e4a; font-family:inherit; }
-    .flow-label-loss { fill:#9a3412; }
+    .audit-box { fill:white; stroke:#111827; stroke-width:3; }
+    .audit-line { stroke:#111827; stroke-width:3; }
+    .audit-head { fill:#111827; }
+    .audit-text { font-size:22px; fill:#1f2937; font-family:Arial,Helvetica,sans-serif; }
+    .audit-note { font-size:13px; fill:#6b7280; font-family:Arial,Helvetica,sans-serif; }
 
     @media print {
       .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.sim-embed-section { display:none!important; }
@@ -220,7 +222,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 25 September 2026, 16:52</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 25 September 2026, 17:11</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Drive Systems</div>
       <h1 class="hero-title">&#x2699;&#xFE0F; Drive Systems &mdash; Course Notes</h1>
       <p class="hero-sub">Gear trains, belt drives, chain drives, velocity ratio and motion conversion</p>
@@ -396,6 +398,7 @@
         </div>
       </div>
       <p class="notes-p" style="font-size:12px;">In each symbol the dot marks the shaft, which you are looking at end-on.</p>
+      <p class="notes-p">We will look at each of these drive systems in more detail in the following sections.</p>
 
       <h2 class="notes-h2" id="section-1b" data-toc-sub>Friction in drive systems</h2>
       <p class="notes-p">Wherever parts of a drive system rub or slide against each other, there is <strong>friction</strong>. This happens where gear teeth mesh, where shafts turn in their bearings, and where a belt or chain wraps round a pulley or sprocket. Friction turns some of the energy put into the system into forms that are not useful, so <strong>less energy reaches the output</strong> than was put in.</p>
@@ -408,16 +411,17 @@
       </div>
 
       <div class="friction-diagram">
-        <svg viewBox="0 0 640 230" role="img" aria-label="Energy flow diagram: energy in from the motor splits into useful energy out and energy wasted as heat and sound">
-          <path class="flow-in" d="M20 40 H300 V120 H20 Z"/>
-          <path class="flow-out" d="M300 40 H560 V104 H300 Z"/>
-          <path class="flow-out" d="M560 26 L610 72 L560 118 Z"/>
-          <path class="flow-loss" d="M300 104 H360 V180 H300 Z"/>
-          <path class="flow-loss" d="M284 180 L330 220 L376 180 Z"/>
-          <text x="36" y="86" class="flow-label">Energy in (from motor)</text>
-          <text x="340" y="78" class="flow-label">Useful energy out (to driven shaft)</text>
-          <text x="392" y="150" class="flow-label flow-label-loss">Wasted as heat and sound</text>
-          <text x="392" y="170" class="flow-label flow-label-loss" style="font-weight:400;">(caused by friction)</text>
+        <svg viewBox="0 0 700 250" role="img" aria-label="Energy audit diagram: energy in goes into the drive system; energy out leaves on the right; energy wasted leaves downwards">
+          <defs><marker id="audit-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" class="audit-head"/></marker></defs>
+          <rect x="250" y="30" width="180" height="100" class="audit-box"/>
+          <text x="340" y="86" class="audit-text" text-anchor="middle">drive system</text>
+          <line x1="180" y1="80" x2="248" y2="80" class="audit-line" marker-end="url(#audit-arrow)"/>
+          <line x1="430" y1="80" x2="498" y2="80" class="audit-line" marker-end="url(#audit-arrow)"/>
+          <line x1="340" y1="130" x2="340" y2="198" class="audit-line" marker-end="url(#audit-arrow)"/>
+          <text x="165" y="87" class="audit-text" text-anchor="end">energy in</text>
+          <text x="512" y="87" class="audit-text">energy out</text>
+          <text x="340" y="228" class="audit-text" text-anchor="middle" font-style="italic">energy wasted</text>
+          <text x="340" y="246" class="audit-note" text-anchor="middle">(heat and sound, caused by friction)</text>
         </svg>
       </div>
       <p class="notes-p">You met <strong>efficiency</strong> in Energy and Efficiency: efficiency compares the useful energy out with the energy put in. The more friction there is in a drive system, the lower its efficiency.</p>
@@ -466,10 +470,9 @@
       <p class="notes-p">The data booklet gives this equation for drive systems:</p>
       <div class="formula-box">
         <div class="formula">Input speed &times; input size = output speed &times; output size</div>
-        <div class="formula-sub">From the data booklet. For gears, the <strong>size</strong> is the <strong>number of teeth</strong>.</div>
       </div>
 
-      <p class="notes-p">For gears, a memorable way of writing the same equation is <strong>teeth times turns</strong>: the number of teeth multiplied by the number of turns is the same for the input gear and the output gear.</p>
+      <p class="notes-p">This is a universal equation that covers both gears and pulleys. When dealing with gears, lots of people find the <strong>&lsquo;teeth times turns&rsquo;</strong> equation easier to use:</p>
       <div class="formula-box">
         <div class="formula">Teeth<sub>In</sub> &times; Turns<sub>In</sub> = Teeth<sub>Out</sub> &times; Turns<sub>Out</sub></div>
         <div class="formula-sub">Turns can be revolutions per second (rev s<sup>&minus;1</sup>) or per minute (rev min<sup>&minus;1</sup>)</div>
