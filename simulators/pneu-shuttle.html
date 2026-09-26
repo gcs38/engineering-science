@@ -46,7 +46,7 @@
 </head>
 <body class="flex flex-col h-screen">
 
-    <div id="topToolbar" class="h-16 bg-[#f0f4f9] z-20 flex items-center justify-between px-4 shrink-0">
+    <div class="h-16 bg-[#f0f4f9] z-20 flex items-center justify-between px-4 shrink-0">
         
         <div class="flex items-center gap-2">
             <div class="flex items-center gap-2">
@@ -212,7 +212,7 @@
                     <div class="comp-card" data-type="text"><div class="preview-box border-slate-400 text-slate-600 font-serif pointer-events-none">Aa</div><span class="card-label">Text Note</span></div>
                 </div>
             </div>
-        </div> <button id="btnSidebarToggle" onclick="toggleSidebar()" class="absolute top-1/2 -right-4 w-8 h-8 bg-white border border-orange-200 rounded-full shadow-md flex items-center justify-center text-slate-500 hover:text-orange-900 hover:scale-110 z-50 transform -translate-y-1/2 transition-all focus:outline-none">
+        </div> <button onclick="toggleSidebar()" class="absolute top-1/2 -right-4 w-8 h-8 bg-white border border-orange-200 rounded-full shadow-md flex items-center justify-center text-slate-500 hover:text-orange-900 hover:scale-110 z-50 transform -translate-y-1/2 transition-all focus:outline-none">
             <svg id="sidebarIcon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/></svg>
         </button>
         
@@ -397,7 +397,6 @@
        const CFG = { grid:5, portR:5, hitR:14, col:{off:'#cbd5e1', on:'#2563eb', sel:'#f59e0b', txt:'#334155'} };
         const view = { x:0, y:0, scale:1 };
         window.showNames = true;
-        const isKiosk = new URLSearchParams(window.location.search).get('kiosk') === 'true';
        let state = { comps:[], pipes:[], sim:false, t:0, sel:null, multiSel:[], boxSel:null, drag:{act:false}, pipe:{act:false,pts:[]}, ms:{x:0,y:0}, anim:0, viewMode: 'symbol', activeTouches: {} };
         let clipboard = null; let historyStack = [], historyIndex = -1; const MAX_HISTORY = 50;
         
@@ -406,7 +405,6 @@
         }
 
         const cvs=document.getElementById('simCanvas'); const ctx=cvs.getContext('2d');
-        function isLessonActive() { return typeof preloadedLesson !== 'undefined' && preloadedLesson && preloadedLesson.trim().length > 10; }
         function resize() { cvs.width = cvs.parentElement.clientWidth; cvs.height = cvs.parentElement.clientHeight; if (typeof draw === 'function') draw(); }
         window.onresize=resize; setTimeout(resize,50);
 
@@ -1308,7 +1306,7 @@
                             if(c.type === 'bleed') { c.capped=!c.capped; break; } 
                             
                             // Allow selecting Restrictors and Reservoirs during sim
-                            if(!isLessonActive() && (c.type === 'unidir' || c.type === 'reservoir')) {
+                            if(c.type === 'unidir' || c.type === 'reservoir') {
                                 state.multiSel = [{type:'c', obj:c}];
                                 state.sel = state.multiSel[0];
                                 updInsp();
@@ -1529,8 +1527,11 @@
         window.addEventListener('mousemove', onMove, {passive: false});
         window.addEventListener('touchmove', onMove, {passive: false});
         window.addEventListener('mouseup', onUp);
+        window.addEventListener('touchend', onUp);
         cvs.addEventListener('touchcancel', onUp);
         
+        function isLessonActive() { return typeof preloadedLesson !== 'undefined' && preloadedLesson && preloadedLesson.trim().length > 10; }
+
         cvs.addEventListener('wheel', e => {
             if (isLessonActive()) return;
             e.preventDefault();
@@ -1922,8 +1923,7 @@ c.rodDia = d.rodDia !== undefined ? d.rodDia : c.rodDia;c.latching = d.latching 
             draw(); 
         });
 
-        safeBind('btnClear', 'onclick', ()=>{ if(!state.sim) {state.comps=[]; state.pipes=[]; state.multiSel=[]; state.sel=null; recordState(); draw();} });
-        safeBind('btnHome', 'onclick', () => { fitToScreen(); });
+        safeBind('btnClear', 'onclick', ()=>{ if(!state.sim) {state.comps=[]; state.pipes=[]; state.multiSel=[]; state.sel=null; recordState(); draw();} });safeBind('btnHome', 'onclick', () => { fitToScreen(); });
         safeBind('btnZoomIn', 'onclick', () => { view.scale = Math.min(view.scale * 1.1, 5.0); draw(); });
         safeBind('btnZoomOut', 'onclick', () => { view.scale = Math.max(view.scale * 0.9, 0.1); draw(); });
         safeBind('btnToggleLabels', 'onclick', function() {
@@ -2567,134 +2567,149 @@ makeDraggable(document.getElementById('inspector'), document.getElementById('ins
 const preloadedLesson = `{
   "components": [
     {
-      "id": "3ovhc8q9i",
+      "id": "f8760lggm",
       "type": "valve32",
-      "x": 240,
-      "y": 325,
+      "x": 190,
+      "y": 320,
       "rot": 90,
       "lbl": "",
       "restrict": 0,
-      "capped": false,
-      "manual": false,
-      "flipV": false,
-      "flipH": false,
-      "startPos": false,
-      "normallyOpen": false
-    },
-    {
-      "id": "cklq6j1km",
-      "type": "supply",
-      "x": 170,
-      "y": 315,
-      "rot": 0,
-      "lbl": "",
-      "restrict": 0,
-      "capped": false,
-      "manual": false,
-      "flipV": false,
-      "flipH": false
-    },
-    {
-      "id": "fftc4zys9",
-      "type": "sac",
-      "x": 460,
-      "y": 145,
-      "rot": 0,
-      "lbl": "",
-      "restrict": 0,
-      "capped": false,
-      "manual": false,
-      "flipV": false,
-      "flipH": false
-    },
-    {
-      "id": "545dvlymy",
-      "type": "valve32",
-      "x": 555,
-      "y": 325,
-      "rot": 90,
-      "lbl": "",
-      "restrict": 0,
+      "capacity": 1,
       "capped": false,
       "manual": false,
       "flipV": true,
       "flipH": false,
       "startPos": false,
-      "normallyOpen": false
+      "normallyOpen": false,
+      "latching": false,
+      "mechId": ""
     },
     {
-      "id": "n3fcks0fg",
-      "type": "supply",
-      "x": 615,
-      "y": 315,
-      "rot": 0,
-      "lbl": "",
-      "restrict": 0,
-      "capped": false,
-      "manual": false,
-      "flipV": false,
-      "flipH": true
-    },
-    {
-      "id": "1lwno2xrb",
+      "id": "gmc44jacj",
       "type": "shuttle",
-      "x": 380,
-      "y": 315,
+      "x": 305,
+      "y": 310,
       "rot": 0,
       "lbl": "",
       "restrict": 0,
+      "capacity": 1,
       "capped": false,
       "manual": false,
       "flipV": false,
-      "flipH": false
+      "flipH": false,
+      "mechId": ""
+    },
+    {
+      "id": "7ean21lj5",
+      "type": "valve32lever",
+      "x": 430,
+      "y": 320,
+      "rot": 90,
+      "lbl": "",
+      "restrict": 0,
+      "capacity": 1,
+      "capped": false,
+      "manual": false,
+      "flipV": false,
+      "flipH": false,
+      "startPos": false,
+      "normallyOpen": false,
+      "latching": true,
+      "mechId": ""
+    },
+    {
+      "id": "j4xyetn3m",
+      "type": "sac",
+      "x": 385,
+      "y": 145,
+      "rot": 0,
+      "lbl": "",
+      "restrict": 0,
+      "capacity": 1,
+      "capped": false,
+      "manual": false,
+      "flipV": false,
+      "flipH": false,
+      "boreDia": 12,
+      "rodDia": 5,
+      "mechId": ""
+    },
+    {
+      "id": "giro57tel",
+      "type": "supply",
+      "x": 105,
+      "y": 310,
+      "rot": 0,
+      "lbl": "",
+      "restrict": 0,
+      "capacity": 1,
+      "capped": false,
+      "manual": false,
+      "flipV": false,
+      "flipH": false,
+      "pressure": 0.2,
+      "mechId": ""
+    },
+    {
+      "id": "u3b0pw7v0",
+      "type": "supply",
+      "x": 530,
+      "y": 310,
+      "rot": 0,
+      "lbl": "",
+      "restrict": 0,
+      "capacity": 1,
+      "capped": false,
+      "manual": false,
+      "flipV": false,
+      "flipH": true,
+      "pressure": 0.2,
+      "mechId": ""
     }
   ],
   "pipes": [
     {
-      "p1_comp": "cklq6j1km",
-      "p1_idx": 0,
-      "p2_comp": "3ovhc8q9i",
-      "p2_idx": 0,
-      "points": [],
-      "dashed": false
-    },
-    {
-      "p1_comp": "n3fcks0fg",
-      "p1_idx": 0,
-      "p2_comp": "545dvlymy",
-      "p2_idx": 0,
-      "points": [],
-      "dashed": false
-    },
-    {
-      "p1_comp": "3ovhc8q9i",
-      "p1_idx": 1,
-      "p2_comp": "1lwno2xrb",
-      "p2_idx": 0,
-      "points": [],
-      "color": "#ef4444",
-      "dashed": true
-    },
-    {
-      "p1_comp": "545dvlymy",
-      "p1_idx": 1,
-      "p2_comp": "1lwno2xrb",
-      "p2_idx": 1,
-      "points": [],
-      "color": "#10b981",
-      "dashed": true
-    },
-    {
-      "p1_comp": "1lwno2xrb",
+      "p1_comp": "gmc44jacj",
       "p1_idx": 2,
-      "p2_comp": "fftc4zys9",
+      "p2_comp": "j4xyetn3m",
       "p2_idx": 0,
       "points": [],
-      "color": "#2563eb",
+      "dashed": false
+    },
+    {
+      "p1_comp": "gmc44jacj",
+      "p1_idx": 0,
+      "p2_comp": "f8760lggm",
+      "p2_idx": 0,
+      "points": [],
+      "dashed": false
+    },
+    {
+      "p1_comp": "f8760lggm",
+      "p1_idx": 1,
+      "p2_comp": "giro57tel",
+      "p2_idx": 0,
+      "points": [],
+      "dashed": false
+    },
+    {
+      "p1_comp": "gmc44jacj",
+      "p1_idx": 1,
+      "p2_comp": "7ean21lj5",
+      "p2_idx": 0,
+      "points": [],
+      "dashed": false
+    },
+    {
+      "p1_comp": "7ean21lj5",
+      "p1_idx": 1,
+      "p2_comp": "u3b0pw7v0",
+      "p2_idx": 0,
+      "points": [],
       "dashed": false
     }
   ],
-  "version": "V2.4.1"
+  "version": "V3.2.1"
 }`; 
 
 function renderSidebarIcons() {
@@ -2744,29 +2759,35 @@ function renderSidebarIcons() {
     state.viewMode = oldViewMode; // Restore user's current view mode
 }
 
-// === 2. INITIALISATION & AUTO-LOAD ===
+// === 2. INITIALISATION & AUTO-LOAD (Engineering Science Scotland kiosk embed) ===
 window.onload = () => {
     renderSidebarIcons(); // Draw the menu icons first
 
-    if (isLessonActive()) {
+    if (preloadedLesson && preloadedLesson.trim().length > 10) {
         // 1. Load the saved JSON circuit
         loadStateJSON(preloadedLesson);
         recordState();
-        
-        // 2. Hide toolbars and lock UI for presentation/lesson mode
-        document.getElementById('topToolbar').style.display = 'none';
+
+        // 2. KIOSK MODE: Completely hide the top and side menus
         document.getElementById('sidebarContainer').style.display = 'none';
-        document.getElementById('btnSidebarToggle').style.display = 'none';
-        
+
+        // Hide the floating orange toggle button
+        const toggleBtn = document.querySelector('button[onclick="toggleSidebar()"]');
+        if (toggleBtn) toggleBtn.style.display = 'none';
+
+        // Hide the top toolbar (using a selector specific to No Pressure Sim's layout)
+        const topToolbar = document.querySelector('.h-16.bg-\\[\\#f0f4f9\\].z-20');
+        if (topToolbar) topToolbar.style.display = 'none';
+
         // 3. Start the live simulation automatically
         document.getElementById('btnSim').click();
 
-        // 4. THE FIX: Wait 350ms for the sidebar sliding animation to finish!
+        // 4. Resize and center (no slide animation to wait for)
         setTimeout(() => {
             resize();         // Update internal canvas dimensions
             fitToScreen();    // Calculate the perfect centre
-        }, 350); 
-        
+        }, 50);
+
     } else {
         // Normal empty startup
         recordState();

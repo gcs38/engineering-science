@@ -1333,6 +1333,7 @@
             state.ms = p; 
             
             if(raw.button === 1 || raw.button === 2 || e.ctrlKey || e.metaKey) {
+                if (isLessonActive()) return;
                 isPanning = true; startPan = {x:raw.clientX, y:raw.clientY}; cvs.style.cursor='grabbing'; return;
             }
 
@@ -1527,9 +1528,12 @@
         window.addEventListener('touchmove', onMove, {passive: false});
         window.addEventListener('mouseup', onUp);
         window.addEventListener('touchend', onUp);
-        window.addEventListener('touchcancel', onUp);
+        cvs.addEventListener('touchcancel', onUp);
         
+        function isLessonActive() { return typeof preloadedLesson !== 'undefined' && preloadedLesson && preloadedLesson.trim().length > 10; }
+
         cvs.addEventListener('wheel', e => {
+            if (isLessonActive()) return;
             e.preventDefault();
             const zs = e.deltaY > 0 ? 0.9 : 1.1;
             const r = cvs.getBoundingClientRect();
@@ -1849,6 +1853,7 @@ c.rodDia = d.rodDia !== undefined ? d.rodDia : c.rodDia;c.latching = d.latching 
         }
 
         window.addEventListener('keydown', e => {
+            if (isLessonActive()) return;
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
             if(e.key === 'Delete' || e.key === 'Backspace') deleteSelected();
             if(e.key === 'Escape') { state.pipe.act = false; state.sel = null; state.multiSel = []; updInsp(); draw(); }
