@@ -9,8 +9,8 @@
     .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
     .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
     .back-link:hover { color:var(--teal-800); }
-    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
-    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); scroll-margin-top:100px; }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; scroll-margin-top:100px; }
     .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:14px 0 6px; }
     .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
     .notes-p strong { color:var(--gray-900); }
@@ -129,12 +129,63 @@
     .ctrl-btn-print:hover { background:var(--teal-100); }
     .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
     .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+
+    .answer-box img { max-width:100%; height:auto; }
+    .cell-answer { outline:none; background:#f8faff; min-height:36px; }
+    .cell-answer:focus { box-shadow:inset 0 0 0 2px var(--teal-400); background:white; }
+    .data-table tr:nth-child(even) td.cell-answer { background:#f8faff; }
+    .task-download-row { background:var(--gray-50); border-top:1px solid var(--gray-200); padding:9px 20px; text-align:right; }
+    .task-download-btn { display:inline-flex; align-items:center; gap:6px; background:white; border:1.2px solid var(--teal-400); color:var(--teal-800); font-size:10px; font-weight:700; padding:7px 12px; border-radius:999px; cursor:pointer; transition:background .15s; }
+    .task-download-btn:hover { background:var(--teal-50); }
+    .task-download-btn:disabled { opacity:.6; cursor:wait; }
+    .spec-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .spec-table th { background:transparent; padding:8px 6px 8px 0; width:32px; vertical-align:top; }
+    .spec-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
+    .data-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:var(--teal-50); color:var(--teal-800); border:1px solid var(--teal-100); font-size:11px; font-weight:700; }
+    .ctrl-btn-download-all { background:#eef2ff; color:#4338ca; }
+    .ctrl-btn-download-all:hover { background:#e0e7ff; }
+
+    .toc-fab { position:fixed; right:24px; bottom:76px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#c2410c; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+    .toc-fab:hover { background:#9a3412; }
+    .toc-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; }
+    .toc-overlay.open { display:block; }
+    .toc-panel { position:fixed; top:0; right:-340px; width:320px; max-width:85vw; height:100%; background:white; z-index:999998; box-shadow:-8px 0 30px rgba(0,0,0,.2); transition:right .25s ease; display:flex; flex-direction:column; }
+    .toc-panel.open { right:0; }
+    .toc-panel-header { padding:18px 20px 14px; border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; }
+    .toc-panel-header h3 { margin:0; font-size:16px; color:var(--teal-800); }
+    .toc-panel-close { background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .toc-panel-close:hover { color:var(--gray-700); }
+    .toc-list { overflow-y:auto; padding:8px 0 20px; }
+    .toc-list a { display:block; padding:10px 20px; font-size:14px; color:var(--gray-700); text-decoration:none; border-left:3px solid transparent; }
+    .toc-list a:hover { background:var(--teal-50); color:var(--teal-800); }
+    .toc-list a.toc-active { border-left-color:var(--teal-500,var(--teal-600)); background:var(--teal-50); color:var(--teal-800); font-weight:700; }
+    .toc-list a.toc-sub { padding-left:36px; font-size:13px; color:var(--gray-500); }
+
+    .name-fab { position:fixed; right:24px; bottom:132px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#4f46e5; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); overflow:hidden; }
+    .name-fab-icon { font-size:14px; line-height:1; flex-shrink:0; }
+    #nameFabLabel { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:78px; text-align:left; }
+    .name-fab:hover { background:#3730a3; }
+    .name-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; align-items:center; justify-content:center; padding:20px; }
+    .name-overlay.open { display:flex; }
+    .name-panel { background:white; border-radius:14px; max-width:360px; width:100%; padding:24px 24px 22px; box-shadow:0 20px 60px rgba(0,0,0,.35); position:relative; }
+    .name-panel-close { position:absolute; top:10px; right:12px; background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .name-panel-close:hover { color:var(--gray-700); }
+    .name-panel h3 { margin:0 0 8px; font-size:16px; color:#4338ca; }
+    .name-panel p { margin:0 0 14px; font-size:13px; line-height:1.5; color:var(--gray-600); }
+    .name-panel input { width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid var(--gray-200); border-radius:8px; font-size:14px; margin-bottom:12px; }
+    .name-panel input:focus { outline:none; border-color:#4338ca; }
+    .name-panel-save { width:100%; background:#4338ca; color:white; border:none; border-radius:8px; padding:10px; font-size:14px; font-weight:700; cursor:pointer; }
+    .name-panel-save:hover { background:#3730a3; }
+    .name-panel-saved-msg { font-size:12px; color:#16a34a; margin-top:8px; text-align:center; display:none; }
+    .name-panel-saved-msg.show { display:block; }
+
     @media print {
-      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.sim-embed-section { display:none!important; }
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.sim-embed-section,.toc-fab,.toc-panel,.toc-overlay,.name-fab,.name-overlay,.task-download-row,.page-nav,.exemplar-thumb,.exemplar-modal { display:none!important; }
       .layout { display:block!important; }
       .main { margin:0!important; padding:0!important; }
       .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
       .tt-answer td.blank { border:1px solid #94a3b8!important; background:white!important; }
+      .cell-answer { background:white!important; }
       .diagram-placeholder { border:1.5px dashed #7dd3fc!important; }
     }
   </style>
@@ -162,7 +213,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 16 September 2026 14:05</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 26 September 2026, 20:15</div>
       <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Digital Electronics</div>
       <h1 class="hero-title">Digital Electronics &mdash; Course Notes</h1>
       <p class="hero-sub">NOT, AND and OR gates &mdash; truth tables, Boolean algebra, combinational circuits and real-world applications</p>
@@ -179,7 +230,7 @@
       <a href="index.html" class="back-link">&larr; Back to Digital Electronics</a>
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 1: Analogue and Digital Signals</h1>
+      <h1 class="notes-h1" id="section-1">Section 1: Analogue and Digital Signals</h1>
 
       <p class="notes-p">Electronic circuits process <strong>electrical signals</strong>. A signal is a voltage that carries information — it tells the circuit when to switch on or off, or what value something is. There are two fundamentally different types of signal:</p>
 
@@ -198,7 +249,7 @@
       <!-- DIAGRAM PLACEHOLDER -->
       <img src="images/digital-analogue-signals.png" alt="Analogue vs digital signal graphs" style="width:100%;max-width:544px;display:block;margin:16px auto;border-radius:8px;">
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task1">
         <div class="assignment-header"><div class="assignment-title">Task 1 &mdash; Analogue or digital?</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -217,12 +268,15 @@
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t1d" data-placeholder="Analogue or digital? Explain..."></div>
           </div>
         </div>
-      </div>
+                <div class="task-download-row">
+            <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task1', 'Task 1 — Analogue or digital?')">Download my answers (PDF)</button>
+          </div>
+</div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 2: Logic Gates</h1>
+      <h1 class="notes-h1" id="section-2">Section 2: Logic Gates</h1>
 
       <p class="notes-p">A <strong>logic gate</strong> is an electronic component that takes one or more digital inputs and produces a single digital output. The output depends entirely on the combination of inputs — and that relationship is described precisely using a <strong>truth table</strong> and a <strong>Boolean expression</strong>.</p>
 
@@ -298,7 +352,7 @@
 
       <hr class="divider">
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task2">
         <div class="assignment-header"><div class="assignment-title">Task 2 &mdash; Logic gates</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -335,7 +389,10 @@
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t2e" data-placeholder="Gate type and explanation..."></div>
           </div>
         </div>
-      </div>
+                <div class="task-download-row">
+            <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task2', 'Task 2 — Logic gates')">Download my answers (PDF)</button>
+          </div>
+</div>
 
       <!-- Simulator: individual gates -->
       <div class="sim-embed-section">
@@ -352,7 +409,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 3: Combinational Logic Circuits</h1>
+      <h1 class="notes-h1" id="section-3">Section 3: Combinational Logic Circuits</h1>
 
       <p class="notes-p">When two or more logic gates are connected together to perform a specific task, the result is called a <strong>combinational logic circuit</strong>. The output depends on the <em>combination</em> of all current inputs.</p>
 
@@ -423,7 +480,7 @@
         </table>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task3">
         <div class="assignment-header"><div class="assignment-title">Task 3 &mdash; Complete the truth tables</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">For each circuit, complete the truth table by filling in the intermediate gate outputs and the final output. Check your answers using the NoNANDSense simulator.</p>
@@ -500,7 +557,10 @@
             </table>
           </div>
         </div>
-      </div>
+                <div class="task-download-row">
+            <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task3', 'Task 3 — Complete the truth tables')">Download my answers (PDF)</button>
+          </div>
+</div>
 
       <!-- Simulator: combinational circuits -->
       <div class="sim-embed-section">
@@ -517,7 +577,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 4: Boolean Algebra</h1>
+      <h1 class="notes-h1" id="section-4">Section 4: Boolean Algebra</h1>
 
       <p class="notes-p"><strong>Boolean algebra</strong> was developed by the British mathematician George Boole in the 1850s. It gives us a precise mathematical language to describe the behaviour of logic circuits. Today it is used by every electronic engineer, computer scientist and software developer.</p>
 
@@ -600,7 +660,7 @@
           <tr><td class="input">1</td><td class="input">1</td><td class="input">1</td><td class="blank" contenteditable="true" data-key="de-bridge-r7-or"></td><td class="blank" contenteditable="true" data-key="de-bridge-r7-and"></td></tr>
         </table>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task4">
         <div class="assignment-header"><div class="assignment-title">Task 4 &mdash; Boolean expressions from circuits</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">For each circuit below, complete a truth table and write the Boolean expression for Z.</p>
@@ -685,12 +745,15 @@
             </div>
           </div>
         </div>
-      </div>
+                <div class="task-download-row">
+            <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task4', 'Task 4 — Boolean expressions from circuits')">Download my answers (PDF)</button>
+          </div>
+</div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 5: Boolean Expressions from Truth Tables</h1>
+      <h1 class="notes-h1" id="section-5">Section 5: Boolean Expressions from Truth Tables</h1>
 
       <p class="notes-p">Sometimes you will be given a truth table and asked to write the Boolean expression and draw the circuit. The method is straightforward — focus only on the rows where the output is <strong>logic 1</strong>.</p>
 
@@ -721,7 +784,7 @@
         <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Z = (<span style="text-decoration:overline;">A</span>.B.<span style="text-decoration:overline;">C</span>) + (A.<span style="text-decoration:overline;">B</span>.<span style="text-decoration:overline;">C</span>)</strong></div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task5">
         <div class="assignment-header"><div class="assignment-title">Task 5 &mdash; Boolean expressions from truth tables</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">For each truth table, write the Boolean expression for Z. Then build and verify the circuit using NoNANDSense.</p>
@@ -802,12 +865,15 @@
             </div>
           </div>
         </div>
-      </div>
+                <div class="task-download-row">
+            <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task5', 'Task 5 — Boolean expressions from truth tables')">Download my answers (PDF)</button>
+          </div>
+</div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 6: Designing Circuits from a Specification</h1>
+      <h1 class="notes-h1" id="section-6">Section 6: Designing Circuits from a Specification</h1>
 
       <p class="notes-p">The most common engineering application of digital logic is designing a circuit to meet a given <strong>written specification</strong>. Read the specification carefully — the key words AND, OR and NOT tell you which gates are needed.</p>
 
@@ -846,7 +912,7 @@
         <tr><td>1</td><td>1</td><td>1</td><td>0</td><td>1</td><td class="hi-out">1</td></tr>
       </table>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task6">
         <div class="assignment-header"><div class="assignment-title">Task 6 &mdash; Design from specification</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">For each specification: identify inputs and outputs, write the Boolean expression, draw the circuit diagram and complete the truth table. Verify using NoNANDSense.</p>
@@ -919,7 +985,10 @@
             </div>
           </div>
         </div>
-      </div>
+                <div class="task-download-row">
+            <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task6', 'Task 6 — Design from specification')">Download my answers (PDF)</button>
+          </div>
+</div>
 
       <!-- Simulator: design task -->
       <div class="sim-embed-section">
@@ -936,7 +1005,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 7: Logic Gate Integrated Circuits (ICs)</h1>
+      <h1 class="notes-h1" id="section-7">Section 7: Logic Gate Integrated Circuits (ICs)</h1>
 
       <p class="notes-p">In practice, logic gates are not individual components — they are built into <strong>integrated circuits (ICs)</strong>, also called chips. Each IC contains several logic gates in a single small package.</p>
 
@@ -962,7 +1031,7 @@
       <h2 class="notes-h2">The NoNANDSense IC diagram feature</h2>
       <p class="notes-p">The NoNANDSense simulator includes a <strong>7400 Series Circuit Diagram</strong> tool. After building your logic circuit, this tool automatically selects the correct IC chips, groups gates into ICs, and draws the physical wiring diagram — ready for building on a breadboard.</p>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task7">
         <div class="assignment-header"><div class="assignment-title">Task 7 &mdash; Integrated circuits</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -985,12 +1054,15 @@
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="de-t7c" data-placeholder="Explain..."></div>
           </div>
         </div>
-      </div>
+                <div class="task-download-row">
+            <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task7', 'Task 7 — Integrated circuits')">Download my answers (PDF)</button>
+          </div>
+</div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 8: Real-World Applications of Logic Gates</h1>
+      <h1 class="notes-h1" id="section-8">Section 8: Real-World Applications of Logic Gates</h1>
 
       <p class="notes-p">Logic gates are found in almost every electronic system. Understanding how they work allows engineers to design control systems, safety systems, automation and more.</p>
 
@@ -1021,7 +1093,7 @@
         </div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task8">
         <div class="assignment-header"><div class="assignment-title">Task 8 &mdash; Real-world design challenge</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1053,7 +1125,10 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="de-t8d" data-placeholder="Work through this step by step: inputs, Boolean expression, circuit, truth table..."></div>
           </div>
         </div>
-      </div>
+                <div class="task-download-row">
+            <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task8', 'Task 8 — Real-world design challenge')">Download my answers (PDF)</button>
+          </div>
+</div>
 
       <!-- Final simulator embed -->
       <div class="sim-embed-section">
@@ -1070,12 +1145,13 @@
       <!-- Controls -->
       <div class="controls-bar">
         <span class="controls-label">Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-download-all" id="downloadAllBtn" onclick="downloadAllAnswersPDF()">Download ALL my answers (PDF)</button>
         <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">Print page</button>
         <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">Clear all answers</button>
       </div>
       <div class="storage-status" id="storage-status">Last saved: never</div>
 
-      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
+      <div class="page-nav" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
         <button class="ctrl-btn ctrl-btn-print" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});">&#x2B06;&#xFE0F; Back to top</button>
         <a href="index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">&#x2302; Main menu</a>
         <a href="../control-systems/course-notes.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">Next section &#x2192;</a>
@@ -1093,6 +1169,7 @@
 
 <script src="../../../../js/site.js"></script>
 <script src="../../../../js/nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
 
 <script>
@@ -1100,8 +1177,8 @@ const STORAGE_PREFIX='ess_answers_';
 function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
 function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
 function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
-function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
-function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box, .tt-answer td.blank[contenteditable="true"]').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function showSaved(key){var ind=document.getElementById('ind-'+key.replace(/^de-/,''));if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('[data-key]').forEach(function(b){var k=b.dataset.key;if(k){try{localStorage.removeItem(STORAGE_PREFIX+k);}catch(e){}b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
 function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
 function placeCaretAtEnd(el){el.focus();if(typeof window.getSelection!=='undefined'&&typeof document.createRange!=='undefined'){var range=document.createRange();range.selectNodeContents(el);range.collapse(false);var sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);}}
 function toggleExprBuilder(key){var panel=document.getElementById('expr-panel-'+key);if(!panel)return;panel.classList.toggle('open');}
@@ -1112,7 +1189,7 @@ function exprBackspace(key){var box=document.querySelector('[data-key="'+key+'"]
 function exprClear(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;box.innerHTML='';exprCommit(key,box);}
 function exprOverlineSelection(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var sel=window.getSelection();if(!sel||sel.rangeCount===0)return;var range=sel.getRangeAt(0);if(range.collapsed)return;if(!box.contains(range.commonAncestorContainer))return;var frag=range.extractContents();var span=document.createElement('span');span.style.textDecoration='overline';span.appendChild(frag);range.insertNode(span);range.setStartAfter(span);range.collapse(true);sel.removeAllRanges();sel.addRange(range);exprCommit(key,box);}
 document.addEventListener('DOMContentLoaded',function(){
-  document.querySelectorAll('.answer-box, .tt-answer td.blank[contenteditable="true"]').forEach(function(box){
+  document.querySelectorAll('[data-key]').forEach(function(box){
     var key=box.dataset.key;if(!key)return;
     var saved=loadValue(key);if(saved)box.innerHTML=saved;
     var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
@@ -1120,6 +1197,224 @@ document.addEventListener('DOMContentLoaded',function(){
     box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
   });
 });
+
+/* -- PDF export -- */
+function pdfSafe(s){
+  if(!s)return '';
+  return String(s)
+    .replace(/[\u2018\u2019\u201B\u2032]/g,"'")
+    .replace(/[\u201C\u201D\u201F\u2033]/g,'"')
+    .replace(/[\u2013\u2014\u2212]/g,'-')
+    .replace(/\u2026/g,'...')
+    .replace(/\u00A0/g,' ')
+    .replace(/\u2713/g,'')
+    .replace(/\u03C3/g,'sigma').replace(/\u03B5/g,'epsilon').replace(/\u0394/g,'delta').replace(/\u03C0/g,'pi')
+    .replace(/[^\x00-\xFF]/g,'');
+}
+
+var PUPIL_NAME_KEY='digielec-pupil-name';
+function getPupilName(){try{return localStorage.getItem(PUPIL_NAME_KEY)||'';}catch(e){return '';}}
+
+function pdfNewDoc(){
+  var doc=new window.jspdf.jsPDF({unit:'pt',format:'a4'});
+  var state={margin:48,pageWidth:doc.internal.pageSize.getWidth(),pageHeight:doc.internal.pageSize.getHeight()};
+  state.usableWidth=state.pageWidth-state.margin*2;
+  state.y=state.margin;
+  return {doc:doc,state:state};
+}
+
+function pdfAddHeader(doc,state,taskLabel){
+  doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(15,90,68);
+  doc.text('Engineering Science Scotland',state.margin,state.y);state.y+=20;
+  doc.setFontSize(14);doc.setTextColor(30,30,30);
+  var tLines=doc.splitTextToSize(pdfSafe(taskLabel),state.usableWidth);
+  doc.text(tLines,state.margin,state.y);state.y+=tLines.length*16+6;
+  doc.setFont('helvetica','normal');doc.setFontSize(11);doc.setTextColor(90,90,90);
+  var pupilName=getPupilName();
+  var todayStr=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  var nameLine=pupilName?('Name: '+pdfSafe(pupilName)+'      Date: '+todayStr):('Name: _________________________________      Date: _______________');
+  doc.text(nameLine,state.margin,state.y);state.y+=20;
+  doc.setDrawColor(200,200,200);doc.line(state.margin,state.y,state.pageWidth-state.margin,state.y);state.y+=18;
+}
+
+function pdfEnsureSpace(doc,state,h){if(state.y+h>state.pageHeight-state.margin){doc.addPage();state.y=state.margin;}}
+
+function pdfWriteAnswer(doc,state,el){
+  var img=el.querySelector('img');
+  if(img&&img.src){
+    try{
+      var props=doc.getImageProperties(img.src);
+      var ratio=Math.min(state.usableWidth/props.width,260/props.height,1);
+      var w=props.width*ratio,h=props.height*ratio;
+      pdfEnsureSpace(doc,state,h+14);
+      doc.addImage(img.src,props.fileType||'PNG',state.margin,state.y,w,h);
+      state.y+=h+10;
+    }catch(e){
+      doc.setFont('helvetica','italic');doc.setFontSize(11);doc.setTextColor(160,60,60);
+      pdfEnsureSpace(doc,state,14);doc.text('[Could not embed pasted image]',state.margin,state.y);state.y+=16;
+    }
+  }
+  var text=pdfSafe(el.innerText.trim());
+  if(img&&!text)return;
+  doc.setFontSize(11);
+  if(!text){doc.setFont('helvetica','italic');doc.setTextColor(160,160,160);text='(no answer entered yet)';}
+  else{doc.setFont('helvetica','normal');doc.setTextColor(40,40,40);}
+  var lines=doc.splitTextToSize(text,state.usableWidth);
+  for(var i=0;i<lines.length;i++){pdfEnsureSpace(doc,state,14);doc.text(lines[i],state.margin,state.y);state.y+=14;}
+  state.y+=6;
+}
+
+function pdfRenderPanelItems(doc,state,panel){
+  var items=panel.querySelectorAll('.task-item');
+  for(var i=0;i<items.length;i++){
+    var qEl=items[i].querySelector('.task-q');
+    var qText=qEl?pdfSafe(qEl.innerText.trim()):'';
+    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(15,90,68);
+    var qLines=doc.splitTextToSize(qText,state.usableWidth);
+    pdfEnsureSpace(doc,state,qLines.length*14+6);
+    doc.text(qLines,state.margin,state.y);state.y+=qLines.length*14+6;
+    var fields=items[i].querySelectorAll('[data-key]');
+    for(var f=0;f<fields.length;f++){
+      var lab=fields[f].dataset.label;
+      if(lab){
+        doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(90,90,90);
+        pdfEnsureSpace(doc,state,28);doc.text(pdfSafe(lab)+':',state.margin,state.y);state.y+=13;
+      }
+      pdfWriteAnswer(doc,state,fields[f]);
+    }
+    state.y+=6;
+  }
+}
+
+function pdfAddFooters(doc,state){
+  var n=doc.internal.getNumberOfPages();
+  for(var p=1;p<=n;p++){
+    doc.setPage(p);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(150,150,150);
+    doc.text('Page '+p+' of '+n+'  -  engineeringsciencescotland.co.uk',state.margin,state.pageHeight-24);
+  }
+}
+
+function downloadTaskPDF(panelId,taskLabel){
+  var panel=document.getElementById(panelId);if(!panel)return;
+  var btn=panel.querySelector('.task-download-btn');var orig=btn?btn.innerHTML:'';
+  if(btn){btn.disabled=true;btn.innerHTML='Building PDF&hellip;';}
+  setTimeout(function(){
+    try{
+      var o=pdfNewDoc();
+      pdfAddHeader(o.doc,o.state,taskLabel);
+      pdfRenderPanelItems(o.doc,o.state,panel);
+      pdfAddFooters(o.doc,o.state);
+      o.doc.save(pdfSafe(taskLabel).replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'-')+'.pdf');
+    }catch(err){console.error(err);alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.');}
+    finally{if(btn){btn.disabled=false;btn.innerHTML=orig;}}
+  },30);
+}
+
+var ALL_TASK_PANELS=[
+  ['assignment-task1','Task 1 \u2014 Analogue or digital?'],
+  ['assignment-task2','Task 2 \u2014 Logic gates'],
+  ['assignment-task3','Task 3 \u2014 Complete the truth tables'],
+  ['assignment-task4','Task 4 \u2014 Boolean expressions from circuits'],
+  ['assignment-task5','Task 5 \u2014 Boolean expressions from truth tables'],
+  ['assignment-task6','Task 6 \u2014 Design from specification'],
+  ['assignment-task7','Task 7 \u2014 Integrated circuits'],
+  ['assignment-task8','Task 8 \u2014 Real-world design challenge']
+];
+
+function downloadAllAnswersPDF(){
+  var btn=document.getElementById('downloadAllBtn');var orig=btn?btn.innerHTML:'';
+  if(btn){btn.disabled=true;btn.innerHTML='Building PDF&hellip;';}
+  setTimeout(function(){
+    try{
+      var o=pdfNewDoc(),doc=o.doc,state=o.state;
+      pdfAddHeader(doc,state,'Digital Electronics \u2014 All my answers');
+      for(var i=0;i<ALL_TASK_PANELS.length;i++){
+        var panel=document.getElementById(ALL_TASK_PANELS[i][0]);if(!panel)continue;
+        pdfEnsureSpace(doc,state,40);
+        doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(194,65,12);
+        doc.text(pdfSafe(ALL_TASK_PANELS[i][1]),state.margin,state.y);state.y+=8;
+        doc.setDrawColor(230,200,180);doc.line(state.margin,state.y,state.pageWidth-state.margin,state.y);state.y+=16;
+        pdfRenderPanelItems(doc,state,panel);state.y+=10;
+      }
+      pdfAddFooters(doc,state);
+      doc.save('Digital-Electronics-All-My-Answers.pdf');
+    }catch(err){console.error(err);alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.');}
+    finally{if(btn){btn.disabled=false;btn.innerHTML=orig;}}
+  },30);
+}
+
+/* -- Contents panel -- */
+function openToc(){document.getElementById('tocPanel').classList.add('open');document.getElementById('tocOverlay').classList.add('open');}
+function closeToc(){document.getElementById('tocPanel').classList.remove('open');document.getElementById('tocOverlay').classList.remove('open');}
+
+/* -- My Name -- */
+function updateNameFabLabel(){var l=document.getElementById('nameFabLabel');if(!l)return;var n=getPupilName();l.textContent=n?n:'My Name';}
+function openNamePanel(){
+  var input=document.getElementById('nameInput');if(input)input.value=getPupilName();
+  var msg=document.getElementById('nameSavedMsg');if(msg)msg.classList.remove('show');
+  document.getElementById('nameOverlay').classList.add('open');
+  if(input)setTimeout(function(){input.focus();},50);
+}
+function closeNamePanel(){document.getElementById('nameOverlay').classList.remove('open');}
+function closeNameOverlayClick(e){if(e.target.id==='nameOverlay')closeNamePanel();}
+function saveNameInput(){
+  var input=document.getElementById('nameInput');var name=input?input.value.trim():'';
+  try{localStorage.setItem(PUPIL_NAME_KEY,name);}catch(e){}
+  updateNameFabLabel();
+  var msg=document.getElementById('nameSavedMsg');if(msg)msg.classList.add('show');
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeToc();closeNamePanel();}});
+</script>
+
+<button class="toc-fab" id="tocFab" onclick="openToc()">&#x2630; Contents</button>
+
+<button class="name-fab" id="nameFab" onclick="openNamePanel()"><span class="name-fab-icon">&#x1F464;</span><span id="nameFabLabel">My Name</span></button>
+
+<div class="name-overlay" id="nameOverlay" onclick="closeNameOverlayClick(event)">
+  <div class="name-panel">
+    <button class="name-panel-close" onclick="closeNamePanel()" aria-label="Close">&times;</button>
+    <h3>Your name</h3>
+    <p>Enter your name once and it&rsquo;ll be added to the top of every task&rsquo;s downloaded PDF &mdash; no need to write it in by hand each time.</p>
+    <input type="text" id="nameInput" placeholder="e.g. Jamie Smith" maxlength="60">
+    <button class="name-panel-save" onclick="saveNameInput()">Save name</button>
+    <div class="name-panel-saved-msg" id="nameSavedMsg">&#x2713; Saved &mdash; it&rsquo;ll now appear on your PDFs</div>
+  </div>
+</div>
+
+<div class="toc-overlay" id="tocOverlay" onclick="closeToc()"></div>
+<div class="toc-panel" id="tocPanel">
+  <div class="toc-panel-header">
+    <h3>Contents</h3>
+    <button class="toc-panel-close" onclick="closeToc()" aria-label="Close">&times;</button>
+  </div>
+  <nav class="toc-list" id="tocList">
+    <a href="#section-1" onclick="closeToc()">Section 1: Analogue and Digital Signals</a>
+    <a href="#section-2" onclick="closeToc()">Section 2: Logic Gates</a>
+    <a href="#section-3" onclick="closeToc()">Section 3: Combinational Logic Circuits</a>
+    <a href="#section-4" onclick="closeToc()">Section 4: Boolean Algebra</a>
+    <a href="#section-5" onclick="closeToc()">Section 5: Boolean Expressions from Truth Tables</a>
+    <a href="#section-6" onclick="closeToc()">Section 6: Designing Circuits from a Specification</a>
+    <a href="#section-7" onclick="closeToc()">Section 7: Logic Gate Integrated Circuits (ICs)</a>
+    <a href="#section-8" onclick="closeToc()">Section 8: Real-World Applications of Logic Gates</a>
+  </nav>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded',updateNameFabLabel);
+(function(){
+  var nameInputEl=document.getElementById('nameInput');
+  if(nameInputEl)nameInputEl.addEventListener('keydown',function(e){if(e.key==='Enter')saveNameInput();});
+  var links=Array.prototype.slice.call(document.querySelectorAll('.toc-list a'));
+  var targets=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));}).filter(Boolean);
+  if(!targets.length||!('IntersectionObserver' in window))return;
+  var observer=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      var link=document.querySelector('.toc-list a[href="#'+entry.target.id+'"]');
+      if(link&&entry.isIntersecting){links.forEach(function(a){a.classList.remove('toc-active');});link.classList.add('toc-active');}
+    });
+  },{rootMargin:'-15% 0px -70% 0px',threshold:0});
+  targets.forEach(function(t){observer.observe(t);});
+})();
 </script>
 
 </body>
