@@ -6,11 +6,11 @@
   <title>Materials — Course Notes — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .notes-wrap { max-width:860px; margin:0 auto; padding:28px 32px 80px; }
-    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .notes-wrap { max-width:860px; margin:0 auto; padding:16px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:6px; }
     .back-link:hover { color:var(--teal-800); }
-    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
-    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); scroll-margin-top:100px; }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; scroll-margin-top:100px; }
     .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:16px 0 8px; }
     .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
     .notes-p strong { color:var(--gray-900); }
@@ -20,11 +20,13 @@
     .warning { background:#FFF7ED; border-left:4px solid #F97316; border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#9A3412; }
 
     /* Material category cards */
-    .mat-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:12px; margin:16px 0 20px; }
+    .mat-grid { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:18px; margin:18px auto 22px; justify-content:center; }
     .mat-card { background:white; border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; }
-    .mat-card-header { padding:10px 14px; font-size:13px; font-weight:700; color:white; }
-    .mat-card-body { padding:12px 14px; font-size:13px; color:var(--gray-600); line-height:1.6; }
-    .mat-card-body li { margin-bottom:3px; }
+    .mat-card-header { padding:10px 16px; font-size:14px; font-weight:700; color:white; }
+    .mat-card-body { padding:12px 16px 14px; font-size:13px; color:var(--gray-600); line-height:1.6; }
+    .mat-card-body ul { list-style:disc; margin:0; padding-left:26px; }
+    .mat-card-body li { margin-bottom:4px; padding-left:2px; }
+    @media (max-width:640px) { .mat-grid { grid-template-columns:1fr; } }
 
     /* Properties table */
     .mat-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
@@ -79,10 +81,75 @@
     .ctrl-btn-print { background:var(--teal-50); color:var(--teal-800); }
     .ctrl-btn-print:hover { background:var(--teal-100); }
     .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
+
+    /* Fractions: stacked numerator over denominator with a divide line */
+    .frac { display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; margin:6px 0.6em; line-height:1.3; text-align:center; }
+    .frac > .num { padding:0 0.4em 0.25em; border-bottom:1.5px solid currentColor; }
+    .frac > .den { padding:0.25em 0.4em 0; }
+    .formula .frac { margin:8px 0.7em; }
+    .step-content .frac, .notes-ul .frac { margin:6px 0.55em; }
+
+    /* Formula triangles */
+    .tri-row { display:flex; align-items:center; gap:18px; margin:4px 0 18px; padding:12px 16px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; }
+    .tri-row svg { flex-shrink:0; width:130px; height:auto; }
+    .tri-row p { font-size:13px; color:var(--gray-600); line-height:1.7; margin:0; }
+    @media (max-width:560px) { .tri-row { flex-direction:column; text-align:center; } }
+
+    /* Floating buttons (Feedback lives in site.js; re-stacked to the bottom by script below) */
+    .float-btn { position:fixed; right:24px; width:120px; padding:12px 14px; font-size:13px; font-weight:600; border-radius:999px; border:none; color:white; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; box-shadow:0 4px 14px rgba(0,0,0,.18); z-index:9000; box-sizing:border-box; font-family:inherit; }
+    .float-btn span.lbl { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+    #toc-btn { bottom:76px; background:var(--teal-600); }
+    #name-btn { bottom:132px; background:#334155; }
+    .float-btn:hover { filter:brightness(1.1); }
+    .float-btn:focus-visible, .toc-link:focus-visible { outline:3px solid #f59e0b; outline-offset:2px; }
+
+    /* Contents panel */
+    .toc-backdrop { position:fixed; inset:0; background:rgba(15,23,42,.25); opacity:0; pointer-events:none; transition:opacity .2s; z-index:10000; }
+    .toc-backdrop.open { opacity:1; pointer-events:auto; }
+    .toc-panel { position:fixed; top:0; right:0; height:100%; width:300px; max-width:85vw; background:white; box-shadow:-6px 0 24px rgba(0,0,0,.15); transform:translateX(100%); transition:transform .25s ease; z-index:10001; display:flex; flex-direction:column; }
+    .toc-panel.open { transform:translateX(0); }
+    .toc-head { display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid var(--gray-200); font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-800); }
+    .toc-close { background:none; border:none; font-size:22px; cursor:pointer; color:var(--gray-500); line-height:1; }
+    .toc-list { overflow-y:auto; padding:10px 10px 24px; }
+    .toc-link { display:block; padding:8px 12px; border-radius:7px; font-size:13px; color:var(--gray-700); text-decoration:none; border-left:3px solid transparent; }
+    .toc-link:hover { background:var(--gray-50); }
+    .toc-link.sub { padding-left:28px; font-size:12.5px; color:var(--gray-500); }
+    .toc-link.active { background:var(--teal-50); color:var(--teal-800); font-weight:600; border-left-color:var(--teal-400); }
+    @media (prefers-reduced-motion:reduce) { .toc-panel, .toc-backdrop { transition:none; } }
+
+    /* Name popup */
+    .name-pop { position:fixed; right:24px; bottom:188px; width:260px; background:white; border:1px solid var(--gray-200); border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.18); padding:16px; z-index:10002; display:none; }
+    .name-pop.open { display:block; }
+    .name-pop h3 { font-size:14px; margin:0 0 4px; color:var(--gray-900); }
+    .name-pop p { font-size:12px; color:var(--gray-500); margin:0 0 10px; line-height:1.5; }
+    .name-pop input { width:100%; box-sizing:border-box; padding:8px 10px; border:2px solid #c7d7f5; border-radius:7px; font-size:14px; margin-bottom:10px; font-family:inherit; }
+    .name-pop input:focus { outline:none; border-color:var(--teal-400); }
+    .name-pop .row { display:flex; gap:8px; justify-content:flex-end; }
+
+    /* Per-task PDF footer */
+    .assignment-footer { display:flex; justify-content:flex-end; padding:10px 16px; background:var(--gray-50); border-top:1px solid var(--gray-200); }
+    .ctrl-btn-pdf { background:var(--teal-400); color:white; }
+    .ctrl-btn-pdf:hover { background:var(--teal-600); }
+    .ctrl-btn-pdf[disabled] { opacity:.6; cursor:wait; }
+
+    /* Spec tables with numbered badges */
+    .spec-table { width:100%; border-collapse:collapse; margin:10px 0 16px; font-size:13px; }
+    .spec-table td { padding:8px 10px; border-bottom:1px solid var(--gray-200); color:var(--gray-700); vertical-align:top; line-height:1.6; }
+    .spec-table td:first-child { width:34px; }
+    .data-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:var(--teal-100); color:var(--teal-800); font-size:11px; font-weight:700; }
+    .challenge-context { font-size:13.5px; color:var(--gray-600); line-height:1.75; margin-bottom:10px; }
+
+    /* Exemplar lightbox */
+    .exemplar-thumb { display:inline-flex; align-items:center; gap:12px; margin:6px 0 4px; padding:8px 12px 8px 8px; background:#f0fdf4; border:1px dashed #86efac; border-radius:10px; cursor:pointer; font-size:12.5px; color:#15803d; font-weight:600; font-family:inherit; text-align:left; }
+    .exemplar-thumb img { width:120px; height:80px; object-fit:cover; border-radius:6px; filter:blur(1.5px); display:block; }
+    .exemplar-thumb:hover { background:#dcfce7; }
+    .lightbox { position:fixed; inset:0; background:rgba(15,23,42,.85); display:none; align-items:center; justify-content:center; z-index:10010; padding:24px; cursor:zoom-out; }
+    .lightbox.open { display:flex; }
+    .lightbox img { max-width:100%; max-height:90vh; border-radius:8px; box-shadow:0 10px 40px rgba(0,0,0,.4); background:white; }
     .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
 
     @media print {
-      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator { display:none!important; }
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.float-btn,.toc-panel,.toc-backdrop,.name-pop,.assignment-footer,.lightbox,.page-nav { display:none!important; }
       .layout { display:block!important; }
       .main { margin:0!important; padding:0!important; }
       .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
@@ -111,7 +178,8 @@
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
-    <div class="hero">
+    <div class="hero" id="top" style="position:relative;">
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 26 September 2026, 09:11</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Materials</div>
       <h1 class="hero-title">&#x1F9F1; Materials &mdash; Course Notes</h1>
       <p class="hero-sub">Material properties, selection and justification, stress and strain calculations</p>
@@ -128,7 +196,7 @@
       <a href="index.html" class="back-link">&larr; Back to Materials</a>
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 1: Material Categories</h1>
+      <h1 class="notes-h1" id="section-1">Section 1: Material Categories</h1>
 
       <p class="notes-p">Engineers must choose the most appropriate material for every part of a design. The choice depends on what the part needs to do, what forces it will experience, and the environment it will operate in. Materials are grouped into four main categories:</p>
 
@@ -181,7 +249,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 2: Material Properties</h1>
+      <h1 class="notes-h1" id="section-2">Section 2: Material Properties</h1>
 
       <p class="notes-p">To choose the right material, engineers consider a range of <strong>mechanical, physical and other properties</strong>. Understanding these properties allows you to justify a material choice in the exam.</p>
 
@@ -201,7 +269,7 @@
         <tr><td>Cost</td><td>Material and processing cost per unit</td><td>Always a factor in real engineering decisions</td></tr>
       </table>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task1">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Material categories and properties</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -225,7 +293,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 3: Selecting a Material</h1>
+      <h1 class="notes-h1" id="section-3">Section 3: Selecting a Material</h1>
 
       <p class="notes-p">In the SQA exam you will be given a scenario and asked to select a suitable material and <strong>justify your choice</strong>. A good justification always links the properties of the material directly to the demands of the application.</p>
 
@@ -266,7 +334,7 @@
         </div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task2">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Material selection and justification</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -300,13 +368,25 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 4: Stress</h1>
+      <h1 class="notes-h1" id="section-4">Section 4: Stress</h1>
 
       <p class="notes-p">When a force is applied to a structural member, the material inside it is being <strong>squeezed or stretched</strong>. The intensity of this internal force — the force per unit area — is called <strong>stress</strong>. Stress is what determines whether a material will fail: if the stress in a member exceeds the material's strength, it will break.</p>
 
       <div class="formula-box">
-        <div class="formula">Stress (&sigma;) = Force (N) &divide; Area (mm&sup2;)</div>
-        <div class="formula-sub">Stress is measured in N/mm&sup2; (also written as MPa). The symbol is the Greek letter sigma (&sigma;).<br>Rearrangements: &nbsp; Force = Stress &times; Area &nbsp;&nbsp;|&nbsp;&nbsp; Area = Force &divide; Stress</div>
+        <div class="formula">Stress (&sigma;) = <span class="frac"><span class="num">Force (N)</span><span class="den">Area (mm&sup2;)</span></span></div>
+        <div class="formula-sub">Stress is measured in N/mm&sup2; (also written as MPa). The symbol is the Greek letter sigma (&sigma;).<br>Rearrangements: &nbsp; Force = Stress &times; Area &nbsp;&nbsp;|&nbsp;&nbsp; Area = <span class="frac"><span class="num">Force</span><span class="den">Stress</span></span></div>
+      </div>
+
+      <div class="tri-row">
+        <svg viewBox="0 0 130 112" role="img" aria-label="Formula triangle: F on top, sigma and A on the bottom">
+          <polygon points="65,4 126,108 4,108" fill="#f0fdfa" stroke="#0f766e" stroke-width="2.5" stroke-linejoin="round"/>
+          <line x1="33" y1="60" x2="97" y2="60" stroke="#0f766e" stroke-width="2"/>
+          <line x1="65" y1="60" x2="65" y2="108" stroke="#0f766e" stroke-width="2"/>
+          <text x="65" y="50" text-anchor="middle" font-size="24" font-weight="700" fill="#134e4a" font-family="Georgia,serif">F</text>
+          <text x="44" y="94" text-anchor="middle" font-size="22" font-weight="700" fill="#134e4a" font-family="Georgia,serif">&#963;</text>
+          <text x="86" y="94" text-anchor="middle" font-size="22" font-weight="700" fill="#134e4a" font-family="Georgia,serif">A</text>
+        </svg>
+        <p><strong>F&sigma;A formula triangle.</strong> Cover up the quantity you want to find. If the two that are left sit <strong>side by side</strong>, multiply them. If one sits <strong>above</strong> the other, divide the top by the bottom. Cover &sigma; and you see F over A; cover F and you see &sigma; next to A.</p>
       </div>
 
       <p class="notes-p">The <strong>cross-sectional area</strong> is the area of the cut face of the member — perpendicular to the direction of the force. A smaller cross-section experiences <strong>greater stress</strong> for the same force. This is why load-bearing columns and cables are sized carefully.</p>
@@ -317,7 +397,7 @@
       <p class="notes-p">The cross-section shape determines how you calculate the area:</p>
       <ul class="notes-ul">
         <li><strong>Rectangle:</strong> A = width &times; height &nbsp;(mm &times; mm = mm&sup2;)</li>
-        <li><strong>Circle:</strong> A = &pi;r&sup2; = &pi;(d/2)&sup2; &nbsp;&mdash;&nbsp; where d is the diameter in mm</li>
+        <li><strong>Circle:</strong> A = &pi;r&sup2; = <span class="frac"><span class="num">&pi;d&sup2;</span><span class="den">4</span></span> &nbsp;&mdash;&nbsp; where d is the diameter in mm</li>
         <li><strong>Square:</strong> A = side &times; side</li>
       </ul>
 
@@ -327,9 +407,9 @@
       <div class="worked-example">
         <div class="worked-example-title">Worked Example 1 &mdash; Stress in a square bar</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A square bar of 20 mm &times; 20 mm cross-section is subjected to a tensile load of 500 N. Calculate the stress in the bar.</p>
-        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Write the formula:</strong> &sigma; = F &divide; A</div></div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Write the formula:</strong> &sigma; = <span class="frac"><span class="num">F</span><span class="den">A</span></span></div></div>
         <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Calculate area:</strong> A = 20 &times; 20 = 400 mm&sup2;</div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate stress:</strong> &sigma; = 500 &divide; 400 = <strong>1.25 N/mm&sup2;</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate stress:</strong> &sigma; = <span class="frac"><span class="num">500</span><span class="den">400</span></span> = <strong>1.25 N/mm&sup2;</strong></div></div>
       </div>
 
       <div class="worked-example">
@@ -343,11 +423,11 @@
         <div class="worked-example-title">Worked Example 3 &mdash; Minimum wire diameter</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A steel wire supports a load of 8 kN. The stress must not exceed 200 N/mm&sup2;. Find the minimum wire diameter required.</p>
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Convert load:</strong> 8 kN = 8 000 N</div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Find minimum area:</strong> A = F &divide; &sigma; = 8 000 &divide; 200 = 40 mm&sup2;</div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Find diameter from circular area formula:</strong> A = &pi;d&sup2;/4<br>d&sup2; = 4A &divide; &pi; = (4 &times; 40) &divide; &pi; = 50.93<br><strong>d = &radic;50.93 = 7.14 mm</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Find minimum area:</strong> A = <span class="frac"><span class="num">F</span><span class="den">&sigma;</span></span> = <span class="frac"><span class="num">8 000</span><span class="den">200</span></span> = 40 mm&sup2;</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Find diameter from circular area formula:</strong> A = <span class="frac"><span class="num">&pi;d&sup2;</span><span class="den">4</span></span><br>d&sup2; = <span class="frac"><span class="num">4A</span><span class="den">&pi;</span></span> = <span class="frac"><span class="num">4 &times; 40</span><span class="den">&pi;</span></span> = 50.93<br><strong>d = &radic;50.93 = 7.14 mm</strong></div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task3">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Stress calculations</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Show all working. Check units carefully — forces in N, areas in mm&sup2;, stress in N/mm&sup2;.</p>
@@ -387,13 +467,25 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 5: Strain</h1>
+      <h1 class="notes-h1" id="section-5">Section 5: Strain</h1>
 
       <p class="notes-p">Every material deforms slightly when a force is applied to it — it stretches under tension or shortens under compression. This change in length, expressed as a <strong>proportion of the original length</strong>, is called <strong>strain</strong>. Strain tells us how much a material has deformed relative to its size.</p>
 
       <div class="formula-box">
-        <div class="formula">Strain (&epsilon;) = Change in length (&Delta;L) &divide; Original length (L)</div>
-        <div class="formula-sub">Strain has <strong>no units</strong> — it is a dimensionless ratio. The symbol is the Greek letter epsilon (&epsilon;).<br>Both &Delta;L and L must be in the same units before dividing.<br>Rearrangements: &nbsp; &Delta;L = &epsilon; &times; L &nbsp;&nbsp;|&nbsp;&nbsp; L = &Delta;L &divide; &epsilon;</div>
+        <div class="formula">Strain (&epsilon;) = <span class="frac"><span class="num">Change in length (&Delta;L)</span><span class="den">Original length (L)</span></span></div>
+        <div class="formula-sub">Strain has <strong>no units</strong> — it is a dimensionless ratio. The symbol is the Greek letter epsilon (&epsilon;).<br>Both &Delta;L and L must be in the same units before dividing.<br>Rearrangements: &nbsp; &Delta;L = &epsilon; &times; L &nbsp;&nbsp;|&nbsp;&nbsp; L = <span class="frac"><span class="num">&Delta;L</span><span class="den">&epsilon;</span></span></div>
+      </div>
+
+      <div class="tri-row">
+        <svg viewBox="0 0 130 112" role="img" aria-label="Formula triangle: delta L on top, epsilon and L on the bottom">
+          <polygon points="65,4 126,108 4,108" fill="#f0fdfa" stroke="#0f766e" stroke-width="2.5" stroke-linejoin="round"/>
+          <line x1="33" y1="60" x2="97" y2="60" stroke="#0f766e" stroke-width="2"/>
+          <line x1="65" y1="60" x2="65" y2="108" stroke="#0f766e" stroke-width="2"/>
+          <text x="65" y="50" text-anchor="middle" font-size="22" font-weight="700" fill="#134e4a" font-family="Georgia,serif">&#916;L</text>
+          <text x="44" y="94" text-anchor="middle" font-size="22" font-weight="700" fill="#134e4a" font-family="Georgia,serif">&#949;</text>
+          <text x="86" y="94" text-anchor="middle" font-size="22" font-weight="700" fill="#134e4a" font-family="Georgia,serif">L</text>
+        </svg>
+        <p><strong>&Delta;L&epsilon;L formula triangle.</strong> It works exactly like the stress triangle: cover the quantity you want. Cover &epsilon; and you see &Delta;L over L; cover &Delta;L and you see &epsilon; next to L, so multiply.</p>
       </div>
 
       <div class="key-point">Strain is always a very small number — often expressed in scientific notation (e.g. 5 &times; 10<sup>&minus;4</sup>). It has no units because it is a ratio of two lengths.</div>
@@ -407,9 +499,9 @@
       <div class="worked-example">
         <div class="worked-example-title">Worked Example 1 &mdash; Strain in a wire</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A steel wire of length 5 m stretches 2.5 mm when a load is applied. Calculate the strain.</p>
-        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Write the formula:</strong> &epsilon; = &Delta;L &divide; L</div></div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Write the formula:</strong> &epsilon; = <span class="frac"><span class="num">&Delta;L</span><span class="den">L</span></span></div></div>
         <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Convert to consistent units:</strong> L = 5 m = 5 000 mm, &Delta;L = 2.5 mm</div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate strain:</strong> &epsilon; = 2.5 &divide; 5 000 = <strong>0.0005 (= 5 &times; 10<sup>&minus;4</sup>)</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate strain:</strong> &epsilon; = <span class="frac"><span class="num">2.5</span><span class="den">5 000</span></span> = <strong>0.0005 (= 5 &times; 10<sup>&minus;4</sup>)</strong></div></div>
         <div class="step"><div class="step-num">4</div><div class="step-content"><strong>State units:</strong> Strain has no units.</div></div>
       </div>
 
@@ -426,11 +518,11 @@
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A mass of 2 500 kg is hung from a vertical steel bar. The bar has a rectangular cross-section of 75 mm &times; 50 mm and an original length of 0.5 m. The bar stretches by 2.5 mm. Calculate both the stress and the strain. (Use g = 9.81 m/s&sup2;.)</p>
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Find the force:</strong> F = mg = 2 500 &times; 9.81 = 24 525 N</div></div>
         <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Find the area:</strong> A = 75 &times; 50 = 3 750 mm&sup2;</div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate stress:</strong> &sigma; = F &divide; A = 24 525 &divide; 3 750 = <strong>6.54 N/mm&sup2;</strong></div></div>
-        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Calculate strain:</strong> L = 0.5 m = 500 mm, &Delta;L = 2.5 mm<br>&epsilon; = 2.5 &divide; 500 = <strong>0.005</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate stress:</strong> &sigma; = <span class="frac"><span class="num">F</span><span class="den">A</span></span> = <span class="frac"><span class="num">24 525</span><span class="den">3 750</span></span> = <strong>6.54 N/mm&sup2;</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Calculate strain:</strong> L = 0.5 m = 500 mm, &Delta;L = 2.5 mm<br>&epsilon; = <span class="frac"><span class="num">2.5</span><span class="den">500</span></span> = <strong>0.005</strong></div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task4">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Strain calculations</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Show all working. Remember to convert both lengths to the same unit before dividing. State clearly that strain has no units.</p>
@@ -467,13 +559,114 @@
         </div>
       </div>
 
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-6">Section 6: Design Challenges</h1>
+
+      <p class="notes-p">These challenges bring everything together: choosing a material, justifying it against a specification, sizing a part using stress, and checking a prototype using strain. They follow the same shape as an assignment task &mdash; a context, a numbered specification, then design, test and evaluate. Work through each part in order and refer back to the specification by number when you justify or evaluate.</p>
+
+      <h2 class="notes-h2" id="section-6-1">Design Challenge 1: Caf&eacute; sign hanger rods</h2>
+      <div class="assignment" id="assignment-dc1">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Design, test and evaluate</div></div>
+        <div class="assignment-body">
+          <p class="challenge-context">A caf&eacute; on a seafront promenade wants a heavy wooden sign to hang from a bracket above its door. The sign will hang from <strong>two round rods</strong>, each 400 mm long, which will be in <strong>tension</strong>. You have been asked to choose a material for the rods and work out what size they need to be. The rods must meet the following specification:</p>
+        <table class="spec-table">
+          <tr><td><span class="data-badge">i</span></td><td>Each rod must carry a tensile force of <strong>1 200 N</strong>.</td></tr>
+          <tr><td><span class="data-badge">ii</span></td><td>The stress in each rod must not exceed <strong>60 N/mm&sup2;</strong>.</td></tr>
+          <tr><td><span class="data-badge">iii</span></td><td>The rods must survive in salty, damp sea air for at least 10 years without significant corrosion.</td></tr>
+          <tr><td><span class="data-badge">iv</span></td><td>The strain in each rod must not exceed <strong>0.0004</strong>.</td></tr>
+        </table>
+
+          <div class="task-item">
+            <div class="task-q">(a) Select a suitable material for the rods. Justify your choice, referring to specification point iii and at least one other property.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-dc1a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-dc1a" data-placeholder="Material: ... Justification: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Calculate the minimum diameter of rod that meets specification ii. Rods are only available in whole-millimetre diameters &mdash; state which size you would use.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-dc1b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-dc1b" data-placeholder="Minimum area... minimum diameter... size chosen: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) A prototype rod of the size you chose in (b) was tested with the full 1 200 N load and stretched by 0.09 mm. Calculate the strain and state whether specification iv is met.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-dc1c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-dc1c" data-placeholder="Strain = ... Specification iv met? ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(d) Evaluate your design against each specification point in turn. Suggest one improvement or further test you would make before the sign is installed.</div>
+            <div class="answer-label">Evaluation <span class="saved-indicator" id="ind-dc1d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-dc1d" data-placeholder="i: ... ii: ... iii: ... iv: ... Improvement: ..."></div>
+          </div>
+          <button type="button" class="exemplar-thumb" onclick="openLightbox('images/materials-dc1-exemplar.png','Design Challenge 1 exemplar answer')">
+            <img src="images/materials-dc1-exemplar.png" alt="Design Challenge 1 exemplar answer (thumbnail)">
+            <span>&#x1F50D; Try the design yourself first &mdash; then click here to compare</span>
+          </button>
+        </div>
+      </div>
+
+      <h2 class="notes-h2" id="section-6-2">Design Challenge 2: Community garden planter legs</h2>
+      <div class="assignment" id="assignment-dc2">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Design, test and evaluate</div></div>
+        <div class="assignment-body">
+          <p class="challenge-context">A community garden is building raised planters at wheelchair height so that everyone can reach the soil. Each planter stands on <strong>four square legs</strong>, each 600 mm tall, which will be in <strong>compression</strong>. When full of wet soil, the load on each leg is 6 000 N. The legs must meet the following specification:</p>
+        <table class="spec-table">
+          <tr><td><span class="data-badge">i</span></td><td>Each leg must carry a compressive force of <strong>6 000 N</strong>.</td></tr>
+          <tr><td><span class="data-badge">ii</span></td><td>Each leg must have a square cross-section no bigger than <strong>100 mm &times; 100 mm</strong> so it fits the frame.</td></tr>
+          <tr><td><span class="data-badge">iii</span></td><td>The legs must not rot or corrode while standing on damp ground for many years.</td></tr>
+          <tr><td><span class="data-badge">iv</span></td><td>The legs should be made from recycled material wherever possible.</td></tr>
+          <tr><td><span class="data-badge">v</span></td><td>Each leg must not shorten by more than <strong>0.3 mm</strong> under full load.</td></tr>
+        </table>
+
+          <p class="challenge-context">The garden has three materials it could use. The allowable compressive stress is the highest stress each material should be designed to carry.</p>
+          <table class="mat-table">
+            <tr><th>Material</th><th>Allowable compressive stress</th><th>Notes</th></tr>
+            <tr><td>Softwood timber</td><td>7 N/mm&sup2;</td><td>Cheap and easy to cut; rots in damp ground unless treated</td></tr>
+            <tr><td>Recycled plastic lumber (HDPE)</td><td>2 N/mm&sup2;</td><td>Made from 100% recycled plastic; does not rot</td></tr>
+            <tr><td>Glass fibre composite (GRP)</td><td>40 N/mm&sup2;</td><td>Very strong and does not rot; difficult to recycle and expensive</td></tr>
+          </table>
+          <div class="task-item">
+            <div class="task-q">(a) For each of the three materials, calculate the minimum side length of square leg needed to carry the load in specification i.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-dc2a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-dc2a" data-placeholder="Timber: ... Recycled HDPE: ... GRP: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Select the most suitable material. Justify your choice by referring to each of specifications ii, iii and iv.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-dc2b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-dc2b" data-placeholder="Material: ... ii: ... iii: ... iv: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) A 60 mm &times; 60 mm prototype leg made from your chosen material was loaded to 6 000 N and shortened by 0.25 mm. Calculate the stress and the strain in the leg.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-dc2c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-dc2c" data-placeholder="Stress = ... Strain = ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(d) Evaluate the prototype leg against specifications i, ii and v. Describe one change you could make to the leg if it had failed specification v.</div>
+            <div class="answer-label">Evaluation <span class="saved-indicator" id="ind-dc2d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="mat-dc2d" data-placeholder="i: ... ii: ... v: ... If it had failed v: ..."></div>
+          </div>
+          <button type="button" class="exemplar-thumb" onclick="openLightbox('images/materials-dc2-exemplar.png','Design Challenge 2 exemplar answer')">
+            <img src="images/materials-dc2-exemplar.png" alt="Design Challenge 2 exemplar answer (thumbnail)">
+            <span>&#x1F50D; Try the design yourself first &mdash; then click here to compare</span>
+          </button>
+        </div>
+      </div>
+
       <!-- Controls -->
       <div class="controls-bar">
         <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-pdf" id="dl-all-btn" onclick="downloadAllPDF(this)">&#x2B07;&#xFE0F; Download ALL my answers (PDF)</button>
         <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
         <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
       </div>
       <div class="storage-status" id="storage-status">Last saved: never</div>
+
+      <div class="page-nav" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
+        <button class="ctrl-btn ctrl-btn-print" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});">&#x2B06;&#xFE0F; Back to top</button>
+        <a href="index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">&#x2302; Main menu</a>
+        <!-- TODO: point this at the next topic's course-notes.html once confirmed (currently the Mechanisms and Structures menu) -->
+        <a href="../index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">Next section &#x2192;</a>
+      </div>
 
     </div>
     </div>
@@ -505,6 +698,206 @@ document.addEventListener('DOMContentLoaded',function(){
     box.addEventListener('input',ds);
     box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
   });
+});
+</script>
+
+<!-- ═══ Floating buttons, Contents panel, My Name popup, exemplar lightbox ═══ -->
+<button type="button" class="float-btn" id="name-btn" onclick="toggleNamePop()" aria-haspopup="dialog" title="Set your name for PDF downloads">&#x1F464; <span class="lbl" id="name-btn-lbl">My name</span></button>
+<button type="button" class="float-btn" id="toc-btn" onclick="toggleToc()" aria-controls="toc-panel" aria-expanded="false">&#x2630; <span class="lbl">Contents</span></button>
+
+<div class="name-pop" id="name-pop" role="dialog" aria-labelledby="name-pop-h">
+  <h3 id="name-pop-h">Your name</h3>
+  <p>Type it once and it will be added to every PDF you download from this page.</p>
+  <input type="text" id="name-input" maxlength="60" placeholder="First name and surname" autocomplete="off">
+  <div class="row">
+    <button type="button" class="ctrl-btn ctrl-btn-clear" onclick="clearPupilName()">Clear</button>
+    <button type="button" class="ctrl-btn ctrl-btn-pdf" onclick="savePupilName()">Save</button>
+  </div>
+</div>
+
+<div class="toc-backdrop" id="toc-backdrop" onclick="toggleToc(false)"></div>
+<aside class="toc-panel" id="toc-panel" aria-label="Contents">
+  <div class="toc-head">Contents <button type="button" class="toc-close" onclick="toggleToc(false)" aria-label="Close contents">&times;</button></div>
+  <nav class="toc-list" id="toc-list"></nav>
+</aside>
+
+<div class="lightbox" id="lightbox" onclick="closeLightbox()" role="dialog" aria-label="Exemplar answer"><img id="lightbox-img" src="" alt=""></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* ---------- Task panels, in page order (keep in sync if tasks are added/removed/reordered) ---------- */
+var ALL_TASK_PANELS = [
+  { id:'assignment-task1', label:'Task 1 - Material categories and properties' },
+  { id:'assignment-task2', label:'Task 2 - Material selection and justification' },
+  { id:'assignment-task3', label:'Task 3 - Stress calculations' },
+  { id:'assignment-task4', label:'Task 4 - Strain calculations' },
+  { id:'assignment-dc1',   label:'Design Challenge 1 - Cafe sign hanger rods' },
+  { id:'assignment-dc2',   label:'Design Challenge 2 - Community garden planter legs' }
+];
+var NAME_KEY = 'mat-pupil-name';   /* subject-specific so names don't leak between course pages */
+var PAGE_TITLE = 'N5 Materials - Course Notes';
+var SITE_URL = 'engineeringsciencescotland.co.uk';
+
+/* ---------- My name ---------- */
+function getPupilName(){ try { return (localStorage.getItem(NAME_KEY)||'').trim(); } catch(e){ return ''; } }
+function refreshNameBtn(){ var n=getPupilName(); document.getElementById('name-btn-lbl').textContent = n || 'My name'; document.getElementById('name-btn').title = n ? ('Name: '+n+' (click to change)') : 'Set your name for PDF downloads'; }
+function toggleNamePop(force){
+  var pop=document.getElementById('name-pop'); var open = (typeof force==='boolean') ? force : !pop.classList.contains('open');
+  pop.classList.toggle('open', open);
+  if(open){ var i=document.getElementById('name-input'); i.value=getPupilName(); setTimeout(function(){i.focus();},30); }
+}
+function savePupilName(){ var v=document.getElementById('name-input').value.trim(); try{ if(v) localStorage.setItem(NAME_KEY,v); else localStorage.removeItem(NAME_KEY);}catch(e){} refreshNameBtn(); toggleNamePop(false); }
+function clearPupilName(){ try{localStorage.removeItem(NAME_KEY);}catch(e){} document.getElementById('name-input').value=''; refreshNameBtn(); toggleNamePop(false); }
+
+/* ---------- Contents panel + scroll-spy ---------- */
+var tocTargets=[];
+function buildToc(){
+  var list=document.getElementById('toc-list');
+  document.querySelectorAll('.notes-h1[id], .notes-h2[id^="section-6-"]').forEach(function(h){
+    var a=document.createElement('a'); a.href='#'+h.id; a.className='toc-link'+(h.classList.contains('notes-h2')?' sub':'');
+    a.textContent=h.textContent.trim();
+    a.addEventListener('click',function(e){ e.preventDefault(); toggleToc(false); h.scrollIntoView({behavior:'smooth'}); history.replaceState(null,'','#'+h.id); });
+    list.appendChild(a); tocTargets.push({h:h,a:a});
+  });
+}
+function spy(){
+  var cur=null; tocTargets.forEach(function(t){ if(t.h.getBoundingClientRect().top < 140) cur=t; });
+  tocTargets.forEach(function(t){ t.a.classList.toggle('active', t===cur); });
+}
+function toggleToc(force){
+  var p=document.getElementById('toc-panel'); var open=(typeof force==='boolean')?force:!p.classList.contains('open');
+  p.classList.toggle('open',open); document.getElementById('toc-backdrop').classList.toggle('open',open);
+  document.getElementById('toc-btn').setAttribute('aria-expanded',open);
+  if(open){ toggleNamePop(false); spy(); }
+}
+
+/* ---------- Lightbox ---------- */
+function openLightbox(src,alt){ var i=document.getElementById('lightbox-img'); i.src=src; i.alt=alt||''; document.getElementById('lightbox').classList.add('open'); }
+function closeLightbox(){ document.getElementById('lightbox').classList.remove('open'); }
+
+document.addEventListener('keydown',function(e){ if(e.key==='Escape'){ closeLightbox(); toggleToc(false); toggleNamePop(false); } if(e.key==='Enter' && document.activeElement && document.activeElement.id==='name-input'){ savePupilName(); } });
+
+/* ---------- Feedback button (from site.js): stack it at the bottom, Contents above, My Name on top ---------- */
+function placeFeedbackBtn(){
+  var done=false;
+  document.querySelectorAll('body a, body button, body div').forEach(function(el){
+    if(done || el.classList.contains('float-btn')) return;
+    if(!/feedback/i.test(el.textContent||'') || (el.textContent||'').length>40) return;
+    if(getComputedStyle(el).position!=='fixed') return;
+    el.style.setProperty('bottom','24px','important'); el.style.setProperty('right','24px','important');
+    el.style.setProperty('top','auto','important'); done=true;
+  });
+  return done;
+}
+
+/* ---------- PDF helpers ---------- */
+function pdfSafe(t){
+  return (t||'').replace(/[\u2018\u2019]/g,"'").replace(/[\u201C\u201D]/g,'"').replace(/[\u2013\u2014\u2212]/g,'-')
+    .replace(/\u2026/g,'...').replace(/[\u00A0\u202F\u2009]/g,' ').replace(/\u03C3/g,'sigma').replace(/\u03B5/g,'epsilon')
+    .replace(/\u0394/g,'delta ').replace(/\u03C0/g,'pi').replace(/\u221A/g,'sqrt').replace(/\u2248/g,'~').replace(/\u2264/g,'<=').replace(/\u2265/g,'>=')
+    .replace(/[^\x09\x0A\x0D\x20-\x7E\u00A0-\u00FF]/g,'');
+}
+function todayStr(){ return new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'}); }
+function answerParts(box){
+  var parts=[], buf='';
+  function flush(){ if(buf.trim()) parts.push({t:'text',v:buf.replace(/\n{3,}/g,'\n\n').trim()}); buf=''; }
+  (function walk(n){
+    n.childNodes.forEach(function(c){
+      if(c.nodeType===3){ buf+=c.nodeValue; }
+      else if(c.nodeType===1){
+        var tag=c.tagName;
+        if(tag==='IMG'){ flush(); parts.push({t:'img',v:c}); }
+        else if(tag==='BR'){ buf+='\n'; }
+        else { var block=/^(DIV|P|LI|H\d|TR)$/.test(tag); if(block && buf && !/\n$/.test(buf)) buf+='\n'; walk(c); if(block) buf+='\n'; }
+      }
+    });
+  })(box);
+  flush(); return parts;
+}
+function imgData(img){
+  try{ var w=img.naturalWidth, h=img.naturalHeight; if(!w||!h) return null;
+    var c=document.createElement('canvas'); c.width=w; c.height=h; var x=c.getContext('2d');
+    x.fillStyle='#fff'; x.fillRect(0,0,w,h); x.drawImage(img,0,0); return {d:c.toDataURL('image/jpeg',0.9),w:w,h:h};
+  }catch(e){ return null; }
+}
+function PdfWriter(title){
+  var J=window.jspdf.jsPDF; this.doc=new J({unit:'mm',format:'a4'});
+  this.M=18; this.W=210-2*this.M; this.bottom=297-18; this.y=this.M;
+  var d=this.doc, name=getPupilName();
+  d.setFont('helvetica','normal'); d.setFontSize(10); d.setTextColor(15,118,110); d.text('Engineering Science Scotland', this.M, this.y+2);
+  d.setFontSize(9); d.setTextColor(120); d.text(PAGE_TITLE, this.M+this.W, this.y+2, {align:'right'});
+  this.y+=10; d.setFont('helvetica','bold'); d.setFontSize(15); d.setTextColor(20);
+  var tl=d.splitTextToSize(pdfSafe(title), this.W); d.text(tl,this.M,this.y); this.y+=tl.length*6.5+2;
+  d.setFont('helvetica','normal'); d.setFontSize(11); d.setTextColor(40);
+  d.text(name ? ('Name: '+pdfSafe(name)+'        Date: '+todayStr()) : 'Name: ________________________________        Date: ________________', this.M, this.y);
+  this.y+=4; d.setDrawColor(204,251,241); d.setLineWidth(0.8); d.line(this.M,this.y,this.M+this.W,this.y); this.y+=8;
+}
+PdfWriter.prototype.need=function(h){ if(this.y+h>this.bottom){ this.doc.addPage(); this.y=this.M+4; } };
+PdfWriter.prototype.para=function(txt,o){
+  o=o||{}; var d=this.doc; d.setFont('helvetica',o.bold?'bold':(o.italic?'italic':'normal')); d.setFontSize(o.size||11);
+  var c=o.color||[40,40,40]; d.setTextColor(c[0],c[1],c[2]); var lh=(o.size||11)*0.45;
+  var self=this;
+  pdfSafe(txt).split('\n').forEach(function(line){
+    var ls=line.trim()? d.splitTextToSize(line,self.W-(o.indent||0)) : [''];
+    ls.forEach(function(l){ self.need(lh); d.text(l,self.M+(o.indent||0),self.y); self.y+=lh; });
+  });
+  this.y+=(o.after===undefined?2:o.after);
+};
+PdfWriter.prototype.image=function(img){
+  var r=imgData(img); if(!r){ this.para('(an image here could not be included)',{italic:true,color:[150,150,150],indent:4}); return; }
+  var w=Math.min(120,this.W-4), h=w*r.h/r.w; if(h>100){ h=100; w=h*r.w/r.h; }
+  this.need(h+3); this.doc.addImage(r.d,'JPEG',this.M+4,this.y,w,h); this.y+=h+4;
+};
+PdfWriter.prototype.panel=function(panel){
+  var self=this, items=panel.querySelectorAll('.task-item');
+  items.forEach(function(it){
+    var q=it.querySelector('.task-q'), box=it.querySelector('.answer-box'); if(!q||!box) return;
+    self.need(12); self.para(q.textContent.trim(),{bold:true,size:11,after:2});
+    var parts=answerParts(box);
+    if(!parts.length){ self.para('(no answer entered yet)',{italic:true,color:[150,150,150],indent:4,after:5}); return; }
+    parts.forEach(function(p){ if(p.t==='text') self.para(p.v,{indent:4,after:2}); else self.image(p.v); });
+    self.y+=3;
+  });
+};
+PdfWriter.prototype.finish=function(fileTag){
+  var d=this.doc, n=d.getNumberOfPages();
+  for(var i=1;i<=n;i++){ d.setPage(i); d.setFont('helvetica','normal'); d.setFontSize(8); d.setTextColor(150);
+    d.text(SITE_URL,this.M,297-9); d.text('Page '+i+' of '+n,this.M+this.W,297-9,{align:'right'}); }
+  var nm=getPupilName().replace(/[^A-Za-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  d.save('Materials-'+fileTag+(nm?('-'+nm):'')+'.pdf');
+};
+function pdfReady(){ if(window.jspdf && window.jspdf.jsPDF) return true; alert('The PDF tool has not loaded yet. Check you are online, then try again.'); return false; }
+function panelLabel(id){ for(var i=0;i<ALL_TASK_PANELS.length;i++) if(ALL_TASK_PANELS[i].id===id) return ALL_TASK_PANELS[i].label; return 'My answers'; }
+function downloadTaskPDF(id){
+  if(!pdfReady()) return; var panel=document.getElementById(id); if(!panel) return;
+  var w=new PdfWriter(panelLabel(id)); w.panel(panel); w.finish(id.replace('assignment-',''));
+}
+function downloadAllPDF(btn){
+  if(!pdfReady()) return; if(btn) btn.disabled=true;
+  try{
+    var w=new PdfWriter('Materials - all my answers');
+    ALL_TASK_PANELS.forEach(function(t,i){
+      var p=document.getElementById(t.id); if(!p) return;
+      w.need(20); if(i>0) w.y+=3;
+      w.doc.setFillColor(240,253,250); w.doc.rect(w.M,w.y-5,w.W,8,'F');
+      w.para(t.label,{bold:true,size:12,color:[15,118,110],after:4}); w.panel(p);
+    });
+    w.finish('all-answers');
+  } finally { if(btn) btn.disabled=false; }
+}
+
+/* ---------- Init ---------- */
+document.addEventListener('DOMContentLoaded',function(){
+  refreshNameBtn(); buildToc(); spy();
+  window.addEventListener('scroll',spy,{passive:true});
+  ALL_TASK_PANELS.forEach(function(t){
+    var p=document.getElementById(t.id); if(!p) return;
+    var f=document.createElement('div'); f.className='assignment-footer';
+    f.innerHTML='<button type="button" class="ctrl-btn ctrl-btn-pdf">&#x2B07;&#xFE0F; Download my answers (PDF)</button>';
+    f.firstChild.addEventListener('click',function(){ downloadTaskPDF(t.id); });
+    p.appendChild(f);
+  });
+  var tries=0; (function retry(){ if(!placeFeedbackBtn() && ++tries<20) setTimeout(retry,250); })();
 });
 </script>
 
