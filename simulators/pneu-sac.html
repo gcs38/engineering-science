@@ -46,7 +46,7 @@
 </head>
 <body class="flex flex-col h-screen">
 
-    <div class="h-16 bg-[#f0f4f9] z-20 flex items-center justify-between px-4 shrink-0">
+    <div id="topToolbar" class="h-16 bg-[#f0f4f9] z-20 flex items-center justify-between px-4 shrink-0">
         
         <div class="flex items-center gap-2">
             <div class="flex items-center gap-2">
@@ -212,7 +212,7 @@
                     <div class="comp-card" data-type="text"><div class="preview-box border-slate-400 text-slate-600 font-serif pointer-events-none">Aa</div><span class="card-label">Text Note</span></div>
                 </div>
             </div>
-        </div> <button onclick="toggleSidebar()" class="absolute top-1/2 -right-4 w-8 h-8 bg-white border border-orange-200 rounded-full shadow-md flex items-center justify-center text-slate-500 hover:text-orange-900 hover:scale-110 z-50 transform -translate-y-1/2 transition-all focus:outline-none">
+        </div> <button id="btnSidebarToggle" onclick="toggleSidebar()" class="absolute top-1/2 -right-4 w-8 h-8 bg-white border border-orange-200 rounded-full shadow-md flex items-center justify-center text-slate-500 hover:text-orange-900 hover:scale-110 z-50 transform -translate-y-1/2 transition-all focus:outline-none">
             <svg id="sidebarIcon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"/></svg>
         </button>
         
@@ -397,6 +397,7 @@
        const CFG = { grid:5, portR:5, hitR:14, col:{off:'#cbd5e1', on:'#2563eb', sel:'#f59e0b', txt:'#334155'} };
         const view = { x:0, y:0, scale:1 };
         window.showNames = true;
+        const isKiosk = new URLSearchParams(window.location.search).get('kiosk') === 'true';
        let state = { comps:[], pipes:[], sim:false, t:0, sel:null, multiSel:[], boxSel:null, drag:{act:false}, pipe:{act:false,pts:[]}, ms:{x:0,y:0}, anim:0, viewMode: 'symbol', activeTouches: {} };
         let clipboard = null; let historyStack = [], historyIndex = -1; const MAX_HISTORY = 50;
         
@@ -405,6 +406,7 @@
         }
 
         const cvs=document.getElementById('simCanvas'); const ctx=cvs.getContext('2d');
+        function isLessonActive() { return typeof preloadedLesson !== 'undefined' && preloadedLesson && preloadedLesson.trim().length > 10; }
         function resize() { cvs.width = cvs.parentElement.clientWidth; cvs.height = cvs.parentElement.clientHeight; if (typeof draw === 'function') draw(); }
         window.onresize=resize; setTimeout(resize,50);
 
@@ -1306,7 +1308,7 @@
                             if(c.type === 'bleed') { c.capped=!c.capped; break; } 
                             
                             // Allow selecting Restrictors and Reservoirs during sim
-                            if(c.type === 'unidir' || c.type === 'reservoir') {
+                            if(!isLessonActive() && (c.type === 'unidir' || c.type === 'reservoir')) {
                                 state.multiSel = [{type:'c', obj:c}];
                                 state.sel = state.multiSel[0];
                                 updInsp();
@@ -1333,6 +1335,7 @@
             state.ms = p; 
             
             if(raw.button === 1 || raw.button === 2 || e.ctrlKey || e.metaKey) {
+                if (isLessonActive()) return;
                 isPanning = true; startPan = {x:raw.clientX, y:raw.clientY}; cvs.style.cursor='grabbing'; return;
             }
 
@@ -1526,10 +1529,10 @@
         window.addEventListener('mousemove', onMove, {passive: false});
         window.addEventListener('touchmove', onMove, {passive: false});
         window.addEventListener('mouseup', onUp);
-        window.addEventListener('touchend', onUp);
-        window.addEventListener('touchcancel', onUp);
+        cvs.addEventListener('touchcancel', onUp);
         
         cvs.addEventListener('wheel', e => {
+            if (isLessonActive()) return;
             e.preventDefault();
             const zs = e.deltaY > 0 ? 0.9 : 1.1;
             const r = cvs.getBoundingClientRect();
@@ -1849,6 +1852,7 @@ c.rodDia = d.rodDia !== undefined ? d.rodDia : c.rodDia;c.latching = d.latching 
         }
 
         window.addEventListener('keydown', e => {
+            if (isLessonActive()) return;
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
             if(e.key === 'Delete' || e.key === 'Backspace') deleteSelected();
             if(e.key === 'Escape') { state.pipe.act = false; state.sel = null; state.multiSel = []; updInsp(); draw(); }
@@ -1918,7 +1922,8 @@ c.rodDia = d.rodDia !== undefined ? d.rodDia : c.rodDia;c.latching = d.latching 
             draw(); 
         });
 
-        safeBind('btnClear', 'onclick', ()=>{ if(!state.sim) {state.comps=[]; state.pipes=[]; state.multiSel=[]; state.sel=null; recordState(); draw();} });safeBind('btnHome', 'onclick', () => { fitToScreen(); });
+        safeBind('btnClear', 'onclick', ()=>{ if(!state.sim) {state.comps=[]; state.pipes=[]; state.multiSel=[]; state.sel=null; recordState(); draw();} });
+        safeBind('btnHome', 'onclick', () => { fitToScreen(); });
         safeBind('btnZoomIn', 'onclick', () => { view.scale = Math.min(view.scale * 1.1, 5.0); draw(); });
         safeBind('btnZoomOut', 'onclick', () => { view.scale = Math.max(view.scale * 0.9, 0.1); draw(); });
         safeBind('btnToggleLabels', 'onclick', function() {
@@ -2676,35 +2681,29 @@ function renderSidebarIcons() {
     state.viewMode = oldViewMode; // Restore user's current view mode
 }
 
-// === 2. INITIALISATION & AUTO-LOAD (Engineering Science Scotland kiosk embed) ===
+// === 2. INITIALISATION & AUTO-LOAD ===
 window.onload = () => {
     renderSidebarIcons(); // Draw the menu icons first
 
-    if (preloadedLesson && preloadedLesson.trim().length > 10) {
+    if (isLessonActive()) {
         // 1. Load the saved JSON circuit
         loadStateJSON(preloadedLesson);
         recordState();
-
-        // 2. KIOSK MODE: Completely hide the top and side menus
+        
+        // 2. Hide toolbars and lock UI for presentation/lesson mode
+        document.getElementById('topToolbar').style.display = 'none';
         document.getElementById('sidebarContainer').style.display = 'none';
-
-        // Hide the floating orange toggle button
-        const toggleBtn = document.querySelector('button[onclick="toggleSidebar()"]');
-        if (toggleBtn) toggleBtn.style.display = 'none';
-
-        // Hide the top toolbar (using a selector specific to No Pressure Sim's layout)
-        const topToolbar = document.querySelector('.h-16.bg-\\[\\#f0f4f9\\].z-20');
-        if (topToolbar) topToolbar.style.display = 'none';
-
+        document.getElementById('btnSidebarToggle').style.display = 'none';
+        
         // 3. Start the live simulation automatically
         document.getElementById('btnSim').click();
 
-        // 4. Resize and center (no slide animation to wait for)
+        // 4. THE FIX: Wait 350ms for the sidebar sliding animation to finish!
         setTimeout(() => {
             resize();         // Update internal canvas dimensions
             fitToScreen();    // Calculate the perfect centre
-        }, 50);
-
+        }, 350); 
+        
     } else {
         // Normal empty startup
         recordState();
