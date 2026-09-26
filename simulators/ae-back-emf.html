@@ -4004,10 +4004,15 @@ function setupUIBindings(){
     });
 }
 
+function isLessonActive() {
+  return typeof preloadedLesson !== 'undefined' && preloadedLesson && preloadedLesson.trim().length > 10;
+}
+
 function setupCanvasInteractions(){
     cvs.oncontextmenu = e => { e.preventDefault(); return false; };
     // --- MOUSE WHEEL ZOOM FOR CIRCUIT CANVAS ---
     cvs.addEventListener('wheel', e => {
+        if (isLessonActive()) return;
         e.preventDefault();
         const r = cvs.getBoundingClientRect();
         const mx = e.clientX - r.left;
@@ -4042,6 +4047,7 @@ function setupCanvasInteractions(){
         state.ms = p;
 
         if(raw.button === 1 || raw.button === 2 || e.ctrlKey || e.metaKey) {
+            if (isLessonActive()) return;
             isPanning = true;
             startPan = { x: raw.clientX, y: raw.clientY };
             cvs.style.cursor = 'grabbing';
@@ -4313,7 +4319,7 @@ function setupCanvasInteractions(){
     window.addEventListener('touchmove', onMove, {passive: false});
     window.addEventListener('mouseup', onUp);
     window.addEventListener('touchend', onUp);
-    window.addEventListener('touchcancel', onUp);
+    cvs.addEventListener('touchcancel', onUp);
 
     // --- CUSTOM UNIFIED DRAG-AND-DROP WITH GHOSTING FOR PANEL ---
     document.querySelectorAll('.comp-card[data-type]').forEach(el=>{
@@ -4385,6 +4391,7 @@ function setupCanvasInteractions(){
 
 // Global Keyboard Bindings (Deduplicated)
 window.addEventListener('keydown',e=>{
+    if (isLessonActive()) return;
     if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT')return;
     // --- UNDO / REDO INTERCEPT ---
     if ((e.ctrlKey || e.metaKey) && (e.key === 'z' || e.key === 'Z')) {
