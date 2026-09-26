@@ -178,6 +178,10 @@
     .graph-btn:hover { background:#ffedd5; }
     .graph-btn:focus-visible { outline:3px solid #fb923c; outline-offset:2px; }
 
+    /* Task 3 photo strip */
+    .lever-photos { margin:0 0 16px; border-radius:8px; overflow:hidden; border:1px solid var(--gray-200); background:var(--gray-50); aspect-ratio:1900 / 320; }
+    .lever-photos img { display:block; width:100%; height:100%; object-fit:cover; }
+
     @media print {
       .topbar, .sidebar, .footer, .controls-bar, .storage-status { display:none !important; }
       .float-btn, .toc-panel, .name-pop, .lightbox, .assignment-footer, .exemplar-row, .graph-row { display:none !important; }
@@ -211,7 +215,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 25th September 2026 at 15:09</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 26th September 2026 at 08:32</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Structures and Forces</div>
       <h1 class="hero-title">&#x1F3D7;&#xFE0F; Structures and Forces &mdash; Course Notes</h1>
       <p class="hero-sub">Forces, free-body diagrams, levers, moments, beams, reactions and vectors</p>
@@ -405,8 +409,8 @@
             </ul>
           </div>
         </div>
-        <div class="mw-formula">Weight = mass &times; g &nbsp;&nbsp;&nbsp; W = m &times; 9.81</div>
-        <p class="mw-note">On Earth, g = 9.81 N/kg, so every kilogram of mass has a weight of about 9.81 N. For example, a 50 kg crate has a weight of 50 &times; 9.81 = <strong>490.5 N</strong>.</p>
+        <div class="mw-formula">Weight = mass &times; g &nbsp;&nbsp;&nbsp; W = m &times; 9.8</div>
+        <p class="mw-note">On Earth, g = 9.8 m/s&sup2;, so every kilogram of mass has a weight of about 9.8 N. For example, a 50 kg crate has a weight of 50 &times; 9.8 = <strong>490 N</strong>.</p>
         <p class="mw-note">In everyday speech people say &ldquo;I weigh 60 kg&rdquo;, but that is really their <strong>mass</strong>. On a free-body diagram, always draw <strong>weight</strong>, a force in newtons, never mass in kilograms.</p>
       </div>
 
@@ -510,7 +514,10 @@
       <div class="assignment" id="assignment-task3">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Identifying the fulcrum</div></div>
         <div class="assignment-body">
-          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">For each photograph provided (door handle, seesaw, wheelbarrow, fishing rod), identify: (a) where the fulcrum is, (b) where each force acts, and (c) which arrangement it matches — fulcrum in the middle, or fulcrum at one end with the object being moved or the applied force in the middle.</p>
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Examine the photos below to identify: (a) where the fulcrum is, (b) where each force acts, and (c) which arrangement it matches — fulcrum in the middle, or fulcrum at one end with the object being moved or the applied force in the middle.</p>
+          <div class="lever-photos">
+            <img src="images/lever-photos.png" alt="Four levers: a door handle, a seesaw, a wheelbarrow and a fishing rod" data-placeholder-label="Lever photos: door handle, seesaw, wheelbarrow, fishing rod">
+          </div>
           <div class="task-item">
             <div class="task-q">1. Door handle</div>
             <div class="answer-label">Fulcrum, forces, and arrangement <span class="saved-indicator" id="ind-lev1">&#x2713; Saved</span></div>
@@ -1313,6 +1320,17 @@ function getPupilName(){ try { return (localStorage.getItem(SF_NAME_KEY) || '').
 })();
 
 /* ---------- Exemplar thumbnails: placeholder fallback + lightbox ---------- */
+function widePlaceholderSrc(label){
+  const esc = t => String(t).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1900" height="320" viewBox="0 0 1900 320">
+    <rect width="1900" height="320" fill="#f0fdf4"/>
+    <rect x="12" y="12" width="1876" height="296" rx="16" fill="none" stroke="#4ade80" stroke-width="5" stroke-dasharray="22 14"/>
+    <g transform="translate(430 160) rotate(-35)" fill="none" stroke="#16a34a" stroke-width="8" stroke-linejoin="round">
+      <rect x="-80" y="-19" width="130" height="38" rx="5" fill="#bbf7d0"/><polygon points="50,-19 94,0 50,19" fill="#fef3c7"/><polygon points="80,-6 94,0 80,6" fill="#16a34a"/><rect x="-102" y="-19" width="22" height="38" rx="5" fill="#fda4af"/></g>
+    <text x="560" y="150" font-family="Arial, sans-serif" font-size="40" font-weight="700" fill="#166534">${esc(label)}</text>
+    <text x="560" y="200" font-family="Arial, sans-serif" font-size="28" fill="#15803d">Placeholder: drop in the real photo later</text></svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
 function placeholderSrc(label){
   const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="900" height="600" viewBox="0 0 900 600">
@@ -1325,8 +1343,8 @@ function placeholderSrc(label){
   return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
 }
 (function(){
-  document.querySelectorAll('.exemplar-thumb img').forEach(img => {
-    const use = () => { if (!img.dataset.fallback){ img.dataset.fallback = '1'; img.src = placeholderSrc(img.dataset.placeholderLabel || 'Exemplar'); } };
+  document.querySelectorAll('.exemplar-thumb img, .lever-photos img').forEach(img => {
+    const use = () => { if (!img.dataset.fallback){ img.dataset.fallback = '1'; img.src = img.closest('.lever-photos') ? widePlaceholderSrc(img.dataset.placeholderLabel || 'Photo') : placeholderSrc(img.dataset.placeholderLabel || 'Exemplar'); } };
     img.addEventListener('error', use);
     if (img.complete && img.naturalWidth === 0) use();
   });
