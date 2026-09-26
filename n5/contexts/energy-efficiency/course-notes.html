@@ -6,11 +6,11 @@
   <title>Energy and Efficiency — Course Notes — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
-    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 16px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:6px; }
     .back-link:hover { color:var(--teal-800); }
-    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
-    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); scroll-margin-top:100px; }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; scroll-margin-top:100px; }
     .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:16px 0 8px; }
     .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
     .notes-p strong { color:var(--gray-900); }
@@ -67,6 +67,67 @@
     .ctrl-btn-print:hover { background:var(--teal-100); }
     .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
     .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+    /* ── Stacked fractions (no division signs anywhere) ── */
+    .frac { display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; margin:6px 0.6em; line-height:1.3; text-align:center; }
+    .frac > .num { padding:0 0.4em 0.25em; border-bottom:1.5px solid currentColor; }
+    .frac > .den { padding:0.25em 0.4em 0; }
+    /* ── Formula box + formula triangle side by side ── */
+    .formula-row { display:flex; gap:18px; align-items:center; margin:16px 0; }
+    .formula-row .formula-box { flex:1; margin:0; }
+    .formula-tri { width:130px; flex-shrink:0; display:block; }
+    @media (max-width:600px) { .formula-row { flex-direction:column; } .formula-row .formula-box { width:100%; box-sizing:border-box; } }
+    /* ── Task 10 table answer cells ── */
+    .table-answer { min-height:60px; height:60px; padding:8px; vertical-align:top; background:#f8faff!important; outline:none; cursor:text; }
+    .table-answer:focus { box-shadow:inset 0 0 0 2px var(--teal-400); }
+    /* ── Design Challenges ── */
+    .assignment-dc { border-color:var(--teal-800); }
+    .assignment-dc .assignment-header { background:var(--teal-800); }
+    .assignment-dc .notes-h3 { margin-top:14px; }
+    .spec-table { width:100%; border-collapse:collapse; margin:6px 0 16px; font-size:13px; }
+    .spec-table td { padding:7px 8px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; line-height:1.6; }
+    .spec-table td.spec-num { width:34px; padding-right:0; }
+    .data-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:#ccfbf1; color:#115e59; font-size:10.5px; font-weight:700; font-style:italic; }
+    /* ── Per-task PDF strip ── */
+    .pdf-strip { display:flex; justify-content:flex-end; padding:10px 18px; background:var(--gray-50); border-top:1px solid var(--gray-200); }
+    /* ── Floating buttons (Feedback is placed by site.js at bottom:24px) ── */
+    .float-btn { position:fixed; right:24px; width:120px; box-sizing:border-box; padding:12px 14px; font-size:13px; font-weight:700; color:white; border:none; border-radius:999px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 6px 18px rgba(0,0,0,.25); z-index:9998; font-family:inherit; line-height:1.2; transition:background .15s; }
+    .float-btn:focus-visible { outline:3px solid #fde68a; outline-offset:2px; }
+    .float-btn .float-icon { flex-shrink:0; }
+    .float-btn .float-label { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+    #toc-btn { bottom:76px; background:#c2410c; }
+    #toc-btn:hover { background:#9a3412; }
+    #name-btn { bottom:132px; background:#4f46e5; }
+    #name-btn:hover { background:#3730a3; }
+    /* ── Contents slide-out panel ── */
+    .toc-backdrop[hidden], .name-backdrop[hidden] { display:none!important; }
+    .toc-backdrop { position:fixed; inset:0; background:rgba(15,23,42,.35); z-index:10000; }
+    .toc-panel { position:fixed; top:0; right:0; height:100%; width:330px; max-width:88vw; background:white; box-shadow:-8px 0 24px rgba(0,0,0,.18); z-index:10001; display:flex; flex-direction:column; transform:translateX(100%); visibility:hidden; transition:transform .25s ease, visibility 0s linear .25s; }
+    .toc-panel.open { transform:none; visibility:visible; transition:transform .25s ease, visibility 0s linear 0s; }
+    .toc-head { display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:2px solid var(--teal-100); }
+    .toc-head-title { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-800); }
+    .toc-close { background:none; border:none; font-size:26px; line-height:1; color:var(--gray-500); cursor:pointer; padding:2px 8px; border-radius:6px; }
+    .toc-close:hover { background:var(--gray-100); color:var(--gray-900); }
+    .toc-list { list-style:none; margin:0; padding:10px 10px 30px; overflow-y:auto; flex:1; }
+    .toc-list a { display:block; padding:7px 10px; border-radius:7px; font-size:13.5px; color:var(--gray-700); text-decoration:none; line-height:1.4; border-left:3px solid transparent; }
+    .toc-list a:hover { background:var(--teal-50); color:var(--teal-800); }
+    .toc-list li.toc-l2 a { padding-left:26px; font-size:12.5px; color:var(--gray-500); }
+    .toc-list a.active { background:var(--teal-50); color:var(--teal-800); font-weight:700; border-left-color:#c2410c; }
+    /* ── My name popup ── */
+    .name-backdrop { position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:10002; display:flex; align-items:center; justify-content:center; padding:20px; }
+    .name-modal { background:white; border-radius:12px; padding:22px 24px; width:100%; max-width:380px; box-shadow:0 20px 50px rgba(0,0,0,.3); }
+    .name-modal h2 { font-family:"DM Serif Display",serif; font-size:21px; color:var(--teal-800); margin:0 0 6px; }
+    .name-modal p { font-size:13px; color:var(--gray-600); line-height:1.6; margin:0 0 12px; }
+    .name-modal input { width:100%; box-sizing:border-box; padding:10px 12px; font-size:15px; border:2px solid #c7d7f5; border-radius:8px; outline:none; font-family:inherit; }
+    .name-modal input:focus { border-color:#4f46e5; box-shadow:0 0 0 3px rgba(79,70,229,.15); }
+    .name-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:14px; flex-wrap:wrap; }
+    .name-actions button { padding:8px 14px; border-radius:7px; font-size:13px; font-weight:600; cursor:pointer; border:none; font-family:inherit; }
+    .name-btn-save { background:#4f46e5; color:white; }
+    .name-btn-save:hover { background:#3730a3; }
+    .name-btn-cancel { background:var(--gray-100); color:var(--gray-700); }
+    .name-btn-clear { background:#fef2f2; color:#ef4444; margin-right:auto; }
+    .name-note { font-size:11px!important; color:var(--gray-400)!important; margin:12px 0 0!important; }
+    @media (prefers-reduced-motion: reduce) { .toc-panel, .toc-panel.open { transition:none; } html { scroll-behavior:auto; } }
+    @media print { .float-btn,.toc-panel,.toc-backdrop,.name-backdrop,.pdf-strip,.page-nav{display:none!important;} .assignment{break-inside:auto;} }
     @media print { .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator{display:none!important;} .layout{display:block!important;} .main{margin:0!important;padding:0!important;} .answer-box{border:1.5px solid #94a3b8!important;background:white!important;} }
   </style>
 </head>
@@ -92,10 +153,10 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 10 September 2026</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 26 September 2026, 11:31</div>
       <div class="hero-label">National 5 &middot; Engineering Contexts &rsaquo; Energy and Efficiency</div>
       <h1 class="hero-title">&#x26A1; Energy and Efficiency &mdash; Course Notes</h1>
-      <p class="hero-sub">Forms of energy, energy calculations, efficiency, energy audits and power</p>
+      <p class="hero-sub">Forms of energy, energy calculations, efficiency, energy audits, power and design challenges</p>
       <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../index.html">Engineering Contexts</a> &rsaquo; <a href="index.html">Energy and Efficiency</a> &rsaquo; <span>Course notes</span></div>
     </div>
     <div class="content">
@@ -103,7 +164,7 @@
       <a href="index.html" class="back-link">&larr; Back to Energy and Efficiency</a>
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 1: Introduction to Energy</h1>
+      <h1 class="notes-h1" id="section-1">Section 1: Introduction to Energy</h1>
 
       <p class="notes-p">In engineering, <strong>energy</strong> is the capacity of a system to make something happen. It is measured in <strong>Joules (J)</strong>. Energy cannot be created or destroyed — only transferred or transformed from one form to another. This is the <strong>Law of Conservation of Energy</strong>.</p>
 
@@ -134,7 +195,7 @@
         <li><strong>Nuclear fuels</strong> (uranium) — energy from splitting atoms (fission). Very high energy density but produces radioactive waste.</li>
       </ul>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task1">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Identifying forms of energy</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -168,10 +229,10 @@
             <div class="task-q">3. A hydroelectric power station has water in a reservoir (A), water flowing through a pipe called a penstock (B), a turbine (C) and a generator (D). Name the form of energy at each point — click each yellow box to type your answer.</div>
             <div style="position:relative;display:block;width:88%;max-width:750px;margin:14px auto;">
               <img src="images/energy-hydro-flow.png" alt="Hydroelectric system: identify energy forms at points A, B, C and D" style="width:100%;display:block;border-radius:8px;">
-              <div contenteditable="true" data-key="en-e1g-a" data-placeholder="Type energy form..." style="position:absolute;background:#fffbeb;border:2px solid #f97316;border-radius:6px;padding:4px 8px;font-size:13px;font-weight:600;color:#1e293b;min-height:32px;cursor:text;outline:none;box-shadow:0 1px 4px rgba(0,0,0,0.15);left:28.76%;top:22.79%;width:20.58%;min-height:35px;" title="Point A: click to type"></div>
-              <div contenteditable="true" data-key="en-e1g-b" data-placeholder="Type energy form..." style="position:absolute;background:#fffbeb;border:2px solid #f97316;border-radius:6px;padding:4px 8px;font-size:13px;font-weight:600;color:#1e293b;min-height:32px;cursor:text;outline:none;box-shadow:0 1px 4px rgba(0,0,0,0.15);left:75.28%;top:24.61%;width:21.49%;min-height:35px;" title="Point B: click to type"></div>
-              <div contenteditable="true" data-key="en-e1g-c" data-placeholder="Type energy form..." style="position:absolute;background:#fffbeb;border:2px solid #f97316;border-radius:6px;padding:4px 8px;font-size:13px;font-weight:600;color:#1e293b;min-height:32px;cursor:text;outline:none;box-shadow:0 1px 4px rgba(0,0,0,0.15);left:29.76%;top:58.59%;width:19.65%;min-height:35px;" title="Point C: click to type"></div>
-              <div contenteditable="true" data-key="en-e1g-d" data-placeholder="Type energy form..." style="position:absolute;background:#fffbeb;border:2px solid #f97316;border-radius:6px;padding:4px 8px;font-size:13px;font-weight:600;color:#1e293b;min-height:32px;cursor:text;outline:none;box-shadow:0 1px 4px rgba(0,0,0,0.15);left:78.69%;top:58.59%;width:20.15%;min-height:35px;" title="Point D: click to type"></div>
+              <div contenteditable="true" data-key="en-e1g-a" data-pdf-label="Point A" data-placeholder="Type energy form..." style="position:absolute;background:#fffbeb;border:2px solid #f97316;border-radius:6px;padding:4px 8px;font-size:13px;font-weight:600;color:#1e293b;min-height:32px;cursor:text;outline:none;box-shadow:0 1px 4px rgba(0,0,0,0.15);left:28.76%;top:22.79%;width:20.58%;min-height:35px;" title="Point A: click to type"></div>
+              <div contenteditable="true" data-key="en-e1g-b" data-pdf-label="Point B" data-placeholder="Type energy form..." style="position:absolute;background:#fffbeb;border:2px solid #f97316;border-radius:6px;padding:4px 8px;font-size:13px;font-weight:600;color:#1e293b;min-height:32px;cursor:text;outline:none;box-shadow:0 1px 4px rgba(0,0,0,0.15);left:75.28%;top:24.61%;width:21.49%;min-height:35px;" title="Point B: click to type"></div>
+              <div contenteditable="true" data-key="en-e1g-c" data-pdf-label="Point C" data-placeholder="Type energy form..." style="position:absolute;background:#fffbeb;border:2px solid #f97316;border-radius:6px;padding:4px 8px;font-size:13px;font-weight:600;color:#1e293b;min-height:32px;cursor:text;outline:none;box-shadow:0 1px 4px rgba(0,0,0,0.15);left:29.76%;top:58.59%;width:19.65%;min-height:35px;" title="Point C: click to type"></div>
+              <div contenteditable="true" data-key="en-e1g-d" data-pdf-label="Point D" data-placeholder="Type energy form..." style="position:absolute;background:#fffbeb;border:2px solid #f97316;border-radius:6px;padding:4px 8px;font-size:13px;font-weight:600;color:#1e293b;min-height:32px;cursor:text;outline:none;box-shadow:0 1px 4px rgba(0,0,0,0.15);left:78.69%;top:58.59%;width:20.15%;min-height:35px;" title="Point D: click to type"></div>
               </div>
             <div class="answer-label" style="margin-top:8px;">Answers saved automatically as you type</div>
           </div>
@@ -181,7 +242,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 2: Work Done (E<sub>w</sub>)</h1>
+      <h1 class="notes-h1" id="section-2">Section 2: Work Done (E<sub>w</sub>)</h1>
 
       <p class="notes-p">Work is done when a force moves an object. The amount of work depends on the size of the force and the distance moved. Work is measured in <strong>Joules (J)</strong>.</p>
 
@@ -189,9 +250,21 @@
         <img src="images/energy-workdone.png" alt="Diagram showing force F pushing a car over distance d" style="width:80%;max-width:688px;display:block;margin:12px auto;border-radius:8px;">
       </div>
 
+      <div class="formula-row">
       <div class="formula-box">
         <div class="formula">E<sub>w</sub> = F &times; d</div>
         <div class="formula-sub">E<sub>w</sub> = work done (J) &nbsp;&nbsp; F = force (N) &nbsp;&nbsp; d = distance (m)</div>
+        <div class="formula-sub">Rearranged: F = <span class="frac"><span class="num">E<sub>w</sub></span><span class="den">d</span></span> &nbsp;&nbsp; d = <span class="frac"><span class="num">E<sub>w</sub></span><span class="den">F</span></span></div>
+      </div>
+        <svg class="formula-tri" viewBox="0 0 140 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Formula triangle: E w on top, F and d on the bottom">
+          <polygon points="70,6 134,118 6,118" style="fill:#f0fdfa;stroke:#0f766e;stroke-width:2.5;stroke-linejoin:round;"/>
+          <line x1="33" y1="70" x2="107" y2="70" style="stroke:#0f766e;stroke-width:2;"/>
+          <line x1="70" y1="70" x2="70" y2="118" style="stroke:#0f766e;stroke-width:2;"/>
+          <text x="70" y="60" text-anchor="middle" style="font:700 22px Arial,sans-serif;fill:#134e4a;">E<tspan dy="5" style="font-size:14px;">w</tspan></text>
+          <text x="46" y="104" text-anchor="middle" style="font:700 22px Arial,sans-serif;fill:#134e4a;">F</text>
+          <text x="94" y="104" text-anchor="middle" style="font:700 22px Arial,sans-serif;fill:#134e4a;">d</text>
+          <text x="70" y="140" text-anchor="middle" style="font:11px Arial,sans-serif;fill:#64748b;">Cover the one you need</text>
+        </svg>
       </div>
 
       <div class="worked-example">
@@ -202,7 +275,7 @@
         <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Solve:</strong> E<sub>w</sub> = 6000 &times; 25 = <strong>150 000 J = 150 kJ</strong></div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task2">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Work done calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -239,7 +312,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 3: Potential Energy (E<sub>p</sub>)</h1>
+      <h1 class="notes-h1" id="section-3">Section 3: Potential Energy (E<sub>p</sub>)</h1>
 
       <p class="notes-p"><strong>Potential energy</strong> is the energy stored in an object due to its height above the ground. When work is done to lift an object, that energy is stored as potential energy.</p>
 
@@ -258,7 +331,7 @@
         <div class="step"><div class="step-num">1</div><div class="step-content">E<sub>p</sub> = m &times; g &times; h = 100 &times; 9.8 &times; 20 = <strong>19 600 J</strong></div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task3">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Potential energy calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -287,7 +360,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 4: Kinetic Energy (E<sub>k</sub>)</h1>
+      <h1 class="notes-h1" id="section-4">Section 4: Kinetic Energy (E<sub>k</sub>)</h1>
 
       <p class="notes-p"><strong>Kinetic energy</strong> is the energy of movement. Any moving object has kinetic energy. It depends on two factors: the mass of the object and its velocity.</p>
 
@@ -307,7 +380,7 @@
         <div class="step"><div class="step-num">2</div><div class="step-content">= &frac12; &times; 90 &times; 16 = <strong>720 J</strong></div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task4">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Kinetic energy calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -336,7 +409,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 5: Electrical Energy (E<sub>e</sub>)</h1>
+      <h1 class="notes-h1" id="section-5">Section 5: Electrical Energy (E<sub>e</sub>)</h1>
 
       <p class="notes-p"><strong>Electrical energy</strong> is one of the most useful forms of energy because it can be transported easily along cables and converted into almost any other form.</p>
 
@@ -347,7 +420,7 @@
         <img src="images/energy-electricity-generation.png" alt="Electricity generation: Burn fuel → Heat water → Steam spins turbine → Generator → Electricity to grid" style="width:80%;max-width:688px;display:block;margin:12px auto;border-radius:8px;">
       </div>
 
-      <p class="notes-p">This process is used with coal, gas, oil and nuclear fuel. To reduce climate change, we want to use renewable sources — major sources such as wind, solar and hydro power generator power in different ways but do it without the pollution caused by burning fossil fuels.</p>
+      <p class="notes-p">This process is used with coal, gas, oil and nuclear fuel. To reduce climate change, we want to use renewable sources — major sources such as wind, solar and hydro power generate electricity in different ways but do it without the pollution caused by burning fossil fuels.</p>
 
       <div class="formula-box">
         <div class="formula">E<sub>e</sub> = V &times; I &times; t</div>
@@ -361,7 +434,7 @@
         <div class="step"><div class="step-num">2</div><div class="step-content">E<sub>e</sub> = V &times; I &times; t = 230 &times; 5 &times; 300 = <strong>345 000 J = 345 kJ</strong></div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task5">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Electrical energy calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -390,7 +463,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 6: Heat Energy (E<sub>h</sub>)</h1>
+      <h1 class="notes-h1" id="section-6">Section 6: Heat Energy (E<sub>h</sub>)</h1>
 
       <p class="notes-p"><strong>Heat energy</strong> (thermal energy) is the energy transferred to a body that results in a change in temperature. The amount of heat energy needed depends on the mass of the material, the temperature rise required, and the <strong>specific heat capacity</strong> of the material — a fixed property of each material.</p>
 
@@ -408,7 +481,7 @@
         <div class="step"><div class="step-num">2</div><div class="step-content">E<sub>h</sub> = m &times; c &times; &Delta;T = 200 &times; 4180 &times; 32 = <strong>26 752 000 J = 26.75 MJ</strong></div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task6">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Heat energy calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -437,7 +510,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 7: Energy Transfers and Energy Audits</h1>
+      <h1 class="notes-h1" id="section-7">Section 7: Energy Transfers and Energy Audits</h1>
 
       <p class="notes-p">At every stage in a system, energy is transferred from one body to another or transformed into a different type of energy. In an ideal system, all energy would be converted to the useful output form — but in practice, some is always lost, usually as heat.</p>
 
@@ -469,7 +542,7 @@
         <div class="diagram-placeholder-sub">Add this file to the images/ folder to display it here.</div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task7">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Energy transfers and audits</div></div>
         <div class="assignment-body">
 
@@ -482,7 +555,7 @@
                 <!-- Input box -->
                 <rect x="2" y="20" width="160" height="70" rx="5" fill="#f8faff" stroke="#c7d7f5" stroke-width="1.5"/>
                 <text x="82" y="36" text-anchor="middle" font-size="10" fill="#94a3b8">Input energy:</text>
-                <foreignObject x="6" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7b-in" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
+                <foreignObject x="6" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7b-in" data-pdf-label="Input energy" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
                 <!-- Arrow in -->
                 <line x1="162" y1="55" x2="182" y2="55" stroke="#64748b" stroke-width="2"/>
                 <polygon points="176,50 187,55 176,60" fill="#64748b"/>
@@ -496,14 +569,14 @@
                 <!-- Output box -->
                 <rect x="398" y="20" width="160" height="70" rx="5" fill="#f8faff" stroke="#c7d7f5" stroke-width="1.5"/>
                 <text x="478" y="36" text-anchor="middle" font-size="10" fill="#94a3b8">Useful output:</text>
-                <foreignObject x="402" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7b-out" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
+                <foreignObject x="402" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7b-out" data-pdf-label="Useful output" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
                 <!-- Arrow down from process box -->
                 <line x1="260" y1="100" x2="260" y2="128" stroke="#f97316" stroke-width="2"/>
                 <polygon points="255,122 260,133 265,122" fill="#f97316"/>
                 <!-- Wasted box — same height as side boxes (70), centred under process -->
                 <rect x="180" y="133" width="160" height="70" rx="5" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
                 <text x="260" y="150" text-anchor="middle" font-size="10" fill="#f97316">Wasted energy:</text>
-                <foreignObject x="184" y="157" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7b-waste" style="font-size:12px;color:#c2410c;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
+                <foreignObject x="184" y="157" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7b-waste" data-pdf-label="Wasted energy" style="font-size:12px;color:#c2410c;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
               </svg>
             </div>
 
@@ -513,7 +586,7 @@
                 <!-- Input box -->
                 <rect x="2" y="20" width="160" height="70" rx="5" fill="#f8faff" stroke="#c7d7f5" stroke-width="1.5"/>
                 <text x="82" y="36" text-anchor="middle" font-size="10" fill="#94a3b8">Input energy:</text>
-                <foreignObject x="6" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7c-in" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
+                <foreignObject x="6" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7c-in" data-pdf-label="Input energy" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
                 <!-- Arrow in -->
                 <line x1="162" y1="55" x2="182" y2="55" stroke="#64748b" stroke-width="2"/>
                 <polygon points="176,50 187,55 176,60" fill="#64748b"/>
@@ -527,14 +600,14 @@
                 <!-- Output box -->
                 <rect x="398" y="20" width="160" height="70" rx="5" fill="#f8faff" stroke="#c7d7f5" stroke-width="1.5"/>
                 <text x="478" y="36" text-anchor="middle" font-size="10" fill="#94a3b8">Useful output:</text>
-                <foreignObject x="402" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7c-out" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
+                <foreignObject x="402" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7c-out" data-pdf-label="Useful output" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
                 <!-- Arrow down from process box -->
                 <line x1="260" y1="100" x2="260" y2="128" stroke="#f97316" stroke-width="2"/>
                 <polygon points="255,122 260,133 265,122" fill="#f97316"/>
                 <!-- Wasted box — same height as side boxes (70), centred under process -->
                 <rect x="180" y="133" width="160" height="70" rx="5" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
                 <text x="260" y="150" text-anchor="middle" font-size="10" fill="#f97316">Wasted energy:</text>
-                <foreignObject x="184" y="157" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7c-waste" style="font-size:12px;color:#c2410c;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
+                <foreignObject x="184" y="157" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7c-waste" data-pdf-label="Wasted energy" style="font-size:12px;color:#c2410c;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
               </svg>
             </div>
 
@@ -544,7 +617,7 @@
                 <!-- Input box -->
                 <rect x="2" y="20" width="160" height="70" rx="5" fill="#f8faff" stroke="#c7d7f5" stroke-width="1.5"/>
                 <text x="82" y="36" text-anchor="middle" font-size="10" fill="#94a3b8">Input energy:</text>
-                <foreignObject x="6" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7a-in" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
+                <foreignObject x="6" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7a-in" data-pdf-label="Input energy" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
                 <!-- Arrow in -->
                 <line x1="162" y1="55" x2="182" y2="55" stroke="#64748b" stroke-width="2"/>
                 <polygon points="176,50 187,55 176,60" fill="#64748b"/>
@@ -558,14 +631,14 @@
                 <!-- Output box -->
                 <rect x="398" y="20" width="160" height="70" rx="5" fill="#f8faff" stroke="#c7d7f5" stroke-width="1.5"/>
                 <text x="478" y="36" text-anchor="middle" font-size="10" fill="#94a3b8">Useful output:</text>
-                <foreignObject x="402" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7a-out" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
+                <foreignObject x="402" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7a-out" data-pdf-label="Useful output" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
                 <!-- Arrow down from process box -->
                 <line x1="260" y1="100" x2="260" y2="128" stroke="#f97316" stroke-width="2"/>
                 <polygon points="255,122 260,133 265,122" fill="#f97316"/>
                 <!-- Wasted box — same height as side boxes (70), centred under process -->
                 <rect x="180" y="133" width="160" height="70" rx="5" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
                 <text x="260" y="150" text-anchor="middle" font-size="10" fill="#f97316">Wasted energy:</text>
-                <foreignObject x="184" y="157" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7a-waste" style="font-size:12px;color:#c2410c;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
+                <foreignObject x="184" y="157" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7a-waste" data-pdf-label="Wasted energy" style="font-size:12px;color:#c2410c;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
               </svg>
             </div>
 
@@ -575,7 +648,7 @@
                 <!-- Input box -->
                 <rect x="2" y="20" width="160" height="70" rx="5" fill="#f8faff" stroke="#c7d7f5" stroke-width="1.5"/>
                 <text x="82" y="36" text-anchor="middle" font-size="10" fill="#94a3b8">Input energy:</text>
-                <foreignObject x="6" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7d-in" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
+                <foreignObject x="6" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7d-in" data-pdf-label="Input energy" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
                 <!-- Arrow in -->
                 <line x1="162" y1="55" x2="182" y2="55" stroke="#64748b" stroke-width="2"/>
                 <polygon points="176,50 187,55 176,60" fill="#64748b"/>
@@ -590,14 +663,14 @@
                 <!-- Output box -->
                 <rect x="398" y="20" width="160" height="70" rx="5" fill="#f8faff" stroke="#c7d7f5" stroke-width="1.5"/>
                 <text x="478" y="36" text-anchor="middle" font-size="10" fill="#94a3b8">Useful output:</text>
-                <foreignObject x="402" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7d-out" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
+                <foreignObject x="402" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7d-out" data-pdf-label="Useful output" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
                 <!-- Arrow down from process box -->
                 <line x1="260" y1="100" x2="260" y2="128" stroke="#f97316" stroke-width="2"/>
                 <polygon points="255,122 260,133 265,122" fill="#f97316"/>
                 <!-- Wasted box — same height as side boxes (70), centred under process -->
                 <rect x="180" y="133" width="160" height="70" rx="5" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
                 <text x="260" y="150" text-anchor="middle" font-size="10" fill="#f97316">Wasted energy:</text>
-                <foreignObject x="184" y="157" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7d-waste" style="font-size:12px;color:#c2410c;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
+                <foreignObject x="184" y="157" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-e7d-waste" data-pdf-label="Wasted energy" style="font-size:12px;color:#c2410c;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
               </svg>
             </div>
           </div>
@@ -614,23 +687,23 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 8: Efficiency</h1>
+      <h1 class="notes-h1" id="section-8">Section 8: Efficiency</h1>
 
       <p class="notes-p">Efficiency is a measure of how much of the input energy is converted to <strong>useful</strong> output energy. It is always less than 100% because some energy is always lost (usually as heat). Efficiency can be calculated using energy values or power values.</p>
 
       <div class="formula-box">
-        <div class="formula">&eta; = <span style="display:inline-block; vertical-align:middle; text-align:center; margin:0 4px;"><span style="display:block; border-bottom:2px solid var(--teal-800); padding:0 6px 2px;">E<sub>out</sub></span><span style="display:block; padding:2px 6px 0;">E<sub>in</sub></span></span> &times; 100%</div>
-        <div class="formula-sub">Also valid: &eta; = <span style="display:inline-block; vertical-align:middle; text-align:center; margin:0 2px;"><span style="display:block; border-bottom:1.5px solid var(--gray-400); padding:0 4px 1px;">P<sub>out</sub></span><span style="display:block; padding:1px 4px 0;">P<sub>in</sub></span></span> &times; 100% &nbsp;&nbsp;&nbsp; &eta; (pronounced &ldquo;EE-ta&rdquo;) = efficiency (%) &nbsp;&nbsp; E = energy (J) &nbsp;&nbsp; P = power (W)</div>
+        <div class="formula">&eta; = <span class="frac"><span class="num">E<sub>out</sub></span><span class="den">E<sub>in</sub></span></span> &times; 100%</div>
+        <div class="formula-sub">Also valid: &eta; = <span class="frac"><span class="num">P<sub>out</sub></span><span class="den">P<sub>in</sub></span></span> &times; 100% &nbsp;&nbsp;&nbsp; &eta; (pronounced &ldquo;EE-ta&rdquo;) = efficiency (%) &nbsp;&nbsp; E = energy (J) &nbsp;&nbsp; P = power (W)</div>
       </div>
 
       <div class="worked-example">
         <div class="worked-example-title">Worked Example &mdash; Efficiency</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A motor receives 500 J of electrical energy and produces 375 J of mechanical energy. Calculate its efficiency.</p>
-        <div class="step"><div class="step-num">1</div><div class="step-content">&eta; = (E<sub>out</sub> &divide; E<sub>in</sub>) &times; 100 = (375 &divide; 500) &times; 100 = <strong>75%</strong></div></div>
+        <div class="step"><div class="step-num">1</div><div class="step-content">&eta; = <span class="frac"><span class="num">E<sub>out</sub></span><span class="den">E<sub>in</sub></span></span> &times; 100 = <span class="frac"><span class="num">375</span><span class="den">500</span></span> &times; 100 = <strong>75%</strong></div></div>
         <div class="step"><div class="step-num">2</div><div class="step-content">The remaining 25% (125 J) is lost as heat due to friction and resistance in the motor.</div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task8">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; Efficiency calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -669,23 +742,35 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 9: Power</h1>
+      <h1 class="notes-h1" id="section-9">Section 9: Power</h1>
 
       <p class="notes-p"><strong>Power</strong> is the rate at which energy is transferred — how quickly energy is used or produced. It is measured in <strong>Watts (W)</strong>, named after the Scottish engineer James Watt. 1 W = 1 J per second.</p>
 
+      <div class="formula-row">
       <div class="formula-box">
-        <div class="formula">P = E &divide; t</div>
+        <div class="formula">P = <span class="frac"><span class="num">E</span><span class="den">t</span></span></div>
         <div class="formula-sub">P = power (W) &nbsp;&nbsp; E = energy (J) &nbsp;&nbsp; t = time (s)</div>
+        <div class="formula-sub">Rearranged: E = P &times; t &nbsp;&nbsp; t = <span class="frac"><span class="num">E</span><span class="den">P</span></span></div>
+      </div>
+        <svg class="formula-tri" viewBox="0 0 140 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Formula triangle: E on top, P and t on the bottom">
+          <polygon points="70,6 134,118 6,118" style="fill:#f0fdfa;stroke:#0f766e;stroke-width:2.5;stroke-linejoin:round;"/>
+          <line x1="33" y1="70" x2="107" y2="70" style="stroke:#0f766e;stroke-width:2;"/>
+          <line x1="70" y1="70" x2="70" y2="118" style="stroke:#0f766e;stroke-width:2;"/>
+          <text x="70" y="60" text-anchor="middle" style="font:700 22px Arial,sans-serif;fill:#134e4a;">E</text>
+          <text x="46" y="104" text-anchor="middle" style="font:700 22px Arial,sans-serif;fill:#134e4a;">P</text>
+          <text x="94" y="104" text-anchor="middle" style="font:700 22px Arial,sans-serif;fill:#134e4a;">t</text>
+          <text x="70" y="140" text-anchor="middle" style="font:11px Arial,sans-serif;fill:#64748b;">Cover the one you need</text>
+        </svg>
       </div>
 
       <div class="worked-example">
         <div class="worked-example-title">Worked Example &mdash; Power</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">An electric light bulb uses 60 kJ of energy in 10 minutes. What is its power rating?</p>
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Convert:</strong> E = 60 000 J, t = 10 &times; 60 = 600 s</div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content">P = E &divide; t = 60 000 &divide; 600 = <strong>100 W</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">P = <span class="frac"><span class="num">E</span><span class="den">t</span></span> = <span class="frac"><span class="num">60 000</span><span class="den">600</span></span> = <strong>100 W</strong></div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task9">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 9 &mdash; Power calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -699,7 +784,7 @@
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e9a" data-placeholder="Show working here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">3. A car stereo operates at 15 W. During a 10 minute journey it draws energy from the battery. Calculate the power rating and total energy used.</div>
+            <div class="task-q">3. A car stereo operates at 15 W. During a 10 minute journey it draws energy from the battery. Calculate the total energy used.</div>
             <div class="answer-label">Working <span class="saved-indicator" id="ind-e9b">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="en-e9b" data-placeholder="Show working here..."></div>
           </div>
@@ -724,7 +809,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 10: Renewable and Non-Renewable Energy</h1>
+      <h1 class="notes-h1" id="section-10">Section 10: Renewable and Non-Renewable Energy</h1>
 
       <p class="notes-p">In the context of engineering, understanding <strong>where energy comes from</strong> is important for designing sustainable systems.</p>
 
@@ -744,25 +829,241 @@
         <div class="diagram-placeholder-sub">Add this file to the images/ folder to display it here.</div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task10">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 10 &mdash; Renewable energy sources</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <div class="task-q">Research each renewable energy source below. Complete the table to show how each one works and its main limitations. Use the internet, textbooks or the Energy and Efficiency course notes to help you.</div>
+            <div class="task-q">1. Research each renewable energy source below. Complete the table to show how each one works and its main limitations. Use the internet, textbooks or the Energy and Efficiency course notes to help you.</div>
             <table class="data-table">
               <tr><th style="width:20%;">Renewable source</th><th style="width:40%;">How it works</th><th style="width:40%;">Limitations</th></tr>
-              <tr><td style="font-weight:600;vertical-align:top;">Wind</td><td contenteditable="true" style="min-height:60px;padding:8px;vertical-align:top;"></td><td contenteditable="true" style="min-height:60px;padding:8px;vertical-align:top;"></td></tr>
-              <tr><td style="font-weight:600;vertical-align:top;">Solar</td><td contenteditable="true" style="min-height:60px;padding:8px;vertical-align:top;"></td><td contenteditable="true" style="min-height:60px;padding:8px;vertical-align:top;"></td></tr>
-              <tr><td style="font-weight:600;vertical-align:top;">Hydropower</td><td contenteditable="true" style="min-height:60px;padding:8px;vertical-align:top;"></td><td contenteditable="true" style="min-height:60px;padding:8px;vertical-align:top;"></td></tr>
-              <tr><td style="font-weight:600;vertical-align:top;">Wave</td><td contenteditable="true" style="min-height:60px;padding:8px;vertical-align:top;"></td><td contenteditable="true" style="min-height:60px;padding:8px;vertical-align:top;"></td></tr>
-              <tr><td style="font-weight:600;vertical-align:top;">Tidal</td><td contenteditable="true" style="min-height:60px;padding:8px;vertical-align:top;"></td><td contenteditable="true" style="min-height:60px;padding:8px;vertical-align:top;"></td></tr>
-              <tr><td style="font-weight:600;vertical-align:top;">Geothermal</td><td contenteditable="true" style="min-height:60px;padding:8px;vertical-align:top;"></td><td contenteditable="true" style="min-height:60px;padding:8px;vertical-align:top;"></td></tr>
+              <tr><td style="font-weight:600;vertical-align:top;">Wind</td><td class="table-answer" contenteditable="true" data-key="en-e10-wind-how" data-pdf-label="Wind: how it works"></td><td class="table-answer" contenteditable="true" data-key="en-e10-wind-lim" data-pdf-label="Wind: limitations"></td></tr>
+              <tr><td style="font-weight:600;vertical-align:top;">Solar</td><td class="table-answer" contenteditable="true" data-key="en-e10-solar-how" data-pdf-label="Solar: how it works"></td><td class="table-answer" contenteditable="true" data-key="en-e10-solar-lim" data-pdf-label="Solar: limitations"></td></tr>
+              <tr><td style="font-weight:600;vertical-align:top;">Hydropower</td><td class="table-answer" contenteditable="true" data-key="en-e10-hydropower-how" data-pdf-label="Hydropower: how it works"></td><td class="table-answer" contenteditable="true" data-key="en-e10-hydropower-lim" data-pdf-label="Hydropower: limitations"></td></tr>
+              <tr><td style="font-weight:600;vertical-align:top;">Wave</td><td class="table-answer" contenteditable="true" data-key="en-e10-wave-how" data-pdf-label="Wave: how it works"></td><td class="table-answer" contenteditable="true" data-key="en-e10-wave-lim" data-pdf-label="Wave: limitations"></td></tr>
+              <tr><td style="font-weight:600;vertical-align:top;">Tidal</td><td class="table-answer" contenteditable="true" data-key="en-e10-tidal-how" data-pdf-label="Tidal: how it works"></td><td class="table-answer" contenteditable="true" data-key="en-e10-tidal-lim" data-pdf-label="Tidal: limitations"></td></tr>
+              <tr><td style="font-weight:600;vertical-align:top;">Geothermal</td><td class="table-answer" contenteditable="true" data-key="en-e10-geothermal-how" data-pdf-label="Geothermal: how it works"></td><td class="table-answer" contenteditable="true" data-key="en-e10-geothermal-lim" data-pdf-label="Geothermal: limitations"></td></tr>
             </table>
           </div>
           <div class="task-item">
-            <div class="task-q">Explain why a single renewable energy source may not be enough to supply an entire country with electricity. Why do we need a mix of renewable sources?</div>
+            <div class="task-q">2. Explain why a single renewable energy source may not be enough to supply an entire country with electricity. Why do we need a mix of renewable sources?</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-e10a">&#x2713; Saved</span></div>
             <div class="answer-box" contenteditable="true" data-key="en-e10a" data-placeholder="Explain here..."></div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-11">Section 11: Design Challenges</h1>
+
+      <p class="notes-p">Each challenge below follows the same cycle you will use in your assignment: read the context, check the <strong>specification</strong>, then work through four parts &mdash; <strong>(a)</strong> analyse the system, <strong>(b)</strong> use calculations to make a design decision, <strong>(c)</strong> test the design using results or new conditions, and <strong>(d)</strong> evaluate the design against every point of the specification.</p>
+
+      <div class="key-point">Every value is already in the units the formulas need (kg, m, s, J, V, A, &deg;C), so no unit conversion is needed. Use g = 9.8 N/kg and c<sub>water</sub> = 4180 J/kg&middot;K where required.</div>
+
+      <!-- ─── Design Challenge 1 ─── -->
+      <h2 class="notes-h2" id="section-11-1">Design Challenge 1: Expedition kettle</h2>
+
+      <div class="assignment assignment-dc" id="assignment-dc1">
+        <div class="assignment-header"><div class="assignment-title">&#x1F6E0;&#xFE0F; Design Challenge 1 &mdash; Expedition kettle</div></div>
+        <div class="assignment-body">
+          <p class="notes-p pdf-text">A group of S4 pupils is planning a Duke of Edinburgh expedition in the Cairngorms. They want to avoid carrying gas canisters, so they plan to build a small electric kettle that runs from a rechargeable 12&nbsp;V power pack. You have been asked to choose a heating element and check whether the design works.</p>
+
+          <h3 class="notes-h3 pdf-text">Specification</h3>
+          <table class="spec-table">
+            <tr class="pdf-text"><td class="spec-num"><span class="data-badge">i</span></td><td>The kettle must heat 0.25&nbsp;kg of water (one mug) from 10&nbsp;&deg;C to 90&nbsp;&deg;C.</td></tr>
+            <tr class="pdf-text"><td class="spec-num"><span class="data-badge">ii</span></td><td>It must run from the 12&nbsp;V power pack, which can supply a maximum current of 15&nbsp;A.</td></tr>
+            <tr class="pdf-text"><td class="spec-num"><span class="data-badge">iii</span></td><td>The water must reach 90&nbsp;&deg;C in 900&nbsp;s or less.</td></tr>
+            <tr class="pdf-text"><td class="spec-num"><span class="data-badge">iv</span></td><td>The kettle must be at least 70% efficient.</td></tr>
+          </table>
+
+          <h3 class="notes-h3 pdf-text">Heating elements available</h3>
+          <table class="data-table">
+            <tr class="pdf-text"><th>Element</th><th>Supply voltage</th><th>Current drawn</th></tr>
+            <tr class="pdf-text"><td style="font-weight:600;">A</td><td>12 V</td><td>8 A</td></tr>
+            <tr class="pdf-text"><td style="font-weight:600;">B</td><td>12 V</td><td>12 A</td></tr>
+            <tr class="pdf-text"><td style="font-weight:600;">C</td><td>12 V</td><td>20 A</td></tr>
+          </table>
+
+          <div class="task-item">
+            <div class="task-q">(a) Complete the energy audit diagram for the kettle. Write the type of energy in each box.</div>
+            <div style="margin:8px 0 10px;text-align:center;">
+              <svg viewBox="0 0 560 210" xmlns="http://www.w3.org/2000/svg" style="max-width:540px;width:100%;display:block;margin:0 auto;font-family:Arial,sans-serif;">
+                <rect x="2" y="20" width="160" height="70" rx="5" fill="#f8faff" stroke="#c7d7f5" stroke-width="1.5"/>
+                <text x="82" y="36" text-anchor="middle" font-size="10" fill="#94a3b8">Input energy:</text>
+                <foreignObject x="6" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-dc1a-in" data-pdf-label="Input energy" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
+                <line x1="162" y1="55" x2="182" y2="55" stroke="#64748b" stroke-width="2"/>
+                <polygon points="176,50 187,55 176,60" fill="#64748b"/>
+                <rect x="188" y="10" width="144" height="90" rx="5" fill="#f0fdfa" stroke="#0f766e" stroke-width="2.5"/>
+                <text x="260" y="52" text-anchor="middle" font-size="12" font-weight="700" fill="#0f766e">EXPEDITION</text>
+                <text x="260" y="68" text-anchor="middle" font-size="12" font-weight="700" fill="#0f766e">KETTLE</text>
+                <line x1="332" y1="55" x2="392" y2="55" stroke="#64748b" stroke-width="2"/>
+                <polygon points="386,50 397,55 386,60" fill="#64748b"/>
+                <rect x="398" y="20" width="160" height="70" rx="5" fill="#f8faff" stroke="#c7d7f5" stroke-width="1.5"/>
+                <text x="478" y="36" text-anchor="middle" font-size="10" fill="#94a3b8">Useful output:</text>
+                <foreignObject x="402" y="42" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-dc1a-out" data-pdf-label="Useful output" style="font-size:12px;color:#1e293b;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
+                <line x1="260" y1="100" x2="260" y2="128" stroke="#f97316" stroke-width="2"/>
+                <polygon points="255,122 260,133 265,122" fill="#f97316"/>
+                <rect x="180" y="133" width="160" height="70" rx="5" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+                <text x="260" y="150" text-anchor="middle" font-size="10" fill="#f97316">Wasted energy:</text>
+                <foreignObject x="184" y="157" width="152" height="44"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-dc1a-waste" data-pdf-label="Wasted energy" style="font-size:12px;color:#c2410c;outline:none;padding:3px 5px;min-height:38px;" class="answer-box" data-placeholder="Type of energy..."></div></foreignObject>
+              </svg>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Calculate the heat energy needed to meet specification point i. Then calculate the minimum electrical input power needed to meet points iii and iv. Use your answer to choose element A, B or C, and explain why you rejected the other two.</div>
+            <div class="answer-label">Working and choice <span class="saved-indicator" id="ind-dc1b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="en-dc1b" data-placeholder="Heat energy needed... Minimum input power... Element chosen and why..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) A prototype is built with element B and tested. It heats 0.25&nbsp;kg of water from 10&nbsp;&deg;C to 90&nbsp;&deg;C in 820&nbsp;s. Calculate the electrical energy supplied during the test and the efficiency of the prototype.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-dc1c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="en-dc1c" data-placeholder="Electrical energy supplied... Efficiency..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(d) Evaluate the prototype against each point of the specification, using your test results as evidence. Suggest one modification that would improve the kettle&rsquo;s efficiency, and explain how it reduces wasted energy.</div>
+            <div class="answer-label">Evaluation <span class="saved-indicator" id="ind-dc1d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="en-dc1d" data-placeholder="Spec point i... ii... iii... iv... Modification..."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Design Challenge 2 ─── -->
+      <h2 class="notes-h2" id="section-11-2">Design Challenge 2: Stage scenery winch</h2>
+
+      <div class="assignment assignment-dc" id="assignment-dc2">
+        <div class="assignment-header"><div class="assignment-title">&#x1F6E0;&#xFE0F; Design Challenge 2 &mdash; Stage scenery winch</div></div>
+        <div class="assignment-body">
+          <p class="notes-p pdf-text">A school drama department wants to &ldquo;fly&rdquo; a painted scenery flat up into the roof space between scenes, so it disappears from view. At the moment two pupils haul it up by hand on a rope. You have been asked to specify an electric motor for a winch to do the job.</p>
+
+          <h3 class="notes-h3 pdf-text">Specification</h3>
+          <table class="spec-table">
+            <tr class="pdf-text"><td class="spec-num"><span class="data-badge">i</span></td><td>The winch must lift a scenery flat of mass 40&nbsp;kg through a height of 6&nbsp;m.</td></tr>
+            <tr class="pdf-text"><td class="spec-num"><span class="data-badge">ii</span></td><td>The lift must take 12&nbsp;s or less, so it fits within a scene change.</td></tr>
+            <tr class="pdf-text"><td class="spec-num"><span class="data-badge">iii</span></td><td>The motor must run from the stage&rsquo;s 24&nbsp;V supply.</td></tr>
+            <tr class="pdf-text"><td class="spec-num"><span class="data-badge">iv</span></td><td>To keep cost and noise down, the lowest-power motor that meets points i to iii must be chosen.</td></tr>
+            <tr class="pdf-text"><td class="spec-num"><span class="data-badge">v</span></td><td>The flat must stay safely in the roof space if the power fails.</td></tr>
+          </table>
+
+          <h3 class="notes-h3 pdf-text">Design data</h3>
+          <p class="notes-p pdf-text">The supplier states that the complete winch system (motor, gearbox and pulleys) is 60% efficient.</p>
+          <table class="data-table">
+            <tr class="pdf-text"><th>Motor</th><th>Supply voltage</th><th>Maximum current</th></tr>
+            <tr class="pdf-text"><td style="font-weight:600;">X</td><td>24 V</td><td>10 A</td></tr>
+            <tr class="pdf-text"><td style="font-weight:600;">Y</td><td>24 V</td><td>15 A</td></tr>
+            <tr class="pdf-text"><td style="font-weight:600;">Z</td><td>24 V</td><td>25 A</td></tr>
+          </table>
+
+          <div class="task-item">
+            <div class="task-q">(a) Describe the energy changes in the winch system, from the electrical supply to the flat resting in the roof space. Name two forms of wasted energy and where each one is produced.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-dc2a">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="en-dc2a" data-placeholder="Electrical energy → ... → ... Wasted as..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Calculate the potential energy gained by the flat, the useful output power needed to meet point ii, and the electrical input power needed. Work out the current the motor must draw from the 24&nbsp;V supply, then choose motor X, Y or Z and justify your choice using point iv.</div>
+            <div class="answer-label">Working and choice <span class="saved-indicator" id="ind-dc2b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="en-dc2b" data-placeholder="Potential energy... Output power... Input power... Current... Motor chosen..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) The winch is built with motor Y and tested. It lifts the flat through 6&nbsp;m in 11&nbsp;s, drawing 14&nbsp;A from the 24&nbsp;V supply. Calculate the electrical energy used and the actual efficiency of the winch system. Compare this with the supplier&rsquo;s figure.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-dc2c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="en-dc2c" data-placeholder="Electrical energy used... Efficiency... Comparison..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(d) Evaluate the winch against points i to iv. For point v, explain what happens to the flat&rsquo;s potential energy if the motor loses power at the top, and suggest a feature that would keep the stage safe.</div>
+            <div class="answer-label">Evaluation <span class="saved-indicator" id="ind-dc2d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="en-dc2d" data-placeholder="Points i–iv... Point v: the potential energy... Safety feature..."></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Design Challenge 3 ─── -->
+      <h2 class="notes-h2" id="section-11-3">Design Challenge 3: Micro-hydro for a mountain bothy</h2>
+
+      <div class="assignment assignment-dc" id="assignment-dc3">
+        <div class="assignment-header"><div class="assignment-title">&#x1F6E0;&#xFE0F; Design Challenge 3 &mdash; Micro-hydro for a mountain bothy</div></div>
+        <div class="assignment-body">
+          <p class="notes-p pdf-text">A remote Highland bothy has no mains electricity, and fuel has to be carried in on foot. A stream runs down the hillside just above it. A volunteer group wants to pipe some of the stream through a small turbine and generator, then send the electricity along a cable to the bothy for LED lighting and a charging point for phones and emergency radios.</p>
+
+          <h3 class="notes-h3 pdf-text">Specification</h3>
+          <table class="spec-table">
+            <tr class="pdf-text"><td class="spec-num"><span class="data-badge">i</span></td><td>At normal stream flow, the system must deliver at least 80&nbsp;W to the bothy (60&nbsp;W of lighting plus a 20&nbsp;W charging point).</td></tr>
+            <tr class="pdf-text"><td class="spec-num"><span class="data-badge">ii</span></td><td>It must not need any fuel to be delivered.</td></tr>
+            <tr class="pdf-text"><td class="spec-num"><span class="data-badge">iii</span></td><td>During a dry spell, it must still deliver enough power for the 60&nbsp;W of lighting.</td></tr>
+          </table>
+
+          <h3 class="notes-h3 pdf-text">Design data</h3>
+          <table class="data-table">
+            <tr class="pdf-text"><th>Item</th><th>Value</th></tr>
+            <tr class="pdf-text"><td>Height the water falls through the pipe</td><td>8 m</td></tr>
+            <tr class="pdf-text"><td>Mass of water through the pipe each second (normal flow)</td><td>2 kg</td></tr>
+            <tr class="pdf-text"><td>Mass of water through the pipe each second (dry spell)</td><td>1.5 kg</td></tr>
+            <tr class="pdf-text"><td>Turbine efficiency</td><td>70%</td></tr>
+            <tr class="pdf-text"><td>Generator efficiency</td><td>80%</td></tr>
+            <tr class="pdf-text"><td>Cable efficiency (turbine house to bothy)</td><td>95%</td></tr>
+          </table>
+
+          <div class="task-item">
+            <div class="task-q">(a) Complete the energy audit for the system. Write the form of energy passing along each arrow, and the main form of energy wasted at each stage.</div>
+            <div style="margin:8px 0 10px;text-align:center;">
+              <svg viewBox="0 0 780 205" xmlns="http://www.w3.org/2000/svg" style="max-width:760px;width:100%;display:block;margin:0 auto;font-family:Arial,sans-serif;">
+                <!-- energy-form slots -->
+                <rect x="0" y="26" width="110" height="64" rx="5" fill="#f8faff" stroke="#c7d7f5" stroke-width="1.5"/>
+                <text x="55" y="40" text-anchor="middle" font-size="9.5" fill="#94a3b8">Water into turbine:</text>
+                <foreignObject x="4" y="45" width="102" height="42"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-dc3a-1" data-pdf-label="Water into turbine" style="font-size:11px;color:#1e293b;outline:none;padding:2px 4px;min-height:36px;" class="answer-box" data-placeholder="Energy form..."></div></foreignObject>
+                <rect x="220" y="26" width="110" height="64" rx="5" fill="#f8faff" stroke="#c7d7f5" stroke-width="1.5"/>
+                <text x="275" y="40" text-anchor="middle" font-size="9.5" fill="#94a3b8">Turbine to generator:</text>
+                <foreignObject x="224" y="45" width="102" height="42"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-dc3a-2" data-pdf-label="Turbine to generator" style="font-size:11px;color:#1e293b;outline:none;padding:2px 4px;min-height:36px;" class="answer-box" data-placeholder="Energy form..."></div></foreignObject>
+                <rect x="440" y="26" width="110" height="64" rx="5" fill="#f8faff" stroke="#c7d7f5" stroke-width="1.5"/>
+                <text x="495" y="40" text-anchor="middle" font-size="9.5" fill="#94a3b8">Generator to cable:</text>
+                <foreignObject x="444" y="45" width="102" height="42"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-dc3a-3" data-pdf-label="Generator to cable" style="font-size:11px;color:#1e293b;outline:none;padding:2px 4px;min-height:36px;" class="answer-box" data-placeholder="Energy form..."></div></foreignObject>
+                <rect x="660" y="26" width="110" height="64" rx="5" fill="#f8faff" stroke="#c7d7f5" stroke-width="1.5"/>
+                <text x="715" y="40" text-anchor="middle" font-size="9.5" fill="#94a3b8">Delivered to bothy:</text>
+                <foreignObject x="664" y="45" width="102" height="42"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-dc3a-4" data-pdf-label="Delivered to bothy" style="font-size:11px;color:#1e293b;outline:none;padding:2px 4px;min-height:36px;" class="answer-box" data-placeholder="Energy form..."></div></foreignObject>
+                <!-- stages -->
+                <rect x="125" y="16" width="80" height="84" rx="5" fill="#f0fdfa" stroke="#0f766e" stroke-width="2.5"/>
+                <text x="165" y="62" text-anchor="middle" font-size="11" font-weight="700" fill="#0f766e">TURBINE</text>
+                <rect x="345" y="16" width="80" height="84" rx="5" fill="#f0fdfa" stroke="#0f766e" stroke-width="2.5"/>
+                <text x="385" y="62" text-anchor="middle" font-size="11" font-weight="700" fill="#0f766e">GENERATOR</text>
+                <rect x="565" y="16" width="80" height="84" rx="5" fill="#f0fdfa" stroke="#0f766e" stroke-width="2.5"/>
+                <text x="605" y="62" text-anchor="middle" font-size="11" font-weight="700" fill="#0f766e">CABLE</text>
+                <!-- arrows -->
+                <line x1="110" y1="58" x2="119" y2="58" stroke="#64748b" stroke-width="2"/><polygon points="117,53 125,58 117,63" fill="#64748b"/>
+                <line x1="205" y1="58" x2="214" y2="58" stroke="#64748b" stroke-width="2"/><polygon points="212,53 220,58 212,63" fill="#64748b"/>
+                <line x1="330" y1="58" x2="339" y2="58" stroke="#64748b" stroke-width="2"/><polygon points="337,53 345,58 337,63" fill="#64748b"/>
+                <line x1="425" y1="58" x2="434" y2="58" stroke="#64748b" stroke-width="2"/><polygon points="432,53 440,58 432,63" fill="#64748b"/>
+                <line x1="550" y1="58" x2="559" y2="58" stroke="#64748b" stroke-width="2"/><polygon points="557,53 565,58 557,63" fill="#64748b"/>
+                <line x1="645" y1="58" x2="654" y2="58" stroke="#64748b" stroke-width="2"/><polygon points="652,53 660,58 652,63" fill="#64748b"/>
+                <!-- wasted -->
+                <line x1="165" y1="100" x2="165" y2="126" stroke="#f97316" stroke-width="2"/><polygon points="160,122 165,133 170,122" fill="#f97316"/>
+                <rect x="115" y="133" width="100" height="64" rx="5" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+                <text x="165" y="147" text-anchor="middle" font-size="9.5" fill="#f97316">Wasted:</text>
+                <foreignObject x="119" y="152" width="92" height="42"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-dc3a-w1" data-pdf-label="Wasted in turbine" style="font-size:11px;color:#c2410c;outline:none;padding:2px 4px;min-height:36px;" class="answer-box" data-placeholder="Energy form..."></div></foreignObject>
+                <line x1="385" y1="100" x2="385" y2="126" stroke="#f97316" stroke-width="2"/><polygon points="380,122 385,133 390,122" fill="#f97316"/>
+                <rect x="335" y="133" width="100" height="64" rx="5" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+                <text x="385" y="147" text-anchor="middle" font-size="9.5" fill="#f97316">Wasted:</text>
+                <foreignObject x="339" y="152" width="92" height="42"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-dc3a-w2" data-pdf-label="Wasted in generator" style="font-size:11px;color:#c2410c;outline:none;padding:2px 4px;min-height:36px;" class="answer-box" data-placeholder="Energy form..."></div></foreignObject>
+                <line x1="605" y1="100" x2="605" y2="126" stroke="#f97316" stroke-width="2"/><polygon points="600,122 605,133 610,122" fill="#f97316"/>
+                <rect x="555" y="133" width="100" height="64" rx="5" fill="#fff7ed" stroke="#f97316" stroke-width="1.5"/>
+                <text x="605" y="147" text-anchor="middle" font-size="9.5" fill="#f97316">Wasted:</text>
+                <foreignObject x="559" y="152" width="92" height="42"><div xmlns="http://www.w3.org/1999/xhtml" contenteditable="true" data-key="en-dc3a-w3" data-pdf-label="Wasted in cable" style="font-size:11px;color:#c2410c;outline:none;padding:2px 4px;min-height:36px;" class="answer-box" data-placeholder="Energy form..."></div></foreignObject>
+              </svg>
+            </div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) At normal flow, calculate the potential energy given up by the water falling through the pipe each second. Because this happens every second, your answer in joules is also the power available in watts. Then calculate the power leaving each stage and the overall efficiency of the system.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-dc3b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="en-dc3b" data-placeholder="Power available from the water... After turbine... After generator... Delivered to bothy... Overall efficiency..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) Test the design against a dry spell, when only 1.5&nbsp;kg of water passes through the pipe each second. Calculate the power delivered to the bothy under these conditions.</div>
+            <div class="answer-label">Working <span class="saved-indicator" id="ind-dc3c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="en-dc3c" data-placeholder="Power available... Power delivered to bothy..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(d) Evaluate the system against each point of the specification. The volunteers want the charging point to keep working in a dry spell, because the emergency radios depend on it. Suggest a change to the system that would achieve this, and justify it using what you learned in Section 10.</div>
+            <div class="answer-label">Evaluation <span class="saved-indicator" id="ind-dc3d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="en-dc3d" data-placeholder="Spec point i... ii... iii... Suggested change and justification..."></div>
           </div>
         </div>
       </div>
@@ -770,12 +1071,13 @@
       <!-- Controls -->
       <div class="controls-bar">
         <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-print" onclick="downloadAllPDF()">&#x2B07;&#xFE0F; Download ALL my answers (PDF)</button>
         <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
         <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
       </div>
       <div class="storage-status" id="storage-status">Last saved: never</div>
 
-      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
+      <div class="page-nav" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
         <button class="ctrl-btn ctrl-btn-print" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});">&#x2B06;&#xFE0F; Back to top</button>
         <a href="index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">&#x2302; Main menu</a>
         <a href="../roles-disciplines/course-notes.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">Next section &#x2192;</a>
@@ -783,6 +1085,27 @@
 
     </div>
     </div>
+  </div>
+</div>
+<!-- Floating buttons: Feedback (bottom, from site.js), Contents (middle), My name (top) -->
+<button class="float-btn" id="name-btn" type="button"><span class="float-icon" aria-hidden="true">&#x1F464;</span><span class="float-label" id="name-btn-label">My name</span></button>
+<button class="float-btn" id="toc-btn" type="button" aria-controls="toc-panel" aria-expanded="false"><span class="float-icon" aria-hidden="true">&#x2630;</span><span class="float-label">Contents</span></button>
+<div class="toc-backdrop" id="toc-backdrop" hidden></div>
+<aside class="toc-panel" id="toc-panel" aria-label="Contents" aria-hidden="true">
+  <div class="toc-head"><span class="toc-head-title">Contents</span><button class="toc-close" id="toc-close" type="button" aria-label="Close contents">&times;</button></div>
+  <nav><ul class="toc-list" id="toc-list"></ul></nav>
+</aside>
+<div class="name-backdrop" id="name-backdrop" hidden>
+  <div class="name-modal" role="dialog" aria-modal="true" aria-labelledby="name-modal-title">
+    <h2 id="name-modal-title">Your name</h2>
+    <p>Type your name once. It will appear at the top of every PDF you download from this page.</p>
+    <input id="name-input" type="text" maxlength="60" autocomplete="name" placeholder="First name and surname">
+    <div class="name-actions">
+      <button type="button" class="name-btn-clear" id="name-clear">Remove</button>
+      <button type="button" class="name-btn-cancel" id="name-cancel">Cancel</button>
+      <button type="button" class="name-btn-save" id="name-save">Save</button>
+    </div>
+    <p class="name-note">Saved in this browser on this device only.</p>
   </div>
 </div>
 <footer class="footer"><span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
@@ -794,16 +1117,195 @@ function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatu
 function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
 function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
 function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
-function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('[contenteditable][data-key]').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
 function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
 document.addEventListener('DOMContentLoaded',function(){
-  document.querySelectorAll('.answer-box').forEach(function(box){
+  document.querySelectorAll('[contenteditable][data-key]').forEach(function(box){
     var key=box.dataset.key;if(!key)return;
     var saved=loadValue(key);if(saved)box.innerHTML=saved;
     var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
     box.addEventListener('input',ds);
     box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
   });
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+/* ═══════════ Contents panel, My name, PDF downloads ═══════════ */
+const NAME_KEY='energy-pupil-name';            // subject-specific: don't reuse on other pages
+const SITE_URL='engineeringsciencescotland.co.uk';
+const PDF_FILE_STEM='energy-and-efficiency';
+/* Keep in page order. Update whenever a task panel is added, removed or reordered. */
+const ALL_TASK_PANELS=[
+  {id:'assignment-task1', label:'Task 1 - Identifying forms of energy'},
+  {id:'assignment-task2', label:'Task 2 - Work done calculations'},
+  {id:'assignment-task3', label:'Task 3 - Potential energy calculations'},
+  {id:'assignment-task4', label:'Task 4 - Kinetic energy calculations'},
+  {id:'assignment-task5', label:'Task 5 - Electrical energy calculations'},
+  {id:'assignment-task6', label:'Task 6 - Heat energy calculations'},
+  {id:'assignment-task7', label:'Task 7 - Energy transfers and audits'},
+  {id:'assignment-task8', label:'Task 8 - Efficiency calculations'},
+  {id:'assignment-task9', label:'Task 9 - Power calculations'},
+  {id:'assignment-task10', label:'Task 10 - Renewable energy sources'},
+  {id:'assignment-dc1', label:'Design Challenge 1 - Expedition kettle'},
+  {id:'assignment-dc2', label:'Design Challenge 2 - Stage scenery winch'},
+  {id:'assignment-dc3', label:'Design Challenge 3 - Micro-hydro for a mountain bothy'}
+];
+
+/* ── Contents panel + scroll-spy ── */
+(function(){
+  const btn=document.getElementById('toc-btn'), panel=document.getElementById('toc-panel'),
+        backdrop=document.getElementById('toc-backdrop'), closeBtn=document.getElementById('toc-close'),
+        list=document.getElementById('toc-list');
+  const heads=Array.from(document.querySelectorAll('.notes-h1[id], .notes-h2[id]'));
+  const links=[];
+  heads.forEach(function(h){
+    const li=document.createElement('li'); li.className=h.classList.contains('notes-h1')?'toc-l1':'toc-l2';
+    const a=document.createElement('a'); a.href='#'+h.id; a.innerHTML=h.innerHTML.trim();
+    a.addEventListener('click',function(){closeToc();});
+    li.appendChild(a); list.appendChild(li); links.push(a);
+  });
+  function openToc(){panel.classList.add('open');panel.setAttribute('aria-hidden','false');backdrop.hidden=false;btn.setAttribute('aria-expanded','true');spy();setTimeout(function(){closeBtn.focus();},50);}
+  function closeToc(){if(!panel.classList.contains('open'))return;panel.classList.remove('open');panel.setAttribute('aria-hidden','true');backdrop.hidden=true;btn.setAttribute('aria-expanded','false');}
+  window.closeToc=closeToc;
+  btn.addEventListener('click',function(){panel.classList.contains('open')?closeToc():openToc();});
+  closeBtn.addEventListener('click',closeToc);
+  backdrop.addEventListener('click',closeToc);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeToc();});
+  let ticking=false;
+  function spy(){
+    ticking=false; let current=-1;
+    for(let i=0;i<heads.length;i++){ if(heads[i].getBoundingClientRect().top<=130) current=i; else break; }
+    links.forEach(function(a,i){a.classList.toggle('active',i===current);});
+  }
+  window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(spy);}},{passive:true});
+  spy();
+})();
+
+/* ── My name ── */
+function getPupilName(){try{return (localStorage.getItem(NAME_KEY)||'').trim();}catch(e){return '';}}
+function refreshNameBtn(){const n=getPupilName();const l=document.getElementById('name-btn-label');l.textContent=n||'My name';document.getElementById('name-btn').title=n?('Name on PDFs: '+n+' (click to change)'):'Add your name to your PDFs';}
+(function(){
+  const btn=document.getElementById('name-btn'), bd=document.getElementById('name-backdrop'), input=document.getElementById('name-input');
+  function open(){input.value=getPupilName();bd.hidden=false;setTimeout(function(){input.focus();input.select();},30);}
+  function close(){bd.hidden=true;btn.focus();}
+  function save(){try{const v=input.value.trim();if(v)localStorage.setItem(NAME_KEY,v);else localStorage.removeItem(NAME_KEY);}catch(e){}refreshNameBtn();close();}
+  btn.addEventListener('click',open);
+  document.getElementById('name-save').addEventListener('click',save);
+  document.getElementById('name-cancel').addEventListener('click',close);
+  document.getElementById('name-clear').addEventListener('click',function(){input.value='';save();});
+  input.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();save();}});
+  bd.addEventListener('click',function(e){if(e.target===bd)close();});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!bd.hidden)close();});
+  refreshNameBtn();
+})();
+
+/* ── PDF helpers (jsPDF 2.5.1, real selectable text) ── */
+function pdfSafe(s){
+  if(!s)return '';
+  return String(s)
+    .replace(/\u03C3/g,'sigma').replace(/\u03B5/g,'epsilon').replace(/\u0394/g,'delta ').replace(/\u03B4/g,'delta')
+    .replace(/\u03C0/g,'pi').replace(/\u03B7/g,'eta').replace(/\u03BC/g,'\u00B5')
+    .replace(/[\u2018\u2019\u201B\u2032]/g,"'").replace(/[\u201C\u201D\u2033]/g,'"')
+    .replace(/[\u2013\u2014\u2212]/g,'-').replace(/\u2026/g,'...')
+    .replace(/\u2192/g,'->').replace(/\u2190/g,'<-').replace(/\u2265/g,'>=').replace(/\u2264/g,'<=')
+    .replace(/[\u00A0\u2009\u202F]/g,' ')
+    .replace(/[^\x09\x0A\x0D\x20-\x7E\xA1-\xFF]/g,'')
+    .replace(/[ \t]+\n/g,'\n').replace(/\n{3,}/g,'\n\n').trim();
+}
+const PDF_M=18, PDF_W=210, PDF_BOTTOM=278;
+function pdfToday(){return new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});}
+function pdfEnsure(ctx,h){if(ctx.y+h>PDF_BOTTOM){ctx.doc.addPage();ctx.y=PDF_M;}}
+function pdfLines(ctx,text,o){
+  o=o||{}; const d=ctx.doc, size=o.size||10.5, indent=o.indent||0, lh=size*0.45;
+  d.setFont('helvetica',o.bold?'bold':(o.italic?'italic':'normal')); d.setFontSize(size);
+  const c=o.color||[30,41,59]; d.setTextColor(c[0],c[1],c[2]);
+  const lines=d.splitTextToSize(pdfSafe(text),PDF_W-2*PDF_M-indent);
+  lines.forEach(function(line){pdfEnsure(ctx,lh);d.text(line,PDF_M+indent,ctx.y+lh*0.8);ctx.y+=lh;});
+}
+function pdfHeader(ctx,title){
+  const d=ctx.doc;
+  d.setFont('helvetica','bold');d.setFontSize(9);d.setTextColor(15,118,110);
+  d.text('Engineering Science Scotland',PDF_M,ctx.y+3);ctx.y+=7;
+  pdfLines(ctx,title,{bold:true,size:15,color:[17,24,39]});ctx.y+=2;
+  const n=getPupilName();
+  pdfLines(ctx,n?('Name: '+n+'        Date: '+pdfToday()):'Name: ____________________________        Date: ________________',{size:10.5,color:[71,85,105]});
+  ctx.y+=2;d.setDrawColor(204,251,241);d.setLineWidth(0.8);d.line(PDF_M,ctx.y,PDF_W-PDF_M,ctx.y);ctx.y+=6;
+}
+function pdfImage(ctx,img){
+  try{
+    let nw=img.naturalWidth||img.width, nh=img.naturalHeight||img.height; if(!nw||!nh)return;
+    const scale=Math.min(1,1600/nw), cw=Math.round(nw*scale), ch=Math.round(nh*scale);
+    const cv=document.createElement('canvas');cv.width=cw;cv.height=ch;
+    const g=cv.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,cw,ch);g.drawImage(img,0,0,cw,ch);
+    const data=cv.toDataURL('image/jpeg',0.9);
+    let w=Math.min(120,PDF_W-2*PDF_M-8), h=w*nh/nw; if(h>90){h=90;w=h*nw/nh;}
+    pdfEnsure(ctx,h+3);ctx.doc.addImage(data,'JPEG',PDF_M+8,ctx.y+1,w,h);ctx.y+=h+4;
+  }catch(e){pdfLines(ctx,'(a pasted image could not be added to this PDF)',{size:9,italic:true,color:[148,163,184],indent:8});}
+}
+function pdfAnswer(ctx,el){
+  const label=el.getAttribute('data-pdf-label'), text=(el.innerText||el.textContent||'').trim(), imgs=el.querySelectorAll('img');
+  if(label)pdfLines(ctx,label+':',{bold:true,size:9.5,color:[15,118,110],indent:4});
+  if(!text&&!imgs.length){pdfLines(ctx,'(no answer entered yet)',{italic:true,size:10,color:[148,163,184],indent:8});}
+  else{ if(text)pdfLines(ctx,text,{size:10.5,color:[30,41,59],indent:8}); imgs.forEach(function(im){pdfImage(ctx,im);}); }
+  ctx.y+=1.5;
+}
+function pdfPanel(ctx,panel){
+  panel.querySelectorAll('.task-q, .task-q-sub, .pdf-text, [contenteditable][data-key]').forEach(function(el){
+    if(el.matches('[contenteditable][data-key]')) pdfAnswer(ctx,el);
+    else if(el.matches('.task-q')){ctx.y+=2.5;pdfLines(ctx,el.innerText,{bold:true,size:11,color:[17,24,39]});ctx.y+=1;}
+    else if(el.matches('.task-q-sub')){ctx.y+=1;pdfLines(ctx,el.innerText,{bold:true,size:10.5,color:[17,24,39],indent:4});}
+    else{
+      const t=el.matches('tr')?Array.from(el.cells).map(function(c){return c.innerText.trim();}).join('   '):el.innerText;
+      pdfLines(ctx,t,{size:9.5,bold:el.matches('h3'),color:[71,85,105]}); ctx.y+=el.matches('tr')?0.5:2;
+    }
+  });
+}
+function pdfFooters(doc){
+  const n=doc.internal.getNumberOfPages();
+  for(let i=1;i<=n;i++){doc.setPage(i);doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(148,163,184);
+    doc.text(SITE_URL,PDF_M,289);doc.text('Page '+i+' of '+n,PDF_W-PDF_M,289,{align:'right'});}
+}
+function pdfFileName(part){
+  const n=getPupilName().toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  return PDF_FILE_STEM+'-'+part+(n?'-'+n:'')+'.pdf';
+}
+function pdfReady(){
+  if(window.jspdf&&window.jspdf.jsPDF)return true;
+  alert('The PDF tool has not loaded. Check your internet connection, reload the page and try again. Your answers are still saved.');return false;
+}
+function downloadTaskPDF(id){
+  if(!pdfReady())return;
+  const panel=document.getElementById(id); if(!panel)return;
+  const entry=ALL_TASK_PANELS.find(function(p){return p.id===id;});
+  const title=entry?entry.label:pdfSafe(panel.querySelector('.assignment-title').innerText);
+  const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'}), ctx={doc:doc,y:PDF_M};
+  pdfHeader(ctx,'Energy and Efficiency: '+title); pdfPanel(ctx,panel); pdfFooters(doc);
+  doc.save(pdfFileName(id.replace('assignment-','')));
+}
+function downloadAllPDF(){
+  if(!pdfReady())return;
+  const doc=new window.jspdf.jsPDF({unit:'mm',format:'a4'}), ctx={doc:doc,y:PDF_M};
+  pdfHeader(ctx,'Energy and Efficiency: all my answers');
+  ALL_TASK_PANELS.forEach(function(p,i){
+    const panel=document.getElementById(p.id); if(!panel)return;
+    pdfEnsure(ctx,30); if(i>0)ctx.y+=4;
+    const dc=p.id.indexOf('assignment-dc')===0;
+    doc.setFillColor(dc?17:15,dc?94:118,dc?89:110); doc.roundedRect(PDF_M,ctx.y,PDF_W-2*PDF_M,9,1.5,1.5,'F');
+    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(255,255,255);
+    doc.text(pdfSafe(p.label),PDF_M+3,ctx.y+6.2); ctx.y+=13;
+    pdfPanel(ctx,panel);
+  });
+  pdfFooters(doc); doc.save(pdfFileName('all-answers'));
+}
+
+/* Add a "Download my answers" strip to the foot of every task panel */
+document.querySelectorAll('.assignment[id]').forEach(function(panel){
+  if(panel.querySelector('.pdf-strip'))return; const p={id:panel.id};
+  const strip=document.createElement('div'); strip.className='pdf-strip';
+  const b=document.createElement('button'); b.type='button'; b.className='ctrl-btn ctrl-btn-print';
+  b.innerHTML='&#x2B07;&#xFE0F; Download my answers (PDF)'; b.addEventListener('click',function(){downloadTaskPDF(p.id);});
+  strip.appendChild(b); panel.appendChild(strip);
 });
 </script>
 </body>

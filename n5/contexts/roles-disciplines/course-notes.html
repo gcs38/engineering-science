@@ -6,11 +6,11 @@
   <title>Engineering Roles and Disciplines — Course Notes — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
-    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 16px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:6px; }
     .back-link:hover { color:var(--teal-800); }
-    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
-    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); scroll-margin-top:100px; }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; scroll-margin-top:100px; }
     .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:16px 0 8px; }
     .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
     .notes-p strong { color:var(--gray-900); }
@@ -25,6 +25,7 @@
     .discipline-card { background:white; border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; }
     .discipline-card-header { padding:10px 14px; font-size:13px; font-weight:700; color:white; display:flex; align-items:center; gap:8px; }
     .discipline-card-body { padding:12px 14px; font-size:13px; color:var(--gray-600); line-height:1.6; }
+    @media (max-width:640px) { .discipline-grid { grid-template-columns:1fr; } }
     .assignment { background:white; border:2px solid var(--teal-400); border-radius:12px; margin:24px 0; overflow:hidden; }
     .assignment-header { background:var(--teal-400); padding:12px 18px; }
     .assignment-title { font-size:14px; font-weight:700; color:white; }
@@ -41,6 +42,19 @@
     .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
     .answer-box-sm { min-height:44px; }
     .answer-box-lg { min-height:110px; }
+    .answer-box img { max-width:100%; height:auto; }
+    .cell-answer { outline:none; background:#f8faff; min-height:36px; }
+    .cell-answer:focus { box-shadow:inset 0 0 0 2px var(--teal-400); background:white; }
+    .data-table tr:nth-child(even) td.cell-answer, .roles-table td.cell-answer { background:#f8faff; }
+    .task-download-row { background:var(--gray-50); border-top:1px solid var(--gray-200); padding:9px 20px; text-align:right; }
+    .task-download-btn { display:inline-flex; align-items:center; gap:6px; background:white; border:1.2px solid var(--teal-400); color:var(--teal-800); font-size:10px; font-weight:700; padding:7px 12px; border-radius:999px; cursor:pointer; transition:background .15s; }
+    .task-download-btn:hover { background:var(--teal-50); }
+    .task-download-btn:disabled { opacity:.6; cursor:wait; }
+    /* Specification tables in the challenges */
+    .spec-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .spec-table th { background:transparent; padding:8px 6px 8px 0; width:32px; vertical-align:top; }
+    .spec-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
+    .data-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:var(--teal-50); color:var(--teal-800); border:1px solid var(--teal-100); font-size:11px; font-weight:700; }
     .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
     .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
     .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
@@ -56,9 +70,53 @@
     .ctrl-btn-clear:hover { background:#fee2e2; }
     .ctrl-btn-print { background:var(--teal-50); color:var(--teal-800); }
     .ctrl-btn-print:hover { background:var(--teal-100); }
+    .ctrl-btn-download-all { background:#eef2ff; color:#4338ca; }
+    .ctrl-btn-download-all:hover { background:#e0e7ff; }
     .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
     .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
-    @media print { .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator{display:none!important;} .layout{display:block!important;} .main{margin:0!important;padding:0!important;} .answer-box{border:1.5px solid #94a3b8!important;background:white!important;} }
+    /* Table of contents: floating button + slide-out panel */
+    .toc-fab { position:fixed; right:24px; bottom:76px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#c2410c; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+    .toc-fab:hover { background:#9a3412; }
+    .toc-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; }
+    .toc-overlay.open { display:block; }
+    .toc-panel { position:fixed; top:0; right:-340px; width:320px; max-width:85vw; height:100%; background:white; z-index:999998; box-shadow:-8px 0 30px rgba(0,0,0,.2); transition:right .25s ease; display:flex; flex-direction:column; }
+    .toc-panel.open { right:0; }
+    .toc-panel-header { padding:18px 20px 14px; border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; }
+    .toc-panel-header h3 { margin:0; font-size:16px; color:var(--teal-800); }
+    .toc-panel-close { background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .toc-panel-close:hover { color:var(--gray-700); }
+    .toc-list { overflow-y:auto; padding:8px 0 20px; }
+    .toc-list a { display:block; padding:10px 20px; font-size:14px; color:var(--gray-700); text-decoration:none; border-left:3px solid transparent; }
+    .toc-list a:hover { background:var(--teal-50); color:var(--teal-800); }
+    .toc-list a.toc-active { border-left-color:var(--teal-500,var(--teal-600)); background:var(--teal-50); color:var(--teal-800); font-weight:700; }
+    .toc-list a.toc-sub { padding-left:36px; font-size:13px; color:var(--gray-500); }
+
+    /* Pupil name: floating button + small popup */
+    .name-fab { position:fixed; right:24px; bottom:132px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#4f46e5; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); overflow:hidden; }
+    .name-fab-icon { font-size:14px; line-height:1; flex-shrink:0; }
+    #nameFabLabel { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:78px; text-align:left; }
+    .name-fab:hover { background:#3730a3; }
+    .name-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; align-items:center; justify-content:center; padding:20px; }
+    .name-overlay.open { display:flex; }
+    .name-panel { background:white; border-radius:14px; max-width:360px; width:100%; padding:24px 24px 22px; box-shadow:0 20px 60px rgba(0,0,0,.35); position:relative; }
+    .name-panel-close { position:absolute; top:10px; right:12px; background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .name-panel-close:hover { color:var(--gray-700); }
+    .name-panel h3 { margin:0 0 8px; font-size:16px; color:#4338ca; }
+    .name-panel p { margin:0 0 14px; font-size:13px; line-height:1.5; color:var(--gray-600); }
+    .name-panel input { width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid var(--gray-200); border-radius:8px; font-size:14px; margin-bottom:12px; }
+    .name-panel input:focus { outline:none; border-color:#4338ca; }
+    .name-panel-save { width:100%; background:#4338ca; color:white; border:none; border-radius:8px; padding:10px; font-size:14px; font-weight:700; cursor:pointer; }
+    .name-panel-save:hover { background:#3730a3; }
+    .name-panel-saved-msg { font-size:12px; color:#16a34a; margin-top:8px; text-align:center; display:none; }
+    .name-panel-saved-msg.show { display:block; }
+
+    @media print {
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.toc-fab,.toc-panel,.toc-overlay,.name-fab,.name-overlay,.task-download-row,.page-nav { display:none!important; }
+      .layout { display:block!important; }
+      .main { margin:0!important; padding:0!important; }
+      .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
+      .cell-answer { background:white!important; }
+    }
   </style>
 </head>
 <body>
@@ -82,7 +140,8 @@
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
-    <div class="hero">
+    <div class="hero" id="top" style="position:relative;">
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 26 September 2026, 12:22</div>
       <div class="hero-label">National 5 &middot; Engineering Contexts &rsaquo; Engineering Roles and Disciplines</div>
       <h1 class="hero-title">&#x1F477; Engineering Roles and Disciplines &mdash; Course Notes</h1>
       <p class="hero-sub">Branches of engineering, roles of engineers and how disciplines work together</p>
@@ -93,7 +152,7 @@
       <a href="index.html" class="back-link">&larr; Back to Engineering Roles and Disciplines</a>
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 1: What is Engineering?</h1>
+      <h1 class="notes-h1" id="section-1">Section 1: What is Engineering?</h1>
 
       <p class="notes-p">Engineering is the application of <strong>science, mathematics and technology</strong> to design and build solutions to real-world problems. Engineers improve the world around us — from the bridges we cross, to the phones in our pockets, to the medicines that keep us healthy.</p>
 
@@ -106,7 +165,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 2: The Seven Main Branches of Engineering</h1>
+      <h1 class="notes-h1" id="section-2">Section 2: The Seven Main Branches of Engineering</h1>
 
       <p class="notes-p">The QS specification requires you to know seven main branches. Each branch has a different focus, but they frequently <strong>work together</strong> on the same project.</p>
 
@@ -169,29 +228,32 @@
         </div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task1">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Branches of engineering</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">Complete the table below by writing a brief definition and two real-world examples of work for each branch of engineering.</div>
             <table class="data-table">
               <tr><th>Branch</th><th>Definition (in your own words)</th><th>Two examples of projects or work</th></tr>
-              <tr><td>Civil</td><td contenteditable="true" style="min-height:40px;padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
-              <tr><td>Structural</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
-              <tr><td>Mechanical</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
-              <tr><td>Electrical</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
-              <tr><td>Electronic</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
-              <tr><td>Chemical</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
-              <tr><td>Environmental</td><td contenteditable="true" style="padding:8px;"></td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Civil</td><td class="cell-answer" contenteditable="true" data-key="ro-r1-civil-def" data-label="Civil - definition" style="padding:8px;"></td><td class="cell-answer" contenteditable="true" data-key="ro-r1-civil-ex" data-label="Civil - two examples" style="padding:8px;"></td></tr>
+              <tr><td>Structural</td><td class="cell-answer" contenteditable="true" data-key="ro-r1-structural-def" data-label="Structural - definition" style="padding:8px;"></td><td class="cell-answer" contenteditable="true" data-key="ro-r1-structural-ex" data-label="Structural - two examples" style="padding:8px;"></td></tr>
+              <tr><td>Mechanical</td><td class="cell-answer" contenteditable="true" data-key="ro-r1-mechanical-def" data-label="Mechanical - definition" style="padding:8px;"></td><td class="cell-answer" contenteditable="true" data-key="ro-r1-mechanical-ex" data-label="Mechanical - two examples" style="padding:8px;"></td></tr>
+              <tr><td>Electrical</td><td class="cell-answer" contenteditable="true" data-key="ro-r1-electrical-def" data-label="Electrical - definition" style="padding:8px;"></td><td class="cell-answer" contenteditable="true" data-key="ro-r1-electrical-ex" data-label="Electrical - two examples" style="padding:8px;"></td></tr>
+              <tr><td>Electronic</td><td class="cell-answer" contenteditable="true" data-key="ro-r1-electronic-def" data-label="Electronic - definition" style="padding:8px;"></td><td class="cell-answer" contenteditable="true" data-key="ro-r1-electronic-ex" data-label="Electronic - two examples" style="padding:8px;"></td></tr>
+              <tr><td>Chemical</td><td class="cell-answer" contenteditable="true" data-key="ro-r1-chemical-def" data-label="Chemical - definition" style="padding:8px;"></td><td class="cell-answer" contenteditable="true" data-key="ro-r1-chemical-ex" data-label="Chemical - two examples" style="padding:8px;"></td></tr>
+              <tr><td>Environmental</td><td class="cell-answer" contenteditable="true" data-key="ro-r1-environmental-def" data-label="Environmental - definition" style="padding:8px;"></td><td class="cell-answer" contenteditable="true" data-key="ro-r1-environmental-ex" data-label="Environmental - two examples" style="padding:8px;"></td></tr>
             </table>
           </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task1', 'Task 1 — Branches of engineering')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 3: How Engineering Disciplines Work Together</h1>
+      <h1 class="notes-h1" id="section-3">Section 3: How Engineering Disciplines Work Together</h1>
 
       <p class="notes-p">In the real world, major engineering projects are never the work of just one discipline. They require <strong>multiple branches of engineering working together</strong> at every stage. This is called <strong>interdisciplinary engineering</strong>.</p>
 
@@ -208,7 +270,7 @@
 
       <img src="images/roles-wind-farm-interdisciplinary.png" alt="Offshore wind farm showing engineering disciplines" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;">
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task2">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Integrated engineering project</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -221,13 +283,13 @@
             <div class="task-q">Complete the table to show how each engineering branch contributed to your chosen project.</div>
             <table class="data-table">
               <tr><th>Branch</th><th>Contribution to the project</th></tr>
-              <tr><td>Civil</td><td contenteditable="true" style="padding:8px;min-height:36px;"></td></tr>
-              <tr><td>Structural</td><td contenteditable="true" style="padding:8px;"></td></tr>
-              <tr><td>Mechanical</td><td contenteditable="true" style="padding:8px;"></td></tr>
-              <tr><td>Electrical</td><td contenteditable="true" style="padding:8px;"></td></tr>
-              <tr><td>Electronic</td><td contenteditable="true" style="padding:8px;"></td></tr>
-              <tr><td>Chemical</td><td contenteditable="true" style="padding:8px;"></td></tr>
-              <tr><td>Environmental</td><td contenteditable="true" style="padding:8px;"></td></tr>
+              <tr><td>Civil</td><td class="cell-answer" contenteditable="true" data-key="ro-r2-civil" data-label="Civil" style="padding:8px;"></td></tr>
+              <tr><td>Structural</td><td class="cell-answer" contenteditable="true" data-key="ro-r2-structural" data-label="Structural" style="padding:8px;"></td></tr>
+              <tr><td>Mechanical</td><td class="cell-answer" contenteditable="true" data-key="ro-r2-mechanical" data-label="Mechanical" style="padding:8px;"></td></tr>
+              <tr><td>Electrical</td><td class="cell-answer" contenteditable="true" data-key="ro-r2-electrical" data-label="Electrical" style="padding:8px;"></td></tr>
+              <tr><td>Electronic</td><td class="cell-answer" contenteditable="true" data-key="ro-r2-electronic" data-label="Electronic" style="padding:8px;"></td></tr>
+              <tr><td>Chemical</td><td class="cell-answer" contenteditable="true" data-key="ro-r2-chemical" data-label="Chemical" style="padding:8px;"></td></tr>
+              <tr><td>Environmental</td><td class="cell-answer" contenteditable="true" data-key="ro-r2-environmental" data-label="Environmental" style="padding:8px;"></td></tr>
             </table>
           </div>
           <div class="task-item">
@@ -236,12 +298,15 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="ro-r2b" data-placeholder="Explain how the disciplines worked together..."></div>
           </div>
         </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task2', 'Task 2 — Integrated engineering project')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 4: Roles of Engineers</h1>
+      <h1 class="notes-h1" id="section-4">Section 4: Roles of Engineers</h1>
 
       <p class="notes-p">Within any engineering project, engineers take on different <strong>roles</strong> at different stages. The QS specification requires you to know four key stages and what engineers do at each.</p>
 
@@ -275,25 +340,37 @@
 
       <img src="images/roles-design-process.png" alt="Engineering design process cycle" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;">
 
-      <div class="assignment">
+      <div class="key-point">
+        <strong>Professional bodies and codes of conduct:</strong> Most engineers belong to a professional body for their discipline, such as the <strong>ICE</strong> (Institution of Civil Engineers), <strong>IStructE</strong> (Institution of Structural Engineers), <strong>IMechE</strong> (Institution of Mechanical Engineers), <strong>IET</strong> (Institution of Engineering and Technology) or <strong>IChemE</strong> (Institution of Chemical Engineers). Every member must follow that body&rsquo;s <strong>code of conduct</strong>: a set of rules for behaving professionally and responsibly. Typical rules include:
+        <ul class="notes-ul" style="margin:8px 0 6px;">
+          <li>put the <strong>health and safety of the public</strong> first</li>
+          <li>only take on work you are <strong>competent</strong> to do</li>
+          <li>be <strong>honest</strong> and accurate &mdash; never hide faults, risks or poor test results</li>
+          <li>protect the <strong>environment</strong> and act in the public interest</li>
+          <li>keep your knowledge and skills <strong>up to date</strong> throughout your career</li>
+        </ul>
+        Codes of conduct matter because people&rsquo;s lives depend on engineers&rsquo; work. If a bridge, lift or power system is designed carelessly, or a known problem is covered up, people can be seriously hurt. An engineer who breaks the code can be disciplined or lose their professional status.
+      </div>
+
+      <div class="assignment" id="assignment-task3">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Roles of engineers</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">Part A: Identifying Key Roles — think about your chosen project from Task 2 (or a major structural project like the retractable roof on Centre Court at Wimbledon). A project of this scale requires teamwork, but not every type of engineer is needed for every project. Identify two engineering disciplines that were absolutely essential to your chosen project's success.</div>
             <div class="task-q-sub">Discipline 1 (e.g. Structural Engineer):</div>
             <div class="answer-label">Discipline 1 <span class="saved-indicator" id="ind-r3a">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ro-r3a" data-placeholder="Name discipline 1..."></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ro-r3a" data-label="Discipline 1" data-placeholder="Name discipline 1..."></div>
             <div class="task-q-sub" style="margin-top:8px;">Discipline 2 (e.g. Mechanical Engineer):</div>
             <div class="answer-label">Discipline 2 <span class="saved-indicator" id="ind-r3b">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ro-r3b" data-placeholder="Name discipline 2..."></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="ro-r3b" data-label="Discipline 2" data-placeholder="Name discipline 2..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">Part B: The Project Lifecycle — for your two chosen disciplines, briefly describe their specific responsibilities during the three main phases of the project.</div>
             <table class="roles-table">
               <tr><th></th><th>Discipline 1</th><th>Discipline 2</th></tr>
-              <tr><td>1. Designing<br><span style="font-weight:400;font-size:11px;">What did they calculate, model, draw or plan before construction began?</span></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td></tr>
-              <tr><td>2. Implementing<br><span style="font-weight:400;font-size:11px;">What was their role while the project was actively being built or manufactured?</span></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td></tr>
-              <tr><td>3. Testing &amp; Controlling<br><span style="font-weight:400;font-size:11px;">How did they ensure safety, functionality and quality once the physical work was completed or underway?</span></td><td contenteditable="true" style="padding:6px;"></td><td contenteditable="true" style="padding:6px;"></td></tr>
+              <tr><td>1. Designing<br><span style="font-weight:400;font-size:11px;">What did they calculate, model, draw or plan before construction began?</span></td><td class="cell-answer" contenteditable="true" data-key="ro-r3-design-1" data-label="1. Designing - Discipline 1" style="padding:6px;"></td><td class="cell-answer" contenteditable="true" data-key="ro-r3-design-2" data-label="1. Designing - Discipline 2" style="padding:6px;"></td></tr>
+              <tr><td>2. Implementing<br><span style="font-weight:400;font-size:11px;">What was their role while the project was actively being built or manufactured?</span></td><td class="cell-answer" contenteditable="true" data-key="ro-r3-implement-1" data-label="2. Implementing - Discipline 1" style="padding:6px;"></td><td class="cell-answer" contenteditable="true" data-key="ro-r3-implement-2" data-label="2. Implementing - Discipline 2" style="padding:6px;"></td></tr>
+              <tr><td>3. Testing &amp; Controlling<br><span style="font-weight:400;font-size:11px;">How did they ensure safety, functionality and quality once the physical work was completed or underway?</span></td><td class="cell-answer" contenteditable="true" data-key="ro-r3-test-1" data-label="3. Testing and Controlling - Discipline 1" style="padding:6px;"></td><td class="cell-answer" contenteditable="true" data-key="ro-r3-test-2" data-label="3. Testing and Controlling - Discipline 2" style="padding:6px;"></td></tr>
             </table>
           </div>
           <div class="task-item">
@@ -302,12 +379,15 @@
             <div class="answer-box" contenteditable="true" data-key="ro-r3c" data-placeholder="Explain why a code of conduct is important..."></div>
           </div>
         </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task3', 'Task 3 — Roles of engineers')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 5: Career Paths in Engineering</h1>
+      <h1 class="notes-h1" id="section-5">Section 5: Career Paths in Engineering</h1>
 
       <div class="key-point">This section is not directly assessed as part of the QS specification, but it's well worth exploring — it connects your course work to real career and Developing the Young Workforce (DYW) opportunities.</div>
 
@@ -323,7 +403,7 @@
 
       <div class="key-point">Engineering is one of the best-paid and most in-demand careers in Scotland and the UK. Scotland has a particularly strong demand for engineers in renewable energy, civil infrastructure, oil and gas, and advanced manufacturing.</div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task4">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Research task</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -332,15 +412,160 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="ro-r4a" data-placeholder="Branch: ... What they do: ... Real project: ... Qualifications: ... Current challenge: ..."></div>
           </div>
         </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task4', 'Task 4 — Research task')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-6">Section 6: Engineering Challenges</h1>
+
+      <p class="notes-p">Tasks 1&ndash;4 checked that you know the seven branches of engineering and the four roles engineers carry out. The three challenges below work differently. Each one gives you a real-world context and a written <strong>specification</strong>, the same way an assignment brief does. Nobody tells you which engineers are needed: you have to work that out from the specification and justify your choices.</p>
+
+      <div class="key-point">
+        <strong>How to approach these:</strong> Read every specification point and ask <em>&ldquo;what kind of problem is this?&rdquo;</em> Loads and forces point to structural engineers; moving parts to mechanical; generating or transmitting power to electrical; sensors, monitoring and control to electronic; materials, coatings and processes to chemical; wildlife, pollution and waste to environmental; ground works, water and transport routes to civil. Most points need more than one discipline, so look for where they overlap.
+      </div>
+
+      <hr class="divider">
+      <h2 class="notes-h2" id="ch1">Challenge 1 &mdash; Community hydro scheme</h2>
+      <p class="notes-p">A community in a Highland glen wants to build a small hydro-electric scheme. Water will be taken from a burn high on the hillside, carried downhill in a buried pipe, and used to spin a turbine in a small powerhouse beside the glen road. The river below the scheme is an important spawning ground for salmon.</p>
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>The scheme must generate enough electricity to supply around 60 homes and feed it into the local grid.</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>The intake on the burn must always leave enough water flowing to protect fish and other wildlife.</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>The pipe must be buried along its full length so that it can&rsquo;t be seen from the glen road.</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>The scheme must be monitored and controlled remotely, as nobody will be on site from day to day.</td></tr>
+      </table>
+      <div class="assignment" id="assignment-ch1">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Challenge 1 &mdash; Community hydro scheme</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">C1a. For each point of the specification, identify the branch of engineering that would take the lead and explain why.</div>
+            <div class="answer-label">Lead discipline for each point <span class="saved-indicator" id="ind-c1a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="ro-c1a" data-placeholder="i: … because …&#10;ii: … because …&#10;iii: … because …&#10;iv: … because …"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C1b. Choose two of the disciplines you named in (a). For each one, describe one thing it would do during the <strong>designing</strong> stage and one thing it would do during the <strong>implementing</strong> stage.</div>
+            <div class="answer-label">Designing and implementing <span class="saved-indicator" id="ind-c1b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="ro-c1b" data-placeholder="Discipline 1 — designing: … implementing: …&#10;Discipline 2 — designing: … implementing: …"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C1c. Specification points (i) and (iv) can&rsquo;t be met by one discipline working alone. Choose one of these points and explain how two disciplines would need to work together to meet it.</div>
+            <div class="answer-label">Working together <span class="saved-indicator" id="ind-c1c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="ro-c1c" data-placeholder="Point chosen: … The two disciplines are … They would work together by …"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C1d. Once the scheme is running, describe how engineers would <strong>test</strong> and <strong>control</strong> it to make sure it keeps meeting specification point (ii).</div>
+            <div class="answer-label">Testing and controlling <span class="saved-indicator" id="ind-c1d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="ro-c1d" data-placeholder="Testing: …&#10;Controlling: …"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-ch1', 'Challenge 1 — Community hydro scheme')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h2 class="notes-h2" id="ch2">Challenge 2 &mdash; Step-free station footbridge</h2>
+      <p class="notes-p">A town&rsquo;s railway station has an old stepped footbridge that people using wheelchairs, pushchairs or heavy luggage can&rsquo;t use. It is to be replaced with a new step-free footbridge with a lift tower on each platform. The railway underneath is electrified, with overhead power lines, and trains run every few minutes during the day.</p>
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>The bridge must safely carry large crowds of passengers, including at busy times after football matches and concerts.</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>Each platform must have a lift big enough to carry a wheelchair user and a companion.</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>Construction must be planned so that trains are disrupted for as little time as possible.</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>The lifts must report faults automatically so that they can be repaired quickly.</td></tr>
+      </table>
+      <div class="assignment" id="assignment-ch2">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Challenge 2 &mdash; Step-free station footbridge</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">C2a. Identify four branches of engineering needed on this project. For each one, state which specification point it is mainly responsible for and describe its contribution.</div>
+            <div class="answer-label">Four disciplines <span class="saved-indicator" id="ind-c2a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="ro-c2a" data-placeholder="1. … — point … — contribution: …&#10;2. …&#10;3. …&#10;4. …"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C2b. During construction, the team discovers that the ground under one of the lift towers is much softer than the original survey showed. Identify which discipline(s) would deal with this problem and describe what they would need to do.</div>
+            <div class="answer-label">Solving the problem <span class="saved-indicator" id="ind-c2b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="ro-c2b" data-placeholder="Discipline(s): … What they would do: …"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C2c. Describe two tests that engineers should carry out on the lifts before the bridge opens to the public. For each, explain what the test is checking.</div>
+            <div class="answer-label">Two tests <span class="saved-indicator" id="ind-c2c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="ro-c2c" data-placeholder="Test 1: … It checks …&#10;Test 2: … It checks …"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C2d. Suggest one improvement that would make the new footbridge better than the specification requires. Identify which discipline would be responsible for it.</div>
+            <div class="answer-label">Improvement <span class="saved-indicator" id="ind-c2d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box" contenteditable="true" data-key="ro-c2d" data-placeholder="Improvement: … Discipline responsible: …"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-ch2', 'Challenge 2 — Step-free station footbridge')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h2 class="notes-h2" id="ch3">Challenge 3 &mdash; Electric island ferry</h2>
+      <p class="notes-p">A council plans to replace the diesel ferry on a short crossing between the mainland and a west-coast island with a battery-electric ferry. The ferry will be charged from the grid at the mainland pier during the few minutes it spends there loading and unloading vehicles.</p>
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>The ferry&rsquo;s batteries must be recharged during its turnaround time at the mainland pier.</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>The pier must be strengthened to hold the charging equipment and to withstand winter storms.</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>The ferry&rsquo;s hull and the pier equipment must resist corrosion from seawater.</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>The charge level and temperature of the batteries must be monitored continuously on every crossing.</td></tr>
+        <tr><th><span class="data-badge">v</span></th><td>Construction work at the pier must not pollute the harbour or harm marine wildlife.</td></tr>
+      </table>
+      <div class="assignment" id="assignment-ch3">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Challenge 3 &mdash; Electric island ferry</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">C3a. Match each point of the specification to the branch of engineering most responsible for it. Then state whether any of the seven branches from Section 2 is <strong>not</strong> needed on this project, and justify your answer.</div>
+            <div class="answer-label">Matching and justification <span class="saved-indicator" id="ind-c3a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="ro-c3a" data-placeholder="i: …&#10;ii: …&#10;iii: …&#10;iv: …&#10;v: …&#10;Branch not needed (if any): … because …"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C3b. For specification point (iv), describe what engineers would do at each of the four stages.</div>
+            <table class="roles-table">
+              <tr><th>Stage</th><th>What engineers would do for point (iv)</th></tr>
+              <tr><td>&#x1F4D0; Designing</td><td class="cell-answer" contenteditable="true" data-key="ro-c3b-design" data-label="Designing" style="padding:6px;"></td></tr>
+              <tr><td>&#x1F3D7;&#xFE0F; Implementing</td><td class="cell-answer" contenteditable="true" data-key="ro-c3b-implement" data-label="Implementing" style="padding:6px;"></td></tr>
+              <tr><td>&#x1F52C; Testing</td><td class="cell-answer" contenteditable="true" data-key="ro-c3b-test" data-label="Testing" style="padding:6px;"></td></tr>
+              <tr><td>&#x1F39B;&#xFE0F; Controlling</td><td class="cell-answer" contenteditable="true" data-key="ro-c3b-control" data-label="Controlling" style="padding:6px;"></td></tr>
+            </table>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C3c. Explain one way that decisions made by the electrical engineers could affect the work of the civil or structural engineers on this project.</div>
+            <div class="answer-label">Effect on other disciplines <span class="saved-indicator" id="ind-c3c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box" contenteditable="true" data-key="ro-c3c" data-placeholder="If the electrical engineers decide … then the civil/structural engineers would have to …"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C3d. Describe one benefit and one drawback of replacing the diesel ferry with an electric one. (You&rsquo;ll look at impacts like these in much more detail in the next topic, Impacts of Engineering.)</div>
+            <div class="answer-label">Benefit and drawback <span class="saved-indicator" id="ind-c3d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box" contenteditable="true" data-key="ro-c3d" data-placeholder="Benefit: …&#10;Drawback: …"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-ch3', 'Challenge 3 — Electric island ferry')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
       </div>
 
       <!-- Controls -->
       <div class="controls-bar">
         <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-download-all" id="downloadAllBtn" onclick="downloadAllAnswersPDF()">&#x2B07;&#xFE0F; Download ALL my answers (PDF)</button>
         <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
         <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
       </div>
       <div class="storage-status" id="storage-status">Last saved: never</div>
+
+      <div class="page-nav" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
+        <button class="ctrl-btn ctrl-btn-print" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});">&#x2B06;&#xFE0F; Back to top</button>
+        <a href="index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">&#x2302; Main menu</a>
+        <!-- TODO: point this at the Impacts of Engineering course notes once the folder name is confirmed, e.g. ../FOLDER-NAME/course-notes.html -->
+        <a href="../index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">Next section &#x2192;</a>
+      </div>
 
     </div>
     </div>
@@ -348,17 +573,19 @@
 </div>
 <footer class="footer"><span>Engineering Science Scotland &middot; Aligned to QS course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
 <script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
 <script>
 const STORAGE_PREFIX='ess_answers_';
 function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
 function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
 function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
-function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
-function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function showSaved(key){var ind=document.getElementById('ind-'+key.replace(/^ro-/,''));if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('[data-key]').forEach(function(b){var k=b.dataset.key;if(k){try{localStorage.removeItem(STORAGE_PREFIX+k);}catch(e){}b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
 function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
 document.addEventListener('DOMContentLoaded',function(){
-  document.querySelectorAll('.answer-box').forEach(function(box){
+  /* Answer boxes AND the editable table cells both autosave */
+  document.querySelectorAll('[data-key]').forEach(function(box){
     var key=box.dataset.key;if(!key)return;
     var saved=loadValue(key);if(saved)box.innerHTML=saved;
     var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
@@ -366,6 +593,228 @@ document.addEventListener('DOMContentLoaded',function(){
     box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
   });
 });
+
+/* ── PDF export ─────────────────────────────────────────────── */
+/* jsPDF's built-in font can't show some symbols, so convert them to plain text */
+function pdfSafe(s){
+  if(!s)return '';
+  return String(s)
+    .replace(/[\u2018\u2019\u201B\u2032]/g,"'")
+    .replace(/[\u201C\u201D\u201F\u2033]/g,'"')
+    .replace(/[\u2013\u2014\u2212]/g,'-')
+    .replace(/\u2026/g,'...')
+    .replace(/\u00A0/g,' ')
+    .replace(/\u2713/g,'')
+    .replace(/\u03C3/g,'sigma').replace(/\u03B5/g,'epsilon').replace(/\u0394/g,'delta').replace(/\u03C0/g,'pi')
+    .replace(/[^\x00-\xFF]/g,'');
+}
+
+var PUPIL_NAME_KEY='roles-pupil-name';
+function getPupilName(){try{return localStorage.getItem(PUPIL_NAME_KEY)||'';}catch(e){return '';}}
+
+function pdfNewDoc(){
+  var doc=new window.jspdf.jsPDF({unit:'pt',format:'a4'});
+  var state={margin:48,pageWidth:doc.internal.pageSize.getWidth(),pageHeight:doc.internal.pageSize.getHeight()};
+  state.usableWidth=state.pageWidth-state.margin*2;
+  state.y=state.margin;
+  return {doc:doc,state:state};
+}
+
+function pdfAddHeader(doc,state,taskLabel){
+  doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(15,90,68);
+  doc.text('Engineering Science Scotland',state.margin,state.y);state.y+=20;
+  doc.setFontSize(14);doc.setTextColor(30,30,30);
+  var tLines=doc.splitTextToSize(pdfSafe(taskLabel),state.usableWidth);
+  doc.text(tLines,state.margin,state.y);state.y+=tLines.length*16+6;
+  doc.setFont('helvetica','normal');doc.setFontSize(11);doc.setTextColor(90,90,90);
+  var pupilName=getPupilName();
+  var todayStr=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  var nameLine=pupilName?('Name: '+pdfSafe(pupilName)+'      Date: '+todayStr):('Name: _________________________________      Date: _______________');
+  doc.text(nameLine,state.margin,state.y);state.y+=20;
+  doc.setDrawColor(200,200,200);doc.line(state.margin,state.y,state.pageWidth-state.margin,state.y);state.y+=18;
+}
+
+function pdfEnsureSpace(doc,state,h){if(state.y+h>state.pageHeight-state.margin){doc.addPage();state.y=state.margin;}}
+
+function pdfWriteAnswer(doc,state,el){
+  var img=el.querySelector('img');
+  if(img&&img.src){
+    try{
+      var props=doc.getImageProperties(img.src);
+      var ratio=Math.min(state.usableWidth/props.width,260/props.height,1);
+      var w=props.width*ratio,h=props.height*ratio;
+      pdfEnsureSpace(doc,state,h+14);
+      doc.addImage(img.src,props.fileType||'PNG',state.margin,state.y,w,h);
+      state.y+=h+10;
+    }catch(e){
+      doc.setFont('helvetica','italic');doc.setFontSize(11);doc.setTextColor(160,60,60);
+      pdfEnsureSpace(doc,state,14);doc.text('[Could not embed pasted image]',state.margin,state.y);state.y+=16;
+    }
+  }
+  var text=pdfSafe(el.innerText.trim());
+  if(img&&!text)return;
+  doc.setFontSize(11);
+  if(!text){doc.setFont('helvetica','italic');doc.setTextColor(160,160,160);text='(no answer entered yet)';}
+  else{doc.setFont('helvetica','normal');doc.setTextColor(40,40,40);}
+  var lines=doc.splitTextToSize(text,state.usableWidth);
+  for(var i=0;i<lines.length;i++){pdfEnsureSpace(doc,state,14);doc.text(lines[i],state.margin,state.y);state.y+=14;}
+  state.y+=6;
+}
+
+/* Each task item: question in bold, then every saved field (answer boxes and table cells) in page order */
+function pdfRenderPanelItems(doc,state,panel){
+  var items=panel.querySelectorAll('.task-item');
+  for(var i=0;i<items.length;i++){
+    var qEl=items[i].querySelector('.task-q');
+    var qText=qEl?pdfSafe(qEl.innerText.trim()):'';
+    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(15,90,68);
+    var qLines=doc.splitTextToSize(qText,state.usableWidth);
+    pdfEnsureSpace(doc,state,qLines.length*14+6);
+    doc.text(qLines,state.margin,state.y);state.y+=qLines.length*14+6;
+    var fields=items[i].querySelectorAll('[data-key]');
+    for(var f=0;f<fields.length;f++){
+      var lab=fields[f].dataset.label;
+      if(lab){
+        doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(90,90,90);
+        pdfEnsureSpace(doc,state,28);doc.text(pdfSafe(lab)+':',state.margin,state.y);state.y+=13;
+      }
+      pdfWriteAnswer(doc,state,fields[f]);
+    }
+    state.y+=6;
+  }
+}
+
+function pdfAddFooters(doc,state){
+  var n=doc.internal.getNumberOfPages();
+  for(var p=1;p<=n;p++){
+    doc.setPage(p);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(150,150,150);
+    doc.text('Page '+p+' of '+n+'  -  engineeringsciencescotland.co.uk',state.margin,state.pageHeight-24);
+  }
+}
+
+function downloadTaskPDF(panelId,taskLabel){
+  var panel=document.getElementById(panelId);if(!panel)return;
+  var btn=panel.querySelector('.task-download-btn');var orig=btn?btn.innerHTML:'';
+  if(btn){btn.disabled=true;btn.innerHTML='Building PDF&hellip;';}
+  setTimeout(function(){
+    try{
+      var o=pdfNewDoc();
+      pdfAddHeader(o.doc,o.state,taskLabel);
+      pdfRenderPanelItems(o.doc,o.state,panel);
+      pdfAddFooters(o.doc,o.state);
+      o.doc.save(pdfSafe(taskLabel).replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'-')+'.pdf');
+    }catch(err){console.error(err);alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.');}
+    finally{if(btn){btn.disabled=false;btn.innerHTML=orig;}}
+  },30);
+}
+
+/* Keep this list in sync with the task panels on the page, in page order */
+var ALL_TASK_PANELS=[
+  ['assignment-task1','Task 1 — Branches of engineering'],
+  ['assignment-task2','Task 2 — Integrated engineering project'],
+  ['assignment-task3','Task 3 — Roles of engineers'],
+  ['assignment-task4','Task 4 — Research task'],
+  ['assignment-ch1','Challenge 1 — Community hydro scheme'],
+  ['assignment-ch2','Challenge 2 — Step-free station footbridge'],
+  ['assignment-ch3','Challenge 3 — Electric island ferry']
+];
+
+function downloadAllAnswersPDF(){
+  var btn=document.getElementById('downloadAllBtn');var orig=btn?btn.innerHTML:'';
+  if(btn){btn.disabled=true;btn.innerHTML='Building PDF&hellip;';}
+  setTimeout(function(){
+    try{
+      var o=pdfNewDoc(),doc=o.doc,state=o.state;
+      pdfAddHeader(doc,state,'Engineering Roles and Disciplines — All my answers');
+      for(var i=0;i<ALL_TASK_PANELS.length;i++){
+        var panel=document.getElementById(ALL_TASK_PANELS[i][0]);if(!panel)continue;
+        pdfEnsureSpace(doc,state,40);
+        doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(194,65,12);
+        doc.text(pdfSafe(ALL_TASK_PANELS[i][1]),state.margin,state.y);state.y+=8;
+        doc.setDrawColor(230,200,180);doc.line(state.margin,state.y,state.pageWidth-state.margin,state.y);state.y+=16;
+        pdfRenderPanelItems(doc,state,panel);state.y+=10;
+      }
+      pdfAddFooters(doc,state);
+      doc.save('Engineering-Roles-and-Disciplines-All-My-Answers.pdf');
+    }catch(err){console.error(err);alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.');}
+    finally{if(btn){btn.disabled=false;btn.innerHTML=orig;}}
+  },30);
+}
+
+/* ── Contents panel ─────────────────────────────────────────── */
+function openToc(){document.getElementById('tocPanel').classList.add('open');document.getElementById('tocOverlay').classList.add('open');}
+function closeToc(){document.getElementById('tocPanel').classList.remove('open');document.getElementById('tocOverlay').classList.remove('open');}
+
+/* ── My Name ────────────────────────────────────────────────── */
+function updateNameFabLabel(){var l=document.getElementById('nameFabLabel');if(!l)return;var n=getPupilName();l.textContent=n?n:'My Name';}
+function openNamePanel(){
+  var input=document.getElementById('nameInput');if(input)input.value=getPupilName();
+  var msg=document.getElementById('nameSavedMsg');if(msg)msg.classList.remove('show');
+  document.getElementById('nameOverlay').classList.add('open');
+  if(input)setTimeout(function(){input.focus();},50);
+}
+function closeNamePanel(){document.getElementById('nameOverlay').classList.remove('open');}
+function closeNameOverlayClick(e){if(e.target.id==='nameOverlay')closeNamePanel();}
+function saveNameInput(){
+  var input=document.getElementById('nameInput');var name=input?input.value.trim():'';
+  try{localStorage.setItem(PUPIL_NAME_KEY,name);}catch(e){}
+  updateNameFabLabel();
+  var msg=document.getElementById('nameSavedMsg');if(msg)msg.classList.add('show');
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeToc();closeNamePanel();}});
+</script>
+
+    <button class="toc-fab" id="tocFab" onclick="openToc()">&#x2630; Contents</button>
+
+    <button class="name-fab" id="nameFab" onclick="openNamePanel()"><span class="name-fab-icon">&#x1F464;</span><span id="nameFabLabel">My Name</span></button>
+
+    <div class="name-overlay" id="nameOverlay" onclick="closeNameOverlayClick(event)">
+      <div class="name-panel">
+        <button class="name-panel-close" onclick="closeNamePanel()" aria-label="Close">&times;</button>
+        <h3>Your name</h3>
+        <p>Enter your name once and it&rsquo;ll be added to the top of every task&rsquo;s downloaded PDF &mdash; no need to write it in by hand each time.</p>
+        <input type="text" id="nameInput" placeholder="e.g. Jamie Smith" maxlength="60">
+        <button class="name-panel-save" onclick="saveNameInput()">Save name</button>
+        <div class="name-panel-saved-msg" id="nameSavedMsg">&#x2713; Saved &mdash; it&rsquo;ll now appear on your PDFs</div>
+      </div>
+    </div>
+
+    <div class="toc-overlay" id="tocOverlay" onclick="closeToc()"></div>
+    <div class="toc-panel" id="tocPanel">
+      <div class="toc-panel-header">
+        <h3>Contents</h3>
+        <button class="toc-panel-close" onclick="closeToc()" aria-label="Close">&times;</button>
+      </div>
+      <nav class="toc-list" id="tocList">
+        <a href="#section-1" onclick="closeToc()">Section 1: What is Engineering?</a>
+        <a href="#section-2" onclick="closeToc()">Section 2: The Seven Main Branches of Engineering</a>
+        <a href="#section-3" onclick="closeToc()">Section 3: How Engineering Disciplines Work Together</a>
+        <a href="#section-4" onclick="closeToc()">Section 4: Roles of Engineers</a>
+        <a href="#section-5" onclick="closeToc()">Section 5: Career Paths in Engineering</a>
+        <a href="#section-6" onclick="closeToc()">Section 6: Engineering Challenges</a>
+        <a href="#ch1" class="toc-sub" onclick="closeToc()">Challenge 1 — Community hydro scheme</a>
+        <a href="#ch2" class="toc-sub" onclick="closeToc()">Challenge 2 — Step-free station footbridge</a>
+        <a href="#ch3" class="toc-sub" onclick="closeToc()">Challenge 3 — Electric island ferry</a>
+      </nav>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded',updateNameFabLabel);
+(function(){
+  var nameInputEl=document.getElementById('nameInput');
+  if(nameInputEl)nameInputEl.addEventListener('keydown',function(e){if(e.key==='Enter')saveNameInput();});
+  /* Scroll-spy: highlight the Contents link for the section in view */
+  var links=Array.prototype.slice.call(document.querySelectorAll('.toc-list a'));
+  var targets=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));}).filter(Boolean);
+  if(!targets.length||!('IntersectionObserver' in window))return;
+  var observer=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      var link=document.querySelector('.toc-list a[href="#'+entry.target.id+'"]');
+      if(link&&entry.isIntersecting){links.forEach(function(a){a.classList.remove('toc-active');});link.classList.add('toc-active');}
+    });
+  },{rootMargin:'-15% 0px -70% 0px',threshold:0});
+  targets.forEach(function(t){observer.observe(t);});
+})();
 </script>
 </body>
 </html>
