@@ -6,11 +6,11 @@
   <title>The Systems Approach — Course Notes — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
-    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 16px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:6px; }
     .back-link:hover { color:var(--teal-800); }
-    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
-    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); scroll-margin-top:100px; }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; scroll-margin-top:100px; }
     .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:16px 0 8px; }
     .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
     .notes-p strong { color:var(--gray-900); }
@@ -23,6 +23,7 @@
     .diagram-placeholder-text { font-size:13px; color:#0369a1; font-weight:600; }
     .diagram-placeholder-sub { font-size:11px; color:#7dd3fc; margin-top:4px; font-style:italic; }
     .compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0; }
+    @media (max-width:640px) { .compare-grid { grid-template-columns:1fr; } }
     .compare-card { background:white; border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; }
     .compare-card-header { padding:10px 14px; font-size:13px; font-weight:700; color:white; }
     .compare-card-body { padding:12px 14px; font-size:13px; color:var(--gray-600); line-height:1.6; }
@@ -62,8 +63,63 @@
     .ctrl-btn-print { background:var(--teal-50); color:var(--teal-800); }
     .ctrl-btn-print:hover { background:var(--teal-100); }
     .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
+
+    /* ── Overlay answer boxes on the Task 3 diagram ── */
+    .overlay-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; font-weight:400; pointer-events:none; }
+
+    /* ── Spec tables (Design Challenges) ── */
+    .spec-table { width:100%; border-collapse:collapse; margin:10px 0 18px; font-size:13px; }
+    .spec-table td { padding:8px 10px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; line-height:1.6; }
+    .spec-table td:first-child { width:36px; }
+    .data-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:var(--teal-50); color:var(--teal-800); font-size:11px; font-weight:700; border:1px solid var(--teal-100); }
+
+    /* ── Floating buttons (Feedback is placed by site.js at bottom:24px) ── */
+    .float-btn { position:fixed; right:24px; width:120px; box-sizing:border-box; padding:12px 14px; font-size:13px; font-weight:700; color:white; border:none; border-radius:999px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 6px 18px rgba(0,0,0,.25); z-index:9998; font-family:inherit; transition:background .15s; }
+    .float-btn .fb-label { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+    #toc-btn { bottom:76px; background:#c2410c; }
+    #toc-btn:hover { background:#9a3412; }
+    #name-btn { bottom:132px; background:#4f46e5; }
+    #name-btn:hover { background:#3730a3; }
+
+    /* ── Contents slide-out panel ── */
+    .toc-backdrop { position:fixed; inset:0; background:rgba(15,23,42,.35); opacity:0; pointer-events:none; transition:opacity .2s; z-index:10000; }
+    .toc-backdrop.open { opacity:1; pointer-events:auto; }
+    .toc-panel { position:fixed; top:0; right:0; height:100%; width:320px; max-width:88vw; background:white; box-shadow:-8px 0 28px rgba(0,0,0,.18); transform:translateX(105%); transition:transform .25s ease; z-index:10001; display:flex; flex-direction:column; }
+    .toc-panel.open { transform:translateX(0); }
+    .toc-head { display:flex; align-items:center; justify-content:space-between; padding:16px 18px; border-bottom:1px solid var(--gray-200); }
+    .toc-head h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-800); margin:0; }
+    .toc-close { background:none; border:none; font-size:24px; line-height:1; cursor:pointer; color:var(--gray-500); }
+    .toc-list { list-style:none; margin:0; padding:10px 0; overflow-y:auto; }
+    .toc-list a { display:block; padding:8px 18px; font-size:13px; color:var(--gray-700); text-decoration:none; border-left:3px solid transparent; line-height:1.4; }
+    .toc-list a:hover { background:var(--gray-50); }
+    .toc-list a.toc-sub { padding-left:34px; font-size:12px; color:var(--gray-500); }
+    .toc-list a.active { border-left-color:#c2410c; background:#fff7ed; color:#9a3412; font-weight:600; }
+
+    /* ── Name popup ── */
+    .name-modal { position:fixed; inset:0; background:rgba(15,23,42,.45); display:none; align-items:center; justify-content:center; z-index:10002; }
+    .name-modal.open { display:flex; }
+    .name-card { background:white; border-radius:12px; padding:22px; width:320px; max-width:90vw; box-shadow:0 12px 40px rgba(0,0,0,.25); }
+    .name-card h3 { margin:0 0 6px; font-size:16px; color:var(--gray-900); }
+    .name-card p { margin:0 0 12px; font-size:12px; color:var(--gray-500); line-height:1.5; }
+    .name-card input { width:100%; box-sizing:border-box; padding:9px 11px; border:2px solid #c7d7f5; border-radius:8px; font-size:14px; outline:none; }
+    .name-card input:focus { border-color:var(--teal-400); }
+    .name-actions { display:flex; gap:8px; justify-content:flex-end; margin-top:14px; }
+
+    /* ── Per-task PDF footer strip ── */
+    .pdf-strip { display:flex; justify-content:flex-end; padding:10px 18px; background:var(--teal-50); border-top:1px solid var(--teal-100); }
+    .ctrl-btn-pdf { background:#0f766e; color:white; }
+    .ctrl-btn-pdf:hover { background:#115e59; }
+
+    /* ── Exemplar lightbox ── */
+    .exemplar { margin:10px 0 2px; }
+    .exemplar-thumb { display:inline-flex; align-items:center; gap:12px; background:white; border:1px solid var(--gray-200); border-radius:8px; padding:6px 12px 6px 6px; cursor:pointer; font-family:inherit; font-size:12px; font-weight:600; color:var(--teal-800); text-align:left; }
+    .exemplar-thumb:hover { border-color:var(--teal-400); }
+    .exemplar-thumb img { width:120px; height:80px; object-fit:cover; border-radius:5px; filter:blur(1.5px); flex-shrink:0; display:block; }
+    .lightbox { position:fixed; inset:0; background:rgba(0,0,0,.85); display:none; align-items:center; justify-content:center; z-index:10003; cursor:zoom-out; padding:20px; box-sizing:border-box; }
+    .lightbox.open { display:flex; }
+    .lightbox img { max-width:92vw; max-height:88vh; border-radius:8px; background:white; }
     .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
-    @media print { .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator{display:none!important;} .layout{display:block!important;} .main{margin:0!important;padding:0!important;} .answer-box{border:1.5px solid #94a3b8!important;background:white!important;} }
+    @media print { .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.float-btn,.toc-panel,.toc-backdrop,.name-modal,.pdf-strip,.lightbox,.page-nav,.exemplar{display:none!important;} .layout{display:block!important;} .main{margin:0!important;padding:0!important;} .answer-box{border:1.5px solid #94a3b8!important;background:white!important;} }
   </style>
 </head>
 <body>
@@ -88,7 +144,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 11 September 2026</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 26 September 2026, 11:04</div>
       <div class="hero-label">National 5 &middot; Engineering Contexts &rsaquo; The Systems Approach</div>
       <h1 class="hero-title">&#x1F4CA; The Systems Approach &mdash; Course Notes</h1>
       <p class="hero-sub">Systems diagrams, sub-systems, open and closed-loop control, feedback</p>
@@ -99,7 +155,7 @@
       <a href="index.html" class="back-link">&larr; Back to The Systems Approach</a>
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 1: What is a System?</h1>
+      <h1 class="notes-h1" id="section-1">Section 1: What is a System?</h1>
 
       <p class="notes-p">Engineers and designers are in the business of <strong>solving problems</strong>. Whether designing a new bridge, a home electronic device, or a satellite communications system, engineers use a common way of thinking called the <strong>systems approach</strong>.</p>
 
@@ -167,7 +223,7 @@
 
       <div class="warning">&#x26A0;&#xFE0F; Do <strong>not</strong> include electricity as an input in systems diagrams — electricity is part of the system, not a real-world input. Instead write the real-world input that triggers the system (e.g. "light", "heat", "signal").</div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task1">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Universal systems diagrams</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -177,7 +233,7 @@
             <div style="display:flex;align-items:center;">
               <div style="flex:1;min-width:0;">
                 <div style="font-size:10px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Inputs</div>
-                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1a" data-placeholder="e.g. cold water, switch on..."></div>
+                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1a" data-q="Kettle — inputs" data-placeholder="e.g. cold water, switch on..."></div>
               </div>
               <div style="display:flex;align-items:center;padding:0 6px;flex-shrink:0;">
                 <svg viewBox="0 0 54 20" width="54" height="20" xmlns="http://www.w3.org/2000/svg">
@@ -194,7 +250,7 @@
               </div>
               <div style="flex:1;min-width:0;">
                 <div style="font-size:10px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Outputs (wanted + unwanted)</div>
-                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1a-out" data-placeholder="e.g. hot water, steam, heat (unwanted)..."></div>
+                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1a-out" data-q="Kettle — outputs (wanted + unwanted)" data-placeholder="e.g. hot water, steam, heat (unwanted)..."></div>
               </div>
             </div>
           </div>
@@ -202,7 +258,7 @@
             <div style="display:flex;align-items:center;">
               <div style="flex:1;min-width:0;">
                 <div style="font-size:10px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Inputs</div>
-                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1b" data-placeholder="Inputs..."></div>
+                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1b" data-q="Toaster — inputs" data-placeholder="Inputs..."></div>
               </div>
               <div style="display:flex;align-items:center;padding:0 6px;flex-shrink:0;">
                 <svg viewBox="0 0 54 20" width="54" height="20" xmlns="http://www.w3.org/2000/svg">
@@ -219,7 +275,7 @@
               </div>
               <div style="flex:1;min-width:0;">
                 <div style="font-size:10px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Outputs (wanted + unwanted)</div>
-                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1b-out" data-placeholder="Outputs (wanted + unwanted)..."></div>
+                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1b-out" data-q="Toaster — outputs (wanted + unwanted)" data-placeholder="Outputs (wanted + unwanted)..."></div>
               </div>
             </div>
           </div>
@@ -227,7 +283,7 @@
             <div style="display:flex;align-items:center;">
               <div style="flex:1;min-width:0;">
                 <div style="font-size:10px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Inputs</div>
-                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1c" data-placeholder="Inputs..."></div>
+                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1c" data-q="Radio — inputs" data-placeholder="Inputs..."></div>
               </div>
               <div style="display:flex;align-items:center;padding:0 6px;flex-shrink:0;">
                 <svg viewBox="0 0 54 20" width="54" height="20" xmlns="http://www.w3.org/2000/svg">
@@ -244,7 +300,7 @@
               </div>
               <div style="flex:1;min-width:0;">
                 <div style="font-size:10px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Outputs (wanted + unwanted)</div>
-                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1c-out" data-placeholder="Outputs (wanted + unwanted)..."></div>
+                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1c-out" data-q="Radio — outputs (wanted + unwanted)" data-placeholder="Outputs (wanted + unwanted)..."></div>
               </div>
             </div>
           </div>
@@ -252,7 +308,7 @@
             <div style="display:flex;align-items:center;">
               <div style="flex:1;min-width:0;">
                 <div style="font-size:10px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Inputs</div>
-                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1d" data-placeholder="Inputs..."></div>
+                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1d" data-q="Washing machine — inputs" data-placeholder="Inputs..."></div>
               </div>
               <div style="display:flex;align-items:center;padding:0 6px;flex-shrink:0;">
                 <svg viewBox="0 0 54 20" width="54" height="20" xmlns="http://www.w3.org/2000/svg">
@@ -269,7 +325,7 @@
               </div>
               <div style="flex:1;min-width:0;">
                 <div style="font-size:10px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Outputs (wanted + unwanted)</div>
-                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1d-out" data-placeholder="Outputs (wanted + unwanted)..."></div>
+                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1d-out" data-q="Washing machine — outputs (wanted + unwanted)" data-placeholder="Outputs (wanted + unwanted)..."></div>
               </div>
             </div>
           </div>
@@ -277,7 +333,7 @@
             <div style="display:flex;align-items:center;">
               <div style="flex:1;min-width:0;">
                 <div style="font-size:10px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Inputs</div>
-                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1e" data-placeholder="Inputs..."></div>
+                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1e" data-q="3D printer — inputs" data-placeholder="Inputs..."></div>
               </div>
               <div style="display:flex;align-items:center;padding:0 6px;flex-shrink:0;">
                 <svg viewBox="0 0 54 20" width="54" height="20" xmlns="http://www.w3.org/2000/svg">
@@ -294,7 +350,7 @@
               </div>
               <div style="flex:1;min-width:0;">
                 <div style="font-size:10px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Outputs (wanted + unwanted)</div>
-                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1e-out" data-placeholder="Outputs (wanted + unwanted)..."></div>
+                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1e-out" data-q="3D printer — outputs (wanted + unwanted)" data-placeholder="Outputs (wanted + unwanted)..."></div>
               </div>
             </div>
           </div>
@@ -302,7 +358,7 @@
             <div style="display:flex;align-items:center;">
               <div style="flex:1;min-width:0;">
                 <div style="font-size:10px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Inputs</div>
-                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1f" data-placeholder="Inputs..."></div>
+                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1f" data-q="Fire alarm — inputs" data-placeholder="Inputs..."></div>
               </div>
               <div style="display:flex;align-items:center;padding:0 6px;flex-shrink:0;">
                 <svg viewBox="0 0 54 20" width="54" height="20" xmlns="http://www.w3.org/2000/svg">
@@ -319,7 +375,7 @@
               </div>
               <div style="flex:1;min-width:0;">
                 <div style="font-size:10px;font-weight:700;color:var(--gray-500);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px;">Outputs (wanted + unwanted)</div>
-                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1f-out" data-placeholder="Outputs (wanted + unwanted)..."></div>
+                <div class="answer-box answer-box-sm" contenteditable="true" data-key="sys-s1f-out" data-q="Fire alarm — outputs (wanted + unwanted)" data-placeholder="Outputs (wanted + unwanted)..."></div>
               </div>
             </div>
           </div>
@@ -331,7 +387,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 2: Sub-Systems Diagrams</h1>
+      <h1 class="notes-h1" id="section-2">Section 2: Sub-Systems Diagrams</h1>
 
       <p class="notes-p">The universal system diagram tells us what goes in and what comes out — but not how it works inside. The next step is to <strong>divide the process box</strong> into its sub-systems, showing how each part of the system interacts.</p>
 
@@ -340,7 +396,6 @@
       <h2 class="notes-h2">Key terms</h2>
       <ul class="notes-ul">
         <li><strong>System boundary</strong> — a dashed line enclosing all the sub-systems. Real-world inputs and outputs are outside the boundary.</li>
-       </li>
         <li><strong>Input device (sensor)</strong> — converts a real-world input into an electrical signal. Examples: thermistor, microphone, switch, light sensor.</li>
         <li><strong>Output device (actuator)</strong> — converts an electrical signal into a real-world output. Examples: motor, loudspeaker, LED, heater.</li>
         <li><strong>Output driver</strong>  — an electronic component that boosts a low-power control signal from the control unit to provide the higher current or voltage required to operate an output device such as a motor or heating element. Every output device needs a driver (e.g. transistor, relay).</li>
@@ -410,18 +465,20 @@
         </div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task2">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Sub-systems diagrams</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1. Draw a sub-systems diagram for a <strong>mobile phone</strong>. Include: screen, touch pad, control unit, on/off switch, aerial, battery, speaker, microphone, headphone jack, output driver. Show the system boundary and label all connections.</div>
             <div class="answer-label">Sketch or describe your diagram <span class="saved-indicator" id="ind-s2a">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s2a" data-placeholder="Describe or sketch your sub-systems diagram here..."></div>
+            <div class="exemplar"><button type="button" class="exemplar-thumb" onclick="openLightbox('images/systems-exemplar-task2-q1.png', 'Exemplar sub-systems diagram for a mobile phone')"><img src="images/systems-exemplar-task2-q1.png" alt="Blurred preview of exemplar answer"><span>&#x1F50D; Click to see an exemplar answer</span></button></div>
           </div>
           <div class="task-item">
             <div class="task-q">2. Draw a sub-systems diagram for an <strong>electric oven</strong>. Include: output driver, heating element, on/off switch, temperature selector switch, fan selector switch, oven light.</div>
             <div class="answer-label">Sketch or describe your diagram <span class="saved-indicator" id="ind-s2b">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s2b" data-placeholder="Describe or sketch your sub-systems diagram here..."></div>
+            <div class="exemplar"><button type="button" class="exemplar-thumb" onclick="openLightbox('images/systems-exemplar-task2-q2.png', 'Exemplar sub-systems diagram for an electric oven')"><img src="images/systems-exemplar-task2-q2.png" alt="Blurred preview of exemplar answer"><span>&#x1F50D; Click to see an exemplar answer</span></button></div>
           </div>
           <div class="task-item">
             <div class="task-q">3. For each system below, identify the input device and output device, then describe how the system works by explaining the function of each sub-system in order.</div>
@@ -441,7 +498,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 3: Open-Loop and Closed-Loop Control</h1>
+      <h1 class="notes-h1" id="section-3">Section 3: Open-Loop and Closed-Loop Control</h1>
 
       <p class="notes-p">Any system must have some way to <strong>control its operation</strong>. Systems can also be described as <strong>open-loop</strong> or <strong>closed-loop</strong>.</p>
 
@@ -462,6 +519,9 @@
         </div>
       </div>
 
+      <h2 class="notes-h2">Why do we need feedback?</h2>
+      <p class="notes-p">Imagine an oven with open-loop control: the heater is simply switched on for 20 minutes. On a cold day, with the door opened a few times or a heavy tray inside, the oven ends up cooler than intended. On another day it overshoots. The system has <strong>no way of knowing</strong> what temperature it has actually reached, so it cannot correct itself. To fix that, the system needs to <em>measure</em> its own output and act on the result &mdash; this is called <strong>feedback</strong>.</p>
+
       <h2 class="notes-h2">Closed-loop control</h2>
       <p class="notes-p">In a closed-loop system, the output is continually <strong>monitored</strong> and fed back to adjust the process. This makes the system far more accurate. The feedback signal is compared to the desired value and the system corrects itself automatically.</p>
 
@@ -479,7 +539,7 @@
         <div class="compare-card">
           <div class="compare-card-header" style="background:var(--teal-800);">Open-loop systems</div>
           <div class="compare-card-body">
-            <ul style="padding-left:16px;margin:0;">
+            <ul style="padding-left:18px;margin:0;">
               <li>Simple to design and cheap to build</li>
               <li>No feedback — cannot correct errors</li>
               <li>Output may drift from desired value</li>
@@ -490,7 +550,7 @@
         <div class="compare-card">
           <div class="compare-card-header" style="background:var(--teal-600);">Closed-loop systems</div>
           <div class="compare-card-body">
-            <ul style="padding-left:16px;margin:0;">
+            <ul style="padding-left:18px;margin:0;">
               <li>More complex and expensive</li>
               <li>Feedback allows automatic correction</li>
               <li>Output is maintained at the desired value</li>
@@ -521,7 +581,7 @@
         </div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task3">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Open and closed-loop control</div></div>
         <div class="assignment-body">
 
@@ -551,9 +611,9 @@
             <div class="task-q">3. The diagram shows a closed-loop control system for a central heating system. Name the three missing sub-systems by clicking each orange box and typing your answer.</div>
             <div style="position:relative;display:block;width:90%;max-width:700px;margin:14px auto;">
               <img src="images/systems-task3-q3.png" alt="Closed-loop control diagram for a central heating system with three blank boxes to complete" style="width:100%;display:block;border-radius:8px;">
-              <div contenteditable="true" data-key="sys-s3q3a" data-placeholder="Sub-system..." style="position:absolute;background:#fffbeb;border:2px solid #f97316;border-radius:5px;padding:3px 7px;font-size:12px;font-weight:600;color:#1e293b;cursor:text;outline:none;left:43.69%;top:24.53%;width:19.29%;height:17.27%;"></div>
-              <div contenteditable="true" data-key="sys-s3q3b" data-placeholder="Sub-system..." style="position:absolute;background:#fffbeb;border:2px solid #f97316;border-radius:5px;padding:3px 7px;font-size:12px;font-weight:600;color:#1e293b;cursor:text;outline:none;left:43.8%;top:55.45%;width:9.28%;height:16.72%;"></div>
-              <div contenteditable="true" data-key="sys-s3q3c" data-placeholder="Output..." style="position:absolute;background:#fffbeb;border:2px solid #f97316;border-radius:5px;padding:3px 7px;font-size:12px;font-weight:600;color:#1e293b;cursor:text;outline:none;left:80.35%;top:55.45%;width:15.52%;height:16.72%;"></div>
+              <div class="overlay-box" contenteditable="true" data-key="sys-s3q3a" data-q="Missing box 1 (top)" data-placeholder="Sub-system..." style="position:absolute;background:#fffbeb;border:2px solid #f97316;border-radius:5px;padding:3px 7px;font-size:12px;font-weight:600;color:#1e293b;cursor:text;outline:none;left:43.69%;top:24.53%;width:19.29%;height:17.27%;"></div>
+              <div class="overlay-box" contenteditable="true" data-key="sys-s3q3b" data-q="Missing box 2 (bottom middle)" data-placeholder="Sub-system..." style="position:absolute;background:#fffbeb;border:2px solid #f97316;border-radius:5px;padding:3px 7px;font-size:12px;font-weight:600;color:#1e293b;cursor:text;outline:none;left:43.8%;top:55.45%;width:9.28%;height:16.72%;"></div>
+              <div class="overlay-box" contenteditable="true" data-key="sys-s3q3c" data-q="Missing box 3 (bottom right)" data-placeholder="Output..." style="position:absolute;background:#fffbeb;border:2px solid #f97316;border-radius:5px;padding:3px 7px;font-size:12px;font-weight:600;color:#1e293b;cursor:text;outline:none;left:80.35%;top:55.45%;width:15.52%;height:16.72%;"></div>
             </div>
             <div class="key-point" style="margin:10px 0 14px 0;">
               <strong>&#x1F4DD; Exam &amp; assignment tip:</strong> Every line in a sub-systems diagram must have an arrowhead — including both lines into and out of the feedback sensor. The feedback line must always be taken from <em>after</em> the output device, not from the device itself.
@@ -572,6 +632,7 @@
             <div class="task-q">4. Draw a closed-loop control diagram for a <strong>refrigerator</strong> that automatically maintains a set temperature. Include: temperature sensor, control unit, output driver, compressor. Show the system boundary and clearly mark arrowheads on both lines of the feedback loop. Remember: the feedback line must come from <em>after</em> the output device.</div>
             <div class="answer-label">Control diagram <span class="saved-indicator" id="ind-s3h">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s3h" data-placeholder="Sketch or describe your control diagram here..."></div>
+            <div class="exemplar"><button type="button" class="exemplar-thumb" onclick="openLightbox('images/systems-exemplar-task3-q4.png', 'Exemplar closed-loop control diagram for a refrigerator')"><img src="images/systems-exemplar-task3-q4.png" alt="Blurred preview of exemplar answer"><span>&#x1F50D; Click to see an exemplar answer</span></button></div>
           </div>
 
         </div>
@@ -579,7 +640,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 4: Case Study &mdash; Domestic Appliances</h1>
+      <h1 class="notes-h1" id="section-4">Section 4: Case Study &mdash; Domestic Appliances</h1>
 
       <p class="notes-p">Many everyday appliances use systems principles. The washing machine is a good example of a system with multiple levels of control complexity.</p>
 
@@ -600,13 +661,14 @@
         </div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task4">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Domestic appliances</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">1a. Sketch a sub-systems diagram for a <strong>clothes iron</strong> with automatic temperature control. Include a temperature selector, control unit, output driver and heating element. Show the system boundary and any feedback path.</div>
             <div class="answer-label">Sub-systems diagram <span class="saved-indicator" id="ind-s4a">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s4a" data-placeholder="Sketch or describe your diagram..."></div>
+            <div class="exemplar"><button type="button" class="exemplar-thumb" onclick="openLightbox('images/systems-exemplar-task4-q1a.png', 'Exemplar sub-systems diagram for a clothes iron')"><img src="images/systems-exemplar-task4-q1a.png" alt="Blurred preview of exemplar answer"><span>&#x1F50D; Click to see an exemplar answer</span></button></div>
           </div>
           <div class="task-item">
             <div class="task-q">1b. Is the iron an open-loop or closed-loop system? Explain your answer with reference to your diagram.</div>
@@ -617,6 +679,7 @@
             <div class="task-q">1c. Sketch a sub-systems diagram for a <strong>slow cooker</strong> with a temperature control setting. Show the system boundary, inputs, outputs and all sub-systems inside the boundary.</div>
             <div class="answer-label">Sub-systems diagram <span class="saved-indicator" id="ind-s4c">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s4c" data-placeholder="Sketch or describe your diagram..."></div>
+            <div class="exemplar"><button type="button" class="exemplar-thumb" onclick="openLightbox('images/systems-exemplar-task4-q1c.png', 'Exemplar sub-systems diagram for a slow cooker')"><img src="images/systems-exemplar-task4-q1c.png" alt="Blurred preview of exemplar answer"><span>&#x1F50D; Click to see an exemplar answer</span></button></div>
           </div>
           <div class="task-item">
             <div class="task-q">2a. State the name of the sub-system in the washing machine that provides feedback for temperature control.</div>
@@ -634,7 +697,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 5: Case Study &mdash; The Furby Electronic Toy</h1>
+      <h1 class="notes-h1" id="section-5">Section 5: Case Study &mdash; The Furby Electronic Toy</h1>
 
       <p class="notes-p">The Furby is a good example of a <strong>mechatronic system</strong> — one that uses an electronic circuit to control a number of mechanisms. It contains several sensors so it can react to changes in its environment (e.g. being placed in a dark room or turned upside down).</p>
 
@@ -643,7 +706,7 @@
            style="width:70%;max-width:420px;display:block;margin:10px auto;border-radius:8px;"
            onerror="this.style.display='none';">
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task5">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Furby case study</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -665,6 +728,7 @@
             <div class="task-q">4. Draw a sub-systems diagram for the Furby. Show the system boundary and make clear the difference between real-world inputs/outputs and system sub-systems.</div>
             <div class="answer-label">Sub-systems diagram <span class="saved-indicator" id="ind-s5d">&#x2713; Saved</span></div>
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-s5d" data-placeholder="Sketch or describe your sub-systems diagram..."></div>
+            <div class="exemplar"><button type="button" class="exemplar-thumb" onclick="openLightbox('images/systems-exemplar-task5-q4.png', 'Exemplar sub-systems diagram for the Furby')"><img src="images/systems-exemplar-task5-q4.png" alt="Blurred preview of exemplar answer"><span>&#x1F50D; Click to see an exemplar answer</span></button></div>
           </div>
           <div class="task-item">
             <div class="task-q">5. Describe how the system works, referring to all sub-systems and how they interact to perform each function.</div>
@@ -674,15 +738,136 @@
         </div>
       </div>
 
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-6">Section 6: Design Challenges</h1>
+
+      <p class="notes-p">Engineers use the systems approach to <strong>design</strong> new systems, not just to describe existing ones. Each challenge below gives you a short brief and a numbered specification. Work through parts (a) to (d) in order: start with the big picture, then break it down into sub-systems, then decide how it should be controlled, and finally evaluate your design.</p>
+
+      <div class="key-point">Read every specification point carefully. A good answer shows how <strong>each</strong> point is met &mdash; tick them off as you go.</div>
+
+      <h2 class="notes-h2" id="section-6-1">Design Challenge 1: Automatic bike light</h2>
+      <p class="notes-p">A cycling charity wants a rear bike light that riders never forget to switch on. The light should come on by itself when it gets dark, but riders must still be able to switch it off completely when the bike is parked.</p>
+      <p class="notes-p" style="margin-bottom:4px;"><strong>Specification</strong> &mdash; the system must:</p>
+        <table class="spec-table">
+          <tr><td><span class="data-badge">i</span></td><td>switch on automatically when the surrounding light level falls below a set level;</td></tr>
+          <tr><td><span class="data-badge">ii</span></td><td>switch off automatically when it becomes light again;</td></tr>
+          <tr><td><span class="data-badge">iii</span></td><td>have a master on/off switch that the rider can use to disable the system;</td></tr>
+          <tr><td><span class="data-badge">iv</span></td><td>flash a red LED so the cyclist is visible to drivers behind.</td></tr>
+        </table>
+
+      <div class="assignment" id="assignment-dc1">
+        <div class="assignment-header"><div class="assignment-title">&#x1F6E0;&#xFE0F; Design Challenge 1 &mdash; Automatic bike light</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) Draw a universal system diagram for the bike light. Remember: do not include electricity as an input.</div>
+            <div class="answer-label">Universal system diagram <span class="saved-indicator" id="ind-dc1a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-dc1a" data-placeholder="Inputs &rarr; bike light &rarr; outputs..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Draw a sub-systems diagram for the bike light. Show the system boundary, both input devices, the control unit, the output driver and the output device.</div>
+            <div class="answer-label">Sub-systems diagram <span class="saved-indicator" id="ind-dc1b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-dc1b" data-placeholder="Sketch or describe your sub-systems diagram..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) State whether this is an open-loop or closed-loop system. Justify your answer.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-dc1c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box" contenteditable="true" data-key="sys-dc1c" data-placeholder="Open-loop / closed-loop, because..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(d) Evaluate your design against the specification. Describe one situation where the light might switch on or off when the rider does not want it to, and suggest an improvement.</div>
+            <div class="answer-label">Evaluation <span class="saved-indicator" id="ind-dc1d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-dc1d" data-placeholder="My design meets the specification because... One problem could be..."></div>
+          </div>
+          <div class="exemplar"><button type="button" class="exemplar-thumb" onclick="openLightbox('images/systems-exemplar-dc1.png', 'Exemplar answer for Design Challenge 1')"><img src="images/systems-exemplar-dc1.png" alt="Blurred preview of exemplar answer"><span>Try the design yourself first &mdash; then click here to compare</span></button></div>
+        </div>
+      </div>
+
+      <h2 class="notes-h2" id="section-6-2">Design Challenge 2: Aquarium heater</h2>
+      <p class="notes-p">Tropical fish need their tank water kept at a steady temperature. A pet shop wants a heater unit that holds the water at whatever temperature the owner sets, and warns them if something goes wrong.</p>
+      <p class="notes-p" style="margin-bottom:4px;"><strong>Specification</strong> &mdash; the system must:</p>
+        <table class="spec-table">
+          <tr><td><span class="data-badge">i</span></td><td>allow the owner to set the desired water temperature using a dial;</td></tr>
+          <tr><td><span class="data-badge">ii</span></td><td>keep the water at the set temperature automatically, switching the heater on and off as needed;</td></tr>
+          <tr><td><span class="data-badge">iii</span></td><td>light a warning LED if the water becomes too hot;</td></tr>
+          <tr><td><span class="data-badge">iv</span></td><td>be fully enclosed so that no electrical parts touch the water.</td></tr>
+        </table>
+
+      <div class="assignment" id="assignment-dc2">
+        <div class="assignment-header"><div class="assignment-title">&#x1F6E0;&#xFE0F; Design Challenge 2 &mdash; Aquarium heater</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) Draw a closed-loop control diagram for the aquarium heater. Label the feedback path and make sure every line has an arrowhead.</div>
+            <div class="answer-label">Control diagram <span class="saved-indicator" id="ind-dc2a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-dc2a" data-placeholder="Sketch or describe your closed-loop control diagram..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Name the sub-system that provides feedback and state what information it gives to the control unit.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-dc2b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box" contenteditable="true" data-key="sys-dc2b" data-placeholder="The feedback sub-system is... It tells the control unit..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) Describe what the system does, step by step, when cold water is added to the tank during cleaning.</div>
+            <div class="answer-label">Description <span class="saved-indicator" id="ind-dc2c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-dc2c" data-placeholder="First the sensor detects... then the control unit..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(d) The pet shop owner suggests a cheaper design that simply switches the heater on for 10 minutes every hour. Explain why the closed-loop design is better for the fish.</div>
+            <div class="answer-label">Evaluation <span class="saved-indicator" id="ind-dc2d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-dc2d" data-placeholder="The closed-loop design is better because..."></div>
+          </div>
+          <div class="exemplar"><button type="button" class="exemplar-thumb" onclick="openLightbox('images/systems-exemplar-dc2.png', 'Exemplar answer for Design Challenge 2')"><img src="images/systems-exemplar-dc2.png" alt="Blurred preview of exemplar answer"><span>Try the design yourself first &mdash; then click here to compare</span></button></div>
+        </div>
+      </div>
+
+      <h2 class="notes-h2" id="section-6-3">Design Challenge 3: Hands-free bin lid</h2>
+      <p class="notes-p">A school canteen wants to reduce the spread of germs by fitting a bin whose lid opens without being touched.</p>
+      <p class="notes-p" style="margin-bottom:4px;"><strong>Specification</strong> &mdash; the system must:</p>
+        <table class="spec-table">
+          <tr><td><span class="data-badge">i</span></td><td>open the lid when a hand is detected above the bin;</td></tr>
+          <tr><td><span class="data-badge">ii</span></td><td>close the lid automatically a few seconds after the hand is removed;</td></tr>
+          <tr><td><span class="data-badge">iii</span></td><td>sound a buzzer when the bin is full;</td></tr>
+          <tr><td><span class="data-badge">iv</span></td><td>have a main on/off switch for the canteen staff.</td></tr>
+        </table>
+
+      <div class="assignment" id="assignment-dc3">
+        <div class="assignment-header"><div class="assignment-title">&#x1F6E0;&#xFE0F; Design Challenge 3 &mdash; Hands-free bin lid</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) Draw a universal system diagram for the bin. Include any unwanted outputs.</div>
+            <div class="answer-label">Universal system diagram <span class="saved-indicator" id="ind-dc3a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-dc3a" data-placeholder="Inputs &rarr; bin &rarr; outputs (wanted + unwanted)..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Draw a sub-systems diagram for the bin. Show the system boundary and every input device, output driver and output device needed to meet the specification.</div>
+            <div class="answer-label">Sub-systems diagram <span class="saved-indicator" id="ind-dc3b">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-dc3b" data-placeholder="Sketch or describe your sub-systems diagram..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) Describe how the system works, explaining the function of each sub-system in order.</div>
+            <div class="answer-label">Description <span class="saved-indicator" id="ind-dc3c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-dc3c" data-placeholder="When a hand is placed above the bin, the..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(d) Evaluate your design. Identify one part of the system that could fail in a busy canteen and suggest how the design could be improved.</div>
+            <div class="answer-label">Evaluation <span class="saved-indicator" id="ind-dc3d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="sys-dc3d" data-placeholder="One weakness is... This could be improved by..."></div>
+          </div>
+          <div class="exemplar"><button type="button" class="exemplar-thumb" onclick="openLightbox('images/systems-exemplar-dc3.png', 'Exemplar answer for Design Challenge 3')"><img src="images/systems-exemplar-dc3.png" alt="Blurred preview of exemplar answer"><span>Try the design yourself first &mdash; then click here to compare</span></button></div>
+        </div>
+      </div>
+
       <!-- Controls -->
       <div class="controls-bar">
         <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-pdf" onclick="downloadAllPdf()">&#x2B07;&#xFE0F; Download ALL my answers (PDF)</button>
         <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
         <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
       </div>
       <div class="storage-status" id="storage-status">Last saved: never</div>
 
-      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
+      <div class="page-nav" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
         <button class="ctrl-btn ctrl-btn-print" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});">&#x2B06;&#xFE0F; Back to top</button>
         <a href="index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">&#x2302; Main menu</a>
         <a href="../energy-efficiency/course-notes.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">Next section &#x2192;</a>
@@ -692,7 +877,40 @@
     </div>
   </div>
 </div>
+
+<!-- Floating buttons, Contents panel, name popup, lightbox -->
+<button type="button" class="float-btn" id="name-btn" onclick="openNameModal()" aria-label="Set my name for PDF downloads"><span>&#x1F464;</span><span class="fb-label" id="name-btn-label">My name</span></button>
+<button type="button" class="float-btn" id="toc-btn" onclick="openToc()" aria-label="Open contents"><span>&#x2630;</span><span class="fb-label">Contents</span></button>
+<div class="toc-backdrop" id="toc-backdrop" onclick="closeToc()"></div>
+<aside class="toc-panel" id="toc-panel" aria-label="Contents" aria-hidden="true">
+  <div class="toc-head"><h2>Contents</h2><button type="button" class="toc-close" onclick="closeToc()" aria-label="Close contents">&times;</button></div>
+  <ul class="toc-list" id="toc-list">
+    <li><a href="#section-1">1. What is a System?</a></li>
+    <li><a href="#section-2">2. Sub-Systems Diagrams</a></li>
+    <li><a href="#section-3">3. Open-Loop and Closed-Loop Control</a></li>
+    <li><a href="#section-4">4. Case Study: Domestic Appliances</a></li>
+    <li><a href="#section-5">5. Case Study: The Furby Electronic Toy</a></li>
+    <li><a href="#section-6">6. Design Challenges</a></li>
+    <li><a href="#section-6-1" class="toc-sub">Design Challenge 1: Automatic bike light</a></li>
+    <li><a href="#section-6-2" class="toc-sub">Design Challenge 2: Aquarium heater</a></li>
+    <li><a href="#section-6-3" class="toc-sub">Design Challenge 3: Hands-free bin lid</a></li>
+  </ul>
+</aside>
+<div class="name-modal" id="name-modal" onclick="if(event.target===this)closeNameModal()">
+  <div class="name-card" role="dialog" aria-labelledby="name-modal-title">
+    <h3 id="name-modal-title">&#x1F464; Your name</h3>
+    <p>Type your name once. It will appear at the top of every PDF you download from this page. It is only stored in this browser on this device.</p>
+    <input type="text" id="name-input" maxlength="60" placeholder="e.g. Jamie Smith" onkeydown="if(event.key==='Enter')saveName()">
+    <div class="name-actions">
+      <button type="button" class="ctrl-btn ctrl-btn-clear" onclick="clearName()">Clear</button>
+      <button type="button" class="ctrl-btn ctrl-btn-print" onclick="closeNameModal()">Cancel</button>
+      <button type="button" class="ctrl-btn ctrl-btn-pdf" onclick="saveName()">Save</button>
+    </div>
+  </div>
+</div>
+<div class="lightbox" id="lightbox" onclick="closeLightbox()"><img id="lightbox-img" src="" alt=""></div>
 <footer class="footer"><span>Engineering Science Scotland &middot; Aligned to QS course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script>
 <script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
 <script>
@@ -701,10 +919,10 @@ function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatu
 function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
 function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
 function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
-function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('[contenteditable="true"][data-key]').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
 function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
 document.addEventListener('DOMContentLoaded',function(){
-  document.querySelectorAll('.answer-box').forEach(function(box){
+  document.querySelectorAll('[contenteditable="true"][data-key]').forEach(function(box){
     var key=box.dataset.key;if(!key)return;
     var saved=loadValue(key);if(saved)box.innerHTML=saved;
     var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
@@ -712,6 +930,152 @@ document.addEventListener('DOMContentLoaded',function(){
     box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
   });
 });
+</script>
+<script>
+/* ══════════ Contents panel + scroll-spy ══════════ */
+function openToc(){document.getElementById('toc-panel').classList.add('open');document.getElementById('toc-backdrop').classList.add('open');document.getElementById('toc-panel').setAttribute('aria-hidden','false');}
+function closeToc(){document.getElementById('toc-panel').classList.remove('open');document.getElementById('toc-backdrop').classList.remove('open');document.getElementById('toc-panel').setAttribute('aria-hidden','true');}
+document.querySelectorAll('#toc-list a').forEach(function(a){a.addEventListener('click',function(e){var t=document.querySelector(a.getAttribute('href'));if(t){e.preventDefault();closeToc();t.scrollIntoView({behavior:'smooth'});history.replaceState(null,'',a.getAttribute('href'));}});});
+var tocLinks=[].slice.call(document.querySelectorAll('#toc-list a'));
+var tocTargets=tocLinks.map(function(a){return document.querySelector(a.getAttribute('href'));});
+function tocSpy(){var cur=-1;for(var i=0;i<tocTargets.length;i++){if(tocTargets[i]&&tocTargets[i].getBoundingClientRect().top<=120)cur=i;}
+  tocLinks.forEach(function(a,i){a.classList.toggle('active',i===cur);});}
+window.addEventListener('scroll',tocSpy,{passive:true});tocSpy();
+
+/* ══════════ My Name ══════════ */
+var NAME_KEY='sys-pupil-name';
+function getPupilName(){try{return (localStorage.getItem(NAME_KEY)||'').trim();}catch(e){return '';}}
+function refreshNameBtn(){var n=getPupilName();var l=document.getElementById('name-btn-label');l.textContent=n||'My name';document.getElementById('name-btn').title=n?('Name on PDFs: '+n):'Set your name for PDF downloads';}
+function openNameModal(){document.getElementById('name-input').value=getPupilName();document.getElementById('name-modal').classList.add('open');setTimeout(function(){document.getElementById('name-input').focus();},50);}
+function closeNameModal(){document.getElementById('name-modal').classList.remove('open');}
+function saveName(){var v=document.getElementById('name-input').value.trim();try{if(v)localStorage.setItem(NAME_KEY,v);else localStorage.removeItem(NAME_KEY);}catch(e){}refreshNameBtn();closeNameModal();}
+function clearName(){try{localStorage.removeItem(NAME_KEY);}catch(e){}document.getElementById('name-input').value='';refreshNameBtn();closeNameModal();}
+refreshNameBtn();
+
+/* ══════════ Exemplar lightbox ══════════ */
+function openLightbox(src,alt){var i=document.getElementById('lightbox-img');i.src=src;i.alt=alt||'Exemplar answer';document.getElementById('lightbox').classList.add('open');}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open');}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeToc();closeNameModal();closeLightbox();}});
+
+/* ══════════ PDF downloads ══════════ */
+// Keep this list in page order and in sync whenever tasks are added, removed or reordered.
+var ALL_TASK_PANELS=[
+  {id:'assignment-task1',label:'Task 1 — Universal systems diagrams'},
+  {id:'assignment-task2',label:'Task 2 — Sub-systems diagrams'},
+  {id:'assignment-task3',label:'Task 3 — Open and closed-loop control'},
+  {id:'assignment-task4',label:'Task 4 — Domestic appliances'},
+  {id:'assignment-task5',label:'Task 5 — Furby case study'},
+  {id:'assignment-dc1',label:'Design Challenge 1 — Automatic bike light'},
+  {id:'assignment-dc2',label:'Design Challenge 2 — Aquarium heater'},
+  {id:'assignment-dc3',label:'Design Challenge 3 — Hands-free bin lid'}
+];
+var PDF_SITE='engineeringsciencescotland.co.uk';
+var PDF_TOPIC='The Systems Approach';
+
+function pdfSafe(t){
+  if(!t)return '';
+  var map={'σ':'sigma','ε':'epsilon','Δ':'delta','δ':'delta','π':'pi','Ω':'ohm','μ':'micro','θ':'theta','°':' deg','²':'^2','³':'^3','×':'x','→':'->','←':'<-','≈':'~','≤':'<=','≥':'>=','±':'+/-',
+    '‘':"'",'’':"'",'“':'"','”':'"','–':'-','—':'-','…':'...','•':'-','✓':'(tick)','\u00a0':' '};
+  return t.replace(/[σεΔδπΩμθ°²³×→←≈≤≥±‘’“”–—…•✓\u00a0]/g,function(c){return map[c];})
+          .replace(/[^\x09\x0A\x0D\x20-\x7E\xA0-\xFF]/g,'');
+}
+
+// Build a list of {type:'q'|'q2'|'a', ...} entries for one task panel.
+function collectPanel(id){
+  var panel=document.getElementById(id);var out=[];if(!panel)return out;
+  panel.querySelectorAll('.task-item').forEach(function(ti){
+    var main=ti.querySelector('.task-q');out.push({type:'q',text:main?main.innerText.trim():''});
+    var lastSub=null;
+    ti.querySelectorAll('.task-q-sub, [contenteditable="true"][data-key]').forEach(function(el){
+      if(el.classList.contains('task-q-sub')){lastSub=el.innerText.trim();return;}
+      if(lastSub){out.push({type:'q2',text:lastSub});lastSub=null;}
+      if(el.dataset.q)out.push({type:'q2',text:el.dataset.q});
+      out.push({type:'a',el:el});
+    });
+  });
+  return out;
+}
+
+function imgToDataUrl(img){
+  return new Promise(function(res){
+    var src=img.getAttribute('src')||'';
+    function viaCanvas(im){try{var c=document.createElement('canvas');c.width=im.naturalWidth;c.height=im.naturalHeight;c.getContext('2d').drawImage(im,0,0);res({url:c.toDataURL('image/png'),w:im.naturalWidth,h:im.naturalHeight});}catch(e){res(null);}}
+    if(img.complete&&img.naturalWidth){ if(/^data:image\/(png|jpe?g)/i.test(src))res({url:src,w:img.naturalWidth,h:img.naturalHeight}); else viaCanvas(img); }
+    else{var im=new Image();im.onload=function(){viaCanvas(im);};im.onerror=function(){res(null);};im.src=src;}
+  });
+}
+
+function makeDoc(){
+  if(!window.jspdf||!window.jspdf.jsPDF){alert('The PDF tool has not loaded yet. Check your internet connection and try again.');return null;}
+  return new window.jspdf.jsPDF({unit:'mm',format:'a4'});
+}
+
+function PdfWriter(doc){this.doc=doc;this.M=18;this.W=210;this.H=297;this.y=this.M;this.cw=this.W-2*this.M;}
+PdfWriter.prototype.need=function(h){if(this.y+h>this.H-18){this.doc.addPage();this.y=this.M;}};
+PdfWriter.prototype.text=function(t,size,style,color,gapAfter){
+  var d=this.doc;d.setFont('helvetica',style||'normal');d.setFontSize(size);d.setTextColor.apply(d,color||[30,41,59]);
+  var lines=d.splitTextToSize(pdfSafe(t),this.cw);var lh=size*0.42;
+  for(var i=0;i<lines.length;i++){this.need(lh);d.text(lines[i],this.M,this.y+lh*0.8);this.y+=lh;}
+  this.y+=(gapAfter==null?1.5:gapAfter);
+};
+PdfWriter.prototype.header=function(title){
+  var d=this.doc,name=getPupilName();
+  d.setFont('helvetica','bold');d.setFontSize(15);d.setTextColor(15,118,110);d.text('Engineering Science Scotland',this.M,this.y+5);this.y+=9;
+  this.text(title,12,'bold',[30,41,59],1);
+  var date=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  this.text(name?('Name: '+name+'        Date: '+date):'Name: ______________________        Date: ____________',10.5,'normal',[71,85,105],2);
+  d.setDrawColor(153,246,228);d.setLineWidth(0.6);d.line(this.M,this.y,this.W-this.M,this.y);this.y+=6;
+};
+PdfWriter.prototype.bar=function(label){
+  this.need(16);var d=this.doc;d.setFillColor(45,212,191);d.roundedRect(this.M,this.y,this.cw,9,1.5,1.5,'F');
+  d.setFont('helvetica','bold');d.setFontSize(11.5);d.setTextColor(255,255,255);d.text(pdfSafe(label),this.M+3,this.y+6.2);this.y+=13;
+};
+PdfWriter.prototype.answer=async function(el){
+  var txt=(el.innerText||'').replace(/\n{3,}/g,'\n\n').trim();var imgs=[].slice.call(el.querySelectorAll('img'));
+  if(!txt&&!imgs.length){this.text('(no answer entered yet)',10.5,'italic',[148,163,184],4);return;}
+  if(txt)this.text(txt,10.5,'normal',[51,65,85],2);
+  for(var i=0;i<imgs.length;i++){
+    var r=await imgToDataUrl(imgs[i]);if(!r||!r.w)continue;
+    var w=Math.min(this.cw*0.75,r.w*0.26),h=w*r.h/r.w;if(h>100){h=100;w=h*r.w/r.h;}
+    this.need(h+3);try{this.doc.addImage(r.url,/jpe?g/i.test(r.url.slice(0,20))?'JPEG':'PNG',this.M,this.y,w,h);this.y+=h+3;}catch(e){}
+  }
+  this.y+=2.5;
+};
+PdfWriter.prototype.panel=async function(id){
+  var entries=collectPanel(id);
+  for(var i=0;i<entries.length;i++){var e=entries[i];
+    if(e.type==='q'){if(e.text){this.need(12);this.text(e.text,11,'bold',[15,23,42],1.5);}}
+    else if(e.type==='q2'){this.need(10);this.text(e.text,10.5,'bold',[15,118,110],1);}
+    else await this.answer(e.el);
+  }
+};
+PdfWriter.prototype.finish=function(fname){
+  var d=this.doc,n=d.getNumberOfPages();
+  for(var p=1;p<=n;p++){d.setPage(p);d.setFont('helvetica','normal');d.setFontSize(8.5);d.setTextColor(148,163,184);
+    d.text(PDF_SITE,this.M,this.H-9);d.text('Page '+p+' of '+n,this.W-this.M,this.H-9,{align:'right'});}
+  d.save(fname);
+};
+function pdfFileName(label){var n=getPupilName();return ('systems-approach-'+label+(n?'-'+n:'')).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')+'.pdf';}
+
+async function downloadTaskPdf(id){
+  var doc=makeDoc();if(!doc)return;var info=ALL_TASK_PANELS.filter(function(p){return p.id===id;})[0]||{label:id};
+  var w=new PdfWriter(doc);w.header(PDF_TOPIC+' — '+info.label);await w.panel(id);w.finish(pdfFileName(info.label.split(' — ')[0]));
+}
+async function downloadAllPdf(){
+  var doc=makeDoc();if(!doc)return;var w=new PdfWriter(doc);w.header(PDF_TOPIC+' — All my answers');
+  for(var i=0;i<ALL_TASK_PANELS.length;i++){w.bar(ALL_TASK_PANELS[i].label);await w.panel(ALL_TASK_PANELS[i].id);w.y+=3;}
+  w.finish(pdfFileName('all-answers'));
+}
+
+// Add a "Download my answers" strip to the bottom of every task panel.
+ALL_TASK_PANELS.forEach(function(p){
+  var el=document.getElementById(p.id);if(!el)return;
+  var strip=document.createElement('div');strip.className='pdf-strip';
+  strip.innerHTML='<button type="button" class="ctrl-btn ctrl-btn-pdf">&#x2B07;&#xFE0F; Download my answers (PDF)</button>';
+  strip.querySelector('button').addEventListener('click',function(){downloadTaskPdf(p.id);});
+  el.appendChild(strip);
+});
+
 </script>
 </body>
 </html>
