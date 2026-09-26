@@ -6,12 +6,12 @@
   <title>Analogue Electronics &mdash; Course Notes &mdash; Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
-    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 16px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:6px; }
     .back-link:hover { color:var(--teal-800); }
 
-    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
-    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:24px 0 10px; }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); scroll-margin-top:100px; }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:24px 0 10px; scroll-margin-top:100px; }
     .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:18px 0 8px; }
     .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
     .notes-p strong { color:var(--gray-900); }
@@ -111,6 +111,67 @@
     .ctrl-btn-clear { background:white; color:#ef4444; border:1.5px solid #fca5a5; }
     .answer-cell-editable { background:var(--blue-50,#f0f9ff) !important; cursor:text; outline:none; }
     .answer-cell-editable:empty:before { content:"Click to enter..."; color:#94a3b8; font-style:italic; pointer-events:none; }
+
+    /* ── Added per site-wide handover (26 Sep 2026) ─────────────────────────── */
+    .answer-box img { max-width:100%; height:auto; }
+    .cell-answer { outline:none; background:#f8faff; min-height:36px; }
+    .cell-answer:focus { box-shadow:inset 0 0 0 2px var(--teal-400); background:white; }
+    .data-table tr:nth-child(even) td.cell-answer { background:#f8faff; }
+    .task-download-row { background:var(--gray-50); border-top:1px solid var(--gray-200); padding:9px 20px; text-align:right; }
+    .task-download-btn { display:inline-flex; align-items:center; gap:6px; background:white; border:1.2px solid var(--teal-400); color:var(--teal-800); font-size:10px; font-weight:700; padding:7px 12px; border-radius:999px; cursor:pointer; transition:background .15s; }
+    .task-download-btn:hover { background:var(--teal-50); }
+    .task-download-btn:disabled { opacity:.6; cursor:wait; }
+    /* Specification tables in the challenges */
+    .spec-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .spec-table th { background:transparent; padding:8px 6px 8px 0; width:32px; vertical-align:top; }
+    .spec-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
+    .data-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:var(--teal-50); color:var(--teal-800); border:1px solid var(--teal-100); font-size:11px; font-weight:700; }
+    .ctrl-btn-download-all { background:#eef2ff; color:#4338ca; }
+    .ctrl-btn-download-all:hover { background:#e0e7ff; }
+
+    /* Table of contents: floating button + slide-out panel */
+    .toc-fab { position:fixed; right:24px; bottom:76px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#c2410c; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+    .toc-fab:hover { background:#9a3412; }
+    .toc-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; }
+    .toc-overlay.open { display:block; }
+    .toc-panel { position:fixed; top:0; right:-340px; width:320px; max-width:85vw; height:100%; background:white; z-index:999998; box-shadow:-8px 0 30px rgba(0,0,0,.2); transition:right .25s ease; display:flex; flex-direction:column; }
+    .toc-panel.open { right:0; }
+    .toc-panel-header { padding:18px 20px 14px; border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; }
+    .toc-panel-header h3 { margin:0; font-size:16px; color:var(--teal-800); }
+    .toc-panel-close { background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .toc-panel-close:hover { color:var(--gray-700); }
+    .toc-list { overflow-y:auto; padding:8px 0 20px; }
+    .toc-list a { display:block; padding:10px 20px; font-size:14px; color:var(--gray-700); text-decoration:none; border-left:3px solid transparent; }
+    .toc-list a:hover { background:var(--teal-50); color:var(--teal-800); }
+    .toc-list a.toc-active { border-left-color:var(--teal-500,var(--teal-600)); background:var(--teal-50); color:var(--teal-800); font-weight:700; }
+    .toc-list a.toc-sub { padding-left:36px; font-size:13px; color:var(--gray-500); }
+
+    /* Pupil name: floating button + small popup */
+    .name-fab { position:fixed; right:24px; bottom:132px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#4f46e5; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); overflow:hidden; }
+    .name-fab-icon { font-size:14px; line-height:1; flex-shrink:0; }
+    #nameFabLabel { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:78px; text-align:left; }
+    .name-fab:hover { background:#3730a3; }
+    .name-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; align-items:center; justify-content:center; padding:20px; }
+    .name-overlay.open { display:flex; }
+    .name-panel { background:white; border-radius:14px; max-width:360px; width:100%; padding:24px 24px 22px; box-shadow:0 20px 60px rgba(0,0,0,.35); position:relative; }
+    .name-panel-close { position:absolute; top:10px; right:12px; background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .name-panel-close:hover { color:var(--gray-700); }
+    .name-panel h3 { margin:0 0 8px; font-size:16px; color:#4338ca; }
+    .name-panel p { margin:0 0 14px; font-size:13px; line-height:1.5; color:var(--gray-600); }
+    .name-panel input { width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid var(--gray-200); border-radius:8px; font-size:14px; margin-bottom:12px; }
+    .name-panel input:focus { outline:none; border-color:#4338ca; }
+    .name-panel-save { width:100%; background:#4338ca; color:white; border:none; border-radius:8px; padding:10px; font-size:14px; font-weight:700; cursor:pointer; }
+    .name-panel-save:hover { background:#3730a3; }
+    .name-panel-saved-msg { font-size:12px; color:#16a34a; margin-top:8px; text-align:center; display:none; }
+    .name-panel-saved-msg.show { display:block; }
+
+    @media print {
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.toc-fab,.toc-panel,.toc-overlay,.name-fab,.name-overlay,.task-download-row,.page-nav,.exemplar-thumb,.exemplar-modal { display:none!important; }
+      .layout { display:block!important; }
+      .main { margin:0!important; padding:0!important; }
+      .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
+      .cell-answer { background:white!important; }
+    }
   </style>
 </head>
 <body>
@@ -136,7 +197,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute;top:12px;right:16px;font-size:11px;color:#94a3b8;font-family:monospace;letter-spacing:.3px;">Last updated: 15 September 2026, 09:54</div>
+      <div style="position:absolute;top:14px;right:20px;font-size:11px;color:#94a3b8;">Last updated: 26 September 2026, 19:57</div>
       <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Analogue Electronics</div>
       <h1 class="hero-title">&#x26A1; Analogue Electronics &mdash; Course Notes</h1>
       <p class="hero-sub">Current, voltage, resistance, Ohm's law, circuit types, components and transistor switching</p>
@@ -153,7 +214,7 @@
       <a href="index.html" class="back-link">&larr; Back to Analogue Electronics</a>
 
       <!-- ═══════════════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 1: Current, Voltage and Resistance</h1>
+      <h1 class="notes-h1" id="section-1">Section 1: Current, Voltage and Resistance</h1>
 
       <h2 class="notes-h2">Introducing electricity</h2>
       <p class="notes-p">Electricity is one of the most important forms of energy in everyday life. The devices around us &mdash; phones, computers, heating systems &mdash; all rely on electrical circuits to work. In this section you will learn how circuits work and what the key quantities are.</p>
@@ -250,7 +311,7 @@
         <div class="sim-wrap"><iframe class="sim-iframe" id="sim-main" title="NoResistance circuit simulator" src="../../../../simulators/ae-basic-circuit.html" loading="lazy"></iframe></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-inv1">
         <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 1 &mdash; Voltage, resistance and current</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;"><a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn" style="display:inline-flex;">&#x26A1; Open the NoResistance simulator</a> Create a copy of the demo circuit and then change the battery voltage and resistance value using the <strong>Properties</strong> panel and record the ammeter readings in the tables below.</p>
@@ -294,12 +355,16 @@
             <div class="answer-box" contenteditable="true" data-key="ae-inv1-qc" data-placeholder="When voltage increases... When resistance increases..."></div>
           </div>
         </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv1', 'Investigation 1 &mdash; Voltage, resistance and current')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+      </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 2: Components and Circuit Symbols 1</h1>
+      <h1 class="notes-h1" id="section-2">Section 2: Components and Circuit Symbols 1</h1>
 
       <p class="notes-p">In Engineering Science you need to recognise and draw standard circuit symbols. These are the same symbols used by engineers worldwide &mdash; which matters because engineers, electricians and manufacturers in different countries often do not share a spoken language. A standard symbol carries its meaning without translation, so a circuit diagram drawn in Scotland can be read and built correctly by someone in Germany, Japan or anywhere else.</p>
 
@@ -379,7 +444,7 @@
         </div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-inv2">
         <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 2 &mdash; Switch circuits</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;"><a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn" style="display:inline-flex;">&#x26A1; Open the NoResistance simulator</a> Build, using the symbols listed above, circuits to do the following jobs. For each, paste your completed circuit design into the answer space below.</p>
@@ -413,11 +478,15 @@
             </div>
           </div>
         </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv2', 'Investigation 2 &mdash; Switch circuits')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+      </div>
       </div>
 
       
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task1">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Components and symbols</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">For any question below that asks you to draw or sketch, either describe the symbol clearly in words in the answer box, or draw it on paper / in your jotter and show your teacher.</p>
@@ -434,12 +503,16 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q020"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q020" data-placeholder="Type your answer here..."></div>
           </div>
         </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task1', 'Task 1 &mdash; Components and symbols')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+      </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 3: Ohm's Law</h1>
+      <h1 class="notes-h1" id="section-3">Section 3: Ohm's Law</h1>
 
       <p class="notes-p">From your investigation you will have found that <strong>doubling the voltage doubles the current</strong> through a resistor. This relationship is known as <strong>Ohm's Law</strong>:</p>
 
@@ -493,7 +566,7 @@
         <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Substitute and calculate:</strong> R = <span class="frac"><span class="frac-n">9</span><span class="frac-d">0.045</span></span> = <strong>200 &Omega;</strong></div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task2">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Ohm's Law calculations</div></div>
         <div class="assignment-body">
           <div class="circuit-figure" style="max-width:320px;margin:0 auto 16px;">
@@ -530,12 +603,16 @@
           </div>
           <p style="font-size:12px;color:var(--teal-600);margin-top:8px;">&#x26A1; <a href="../../../../simulators/electronics.html" target="_blank" style="color:inherit;text-decoration:underline;">Check your answers using the NoResistance simulator</a>.</p>
         </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task2', 'Task 2 &mdash; Ohm's Law calculations')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+      </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 4: Resistors in Series</h1>
+      <h1 class="notes-h1" id="section-4">Section 4: Resistors in Series</h1>
 
       <p class="notes-p">When resistors are connected one after another (in series), their resistances <strong>add together</strong>:</p>
 
@@ -592,7 +669,7 @@
         <div class="sim-wrap"><iframe class="sim-iframe" title="Series circuit simulator" src="../../../../simulators/ae-series-circuit.html" loading="lazy"></iframe></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task3">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Series circuits</div></div>
         <div class="assignment-body">
           <div class="circuit-figure" style="max-width:260px;margin:0 auto 16px;">
@@ -653,14 +730,18 @@
           </div>
           <p style="font-size:12px;color:var(--teal-600);margin-top:8px;">&#x26A1; Build these circuits in the simulator and check your answers.</p>
         </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task3', 'Task 3 &mdash; Series circuits')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+      </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 5: Voltage Drops and Current Junctions</h1>
+      <h1 class="notes-h1" id="section-5">Section 5: Voltage Drops and Current Junctions</h1>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-inv3">
         <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 3 &mdash; Measuring voltage and current</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;"><a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn" style="display:inline-flex;">&#x26A1; Open the NoResistance simulator</a> Build the following circuit: a 9 V battery, a 1 k&Omega; resistor and a 470 &Omega; resistor in series. Add a voltmeter across each component and an ammeter in series.</p>
@@ -719,6 +800,10 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q008"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q008" data-placeholder="Type your answer here..."></div>
           </div>
         </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv3', 'Investigation 3 &mdash; Measuring voltage and current')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+      </div>
       </div>
 
       <h2 class="notes-h2">Voltage drops in a series circuit</h2>
@@ -766,7 +851,7 @@
 
       <div class="key-point">In a <strong>series circuit</strong>: the current is the same everywhere, and the voltages add up to the supply voltage.</div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-quickcheck1">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Quick check &mdash; the voltage rule</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -774,12 +859,16 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q014"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q014" data-placeholder="Type your answer here..."></div>
           </div>
         </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-quickcheck1', 'Quick check &mdash; the voltage rule')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+      </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 6: Parallel Circuits</h1>
+      <h1 class="notes-h1" id="section-6">Section 6: Parallel Circuits</h1>
 
       <h2 class="notes-h2">What is a parallel circuit?</h2>
       <p class="notes-p">In a parallel circuit there is more than one path for current to flow. In a circuit like the one below, each branch receives the <strong>full supply voltage</strong> &mdash; more generally, <strong>two components connected in parallel always share the same voltage</strong>, even inside a larger combined circuit that mixes series and parallel parts. A common example is the lighting in a classroom &mdash; each light has its own switch and works independently of the others.</p>
@@ -878,7 +967,7 @@
         <div class="sim-wrap"><iframe class="sim-iframe" title="Parallel circuit simulator" src="../../../../simulators/ae-parallel-circuit.html" loading="lazy"></iframe></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task4">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Parallel circuits</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -911,12 +1000,16 @@
           </div>
           <p style="font-size:12px;color:var(--teal-600);margin-top:8px;">&#x26A1; Build these circuits in the simulator and check your answers.</p>
         </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task4', 'Task 4 &mdash; Parallel circuits')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+      </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 7: Combined Series and Parallel Circuits</h1>
+      <h1 class="notes-h1" id="section-7">Section 7: Combined Series and Parallel Circuits</h1>
 
       <p class="notes-p">Real circuits often have a mix of series and parallel connections. To solve these you must <strong>simplify step by step</strong>:</p>
 
@@ -980,7 +1073,7 @@
         <div class="step"><div class="step-num">8</div><div class="step-content"><strong>Check:</strong> I<sub>2</sub> + I<sub>3</sub> = 15 + 30 = 45 mA &mdash; matches I<sub>C</sub>. &#x2713;</div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task5">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Combined circuits</div></div>
         <div class="assignment-body">
           <div class="circuit-figure" style="max-width:280px;margin:0 auto 16px;">
@@ -1028,12 +1121,16 @@
             </div>
           </div>
         </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task5', 'Task 5 &mdash; Combined circuits')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+      </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 8: Voltage Dividers</h1>
+      <h1 class="notes-h1" id="section-8">Section 8: Voltage Dividers</h1>
 
       <p class="notes-p">A voltage divider is two (or more) resistors connected in series across a power supply, with an output connection taken from the midpoint between them. In a series circuit, each resistor gets a <strong>share</strong> of the supply voltage — the bigger the resistor, the bigger its share.</p>
 
@@ -1218,7 +1315,7 @@
       </div>
 
       <!-- ── Task 6a ────────────────────────────────────────────────── -->
-      <div class="assignment">
+      <div class="assignment" id="assignment-task6a">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6a &mdash; Reading sensor graphs and calculating V<sub>out</sub></div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Use the ORP12 LDR graph and the thermistor graph (curve 3) above to answer these questions. For each calculation, show clearly: the resistance you read from the graph, R<sub>T</sub>, and V<sub>out</sub>.</p>
@@ -1274,6 +1371,10 @@
             </div>
           </div>
         </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task6a', 'Task 6a &mdash; Reading sensor graphs and calculating Vout')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+      </div>
       </div>
 
       <h3 class="notes-h3">What does the output voltage tell us?</h3>
@@ -1293,7 +1394,7 @@
         </div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task6b">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6b &mdash; Light sensor vs dark sensor</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1323,9 +1424,13 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q112"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q112" data-placeholder="Type your answer here..."></div>
           </div>
         </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task6b', 'Task 6b &mdash; Light sensor vs dark sensor')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+      </div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-inv4">
         <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 4 &mdash; How does V<sub>out</sub> change in a sensor voltage divider?</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">In this investigation you will explore how the output voltage of a sensor voltage divider depends on (a) the sensor's resistance, and (b) which way round the components are placed. Use the simulator above. V<sub>out</sub> is always measured <strong>between the midpoint of the divider and 0 V (ground)</strong> &mdash; the voltage at the mid-rail.</p>
@@ -1373,9 +1478,13 @@
 
           <div class="key-point" style="margin-top:14px;"><strong>Key conclusion:</strong> a sensor voltage divider produces a voltage that <em>varies</em> with conditions &mdash; but a varying voltage on its own cannot switch a motor or lamp on and off. We need a component that can use a small voltage from the sensor circuit to control a much larger current in a separate output circuit. That component is the <strong>transistor</strong>.</div>
         </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv4', 'Investigation 4 &mdash; How does Vout change in a sensor voltage divider?')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+      </div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task6c">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6c &mdash; Voltage divider calculations</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1406,12 +1515,16 @@
             </div>
           </div>
         </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task6c', 'Task 6c &mdash; Voltage divider calculations')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+      </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 9: Transistors</h1>
+      <h1 class="notes-h1" id="section-9">Section 9: Transistors</h1>
 
       <h2 class="notes-h2">Why do we need a transistor?</h2>
       <p class="notes-p">You have seen that a sensor voltage divider produces a voltage that varies with conditions &mdash; rising in darkness, falling in light, or rising with heat. But that varying voltage on its own cannot switch a motor, a buzzer, or a lamp. Those output devices need a <strong>much larger current</strong> than the tiny sensor circuit can ever supply.</p>
@@ -1512,7 +1625,7 @@
         <div class="sim-wrap"><iframe class="sim-iframe" id="sim-backemf" title="Back EMF and protective diode" src="../../../../simulators/ae-back-emf.html" loading="lazy"></iframe></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-inv5">
         <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 5 &mdash; Transistor switching</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">Build a light-sensing transistor circuit in the simulator. Use a 9 V supply, an LDR in series with a 10 k&Omega; fixed resistor as the voltage divider (base circuit), and an LED in series with a 470 &Omega; resistor as the output (collector circuit).</p>
@@ -1533,9 +1646,13 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q046"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q046" data-placeholder="Type your answer here..."></div>
           </div>
         </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv5', 'Investigation 5 &mdash; Transistor switching')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+      </div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task8">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; Transistor circuit design</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1550,12 +1667,16 @@
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-q048"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q048" data-placeholder="Type your answer here..." style="min-height:100px;"></div>
           </div>
         </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task8', 'Task 8 &mdash; Transistor circuit design')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+      </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 10: Relays</h1>
+      <h1 class="notes-h1" id="section-10">Section 10: Relays</h1>
 
       <h2 class="notes-h2">Why use a relay?</h2>
       <p class="notes-p">Many output devices &mdash; such as motors in industrial machinery or mains-powered heaters &mdash; require much higher voltages and currents than a low-power electronic circuit can safely supply. A <strong>relay</strong> is the link between the two: a small control current switches a magnetically operated contact that controls the high-power circuit.</p>
@@ -1595,7 +1716,7 @@
         <div class="sim-wrap"><iframe class="sim-iframe" id="sim-relay" title="Relay circuit" src="../../../../simulators/ae-relay.html" loading="lazy"></iframe></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task9">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 9 &mdash; Relays</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1624,15 +1745,195 @@
             </div>
           </div>
         </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task9', 'Task 9 &mdash; Relays')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
       </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-11">Section 11: Design Challenges</h1>
+      <p class="notes-p">The challenges below are different from the tasks you've done so far. Each gives you a real-world context and a short written specification &mdash; much like a real engineering brief &mdash; rather than a single question with one right answer. You'll need to design a circuit that meets the spec, build or simulate it, test it, and evaluate how well it actually performs.</p>
+      <div class="key-point"><strong>How to approach these:</strong> read the whole specification before you start. Work out which sections of the course notes are relevant (voltage dividers? series/parallel? a relay?), do your calculations first, then build and test in the simulator. Your evaluation should refer back to the numbered points in the specification &mdash; say clearly whether each one is met, and by how much.</div>
+
+      <hr class="divider">
+
+      <h2 class="notes-h2" id="dc1">Design Challenge 1 &mdash; Hogmanay street lighting, Edinburgh</h2>
+      <p class="notes-p">A contractor is fitting temporary decorative lighting along a section of the Royal Mile for Hogmanay. The display uses a string of small lamps (modelled here as fixed resistors) run from a single supply.</p>
+
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>Supply voltage: 12 V</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>Six identical lamps, each with a resistance of 60 &Omega;</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>Total circuit current must not exceed 1.5 A with all six lamps lit, to stay within the extension lead's rating</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>If any single lamp fails (goes open-circuit), the rest of the string must stay lit</td></tr>
+      </table>
+
+      <div class="assignment" id="assignment-dc1">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Design Challenge 1 &mdash; Hogmanay street lighting</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) <strong>Design.</strong> Considering requirement (iv), decide whether the six lamps should be connected in series or in parallel, and justify your choice. Calculate the total resistance and total current for your chosen arrangement with all six lamps present, and confirm it meets requirement (iii).</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-dc1a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc1a" data-placeholder="Arrangement chosen, justification, and working..." style="min-height:100px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) <strong>Build/simulate.</strong> Build your circuit in the NoResistance simulator using a 12 V supply and six 60 &Omega; resistors. Paste or describe your completed circuit.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-dc1b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc1b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) <strong>Test.</strong> In the simulator, remove one lamp to represent it failing. Record what happens to the remaining lamps and to the total circuit current.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-dc1c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc1c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) <strong>Evaluate.</strong> Does your design still meet the specification after one lamp fails? Suggest one realistic improvement that would make the display safer or more reliable.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-dc1d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc1d" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc1', 'Design Challenge 1 &mdash; Hogmanay street lighting')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h2 class="notes-h2" id="dc2">Design Challenge 2 &mdash; Automatic polytunnel vent fan, Fife</h2>
+      <p class="notes-p">A community allotment group wants to protect their crops from overheating by fitting a fan that switches on automatically once their polytunnel gets too warm.</p>
+
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>Supply voltage: 9 V</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>The fan (a motor) should switch on once the temperature inside the tunnel reaches approximately 30&deg;C</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>A thermistor is available with a resistance of 4 k&Omega; at 30&deg;C</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>Choose a fixed resistor from 1 k&Omega;, 2 k&Omega;, 3.3 k&Omega; or 4.7 k&Omega;. Treat the fan as switching on once V<sub>out</sub> at the transistor base reaches at least half the supply voltage (4.5 V)</td></tr>
+      </table>
+
+      <div class="assignment" id="assignment-dc2">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Design Challenge 2 &mdash; Polytunnel vent fan</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) <strong>Design.</strong> Decide whether the thermistor should be in the upper or lower position of the voltage divider so that V<sub>out</sub> rises as it gets hotter, and explain your reasoning. Then calculate V<sub>out</sub> at 30&deg;C for each of the four candidate fixed resistors, and select the one that comes closest to switching the fan on right at the 30&deg;C target (requirement iv). Show all your working.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-dc2a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc2a" data-placeholder="Position, working for each resistor option, and your choice..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) <strong>Build/simulate.</strong> Build the complete circuit &mdash; voltage divider, transistor and motor &mdash; in the simulator using your chosen resistor.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-dc2b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc2b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) <strong>Test.</strong> Adjust the simulated thermistor value from a low temperature up towards 30&deg;C and note the resistance at which the fan actually switches on.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-dc2c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc2c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) <strong>Evaluate.</strong> How close was the actual switching point to 30&deg;C? Suggest a realistic improvement &mdash; for example, would a variable resistor in place of the fixed one make the design better suited to a real installation?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-dc2d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc2d" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc2', 'Design Challenge 2 &mdash; Polytunnel vent fan')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h2 class="notes-h2" id="dc3">Design Challenge 3 &mdash; Cycle shed security light</h2>
+      <p class="notes-p">A school wants an LED light above the bike shed door that switches on automatically once it gets dark enough to be a safety concern, without anyone needing to flick a switch.</p>
+
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>Supply voltage: 6 V</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>An LDR is available: its resistance is around 400 &Omega; in daylight, rising to about 8 k&Omega; once it is dark enough to be a safety concern</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>Output: a red LED, voltage drop 2 V when lit, current must not exceed 20 mA</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>Choose a fixed resistor for the light-sensing divider from 470 &Omega;, 1 k&Omega; or 2.2 k&Omega;. Treat the light as switching on once V<sub>out</sub> at the transistor base reaches at least half the supply voltage (3 V), and it must stay below this in daylight</td></tr>
+      </table>
+
+      <div class="assignment" id="assignment-dc3">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Design Challenge 3 &mdash; Cycle shed security light</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) <strong>Design &mdash; sensor divider.</strong> This needs to be a dark sensor. Decide the LDR's position in the divider, then calculate V<sub>out</sub> in daylight <em>and</em> in the dark for all three candidate fixed resistors. Select the resistor that gives the most reliable margin between clearly off and clearly on, and justify your choice.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-dc3a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc3a" data-placeholder="Position, working for each resistor option, and your choice..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) <strong>Design &mdash; LED resistor.</strong> Calculate the minimum series resistor needed to keep the LED current at or below 20 mA, then choose a suitable standard value.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-dc3b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc3b" data-placeholder="Type your working here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) <strong>Build/simulate and test.</strong> Build the complete circuit and vary the simulated light level from bright to dark. Note the light level at which the LED actually switches on.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-dc3c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc3c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) <strong>Evaluate.</strong> Does the switching point match your design? Suggest a realistic improvement to the design.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-dc3d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc3d" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc3', 'Design Challenge 3 &mdash; Cycle shed security light')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h2 class="notes-h2" id="dc4">Design Challenge 4 &mdash; Harbour ice-warning light, Eyemouth</h2>
+      <p class="notes-p">A small fishing harbour wants a warning light on the pier that comes on automatically when deck conditions are cold enough to risk icing, alerting crews before they step out.</p>
+
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>Control circuit supply: 9 V</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>Output: a 12 V warning lamp, switched via a relay</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>Thermistor: resistance &asymp; 2 k&Omega; at 3&deg;C (the icing-risk threshold), &asymp; 500 &Omega; at 15&deg;C (a mild day)</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>Choose a fixed resistor from 1 k&Omega;, 2 k&Omega; or 3.3 k&Omega;. The warning light must be ON at 3&deg;C and below, and clearly OFF at 15&deg;C, using the same 4.5 V (half-supply) switching convention as the earlier challenges</td></tr>
+        <tr><th><span class="data-badge">v</span></th><td>Include a protective diode, and be ready to justify its placement</td></tr>
+      </table>
+
+      <div class="assignment" id="assignment-dc4">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Design Challenge 4 &mdash; Harbour ice-warning light</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) <strong>Design &mdash; sensor divider.</strong> Decide the thermistor's position so that V<sub>out</sub> is high when it's cold. Calculate V<sub>out</sub> at both 3&deg;C and 15&deg;C for all three candidate fixed resistors, and select the one that best meets requirement (iv). Show your working, including any option(s) that fail the spec and why.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-dc4a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc4a" data-placeholder="Position, working for each resistor option, and your choice..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) <strong>Design &mdash; output stage.</strong> Explain why a relay is needed here, referring to requirement (ii). Then explain where you would place a protective diode and why it is needed.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-dc4b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc4b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) <strong>Build/simulate and test.</strong> Build the complete circuit &mdash; thermistor divider, transistor, relay, diode and lamp &mdash; and vary the simulated temperature between 3&deg;C and 15&deg;C. Record what you observe.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-dc4c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc4c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) <strong>Evaluate.</strong> Does your design meet every part of the specification? Compare this challenge to Design Challenge 3: why did that circuit not need a relay, while this one does?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-ae-dc4d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc4d" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc4', 'Design Challenge 4 &mdash; Harbour ice-warning light')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
 
       <div class="controls-bar">
         <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-download-all" id="downloadAllBtn" onclick="downloadAllAnswersPDF()">&#x2B07;&#xFE0F; Download ALL my answers (PDF)</button>
         <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8; Print</button>
         <button class="ctrl-btn ctrl-btn-clear" id="btn-clear-all">&#x1F5D1; Clear all answers</button>
       </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
 
-      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
+      <div class="page-nav" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
         <button class="ctrl-btn ctrl-btn-print" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});">&#x2B06;&#xFE0F; Back to top</button>
         <a href="index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">&#x2302; Main menu</a>
         <a href="../digital/course-notes.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">Next section &#x2192;</a>
@@ -1654,56 +1955,280 @@
 
 
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>
-// ── localStorage saving for all answer boxes ──────────────────────────────────
-(function() {
-  const PREFIX = 'ess_answers_ae-';
-  let debounceTimers = {};
-
-  function saveKey(key, val) {
-    try { localStorage.setItem(PREFIX + key, val); } catch(e) {}
-  }
-  function loadKey(key) {
-    try { return localStorage.getItem(PREFIX + key); } catch(e) { return null; }
-  }
-  function showSaved(el) {
-    const ind = el.closest('.task-item, td')?.querySelector('.saved-indicator') ||
-                document.getElementById('ind-' + el.dataset.key);
-    if (ind) { ind.textContent = '✓ Saved'; setTimeout(() => { ind.textContent = ''; }, 2000); }
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    // Restore and wire up all contenteditable answer boxes and cells
-    document.querySelectorAll('[data-key]').forEach(el => {
-      const key = el.dataset.key;
-      const saved = loadKey(key);
-      if (saved !== null) el.innerHTML = saved;
-
-      el.addEventListener('input', function() {
-        clearTimeout(debounceTimers[key]);
-        debounceTimers[key] = setTimeout(() => {
-          saveKey(key, el.innerHTML);
-          showSaved(el);
-        }, 800);
-      });
-      el.addEventListener('blur', function() {
-        clearTimeout(debounceTimers[key]);
-        saveKey(key, el.innerHTML);
-      });
-    });
-
-    // Clear all button
-    const clearBtn = document.getElementById('btn-clear-all');
-    if (clearBtn) {
-      clearBtn.addEventListener('click', function() {
-        if (!confirm('Clear all saved answers? This cannot be undone.')) return;
-        document.querySelectorAll('[data-key]').forEach(el => {
-          el.innerHTML = '';
-          saveKey(el.dataset.key, '');
-        });
-      });
-    }
+// ── localStorage saving for all answer boxes and cells ─────────────────────
+const STORAGE_PREFIX = 'ess_answers_';
+function saveValue(k, v) { try { localStorage.setItem(STORAGE_PREFIX + k, v); updateStatusBar(); } catch(e) {} }
+function loadValue(k) { try { return localStorage.getItem(STORAGE_PREFIX + k) || ''; } catch(e) { return ''; } }
+function updateStatusBar() { const el = document.getElementById('storage-status'); if (el) el.textContent = 'Last saved: ' + new Date().toLocaleTimeString(); }
+function showSaved(key) {
+  const ind = document.getElementById('ind-' + key);
+  if (!ind) return;
+  ind.textContent = '\u2713 Saved';
+  setTimeout(() => { ind.textContent = ''; }, 2000);
+}
+function clearAllAnswers() {
+  if (!confirm('Clear all saved answers on this page? This cannot be undone.')) return;
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const k = el.dataset.key;
+    if (k) { try { localStorage.removeItem(STORAGE_PREFIX + k); } catch(e) {} el.innerHTML = ''; }
   });
+  const el = document.getElementById('storage-status');
+  if (el) el.textContent = 'Answers cleared.';
+}
+function debounce(fn, d) { let t; return function() { clearTimeout(t); const a = arguments, c = this; t = setTimeout(() => fn.apply(c, a), d); }; }
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-key]').forEach(box => {
+    const key = box.dataset.key;
+    if (!key) return;
+    const saved = loadValue(key);
+    if (saved) box.innerHTML = saved;
+    const ds = debounce(() => { saveValue(key, box.innerHTML); showSaved(key); }, 800);
+    box.addEventListener('input', ds);
+    box.addEventListener('blur', () => { saveValue(key, box.innerHTML); showSaved(key); });
+  });
+  const clearBtn = document.getElementById('btn-clear-all');
+  if (clearBtn) clearBtn.addEventListener('click', clearAllAnswers);
+});
+
+/* ── PDF export ─────────────────────────────────────────────── */
+function pdfSafe(s) {
+  if (!s) return '';
+  return String(s)
+    .replace(/[\u2018\u2019\u201B\u2032]/g, "'")
+    .replace(/[\u201C\u201D\u201F\u2033]/g, '"')
+    .replace(/[\u2013\u2014\u2212]/g, '-')
+    .replace(/\u2026/g, '...')
+    .replace(/\u00A0/g, ' ')
+    .replace(/\u2713/g, '')
+    .replace(/\u03A9/g, 'ohm').replace(/\u03C3/g, 'sigma').replace(/\u03B5/g, 'epsilon').replace(/\u0394/g, 'delta').replace(/\u03C0/g, 'pi')
+    .replace(/[^\x00-\xFF]/g, '');
+}
+
+const PUPIL_NAME_KEY = 'ae-pupil-name';
+function getPupilName() { try { return localStorage.getItem(PUPIL_NAME_KEY) || ''; } catch(e) { return ''; } }
+
+function pdfNewDoc() {
+  const doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' });
+  const state = { margin: 48, pageWidth: doc.internal.pageSize.getWidth(), pageHeight: doc.internal.pageSize.getHeight() };
+  state.usableWidth = state.pageWidth - state.margin * 2;
+  state.y = state.margin;
+  return { doc, state };
+}
+
+function pdfAddHeader(doc, state, taskLabel) {
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(16); doc.setTextColor(15, 90, 68);
+  doc.text('Engineering Science Scotland', state.margin, state.y); state.y += 20;
+  doc.setFontSize(14); doc.setTextColor(30, 30, 30);
+  const tLines = doc.splitTextToSize(pdfSafe(taskLabel), state.usableWidth);
+  doc.text(tLines, state.margin, state.y); state.y += tLines.length * 16 + 6;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(11); doc.setTextColor(90, 90, 90);
+  const pupilName = getPupilName();
+  const todayStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const nameLine = pupilName ? ('Name: ' + pdfSafe(pupilName) + '      Date: ' + todayStr) : ('Name: _________________________________      Date: _______________');
+  doc.text(nameLine, state.margin, state.y); state.y += 20;
+  doc.setDrawColor(200, 200, 200); doc.line(state.margin, state.y, state.pageWidth - state.margin, state.y); state.y += 18;
+}
+
+function pdfEnsureSpace(doc, state, h) { if (state.y + h > state.pageHeight - state.margin) { doc.addPage(); state.y = state.margin; } }
+
+function pdfWriteAnswer(doc, state, el) {
+  const img = el.querySelector('img');
+  if (img && img.src) {
+    try {
+      const props = doc.getImageProperties(img.src);
+      const ratio = Math.min(state.usableWidth / props.width, 260 / props.height, 1);
+      const w = props.width * ratio, h = props.height * ratio;
+      pdfEnsureSpace(doc, state, h + 14);
+      doc.addImage(img.src, props.fileType || 'PNG', state.margin, state.y, w, h);
+      state.y += h + 10;
+    } catch (e) {
+      doc.setFont('helvetica', 'italic'); doc.setFontSize(11); doc.setTextColor(160, 60, 60);
+      pdfEnsureSpace(doc, state, 14); doc.text('[Could not embed pasted image]', state.margin, state.y); state.y += 16;
+    }
+  }
+  let text = pdfSafe(el.innerText.trim());
+  if (img && !text) return;
+  doc.setFontSize(11);
+  if (!text) { doc.setFont('helvetica', 'italic'); doc.setTextColor(160, 160, 160); text = '(no answer entered yet)'; }
+  else { doc.setFont('helvetica', 'normal'); doc.setTextColor(40, 40, 40); }
+  const lines = doc.splitTextToSize(text, state.usableWidth);
+  for (let i = 0; i < lines.length; i++) { pdfEnsureSpace(doc, state, 14); doc.text(lines[i], state.margin, state.y); state.y += 14; }
+  state.y += 6;
+}
+
+function pdfRenderPanelItems(doc, state, panel) {
+  const items = panel.querySelectorAll('.task-item');
+  for (let i = 0; i < items.length; i++) {
+    const qEl = items[i].querySelector('.task-q');
+    const qText = qEl ? pdfSafe(qEl.innerText.trim()) : '';
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(15, 90, 68);
+    const qLines = doc.splitTextToSize(qText, state.usableWidth);
+    pdfEnsureSpace(doc, state, qLines.length * 14 + 6);
+    doc.text(qLines, state.margin, state.y); state.y += qLines.length * 14 + 6;
+    const fields = items[i].querySelectorAll('[data-key]');
+    for (let f = 0; f < fields.length; f++) {
+      const lab = fields[f].dataset.label;
+      if (lab) {
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(90, 90, 90);
+        pdfEnsureSpace(doc, state, 28); doc.text(pdfSafe(lab) + ':', state.margin, state.y); state.y += 13;
+      }
+      pdfWriteAnswer(doc, state, fields[f]);
+    }
+    state.y += 6;
+  }
+}
+
+function pdfAddFooters(doc, state) {
+  const n = doc.internal.getNumberOfPages();
+  for (let p = 1; p <= n; p++) {
+    doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(150, 150, 150);
+    doc.text('Page ' + p + ' of ' + n + '  -  engineeringsciencescotland.co.uk', state.margin, state.pageHeight - 24);
+  }
+}
+
+function downloadTaskPDF(panelId, taskLabel) {
+  const panel = document.getElementById(panelId); if (!panel) return;
+  const btn = panel.querySelector('.task-download-btn'); const orig = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = 'Building PDF&hellip;'; }
+  setTimeout(() => {
+    try {
+      const o = pdfNewDoc();
+      pdfAddHeader(o.doc, o.state, taskLabel);
+      pdfRenderPanelItems(o.doc, o.state, panel);
+      pdfAddFooters(o.doc, o.state);
+      o.doc.save(pdfSafe(taskLabel).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '-') + '.pdf');
+    } catch (err) { console.error(err); alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.'); }
+    finally { if (btn) { btn.disabled = false; btn.innerHTML = orig; } }
+  }, 30);
+}
+
+/* Keep this list in sync with the task panels on the page, in page order */
+const ALL_TASK_PANELS = [
+  ['assignment-inv1',  'Investigation 1 \u2014 Voltage, resistance and current'],
+  ['assignment-inv2',  'Investigation 2 \u2014 Switch circuits'],
+  ['assignment-task1', 'Task 1 \u2014 Components and symbols'],
+  ['assignment-task2', 'Task 2 \u2014 Ohm\u2019s Law calculations'],
+  ['assignment-task3', 'Task 3 \u2014 Series circuits'],
+  ['assignment-inv3',  'Investigation 3 \u2014 Measuring voltage and current'],
+  ['assignment-quickcheck1', 'Quick check \u2014 the voltage rule'],
+  ['assignment-task4', 'Task 4 \u2014 Parallel circuits'],
+  ['assignment-task5', 'Task 5 \u2014 Combined circuits'],
+  ['assignment-task6a','Task 6a \u2014 Reading sensor graphs and calculating Vout'],
+  ['assignment-task6b','Task 6b \u2014 Light sensor vs dark sensor'],
+  ['assignment-inv4',  'Investigation 4 \u2014 How does Vout change in a sensor voltage divider?'],
+  ['assignment-task6c','Task 6c \u2014 Voltage divider calculations'],
+  ['assignment-inv5',  'Investigation 5 \u2014 Transistor switching'],
+  ['assignment-task8', 'Task 8 \u2014 Transistor circuit design'],
+  ['assignment-task9', 'Task 9 \u2014 Relays'],
+  ['assignment-dc1',   'Design Challenge 1 \u2014 Hogmanay street lighting'],
+  ['assignment-dc2',   'Design Challenge 2 \u2014 Polytunnel vent fan'],
+  ['assignment-dc3',   'Design Challenge 3 \u2014 Cycle shed security light'],
+  ['assignment-dc4',   'Design Challenge 4 \u2014 Harbour ice-warning light']
+];
+
+function downloadAllAnswersPDF() {
+  const btn = document.getElementById('downloadAllBtn'); const orig = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = 'Building PDF&hellip;'; }
+  setTimeout(() => {
+    try {
+      const o = pdfNewDoc(), doc = o.doc, state = o.state;
+      pdfAddHeader(doc, state, 'Analogue Electronics \u2014 All my answers');
+      for (let i = 0; i < ALL_TASK_PANELS.length; i++) {
+        const panel = document.getElementById(ALL_TASK_PANELS[i][0]); if (!panel) continue;
+        pdfEnsureSpace(doc, state, 40);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(194, 65, 12);
+        doc.text(pdfSafe(ALL_TASK_PANELS[i][1]), state.margin, state.y); state.y += 8;
+        doc.setDrawColor(230, 200, 180); doc.line(state.margin, state.y, state.pageWidth - state.margin, state.y); state.y += 16;
+        pdfRenderPanelItems(doc, state, panel); state.y += 10;
+      }
+      pdfAddFooters(doc, state);
+      doc.save('Analogue-Electronics-All-My-Answers.pdf');
+    } catch (err) { console.error(err); alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.'); }
+    finally { if (btn) { btn.disabled = false; btn.innerHTML = orig; } }
+  }, 30);
+}
+
+/* ── Contents panel ─────────────────────────────────────────── */
+function openToc() { document.getElementById('tocPanel').classList.add('open'); document.getElementById('tocOverlay').classList.add('open'); }
+function closeToc() { document.getElementById('tocPanel').classList.remove('open'); document.getElementById('tocOverlay').classList.remove('open'); }
+
+/* ── My Name ────────────────────────────────────────────────── */
+function updateNameFabLabel() { const l = document.getElementById('nameFabLabel'); if (!l) return; const n = getPupilName(); l.textContent = n ? n : 'My Name'; }
+function openNamePanel() {
+  const input = document.getElementById('nameInput'); if (input) input.value = getPupilName();
+  const msg = document.getElementById('nameSavedMsg'); if (msg) msg.classList.remove('show');
+  document.getElementById('nameOverlay').classList.add('open');
+  if (input) setTimeout(() => input.focus(), 50);
+}
+function closeNamePanel() { document.getElementById('nameOverlay').classList.remove('open'); }
+function closeNameOverlayClick(e) { if (e.target.id === 'nameOverlay') closeNamePanel(); }
+function saveNameInput() {
+  const input = document.getElementById('nameInput'); const name = input ? input.value.trim() : '';
+  try { localStorage.setItem(PUPIL_NAME_KEY, name); } catch(e) {}
+  updateNameFabLabel();
+  const msg = document.getElementById('nameSavedMsg'); if (msg) msg.classList.add('show');
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeToc(); closeNamePanel(); } });
+</script>
+
+<button class="toc-fab" id="tocFab" onclick="openToc()">&#x2630; Contents</button>
+
+<button class="name-fab" id="nameFab" onclick="openNamePanel()"><span class="name-fab-icon">&#x1F464;</span><span id="nameFabLabel">My Name</span></button>
+
+<div class="name-overlay" id="nameOverlay" onclick="closeNameOverlayClick(event)">
+  <div class="name-panel">
+    <button class="name-panel-close" onclick="closeNamePanel()" aria-label="Close">&times;</button>
+    <h3>Your name</h3>
+    <p>Enter your name once and it&rsquo;ll be added to the top of every task&rsquo;s downloaded PDF &mdash; no need to write it in by hand each time.</p>
+    <input type="text" id="nameInput" placeholder="e.g. Jamie Smith" maxlength="60">
+    <button class="name-panel-save" onclick="saveNameInput()">Save name</button>
+    <div class="name-panel-saved-msg" id="nameSavedMsg">&#x2713; Saved &mdash; it&rsquo;ll now appear on your PDFs</div>
+  </div>
+</div>
+
+<div class="toc-overlay" id="tocOverlay" onclick="closeToc()"></div>
+<div class="toc-panel" id="tocPanel">
+  <div class="toc-panel-header">
+    <h3>Contents</h3>
+    <button class="toc-panel-close" onclick="closeToc()" aria-label="Close">&times;</button>
+  </div>
+  <nav class="toc-list" id="tocList">
+    <a href="#section-1" onclick="closeToc()">Section 1: Current, Voltage and Resistance</a>
+    <a href="#section-2" onclick="closeToc()">Section 2: Components and Circuit Symbols 1</a>
+    <a href="#section-3" onclick="closeToc()">Section 3: Ohm's Law</a>
+    <a href="#section-4" onclick="closeToc()">Section 4: Resistors in Series</a>
+    <a href="#section-5" onclick="closeToc()">Section 5: Voltage Drops and Current Junctions</a>
+    <a href="#section-6" onclick="closeToc()">Section 6: Parallel Circuits</a>
+    <a href="#section-7" onclick="closeToc()">Section 7: Combined Series and Parallel Circuits</a>
+    <a href="#section-8" onclick="closeToc()">Section 8: Voltage Dividers</a>
+    <a href="#section-9" onclick="closeToc()">Section 9: Transistors</a>
+    <a href="#section-10" onclick="closeToc()">Section 10: Relays</a>
+    <a href="#section-11" onclick="closeToc()">Section 11: Design Challenges</a>
+    <a href="#dc1" class="toc-sub" onclick="closeToc()">Challenge 1 &mdash; Hogmanay street lighting</a>
+    <a href="#dc2" class="toc-sub" onclick="closeToc()">Challenge 2 &mdash; Polytunnel vent fan</a>
+    <a href="#dc3" class="toc-sub" onclick="closeToc()">Challenge 3 &mdash; Cycle shed security light</a>
+    <a href="#dc4" class="toc-sub" onclick="closeToc()">Challenge 4 &mdash; Harbour ice-warning light</a>
+  </nav>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', updateNameFabLabel);
+(function() {
+  const nameInputEl = document.getElementById('nameInput');
+  if (nameInputEl) nameInputEl.addEventListener('keydown', function(e) { if (e.key === 'Enter') saveNameInput(); });
+  const links = Array.prototype.slice.call(document.querySelectorAll('.toc-list a'));
+  const targets = links.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+  if (!targets.length || !('IntersectionObserver' in window)) return;
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const link = document.querySelector('.toc-list a[href="#' + entry.target.id + '"]');
+      if (link && entry.isIntersecting) { links.forEach(a => a.classList.remove('toc-active')); link.classList.add('toc-active'); }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  targets.forEach(t => observer.observe(t));
 })();
 </script>
 
