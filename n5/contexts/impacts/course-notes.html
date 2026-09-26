@@ -6,11 +6,11 @@
   <title>Impacts of Engineering — Course Notes — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
-    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 16px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:6px; }
     .back-link:hover { color:var(--teal-800); }
-    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
-    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); scroll-margin-top:100px; }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; scroll-margin-top:100px; }
     .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:16px 0 8px; }
     .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
     .notes-p strong { color:var(--gray-900); }
@@ -62,7 +62,66 @@
     .ctrl-btn-print:hover { background:var(--teal-100); }
     .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
     .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
-    @media print { .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator{display:none!important;} .layout{display:block!important;} .main{margin:0!important;padding:0!important;} .answer-box{border:1.5px solid #94a3b8!important;background:white!important;} }
+    @media (max-width:640px) { .impact-grid { grid-template-columns:1fr; } }
+    .answer-box img { max-width:100%; height:auto; }
+    .cell-answer { outline:none; background:#f8faff; min-height:36px; }
+    .cell-answer:focus { box-shadow:inset 0 0 0 2px var(--teal-400); background:white; }
+    .data-table tr:nth-child(even) td.cell-answer, .roles-table td.cell-answer { background:#f8faff; }
+    .task-download-row { background:var(--gray-50); border-top:1px solid var(--gray-200); padding:9px 20px; text-align:right; }
+    .task-download-btn { display:inline-flex; align-items:center; gap:6px; background:white; border:1.2px solid var(--teal-400); color:var(--teal-800); font-size:10px; font-weight:700; padding:7px 12px; border-radius:999px; cursor:pointer; transition:background .15s; }
+    .task-download-btn:hover { background:var(--teal-50); }
+    .task-download-btn:disabled { opacity:.6; cursor:wait; }
+    /* Specification tables in the challenges */
+    .spec-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .spec-table th { background:transparent; padding:8px 6px 8px 0; width:32px; vertical-align:top; }
+    .spec-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
+    .data-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:var(--teal-50); color:var(--teal-800); border:1px solid var(--teal-100); font-size:11px; font-weight:700; }
+    .ctrl-btn-download-all { background:#eef2ff; color:#4338ca; }
+    .ctrl-btn-download-all:hover { background:#e0e7ff; }
+
+    /* Table of contents: floating button + slide-out panel */
+    .toc-fab { position:fixed; right:24px; bottom:76px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#c2410c; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+    .toc-fab:hover { background:#9a3412; }
+    .toc-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; }
+    .toc-overlay.open { display:block; }
+    .toc-panel { position:fixed; top:0; right:-340px; width:320px; max-width:85vw; height:100%; background:white; z-index:999998; box-shadow:-8px 0 30px rgba(0,0,0,.2); transition:right .25s ease; display:flex; flex-direction:column; }
+    .toc-panel.open { right:0; }
+    .toc-panel-header { padding:18px 20px 14px; border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; }
+    .toc-panel-header h3 { margin:0; font-size:16px; color:var(--teal-800); }
+    .toc-panel-close { background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .toc-panel-close:hover { color:var(--gray-700); }
+    .toc-list { overflow-y:auto; padding:8px 0 20px; }
+    .toc-list a { display:block; padding:10px 20px; font-size:14px; color:var(--gray-700); text-decoration:none; border-left:3px solid transparent; }
+    .toc-list a:hover { background:var(--teal-50); color:var(--teal-800); }
+    .toc-list a.toc-active { border-left-color:var(--teal-500,var(--teal-600)); background:var(--teal-50); color:var(--teal-800); font-weight:700; }
+    .toc-list a.toc-sub { padding-left:36px; font-size:13px; color:var(--gray-500); }
+
+    /* Pupil name: floating button + small popup */
+    .name-fab { position:fixed; right:24px; bottom:132px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#4f46e5; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); overflow:hidden; }
+    .name-fab-icon { font-size:14px; line-height:1; flex-shrink:0; }
+    #nameFabLabel { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:78px; text-align:left; }
+    .name-fab:hover { background:#3730a3; }
+    .name-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; align-items:center; justify-content:center; padding:20px; }
+    .name-overlay.open { display:flex; }
+    .name-panel { background:white; border-radius:14px; max-width:360px; width:100%; padding:24px 24px 22px; box-shadow:0 20px 60px rgba(0,0,0,.35); position:relative; }
+    .name-panel-close { position:absolute; top:10px; right:12px; background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .name-panel-close:hover { color:var(--gray-700); }
+    .name-panel h3 { margin:0 0 8px; font-size:16px; color:#4338ca; }
+    .name-panel p { margin:0 0 14px; font-size:13px; line-height:1.5; color:var(--gray-600); }
+    .name-panel input { width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid var(--gray-200); border-radius:8px; font-size:14px; margin-bottom:12px; }
+    .name-panel input:focus { outline:none; border-color:#4338ca; }
+    .name-panel-save { width:100%; background:#4338ca; color:white; border:none; border-radius:8px; padding:10px; font-size:14px; font-weight:700; cursor:pointer; }
+    .name-panel-save:hover { background:#3730a3; }
+    .name-panel-saved-msg { font-size:12px; color:#16a34a; margin-top:8px; text-align:center; display:none; }
+    .name-panel-saved-msg.show { display:block; }
+
+    @media print {
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.toc-fab,.toc-panel,.toc-overlay,.name-fab,.name-overlay,.task-download-row,.page-nav,.exemplar-thumb,.exemplar-modal { display:none!important; }
+      .layout { display:block!important; }
+      .main { margin:0!important; padding:0!important; }
+      .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
+      .cell-answer { background:white!important; }
+    }
   </style>
 </head>
 <body>
@@ -87,7 +146,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 15 September 2026, 10:41</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 26 September 2026, 12:38</div>
       <div class="hero-label">National 5 &middot; Engineering Contexts &rsaquo; Impacts of Engineering</div>
       <h1 class="hero-title">&#x1F30D; Impacts of Engineering &mdash; Course Notes</h1>
       <p class="hero-sub">Social, economic and environmental impacts, climate change and emerging technologies</p>
@@ -98,7 +157,7 @@
       <a href="index.html" class="back-link">&larr; Back to Impacts of Engineering</a>
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 1: The Wider Impact of Engineering</h1>
+      <h1 class="notes-h1" id="section-1">Section 1: The Wider Impact of Engineering</h1>
 
       <p class="notes-p">Every engineering project — from a new road to a smartphone — has an impact far beyond its immediate purpose. Engineers must consider the effects their work has on <strong>society, the economy and the environment</strong>. These impacts can be positive or negative, short-term or long-term, local or global.</p>
 
@@ -109,7 +168,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 2: Social Impacts</h1>
+      <h1 class="notes-h1" id="section-2">Section 2: Social Impacts</h1>
 
       <p class="notes-p"><strong>Social impacts</strong> are the effects an engineering project has on people and communities — their lives, lifestyles, wellbeing and culture.</p>
 
@@ -142,7 +201,7 @@
         </div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task1">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Social impacts</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -156,12 +215,15 @@
             <div class="answer-box" contenteditable="true" data-key="im-i1c" data-placeholder="Positive: ... Negative: ..."></div>
           </div>
         </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task1', 'Task 1 — Social impacts')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 3: Economic Impacts</h1>
+      <h1 class="notes-h1" id="section-3">Section 3: Economic Impacts</h1>
 
       <p class="notes-p"><strong>Economic impacts</strong> are the effects an engineering project has on money, trade and the economy — locally, nationally and internationally.</p>
 
@@ -192,7 +254,7 @@
         </div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task2">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Economic impacts</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -206,12 +268,15 @@
             <div class="answer-box" contenteditable="true" data-key="im-i2b" data-placeholder="Positive: ... Negative: ..."></div>
           </div>
         </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task2', 'Task 2 — Economic impacts')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 4: Environmental Impacts</h1>
+      <h1 class="notes-h1" id="section-4">Section 4: Environmental Impacts</h1>
 
       <p class="notes-p"><strong>Environmental impacts</strong> are the effects an engineering project has on the natural world — air, water, land, wildlife and the climate.</p>
 
@@ -240,7 +305,7 @@
         </div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task3">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Environmental impacts</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -254,12 +319,15 @@
             <div class="answer-box" contenteditable="true" data-key="im-i3c" data-placeholder="1. ... 2. ..."></div>
           </div>
         </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task3', 'Task 3 — Environmental impacts')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 5: Engineering and Climate Change</h1>
+      <h1 class="notes-h1" id="section-5">Section 5: Engineering and Climate Change</h1>
 
       <p class="notes-p"><strong>Climate change</strong> is one of the most important engineering challenges of our time. The burning of fossil fuels releases CO<sub>2</sub> and other greenhouse gases, which trap heat in the atmosphere and cause global temperatures to rise. Engineers are at the forefront of developing solutions.</p>
 
@@ -289,7 +357,7 @@
         <div class="tech-card-body">Mechanical and electrical engineers are developing electric vehicles, hydrogen fuel cell buses and electric aircraft to reduce transport emissions — currently one of the largest sources of greenhouse gases. Scotland aims to phase out petrol and diesel cars by 2030.</div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task4">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Climate change engineering</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -301,13 +369,13 @@
             <div class="task-q">2. Describe three engineering solutions to climate change. For each, explain how it works and what effect it has on the environment.</div>
             <div class="task-q-sub">Solution 1:</div>
             <div class="answer-label">Description and environmental effect <span class="saved-indicator" id="ind-i4b">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="im-i4b" data-placeholder="Name and describe solution 1, and its environmental effect..."></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i4b" data-label="Solution 1" data-placeholder="Name and describe solution 1, and its environmental effect..."></div>
             <div class="task-q-sub">Solution 2:</div>
             <div class="answer-label">Description and environmental effect <span class="saved-indicator" id="ind-i4c">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="im-i4c" data-placeholder="Name and describe solution 2, and its environmental effect..."></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i4c" data-label="Solution 2" data-placeholder="Name and describe solution 2, and its environmental effect..."></div>
             <div class="task-q-sub">Solution 3:</div>
             <div class="answer-label">Description and environmental effect <span class="saved-indicator" id="ind-i4d">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="im-i4d" data-placeholder="Name and describe solution 3, and its environmental effect..."></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i4d" data-label="Solution 3" data-placeholder="Name and describe solution 3, and its environmental effect..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">3. Research: find a method by which CO<sub>2</sub> could be captured or used. Describe how it works.</div>
@@ -315,12 +383,15 @@
             <div class="answer-box" contenteditable="true" data-key="im-i4e" data-placeholder="Describe your researched method here..."></div>
           </div>
         </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task4', 'Task 4 — Climate change engineering')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 6: Emerging Technologies</h1>
+      <h1 class="notes-h1" id="section-6">Section 6: Emerging Technologies</h1>
 
       <p class="notes-p">Engineering is constantly evolving — making things smaller, lighter, faster, more efficient and more sustainable. <strong>Emerging technologies</strong> are new developments that are currently being developed or have recently become available. The specific technologies making headlines will keep changing, but they tend to fall into a small number of broad areas that engineers keep pushing forward.</p>
 
@@ -351,7 +422,7 @@
         <div class="tech-card-body">Batteries and other ways of storing and generating energy are constantly being redesigned to store more energy in a smaller, lighter and safer package, and to charge or generate more efficiently. Improvements in this area affect a wide range of products, from electric vehicles and portable electronics to renewable energy grids.</div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task5">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Emerging technologies</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -359,33 +430,36 @@
             <div class="key-point">&#x1F4A1; <strong>Tip:</strong> Not sure where to start? Try searching something like "top 10 emerging technologies" in a search engine — this will bring up current, up-to-date examples. Try to use a source published within the last year or so, and check more than one source if you can.</div>
             <div class="task-q-sub">Emerging Technology 1:</div>
             <div class="answer-label">Problem it solves <span class="saved-indicator" id="ind-i5a">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="im-i5a" data-placeholder="What problem does this technology address?"></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="im-i5a" data-label="Technology 1 - problem it solves" data-placeholder="What problem does this technology address?"></div>
             <div class="answer-label" style="margin-top:8px;">How it works <span class="saved-indicator" id="ind-i5b">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="im-i5b" data-placeholder="Describe how this technology works..."></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i5b" data-label="Technology 1 - how it works" data-placeholder="Describe how this technology works..."></div>
             <div class="answer-label" style="margin-top:8px;">Potential impact <span class="saved-indicator" id="ind-i5c">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="im-i5c" data-placeholder="What social, economic or environmental impact could this have?"></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="im-i5c" data-label="Technology 1 - potential impact" data-placeholder="What social, economic or environmental impact could this have?"></div>
           </div>
           <div class="task-item">
             <div class="task-q"></div>
             <div class="task-q-sub">Emerging Technology 2:</div>
             <div class="answer-label">Problem it solves <span class="saved-indicator" id="ind-i5d">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="im-i5d" data-placeholder="What problem does this technology address?"></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="im-i5d" data-label="Technology 2 - problem it solves" data-placeholder="What problem does this technology address?"></div>
             <div class="answer-label" style="margin-top:8px;">How it works <span class="saved-indicator" id="ind-i5e">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="im-i5e" data-placeholder="Describe how this technology works..."></div>
+            <div class="answer-box" contenteditable="true" data-key="im-i5e" data-label="Technology 2 - how it works" data-placeholder="Describe how this technology works..."></div>
             <div class="answer-label" style="margin-top:8px;">Potential impact <span class="saved-indicator" id="ind-i5f">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-sm" contenteditable="true" data-key="im-i5f" data-placeholder="What social, economic or environmental impact could this have?"></div>
+            <div class="answer-box answer-box-sm" contenteditable="true" data-key="im-i5f" data-label="Technology 2 - potential impact" data-placeholder="What social, economic or environmental impact could this have?"></div>
           </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task5', 'Task 5 — Emerging technologies')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 7: Putting It All Together &mdash; Case Study</h1>
+      <h1 class="notes-h1" id="section-7">Section 7: Putting It All Together &mdash; Case Study</h1>
 
       <p class="notes-p">Use this section to bring together all three types of impact for a major engineering project of your choice. This mirrors the style of QS exam questions and the Engineering Contexts assignment.</p>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task6">
         <div class="assignment-header"><div class="assignment-title">&#x1F4CB; Task 6 &mdash; Full impact case study</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -414,17 +488,162 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="im-i6e" data-placeholder="Emerging technology: ... How it might impact the project in future: ..."></div>
           </div>
         </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task6', 'Task 6 — Full impact case study')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-8">Section 8: Engineering Challenges</h1>
+
+      <p class="notes-p">The tasks above asked you about one type of impact at a time. These challenges are closer to a real assignment brief: each one describes a Scottish engineering project and gives you a written <strong>specification</strong>. Your job is to work out what impacts the specification implies, sort them into the right categories, deal with a problem that crops up part-way through the project, and then weigh everything up to reach a justified decision.</p>
+
+      <div class="key-point"><strong>How to approach these:</strong> Read the context and the whole specification before you start writing. Every specification point tells you something the project <em>must</em> do &mdash; ask yourself who that affects (social), what it costs or earns (economic) and what it does to the natural world (environmental). Always say whether an impact is <strong>positive or negative</strong>, and use the exam tip in Section 3 when an impact could sound like either social or economic. In the evaluation questions there is no single right answer: marks come from a balanced argument and a conclusion that follows from it.</div>
+
+      <hr class="divider">
+
+      <!-- ── Challenge 1 ───────────────────────────────────────────── -->
+      <h2 class="notes-h2" id="ch1">Challenge 1 &mdash; Heat from the old mines</h2>
+
+      <p class="notes-p">Deep below a former mining town in Fife, the old coal workings have flooded with water that stays at a steady, slightly warm temperature all year round. The local council plans to use this water to heat homes. Water will be pumped up from the mine, a large heat pump in a new energy centre will raise its temperature, and insulated pipes laid under the streets will carry hot water to 400 homes, the primary school and the leisure centre. At the moment, every one of these buildings is heated by its own gas boiler.</p>
+
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>The scheme must supply heating and hot water to 400 homes, the primary school and the leisure centre, replacing their individual gas boilers.</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>Heating bills for connected households must be no higher than their current gas bills.</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>The pipe network must be laid under existing streets within 18 months, with at least one route into the town centre kept open at all times.</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>The scheme must cut the carbon emissions from heating these buildings by at least 60%.</td></tr>
+        <tr><th><span class="data-badge">v</span></th><td>Mine water must be returned underground after use, without contaminating local rivers or burns.</td></tr>
+      </table>
+
+      <div class="assignment" id="assignment-ch1">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Challenge 1 &mdash; Heat from the old mines</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">C1a. For each specification point (i&ndash;v), identify one impact it implies. State whether the impact is social, economic or environmental, and whether it is positive or negative.</div>
+            <div class="answer-label">Impacts of the specification <span class="saved-indicator" id="ind-c1a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="im-c1a" data-placeholder="i: ... (social / economic / environmental, positive / negative)&#10;ii: ...&#10;iii: ...&#10;iv: ...&#10;v: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C1b. Specification point ii is about household heating bills. Explain whether meeting this point is a social or an economic impact, then describe one related impact that belongs to the <em>other</em> category.</div>
+            <div class="answer-label">Social or economic? <span class="saved-indicator" id="ind-c1b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-c1b" data-placeholder="Meeting point ii is a ... impact because ...&#10;A related ... impact is ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C1c. Six months into construction, pipe-laying on the main shopping street is running late. Shopkeepers report fewer customers and residents complain about noise and diversions. Describe the impacts of this problem, covering at least two categories, and suggest one way the engineers could reduce them.</div>
+            <div class="answer-label">Impacts and response <span class="saved-indicator" id="ind-c1c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="im-c1c" data-placeholder="Impact 1 (category): ...&#10;Impact 2 (category): ...&#10;The engineers could reduce these by ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C1d. Once the scheme is running, the council must decide whether to extend it to a further 600 homes. Evaluate the scheme by weighing up its positive and negative impacts, using at least one impact from each category, and give a justified recommendation.</div>
+            <div class="answer-label">Evaluation and recommendation <span class="saved-indicator" id="ind-c1d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="im-c1d" data-placeholder="Positive impacts: ...&#10;Negative impacts: ...&#10;Recommendation: the council should / should not extend the scheme because ..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-ch1', 'Challenge 1 — Heat from the old mines')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ── Challenge 2 ───────────────────────────────────────────── -->
+      <h2 class="notes-h2" id="ch2">Challenge 2 &mdash; Reopening the branch line</h2>
+
+      <p class="notes-p">A railway branch line in Aberdeenshire closed in the 1960s. Since then, the town at the end of it has grown quickly, and most people now drive to work in Aberdeen along a busy, congested road. Transport Scotland is considering reopening a 25&nbsp;km stretch of the old line. Much of the old route still exists, although parts of it have become a woodland walking path and a corridor for wildlife.</p>
+
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>The journey from the town to Aberdeen city centre must take less than 30 minutes, with a train every 30 minutes at peak times.</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>A new station must be built with a 300-space car park and a bus interchange.</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>The line must follow the old route where possible. Where the old route is now used as a walking path, a replacement path must be provided alongside it.</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>Only battery-electric trains may be used on the line; no diesel trains.</td></tr>
+        <tr><th><span class="data-badge">v</span></th><td>The project is publicly funded and must be delivered within its agreed budget.</td></tr>
+      </table>
+
+      <div class="assignment" id="assignment-ch2">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Challenge 2 &mdash; Reopening the branch line</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">C2a. For each specification point (i&ndash;v), identify one impact it implies. State whether the impact is social, economic or environmental, and whether it is positive or negative.</div>
+            <div class="answer-label">Impacts of the specification <span class="saved-indicator" id="ind-c2a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="im-c2a" data-placeholder="i: ... (social / economic / environmental, positive / negative)&#10;ii: ...&#10;iii: ...&#10;iv: ...&#10;v: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C2b. Specification point iv requires battery-electric trains. Explain how this choice links to tackling climate change, then describe one positive and one negative impact of using battery-electric trains instead of diesel.</div>
+            <div class="answer-label">Battery-electric trains <span class="saved-indicator" id="ind-c2b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-c2b" data-placeholder="Link to climate change: ...&#10;Positive impact: ...&#10;Negative impact: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C2c. A wildlife survey finds a colony of protected bats roosting in an old stone bridge that the line must cross. The bridge cannot be demolished during the breeding season. Describe the impacts this problem has on the project, covering at least two categories, and suggest how the engineers could respond.</div>
+            <div class="answer-label">Impacts and response <span class="saved-indicator" id="ind-c2c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="im-c2c" data-placeholder="Impact 1 (category): ...&#10;Impact 2 (category): ...&#10;The engineers could respond by ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C2d. Opinion in the town is divided. Commuters are strongly in favour, but some residents living near the new station are worried about traffic and noise. Write a balanced evaluation of the project, using at least one impact from each category, and state whether you think it should go ahead.</div>
+            <div class="answer-label">Evaluation and recommendation <span class="saved-indicator" id="ind-c2d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="im-c2d" data-placeholder="For the project: ...&#10;Against the project: ...&#10;Conclusion: I think the project should / should not go ahead because ..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-ch2', 'Challenge 2 — Reopening the branch line')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ── Challenge 3 ───────────────────────────────────────────── -->
+      <h2 class="notes-h2" id="ch3">Challenge 3 &mdash; Giving old batteries a new life</h2>
+
+      <p class="notes-p">As more people switch to electric vehicles, thousands of worn-out car batteries will need to be dealt with every year. A company plans to build a battery recycling plant on a former industrial site beside the Firth of Forth. The plant will break down used batteries and recover valuable metals such as lithium, cobalt and nickel so they can be made into new batteries. Most of the handling will be done by automated machinery, because damaged batteries can catch fire and are dangerous to handle by hand.</p>
+
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>The plant must be able to recycle the batteries from 20,000 electric vehicles every year.</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>At least 90% of the lithium, cobalt and nickel in each battery must be recovered for reuse.</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>The plant must be built on the existing former industrial site, not on undeveloped land.</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>Battery handling must be automated. The plant will employ 150 permanent staff, many in new technician roles that need training.</td></tr>
+        <tr><th><span class="data-badge">v</span></th><td>Used batteries must be delivered by rail or sea wherever possible, rather than by road.</td></tr>
+      </table>
+
+      <div class="assignment" id="assignment-ch3">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Challenge 3 &mdash; Giving old batteries a new life</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">C3a. For each specification point (i&ndash;v), identify one impact it implies. State whether the impact is social, economic or environmental, and whether it is positive or negative.</div>
+            <div class="answer-label">Impacts of the specification <span class="saved-indicator" id="ind-c3a">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="im-c3a" data-placeholder="i: ... (social / economic / environmental, positive / negative)&#10;ii: ...&#10;iii: ...&#10;iv: ...&#10;v: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C3b. Specification point ii requires most of the metals to be recovered. Explain how recycling these metals could reduce one negative environmental impact and one negative economic impact of making new batteries.</div>
+            <div class="answer-label">Why recover the metals? <span class="saved-indicator" id="ind-c3b">&#x2713; Saved</span></div>
+            <div class="answer-box" contenteditable="true" data-key="im-c3b" data-placeholder="Environmental: recycling reduces ... because ...&#10;Economic: recycling reduces ... because ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C3c. During testing, a small fire breaks out in a storage area for damaged batteries. Nobody is hurt, but it is reported in the local news and nearby residents become worried. Describe the impacts of this incident, covering at least two categories, and suggest one engineering change that would reduce the risk of it happening again.</div>
+            <div class="answer-label">Impacts and response <span class="saved-indicator" id="ind-c3c">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="im-c3c" data-placeholder="Impact 1 (category): ...&#10;Impact 2 (category): ...&#10;Engineering change: ..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">C3d. The company is considering automating even more of the plant, which would reduce the number of permanent staff from 150 to 60. Evaluate this proposal by weighing up its impacts, using at least one impact from each category, and give a justified recommendation.</div>
+            <div class="answer-label">Evaluation and recommendation <span class="saved-indicator" id="ind-c3d">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="im-c3d" data-placeholder="Positive impacts of more automation: ...&#10;Negative impacts of more automation: ...&#10;Recommendation: the company should / should not ... because ..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-ch3', 'Challenge 3 — Giving old batteries a new life')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
       </div>
 
       <!-- Controls -->
       <div class="controls-bar">
         <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-download-all" id="downloadAllBtn" onclick="downloadAllAnswersPDF()">&#x2B07;&#xFE0F; Download ALL my answers (PDF)</button>
         <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
         <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
       </div>
       <div class="storage-status" id="storage-status">Last saved: never</div>
 
-      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
+      <div class="page-nav" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
         <button class="ctrl-btn ctrl-btn-print" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});">&#x2B06;&#xFE0F; Back to top</button>
         <a href="index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">&#x2302; Main menu</a>
         <a href="../../electronics/analogue/course-notes.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">Next section &#x2192;</a>
@@ -436,17 +655,19 @@
 </div>
 <footer class="footer"><span>Engineering Science Scotland &middot; Aligned to QS course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
 <script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
 <script>
 const STORAGE_PREFIX='ess_answers_';
 function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
 function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
 function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
-function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
-function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function showSaved(key){var ind=document.getElementById('ind-'+key.replace(/^im-/,''));if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('[data-key]').forEach(function(b){var k=b.dataset.key;if(k){try{localStorage.removeItem(STORAGE_PREFIX+k);}catch(e){}b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
 function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
 document.addEventListener('DOMContentLoaded',function(){
-  document.querySelectorAll('.answer-box').forEach(function(box){
+  /* Answer boxes AND the editable table cells both autosave */
+  document.querySelectorAll('[data-key]').forEach(function(box){
     var key=box.dataset.key;if(!key)return;
     var saved=loadValue(key);if(saved)box.innerHTML=saved;
     var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
@@ -454,6 +675,232 @@ document.addEventListener('DOMContentLoaded',function(){
     box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
   });
 });
+
+/* ── PDF export ─────────────────────────────────────────────── */
+/* jsPDF's built-in font can't show some symbols, so convert them to plain text */
+function pdfSafe(s){
+  if(!s)return '';
+  return String(s)
+    .replace(/[\u2018\u2019\u201B\u2032]/g,"'")
+    .replace(/[\u201C\u201D\u201F\u2033]/g,'"')
+    .replace(/[\u2013\u2014\u2212]/g,'-')
+    .replace(/\u2026/g,'...')
+    .replace(/\u00A0/g,' ')
+    .replace(/\u2713/g,'')
+    .replace(/\u03C3/g,'sigma').replace(/\u03B5/g,'epsilon').replace(/\u0394/g,'delta').replace(/\u03C0/g,'pi')
+    .replace(/[^\x00-\xFF]/g,'');
+}
+
+var PUPIL_NAME_KEY='imp-pupil-name';
+function getPupilName(){try{return localStorage.getItem(PUPIL_NAME_KEY)||'';}catch(e){return '';}}
+
+function pdfNewDoc(){
+  var doc=new window.jspdf.jsPDF({unit:'pt',format:'a4'});
+  var state={margin:48,pageWidth:doc.internal.pageSize.getWidth(),pageHeight:doc.internal.pageSize.getHeight()};
+  state.usableWidth=state.pageWidth-state.margin*2;
+  state.y=state.margin;
+  return {doc:doc,state:state};
+}
+
+function pdfAddHeader(doc,state,taskLabel){
+  doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(15,90,68);
+  doc.text('Engineering Science Scotland',state.margin,state.y);state.y+=20;
+  doc.setFontSize(14);doc.setTextColor(30,30,30);
+  var tLines=doc.splitTextToSize(pdfSafe(taskLabel),state.usableWidth);
+  doc.text(tLines,state.margin,state.y);state.y+=tLines.length*16+6;
+  doc.setFont('helvetica','normal');doc.setFontSize(11);doc.setTextColor(90,90,90);
+  var pupilName=getPupilName();
+  var todayStr=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  var nameLine=pupilName?('Name: '+pdfSafe(pupilName)+'      Date: '+todayStr):('Name: _________________________________      Date: _______________');
+  doc.text(nameLine,state.margin,state.y);state.y+=20;
+  doc.setDrawColor(200,200,200);doc.line(state.margin,state.y,state.pageWidth-state.margin,state.y);state.y+=18;
+}
+
+function pdfEnsureSpace(doc,state,h){if(state.y+h>state.pageHeight-state.margin){doc.addPage();state.y=state.margin;}}
+
+function pdfWriteAnswer(doc,state,el){
+  var img=el.querySelector('img');
+  if(img&&img.src){
+    try{
+      var props=doc.getImageProperties(img.src);
+      var ratio=Math.min(state.usableWidth/props.width,260/props.height,1);
+      var w=props.width*ratio,h=props.height*ratio;
+      pdfEnsureSpace(doc,state,h+14);
+      doc.addImage(img.src,props.fileType||'PNG',state.margin,state.y,w,h);
+      state.y+=h+10;
+    }catch(e){
+      doc.setFont('helvetica','italic');doc.setFontSize(11);doc.setTextColor(160,60,60);
+      pdfEnsureSpace(doc,state,14);doc.text('[Could not embed pasted image]',state.margin,state.y);state.y+=16;
+    }
+  }
+  var text=pdfSafe(el.innerText.trim());
+  if(img&&!text)return;
+  doc.setFontSize(11);
+  if(!text){doc.setFont('helvetica','italic');doc.setTextColor(160,160,160);text='(no answer entered yet)';}
+  else{doc.setFont('helvetica','normal');doc.setTextColor(40,40,40);}
+  var lines=doc.splitTextToSize(text,state.usableWidth);
+  for(var i=0;i<lines.length;i++){pdfEnsureSpace(doc,state,14);doc.text(lines[i],state.margin,state.y);state.y+=14;}
+  state.y+=6;
+}
+
+/* Each task item: question in bold, then every saved field (answer boxes and table cells) in page order */
+function pdfRenderPanelItems(doc,state,panel){
+  var items=panel.querySelectorAll('.task-item');
+  for(var i=0;i<items.length;i++){
+    var qEl=items[i].querySelector('.task-q');
+    var qText=qEl?pdfSafe(qEl.innerText.trim()):'';
+    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(15,90,68);
+    var qLines=doc.splitTextToSize(qText,state.usableWidth);
+    pdfEnsureSpace(doc,state,qLines.length*14+6);
+    doc.text(qLines,state.margin,state.y);state.y+=qLines.length*14+6;
+    var fields=items[i].querySelectorAll('[data-key]');
+    for(var f=0;f<fields.length;f++){
+      var lab=fields[f].dataset.label;
+      if(lab){
+        doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(90,90,90);
+        pdfEnsureSpace(doc,state,28);doc.text(pdfSafe(lab)+':',state.margin,state.y);state.y+=13;
+      }
+      pdfWriteAnswer(doc,state,fields[f]);
+    }
+    state.y+=6;
+  }
+}
+
+function pdfAddFooters(doc,state){
+  var n=doc.internal.getNumberOfPages();
+  for(var p=1;p<=n;p++){
+    doc.setPage(p);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(150,150,150);
+    doc.text('Page '+p+' of '+n+'  -  engineeringsciencescotland.co.uk',state.margin,state.pageHeight-24);
+  }
+}
+
+function downloadTaskPDF(panelId,taskLabel){
+  var panel=document.getElementById(panelId);if(!panel)return;
+  var btn=panel.querySelector('.task-download-btn');var orig=btn?btn.innerHTML:'';
+  if(btn){btn.disabled=true;btn.innerHTML='Building PDF&hellip;';}
+  setTimeout(function(){
+    try{
+      var o=pdfNewDoc();
+      pdfAddHeader(o.doc,o.state,taskLabel);
+      pdfRenderPanelItems(o.doc,o.state,panel);
+      pdfAddFooters(o.doc,o.state);
+      o.doc.save(pdfSafe(taskLabel).replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'-')+'.pdf');
+    }catch(err){console.error(err);alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.');}
+    finally{if(btn){btn.disabled=false;btn.innerHTML=orig;}}
+  },30);
+}
+
+/* Keep this list in sync with the task panels on the page, in page order */
+var ALL_TASK_PANELS=[
+  ['assignment-task1','Task 1 — Social impacts'],
+  ['assignment-task2','Task 2 — Economic impacts'],
+  ['assignment-task3','Task 3 — Environmental impacts'],
+  ['assignment-task4','Task 4 — Climate change engineering'],
+  ['assignment-task5','Task 5 — Emerging technologies'],
+  ['assignment-task6','Task 6 — Full impact case study'],
+  ['assignment-ch1','Challenge 1 — Heat from the old mines'],
+  ['assignment-ch2','Challenge 2 — Reopening the branch line'],
+  ['assignment-ch3','Challenge 3 — Giving old batteries a new life']
+];
+
+function downloadAllAnswersPDF(){
+  var btn=document.getElementById('downloadAllBtn');var orig=btn?btn.innerHTML:'';
+  if(btn){btn.disabled=true;btn.innerHTML='Building PDF&hellip;';}
+  setTimeout(function(){
+    try{
+      var o=pdfNewDoc(),doc=o.doc,state=o.state;
+      pdfAddHeader(doc,state,'Impacts of Engineering — All my answers');
+      for(var i=0;i<ALL_TASK_PANELS.length;i++){
+        var panel=document.getElementById(ALL_TASK_PANELS[i][0]);if(!panel)continue;
+        pdfEnsureSpace(doc,state,40);
+        doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(194,65,12);
+        doc.text(pdfSafe(ALL_TASK_PANELS[i][1]),state.margin,state.y);state.y+=8;
+        doc.setDrawColor(230,200,180);doc.line(state.margin,state.y,state.pageWidth-state.margin,state.y);state.y+=16;
+        pdfRenderPanelItems(doc,state,panel);state.y+=10;
+      }
+      pdfAddFooters(doc,state);
+      doc.save('Impacts-of-Engineering-All-My-Answers.pdf');
+    }catch(err){console.error(err);alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.');}
+    finally{if(btn){btn.disabled=false;btn.innerHTML=orig;}}
+  },30);
+}
+
+/* ── Contents panel ─────────────────────────────────────────── */
+function openToc(){document.getElementById('tocPanel').classList.add('open');document.getElementById('tocOverlay').classList.add('open');}
+function closeToc(){document.getElementById('tocPanel').classList.remove('open');document.getElementById('tocOverlay').classList.remove('open');}
+
+/* ── My Name ────────────────────────────────────────────────── */
+function updateNameFabLabel(){var l=document.getElementById('nameFabLabel');if(!l)return;var n=getPupilName();l.textContent=n?n:'My Name';}
+function openNamePanel(){
+  var input=document.getElementById('nameInput');if(input)input.value=getPupilName();
+  var msg=document.getElementById('nameSavedMsg');if(msg)msg.classList.remove('show');
+  document.getElementById('nameOverlay').classList.add('open');
+  if(input)setTimeout(function(){input.focus();},50);
+}
+function closeNamePanel(){document.getElementById('nameOverlay').classList.remove('open');}
+function closeNameOverlayClick(e){if(e.target.id==='nameOverlay')closeNamePanel();}
+function saveNameInput(){
+  var input=document.getElementById('nameInput');var name=input?input.value.trim():'';
+  try{localStorage.setItem(PUPIL_NAME_KEY,name);}catch(e){}
+  updateNameFabLabel();
+  var msg=document.getElementById('nameSavedMsg');if(msg)msg.classList.add('show');
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeToc();closeNamePanel();}});
+</script>
+
+    <button class="toc-fab" id="tocFab" onclick="openToc()">&#x2630; Contents</button>
+
+    <button class="name-fab" id="nameFab" onclick="openNamePanel()"><span class="name-fab-icon">&#x1F464;</span><span id="nameFabLabel">My Name</span></button>
+
+    <div class="name-overlay" id="nameOverlay" onclick="closeNameOverlayClick(event)">
+      <div class="name-panel">
+        <button class="name-panel-close" onclick="closeNamePanel()" aria-label="Close">&times;</button>
+        <h3>Your name</h3>
+        <p>Enter your name once and it&rsquo;ll be added to the top of every task&rsquo;s downloaded PDF &mdash; no need to write it in by hand each time.</p>
+        <input type="text" id="nameInput" placeholder="e.g. Jamie Smith" maxlength="60">
+        <button class="name-panel-save" onclick="saveNameInput()">Save name</button>
+        <div class="name-panel-saved-msg" id="nameSavedMsg">&#x2713; Saved &mdash; it&rsquo;ll now appear on your PDFs</div>
+      </div>
+    </div>
+
+    <div class="toc-overlay" id="tocOverlay" onclick="closeToc()"></div>
+    <div class="toc-panel" id="tocPanel">
+      <div class="toc-panel-header">
+        <h3>Contents</h3>
+        <button class="toc-panel-close" onclick="closeToc()" aria-label="Close">&times;</button>
+      </div>
+      <nav class="toc-list" id="tocList">
+        <a href="#section-1" onclick="closeToc()">Section 1: The Wider Impact of Engineering</a>
+        <a href="#section-2" onclick="closeToc()">Section 2: Social Impacts</a>
+        <a href="#section-3" onclick="closeToc()">Section 3: Economic Impacts</a>
+        <a href="#section-4" onclick="closeToc()">Section 4: Environmental Impacts</a>
+        <a href="#section-5" onclick="closeToc()">Section 5: Engineering and Climate Change</a>
+        <a href="#section-6" onclick="closeToc()">Section 6: Emerging Technologies</a>
+        <a href="#section-7" onclick="closeToc()">Section 7: Case Study</a>
+        <a href="#section-8" onclick="closeToc()">Section 8: Engineering Challenges</a>
+        <a href="#ch1" class="toc-sub" onclick="closeToc()">Challenge 1 — Heat from the old mines</a>
+        <a href="#ch2" class="toc-sub" onclick="closeToc()">Challenge 2 — Reopening the branch line</a>
+        <a href="#ch3" class="toc-sub" onclick="closeToc()">Challenge 3 — Giving old batteries a new life</a>
+      </nav>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded',updateNameFabLabel);
+(function(){
+  var nameInputEl=document.getElementById('nameInput');
+  if(nameInputEl)nameInputEl.addEventListener('keydown',function(e){if(e.key==='Enter')saveNameInput();});
+  /* Scroll-spy: highlight the Contents link for the section in view */
+  var links=Array.prototype.slice.call(document.querySelectorAll('.toc-list a'));
+  var targets=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));}).filter(Boolean);
+  if(!targets.length||!('IntersectionObserver' in window))return;
+  var observer=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      var link=document.querySelector('.toc-list a[href="#'+entry.target.id+'"]');
+      if(link&&entry.isIntersecting){links.forEach(function(a){a.classList.remove('toc-active');});link.classList.add('toc-active');}
+    });
+  },{rootMargin:'-15% 0px -70% 0px',threshold:0});
+  targets.forEach(function(t){observer.observe(t);});
+})();
 </script>
 </body>
 </html>
