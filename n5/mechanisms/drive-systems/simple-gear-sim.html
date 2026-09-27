@@ -248,7 +248,7 @@
                     <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" /></svg>
                 </button>
                 <div class="bg-white/80 backdrop-blur border border-slate-200 shadow-sm rounded-full px-4 flex items-center text-[10px] font-bold text-slate-500 tracking-wide uppercase">
-                    Left Click: Orbit &nbsp;|&nbsp; Right Click: Pan &nbsp;|&nbsp; Scroll: Zoom
+                    Left Click: Orbit &nbsp;|&nbsp; Right Click: Pan &nbsp;|&nbsp; <span id="zoomHint">Scroll: Zoom</span>
                 </div>
             </div>
 
@@ -2662,6 +2662,24 @@
                 if(appContainer) appContainer.classList.remove('p-4', 'gap-4');
                 const canvasContainer = document.getElementById('canvasContainer');
                 if(canvasContainer) canvasContainer.classList.remove('rounded-3xl', 'border');
+
+                // 2b. EMBEDDED PAGE FIX: when this sim sits inside a course-notes page,
+                // let the mouse wheel scroll the page instead of zooming the sim.
+                // Zoom still works with Ctrl + scroll (or a trackpad pinch).
+                // Opened full screen in its own tab, the sim zooms normally.
+                if (window.self !== window.top) {
+                    controls.enableZoom = false;
+                    renderer.domElement.addEventListener('wheel', (e) => {
+                        if (!e.ctrlKey) return;
+                        e.preventDefault();
+                        const offset = new THREE.Vector3().subVectors(camera.position, controls.target);
+                        const newLen = THREE.MathUtils.clamp(offset.length() * Math.exp(e.deltaY * 0.002), controls.minDistance, controls.maxDistance);
+                        camera.position.copy(controls.target).add(offset.setLength(newLen));
+                        controls.update();
+                    }, { passive: false });
+                    const hint = document.getElementById('zoomHint');
+                    if (hint) hint.textContent = 'Ctrl + Scroll: Zoom';
+                }
 
                 // 3. Start the live simulation automatically
                 setTimeout(() => {
