@@ -1,0 +1,3511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NoStressSim V2.4 &mdash; Simply Supported Beam, Two Loads (Structures &amp; Forces Worked Example)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #f8fafc; font-family: 'Roboto', sans-serif; user-select: none; }
+        canvas { display: block; background-color: #ffffff; cursor: crosshair; touch-action: none; border-radius: 24px; }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #64748b; border-radius: 3px; }
+        
+        /* Animations & Menus */
+        .submenu { max-height: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; transform: translateY(-10px); }
+        .submenu.open { max-height: 1000px; opacity: 1; transform: translateY(0); margin-top: 0.5rem; margin-bottom: 0.5rem; } 
+        .rotate-icon { transition: transform 0.3s ease; }
+        .rotate-icon.open { transform: rotate(180deg); }
+
+        /* Card Styling */
+        .comp-card { @apply flex flex-col items-center justify-between p-2 bg-white rounded-2xl border border-emerald-100 shadow-sm cursor-pointer hover:border-emerald-400 hover:shadow-md hover:bg-emerald-50/50 transition-all active:scale-95 h-20 select-none relative overflow-hidden; }
+        .comp-card:active { @apply ring-2 ring-emerald-200 border-emerald-500; }
+        .card-icon { @apply w-full flex-1 flex items-center justify-center text-emerald-700; }
+        .card-label { @apply text-[10px] font-bold text-slate-500 tracking-tight text-center leading-none mt-1; }
+        
+        /* Buttons */
+        .tool-btn { @apply p-2.5 rounded-full text-slate-500 hover:bg-emerald-100 hover:text-emerald-800 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-200; }
+        .tool-btn:disabled { @apply opacity-50 cursor-not-allowed hover:bg-transparent text-slate-300; }
+
+        .acc-btn { @apply w-full px-6 py-4 flex justify-between items-center text-base font-extrabold text-slate-800 bg-white rounded-full hover:bg-emerald-50 hover:text-emerald-700 transition-all shadow-sm border border-transparent hover:border-emerald-100 tracking-wide; }
+        .acc-btn[aria-expanded="true"] { @apply bg-emerald-100 text-emerald-900 shadow-none; }
+
+        /* Modal */
+        .modal-overlay { background-color: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); }
+        .modal-content { animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes modalPop { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+        /* Layout Transitions */
+        #sidebarList { transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); width: 20rem; z-index: 50; }
+        #canvasWrapper { position: absolute; top: 0; bottom: 0; right: 0; transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        
+        .drawer-open #sidebarList { transform: translateX(0); }
+        .drawer-closed #sidebarList { transform: translateX(-100%); }
+        .drawer-open #canvasWrapper { left: 20rem; } 
+        .drawer-closed #canvasWrapper { left: 0; }   
+        .menu-shadow { box-shadow: 10px 0 25px -5px rgba(0, 0, 0, 0.1); }
+
+        /* Colour-Rich Print Styles */
+        /* Colour-Rich Print Styles */
+       @media print {
+            * {
+                -webkit-print-color-adjust: exact !important; 
+                print-color-adjust: exact !important; 
+                color-adjust: exact !important;
+            }
+            html, body { height: auto; min-height: 100%; margin: 0; padding: 0; overflow: visible !important; background-color: white !important; }
+            body > :not(#printArea) { display: none !important; }
+            
+            /* Changed from display: flex to display: block */
+            #printArea { 
+                display: block !important; 
+                min-height: 100vh;
+                height: auto;
+                padding: 0; 
+                margin: 0; 
+                background: white; 
+                width: 100%; 
+                box-sizing: border-box;
+            }
+            @page { margin: 10mm; size: A4 portrait; }
+        }
+        #printArea { display: none; }
+    </style>
+</head>
+<body class="flex h-screen flex-col text-slate-800 bg-[#f8fafc]">
+
+    <div class="h-16 bg-[#f8fafc] z-40 flex items-center justify-between px-6 border-b border-white relative">
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 bg-gradient-to-br from-emerald-500 to-sky-400 text-white rounded-xl shadow-lg hover:scale-105 transition-transform flex items-center justify-center border border-white/20 select-none">
+                    <svg class="w-8 h-8 drop-shadow-sm" viewBox="0 0 24 24">
+                        <rect x="2" y="11" width="20" height="2" rx="1" fill="currentColor" />
+                        <rect x="11.25" y="3" width="1.5" height="5" rx="0.75" fill="currentColor" />
+                        <polygon points="9,7.5 15,7.5 12,11" fill="currentColor" />
+                        <rect x="4.25" y="16" width="1.5" height="5" rx="0.75" fill="currentColor" />
+                        <polygon points="2,16.5 8,16.5 5,13" fill="currentColor" />
+                        <rect x="18.25" y="16" width="1.5" height="5" rx="0.75" fill="currentColor" />
+                        <polygon points="16,16.5 22,16.5 19,13" fill="currentColor" />
+                    </svg>
+                </div>
+                <h1 class="text-xl font-bold text-slate-700 tracking-tight whitespace-nowrap">NoStress<span class="text-sky-500">Sim V2.4</span></h1>
+            </div>
+            
+            <div class="h-8 w-px bg-slate-300 mx-2 rounded-full"></div>
+
+            <div class="flex items-center gap-2 bg-white/60 p-1.5 rounded-full shadow-sm border border-white">
+                <button id="btnSave" class="tool-btn" title="Save JSON"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V7l-4-4zm-5 16v-4a2 2 0 012-2h0a2 2 0 012 2v4M9 3v4a2 2 0 002 2h4a2 2 0 002-2V3"/></svg></button>
+                <label class="tool-btn cursor-pointer" title="Load JSON">
+                    <input type="file" id="fileLoad" accept=".json" class="hidden">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                </label>
+                <button id="btnExport" class="tool-btn" title="Export Image (I)"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg></button>
+                
+                <div class="h-5 w-px bg-slate-200 mx-1"></div>
+                <button id="btnExportReport" class="tool-btn text-emerald-700 hover:text-emerald-900" title="Export Simulation Report"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg></button>
+            </div>
+
+            <button id="btnSolve" type="button" class="px-8 py-2 bg-sky-500 text-white rounded-full hover:bg-sky-600 font-bold text-sm shadow-md shadow-slate-300 transition-all active:scale-95 tracking-wide ml-4">
+                SOLVE
+            </button>
+        </div>
+
+        <div class="flex items-center gap-2 bg-white/60 p-1.5 rounded-full shadow-sm border border-white">
+            <button id="btnUndo" class="tool-btn" title="Undo (Ctrl+Z)" disabled><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg></button>
+            <button id="btnRedo" class="tool-btn" title="Redo (Ctrl+Y)" disabled><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6"/></svg></button>
+            <div class="h-5 w-px bg-slate-300 mx-1"></div>
+            <button id="btnZoomIn" type="button" class="tool-btn" title="Zoom In"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg></button>
+            <button id="btnZoomOut" type="button" class="tool-btn" title="Zoom Out"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/></svg></button>
+            <button id="btnHome" type="button" class="tool-btn" title="Fit to Screen"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg></button>
+            <div class="h-5 w-px bg-slate-300 mx-1"></div>
+            <button id="btnClear" type="button" class="tool-btn text-slate-400 hover:text-slate-600" title="Clear All">✕</button>
+        </div>
+    </div>
+
+    <div id="appContainer" class="flex flex-1 overflow-hidden relative drawer-open">
+        
+        <div id="sidebarList" class="absolute inset-y-0 left-0 bg-white/95 backdrop-blur-xl border-r border-slate-200 flex flex-col menu-shadow !overflow-visible z-40">
+            <button id="btnMenuToggle" class="absolute top-1/2 -right-6 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-sky-400 text-white shadow-lg hover:shadow-slate-300 hover:scale-110 active:scale-95 transition-all duration-300 focus:outline-none group">
+                <svg id="iconMenuChevron" class="w-6 h-6 stroke-[3px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+            </button>
+
+            <div class="sticky top-0 bg-white/50 backdrop-blur z-20 p-4 border-b border-slate-100">
+                <h2 class="text-sm font-black text-slate-400 uppercase tracking-widest mb-1">Toolbox</h2>
+            </div>
+
+            <div class="flex-1 overflow-y-auto p-4 space-y-4 pb-24">
+                 <div class="flex gap-2 sidebar-group">
+                    <button class="acc-btn bg-emerald-50 border-emerald-200 flex-1 flex-col p-2" onclick="openModal('beam')">
+                        <span class="text-emerald-800 text-xs">Create Beam</span> 
+                        <span class="text-xl font-bold text-emerald-600">+</span>
+                    </button>
+                    <button class="acc-btn bg-sky-50 border-sky-200 flex-1 flex-col p-2" onclick="createNode()">
+                        <span class="text-sky-800 text-xs">Static Node</span> 
+                        <span class="text-xl font-bold text-sky-600">+</span>
+                    </button>
+                </div>
+
+                <div class="sidebar-group">
+                    <button class="acc-btn" onclick="toggleMenu('menu-supp', this)">
+                        <span>Supports</span> 
+                        <span class="rotate-icon text-slate-400 text-[10px]">▼</span>
+                    </button>
+                    <div id="menu-supp" class="submenu grid grid-cols-2 gap-2 open">
+                        <div class="comp-card" onclick="openModal('simple')">
+                            <div class="card-icon"><svg viewBox="0 0 40 40" class="w-10 h-10"><path d="M20 10 L30 25 L10 25 Z" fill="#ffffff" stroke="#334155" stroke-width="2"/><line x1="5" y1="25" x2="35" y2="25" stroke="#334155" stroke-width="2"/><line x1="10" y1="25" x2="5" y2="30" stroke="#64748b" stroke-width="1.5"/><line x1="16" y1="25" x2="11" y2="30" stroke="#64748b" stroke-width="1.5"/><line x1="22" y1="25" x2="17" y2="30" stroke="#64748b" stroke-width="1.5"/><line x1="28" y1="25" x2="23" y2="30" stroke="#64748b" stroke-width="1.5"/><line x1="34" y1="25" x2="29" y2="30" stroke="#64748b" stroke-width="1.5"/></svg></div>
+                            <span class="card-label">Simple</span>
+                        </div>
+                        <div class="comp-card" onclick="openModal('hinge')">
+                            <div class="card-icon"><svg viewBox="0 0 40 40" class="w-10 h-10"><path d="M10 25 L10 15 A 10 10 0 0 1 30 15 L 30 25 Z" fill="#ffffff" stroke="#334155" stroke-width="2"/><circle cx="20" cy="15" r="3" fill="#334155"/><line x1="5" y1="25" x2="35" y2="25" stroke="#334155" stroke-width="2"/><line x1="10" y1="25" x2="5" y2="30" stroke="#64748b" stroke-width="1.5"/><line x1="16" y1="25" x2="11" y2="30" stroke="#64748b" stroke-width="1.5"/><line x1="22" y1="25" x2="17" y2="30" stroke="#64748b" stroke-width="1.5"/><line x1="28" y1="25" x2="23" y2="30" stroke="#64748b" stroke-width="1.5"/><line x1="34" y1="25" x2="29" y2="30" stroke="#64748b" stroke-width="1.5"/></svg></div>
+                            <span class="card-label">Hinge</span>
+                        </div>
+                        <div class="comp-card col-span-2" onclick="openModal('roller')">
+                            <div class="card-icon"><svg viewBox="0 0 40 40" class="w-10 h-10"><circle cx="20" cy="15" r="10" fill="#ffffff" stroke="#334155" stroke-width="2"/><path d="M16 15 L24 15 M20 11 L20 19" stroke="#334155" stroke-width="2" stroke-linecap="round"/><line x1="5" y1="25" x2="35" y2="25" stroke="#334155" stroke-width="2"/><line x1="10" y1="25" x2="5" y2="30" stroke="#64748b" stroke-width="1.5"/><line x1="16" y1="25" x2="11" y2="30" stroke="#64748b" stroke-width="1.5"/><line x1="22" y1="25" x2="17" y2="30" stroke="#64748b" stroke-width="1.5"/><line x1="28" y1="25" x2="23" y2="30" stroke="#64748b" stroke-width="1.5"/><line x1="34" y1="25" x2="29" y2="30" stroke="#64748b" stroke-width="1.5"/></svg></div>
+                            <span class="card-label">Roller</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-group">
+                    <button class="acc-btn" onclick="toggleMenu('menu-load', this)">
+                        <span>Forces</span> 
+                        <span class="rotate-icon text-slate-400 text-[10px]">▼</span>
+                    </button>
+                    <div id="menu-load" class="submenu grid grid-cols-2 gap-2 open">
+                        <div class="comp-card" onclick="openModal('point')">
+                            <div class="card-icon"><svg viewBox="0 0 24 24" class="w-8 h-8" fill="none"><line x1="12" y1="3" x2="12" y2="18" stroke="#000000" stroke-width="2.5" stroke-linecap="round" /><polygon points="12,22 8,12 16,12" fill="#000000" /></svg></div>
+                            <span class="card-label">Point</span>
+                        </div>
+                        <div class="comp-card" onclick="openModal('angled')">
+                            <div class="card-icon"><svg viewBox="0 0 24 24" class="w-8 h-8" fill="none"><line x1="2" y1="20" x2="22" y2="20" stroke="#94a3b8" stroke-dasharray="2 2" stroke-width="1.5" stroke-linecap="round" /><line x1="19" y1="5" x2="9" y2="17" stroke="#000000" stroke-width="2.5" stroke-linecap="round" /><polygon points="6,20 15,18 9,11" fill="#000000" /><path d="M 18 20 A 12 12 0 0 0 14 11" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" /></svg></div>
+                            <span class="card-label">Angled</span>
+                        </div>
+                        <div class="comp-card col-span-2" onclick="openModal('udl')">
+                            <div class="card-icon"><svg viewBox="0 0 80 40" class="w-16 h-8" fill="none"><path d="M 10 32 A 6 6 0 0 1 22 32 A 6 6 0 0 1 34 32 A 6 6 0 0 1 46 32 A 6 6 0 0 1 58 32 A 6 6 0 0 1 70 32 L 10 32 Z" fill="#f1f5f9" stroke="#000000" stroke-width="2.5" stroke-linejoin="round"/><line x1="40" y1="26" x2="40" y2="6" stroke="#000000" stroke-dasharray="3 3" stroke-width="1.5" stroke-linecap="round"/><polygon points="40,26 36,14 44,14" fill="#000000"/></svg></div>
+                            <span class="card-label">UDL</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sidebar-group">
+                    <button class="acc-btn" onclick="toggleMenu('menu-note', this)">
+                        <span>Tools</span>
+                        <span class="rotate-icon text-slate-400 text-[10px]">▼</span>
+                    </button>
+                    <div id="menu-note" class="submenu grid grid-cols-2 gap-2">
+                        <div class="comp-card" onclick="openModal('text')">
+                            <div class="card-icon"><svg viewBox="0 0 40 40" class="w-10 h-10"><rect x="6" y="8" width="28" height="24" rx="4" fill="none" stroke="#94a3b8" stroke-width="1.5" stroke-dasharray="4 2"/><text x="20" y="27" font-family="serif" font-weight="bold" font-size="20" fill="#334155" text-anchor="middle">T</text></svg></div>
+                            <span class="card-label">Text Note</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="canvasWrapper" class="absolute p-4 h-full">
+            <div id="canvasContainer" class="w-full h-full relative bg-white rounded-3xl shadow-sm border border-white overflow-hidden flex flex-col">
+                <div class="flex-1 relative overflow-hidden">
+                    <canvas id="simCanvas" class="absolute inset-0 w-full h-full"></canvas>
+                    
+                    <div id="emptyState" class="absolute inset-0 flex items-center justify-center pointer-events-none z-10">
+                        <div class="text-center p-8 bg-white/80 backdrop-blur rounded-3xl border border-dashed border-emerald-300 shadow-sm pointer-events-auto">
+                            <h3 class="text-xl font-bold text-emerald-800 mb-2">Start Project</h3>
+                            <p class="text-slate-500 mb-4">Choose an environment to begin.</p>
+                            <div class="flex gap-2 justify-center">
+                                <button class="px-6 py-2 bg-emerald-500 text-white rounded-xl hover:bg-emerald-600 font-bold shadow-md transition-all active:scale-95" onclick="openModal('beam')">Create Beam</button>
+                                <button class="px-6 py-2 bg-sky-500 text-white rounded-xl hover:bg-sky-600 font-bold shadow-md transition-all active:scale-95" onclick="createNode()">Create Static Node</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="reactionPanel" class="absolute bottom-4 left-4 right-4 bg-slate-900/95 text-white p-4 rounded-2xl shadow-2xl backdrop-blur-md border border-slate-700 hidden flex-col z-30 transition-opacity overflow-y-auto" style="height: 40vh; min-height: 120px;">
+    <div class="sticky top-0 bg-slate-900/95 z-10 flex flex-col pt-1 mb-3 pb-2 border-b border-slate-700">
+        <div id="panelDragHandle" class="w-full flex justify-center items-center pb-3 -mt-2 pt-2 cursor-ns-resize group">
+            <div class="w-16 h-1.5 bg-slate-600 group-hover:bg-sky-500 rounded-full transition-colors"></div>
+        </div>
+        <div class="flex justify-between items-center w-full">
+            <div class="flex items-center gap-3">
+                <h4 class="text-sm font-bold text-sky-400 uppercase tracking-widest flex items-center gap-2" id="panelHeaderTitle">
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                    Reaction Forces
+                </h4>
+                <span class="text-[10px] text-slate-400 font-medium bg-slate-800 px-2 py-1 rounded-md hidden sm:block">* Resultants & independent reactions rounded to 2 decimal places.</span>
+            </div>
+            <div class="flex gap-2">
+                <button id="btnToggleWorking" onclick="toggleWorking()" class="text-[10px] bg-emerald-700 hover:bg-emerald-600 text-white px-3 py-1.5 rounded-md font-bold transition-colors hidden border border-slate-600 shadow-sm">Show Working</button>
+                <button id="btnToggleDiagrams" onclick="toggleDiagrams()" class="text-[10px] bg-sky-700 hover:bg-sky-600 text-white px-3 py-1.5 rounded-md font-bold transition-colors hidden border border-slate-600 shadow-sm">Show Diagrams</button>
+            </div>
+        </div>
+    </div>
+                        
+                        <div id="workingSteps" class="hidden bg-slate-800 p-4 rounded-xl border border-slate-700 shadow-inner w-full text-slate-300 text-xs leading-relaxed font-mono mb-4 transition-all"></div>
+                        <div id="reactionContent" class="flex flex-row justify-around items-start gap-4 w-full flex-wrap"></div>
+                        <div id="statusContent" class="mt-2 text-xs text-red-500 font-bold hidden text-center w-full"></div>
+                        <div id="onScreenDiagrams" class="hidden w-full flex-col gap-4 mt-4 pt-4 border-t border-slate-700">
+    <div>
+        <h4 class="text-xs font-bold text-sky-400 uppercase mb-2 tracking-widest">Shear Force Diagram (SFD)</h4>
+        <canvas id="onScreenSfd" class="w-full h-56 bg-slate-800 rounded-xl border border-slate-600 shadow-inner"></canvas>
+    </div>
+    <div>
+        <h4 class="text-xs font-bold text-sky-400 uppercase mb-2 tracking-widest">Bending Moment Diagram (BMD)</h4>
+        <canvas id="onScreenBmd" class="w-full h-56 bg-slate-800 rounded-xl border border-slate-600 shadow-inner"></canvas>
+    </div>
+</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="appModal" class="hidden fixed inset-0 z-[100] modal-overlay flex items-center justify-center p-4">
+        <div class="modal-content bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden border border-slate-100">
+            <div class="bg-emerald-50 px-6 py-4 border-b border-emerald-100 flex justify-between items-center">
+                <h3 id="modalTitle" class="text-lg font-bold text-emerald-900">Add Component</h3>
+                <button onclick="closeModal()" class="text-emerald-700 hover:text-emerald-900 font-bold">✕</button>
+            </div>
+            <div id="modalBody" class="p-6 space-y-4"></div>
+            <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-between items-center gap-2">
+                <button id="modalDeleteBtn" onclick="deleteEditingComp()" class="px-4 py-2 rounded-xl text-rose-500 hover:bg-rose-100 font-bold text-sm hidden transition-colors">Delete</button>
+                <div class="flex gap-2 ml-auto">
+                    <button onclick="closeModal()" class="px-4 py-2 rounded-xl text-slate-500 hover:bg-slate-200 font-bold text-sm transition-colors">Cancel</button>
+                    <button id="modalConfirmBtn" class="px-6 py-2 rounded-xl bg-emerald-700 text-white hover:bg-emerald-800 font-bold text-sm shadow-md shadow-slate-300 transition-colors">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="reportModal" class="hidden fixed inset-0 z-[110] modal-overlay flex items-center justify-center p-4">
+        <div class="modal-content bg-white w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden border border-slate-100">
+            <div class="bg-emerald-50 px-6 py-4 border-b border-emerald-100 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-emerald-900 flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                    Generate Report
+                </h3>
+                <button onclick="closeReportModal()" class="text-emerald-700 hover:text-emerald-900 font-bold">✕</button>
+            </div>
+          <div class="p-6 space-y-4">
+                <p class="text-xs text-slate-500 mb-2">Enter your details to generate an official printout of this calculation.</p>
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Student Name</label>
+                    <input type="text" id="inp_report_name" placeholder="Enter your full name" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">SCN (Scottish Candidate Number) <span class="text-slate-400 font-normal normal-case">- Optional</span></label>
+                    <input type="text" id="inp_report_scn" placeholder="e.g. 123456789" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+                <div class="mb-3">
+                    <label class="block text-xs font-bold text-slate-500 uppercase mb-1">Task Number <span class="text-slate-400 font-normal normal-case">- Optional</span></label>
+                    <input type="text" id="inp_report_task" placeholder="e.g. Task 1A" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                </div>
+                <div class="mb-1 flex items-center gap-2 pt-2 border-t border-slate-100">
+                    <input type="checkbox" id="inp_report_diagram" checked class="w-4 h-4 text-emerald-600 bg-slate-100 border-slate-300 rounded focus:ring-emerald-500 cursor-pointer">
+                    <label for="inp_report_diagram" class="text-sm font-bold text-slate-500 cursor-pointer">Include diagram in report</label>
+                </div>
+                <div class="mb-1 flex items-center gap-2 pt-2">
+                    <input type="checkbox" id="inp_report_sfd_bmd" checked class="w-4 h-4 text-emerald-600 bg-slate-100 border-slate-300 rounded focus:ring-emerald-500 cursor-pointer">
+                    <label for="inp_report_sfd_bmd" class="text-sm font-bold text-slate-500 cursor-pointer">Include Shear & Bending diagrams</label>
+                </div>
+            </div>
+            <div class="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end gap-2">
+                <button onclick="closeReportModal()" class="px-4 py-2 rounded-xl text-slate-500 hover:bg-slate-200 font-bold text-sm transition-colors">Cancel</button>
+                <button onclick="executeReportGeneration()" class="px-6 py-2 rounded-xl bg-emerald-700 text-white hover:bg-emerald-800 font-bold text-sm shadow-md shadow-slate-300 transition-colors">Generate PDF / Print</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="printArea" class="hidden font-sans bg-white flex-col">
+        <div class="flex justify-between items-end border-b-4 border-sky-500 pb-2 mb-4 shrink-0">
+            <div>
+                <div class="flex items-center gap-2 mb-1">
+                    <svg class="w-7 h-7 text-sky-500" viewBox="0 0 24 24">
+                        <rect x="2" y="11" width="20" height="2" rx="1" fill="currentColor" />
+                        <rect x="11.25" y="3" width="1.5" height="5" rx="0.75" fill="currentColor" />
+                        <polygon points="9,7.5 15,7.5 12,11" fill="currentColor" />
+                        <rect x="4.25" y="16" width="1.5" height="5" rx="0.75" fill="currentColor" />
+                        <polygon points="2,16.5 8,16.5 5,13" fill="currentColor" />
+                        <rect x="18.25" y="16" width="1.5" height="5" rx="0.75" fill="currentColor" />
+                        <polygon points="16,16.5 22,16.5 19,13" fill="currentColor" />
+                    </svg>
+                    <h1 class="text-2xl font-black text-slate-800 tracking-tight">NoStress<span class="text-sky-500">Sim V2.4</span></h1>
+                </div>
+                <h2 class="text-lg font-bold text-slate-600 uppercase tracking-widest" id="printTitleText">Calculation Report</h2>
+            </div>
+        </div>
+
+        <div class="mb-4 w-full flex justify-center shrink min-h-0">
+            <img id="printCanvasImg" class="w-full border-2 border-slate-200 rounded-xl shadow-sm" style="height: auto; object-fit: contain; max-width: 100%; max-height: 350px; display: block;" />
+        </div>
+
+        <div class="mb-4 shrink-0">
+            <h3 class="text-base font-bold text-slate-800 border-b-2 border-slate-200 pb-1 mb-2 uppercase tracking-wider flex items-center gap-2" id="printReactionHeader">
+                <svg class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                Reaction Forces
+            </h3>
+            <div id="printReactions" class="flex flex-wrap gap-4 justify-center"></div>
+        </div>
+
+        <div class="mb-2 shrink-0">
+            <h3 class="text-base font-bold text-slate-800 border-b-2 border-slate-200 pb-1 mb-2 uppercase tracking-wider flex items-center gap-2">
+                <svg class="w-4 h-4 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                Calculation Steps
+            </h3>
+            <div id="printWorking" class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-xs font-mono text-slate-700 leading-relaxed shadow-sm"></div>
+        </div>
+
+       <div id="analyticalDiagrams" class="mb-4 shrink-0 hidden flex-col gap-4" style="page-break-inside: avoid;">
+            <div class="bg-slate-50 border border-slate-200 p-3 rounded-xl text-xs text-slate-600 mb-2 leading-relaxed">
+                <strong class="text-slate-800">Advanced Higher Context:</strong> The shear force at any point along the beam is the first derivative of the bending moment with respect to distance (<span class="font-mono text-emerald-700 font-bold text-[11px]">V = dM/dx</span>). Consequently, the maximum bending moment occurs at the exact point where the shear force diagram crosses the zero axis (<span class="font-mono text-rose-600 font-bold text-[11px]">V = 0</span>).
+            </div>
+            <div>
+                <h3 class="text-base font-bold text-slate-800 border-b-2 border-slate-200 pb-1 mb-2 uppercase tracking-wider flex items-center gap-2">
+                    Shear Force Diagram (SFD)
+                </h3>
+                <canvas id="sfdCanvas" class="w-full h-56 border border-slate-200 rounded-xl bg-white shadow-sm"></canvas>
+            </div>
+            <div>
+                <h3 class="text-base font-bold text-slate-800 border-b-2 border-slate-200 pb-1 mb-2 uppercase tracking-wider flex items-center gap-2">
+                    Bending Moment Diagram (BMD)
+                </h3>
+                <canvas id="bmdCanvas" class="w-full h-56 border border-slate-200 rounded-xl bg-white shadow-sm"></canvas>
+            </div>
+        </div>
+
+        <div class="mt-auto shrink-0 pt-4">
+            <div class="flex justify-between items-end border-t border-slate-300 pt-2 mb-2">
+                <div class="text-left text-slate-800 text-sm">
+                    <p class="font-bold">Student Name: <span id="printName" class="font-normal text-slate-600"></span></p>
+                    <p class="font-bold" id="scnContainer">Candidate Number: <span id="printSCN" class="font-normal text-slate-600"></span></p>
+                    <p class="font-bold" id="taskContainer">Task Number: <span id="printTask" class="font-normal text-slate-600"></span></p>
+                </div>
+                <div class="text-right text-slate-500 text-xs pb-1">
+                    <p>Generated: <span id="printDate"></span></p>
+                </div>
+            </div>
+            <div class="text-center text-slate-500 font-medium text-[10px]">
+                * Resultants and independent reactions are rounded strictly to 2 decimal places.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- UI & Interaction Setup ---
+        const cvs = document.getElementById('simCanvas');
+        const ctx = cvs.getContext('2d');
+        const reactPanel = document.getElementById('reactionPanel');
+        const emptyState = document.getElementById('emptyState');
+        const modal = document.getElementById('appModal');
+        const rptModal = document.getElementById('reportModal');
+        
+        // Colours
+        const COL = {
+            beam: '#334155', // Slate 700
+            supp: '#475569', // Slate 600
+            load: '#000000', // Black
+            sel: '#0ea5e9',  // Sky 500
+            reactV: '#dc2626', // Red 600
+            reactH: '#16a34a', // Green 600
+            reactRes: '#d97706', // Amber 600 (Mix of Green and Red)
+            angle: '#2563eb', // Blue 600
+            text: '#0f172a'  // Slate 900
+        };
+
+        const LABEL_PROPS = {
+            'label': 'labelOffset',
+            'angleLabel': 'angleLabelOffset',
+            'rvLabel': 'rvOffset',
+            'rhLabel': 'rhOffset',
+            'resLabel': 'resOffset',
+            'resAngleLabel': 'resAngleOffset'
+        };
+
+        // State
+        const state = {
+            mode: 'beam', // 'beam' or 'node'
+            beam: null, 
+            node: false,
+            comps: [],
+            sel: null,
+            drag: null,
+            results: { ok: true, left: {}, right: {} },
+            pendingType: null,
+            editingComp: null  
+        };
+
+        const view = { x: 0, y: -40, scale: 50 }; // Shift view up to leave room for dimensions
+// --- Setup Panel Resizing ---
+const panelDragHandle = document.getElementById('panelDragHandle');
+let isDraggingPanel = false;
+let startPanelY = 0;
+let startPanelH = 0;
+
+panelDragHandle.addEventListener('mousedown', (e) => {
+    isDraggingPanel = true;
+    startPanelY = e.clientY;
+    startPanelH = reactPanel.getBoundingClientRect().height;
+    document.body.style.cursor = 'ns-resize';
+    e.preventDefault(); // Prevents accidental text selection while dragging
+});
+
+window.addEventListener('mousemove', (e) => {
+    if (!isDraggingPanel) return;
+    const deltaY = startPanelY - e.clientY;
+    let newH = startPanelH + deltaY;
+    
+    // Constrain the panel so it can't be dragged off screen
+    const containerH = document.getElementById('canvasContainer').clientHeight;
+    const maxH = containerH - 30; 
+    const minH = 120; 
+    
+    if (newH > maxH) newH = maxH;
+    if (newH < minH) newH = minH;
+    
+    reactPanel.style.height = `${newH}px`;
+    
+    // Keep diagrams centred and correctly scaled if they are currently open
+    const dPanel = document.getElementById('onScreenDiagrams');
+    if (dPanel && !dPanel.classList.contains('hidden')) {
+        const targetW = dPanel.clientWidth || 800;
+        drawAnalyticalDiagrams('onScreenSfd', 'onScreenBmd', targetW, 220, true);
+    }
+});
+
+window.addEventListener('mouseup', () => {
+    if (isDraggingPanel) {
+        isDraggingPanel = false;
+        document.body.style.cursor = '';
+    }
+});
+        // --- Safe Math Evaluator ---
+        function evalMath(expr) {
+            try {
+                const sanitized = expr.toString().replace(/[^0-9\.\+\-\*\/\(\)]/g, '');
+                if (!sanitized) return 0;
+                return new Function('return ' + sanitized)();
+            } catch(e) {
+                return parseFloat(expr) || 0;
+            }
+        }
+
+        // Output Formatter (Strict 2 Decimals + Smart scaling to kN)
+        function fmtF(val) {
+            if (Math.abs(val) < 1e-9) return "0.00 N";
+            const v = Math.abs(val);
+            if (v >= 1000) return (v / 1000).toFixed(2) + ' kN';
+            return v.toFixed(2) + ' N';
+        }
+
+        // Output Formatter (Unrounded with ellipsis for intermediate hinge components)
+        function fmtF_pseudo(val, keepUnit = true) {
+            if (Math.abs(val) < 1e-9) return keepUnit ? "0.00 N" : "0.00";
+            const v = Math.abs(val);
+            let cleanV = v >= 1000 ? v / 1000 : v;
+            let unit = v >= 1000 ? ' kN' : ' N';
+            let roundedStr = cleanV.toFixed(2);
+            
+            // If the strict value is different than its 2 decimal round, append '...'
+            let numPortion = Math.abs(cleanV - parseFloat(roundedStr)) > 1e-5 ? roundedStr + '...' : roundedStr;
+            return keepUnit ? numPortion + unit : numPortion;
+        }
+
+        // Removes unnecessary trailing zeros and decimals just for the clean equation layout
+        function numStr(val) {
+            let rounded = val.toFixed(2);
+            if (rounded.endsWith('.00')) return rounded.slice(0, -3);
+            if (rounded.endsWith('0')) return rounded.slice(0, -1);
+            return rounded;
+        }
+
+        function fmtMom(val) {
+            if (Math.abs(val) < 1e-9) return "0.00 Nm";
+            const v = Math.abs(val);
+            if (v >= 1000) return (v / 1000).toFixed(2) + ' kNm';
+            return v.toFixed(2) + ' Nm';
+        }
+
+        function updateSolveButton() {
+            const btn = document.getElementById('btnSolve');
+            if (state.solved) {
+                btn.innerText = 'HIDE SOLUTION';
+                btn.className = "px-8 py-2 bg-slate-700 text-white rounded-full hover:bg-slate-800 font-bold text-sm shadow-md shadow-slate-300 transition-all active:scale-95 tracking-wide ml-4";
+            } else {
+                btn.innerText = 'SOLVE';
+                btn.className = "px-8 py-2 bg-sky-500 text-white rounded-full hover:bg-sky-600 font-bold text-sm shadow-md shadow-slate-300 transition-all active:scale-95 tracking-wide ml-4";
+            }
+        }
+
+        function hideResults() {
+            reactPanel.classList.add('hidden');
+            state.solved = false;
+            updateSolveButton();
+        }
+
+        window.toggleWorking = function() {
+            const w = document.getElementById('workingSteps');
+            const b = document.getElementById('btnToggleWorking');
+            if (w.classList.contains('hidden')) {
+                w.classList.remove('hidden');
+                b.innerText = "Hide Working";
+            } else {
+                w.classList.add('hidden');
+                b.innerText = "Show Working";
+            }
+        };
+window.toggleDiagrams = function() {
+    const d = document.getElementById('onScreenDiagrams');
+    const b = document.getElementById('btnToggleDiagrams');
+    if (d.classList.contains('hidden')) {
+        d.classList.remove('hidden');
+        b.innerText = "Hide Diagrams";
+        // Calculate dynamic width based on the panel size
+        const targetW = d.clientWidth || 800;
+        drawAnalyticalDiagrams('onScreenSfd', 'onScreenBmd', targetW, 220, true);
+    } else {
+        d.classList.add('hidden');
+        b.innerText = "Show Diagrams";
+    }
+};
+        // --- Core Drawing Helpers ---
+        function drawSafeText(renderCtx, textStr, x, y, fontStr, fillStyleStr, alignStr, baselineStr) {
+            renderCtx.save();
+            renderCtx.font = fontStr;
+            renderCtx.textAlign = alignStr;
+            renderCtx.textBaseline = baselineStr;
+            
+            renderCtx.lineWidth = 5;
+            renderCtx.strokeStyle = '#ffffff';
+            renderCtx.lineJoin = "round";
+            renderCtx.miterLimit = 2;
+            renderCtx.strokeText(textStr, x, y);
+            
+            renderCtx.fillStyle = fillStyleStr;
+            renderCtx.fillText(textStr, x, y);
+            renderCtx.restore(); 
+        }
+
+        function drawSubscriptText(renderCtx, mainStr, subStr, valStr, xPos, yPos, align, baseline, col, mainSize=16, subSize=12) {
+            renderCtx.save();
+            renderCtx.textAlign = "left"; 
+            renderCtx.textBaseline = baseline;
+            
+            renderCtx.font = `bold ${mainSize}px Roboto`;
+            const w1 = renderCtx.measureText(mainStr).width;
+            renderCtx.font = `bold ${subSize}px Roboto`;
+            const w2 = renderCtx.measureText(subStr).width;
+            renderCtx.font = `bold ${mainSize}px Roboto`;
+            const w3 = renderCtx.measureText(valStr).width;
+            
+            const totalW = w1 + w2 + w3;
+            let textX = xPos;
+            if (align === 'center') textX -= totalW/2;
+            if (align === 'right') textX -= totalW;
+            
+            renderCtx.lineWidth = 6;
+            renderCtx.strokeStyle = '#ffffff';
+            renderCtx.lineJoin = "round";
+            
+            renderCtx.strokeText(mainStr, textX, yPos);
+            renderCtx.font = `bold ${subSize}px Roboto`;
+            renderCtx.strokeText(subStr, textX + w1, yPos + (mainSize-subSize)); 
+            renderCtx.font = `bold ${mainSize}px Roboto`;
+            renderCtx.strokeText(valStr, textX + w1 + w2, yPos);
+
+            renderCtx.fillStyle = col;
+            renderCtx.font = `bold ${mainSize}px Roboto`;
+            renderCtx.fillText(mainStr, textX, yPos);
+            renderCtx.font = `bold ${subSize}px Roboto`;
+            renderCtx.fillText(subStr, textX + w1, yPos + (mainSize-subSize)); 
+            renderCtx.font = `bold ${mainSize}px Roboto`;
+            renderCtx.fillText(valStr, textX + w1 + w2, yPos);
+            
+            renderCtx.restore();
+        }
+
+        function getNearestAxisAngleDeg(ux, uy) {
+            if (Math.abs(ux) < 1e-5 && Math.abs(uy) < 1e-5) return 0;
+            let v = Math.atan2(uy, ux);
+            let axes = [0, Math.PI/2, Math.PI, -Math.PI/2];
+            let refAngle = axes[0];
+            let minDiff = Infinity;
+            for (let a of axes) {
+                let diff = Math.abs(v - a);
+                if (diff > Math.PI) diff -= 2 * Math.PI;
+                if (diff < -Math.PI) diff += 2 * Math.PI;
+                diff = Math.abs(diff);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    refAngle = a;
+                }
+            }
+            let sweep = Math.abs(v - refAngle);
+            if (sweep > Math.PI) sweep -= 2 * Math.PI;
+            if (sweep < -Math.PI) sweep += 2 * Math.PI;
+            return Math.abs(sweep * 180 / Math.PI);
+        }
+
+        function getAcuteAngleStr(rad) {
+            let deg = Math.abs(rad * 180 / Math.PI) % 180;
+            if (deg > 90) deg = 180 - deg;
+            return deg.toFixed(2) + '°';
+        }
+
+        function drawSmartAngleArc(ctx, x, y, visualAngleRad, radius, color, labelOffset, fontStyle, reference = 'auto', zoom = 1) {
+            ctx.save();
+            ctx.translate(x, y);
+
+            let v = visualAngleRad % (2 * Math.PI);
+            if (v > Math.PI) v -= 2 * Math.PI;
+            if (v <= -Math.PI) v += 2 * Math.PI;
+
+            let axes = [];
+            if (reference === 'horiz') {
+                axes = [0, Math.PI, -Math.PI];
+            } else if (reference === 'vert') {
+                axes = [Math.PI/2, -Math.PI/2];
+            } else {
+                axes = [0, Math.PI/2, Math.PI, -Math.PI/2];
+            }
+
+            let refAngle = axes[0];
+            let minDiff = Infinity;
+            for (let a of axes) {
+                let diff = Math.abs(v - a);
+                if (diff > Math.PI) diff -= 2 * Math.PI; 
+                if (diff < -Math.PI) diff += 2 * Math.PI;
+                diff = Math.abs(diff);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    refAngle = a;
+                }
+            }
+            
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.lineTo(Math.cos(refAngle) * (radius + 15 * zoom), Math.sin(refAngle) * (radius + 15 * zoom));
+            ctx.strokeStyle = '#94a3b8';
+            ctx.setLineDash([4, 4]);
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            ctx.setLineDash([]);
+            
+            let sweep = v - refAngle;
+            if (sweep > Math.PI) sweep -= 2 * Math.PI;
+            if (sweep < -Math.PI) sweep += 2 * Math.PI;
+            
+            let isCCW = sweep < 0; 
+            
+            ctx.beginPath();
+            ctx.arc(0, 0, radius, refAngle, refAngle + sweep, isCCW);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // Draw Dimension Arrowheads on the angle arc
+            const arrowSize = 7 * zoom;
+
+            // 1. Arrowhead at the end of the arc
+            const endAngle = refAngle + sweep;
+            const endX = radius * Math.cos(endAngle);
+            const endY = radius * Math.sin(endAngle);
+            const tangentEnd = endAngle + (isCCW ? -Math.PI/2 : Math.PI/2);
+
+            ctx.beginPath();
+            ctx.moveTo(endX, endY);
+            ctx.lineTo(endX - arrowSize * Math.cos(tangentEnd - 0.4), endY - arrowSize * Math.sin(tangentEnd - 0.4));
+            ctx.lineTo(endX - arrowSize * Math.cos(tangentEnd + 0.4), endY - arrowSize * Math.sin(tangentEnd + 0.4));
+            ctx.closePath();
+            ctx.fillStyle = color;
+            ctx.fill();
+
+            // 2. Arrowhead at the start of the arc
+            const startX_arc = radius * Math.cos(refAngle);
+            const startY_arc = radius * Math.sin(refAngle);
+            const tangentStart = refAngle + (isCCW ? Math.PI/2 : -Math.PI/2);
+
+            ctx.beginPath();
+            ctx.moveTo(startX_arc, startY_arc);
+            ctx.lineTo(startX_arc - arrowSize * Math.cos(tangentStart - 0.4), startY_arc - arrowSize * Math.sin(tangentStart - 0.4));
+            ctx.lineTo(startX_arc - arrowSize * Math.cos(tangentStart + 0.4), startY_arc - arrowSize * Math.sin(tangentStart + 0.4));
+            ctx.closePath();
+            ctx.fill();
+            
+            let sweepDeg = Math.abs(sweep * 180 / Math.PI);
+            let displayAngleStr = sweepDeg.toFixed(2) + '°';
+
+            const bisect = refAngle + sweep / 2;
+            const textR = radius + 15 * zoom;
+            const baseAx = Math.cos(bisect) * textR;
+            const baseAy = Math.sin(bisect) * textR;
+            
+            const ax = baseAx + (labelOffset ? labelOffset.x : 0);
+            const ay = baseAy + (labelOffset ? labelOffset.y : 0);
+            
+            if (labelOffset && (labelOffset.x !== 0 || labelOffset.y !== 0)) {
+                ctx.beginPath();
+                ctx.moveTo(baseAx, baseAy);
+                ctx.lineTo(ax, ay);
+                ctx.strokeStyle = '#cbd5e1';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([2, 2]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+            
+            const isLeft = Math.cos(bisect) < -0.01;
+            const isTop = Math.sin(bisect) < -0.01;
+            
+            drawSafeText(ctx, displayAngleStr, ax, ay, fontStyle, color, isLeft ? "right" : "left", isTop ? "bottom" : "top");
+            
+            const hitBounds = { x: x + ax - (isLeft ? 50 : 0), y: y + ay - (isTop ? 20 : 0), w: 50, h: 25 };
+            ctx.restore();
+            
+            return hitBounds;
+        }
+
+        function generateForceTriangleSVG(rx, ry, rMag, rAngDisplay, lblX, lblY, lblR, theme = 'light') {
+            if (rMag < 1e-5) return '';
+            
+            const svgLbl = (lbl) => lbl.replace(/<sub>(.*?)<\/sub>/g, '<tspan baseline-shift="sub" font-size="0.7em">$1</tspan>');
+            const sX = svgLbl(lblX);
+            const sY = svgLbl(lblY);
+            const sR = svgLbl(lblR);
+            const wrapperClass = theme === 'dark' ? 'bg-slate-900/50 border-slate-700' : 'bg-slate-50/50 border-slate-200';
+            
+            // Generate a simple straight arrow for 1D reactions (Only Horizontal OR Only Vertical)
+            if (Math.abs(rx) < 1e-5 || Math.abs(ry) < 1e-5) {
+                const isVert = Math.abs(rx) < 1e-5;
+                const val = isVert ? ry : rx;
+                const lbl = isVert ? sY : sX;
+                const col = isVert ? '#dc2626' : '#16a34a'; 
+                
+                return `
+                <div class="mt-4 flex flex-col items-center justify-center ${wrapperClass} rounded-xl p-4 border">
+                    <svg width="120" height="120" viewBox="0 0 120 120" class="overflow-visible drop-shadow-sm">
+                        <defs>
+                            <marker id="arr1D_${isVert?'v':'h'}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                                <path d="M 0 0 L 10 5 L 0 10 z" fill="${col}" />
+                            </marker>
+                        </defs>
+                        ${isVert 
+                          ? `<line x1="60" y1="${val > 0 ? 90 : 30}" x2="60" y2="${val > 0 ? 30 : 90}" stroke="${col}" stroke-width="4" marker-end="url(#arr1D_v)" />
+                             <text x="75" y="60" fill="${col}" font-size="16" font-weight="bold" text-anchor="start" font-family="Roboto" alignment-baseline="middle">${lbl} = ${fmtF(Math.abs(val))}</text>`
+                          : `<line x1="${val > 0 ? 30 : 90}" y1="60" x2="${val > 0 ? 90 : 30}" y2="60" stroke="${col}" stroke-width="4" marker-end="url(#arr1D_h)" />
+                             <text x="60" y="45" fill="${col}" font-size="16" font-weight="bold" text-anchor="middle" font-family="Roboto">${lbl} = ${fmtF(Math.abs(val))}</text>`
+                        }
+                    </svg>
+                </div>`;
+            }
+            
+            // Standard 2D Triangle Generation
+            const maxDim = Math.max(Math.abs(rx), Math.abs(ry));
+            const scale = 140 / maxDim; // Max vector line length will be 140px
+            
+            const vx = rx * scale;
+            const vy = -ry * scale; // Invert Y for SVG coordinates (down is positive)
+            
+            // Bounding box calculations to perfectly centre the dynamic triangle
+            const minX = Math.min(0, vx);
+            const maxX = Math.max(0, vx);
+            const minY = Math.min(0, vy);
+            const maxY = Math.max(0, vy);
+            const boxW = maxX - minX;
+            const boxH = maxY - minY;
+            
+            // Centre within an expanded 340x340 view box to allow massive labels
+            const cx = 170 - boxW / 2 - minX;
+            const cy = 170 - boxH / 2 - minY;
+            
+            // Tip-to-tail path points
+            const P0 = { x: cx, y: cy }; // Start point (Horizontal Tail)
+            const P1 = { x: cx + vx, y: cy }; // Horizontal Head -> Vertical Tail
+            const P2 = { x: cx + vx, y: cy + vy }; // Vertical Head -> Resultant Head
+            
+            // Calculate Centroid to dynamically push labels OUTWARDS away from the lines
+            const Centroid = { x: (P0.x + P1.x + P2.x) / 3, y: (P0.y + P1.y + P2.y) / 3 };
+            
+            const getOffsetPos = (pA, pB, dist) => {
+                const mid = { x: (pA.x + pB.x) / 2, y: (pA.y + pB.y) / 2 };
+                let dx = mid.x - Centroid.x;
+                let dy = mid.y - Centroid.y;
+                const len = Math.hypot(dx, dy);
+                if (len > 0.001) { dx /= len; dy /= len; } else { dx = 0; dy = 1; }
+                return { x: mid.x + dx * dist, y: mid.y + dy * dist + 6 }; // +6 to vertically centre text optically
+            };
+            
+            // Increased the 'push' distance significantly
+            const L01 = getOffsetPos(P0, P1, 35); // Horizontal Label Pos
+            const L12 = getOffsetPos(P1, P2, 45); // Vertical Label Pos
+            const L02 = getOffsetPos(P0, P2, 42); // Resultant Label Pos
+            
+            // Angle Arc Math (Acute angle between Horizontal and Resultant)
+            const v_horiz = { x: P1.x - P0.x, y: P1.y - P0.y };
+            const v_res = { x: P2.x - P0.x, y: P2.y - P0.y };
+            
+            const ang_horiz = Math.atan2(v_horiz.y, v_horiz.x);
+            const ang_res = Math.atan2(v_res.y, v_res.x);
+            
+            // 2D Cross product determines if arc sweep is clockwise or anticlockwise
+            const cross = v_horiz.x * v_res.y - v_horiz.y * v_res.x;
+            const swFlag = cross > 0 ? 1 : 0;
+            
+            const arcR = 48; // Even larger, clear arc radius
+            const startArcX = P0.x + arcR * Math.cos(ang_horiz);
+            const startArcY = P0.y + arcR * Math.sin(ang_horiz);
+            const endArcX = P0.x + arcR * Math.cos(ang_res);
+            const endArcY = P0.y + arcR * Math.sin(ang_res);
+            
+            // Bisector for the angle text placement
+            const len1 = Math.hypot(v_horiz.x, v_horiz.y);
+            const len2 = Math.hypot(v_res.x, v_res.y);
+            let bx = v_horiz.x / len1 + v_res.x / len2;
+            let by = v_horiz.y / len1 + v_res.y / len2;
+            const blen = Math.hypot(bx, by);
+            bx /= blen; by /= blen;
+            
+            const LAng = { x: P0.x + (arcR + 25) * bx, y: P0.y + (arcR + 25) * by + 5 };
+            
+            return `
+            <div class="mt-4 flex justify-center ${wrapperClass} rounded-xl p-4 border">
+            <svg width="280" height="280" viewBox="0 0 340 340" class="overflow-visible drop-shadow-sm">
+                <defs>
+                    <marker id="arrG" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#16a34a" />
+                    </marker>
+                    <marker id="arrR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="4" markerHeight="4" orient="auto">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#dc2626" />
+                    </marker>
+                    <marker id="arrRes" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#d97706" />
+                    </marker>
+                </defs>
+                
+                <line x1="${P0.x}" y1="${P0.y}" x2="${P1.x}" y2="${P1.y}" stroke="#16a34a" stroke-width="4" marker-end="url(#arrG)" />
+                <text x="${L01.x}" y="${L01.y}" fill="#16a34a" font-size="16" font-weight="bold" text-anchor="middle" font-family="Roboto">${sX}</text>
+                
+                <line x1="${P1.x}" y1="${P1.y}" x2="${P2.x}" y2="${P2.y}" stroke="#dc2626" stroke-width="4" marker-end="url(#arrR)" />
+                <text x="${L12.x}" y="${L12.y}" fill="#dc2626" font-size="16" font-weight="bold" text-anchor="middle" font-family="Roboto">${sY}</text>
+                
+                <line x1="${P0.x}" y1="${P0.y}" x2="${P2.x}" y2="${P2.y}" stroke="#d97706" stroke-width="4.5" marker-end="url(#arrRes)" stroke-dasharray="8 5" />
+                <text x="${L02.x}" y="${L02.y}" fill="#d97706" font-size="18" font-weight="bold" text-anchor="middle" font-family="Roboto">${sR}</text>
+                
+                <path d="M ${startArcX} ${startArcY} A ${arcR} ${arcR} 0 0 ${swFlag} ${endArcX} ${endArcY}" fill="none" stroke="#d97706" stroke-width="2.5" />
+                <text x="${LAng.x}" y="${LAng.y}" fill="#d97706" font-size="14" font-weight="bold" text-anchor="middle" font-family="Roboto">${rAngDisplay}&deg;</text>
+            </svg>
+            </div>`;
+        }
+
+        // Global Hit Helper
+        function checkHit(mx, my, b) {
+            if (!b) return false;
+            return mx >= b.x && mx <= b.x + b.w && my >= b.y && my <= b.y + b.h;
+        }
+
+        // Mode Switching Functions
+        window.createNode = function() {
+            state.mode = 'node';
+            state.beam = null;
+            state.node = true;
+            state.comps = [];
+            state.sel = null;
+            state.solved = false;
+            view.x = 0;
+            view.y = 0;
+            hideResults();
+            recordState();
+            draw();
+        }
+
+        // --- Core Classes ---
+        class Component {
+            constructor(type, x) {
+                this.id = Math.random().toString(36).substr(2, 9);
+                this.type = type;
+                this.x = x; 
+                this.labelOffset = { x: 0, y: 0 };
+                this.labelHitBounds = null;
+            }
+            hitLabel(mx, my) {
+                if (checkHit(mx, my, this.labelHitBounds)) return 'label';
+                return false;
+            }
+            hit(mx, my) { return false; }
+            draw(ctx, startX, centerY) {}
+        }
+
+        class Support extends Component {
+            constructor(type, x, name = 'A') {
+                super(type, x);
+                this.name = name;
+                this.rvOffset = { x: 0, y: 0 };
+                this.rhOffset = { x: 0, y: 0 };
+                this.resOffset = { x: 0, y: 0 };
+                this.resAngleOffset = { x: 0, y: 0 };
+                
+                this.rvHitBounds = null;
+                this.rhHitBounds = null;
+                this.resHitBounds = null;
+                this.resAngleHitBounds = null;
+            }
+            hit(mx, my) {
+                if(state.mode !== 'beam' || !state.beam) return false;
+                const labelHit = this.hitLabel(mx, my);
+                if (labelHit) return labelHit;
+
+                const sx = worldX(this.x);
+                const sy = view.y + cvs.height/2 + state.beam.y + 20; 
+                if (Math.hypot(mx - sx, my - sy) < 25) return 'body';
+                return false;
+            }
+            draw(renderCtx, startX, centerY) {
+                if(state.mode !== 'beam' || !state.beam) return;
+                const sx = this.x * view.scale; 
+                renderCtx.save();
+                
+                const groundY = 25;
+
+                renderCtx.translate(sx, 0); 
+                renderCtx.fillStyle = (state.sel === this) ? '#e0f2fe' : '#ffffff'; 
+                renderCtx.lineWidth = 2;
+                renderCtx.strokeStyle = (state.sel === this) ? COL.sel : COL.supp;
+
+                if (this.type === 'hinge') {
+                    renderCtx.beginPath();
+                    renderCtx.arc(0, 5, 10, Math.PI, 0); 
+                    renderCtx.lineTo(10, groundY);         
+                    renderCtx.lineTo(-10, groundY);         
+                    renderCtx.lineTo(-10, 5);            
+                    renderCtx.closePath();
+                    renderCtx.fill();
+                    renderCtx.stroke();
+                    
+                    renderCtx.beginPath();
+                    renderCtx.arc(0, 5, 3, 0, Math.PI*2);
+                    renderCtx.fillStyle = COL.supp;
+                    renderCtx.fill();
+                    
+                } else if (this.type === 'roller') {
+                    renderCtx.beginPath();
+                    renderCtx.arc(0, 15, 10, 0, Math.PI*2);
+                    renderCtx.fill();
+                    renderCtx.stroke();
+                    
+                    renderCtx.beginPath();
+                    renderCtx.moveTo(-4, 15);
+                    renderCtx.lineTo(4, 15);
+                    renderCtx.moveTo(0, 11);
+                    renderCtx.lineTo(0, 19);
+                    renderCtx.lineWidth = 2;
+                    renderCtx.strokeStyle = COL.supp;
+                    renderCtx.stroke();
+
+                } else if (this.type === 'simple') {
+                    renderCtx.beginPath();
+                    renderCtx.moveTo(0, 5); // Connect precisely to bottom of beam
+                    renderCtx.lineTo(12, groundY); 
+                    renderCtx.lineTo(-12, groundY); 
+                    renderCtx.closePath();
+                    renderCtx.fill();
+                    renderCtx.stroke();
+                }
+                
+                // Hatched Ground
+                renderCtx.beginPath();
+                renderCtx.lineWidth = 2;
+                renderCtx.strokeStyle = COL.supp;
+                renderCtx.moveTo(-20, groundY);
+                renderCtx.lineTo(20, groundY);
+                renderCtx.stroke();
+                
+                renderCtx.beginPath();
+                renderCtx.lineWidth = 1.5;
+                renderCtx.strokeStyle = '#94a3b8';
+                for(let i=-15; i<=15; i+=6) {
+                    renderCtx.moveTo(i, groundY);
+                    renderCtx.lineTo(i - 6, groundY + 8);
+                }
+                renderCtx.stroke();
+                
+                // Label with Drag Support
+                const lx = this.labelOffset ? this.labelOffset.x : 0;
+                const ly = 45 + (this.labelOffset ? this.labelOffset.y : 0);
+                
+                if (this.labelOffset && (this.labelOffset.x !== 0 || this.labelOffset.y !== 0)) {
+                    renderCtx.beginPath();
+                    renderCtx.moveTo(0, 25);
+                    renderCtx.lineTo(lx, ly - 10);
+                    renderCtx.strokeStyle = '#cbd5e1';
+                    renderCtx.lineWidth = 1;
+                    renderCtx.setLineDash([2, 2]);
+                    renderCtx.stroke();
+                    renderCtx.setLineDash([]);
+                }
+                
+                drawSafeText(renderCtx, `${this.name}`, lx, ly, "bold 16px Roboto", COL.supp, "center", "alphabetic");
+                this.labelHitBounds = { x: startX + sx + lx - 20, y: centerY + ly - 20, w: 40, h: 25 };
+
+                renderCtx.restore();
+            }
+        }
+
+        class PointLoad extends Component {
+            constructor(x, angle = 270, type = 'point') {
+                super(type, x);
+                this.mag = 1000; 
+                this.angle = angle; 
+                this.unit = 'N'; 
+                this.actionDirection = 'away'; 
+                this.reference = 'horiz';
+                this.angleLabelOffset = { x: 0, y: 0 };
+                this.angleHitBounds = null;
+                this.stackOffset = 0; // Used for Node Mode visual stacking
+            }
+            hit(mx, my) {
+                if(!state.beam && state.mode !== 'node') return false;
+                if (checkHit(mx, my, this.labelHitBounds)) return 'label';
+                if (this.type === 'angled' && checkHit(mx, my, this.angleHitBounds)) return 'angleLabel';
+
+                let startX, startY;
+                if (state.mode === 'node') {
+                    startX = view.x + cvs.width/2;
+                    startY = view.y + cvs.height/2;
+                } else {
+                    startX = worldX(this.x);
+                    startY = view.y + cvs.height/2 + state.beam.y;
+                }
+
+                let zoom = state.mode === 'node' ? view.scale / 50 : 1;
+                const displayMagForLen = this.unit === 'kN' ? this.mag * 1000 : this.mag;
+                const len = (70 + Math.log10(Math.max(10, displayMagForLen)) * 10) * zoom;
+                const rad = this.angle * Math.PI / 180;
+                
+                let headX, headY, tailX, tailY;
+                
+                if (state.mode === 'node') {
+                    let off = this.stackOffset || 0;
+                    if (this.actionDirection === 'towards') {
+                        headX = startX + off * Math.cos(rad);
+                        headY = startY - off * Math.sin(rad);
+                        tailX = startX + (off + len) * Math.cos(rad);
+                        tailY = startY - (off + len) * Math.sin(rad);
+                    } else {
+                        tailX = startX + off * Math.cos(rad);
+                        tailY = startY - off * Math.sin(rad); 
+                        headX = startX + (off + len) * Math.cos(rad);
+                        headY = startY - (off + len) * Math.sin(rad);
+                    }
+                } else {
+                    headX = startX;
+                    headY = startY;
+                    tailX = startX - len * Math.cos(rad);
+                    tailY = startY + len * Math.sin(rad);
+                }
+
+                if (Math.hypot(mx - headX, my - headY) < 15 * zoom) return 'body';
+                
+                const l2 = (tailX - headX) ** 2 + (tailY - headY) ** 2;
+                if (l2 > 0) {
+                    let t = ((mx - headX) * (tailX - headX) + (my - headY) * (tailY - headY)) / l2;
+                    t = Math.max(0, Math.min(1, t));
+                    const projX = headX + t * (tailX - headX);
+                    const projY = headY + t * (tailY - headY);
+                    if (Math.hypot(mx - projX, my - projY) < 10) return 'body';
+                }
+                return false;
+            }
+            
+            draw(ctx, startX, centerY) {
+                if (state.mode === 'node') {
+                    this.drawNode(ctx, startX, centerY);
+                } else {
+                    this.drawBeam(ctx, startX, centerY);
+                }
+            }
+
+            drawNode(ctx, startX, centerY) {
+                const cx = startX;
+                const cy = centerY;
+                ctx.save();
+                ctx.translate(cx, cy);
+                
+                const zoom = view.scale / 50;
+                
+                const displayMagForLen = this.unit === 'kN' ? this.mag * 1000 : this.mag;
+                const len = (70 + Math.log10(Math.max(10, displayMagForLen)) * 10) * zoom; 
+                const strokeCol = (state.sel === this) ? COL.sel : COL.load;
+                const angleCol = (state.sel === this) ? COL.sel : COL.angle;
+
+                let off = this.stackOffset || 0;
+                const visualAngleRad = -this.angle * Math.PI / 180;
+                
+                ctx.save();
+                ctx.rotate(visualAngleRad);
+                ctx.translate(off, 0);
+                
+                ctx.strokeStyle = strokeCol;
+                ctx.fillStyle = strokeCol;
+                ctx.lineWidth = 2.5;
+
+                const ahL = 18 * zoom;
+                const ahW = 6 * zoom;
+
+                if (this.actionDirection === 'towards') {
+                    ctx.beginPath();
+                    ctx.moveTo(len, 0);
+                    ctx.lineTo(0, 0);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(ahL, -ahW);
+                    ctx.lineTo(ahL, ahW);
+                    ctx.closePath();
+                    ctx.fill();
+                } else {
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(len, 0);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(len, 0);
+                    ctx.lineTo(len - ahL, -ahW);
+                    ctx.lineTo(len - ahL, ahW);
+                    ctx.closePath();
+                    ctx.fill();
+                }
+                ctx.restore();
+
+                if (this.type === 'angled' && off === 0) {
+                    const bounds = drawSmartAngleArc(ctx, 0, 0, visualAngleRad, 40 * zoom, angleCol, this.angleLabelOffset, "bold 13px Roboto", this.reference, zoom);
+                    this.angleHitBounds = { x: cx + bounds.x, y: cy + bounds.y, w: bounds.w, h: bounds.h };
+                }
+
+                ctx.save();
+                const textRadius = off + len + 15 * zoom;
+                const tx = textRadius * Math.cos(visualAngleRad);
+                const ty = textRadius * Math.sin(visualAngleRad);
+
+                const lx = tx + (this.labelOffset ? this.labelOffset.x : 0);
+                const ly = ty + (this.labelOffset ? this.labelOffset.y : 0);
+                
+                if (this.labelOffset && (this.labelOffset.x !== 0 || this.labelOffset.y !== 0)) {
+                    ctx.beginPath();
+                    ctx.moveTo(tx, ty);
+                    ctx.lineTo(lx, ly);
+                    ctx.strokeStyle = '#cbd5e1';
+                    ctx.lineWidth = 1;
+                    ctx.setLineDash([2, 2]);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+                
+                const isLeft = Math.cos(visualAngleRad) < -0.01;
+                drawSafeText(ctx, `${this.mag} ${this.unit}`, lx, ly, "bold 14px Roboto", strokeCol, "center", "middle");
+                this.labelHitBounds = { x: cx + lx - 30, y: cy + ly - 12, w: 60, h: 25 };
+                
+                ctx.restore();
+                ctx.restore();
+            }
+
+            drawBeam(ctx, startX, centerY) {
+                if(!state.beam) return;
+                const sx = this.x * view.scale;
+                ctx.save();
+                
+                const isUpPoint = this.type === 'point' && this.angle === 90;
+                const beamYOffset = isUpPoint ? 5 : -5;
+                
+                ctx.translate(sx, beamYOffset); 
+                
+                const displayMagForLen = this.unit === 'kN' ? this.mag * 1000 : this.mag;
+                const len = 70 + Math.log10(Math.max(10, displayMagForLen)) * 10; 
+                const strokeCol = (state.sel === this) ? COL.sel : COL.load;
+                const angleCol = (state.sel === this) ? COL.sel : COL.angle;
+                
+                ctx.strokeStyle = strokeCol;
+                ctx.fillStyle = strokeCol;
+                ctx.lineWidth = 2.5;
+                
+                ctx.save();
+                ctx.rotate(-this.angle * Math.PI / 180); 
+                ctx.scale(1, -1); 
+
+                ctx.beginPath();
+                ctx.moveTo(-len, 0);
+                ctx.lineTo(0, 0);
+                ctx.stroke();
+                
+                // Closed, filled BSI Arrowhead pointing AT the beam
+                ctx.beginPath();
+                ctx.moveTo(0, 0); 
+                ctx.lineTo(-18, -6); 
+                ctx.lineTo(-18, 6);
+                ctx.closePath();
+                ctx.fill();
+                
+                if(state.sel === this && this.type === 'angled') {
+                    ctx.beginPath();
+                    ctx.arc(-len, 0, 5, 0, Math.PI*2);
+                    ctx.fillStyle = '#ffffff';
+                    ctx.fill();
+                    ctx.stroke();
+                }
+                ctx.restore();
+
+                if (this.type === 'angled') {
+                    const rayRad = (-this.angle * Math.PI / 180) + Math.PI;
+                    
+                    const bounds = drawSmartAngleArc(ctx, 0, 0, rayRad, 40, angleCol, this.angleLabelOffset, "bold 13px Roboto", 'horiz', 1);
+                    this.angleHitBounds = { x: startX + sx + bounds.x, y: centerY + beamYOffset + bounds.y, w: bounds.w, h: bounds.h };
+                    
+                    const tx = Math.cos(rayRad) * (len + 15);
+                    const ty = Math.sin(rayRad) * (len + 15);
+                    
+                    const lx = tx + (this.labelOffset ? this.labelOffset.x : 0);
+                    const ly = ty + (this.labelOffset ? this.labelOffset.y : 0);
+                    
+                    if (this.labelOffset && (this.labelOffset.x !== 0 || this.labelOffset.y !== 0)) {
+                        ctx.beginPath();
+                        ctx.moveTo(tx, ty);
+                        ctx.lineTo(lx, ly);
+                        ctx.strokeStyle = '#cbd5e1';
+                        ctx.lineWidth = 1;
+                        ctx.setLineDash([2, 2]);
+                        ctx.stroke();
+                        ctx.setLineDash([]);
+                    }
+                    
+                    const isTop = Math.sin(rayRad) < 0;
+                    drawSafeText(ctx, `${this.mag} ${this.unit}`, lx, ly, "bold 14px Roboto", strokeCol, "center", isTop ? "bottom" : "top");
+                    this.labelHitBounds = { x: startX + sx + lx - 30, y: centerY + beamYOffset + ly - (isTop ? 20 : 0), w: 60, h: 25 };
+                    
+                } else {
+                    const lx = this.labelOffset ? this.labelOffset.x : 0;
+                    const baseLy = isUpPoint ? len + 10 : -len - 10;
+                    const ly = baseLy + (this.labelOffset ? this.labelOffset.y : 0);
+                    
+                    if (this.labelOffset && (this.labelOffset.x !== 0 || this.labelOffset.y !== 0)) {
+                        ctx.beginPath(); 
+                        ctx.moveTo(0, isUpPoint ? len + 5 : -len - 5); 
+                        ctx.lineTo(lx, ly + (isUpPoint ? -10 : 10)); 
+                        ctx.strokeStyle = '#cbd5e1'; 
+                        ctx.lineWidth = 1; 
+                        ctx.setLineDash([2,2]); 
+                        ctx.stroke(); 
+                        ctx.setLineDash([]);
+                    }
+                    
+                    drawSafeText(ctx, `${this.mag} ${this.unit}`, lx, ly, "bold 14px Roboto", strokeCol, "center", isUpPoint ? "top" : "bottom");
+                    this.labelHitBounds = { x: startX + sx + lx - 30, y: centerY + beamYOffset + ly - (isUpPoint ? 0 : 20), w: 60, h: 25 };
+                }
+                
+                ctx.restore();
+            }
+        }
+
+        class UDL extends Component {
+            constructor(x) {
+                super('udl', x);
+                this.w = 500; 
+                this.len = 2; 
+                this.unit = 'Nm⁻¹'; 
+            }
+            hit(mx, my) {
+                if(state.mode !== 'beam' || !state.beam) return false;
+                const labelHit = this.hitLabel(mx, my);
+                if (labelHit) return labelHit;
+
+                const sx = worldX(this.x);
+                const ex = worldX(this.x + this.len);
+                const sy = view.y + cvs.height/2 + state.beam.y;
+                return mx >= sx && mx <= ex && my < sy && my > sy - 25;
+            }
+            draw(ctx, startX, centerY) {
+                if(state.mode !== 'beam' || !state.beam) return;
+                const sx = this.x * view.scale;
+                const wPx = this.len * view.scale;
+                
+                ctx.save();
+                ctx.translate(sx, -5); // Flush with beam top
+                
+                const col = (state.sel === this) ? COL.sel : COL.load;
+                ctx.strokeStyle = col;
+                ctx.fillStyle = (state.sel === this) ? '#e0f2fe' : '#f1f5f9'; 
+                ctx.lineWidth = 2;
+
+                const targetR = 12; // Slightly larger bumps
+                const numBumps = Math.max(1, Math.round(wPx / (targetR * 2)));
+                const actualDia = wPx / numBumps;
+                const r = actualDia / 2;
+
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                for(let i=0; i<numBumps; i++) {
+                    const cx = (i * actualDia) + r;
+                    ctx.arc(cx, 0, r, Math.PI, 2*Math.PI);
+                }
+                ctx.fill();
+                ctx.stroke();
+
+                // Dynamic Leader Line
+                const leadX = wPx / 2;
+                const leadY = -r;
+                const isRightHalf = (this.x + this.len/2) > (state.beam.len / 2);
+                const dir = isRightHalf ? -1 : 1; 
+                
+                ctx.beginPath();
+                ctx.moveTo(leadX, leadY);
+                ctx.lineTo(leadX + dir * 20, leadY - 30);
+                ctx.lineTo(leadX + dir * 60, leadY - 30);
+                ctx.strokeStyle = col;
+                ctx.lineWidth = 1.5;
+                ctx.stroke();
+                
+                // Closed BSI Leader Arrow
+                ctx.beginPath();
+                const lAng = Math.atan2((leadY - 30) - leadY, (leadX + dir * 20) - leadX);
+                ctx.moveTo(leadX, leadY);
+                ctx.lineTo(leadX+12*Math.cos(lAng-0.35), leadY+12*Math.sin(lAng-0.35));
+                ctx.lineTo(leadX+12*Math.cos(lAng+0.35), leadY+12*Math.sin(lAng+0.35));
+                ctx.closePath();
+                ctx.fillStyle = col;
+                ctx.fill();
+
+                const baseLx = leadX + dir * 25;
+                const baseLy = leadY - 34;
+                const lx = baseLx + (this.labelOffset ? this.labelOffset.x : 0);
+                const ly = baseLy + (this.labelOffset ? this.labelOffset.y : 0);
+
+                if (this.labelOffset && (this.labelOffset.x !== 0 || this.labelOffset.y !== 0)) {
+                    ctx.beginPath();
+                    ctx.moveTo(baseLx, baseLy + 10);
+                    ctx.lineTo(lx, ly + 10);
+                    ctx.strokeStyle = '#cbd5e1';
+                    ctx.lineWidth = 1;
+                    ctx.setLineDash([2, 2]);
+                    ctx.stroke();
+                    ctx.setLineDash([]);
+                }
+
+                drawSafeText(ctx, `${this.w} ${this.unit}`, lx, ly, "bold 14px Roboto", col, isRightHalf ? "right" : "left", "bottom");
+                this.labelHitBounds = { x: startX + sx + lx - (isRightHalf ? 60 : 0), y: centerY - 5 + ly - 20, w: 60, h: 25 };
+                
+                ctx.restore();
+            }
+        }
+
+        class TextNote extends Component {
+            constructor(x) { super('text', x); this.text = "Note"; this.size = 18; } 
+            hit(mx,my) { 
+                if(!state.beam && state.mode !== 'node') return false;
+                const labelHit = this.hitLabel(mx, my);
+                if (labelHit) return labelHit;
+
+                let sx, sy;
+                if (state.mode === 'node') {
+                    sx = view.x + cvs.width/2;
+                    sy = view.y + cvs.height/2;
+                } else {
+                    sx = worldX(this.x); 
+                    sy = view.y + cvs.height/2 + state.beam.y - 60;
+                }
+
+                return Math.abs(mx-sx)<30 && Math.abs(my-sy)<15; 
+            }
+            draw(ctx, startX, centerY) {
+                if(!state.beam && state.mode !== 'node') return;
+                
+                let sx, cy;
+                if (state.mode === 'node') {
+                    sx = 0;
+                    cy = centerY;
+                } else {
+                    sx = this.x * view.scale;
+                    cy = centerY - 60;
+                }
+                
+                ctx.save(); ctx.translate(startX + sx, cy);
+                
+                const lx = this.labelOffset ? this.labelOffset.x : 0;
+                const ly = this.labelOffset ? this.labelOffset.y : 0;
+
+                drawSafeText(ctx, this.text, lx, ly, `bold ${this.size}px Roboto`, (state.sel===this)?COL.sel:'#334155', "center", "middle");
+
+                if(state.sel===this) { ctx.strokeStyle=COL.sel; ctx.lineWidth=1; ctx.setLineDash([2,2]); ctx.strokeRect(lx - 20, ly - 15, 40, 30); }
+                this.labelHitBounds = { x: startX + sx + lx - 30, y: cy + ly - 15, w: 60, h: 30 };
+
+                ctx.restore();
+            }
+        }
+
+        // --- Drawing Helpers ---
+        function drawArrow(ctx, x1, y1, x2, y2, col) {
+            ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+            ctx.strokeStyle = col; ctx.stroke();
+            const ang = Math.atan2(y2-y1, x2-x1);
+            
+            // Closed BSI Style Vector Arrowhead
+            ctx.beginPath(); 
+            ctx.moveTo(x2, y2); 
+            ctx.lineTo(x2-16*Math.cos(ang-0.35), y2-16*Math.sin(ang-0.35));
+            ctx.lineTo(x2-16*Math.cos(ang+0.35), y2-16*Math.sin(ang+0.35));
+            ctx.closePath();
+            ctx.fillStyle = col; ctx.fill();
+        }
+
+        function drawDimArrow(ctx, x1, y1, x2, y2) {
+            ctx.beginPath();
+            ctx.moveTo(x1, y1); ctx.lineTo(x2, y2);
+            ctx.stroke();
+
+            const headLen = 14;
+            const headWid = 3.5; // Narrow, sharp 1:4 ratio BSI style
+
+            // Left arrow
+            ctx.beginPath();
+            ctx.moveTo(x1, y1); 
+            ctx.lineTo(x1+headLen, y1-headWid);
+            ctx.lineTo(x1+headLen, y1+headWid);
+            ctx.closePath();
+            ctx.fill();
+
+            // Right arrow
+            ctx.beginPath();
+            ctx.moveTo(x2, y2); 
+            ctx.lineTo(x2-headLen, y2-headWid);
+            ctx.lineTo(x2-headLen, y2+headWid);
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function worldX(beamMeters) {
+            if (!state.beam) return view.x + cvs.width/2;
+            const centerPx = view.x + cvs.width/2;
+            const startPx = centerPx - (state.beam.len * view.scale)/2;
+            return startPx + beamMeters * view.scale;
+        }
+
+        // --- Main Logic ---
+
+        function resize() {
+            cvs.width = cvs.parentElement.clientWidth;
+            cvs.height = cvs.parentElement.clientHeight;
+            if(state.beam) state.beam.y = 0; 
+            draw();
+        }
+
+        function drawDimensions(renderCtx, logicalW, logicalH) {
+            if (!state.beam) return;
+            
+            let xs = [0, state.beam.len];
+            state.comps.forEach(c => {
+                xs.push(c.x);
+                if (c.type === 'udl') xs.push(c.x + c.len);
+            });
+            xs = [...new Set(xs.map(x => Math.round(x*1000)/1000))].sort((a,b)=>a-b);
+            
+            const dimY = 70; // Set Dimension Line strictly above the horizontal reactions
+            
+            renderCtx.save();
+            const centerPx = view.x + logicalW/2;
+            const centerY = view.y + logicalH/2 + state.beam.y;
+            const startX = centerPx - (state.beam.len * view.scale)/2;
+            renderCtx.translate(startX, centerY);
+
+            renderCtx.strokeStyle = '#cbd5e1'; // Light grey extensions
+            renderCtx.lineWidth = 1;
+            renderCtx.beginPath();
+            xs.forEach(x => {
+                const px = x * view.scale;
+                renderCtx.moveTo(px, 10);
+                renderCtx.lineTo(px, dimY + 10);
+            });
+            renderCtx.stroke();
+
+            renderCtx.strokeStyle = '#94a3b8'; // Slate 400 for dimension lines
+            renderCtx.fillStyle = '#94a3b8'; // Match fill for arrowheads
+            for(let i=0; i<xs.length-1; i++) {
+                const x1 = xs[i] * view.scale;
+                const x2 = xs[i+1] * view.scale;
+                const mid = (x1 + x2) / 2;
+                const dist = xs[i+1] - xs[i];
+                
+                if(dist < 0.05) continue; 
+                
+                drawDimArrow(renderCtx, x1, dimY, x2, dimY);
+                
+                drawSafeText(renderCtx, dist.toFixed(2) + 'm', mid, dimY - 6, '13px Roboto', '#475569', 'center', 'bottom');
+            }
+            renderCtx.restore();
+        }
+
+        function draw(renderCtx = ctx, logicalW = cvs.width, logicalH = cvs.height) {
+            renderCtx.fillStyle = renderCtx === ctx ? '#f8fafc' : '#ffffff';
+            renderCtx.fillRect(0, 0, logicalW, logicalH);
+
+            if (state.mode === 'beam' && !state.beam) {
+                if (renderCtx === ctx) {
+                    emptyState.classList.remove('hidden');
+                    reactPanel.classList.add('hidden');
+                }
+                return;
+            } else if (state.mode === 'node' && !state.node) {
+                 if (renderCtx === ctx) {
+                    emptyState.classList.remove('hidden');
+                    reactPanel.classList.add('hidden');
+                }
+                return;
+            }
+
+            if (renderCtx === ctx) {
+                emptyState.classList.add('hidden');
+            }
+
+            const centerPx = view.x + logicalW/2;
+            const centerY = view.y + logicalH/2 + (state.beam ? state.beam.y : 0);
+
+            if (state.mode === 'node') {
+                renderCtx.save();
+                renderCtx.translate(centerPx, centerY);
+
+                // Centre lines (BSI standard long dash short dash long dash)
+                renderCtx.strokeStyle = '#94a3b8';
+                renderCtx.lineWidth = 1;
+                renderCtx.beginPath();
+                renderCtx.moveTo(-6, 0); renderCtx.lineTo(6, 0);
+                renderCtx.moveTo(0, -6); renderCtx.lineTo(0, 6);
+                renderCtx.stroke();
+                
+                renderCtx.beginPath();
+                renderCtx.setLineDash([40, 10, 10, 10]);
+                renderCtx.moveTo(15, 0); renderCtx.lineTo(logicalW/2, 0);
+                renderCtx.moveTo(-15, 0); renderCtx.lineTo(-logicalW/2, 0);
+                renderCtx.moveTo(0, 15); renderCtx.lineTo(0, logicalH/2);
+                renderCtx.moveTo(0, -15); renderCtx.lineTo(0, -logicalH/2);
+                renderCtx.stroke();
+                renderCtx.setLineDash([]);
+                
+                // Central Dot (Bigger)
+                renderCtx.beginPath();
+                renderCtx.arc(0, 0, 10, 0, Math.PI*2);
+                renderCtx.fillStyle = '#ffffff';
+                renderCtx.fill();
+                renderCtx.lineWidth = 4;
+                renderCtx.strokeStyle = '#0f172a';
+                renderCtx.stroke();
+                renderCtx.beginPath();
+                renderCtx.arc(0, 0, 8, 0, Math.PI*2);
+                renderCtx.fillStyle = '#0f172a';
+                renderCtx.fill();
+                
+                renderCtx.restore();
+
+                // Compute Stacking Offsets for tip-to-tail
+                let angleStacks = {};
+                const zoom = view.scale / 50;
+                state.comps.forEach(c => {
+                    if (c instanceof PointLoad) {
+                        let a = Math.round(c.angle * 100) / 100;
+                        c.stackOffset = angleStacks[a] || 0;
+                        
+                        const displayMagForLen = c.unit === 'kN' ? c.mag * 1000 : c.mag;
+                        const len = (70 + Math.log10(Math.max(10, displayMagForLen)) * 10) * zoom; 
+                        
+                        angleStacks[a] = (angleStacks[a] || 0) + len + 10 * zoom; 
+                    }
+                });
+
+                // Draw Components
+                state.comps.forEach(c => c.draw(renderCtx, centerPx, centerY));
+
+                // Draw Equilibrant Node Reaction
+                if(state.solved && state.results.ok && state.results.isNode) {
+                    drawNodeReaction(renderCtx, state.results, logicalW, logicalH, centerPx, centerY);
+                }
+
+            } else {
+                // BEAM MODE
+                drawDimensions(renderCtx, logicalW, logicalH);
+
+                const beamW = state.beam.len * view.scale;
+                const startX = centerPx - beamW/2;
+                
+                renderCtx.save();
+                renderCtx.translate(startX, centerY);
+                
+                // Clean Engineering Beam
+                renderCtx.beginPath();
+                renderCtx.rect(0, -5, beamW, 10);
+                renderCtx.fillStyle = '#ffffff';
+                renderCtx.fill();
+                renderCtx.lineWidth = 2.5;
+                renderCtx.strokeStyle = COL.beam;
+                renderCtx.stroke();
+                
+                state.comps.filter(c => c instanceof UDL).forEach(c => c.draw(renderCtx, startX, centerY));
+                state.comps.filter(c => !(c instanceof UDL)).forEach(c => c.draw(renderCtx, startX, centerY));
+                
+                renderCtx.restore();
+                
+                // Draw Reactions
+                if(state.solved && state.results.ok && !state.results.isNode) {
+                    drawReactions(renderCtx, state.results, logicalW, logicalH, startX, centerY);
+                }
+            }
+        }
+
+        function drawNodeReaction(renderCtx, res, logicalW, logicalH, startX, centerY) {
+            if (res.rMag < 1e-5) return; 
+            
+            renderCtx.save();
+            renderCtx.translate(startX, centerY);
+            
+            const zoom = view.scale / 50;
+            
+            const ux = res.Req_x / res.rMag;
+            const uy = -res.Req_y / res.rMag; 
+            
+            const len = Math.max(60, 50 + Math.log10(Math.max(1, res.rMag))*10) * zoom;
+            const tipX = len * ux;
+            const tipY = len * uy; 
+            
+            const colR = COL.reactRes; 
+            
+            renderCtx.lineWidth = 3;
+            const ahL = 16 * zoom;
+            renderCtx.beginPath();
+            renderCtx.moveTo(0, 0); renderCtx.lineTo(tipX, tipY);
+            renderCtx.strokeStyle = colR; renderCtx.stroke();
+            
+            const vecAngleRad = Math.atan2(tipY, tipX);
+            
+            renderCtx.beginPath(); 
+            renderCtx.moveTo(tipX, tipY); 
+            renderCtx.lineTo(tipX-ahL*Math.cos(vecAngleRad-0.35), tipY-ahL*Math.sin(vecAngleRad-0.35));
+            renderCtx.lineTo(tipX-ahL*Math.cos(vecAngleRad+0.35), tipY-ahL*Math.sin(vecAngleRad+0.35));
+            renderCtx.closePath();
+            renderCtx.fillStyle = colR; renderCtx.fill();
+
+            drawSmartAngleArc(renderCtx, 0, 0, vecAngleRad, 40 * zoom, colR, null, "bold 14px Roboto", 'auto', zoom);
+            
+            const isLeft = ux < 0; 
+            const isUp = uy < 0; 
+            
+            const rTextX = tipX + (isLeft ? -10 : 10) * zoom;
+            const rTextY = tipY + (isUp ? -15 : 15) * zoom;
+            
+            const resX = state.comps[0] && state.comps[0].resOffset ? state.comps[0].resOffset.x : 0;
+            const resY = state.comps[0] && state.comps[0].resOffset ? state.comps[0].resOffset.y : 0;
+            
+            if (resX !== 0 || resY !== 0) {
+                renderCtx.beginPath(); renderCtx.moveTo(rTextX, rTextY); renderCtx.lineTo(rTextX + resX, rTextY + resY);
+                renderCtx.strokeStyle = '#cbd5e1'; renderCtx.lineWidth = 1; renderCtx.setLineDash([2, 2]); renderCtx.stroke(); renderCtx.setLineDash([]);
+            }
+            
+            drawSubscriptText(renderCtx, "F", "R", ` = ${fmtF(res.rMag)}`, rTextX + resX, rTextY + resY, isLeft ? "right" : "left", isUp ? "bottom" : "top", colR, 18, 14);
+
+            renderCtx.restore();
+        }
+
+        function drawReactions(renderCtx, res, logicalW, logicalH, startX, centerY) {
+            renderCtx.save();
+            renderCtx.translate(startX, centerY);
+
+            if(res.supports) {
+                res.supports.forEach(r => {
+                    const s = r.support;
+                    const n = s.name || 'A';
+                    const hasV = Math.abs(r.Rv) > 1e-9;
+                    const hasH = Math.abs(r.RH) > 1e-9;
+
+                    const sx = s.x * view.scale;
+                    renderCtx.save();
+                    renderCtx.translate(sx, 0);
+
+                    // Vertical Reaction
+                    if(hasV) {
+                        const isUp = r.Rv > 0;
+                        const len = Math.max(45, 35 + Math.log10(Math.max(1, Math.abs(r.Rv)))*8);
+                        const colV = COL.reactV;
+                        renderCtx.lineWidth = 2.5; 
+                        
+                        const tipY = isUp ? 25 : -5;
+                        const tailY = isUp ? tipY + len : tipY - len;
+                        
+                        renderCtx.beginPath();
+                        drawArrow(renderCtx, 0, tailY, 0, tipY, colV);
+                        
+                        const textY = isUp ? tailY + 15 : tailY - 15;
+                        const rvX = s.rvOffset ? s.rvOffset.x : 0;
+                        const rvY = s.rvOffset ? s.rvOffset.y : 0;
+                        
+                        if (rvX !== 0 || rvY !== 0) {
+                            renderCtx.beginPath(); renderCtx.moveTo(0, textY); renderCtx.lineTo(rvX, textY + rvY);
+                            renderCtx.strokeStyle = '#cbd5e1'; renderCtx.lineWidth = 1; renderCtx.setLineDash([2, 2]); renderCtx.stroke(); renderCtx.setLineDash([]);
+                        }
+                        
+                        const valStrV = hasH ? fmtF_pseudo(r.Rv) : fmtF(r.Rv);
+                        drawSubscriptText(renderCtx, "R", n + "v", `: ${valStrV}`, rvX, textY + rvY, "center", isUp ? "top" : "bottom", colV, 16, 12);
+                        s.rvHitBounds = { x: startX + sx + rvX - 40, y: centerY + textY + rvY - (isUp ? 0 : 25), w: 80, h: 25 };
+                    }
+
+                    // Horizontal Reaction
+                    if(hasH) {
+                        const isRight = r.RH > 0;
+                        const len = Math.max(45, 35 + Math.log10(Math.max(1, Math.abs(r.RH)))*8);
+                        const colH = COL.reactH;
+                        renderCtx.lineWidth = 2.5; 
+                        
+                        const yOff = 25;
+                        const tipX = isRight ? -12 : 12;
+                        const tailX = isRight ? tipX - len : tipX + len;
+                        
+                        renderCtx.beginPath();
+                        drawArrow(renderCtx, tailX, yOff, tipX, yOff, colH);
+                        
+                        const tX = isRight ? tailX - 8 : tailX + 8;
+                        const rhX = s.rhOffset ? s.rhOffset.x : 0;
+                        const rhY = s.rhOffset ? s.rhOffset.y : 0;
+                        
+                        if (rhX !== 0 || rhY !== 0) {
+                            renderCtx.beginPath(); renderCtx.moveTo(tX, yOff); renderCtx.lineTo(tX + rhX, yOff + rhY);
+                            renderCtx.strokeStyle = '#cbd5e1'; renderCtx.lineWidth = 1; renderCtx.setLineDash([2, 2]); renderCtx.stroke(); renderCtx.setLineDash([]);
+                        }
+                        
+                        const align = isRight ? "right" : "left";
+                        const valStrH = fmtF_pseudo(r.RH);
+                        drawSubscriptText(renderCtx, "R", n + "H", `: ${valStrH}`, tX + rhX, yOff + rhY, align, "middle", colH, 16, 12);
+                        s.rhHitBounds = { x: startX + sx + tX + rhX - (isRight ? 80 : 0), y: centerY + yOff + rhY - 12, w: 80, h: 25 };
+                    }
+
+                    // Resultant Vector
+                    if (hasV && hasH) {
+                        const rMag = Math.hypot(r.Rv, r.RH);
+                        const ux = r.RH / rMag;
+                        const uy = r.Rv / rMag; // This is true math Y. Canvas uses -uy for up.
+                        
+                        const len = Math.max(60, 50 + Math.log10(Math.max(1, rMag))*10);
+                        const tipX = 0; 
+                        const tipY = 5; 
+                        const tailX = -ux * len;
+                        const tailY = 5 + (uy * len); 
+                        
+                        const colR = COL.reactRes; 
+                        
+                        renderCtx.lineWidth = 3;
+                        drawArrow(renderCtx, tailX, tailY, tipX, tipY, colR);
+                        renderCtx.lineWidth = 1;
+
+                        const isLeft = ux < 0; 
+                        const isUp = -uy < 0; 
+
+                        const vecAngleRad = Math.atan2(tipY - tailY, tipX - tailX); 
+                        const bounds = drawSmartAngleArc(renderCtx, tailX, tailY, vecAngleRad, 40, colR, s.resAngleOffset, "bold 14px Roboto", 'auto', 1);
+                        s.resAngleHitBounds = { x: startX + sx + bounds.x, y: centerY + bounds.y, w: bounds.w, h: bounds.h };
+                        
+                        const rTextX = tailX + (isLeft ? 10 : -10);
+                        const rTextY = tailY + (isUp ? -15 : 15);
+                        const resX = s.resOffset ? s.resOffset.x : 0;
+                        const resY = s.resOffset ? s.resOffset.y : 0;
+                        
+                        if (resX !== 0 || resY !== 0) {
+                            renderCtx.beginPath(); renderCtx.moveTo(rTextX, rTextY); renderCtx.lineTo(rTextX + resX, rTextY + resY);
+                            renderCtx.strokeStyle = '#cbd5e1'; renderCtx.lineWidth = 1; renderCtx.setLineDash([2, 2]); renderCtx.stroke(); renderCtx.setLineDash([]);
+                        }
+                        
+                        drawSubscriptText(renderCtx, "F", "R", ` = ${fmtF(rMag)}`, rTextX + resX, rTextY + resY, isLeft ? "left" : "right", isUp ? "bottom" : "top", colR, 18, 14);
+
+                        s.resHitBounds = { x: startX + sx + rTextX + resX - (isLeft ? 0 : 140), y: centerY + rTextY + resY - (isUp ? 30 : 0), w: 140, h: 30 };
+                    }
+                    renderCtx.restore();
+                });
+            }
+            renderCtx.restore();
+        }
+
+        // --- Solver UI Generators ---
+        function generateResultCards(results, theme = 'dark') {
+            const bgClass = theme === 'dark' ? 'bg-slate-800 border-slate-700' : 'bg-white border-slate-200';
+            const titleClass = theme === 'dark' ? 'text-sky-400 border-slate-700' : 'text-slate-800 border-slate-200';
+            const labelClass = theme === 'dark' ? 'text-slate-300' : 'text-slate-700';
+            const resTextClass = theme === 'dark' ? 'text-amber-400' : 'text-amber-600';
+            const resSubTextClass = theme === 'dark' ? 'text-slate-400 border-slate-600' : 'text-slate-500 border-slate-200';
+            
+            let html = "";
+            if (results.isNode) {
+                html += `<div class="p-3 ${bgClass} border-2 rounded-xl min-w-[200px] shadow-sm flex-1 max-w-sm">
+                    <span class="${titleClass} font-bold block mb-2 border-b pb-1">Force Reaction</span>
+                    <div class="flex justify-between ${labelClass} mb-1"><span><span class="text-green-600 font-bold">R<sub>x</sub></span>:</span> <span class="font-bold text-green-600">${fmtF_pseudo(results.Req_x)}</span></div>
+                    <div class="flex justify-between ${labelClass} mb-3"><span><span class="text-red-600 font-bold">R<sub>y</sub></span>:</span> <span class="font-bold text-red-600">${fmtF_pseudo(results.Req_y)}</span></div>
+                    <div class="pt-2 border-t ${resSubTextClass} font-bold flex flex-col gap-1">
+                        <span class="text-[10px] uppercase">Resultant Vector:</span>
+                        <span class="${resTextClass} font-bold">F<sub>R</sub> = ${fmtF(results.rMag)} @ <span class="text-blue-600">${results.rAng.toFixed(2)}&deg;</span></span>
+                    </div>`;
+                if (theme === 'light') html += generateForceTriangleSVG(results.Req_x, results.Req_y, results.rMag, results.rAng.toFixed(2), "Rx", "Ry", "FR", theme);
+                html += `</div>`;
+            } else {
+                results.supports.forEach(r => {
+                    const name = r.support.name || 'A';
+                    let suppTypeStr = r.support.type.charAt(0).toUpperCase() + r.support.type.slice(1);
+                    let hasH = Math.abs(r.RH) > 1e-9;
+                    
+                    let rvStr = hasH ? fmtF_pseudo(r.Rv) : fmtF(r.Rv);
+                    let rhStr = hasH ? fmtF_pseudo(r.RH) : "";
+
+                    html += `<div class="p-3 ${bgClass} border-2 rounded-xl min-w-[200px] shadow-sm flex-1 max-w-sm">
+                        <span class="${titleClass} font-bold block mb-2 border-b pb-1">${suppTypeStr} '${name}'</span>`;
+                    
+                    if (hasH) {
+                        html += `<div class="flex justify-between ${labelClass} mb-1"><span><span class="text-green-600 font-bold">R<sub>${name}H</sub></span>:</span> <span class="font-bold text-green-600">${rhStr}</span></div>`;
+                    }
+                    
+                    html += `<div class="flex justify-between ${labelClass} mb-3"><span><span class="text-red-600 font-bold">R<sub>${name}v</sub></span>:</span> <span class="font-bold text-red-600">${rvStr}</span></div>`;
+                    
+                    if (hasH) {
+                        const rMag = Math.hypot(r.Rv, r.RH);
+                        const rAng = getNearestAxisAngleDeg(r.RH, r.Rv);
+                        html += `<div class="pt-2 border-t ${resSubTextClass} font-bold flex flex-col gap-1">
+                                    <span class="text-[10px] uppercase">Resultant Vector:</span>
+                                    <span class="${resTextClass} font-bold">F<sub>R</sub> = ${fmtF(rMag)} @ <span class="text-blue-600">${rAng.toFixed(2)}&deg;</span></span>
+                                 </div>`;
+                        if (theme === 'light') html += generateForceTriangleSVG(r.RH, r.Rv, rMag, rAng.toFixed(2), "RH", "Rv", "FR", theme);
+                    }
+                    
+                    html += `</div>`;
+                });
+            }
+            return html;
+        }
+
+        function generateWorkingHTML(st, isNode, theme = 'dark') {
+            const headerClass = theme === 'dark' ? 'text-sky-400 border-slate-700' : 'text-slate-800 border-slate-200';
+            const stepNumClass = theme === 'dark' ? 'text-slate-300' : 'text-slate-700';
+            const stepMathClass = theme === 'dark' ? 'border-slate-600 text-slate-400' : 'border-slate-300 text-slate-600';
+            const resAnsClass = theme === 'dark' ? 'text-amber-400' : 'text-amber-600';
+            const frClass = theme === 'dark' ? 'text-amber-400' : 'text-amber-600';
+            
+            let html = `<strong class="${headerClass} mb-2 block uppercase tracking-wider border-b pb-1">${isNode ? 'Node Equilibrium' : 'Calculation'} Steps:</strong>`;
+
+            if (isNode) {
+                let upStr = st.upForceTerms.length > 0 ? st.upForceTerms.join(" + ") : "0";
+                let downStr = st.downForceTerms.length > 0 ? st.downForceTerms.join(" + ") : "0";
+                let leftStr = st.leftForceTerms.length > 0 ? st.leftForceTerms.join(" + ") : "0";
+                let rightStr = st.rightForceTerms.length > 0 ? st.rightForceTerms.join(" + ") : "0";
+
+                let eq_Rx_str = `<span class="text-green-600 font-bold">R<sub>x</sub></span>`;
+                let eq_Ry_str = `<span class="text-red-600 font-bold">R<sub>y</sub></span>`;
+
+                if (st.Req_x > 0) rightStr = rightStr === "0" ? eq_Rx_str : rightStr + " + " + eq_Rx_str;
+                else if (st.Req_x < 0) leftStr = leftStr === "0" ? eq_Rx_str : leftStr + " + " + eq_Rx_str;
+
+                if (st.Req_y > 0) upStr = upStr === "0" ? eq_Ry_str : upStr + " + " + eq_Ry_str;
+                else if (st.Req_y < 0) downStr = downStr === "0" ? eq_Ry_str : downStr + " + " + eq_Ry_str;
+
+                html += `
+                    <p class="mb-1 ${stepNumClass} font-bold">1. Vertical Equilibrium: &Sigma; F<sub>up</sub> = &Sigma; F<sub>down</sub></p>
+                    <p class="pl-3 mb-3 border-l-2 ${stepMathClass} ml-1">
+                        ${upStr} = ${downStr} <br> 
+                        <span class="font-bold text-red-600">R<sub>y</sub> = ${fmtF_pseudo(Math.abs(st.Req_y))}</span>
+                    </p>
+
+                    <p class="mb-1 ${stepNumClass} font-bold mt-3">2. Horizontal Equilibrium: &Sigma; F<sub>left</sub> = &Sigma; F<sub>right</sub></p>
+                    <p class="pl-3 mb-3 border-l-2 ${stepMathClass} ml-1">
+                        ${leftStr} = ${rightStr} <br> 
+                        <span class="font-bold text-green-600">R<sub>x</sub> = ${fmtF_pseudo(Math.abs(st.Req_x))}</span>
+                    </p>
+                    
+                    <p class="mb-1 ${stepNumClass} font-bold mt-3">3. Force Reaction: <span class="${frClass} font-bold">F<sub>R</sub></span> = &radic;(<span class="text-red-600 font-bold">R<sub>y</sub></span>&sup2; + <span class="text-green-600 font-bold">R<sub>x</sub></span>&sup2;)</p>
+                    <p class="pl-3 mb-1 border-l-2 ${stepMathClass} ml-1">
+                        <span class="${frClass} font-bold">F<sub>R</sub></span> = &radic;(<span class="text-red-600">${fmtF_pseudo(st.Req_y, false)}</span>&sup2; + <span class="text-green-600">${fmtF_pseudo(st.Req_x, false)}</span>&sup2;) <br> 
+                        <span class="font-bold ${resAnsClass}">F<sub>R</sub> = ${fmtF(st.rMag)} @ <span class="text-blue-600">${st.rAng.toFixed(2)}&deg;</span></span>
+                    </p>`;
+                html += generateForceTriangleSVG(st.Req_x, st.Req_y, st.rMag, st.rAng.toFixed(2), "Rx", "Ry", "FR", theme);
+            } else {
+                if (!st.s1) return `<p class="italic text-slate-500">Detailed step-by-step working is only available for statically determinate systems.</p>`;
+
+                let hasH = st.hinge && Math.abs(st.sumForcesLeft - st.sumForcesRight) > 1e-5;
+                
+                if (st.s2) {
+                    let s2_Rv_str = (st.s2 === st.hinge && hasH) ? fmtF_pseudo((st.sumCWM - st.sumACWM) / st.dist_s1_s2) : fmtF((st.sumCWM - st.sumACWM) / st.dist_s1_s2);
+                    let s1_Rv_str = (st.s1 === st.hinge && hasH) ? fmtF_pseudo(state.results.supports[0].Rv) : fmtF(state.results.supports[0].Rv);
+
+                    let cwmStr = st.cwmTerms.length > 0 ? st.cwmTerms.join(" + ") : "0";
+                    let acwmStr = st.acwmTerms.length > 0 ? st.acwmTerms.join(" + ") : "0";
+                    let s2v_styled = `<span class="text-red-600 font-bold">R<sub>${st.s2.name}v</sub></span>`; 
+                    cwmStr = cwmStr.replace('{{R_s2v}}', s2v_styled);
+                    acwmStr = acwmStr.replace('{{R_s2v}}', s2v_styled);
+
+                    let upStr = `<span class="text-red-600 font-bold">R<sub>${st.s1.name}v</sub></span> + <span class="text-red-600 font-bold">R<sub>${st.s2.name}v</sub></span>`;
+                    if (st.upForceTerms.length > 0) upStr += " + " + st.upForceTerms.join(" + ");
+                    let downStr = st.downForceTerms.length > 0 ? st.downForceTerms.join(" + ") : "0";
+
+                    html += `
+                        <p class="mb-1 ${stepNumClass} font-bold">1. Moments about ${st.s1.name}: &Sigma; CWM = &Sigma; ACWM</p>
+                        <p class="pl-3 mb-3 border-l-2 ${stepMathClass} ml-1">
+                            ${cwmStr} = ${acwmStr} <br> 
+                            <span class="font-bold text-red-600">R<sub>${st.s2.name}v</sub> = ${s2_Rv_str}</span>
+                        </p>
+
+                        <p class="mb-1 ${stepNumClass} font-bold mt-3">2. Vertical Forces: &Sigma; F<sub>up</sub> = &Sigma; F<sub>down</sub></p>
+                        <p class="pl-3 mb-3 border-l-2 ${stepMathClass} ml-1">
+                            ${upStr} = ${downStr} <br> 
+                            <span class="font-bold text-red-600">R<sub>${st.s1.name}v</sub> = ${s1_Rv_str}</span>
+                        </p>`;
+
+                    if (hasH) {
+                        let hinge = st.hinge;
+                        let h_RH_str = fmtF_pseudo(Math.abs(st.sumForcesLeft - st.sumForcesRight));
+                        
+                        let leftStr = st.leftForceTerms.length > 0 ? st.leftForceTerms.join(" + ") : "0";
+                        let rightStr = st.rightForceTerms.length > 0 ? st.rightForceTerms.join(" + ") : "0";
+                        let hingeH = `<span class="text-green-600 font-bold">R<sub>${hinge.name}H</sub></span>`;
+                        
+                        if (st.sumForcesLeft > st.sumForcesRight) {
+                            rightStr = rightStr === "0" ? hingeH : rightStr + " + " + hingeH;
+                        } else {
+                            leftStr = leftStr === "0" ? hingeH : leftStr + " + " + hingeH;
+                        }
+
+                        html += `<p class="mb-1 ${stepNumClass} font-bold mt-3">3. Horizontal Forces: &Sigma; F<sub>left</sub> = &Sigma; F<sub>right</sub></p>
+                        <p class="pl-3 mb-3 border-l-2 ${stepMathClass} ml-1">
+                            ${leftStr} = ${rightStr} <br> 
+                            <span class="font-bold text-green-600">R<sub>${hinge.name}H</sub> = ${h_RH_str}</span>
+                        </p>`;
+                        
+                        let h_Rv = (hinge === st.s1) ? state.results.supports[0].Rv : state.results.supports[1].Rv;
+                        let h_RH = Math.abs(st.sumForcesLeft - st.sumForcesRight);
+                        let rMag = Math.hypot(h_Rv, h_RH);
+                        let rAng = getNearestAxisAngleDeg(h_RH, h_Rv);
+
+                        html += `<p class="mb-1 ${stepNumClass} font-bold mt-3">4. Resultant Force at ${st.hinge.name}: <span class="${frClass} font-bold">F<sub>R</sub></span> = &radic;(<span class="text-red-600 font-bold">R<sub>${st.hinge.name}v</sub></span>&sup2; + <span class="text-green-600 font-bold">R<sub>${st.hinge.name}H</sub></span>&sup2;)</p>
+                        <p class="pl-3 mb-1 border-l-2 ${stepMathClass} ml-1">
+                            <span class="${frClass} font-bold">F<sub>R</sub></span> = &radic;(<span class="text-red-600">${fmtF_pseudo(h_Rv, false)}</span>&sup2; + <span class="text-green-600">${fmtF_pseudo(h_RH, false)}</span>&sup2;) <br> 
+                            <span class="font-bold ${resAnsClass}">F<sub>R</sub> = ${fmtF(rMag)} @ <span class="text-blue-600">${rAng.toFixed(2)}&deg;</span></span>
+                        </p>`;
+                    }
+                } else {
+                    let s = st.s1;
+                    let s1_Rv_str = hasH ? fmtF_pseudo(state.results.supports[0].Rv) : fmtF(state.results.supports[0].Rv);
+
+                    let upStr = `<span class="text-red-600 font-bold">R<sub>${s.name}v</sub></span>`;
+                    if (st.upForceTerms.length > 0) upStr += " + " + st.upForceTerms.join(" + ");
+                    let downStr = st.downForceTerms.length > 0 ? st.downForceTerms.join(" + ") : "0";
+
+                    html += `
+                        <p class="mb-1 ${stepNumClass} font-bold">1. Vertical Forces: &Sigma; F<sub>up</sub> = &Sigma; F<sub>down</sub></p>
+                        <p class="pl-3 mb-3 border-l-2 ${stepMathClass} ml-1">
+                            ${upStr} = ${downStr} <br> 
+                            <span class="font-bold text-red-600">R<sub>${s.name}v</sub> = ${s1_Rv_str}</span>
+                        </p>`;
+                    
+                    if (hasH) {
+                        let h_RH_str = fmtF_pseudo(Math.abs(st.sumForcesLeft - st.sumForcesRight));
+                        
+                        let leftStr = st.leftForceTerms.length > 0 ? st.leftForceTerms.join(" + ") : "0";
+                        let rightStr = st.rightForceTerms.length > 0 ? st.rightForceTerms.join(" + ") : "0";
+                        let hingeH = `<span class="text-green-600 font-bold">R<sub>${s.name}H</sub></span>`;
+                        
+                        if (st.sumForcesLeft > st.sumForcesRight) {
+                            rightStr = rightStr === "0" ? hingeH : rightStr + " + " + hingeH;
+                        } else {
+                            leftStr = leftStr === "0" ? hingeH : leftStr + " + " + hingeH;
+                        }
+
+                        html += `<p class="mb-1 ${stepNumClass} font-bold mt-3">2. Horizontal Forces: &Sigma; F<sub>left</sub> = &Sigma; F<sub>right</sub></p>
+                        <p class="pl-3 mb-3 border-l-2 ${stepMathClass} ml-1">
+                            ${leftStr} = ${rightStr} <br> 
+                            <span class="font-bold text-green-600">R<sub>${s.name}H</sub> = ${h_RH_str}</span>
+                        </p>`;
+
+                        let h_Rv = state.results.supports[0].Rv;
+                        let h_RH = Math.abs(st.sumForcesLeft - st.sumForcesRight);
+                        let rMag = Math.hypot(h_Rv, h_RH);
+                        let rAng = getNearestAxisAngleDeg(h_RH, h_Rv);
+
+                        html += `<p class="mb-1 ${stepNumClass} font-bold mt-3">3. Resultant Force at ${s.name}: <span class="${frClass} font-bold">F<sub>R</sub></span> = &radic;(<span class="text-red-600 font-bold">R<sub>${s.name}v</sub></span>&sup2; + <span class="text-green-600 font-bold">R<sub>${s.name}H</sub></span>&sup2;)</p>
+                        <p class="pl-3 mb-1 border-l-2 ${stepMathClass} ml-1">
+                            <span class="${frClass} font-bold">F<sub>R</sub></span> = &radic;(<span class="text-red-600">${fmtF_pseudo(h_Rv, false)}</span>&sup2; + <span class="text-green-600">${fmtF_pseudo(h_RH, false)}</span>&sup2;) <br> 
+                            <span class="font-bold ${resAnsClass}">F<sub>R</sub> = ${fmtF(rMag)} @ <span class="text-blue-600">${rAng.toFixed(2)}&deg;</span></span>
+                        </p>`;
+                    }
+                }
+
+                // Add graphical vector representations for ALL supports at the very end of the working out
+                html += `<div class="mt-6 flex flex-wrap gap-4 justify-center">`;
+                state.results.supports.forEach(supRes => {
+                    const rMag = Math.hypot(supRes.Rv, supRes.RH);
+                    const rAng = getNearestAxisAngleDeg(supRes.RH, supRes.Rv);
+                    html += `<div class="flex-1 min-w-[200px] max-w-[280px]">
+                                <p class="${stepNumClass} font-bold text-center mb-2 text-[10px] uppercase tracking-widest border-b ${theme === 'dark' ? 'border-slate-700' : 'border-slate-300'} pb-1">Reaction Vector at ${supRes.support.name}</p>
+                                ${generateForceTriangleSVG(supRes.RH, supRes.Rv, rMag, rAng.toFixed(2), `R<sub>${supRes.support.name}H</sub>`, `R<sub>${supRes.support.name}v</sub>`, "FR", theme)}
+                             </div>`;
+                });
+                html += `</div>`;
+            }
+            return html;
+        }
+
+        // --- Core Application Execution ---
+        function solve() {
+            if (state.mode === 'node') {
+                solveNode();
+                return;
+            }
+
+            if(!state.beam) return;
+
+            const supps = state.comps.filter(c => c instanceof Support).sort((a,b) => a.x - b.x);
+            const loads = state.comps.filter(c => c instanceof PointLoad || c instanceof UDL);
+
+            let res = { ok: false, msg: "Unstable" };
+            const statusDiv = document.getElementById('statusContent');
+            const reactDiv = document.getElementById('reactionContent');
+            const workingDiv = document.getElementById('workingSteps');
+            const btnW = document.getElementById('btnToggleWorking');
+            const btnD = document.getElementById('btnToggleDiagrams');
+            reactDiv.innerHTML = "";
+            workingDiv.innerHTML = "";
+            btnW.classList.add('hidden');
+
+            if (supps.length === 0) {
+                statusDiv.innerText = "Please place at least 1 support.";
+                statusDiv.classList.remove('hidden');
+                reactPanel.classList.remove('hidden');
+                state.results = { ok: false };
+                draw();
+                return;
+            }
+
+            // Step variables
+            let sumCWM = 0;
+            let sumACWM = 0;
+            let sumForcesDown = 0;
+            let sumForcesUp = 0;
+            let sumForcesRight = 0;
+            let sumForcesLeft = 0;
+            
+            const s1 = supps[0];
+            const s2 = supps.length > 1 ? supps[1] : null;
+            const dist_s1_s2 = s2 ? s2.x - s1.x : 0; 
+            
+            let cwmTerms = [];
+            let acwmTerms = [];
+            let upForceTerms = [];
+            let downForceTerms = [];
+            let leftForceTerms = [];
+            let rightForceTerms = [];
+
+            loads.forEach(l => {
+                let mult = (l.unit === 'kN' || l.unit === 'kNm⁻¹') ? 1000 : 1;
+                let Fx = 0, Fy = 0;
+                let isUDL = l instanceof UDL;
+                
+                if (!isUDL) {
+                    const rad = l.angle * Math.PI / 180;
+                    Fx = l.mag * mult * Math.cos(rad);
+                    Fy = l.mag * mult * Math.sin(rad); 
+                } else {
+                    Fy = -(l.w * mult * l.len); 
+                }
+                
+                if (Fy < 0) sumForcesDown += Math.abs(Fy);
+                else sumForcesUp += Fy;
+                if (Fx > 0) sumForcesRight += Fx;
+                else sumForcesLeft += Math.abs(Fx);
+                
+                let F_down = -Fy; 
+                let dist = isUDL ? (l.x + l.len/2) - s1.x : l.x - s1.x;
+                let moment = F_down * dist; 
+                if (moment > 0) sumCWM += moment;
+                else sumACWM += Math.abs(moment);
+                
+                // Construct format strings for display
+                let forceStrV = "";
+                let forceStrH = "";
+                if (isUDL) {
+                    forceStrV = `(UDL ${numStr(l.w)} &times; ${numStr(l.len)})`;
+                    forceStrH = `0`;
+                } else {
+                    forceStrV = numStr(Math.abs(Fy) / mult);
+                    forceStrH = numStr(Math.abs(Fx) / mult);
+                }
+
+                if (Fy < 0) downForceTerms.push(forceStrV);
+                else if (Fy > 0) upForceTerms.push(forceStrV);
+
+                if (Fx > 0) rightForceTerms.push(forceStrH);
+                else if (Fx < 0) leftForceTerms.push(forceStrH);
+
+                if (Math.abs(moment) > 1e-5) {
+                    let termStr = `(${forceStrV} &times; ${numStr(Math.abs(dist))})`;
+                    if (moment > 0) cwmTerms.push(termStr);
+                    else acwmTerms.push(termStr);
+                }
+            });
+
+            if (s2) {
+                let s2_dist = s2.x - s1.x;
+                if (Math.abs(s2_dist) > 0.01) {
+                    let s2_term = `({{R_s2v}} &times; ${numStr(Math.abs(s2_dist))})`;
+                    if (s2_dist > 0) acwmTerms.push(s2_term);
+                    else cwmTerms.push(s2_term);
+                }
+            }
+            
+            let stepsObj = { s1, s2, dist_s1_s2, sumCWM, sumACWM, sumForcesUp, sumForcesDown, sumForcesLeft, sumForcesRight, hinge: null };
+            stepsObj.cwmTerms = cwmTerms;
+            stepsObj.acwmTerms = acwmTerms;
+            stepsObj.upForceTerms = upForceTerms;
+            stepsObj.downForceTerms = downForceTerms;
+            stepsObj.leftForceTerms = leftForceTerms;
+            stepsObj.rightForceTerms = rightForceTerms;
+
+            if (supps.length === 1) {
+                const s = supps[0];
+                if (Math.abs(sumCWM - sumACWM) > 1e-5) {
+                    res = { ok: false, msg: "Unbalanced Moments! The beam will rotate. (Add another support or balance the loads)" };
+                } else {
+                    let RH = 0;
+                    let unstable = false;
+                    let req_RH = sumForcesLeft - sumForcesRight;
+                    if (Math.abs(req_RH) > 1e-5) {
+                        if (s.type === 'hinge') { RH = req_RH; } 
+                        else { res = { ok: false, msg: "Unstable: No Hinge to resist horizontal forces." }; unstable = true; }
+                    }
+                    if (!unstable) res = { ok: true, supports: [{ support: s, Rv: sumForcesDown - sumForcesUp, RH: RH }] };
+                }
+            } else if (supps.length === 2) {
+                let hinge = null;
+                if(s1.type === 'hinge') hinge = s1;
+                else if(s2.type === 'hinge') hinge = s2; 
+                stepsObj.hinge = hinge;
+
+                if (Math.abs(dist_s1_s2) < 0.01) {
+                    res = { ok: false, msg: "Supports too close" };
+                } else {
+                    const R2v = (sumCWM - sumACWM) / dist_s1_s2;
+                    const R1v = sumForcesDown - sumForcesUp - R2v;
+                    let R1H = 0, R2H = 0;
+                    const req_RH = sumForcesLeft - sumForcesRight;
+                    
+                    if (Math.abs(req_RH) > 1e-5) {
+                        if (hinge) {
+                            if(hinge === s1) R1H = req_RH; else R2H = req_RH;
+                            res = { ok: true, supports: [ { support: s1, Rv: R1v, RH: R1H }, { support: s2, Rv: R2v, RH: R2H } ] };
+                        } else {
+                            res = { ok: false, msg: "Unstable: No Hinge for Horizontal force." };
+                        }
+                    } else {
+                        res = { ok: true, supports: [ { support: s1, Rv: R1v, RH: 0 }, { support: s2, Rv: R2v, RH: 0 } ] };
+                    }
+                }
+            } else {
+                res = { ok: false, msg: "Too many supports. Maximum 2 for simple calculations." };
+            }
+
+            res.steps = stepsObj;
+            state.results = res;
+            reactPanel.classList.remove('hidden');
+            
+            if(res.ok) {
+                statusDiv.classList.add('hidden');
+                btnW.classList.remove('hidden'); 
+                if (btnD) btnD.classList.remove('hidden');
+                
+                workingDiv.innerHTML = generateWorkingHTML(stepsObj, false, 'dark');
+                reactDiv.innerHTML = generateResultCards(state.results, 'dark');
+                state.solved = true;
+                updateSolveButton();
+
+                const dPanel = document.getElementById('onScreenDiagrams');
+                if (dPanel && !dPanel.classList.contains('hidden')) {
+                    drawAnalyticalDiagrams('onScreenSfd', 'onScreenBmd', dPanel.clientWidth, 220, true);
+                }
+            } else {
+                statusDiv.innerText = res.msg;
+                statusDiv.classList.remove('hidden');
+                if (btnD) btnD.classList.add('hidden');
+                state.solved = false;
+                updateSolveButton();
+            }
+            draw();
+        }
+
+        // --- Node Solver Logic ---
+        function solveNode() {
+            let sumFx = 0;
+            let sumFy = 0;
+            let leftForceTerms = [];
+            let rightForceTerms = [];
+            let upForceTerms = [];
+            let downForceTerms = [];
+
+            state.comps.forEach(l => {
+                if (!(l instanceof PointLoad)) return;
+                let mult = (l.unit === 'kN' || l.unit === 'kNm⁻¹') ? 1000 : 1;
+                const rad = l.angle * Math.PI / 180;
+                let fx = l.mag * mult * Math.cos(rad);
+                let fy = l.mag * mult * Math.sin(rad); 
+                
+                if (l.actionDirection === 'towards') {
+                    fx = -fx;
+                    fy = -fy;
+                }
+
+                sumFx += fx;
+                sumFy += fy;
+
+                let forceStrV = numStr(Math.abs(fy) / mult);
+                let forceStrH = numStr(Math.abs(fx) / mult);
+
+                if (fy < -1e-5) downForceTerms.push(forceStrV);
+                else if (fy > 1e-5) upForceTerms.push(forceStrV);
+
+                if (fx > 1e-5) rightForceTerms.push(forceStrH);
+                else if (fx < -1e-5) leftForceTerms.push(forceStrH);
+            });
+
+            // To balance, R_x = -sumFx, R_y = -sumFy
+            let Req_x = -sumFx;
+            let Req_y = -sumFy;
+
+            let rMag = Math.hypot(Req_x, Req_y);
+            let rAng = getNearestAxisAngleDeg(Req_x, Req_y);
+
+            state.results = {
+                ok: true,
+                isNode: true,
+                Req_x: Req_x,
+                Req_y: Req_y,
+                rMag: rMag,
+                rAng: rAng,
+                upForceTerms,
+                downForceTerms,
+                leftForceTerms,
+                rightForceTerms
+            };
+
+            const statusDiv = document.getElementById('statusContent');
+            const reactDiv = document.getElementById('reactionContent');
+            const workingDiv = document.getElementById('workingSteps');
+            const btnW = document.getElementById('btnToggleWorking');
+            const btnD = document.getElementById('btnToggleDiagrams');
+            reactDiv.innerHTML = "";
+            workingDiv.innerHTML = "";
+            
+            if (state.comps.length === 0) {
+                statusDiv.innerText = "Please place at least 1 force.";
+                statusDiv.classList.remove('hidden');
+                reactPanel.classList.remove('hidden');
+                state.results.ok = false;
+                state.solved = false;
+                draw();
+                return;
+            }
+            
+            statusDiv.classList.add('hidden');
+            btnW.classList.remove('hidden');
+            if (btnD) btnD.classList.add('hidden');
+            
+            workingDiv.innerHTML = generateWorkingHTML(state.results, true, 'dark');
+            reactDiv.innerHTML = generateResultCards(state.results, 'dark');
+
+            reactPanel.classList.remove('hidden');
+            state.solved = true;
+            updateSolveButton();
+            draw();
+        }
+
+        // --- Modals & Input System ---
+        function createSelectField(label, id, optionsHTML) {
+            return `<div class="mb-3 flex-1">
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">${label}</label>
+                <select id="${id}" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                    ${optionsHTML}
+                </select>
+            </div>`;
+        }
+
+        function openModal(type, existingComp = null) {
+            state.pendingType = type;
+            state.editingComp = existingComp;
+            
+            const title = document.getElementById('modalTitle');
+            const body = document.getElementById('modalBody');
+            const confirmBtn = document.getElementById('modalConfirmBtn');
+            const delBtn = document.getElementById('modalDeleteBtn');
+            
+            body.innerHTML = '';
+            
+            if (state.mode === 'node' && ['hinge', 'roller', 'simple', 'udl', 'beam'].includes(type)) {
+                alert("Cannot add beams, supports, or UDLs to a static node.");
+                return;
+            }
+
+            if (type === 'beam') {
+                title.innerText = state.beam ? "Edit Beam" : "Create Beam";
+                body.innerHTML = createMathField('Length (m)', 'len', state.beam ? state.beam.len : 10);
+                delBtn.classList.add('hidden');
+            } else if (['hinge', 'roller', 'simple'].includes(type)) {
+                if(!state.beam && state.mode !== 'node') { alert("Create a beam first!"); return; }
+                title.innerText = existingComp ? "Edit " + type.charAt(0).toUpperCase() + type.slice(1) : "Add " + type.charAt(0).toUpperCase() + type.slice(1);
+                
+                const defaultName = existingComp ? existingComp.name : (state.comps.some(c=>c instanceof Support) ? 'B' : 'A');
+                
+                body.innerHTML = createTextField('Support Name', 'name', defaultName) + 
+                                 createMathField('Position from left (m)', 'pos', existingComp ? existingComp.x : 0);
+                if (existingComp) delBtn.classList.remove('hidden'); else delBtn.classList.add('hidden');
+            } else if (type === 'point') {
+                if(!state.beam && state.mode !== 'node') { alert("Create a beam first!"); return; }
+                title.innerText = existingComp ? "Edit Point Load" : "Add Point Load";
+                
+                let dirStr = existingComp ? existingComp.angle.toString() : '270';
+                if (state.mode === 'beam') {
+                    dirStr = existingComp && existingComp.angle === 90 ? '90' : '270';
+                }
+
+                let dirHTML = '';
+                if (state.mode === 'node') {
+                    dirHTML += `<option value="90" ${dirStr==='90'?'selected':''}>Top (Vertical)</option>
+                               <option value="270" ${dirStr==='270'?'selected':''}>Bottom (Vertical)</option>
+                               <option value="0" ${dirStr==='0'?'selected':''}>Right (Horizontal)</option>
+                               <option value="180" ${dirStr==='180'?'selected':''}>Left (Horizontal)</option>`;
+                } else {
+                    dirHTML += `<option value="270" ${dirStr==='270'?'selected':''}>↓ Pushing Down</option>
+                               <option value="90" ${dirStr==='90'?'selected':''}>↑ Pulling Up</option>`;
+                }
+
+                let act = existingComp && existingComp.actionDirection === 'towards' ? 'towards' : 'away';
+                let actHTML = `<option value="away" ${act==='away'?'selected':''}>Pulling Away</option>
+                               <option value="towards" ${act==='towards'?'selected':''}>Pushing Towards</option>`;
+
+                let posHTML = state.mode === 'node' ? '' : createMathField('Position from left (m)', 'pos', existingComp ? existingComp.x : state.beam.len/2);
+                let dirSelect = createSelectField('Direction', 'inp_dir', dirHTML);
+                let actSelect = state.mode === 'node' ? createSelectField('Action', 'inp_action', actHTML) : '';
+
+                body.innerHTML = posHTML + createMagField('Magnitude', 'mag', existingComp ? existingComp.mag : 1000, existingComp ? existingComp.unit : 'N') + 
+                                 `<div class="flex gap-2">${dirSelect}${actSelect}</div>`;
+
+                if (existingComp) delBtn.classList.remove('hidden'); else delBtn.classList.add('hidden');
+            } else if (type === 'angled') {
+                if(!state.beam && state.mode !== 'node') { alert("Create a beam first!"); return; }
+                title.innerText = existingComp ? "Edit Angled Load" : "Add Angled Load";
+                
+                let internalAngle = existingComp ? existingComp.angle : 315; 
+                internalAngle = internalAngle % 360;
+                if (internalAngle < 0) internalAngle += 360;
+                
+                let dispAng = 0;
+                let dir = 'dr';
+                if (internalAngle >= 0 && internalAngle <= 90) { dispAng = internalAngle; dir = 'ur'; }
+                else if (internalAngle > 90 && internalAngle <= 180) { dispAng = 180 - internalAngle; dir = 'ul'; }
+                else if (internalAngle > 180 && internalAngle <= 270) { dispAng = internalAngle - 180; dir = 'dl'; }
+                else { dispAng = 360 - internalAngle; dir = 'dr'; }
+
+                let rel = existingComp && existingComp.reference === 'vert' ? 'vert' : 'horiz';
+                let relHTML = `<option value="horiz" ${rel==='horiz'?'selected':''}>Horizontal</option>
+                               <option value="vert" ${rel==='vert'?'selected':''}>Vertical</option>`;
+
+                let act = existingComp && existingComp.actionDirection === 'towards' ? 'towards' : 'away';
+                let actHTML = `<option value="away" ${act==='away'?'selected':''}>Pulling Away</option>
+                               <option value="towards" ${act==='towards'?'selected':''}>Pushing Towards</option>`;
+
+                let angleInputHTML = '';
+                if (state.mode === 'node') {
+                    let quadHTML = `<option value="ur" ${dir==='ur'?'selected':''}>↗ Top-Right</option>
+                                    <option value="ul" ${dir==='ul'?'selected':''}>↖ Top-Left</option>
+                                    <option value="dl" ${dir==='dl'?'selected':''}>↙ Bottom-Left</option>
+                                    <option value="dr" ${dir==='dr'?'selected':''}>↘ Bottom-Right</option>`;
+                                    
+                    angleInputHTML = `<div class="flex gap-2">${createSelectField('Relative To', 'inp_rel', relHTML)}${createMathField('Angle (0-90°)', 'angle', parseFloat(dispAng.toFixed(2)))}</div>
+                                      <div class="flex gap-2">${createSelectField('Quadrant', 'inp_dir', quadHTML)}${createSelectField('Action', 'inp_action', actHTML)}</div>`;
+                } else {
+                    let quadHTML = `<option value="dr" ${dir==='dr'?'selected':''}>↘ Pushing Down & Right</option>
+                                    <option value="dl" ${dir==='dl'?'selected':''}>↙ Pushing Down & Left</option>
+                                    <option value="ur" ${dir==='ur'?'selected':''}>↗ Pulling Up & Right</option>
+                                    <option value="ul" ${dir==='ul'?'selected':''}>↖ Pulling Up & Left</option>`;
+                    angleInputHTML = createMathField('Angle from Horizontal (0-90°)', 'angle', parseFloat(dispAng.toFixed(2))) + createSelectField('Direction', 'inp_dir', quadHTML);
+                }
+
+                body.innerHTML = (state.mode === 'node' ? '' : createMathField('Position from left (m)', 'pos', existingComp ? existingComp.x : state.beam.len/2)) + 
+                                 createMagField('Magnitude', 'mag', existingComp ? existingComp.mag : 1000, existingComp ? existingComp.unit : 'N') + 
+                                 angleInputHTML;
+                if (existingComp) delBtn.classList.remove('hidden'); else delBtn.classList.add('hidden');
+            } else if (type === 'udl') {
+                if(!state.beam && state.mode !== 'node') { alert("Create a beam first!"); return; }
+                title.innerText = existingComp ? "Edit Distributed Load" : "Add Distributed Load";
+                body.innerHTML = createMathField('Start Position from left (m)', 'start', existingComp ? existingComp.x : 0) + 
+                                 createMathField('End Position from left (m)', 'end', existingComp ? (existingComp.x + existingComp.len) : state.beam.len) + 
+                                 createMagField('Magnitude', 'mag', existingComp ? existingComp.w : 500, existingComp ? existingComp.unit : 'Nm⁻¹', true);
+                if (existingComp) delBtn.classList.remove('hidden'); else delBtn.classList.add('hidden');
+            } else if (type === 'text') {
+                 if(!state.beam && state.mode !== 'node') { alert("Create a beam/node first!"); return; }
+                 title.innerText = existingComp ? "Edit Note" : "Add Note";
+                 body.innerHTML = (state.mode === 'node' ? '' : createMathField('Position from left (m)', 'pos', existingComp ? existingComp.x : 0)) + 
+                 `<div class="mb-3"><label class="block text-xs font-bold text-slate-500 uppercase mb-1">Text</label><textarea id="inp_text" class="w-full bg-white border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">${existingComp ? existingComp.text : 'Note'}</textarea></div>`;
+                 if (existingComp) delBtn.classList.remove('hidden'); else delBtn.classList.add('hidden');
+            }
+
+            confirmBtn.innerText = existingComp ? "Save Changes" : "Add";
+            confirmBtn.onclick = () => confirmAdd();
+            modal.classList.remove('hidden');
+        }
+
+        function closeModal() { modal.classList.add('hidden'); state.editingComp = null; }
+
+        function createMathField(label, id, val) {
+            const fieldId = id.startsWith('inp_') ? id : `inp_${id}`;
+            return `<div class="mb-3 flex-1">
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">${label}</label>
+                <input type="text" id="${fieldId}" value="${val}" placeholder="e.g. 6-1.1" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+            </div>`;
+        }
+
+        function createMagField(label, id, val, unit, isUDL = false) {
+            const u1 = isUDL ? 'Nm⁻¹' : 'N';
+            const u2 = isUDL ? 'kNm⁻¹' : 'kN';
+            return `<div class="mb-3">
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">${label}</label>
+                <div class="flex gap-2">
+                    <input type="text" id="inp_${id}" value="${val}" class="flex-1 bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+                    <select id="inp_${id}_unit" class="bg-slate-50 border border-slate-300 rounded-lg px-2 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none font-bold text-slate-600">
+                        <option value="${u1}" ${unit===u1?'selected':''}>${u1}</option>
+                        <option value="${u2}" ${unit===u2?'selected':''}>${u2}</option>
+                    </select>
+                </div>
+            </div>`;
+        }
+
+        function createTextField(label, id, val) {
+            return `<div class="mb-3">
+                <label class="block text-xs font-bold text-slate-500 uppercase mb-1">${label}</label>
+                <input type="text" id="inp_${id}" value="${val}" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-emerald-500 outline-none">
+            </div>`;
+        }
+
+        function confirmAdd() {
+            const type = state.pendingType;
+            const comp = state.editingComp;
+            
+            if (type === 'beam') {
+                const len = evalMath(document.getElementById('inp_len').value);
+                if(len > 0) {
+                    if(!state.beam) {
+                        state.mode = 'beam';
+                        state.node = false;
+                        state.comps = [];
+                        state.beam = { len: len, x: 0, y: 0 };
+                    } else {
+                        state.beam.len = len;
+                        state.comps.forEach(c => {
+                            if (c.x > len) c.x = len;
+                            if (c instanceof UDL && c.x + c.len > len) c.len = Math.max(0.1, len - c.x);
+                        });
+                    }
+                }
+            } else {
+                let c = comp;
+                let x = 0;
+                if (state.mode === 'beam') {
+                    if (document.getElementById('inp_pos')) {
+                        x = evalMath(document.getElementById('inp_pos').value);
+                        x = Math.max(0, Math.min(state.beam.len, x)); 
+                    }
+                }
+
+                if (['hinge','roller','simple'].includes(type)) {
+                    const n = document.getElementById('inp_name').value || 'A';
+                    if (c) { c.x = x; c.name = n; c.type = type; } else { c = new Support(type, x, n); }
+                } else if (type === 'point' || type === 'angled') {
+                    const mag = evalMath(document.getElementById('inp_mag').value);
+                    const unit = document.getElementById('inp_mag_unit').value;
+                    
+                    let finalAngle = 270;
+                    let reference = 'horiz';
+                    let actionDirection = 'away';
+
+                    if (state.mode === 'node') {
+                        if (type === 'point') {
+                            const dir = document.getElementById('inp_dir').value;
+                            finalAngle = parseInt(dir, 10);
+                            actionDirection = document.getElementById('inp_action').value;
+                        } else if (type === 'angled') {
+                            const rel = document.getElementById('inp_rel').value;
+                            reference = rel;
+                            const d = document.getElementById('inp_dir').value;
+                            actionDirection = document.getElementById('inp_action').value;
+                            let ang = Math.max(0, Math.min(90, evalMath(document.getElementById('inp_angle').value)));
+                            
+                            if (d === 'ur') finalAngle = rel === 'horiz' ? ang : 90 - ang;
+                            else if (d === 'ul') finalAngle = rel === 'horiz' ? 180 - ang : 90 + ang;
+                            else if (d === 'dl') finalAngle = rel === 'horiz' ? 180 + ang : 270 - ang;
+                            else if (d === 'dr') finalAngle = rel === 'horiz' ? 360 - ang : 270 + ang;
+                        }
+                    } else {
+                        if (type === 'angled') {
+                            const ang = Math.max(0, Math.min(90, evalMath(document.getElementById('inp_angle').value)));
+                            const dir = document.getElementById('inp_dir').value;
+                            if (dir === 'dr') finalAngle = 360 - ang;
+                            else if (dir === 'dl') finalAngle = 180 + ang;
+                            else if (dir === 'ur') finalAngle = ang;
+                            else if (dir === 'ul') finalAngle = 180 - ang;
+                        } else if (type === 'point') {
+                            const dir = document.getElementById('inp_dir').value;
+                            finalAngle = parseInt(dir, 10);
+                        }
+                    }
+
+                    if (c) { 
+                        c.x = x; c.mag = mag; c.angle = finalAngle; c.unit = unit; c.reference = reference; c.actionDirection = actionDirection;
+                    } else { 
+                        c = new PointLoad(x, finalAngle, type); c.mag = mag; c.unit = unit; c.reference = reference; c.actionDirection = actionDirection;
+                    }
+                } else if (type === 'udl') {
+                    let s = evalMath(document.getElementById('inp_start').value);
+                    let e = evalMath(document.getElementById('inp_end').value);
+                    s = Math.max(0, Math.min(state.beam.len, s));
+                    e = Math.max(0, Math.min(state.beam.len, e));
+                    if (s > e) { let tmp = s; s = e; e = tmp; }
+                    
+                    const mag = evalMath(document.getElementById('inp_mag').value);
+                    const unit = document.getElementById('inp_mag_unit').value;
+                    if (c) { 
+                        c.x = s; c.len = e - s; c.w = mag; c.unit = unit; 
+                    } else { 
+                        c = new UDL(s); c.len = e - s; c.w = mag; c.unit = unit; 
+                    }
+                } else if (type === 'text') {
+                    const txt = document.getElementById('inp_text').value;
+                    if (c) { c.x = x; c.text = txt; } else { c = new TextNote(x); c.text = txt; }
+                }
+                
+                if(c && !comp) state.comps.push(c); 
+            }
+            closeModal();
+            hideResults();
+            state.solved = false;
+            recordState();
+            draw();
+        }
+
+        function deleteEditingComp() {
+            if (state.editingComp) {
+                state.comps = state.comps.filter(c => c !== state.editingComp);
+            }
+            state.sel = null;
+            closeModal();
+            hideResults();
+            state.solved = false;
+            recordState();
+            draw();
+        }
+
+        // Global Hit Dispatcher
+        function getHitTarget(mx, my) {
+            const checkComps = (compsList) => {
+                for (let i = compsList.length - 1; i >= 0; i--) {
+                    const c = compsList[i];
+                    if (c.labelHitBounds && checkHit(mx, my, c.labelHitBounds)) return { obj: c, part: 'label' };
+                    if (c.type === 'angled' && c.angleHitBounds && checkHit(mx, my, c.angleHitBounds)) return { obj: c, part: 'angleLabel' };
+                    const res = c.hit(mx, my);
+                    if (res) return { obj: c, part: res === true ? 'body' : res };
+                }
+                return null;
+            };
+
+            let res = checkComps(state.comps.filter(c => !(c instanceof UDL)));
+            if (!res) res = checkComps(state.comps.filter(c => c instanceof UDL));
+
+            if (!res && state.solved && state.results.ok) {
+                if (state.results.isNode) {
+                    const s = { 
+                        resHitBounds: { x: view.x + cvs.width/2 + (state.results.Req_x > 0 ? 10 : -150), y: view.y + cvs.height/2 + (-state.results.Req_y < 0 ? 15 : -45), w: 140, h: 30 },
+                    };
+                    if (checkHit(mx, my, s.resHitBounds)) return { obj: state.comps[0], part: 'resLabel' }; 
+                } else {
+                    for(let i=0; i<state.results.supports.length; i++) {
+                        const s = state.results.supports[i].support;
+                        if (s.rvHitBounds && checkHit(mx, my, s.rvHitBounds)) return { obj: s, part: 'rvLabel' };
+                        if (s.rhHitBounds && checkHit(mx, my, s.rhHitBounds)) return { obj: s, part: 'rhLabel' };
+                        if (s.resHitBounds && checkHit(mx, my, s.resHitBounds)) return { obj: s, part: 'resLabel' };
+                        if (s.resAngleHitBounds && checkHit(mx, my, s.resAngleHitBounds)) return { obj: s, part: 'resAngleLabel' };
+                    }
+                }
+            }
+            return res;
+        }
+
+        cvs.onmousedown = (e) => {
+            if(!state.beam && state.mode !== 'node') return;
+            const r = cvs.getBoundingClientRect();
+            const mx = e.clientX - r.left;
+            const my = e.clientY - r.top;
+
+            let hit = null;
+            let hitPart = null;
+            
+            const target = getHitTarget(mx, my);
+            if (target) {
+                hit = target.obj;
+                hitPart = target.part;
+            }
+
+            if (hit) {
+                state.sel = hit;
+                if (LABEL_PROPS[hitPart]) {
+                    const prop = LABEL_PROPS[hitPart];
+                    state.drag = { obj: hit, mode: hitPart, prop: prop, startX: e.clientX, startY: e.clientY, initOffX: hit[prop] ? hit[prop].x : 0, initOffY: hit[prop] ? hit[prop].y : 0, hasDragged: false };
+                } else {
+                    state.drag = { obj: hit, mode: 'select', startX: e.clientX, startY: e.clientY, hasDragged: false };
+                }
+                draw();
+            } else {
+                if (state.mode === 'beam') {
+                    const centerPx = view.x + cvs.width/2;
+                    const startPx = centerPx - (state.beam.len * view.scale)/2;
+                    const beamW = state.beam.len * view.scale;
+                    const beamY = view.y + cvs.height/2 + state.beam.y;
+                    
+                    if (mx >= startPx && mx <= startPx + beamW && Math.abs(my - beamY) < 10) {
+                        state.drag = { obj: 'beam', startX: e.clientX, startY: e.clientY, hasDragged: false };
+                    } else {
+                        state.sel = null;
+                        state.drag = { pan: true, lx: e.clientX, ly: e.clientY, hasDragged: false };
+                        draw();
+                    }
+                } else {
+                    state.sel = null;
+                    state.drag = { pan: true, lx: e.clientX, ly: e.clientY, hasDragged: false };
+                    draw();
+                }
+            }
+        };
+
+        window.onmousemove = (e) => {
+            const r = cvs.getBoundingClientRect();
+            const mx = e.clientX - r.left;
+            const my = e.clientY - r.top;
+
+            if (!state.drag) {
+                const target = getHitTarget(mx, my);
+                let hoveredPart = target ? target.part : null;
+                
+                if (hoveredPart && hoveredPart.includes('Label')) {
+                    cvs.style.cursor = 'grab';
+                } else if (hoveredPart) {
+                    cvs.style.cursor = 'pointer';
+                } else {
+                    cvs.style.cursor = 'crosshair';
+                }
+                return;
+            }
+            
+            if (state.drag.pan) {
+                const dx = e.clientX - state.drag.lx;
+                const dy = e.clientY - state.drag.ly;
+                view.x += dx;
+                view.y += dy;
+                state.drag.lx = e.clientX;
+                state.drag.ly = e.clientY;
+                state.drag.hasDragged = true;
+                draw();
+                return;
+            }
+
+            if (!state.drag.hasDragged) {
+                if (Math.hypot(e.clientX - state.drag.startX, e.clientY - state.drag.startY) > 3) {
+                    state.drag.hasDragged = true;
+                }
+            }
+
+            if (state.drag.hasDragged && state.drag.obj && state.drag.obj !== 'beam') {
+                const c = state.drag.obj;
+                if (state.drag.prop && c[state.drag.prop]) {
+                    c[state.drag.prop].x = state.drag.initOffX + (e.clientX - state.drag.startX);
+                    c[state.drag.prop].y = state.drag.initOffY + (e.clientY - state.drag.startY);
+                    draw(); 
+                    return;
+                }
+            }
+        };
+
+        window.onmouseup = () => {
+            if (!state.drag) return;
+
+            if (!state.drag.hasDragged) {
+                if (state.drag.obj === 'beam') {
+                    openModal('beam', state.beam);
+                } else if (state.drag.obj && !state.drag.pan && (!state.drag.mode || !state.drag.mode.includes('Label'))) {
+                    openModal(state.drag.obj.type, state.drag.obj);
+                }
+            } else if (state.drag.hasDragged && !state.drag.pan) {
+                recordState(); 
+            }
+            
+            state.drag = null;
+        };
+
+        // Zoom
+        cvs.onwheel = (e) => {
+            e.preventDefault();
+            const zs = e.deltaY > 0 ? 0.9 : 1.1;
+            view.scale *= zs;
+            draw();
+        };
+
+        // --- Report Generation System ---
+        function openReportModal() {
+            if (state.mode === 'beam' && (!state.beam || state.comps.length === 0)) {
+                alert("Please create a beam and add some components first.");
+                return;
+            } else if (state.mode === 'node' && (!state.node || state.comps.length === 0)) {
+                alert("Please add forces to the static node first.");
+                return;
+            }
+            if (!state.solved || !state.results.ok) {
+                alert("Please 'SOLVE' the system successfully before generating a report.");
+                return;
+            }
+            
+            document.getElementById('inp_report_name').value = '';
+            document.getElementById('inp_report_scn').value = '';
+            document.getElementById('inp_report_task').value = '';
+            rptModal.classList.remove('hidden');
+        }
+
+        function closeReportModal() {
+            rptModal.classList.add('hidden');
+        }
+
+        function generateHighResImage() {
+            const logicalW = 1200;
+            const logicalH = 650; 
+
+            const origScale = view.scale;
+            const origX = view.x;
+            const origY = view.y;
+
+            if (state.beam && state.beam.len > 0 && state.mode === 'beam') {
+                view.scale = (logicalW * 0.75) / state.beam.len;
+                view.x = 0; 
+                view.y = -60; 
+            } else if (state.mode === 'node') {
+                const ratio = Math.min(logicalW / cvs.width, logicalH / cvs.height);
+                view.scale = origScale * ratio;
+                view.x = origX * ratio;
+                view.y = origY * ratio;
+            }
+
+            // Reduced from 3 to 2. This prevents the base64 string from exceeding 
+            // the memory limits of standard print spoolers while remaining crisp.
+            const scaleFactor = 2; 
+            const tempCvs = document.createElement('canvas');
+            tempCvs.width = logicalW * scaleFactor;
+            tempCvs.height = logicalH * scaleFactor;
+            const tCtx = tempCvs.getContext('2d');
+            
+            tCtx.scale(scaleFactor, scaleFactor);
+            draw(tCtx, logicalW, logicalH);
+
+            view.scale = origScale;
+            view.x = origX;
+            view.y = origY;
+
+            return tempCvs.toDataURL('image/png');
+        }
+
+        function drawAnalyticalDiagrams(sfdId = 'sfdCanvas', bmdId = 'bmdCanvas', targetW = 800, targetH = 260, isDark = false) {
+    if (!state.beam || !state.results.ok || state.results.isNode) return;
+
+    const sfdCvs = document.getElementById(sfdId);
+    const bmdCvs = document.getElementById(bmdId);
+    if (!sfdCvs || !bmdCvs) return;
+
+    sfdCvs.width = targetW; sfdCvs.height = targetH;
+    bmdCvs.width = targetW; bmdCvs.height = targetH;
+
+    const sCtx = sfdCvs.getContext('2d');
+    const bCtx = bmdCvs.getContext('2d');
+
+    const len = state.beam.len;
+    const steps = 2000;
+    const dx = len / steps;
+
+    let sfd = [];
+    let bmd = [];
+    let maxV = 0, maxM = 0;
+
+    let criticalX = new Set([0, len]);
+    state.comps.forEach(c => {
+        criticalX.add(c.x);
+        if (c instanceof UDL) criticalX.add(c.x + c.len);
+    });
+    let critArr = Array.from(criticalX).sort((a,b) => a - b);
+
+    for (let i = 0; i <= steps; i++) {
+        let x = i * dx;
+        let V = 0;
+        let M = 0;
+
+        state.results.supports.forEach(sup => {
+            if (x > sup.support.x) { V += sup.Rv; M += sup.Rv * (x - sup.support.x); }
+        });
+
+        state.comps.forEach(c => {
+            if (c instanceof PointLoad) {
+                if (x > c.x) {
+                    let mult = (c.unit === 'kN') ? 1000 : 1;
+                    let fy = c.mag * mult * Math.sin(c.angle * Math.PI / 180);
+                    V += fy; 
+                    M += fy * (x - c.x);
+                }
+            } else if (c instanceof UDL) {
+                if (x > c.x) {
+                    let mult = (c.unit === 'kNm⁻¹') ? 1000 : 1;
+                    let start = c.x;
+                    let end = Math.min(x, c.x + c.len);
+                    let loadLen = end - start;
+                    let totalLoad = c.w * mult * loadLen;
+                    V -= totalLoad; 
+                    M -= totalLoad * (x - (start + loadLen / 2));
+                }
+            }
+        });
+
+        if(Math.abs(V) < 1e-6) V = 0;
+        if(Math.abs(M) < 1e-6) M = 0;
+
+        sfd.push({ x, val: V });
+        bmd.push({ x, val: M });
+        maxV = Math.max(maxV, Math.abs(V));
+        maxM = Math.max(maxM, Math.abs(M));
+    }
+
+    let zeroCrossings = [];
+    for(let i = 1; i < sfd.length; i++) {
+        let v1 = sfd[i-1].val;
+        let v2 = sfd[i].val;
+        if ((v1 > 0 && v2 <= 0) || (v1 < 0 && v2 >= 0)) {
+            let zx = sfd[i].x;
+            if (Math.abs(v1 - v2) > 1e-3 && (v1 * v2 < 0) && Math.abs(v1 - v2) < 5000) {
+                let t = Math.abs(v1) / (Math.abs(v1) + Math.abs(v2));
+                zx = sfd[i-1].x + t * (sfd[i].x - sfd[i-1].x);
+            }
+            if (!zeroCrossings.some(z => Math.abs(z - zx) < 0.05)) {
+                zeroCrossings.push(zx);
+            }
+        }
+    }
+
+    const renderGraph = (ctx, data, isSFD, maxAbsVal, unitStr, critPts, zeros) => {
+        ctx.clearRect(0, 0, targetW, targetH);
+        const padX = 60; const padY = 40;
+        const w = targetW - padX * 2; const h = targetH - padY * 2;
+        const midY = padY + h / 2;
+
+        if (maxAbsVal < 1e-5) maxAbsVal = 1;
+        const scaleY = (h / 2) / (maxAbsVal * 1.25);
+        const scaleX = w / len;
+
+        const fmt = (v) => {
+            if (Math.abs(v) < 0.05) return "0"; 
+            let isK = maxAbsVal >= 1000;
+            return isK ? (v/1000).toFixed(2) : v.toFixed(2);
+        };
+
+        const colZeroLine = isDark ? '#475569' : '#475569';
+        const colText = isDark ? '#e2e8f0' : '#0f172a';
+        const colSFDLine = isDark ? '#34d399' : '#16a34a';
+        const colBMDLine = isDark ? '#60a5fa' : '#2563eb';
+        const colSFDFill = isDark ? 'rgba(52, 211, 153, 0.15)' : 'rgba(22, 163, 74, 0.15)';
+        const colBMDFill = isDark ? 'rgba(96, 165, 250, 0.15)' : 'rgba(37, 99, 235, 0.15)';
+        const colZeroDot = isDark ? '#f87171' : '#dc2626';
+        const colMaxMDot = isDark ? '#fbbf24' : '#d97706';
+
+        ctx.beginPath();
+        ctx.moveTo(padX - 10, midY); ctx.lineTo(padX + w + 20, midY);
+        ctx.strokeStyle = colZeroLine; ctx.lineWidth = 1.5; ctx.stroke();
+
+        ctx.fillStyle = colText;
+        ctx.font = 'italic 13px Roboto';
+        ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+        ctx.fillText(isSFD ? `V (${unitStr})` : `M (${unitStr})`, padX - 40, padY - 10);
+        ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+        ctx.fillText(`x (m)`, padX + w + 40, midY);
+
+        ctx.beginPath();
+        ctx.moveTo(padX, midY);
+        for (let i = 0; i < data.length; i++) {
+            ctx.lineTo(padX + data[i].x * scaleX, midY - data[i].val * scaleY);
+        }
+        ctx.lineTo(padX + w, midY);
+        ctx.closePath();
+        
+        ctx.fillStyle = isSFD ? colSFDFill : colBMDFill;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(padX, midY - data[0].val * scaleY);
+        for (let i = 1; i < data.length; i++) {
+            ctx.lineTo(padX + data[i].x * scaleX, midY - data[i].val * scaleY);
+        }
+        ctx.strokeStyle = isSFD ? colSFDLine : colBMDLine;
+        ctx.lineWidth = 2.5; ctx.stroke();
+
+        ctx.font = 'bold 12px Roboto';
+        ctx.textAlign = 'center';
+        
+        critPts.forEach(cx => {
+            let pt = data.find(d => Math.abs(d.x - cx) < dx*2);
+            let isZeroCrossingNear = zeros && !isSFD && zeros.some(zx => Math.abs(zx - cx) < 0.1);
+            
+            if(pt && Math.abs(pt.val) > 1e-3) {
+                let px = padX + pt.x * scaleX;
+                let py = midY - pt.val * scaleY;
+                
+                ctx.beginPath(); ctx.arc(px, py, 4, 0, Math.PI*2);
+                ctx.fillStyle = isSFD ? colSFDLine : colBMDLine; ctx.fill();
+                ctx.strokeStyle = isDark ? '#1e293b' : '#fff'; ctx.lineWidth = 1; ctx.stroke();
+
+                if (!isZeroCrossingNear) {
+                    ctx.fillStyle = colText;
+                    let yOff = pt.val >= 0 ? -12 : 12;
+                    ctx.textBaseline = pt.val >= 0 ? 'bottom' : 'top';
+                    ctx.fillText(fmt(pt.val), px, py + yOff);
+                }
+            } else if (pt && !isSFD && Math.abs(pt.val) < 1e-3) {
+                let px = padX + pt.x * scaleX;
+                ctx.fillStyle = isDark ? '#94a3b8' : '#64748b';
+                ctx.textBaseline = 'bottom';
+                ctx.fillText("0", px, midY - 8);
+            }
+        });
+
+        if (isSFD && zeros) {
+            zeros.forEach(zx => {
+                let px = padX + zx * scaleX;
+                
+                // Explicit vertical dashed line for zero crossing
+                ctx.beginPath();
+                ctx.moveTo(px, midY - 25);
+                ctx.lineTo(px, midY + 25);
+                ctx.strokeStyle = colZeroDot;
+                ctx.lineWidth = 1;
+                ctx.setLineDash([4, 4]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+                
+                // Marker Dot
+                ctx.beginPath(); ctx.arc(px, midY, 5, 0, Math.PI*2);
+                ctx.fillStyle = colZeroDot; ctx.fill();
+                ctx.strokeStyle = isDark ? '#1e293b' : '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+                
+                const txt = `V=0 @ ${zx.toFixed(2)}m`;
+                ctx.font = 'bold 12px Roboto';
+                const tw = ctx.measureText(txt).width;
+                
+                // Draw a background block so the axis text doesn't overlap
+                ctx.fillStyle = isDark ? '#1e293b' : '#ffffff';
+                ctx.fillRect(px - tw/2 - 4, midY + 12, tw + 8, 16);
+                
+                ctx.fillStyle = colZeroDot;
+                ctx.textBaseline = 'top';
+                ctx.textAlign = 'center';
+                ctx.fillText(txt, px, midY + 14);
+            });
+        }
+
+        if (!isSFD && zeros) {
+            zeros.forEach(zx => {
+                let localMaxPt = data.reduce((prev, curr) => {
+                    if (Math.abs(curr.x - zx) < 0.5) return Math.abs(curr.val) > Math.abs(prev.val) ? curr : prev;
+                    return prev;
+                }, {x: zx, val: 0});
+
+                if (Math.abs(localMaxPt.val) > 1e-3) {
+                    let px = padX + localMaxPt.x * scaleX;
+                    let py = midY - localMaxPt.val * scaleY;
+                    
+                    ctx.beginPath(); ctx.arc(px, py, 5, 0, Math.PI*2);
+                    ctx.fillStyle = colMaxMDot; ctx.fill();
+                    ctx.strokeStyle = isDark ? '#1e293b' : '#fff'; ctx.lineWidth = 1; ctx.stroke();
+
+                    ctx.fillStyle = colMaxMDot;
+                    ctx.textBaseline = localMaxPt.val >= 0 ? 'bottom' : 'top';
+                    let yOff = localMaxPt.val >= 0 ? -12 : 12;
+                    ctx.fillText(`M_max = ${fmt(localMaxPt.val)}`, px, py + yOff);
+                }
+            });
+        }
+    };
+
+    let unitV = maxV >= 1000 ? 'kN' : 'N';
+    let unitM = maxM >= 1000 ? 'kNm' : 'Nm';
+
+    renderGraph(sCtx, sfd, true, maxV, unitV, critArr, zeroCrossings);
+    renderGraph(bCtx, bmd, false, maxM, unitM, critArr, zeroCrossings);
+}
+
+       function executeReportGeneration() {
+            const stuName = document.getElementById('inp_report_name').value || 'Student';
+            const stuSCN = document.getElementById('inp_report_scn').value;
+            const stuTask = document.getElementById('inp_report_task').value;
+            const includeDiagram = document.getElementById('inp_report_diagram').checked;
+            const includeSFDBMD = document.getElementById('inp_report_sfd_bmd') ? document.getElementById('inp_report_sfd_bmd').checked : false;
+            
+            // Deselect to hide handles
+            const currentSel = state.sel;
+            state.sel = null;
+            draw(); 
+
+            const imgEl = document.getElementById('printCanvasImg');
+            const imgContainer = imgEl.parentElement;
+            const analyticalDiv = document.getElementById('analyticalDiagrams');
+
+            // Generate SFD / BMD (Beams Only)
+            if (includeSFDBMD && !state.results.isNode) {
+                analyticalDiv.style.display = 'flex';
+                drawAnalyticalDiagrams();
+            } else {
+                if (analyticalDiv) analyticalDiv.style.display = 'none';
+            }
+            
+            document.getElementById('printDate').innerText = new Date().toLocaleString('en-GB');
+            document.getElementById('printName').innerText = stuName;
+            
+            if (stuSCN && stuSCN.trim() !== '') {
+                document.getElementById('printSCN').innerText = stuSCN;
+                document.getElementById('scnContainer').style.display = 'block';
+            } else {
+                document.getElementById('scnContainer').style.display = 'none';
+            }
+
+            if (stuTask && stuTask.trim() !== '') {
+                document.getElementById('printTask').innerText = stuTask;
+                document.getElementById('taskContainer').style.display = 'block';
+            } else {
+                document.getElementById('taskContainer').style.display = 'none';
+            }
+
+            // Restore selection
+            state.sel = currentSel;
+            draw();
+
+            // Generate Results HTML
+            let ansHTML = "";
+            if (state.results.isNode) {
+                // NODE REPORT
+                const res = state.results;
+                ansHTML += `<div class="p-3 bg-white border-2 border-slate-200 rounded-xl min-w-[200px] shadow-sm flex-1 max-w-sm">
+                    <span class="text-slate-800 font-bold block mb-2 border-b border-slate-200 pb-1">Equilibrant Reaction</span>
+                    <div class="flex justify-between text-slate-700 mb-1"><span><span class="text-green-600 font-bold">R<sub>x</sub></span>:</span> <span class="font-bold text-green-600">${fmtF_pseudo(res.Req_x)}</span></div>
+                    <div class="flex justify-between text-slate-700 mb-3"><span><span class="text-red-600 font-bold">R<sub>y</sub></span>:</span> <span class="font-bold text-red-600">${fmtF_pseudo(res.Req_y)}</span></div>
+                    <div class="pt-2 border-t border-slate-200 text-slate-800 font-bold flex flex-col gap-1">
+                        <span class="text-[10px] uppercase text-slate-500">Resultant Vector:</span>
+                        <span class="text-slate-900 font-bold">F<sub>R</sub> = ${fmtF(res.rMag)} @ <span class="text-blue-600">${res.rAng.toFixed(2)}&deg;</span></span>
+                    </div>`;
+                ansHTML += generateForceTriangleSVG(res.Req_x, res.Req_y, res.rMag, res.rAng.toFixed(2), "Rx", "Ry", "FR", 'light');
+                ansHTML += `</div>`;
+            } else {
+                // BEAM REPORT
+                state.results.supports.forEach(r => {
+                    const name = r.support.name || 'A';
+                    let suppTypeStr = r.support.type.charAt(0).toUpperCase() + r.support.type.slice(1);
+                    let hasH = Math.abs(r.RH) > 1e-9;
+                    
+                    let rvStr = hasH ? fmtF_pseudo(r.Rv) : fmtF(r.Rv);
+                    let rhStr = hasH ? fmtF_pseudo(r.RH) : "";
+
+                    ansHTML += `<div class="p-3 bg-white border-2 border-slate-200 rounded-xl min-w-[200px] shadow-sm flex-1 max-w-sm">
+                        <span class="text-slate-800 font-bold block mb-2 border-b border-slate-200 pb-1">${suppTypeStr} '${name}'</span>`;
+                    
+                    if (hasH) {
+                        ansHTML += `<div class="flex justify-between text-slate-700 mb-1"><span><span class="text-green-600 font-bold">R<sub>${name}H</sub></span>:</span> <span class="font-bold text-green-600">${rhStr}</span></div>`;
+                    }
+                    
+                    ansHTML += `<div class="flex justify-between text-slate-700 mb-3"><span><span class="text-red-600 font-bold">R<sub>${name}v</sub></span>:</span> <span class="font-bold text-red-600">${rvStr}</span></div>`;
+                    
+                    if (hasH) {
+                        const rMag = Math.hypot(r.Rv, r.RH);
+                        const rAng = Math.atan2(Math.abs(r.Rv), Math.abs(r.RH)) * 180 / Math.PI;
+                        ansHTML += `<div class="pt-2 border-t border-slate-200 text-slate-800 font-bold flex flex-col gap-1">
+                                    <span class="text-[10px] uppercase text-slate-500">Resultant Vector:</span>
+                                    <span class="text-slate-900 font-bold">R<sub>${name}</sub> = ${fmtF(rMag)} @ <span class="text-blue-600">${rAng.toFixed(2)}&deg;</span></span>
+                                 </div>`;
+                    }
+                    
+                    ansHTML += `</div>`;
+                });
+            }
+            document.getElementById('printReactions').innerHTML = ansHTML;
+
+            // Generate Working Out HTML
+            let wHTML = "";
+            if (state.results.isNode) {
+                wHTML = generateWorkingHTML(state.results, true, 'light');
+            } else {
+                // Beams working out
+                const st = state.results.steps;
+                if (st && st.s2) {
+                    let hasH = st.hinge && Math.abs(st.sumForcesLeft - st.sumForcesRight) > 1e-5;
+                    let s2_Rv_str = (st.s2 === st.hinge && hasH) ? fmtF_pseudo((st.sumCWM - st.sumACWM) / st.dist_s1_s2) : fmtF((st.sumCWM - st.sumACWM) / st.dist_s1_s2);
+                    let s1_Rv_str = (st.s1 === st.hinge && hasH) ? fmtF_pseudo(state.results.supports[0].Rv) : fmtF(state.results.supports[0].Rv);
+
+                    let cwmStr = st.cwmTerms.length > 0 ? st.cwmTerms.join(" + ") : "0";
+                    let acwmStr = st.acwmTerms.length > 0 ? st.acwmTerms.join(" + ") : "0";
+                    let s2v_styled = `<span class="text-red-600 font-bold">R<sub>${st.s2.name}v</sub></span>`; 
+                    cwmStr = cwmStr.replace('{{R_s2v}}', s2v_styled);
+                    acwmStr = acwmStr.replace('{{R_s2v}}', s2v_styled);
+
+                    let upStr = `<span class="text-red-600 font-bold">R<sub>${st.s1.name}v</sub></span> + <span class="text-red-600 font-bold">R<sub>${st.s2.name}v</sub></span>`;
+                    if (st.upForceTerms.length > 0) upStr += " + " + st.upForceTerms.join(" + ");
+                    let downStr = st.downForceTerms.length > 0 ? st.downForceTerms.join(" + ") : "0";
+
+                    wHTML += `
+                        <p class="mb-1 text-slate-700 font-bold">1. Moments about ${st.s1.name}: &Sigma; CWM = &Sigma; ACWM</p>
+                        <p class="pl-3 mb-3 border-l-2 border-slate-300 text-slate-600">
+                            ${cwmStr} = ${acwmStr} <br> 
+                            <span class="font-bold text-red-600">R<sub>${st.s2.name}v</sub> = ${s2_Rv_str}</span>
+                        </p>
+
+                        <p class="mb-1 text-slate-700 font-bold mt-3">2. Vertical Forces: &Sigma; F<sub>up</sub> = &Sigma; F<sub>down</sub></p>
+                        <p class="pl-3 mb-3 border-l-2 border-slate-300 text-slate-600">
+                            ${upStr} = ${downStr} <br> 
+                            <span class="font-bold text-red-600">R<sub>${st.s1.name}v</sub> = ${s1_Rv_str}</span>
+                        </p>`;
+
+                    if (hasH) {
+                        let hinge = st.hinge;
+                        let h_RH_str = fmtF_pseudo(Math.abs(st.sumForcesLeft - st.sumForcesRight));
+                        
+                        let leftStr = st.leftForceTerms.length > 0 ? st.leftForceTerms.join(" + ") : "0";
+                        let rightStr = st.rightForceTerms.length > 0 ? st.rightForceTerms.join(" + ") : "0";
+                        let hingeH = `<span class="text-green-600 font-bold">R<sub>${hinge.name}H</sub></span>`;
+                        
+                        if (st.sumForcesLeft > st.sumForcesRight) {
+                            rightStr = rightStr === "0" ? hingeH : rightStr + " + " + hingeH;
+                        } else {
+                            leftStr = leftStr === "0" ? hingeH : leftStr + " + " + hingeH;
+                        }
+
+                        wHTML += `<p class="mb-1 text-slate-700 font-bold mt-3">3. Horizontal Forces: &Sigma; F<sub>left</sub> = &Sigma; F<sub>right</sub></p>
+                        <p class="pl-3 mb-3 border-l-2 border-slate-300 text-slate-600">
+                            ${leftStr} = ${rightStr} <br> 
+                            <span class="font-bold text-green-600">R<sub>${hinge.name}H</sub> = ${h_RH_str}</span>
+                        </p>`;
+                        
+                        let h_Rv = (st.hinge === st.s1) ? state.results.supports[0].Rv : state.results.supports[1].Rv;
+                        let h_RH = Math.abs(st.sumForcesLeft - st.sumForcesRight);
+                        let rMag = Math.hypot(h_Rv, h_RH);
+                        let rAng = Math.atan2(Math.abs(h_Rv), Math.abs(h_RH)) * 180 / Math.PI;
+
+                        wHTML += `<p class="mb-1 text-slate-700 font-bold mt-3">4. Resultant Force at ${st.hinge.name}: <span class="text-slate-900 font-bold">R<sub>${st.hinge.name}</sub></span> = &radic;(<span class="text-red-600 font-bold">R<sub>${st.hinge.name}v</sub></span>&sup2; + <span class="text-green-600 font-bold">R<sub>${st.hinge.name}H</sub></span>&sup2;)</p>
+                        <p class="pl-3 mb-1 border-l-2 border-slate-300 text-slate-600">
+                            <span class="text-slate-900 font-bold">R<sub>${st.hinge.name}</sub></span> = &radic;(<span class="text-red-600">${fmtF_pseudo(h_Rv, false)}</span>&sup2; + <span class="text-green-600">${fmtF_pseudo(h_RH, false)}</span>&sup2;) <br> 
+                            <span class="font-bold text-slate-900">R<sub>${st.hinge.name}</sub> = ${fmtF(rMag)} @ <span class="text-blue-600">${rAng.toFixed(2)}&deg;</span></span>
+                        </p>`;
+                    }
+                } else if (st && st.s1) { 
+                    let s = st.s1;
+                    let hasH = s.type === 'hinge' && Math.abs(st.sumForcesLeft - st.sumForcesRight) > 1e-5;
+                    let s1_Rv_str = hasH ? fmtF_pseudo(state.results.supports[0].Rv) : fmtF(state.results.supports[0].Rv);
+
+                    let upStr = `<span class="text-red-600 font-bold">R<sub>${s.name}v</sub></span>`;
+                    if (st.upForceTerms.length > 0) upStr += " + " + st.upForceTerms.join(" + ");
+                    let downStr = st.downForceTerms.length > 0 ? st.downForceTerms.join(" + ") : "0";
+
+                    wHTML += `
+                        <p class="mb-1 text-slate-700 font-bold">1. Vertical Forces: &Sigma; F<sub>up</sub> = &Sigma; F<sub>down</sub></p>
+                        <p class="pl-3 mb-3 border-l-2 border-slate-300 text-slate-600">
+                            ${upStr} = ${downStr} <br> 
+                            <span class="font-bold text-red-600">R<sub>${s.name}v</sub> = ${s1_Rv_str}</span>
+                        </p>`;
+                    if (hasH) {
+                        let h_RH_str = fmtF_pseudo(Math.abs(st.sumForcesLeft - st.sumForcesRight));
+                        
+                        let leftStr = st.leftForceTerms.length > 0 ? st.leftForceTerms.join(" + ") : "0";
+                        let rightStr = st.rightForceTerms.length > 0 ? st.rightForceTerms.join(" + ") : "0";
+                        let hingeH = `<span class="text-green-600 font-bold">R<sub>${s.name}H</sub></span>`;
+                        
+                        if (st.sumForcesLeft > st.sumForcesRight) {
+                            rightStr = rightStr === "0" ? hingeH : rightStr + " + " + hingeH;
+                        } else {
+                            leftStr = leftStr === "0" ? hingeH : leftStr + " + " + hingeH;
+                        }
+
+                        wHTML += `<p class="mb-1 text-slate-700 font-bold mt-3">2. Horizontal Forces: &Sigma; F<sub>left</sub> = &Sigma; F<sub>right</sub></p>
+                        <p class="pl-3 mb-3 border-l-2 border-slate-300 text-slate-600">
+                            ${leftStr} = ${rightStr} <br> 
+                            <span class="font-bold text-green-600">R<sub>${s.name}H</sub> = ${h_RH_str}</span>
+                        </p>`;
+
+                        let h_Rv = state.results.supports[0].Rv;
+                        let h_RH = Math.abs(st.sumForcesLeft - st.sumForcesRight);
+                        let rMag = Math.hypot(h_Rv, h_RH);
+                        let rAng = Math.atan2(Math.abs(h_Rv), Math.abs(h_RH)) * 180 / Math.PI;
+
+                        wHTML += `<p class="mb-1 text-slate-700 font-bold mt-3">3. Resultant Force at ${s.name}: <span class="text-slate-900 font-bold">R<sub>${s.name}</sub></span> = &radic;(<span class="text-red-600 font-bold">R<sub>${s.name}v</sub></span>&sup2; + <span class="text-green-600 font-bold">R<sub>${s.name}H</sub></span>&sup2;)</p>
+                        <p class="pl-3 mb-1 border-l-2 border-slate-300 text-slate-600">
+                            <span class="text-slate-900 font-bold">R<sub>${s.name}</sub></span> = &radic;(<span class="text-red-600">${fmtF_pseudo(h_Rv, false)}</span>&sup2; + <span class="text-green-600">${fmtF_pseudo(h_RH, false)}</span>&sup2;) <br> 
+                            <span class="font-bold text-slate-900">R<sub>${s.name}</sub> = ${fmtF(rMag)} @ <span class="text-blue-600">${rAng.toFixed(2)}&deg;</span></span>
+                        </p>`;
+                    }
+                } else {
+                    wHTML += `<p class="italic text-slate-500">Detailed step-by-step working is only available for statically determinate 2-support systems.</p>`;
+                }
+                
+                // Add graphical vector representations for ALL supports at the very end of the working out
+                wHTML += `<div class="mt-6 flex flex-wrap gap-4 justify-center">`;
+                state.results.supports.forEach(supRes => {
+                    const rMag = Math.hypot(supRes.Rv, supRes.RH);
+                    const rAng = getNearestAxisAngleDeg(supRes.RH, supRes.Rv);
+                    wHTML += `<div class="flex-1 min-w-[200px] max-w-[280px]">
+                                <p class="text-slate-700 font-bold text-center mb-2 text-[10px] uppercase tracking-widest border-b border-slate-300 pb-1">Reaction Vector at ${supRes.support.name}</p>
+                                ${generateForceTriangleSVG(supRes.RH, supRes.Rv, rMag, rAng.toFixed(2), `R<sub>${supRes.support.name}H</sub>`, `R<sub>${supRes.support.name}v</sub>`, "FR", 'light')}
+                             </div>`;
+                });
+                wHTML += `</div>`;
+            }
+            document.getElementById('printWorking').innerHTML = wHTML;
+
+            closeReportModal();
+
+            // --- The Bulletproof Print Logic ---
+            if (includeDiagram) {
+                imgContainer.style.display = 'flex';
+                
+                // 1. Clear the source first so the browser registers a definite change
+                imgEl.src = ''; 
+                
+                // 2. Set up the onload listener before assigning the new source
+                imgEl.onload = () => {
+                    // Give the browser's rendering engine a moment to paint the image to the DOM before freezing it with the print dialog
+                    setTimeout(() => window.print(), 500);
+                };
+                
+                // 3. Generate and assign the image inside a tiny timeout to ensure the DOM has updated the empty state
+                setTimeout(() => {
+                    imgEl.src = generateHighResImage();
+                }, 50);
+                
+            } else {
+                imgContainer.style.display = 'none';
+                imgEl.src = '';
+                setTimeout(() => window.print(), 350);
+            }
+        }
+
+// --- State Serialization ---
+function getStateJSON() {
+    // Convert the state to a string, mapping the class names so we can rebuild them later
+    return JSON.stringify({
+        mode: state.mode,
+        beam: state.beam,
+        node: state.node,
+        comps: state.comps.map(c => ({
+            ...c,
+            className: c.constructor.name
+        }))
+    });
+}
+
+function loadStateFromJSON(jsonStr) {
+    try {
+        const data = JSON.parse(jsonStr);
+        state.mode = data.mode;
+        state.beam = data.beam;
+        state.node = data.node;
+        
+        // Rebuild the proper class instances so their .draw() and .hit() methods work
+        state.comps = data.comps.map(cData => {
+            let c;
+            if (cData.className === 'Support') c = new Support(cData.type, cData.x, cData.name);
+            else if (cData.className === 'PointLoad') c = new PointLoad(cData.x, cData.angle, cData.type);
+            else if (cData.className === 'UDL') c = new UDL(cData.x);
+            else if (cData.className === 'TextNote') c = new TextNote(cData.x);
+            else return null;
+
+            // Merge the saved properties back into the new instance
+            Object.assign(c, cData);
+            return c;
+        }).filter(Boolean);
+
+        state.sel = null;
+        state.solved = false;
+        hideResults();
+        draw();
+    } catch (err) {
+        console.error("Error loading file:", err);
+    }
+}
+
+        function recordState() {
+            if (historyIndex < historyStack.length - 1) {
+                historyStack = historyStack.slice(0, historyIndex + 1);
+            }
+            const currentState = getStateJSON();
+            if (historyStack.length > 0 && historyStack[historyStack.length - 1] === currentState) {
+                return; 
+            }
+            historyStack.push(currentState);
+            historyIndex++;
+            if (historyStack.length > MAX_HISTORY) {
+                historyStack.shift();
+                historyIndex--;
+            }
+            updateHistoryButtons();
+        }
+
+        function undo() {
+            if (historyIndex <= 0) return;
+            historyIndex--;
+            loadStateFromJSON(historyStack[historyIndex]);
+            updateHistoryButtons();
+        }
+
+        function redo() {
+            if (historyIndex >= historyStack.length - 1) return;
+            historyIndex++;
+            loadStateFromJSON(historyStack[historyIndex]);
+            updateHistoryButtons();
+        }
+
+        function updateHistoryButtons() {
+            const btnU = document.getElementById('btnUndo');
+            const btnR = document.getElementById('btnRedo');
+            if (btnU) btnU.disabled = (historyIndex <= 0);
+            if (btnR) btnR.disabled = (historyIndex >= historyStack.length - 1);
+        }
+
+        // --- Helpers ---
+        let historyStack = [];
+        let historyIndex = -1;
+        const MAX_HISTORY = 50;
+
+        document.getElementById('btnUndo').onclick = undo;
+        document.getElementById('btnRedo').onclick = redo;
+
+        window.addEventListener('keydown', e => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'z' || e.key === 'Z')) { e.preventDefault(); undo(); }
+            if ((e.ctrlKey || e.metaKey) && (e.key === 'y' || e.key === 'Y')) { e.preventDefault(); redo(); }
+            
+            if (e.key === 'Escape') {
+                closeModal();
+                closeReportModal();
+                state.sel = null;
+                draw();
+            }
+            
+            if (e.key === 'Delete' || e.key === 'Backspace') {
+                if (state.sel) {
+                    state.comps = state.comps.filter(c => c !== state.sel);
+                    state.sel = null;
+                    hideResults();
+                    state.solved = false;
+                    recordState();
+                    draw();
+                }
+            }
+        });
+
+        document.getElementById('btnSolve').onclick = () => { 
+            if (state.solved) {
+                hideResults();
+                draw();
+            } else {
+                solve(); 
+            }
+        };
+        document.getElementById('btnExportReport').onclick = openReportModal;
+
+        document.getElementById('btnClear').onclick = () => { 
+            state.comps = []; 
+            state.sel = null; 
+            state.beam = null; 
+            state.node = false;
+            state.mode = 'beam';
+            state.solved = false; 
+            view.x = 0;
+            view.y = -40;
+            view.scale = 50;
+            hideResults(); 
+            recordState();
+            draw(); 
+        };
+        document.getElementById('btnZoomIn').onclick = () => { view.scale *= 1.2; draw(); };
+        document.getElementById('btnZoomOut').onclick = () => { view.scale *= 0.8; draw(); };
+        document.getElementById('btnHome').onclick = () => { view.x = 0; view.y = state.mode === 'node' ? 0 : -40; view.scale = 50; draw(); };
+        document.getElementById('btnMenuToggle').onclick = () => {
+            const app = document.getElementById('appContainer');
+            if (app.classList.contains('drawer-open')) {
+                app.classList.remove('drawer-open'); app.classList.add('drawer-closed');
+            } else {
+                app.classList.remove('drawer-closed'); app.classList.add('drawer-open');
+            }
+            setTimeout(resize, 450);
+        };
+        function toggleMenu(id, btn) {
+            document.getElementById(id).classList.toggle('open');
+            btn.querySelector('.rotate-icon').classList.toggle('open');
+        }
+
+        document.getElementById('btnSave').onclick = () => {
+            const data = getStateJSON();
+            const blob = new Blob([data], {type: "application/json"});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = "nostresssim_v2.4_design.json"; a.click();
+        };
+
+        document.getElementById('fileLoad').onchange = (e) => {
+            const f = e.target.files[0];
+            if(!f) return;
+            const r = new FileReader();
+            r.onload = (evt) => {
+                loadStateFromJSON(evt.target.result);
+                recordState();
+            };
+            r.readAsText(f);
+        };
+
+        document.getElementById('btnExport').onclick = () => {
+            const currentSel = state.sel;
+            state.sel = null; 
+            draw(); 
+
+            const scaleFactor = 3;
+            const tempCvs = document.createElement('canvas');
+            tempCvs.width = cvs.width * scaleFactor;
+            tempCvs.height = cvs.height * scaleFactor;
+            const tCtx = tempCvs.getContext('2d');
+            
+            tCtx.fillStyle = '#ffffff';
+            tCtx.fillRect(0, 0, tempCvs.width, tempCvs.height);
+            tCtx.save();
+            tCtx.scale(scaleFactor, scaleFactor);
+            draw(tCtx);
+            tCtx.restore();
+            
+            const url = tempCvs.toDataURL('image/png');
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'nostresssim_v2.4_snapshot.png';
+            a.click();
+
+            state.sel = currentSel;
+            draw();
+        };
+
+        window.onresize = resize;
+        
+        loadStateFromJSON('{"mode":"beam","beam":{"len":5,"x":0,"y":0},"node":false,"comps":[{"id":"zg4covf65","type":"simple","x":0,"labelOffset":{"x":0,"y":0},"labelHitBounds":{"x":150.24436559387073,"y":273.5,"w":40,"h":25},"name":"A","rvOffset":{"x":0,"y":0},"rhOffset":{"x":0,"y":0},"resOffset":{"x":0,"y":0},"resAngleOffset":{"x":0,"y":0},"rvHitBounds":{"x":130.24436559387073,"y":354.35865997145015,"w":80,"h":25},"rhHitBounds":null,"resHitBounds":null,"resAngleHitBounds":null,"className":"Support"},{"id":"lngkpvbb7","type":"point","x":2,"labelOffset":{"x":0,"y":0},"labelHitBounds":{"x":476.8488731187741,"y":103.5,"w":60,"h":25},"mag":10000,"angle":270,"unit":"N","actionDirection":"away","reference":"horiz","angleLabelOffset":{"x":0,"y":0},"angleHitBounds":null,"stackOffset":0,"className":"PointLoad"},{"id":"87wsefcj4","type":"simple","x":5,"labelOffset":{"x":0,"y":0},"labelHitBounds":{"x":991.7556344061293,"y":273.5,"w":40,"h":25},"name":"B","rvOffset":{"x":0,"y":0},"rhOffset":{"x":0,"y":0},"resOffset":{"x":0,"y":0},"resAngleOffset":{"x":0,"y":0},"rvHitBounds":{"x":971.7556344061293,"y":355.0558613772014,"w":80,"h":25},"rhHitBounds":null,"resHitBounds":null,"resAngleHitBounds":null,"className":"Support"},{"id":"e026g4pj5","type":"point","x":4,"labelOffset":{"x":0,"y":0},"labelHitBounds":{"x":813.4533806436775,"y":105.71848749616356,"w":60,"h":25},"mag":6000,"angle":270,"unit":"N","actionDirection":"away","reference":"horiz","angleLabelOffset":{"x":0,"y":0},"angleHitBounds":null,"stackOffset":0,"className":"PointLoad"}]}');
+        recordState();
+        resize();
+
+    </script>
+</body>
+</html>
