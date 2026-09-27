@@ -6,11 +6,11 @@
   <title>Control Systems — Course Notes — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .notes-wrap { max-width:860px; margin:0 auto; padding:28px 32px 80px; }
-    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .notes-wrap { max-width:860px; margin:0 auto; padding:16px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:6px; }
     .back-link:hover { color:var(--teal-800); }
-    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); }
-    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); scroll-margin-top:100px; }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; scroll-margin-top:100px; }
     .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
     .notes-p strong { color:var(--gray-900); }
     .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
@@ -102,11 +102,65 @@
     .ctrl-btn-print:hover { background:var(--teal-100); }
     .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
     .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+
+    .answer-box img { max-width:100%; height:auto; }
+    .cell-answer { outline:none; background:#f8faff; min-height:36px; }
+    .cell-answer:focus { box-shadow:inset 0 0 0 2px var(--teal-400); background:white; }
+    .data-table tr:nth-child(even) td.cell-answer, .roles-table td.cell-answer { background:#f8faff; }
+    .task-download-row { background:var(--gray-50); border-top:1px solid var(--gray-200); padding:9px 20px; text-align:right; }
+    .task-download-btn { display:inline-flex; align-items:center; gap:6px; background:white; border:1.2px solid var(--teal-400); color:var(--teal-800); font-size:10px; font-weight:700; padding:7px 12px; border-radius:999px; cursor:pointer; transition:background .15s; }
+    .task-download-btn:hover { background:var(--teal-50); }
+    .task-download-btn:disabled { opacity:.6; cursor:wait; }
+    /* Specification tables in the challenges */
+    .spec-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .spec-table th { background:transparent; padding:8px 6px 8px 0; width:32px; vertical-align:top; }
+    .spec-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
+    .data-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:var(--teal-50); color:var(--teal-800); border:1px solid var(--teal-100); font-size:11px; font-weight:700; }
+    .ctrl-btn-download-all { background:#eef2ff; color:#4338ca; }
+    .ctrl-btn-download-all:hover { background:#e0e7ff; }
+
+    /* Table of contents: floating button + slide-out panel */
+    .toc-fab { position:fixed; right:24px; bottom:76px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#c2410c; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+    .toc-fab:hover { background:#9a3412; }
+    .toc-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; }
+    .toc-overlay.open { display:block; }
+    .toc-panel { position:fixed; top:0; right:-340px; width:320px; max-width:85vw; height:100%; background:white; z-index:999998; box-shadow:-8px 0 30px rgba(0,0,0,.2); transition:right .25s ease; display:flex; flex-direction:column; }
+    .toc-panel.open { right:0; }
+    .toc-panel-header { padding:18px 20px 14px; border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; }
+    .toc-panel-header h3 { margin:0; font-size:16px; color:var(--teal-800); }
+    .toc-panel-close { background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .toc-panel-close:hover { color:var(--gray-700); }
+    .toc-list { overflow-y:auto; padding:8px 0 20px; }
+    .toc-list a { display:block; padding:10px 20px; font-size:14px; color:var(--gray-700); text-decoration:none; border-left:3px solid transparent; }
+    .toc-list a:hover { background:var(--teal-50); color:var(--teal-800); }
+    .toc-list a.toc-active { border-left-color:var(--teal-500,var(--teal-600)); background:var(--teal-50); color:var(--teal-800); font-weight:700; }
+    .toc-list a.toc-sub { padding-left:36px; font-size:13px; color:var(--gray-500); }
+
+    /* Pupil name: floating button + small popup */
+    .name-fab { position:fixed; right:24px; bottom:132px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#4f46e5; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); overflow:hidden; }
+    .name-fab-icon { font-size:14px; line-height:1; flex-shrink:0; }
+    #nameFabLabel { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:78px; text-align:left; }
+    .name-fab:hover { background:#3730a3; }
+    .name-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; align-items:center; justify-content:center; padding:20px; }
+    .name-overlay.open { display:flex; }
+    .name-panel { background:white; border-radius:14px; max-width:360px; width:100%; padding:24px 24px 22px; box-shadow:0 20px 60px rgba(0,0,0,.35); position:relative; }
+    .name-panel-close { position:absolute; top:10px; right:12px; background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .name-panel-close:hover { color:var(--gray-700); }
+    .name-panel h3 { margin:0 0 8px; font-size:16px; color:#4338ca; }
+    .name-panel p { margin:0 0 14px; font-size:13px; line-height:1.5; color:var(--gray-600); }
+    .name-panel input { width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid var(--gray-200); border-radius:8px; font-size:14px; margin-bottom:12px; }
+    .name-panel input:focus { outline:none; border-color:#4338ca; }
+    .name-panel-save { width:100%; background:#4338ca; color:white; border:none; border-radius:8px; padding:10px; font-size:14px; font-weight:700; cursor:pointer; }
+    .name-panel-save:hover { background:#3730a3; }
+    .name-panel-saved-msg { font-size:12px; color:#16a34a; margin-top:8px; text-align:center; display:none; }
+    .name-panel-saved-msg.show { display:block; }
+
     @media print {
-      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.sim-embed-section { display:none!important; }
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.toc-fab,.toc-panel,.toc-overlay,.name-fab,.name-overlay,.task-download-row,.page-nav,.exemplar-thumb,.exemplar-modal,.sim-embed-section { display:none!important; }
       .layout { display:block!important; }
       .main { margin:0!important; padding:0!important; }
       .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
+      .cell-answer { background:white!important; }
     }
   </style>
 </head>
@@ -133,7 +187,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 16 September 2026, 16:11</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 26 September 2026, 20:45</div>
       <div class="hero-label">National 5 &middot; Electronics and Control &rsaquo; Control Systems</div>
       <h1 class="hero-title">&#x1F916; Control Systems &mdash; Course Notes</h1>
       <p class="hero-sub">Microcontrollers, flowcharts, inputs, outputs and programmed control sequences</p>
@@ -150,7 +204,7 @@
       <a href="index.html" class="back-link">&larr; Back to Control Systems</a>
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 1: Electronic Control Systems</h1>
+      <h1 class="notes-h1" id="section-1">Section 1: Electronic Control Systems</h1>
 
       <p class="notes-p">Almost every modern device — from a microwave oven to a car engine — uses an <strong>electronic control system</strong>. These systems allow devices to respond to the world around them, make decisions, and control outputs automatically.</p>
 
@@ -214,7 +268,7 @@
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 2: What is a Microcontroller?</h1>
+      <h1 class="notes-h1" id="section-2">Section 2: What is a Microcontroller?</h1>
 
       <p class="notes-p">A <strong>microcontroller</strong> is often described as a <em>computer-on-a-chip</em>. It contains a processor, memory and input/output connections all in a single small, inexpensive package. Because of this, microcontrollers can easily be built into everyday products to make them more intelligent.</p>
 
@@ -244,7 +298,7 @@
 
       <div class="key-point">A microcontroller is advantageous because the control sequence can be changed by reprogramming rather than redesigning the hardware. This reduces cost and development time.</div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task1">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Control systems</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -263,12 +317,16 @@
             <div class="answer-box" contenteditable="true" data-key="cs-t1c" data-placeholder="Input 1: ... Input 2: ... Input 3: ..."></div>
           </div>
         </div>
+      
+  <div class="task-download-row">
+    <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task1', 'Task 1 — Control systems')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+  </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 3: Flowcharts</h1>
+      <h1 class="notes-h1" id="section-3">Section 3: Flowcharts</h1>
 
       <p class="notes-p">A <strong>flowchart</strong> is a graphical way of planning and communicating a control sequence. It shows exactly what the microcontroller should do, in what order, and under what conditions. Flowcharts are used in the QS assignment and exam — you must be able to read, draw, correct and simulate them.</p>
 
@@ -368,7 +426,7 @@
               fill="none" stroke="#000" stroke-width="2" marker-end="url(#arrowL)"/>
       </svg>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task3">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Flowchart symbols and terminology</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -387,12 +445,16 @@
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t3c" data-placeholder="What is wrong and how to correct it..."></div>
           </div>
         </div>
+      
+  <div class="task-download-row">
+    <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task3', 'Task 3 — Flowchart symbols and terminology')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+  </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 4: Drawing Flowcharts from a Specification</h1>
+      <h1 class="notes-h1" id="section-4">Section 4: Drawing Flowcharts from a Specification</h1>
 
       <p class="notes-p">In the QS exam and assignment you will be given a written specification and asked to draw a flowchart. Read the specification carefully — each step becomes one or more boxes in the flowchart.</p>
 
@@ -526,7 +588,7 @@
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/control.html" title="NoSyntaxSim control systems simulator" loading="lazy"></iframe></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task4">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Drawing flowcharts from a specification</div></div>
         <div class="assignment-body">
           <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">For each task: sketch your flowchart, then build and simulate it in NoSyntaxSim.</p>
@@ -561,12 +623,16 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t4c" data-placeholder="Sketch or describe your flowchart here..."></div>
           </div>
         </div>
+      
+  <div class="task-download-row">
+    <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task4', 'Task 4 — Drawing flowcharts from a specification')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+  </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 5: Using Inputs — Decision Boxes</h1>
+      <h1 class="notes-h1" id="section-5">Section 5: Using Inputs — Decision Boxes</h1>
 
       <p class="notes-p">Most real control systems respond to sensor inputs. A <strong>decision box</strong> (diamond) checks whether an input is ON or OFF and branches the flowchart accordingly.</p>
 
@@ -843,7 +909,7 @@
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/control.html" title="NoSyntaxSim input decision simulator" loading="lazy"></iframe></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task5">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Inputs and decision boxes</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -867,12 +933,16 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t5d" data-placeholder="Sketch or describe your flowchart here..."></div>
           </div>
         </div>
+      
+  <div class="task-download-row">
+    <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task5', 'Task 5 — Inputs and decision boxes')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+  </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 6: Finite (Counted) Loops</h1>
+      <h1 class="notes-h1" id="section-6">Section 6: Finite (Counted) Loops</h1>
 
       <p class="notes-p">A <strong>finite loop</strong> — also called a <strong>fixed loop</strong>, a <strong>counted loop</strong>, or a <strong>for loop</strong> — repeats a sequence a set, predetermined number of times decided in advance, then stops and moves on. This is different from a continuous loop, which has no predetermined end and repeats indefinitely.</p>
 
@@ -1015,7 +1085,7 @@
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/control.html" title="NoSyntaxSim finite loop simulator" loading="lazy"></iframe></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task6">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Finite loops</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1034,12 +1104,16 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t6c" data-placeholder="Sketch or describe your flowchart here..."></div>
           </div>
         </div>
+      
+  <div class="task-download-row">
+    <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task6', 'Task 6 — Finite loops')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+  </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 7: Reading and Correcting Flowcharts</h1>
+      <h1 class="notes-h1" id="section-7">Section 7: Reading and Correcting Flowcharts</h1>
 
       <p class="notes-p">In the QS exam you will often be given a flowchart that contains <strong>errors</strong> and asked to identify and correct them. Common errors include:</p>
 
@@ -1096,7 +1170,7 @@
         <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Error 2:</strong> The delay box reads "500" — this is missing the unit. It should read "Wait 500 ms".</div></div>
       </div>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task7">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Reading and correcting flowcharts</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1164,12 +1238,16 @@
             <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-t7b" data-placeholder="Error 1: ... Correction: ... Error 2: ... Correction: ..."></div>
           </div>
         </div>
+      
+  <div class="task-download-row">
+    <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task7', 'Task 7 — Reading and correcting flowcharts')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+  </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 8: Inputs, Outputs and Pin Numbers</h1>
+      <h1 class="notes-h1" id="section-8">Section 8: Inputs, Outputs and Pin Numbers</h1>
 
       <p class="notes-p">The microcontroller used in NoSyntaxSim is based on the <strong>Arduino</strong> platform. Inputs and outputs connect to numbered <strong>digital pins</strong> (D2–D13). In the QS exam, you will always be given a <strong>pin table</strong> telling you which pin connects to which input or output device.</p>
 
@@ -1196,7 +1274,7 @@
 
       <p class="notes-p">Some inputs — like a thermistor or an LDR — can physically vary smoothly rather than switching cleanly between two states. At this level, you can still treat them as behaving digitally: they are simply LOW until a particular point is reached (e.g. a temperature or light level), then they become HIGH. In Yenka and in some tasks, this is exactly how these inputs are controlled and checked in a flowchart.</p>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task8">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; Inputs, outputs and pin tables</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1210,12 +1288,16 @@
             <div class="answer-box" contenteditable="true" data-key="cs-t2c" data-placeholder="Digital: ... Analogue: ..."></div>
           </div>
         </div>
+      
+  <div class="task-download-row">
+    <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task8', 'Task 8 — Inputs, outputs and pin tables')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+  </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 9: Generating Code</h1>
+      <h1 class="notes-h1" id="section-9">Section 9: Generating Code</h1>
 
       <p class="notes-p">One of the most powerful features of NoSyntaxSim is that it can automatically convert your flowchart into real code — either <strong>Arduino C++</strong> or <strong>pBASIC</strong> (the language used by PICAXE chips), depending on which target you choose. This is the actual code that would run on a physical microcontroller.</p>
 
@@ -1226,7 +1308,7 @@
       <!-- DIAGRAM PLACEHOLDER -->
       <img src="images/nosyntax-code-export.png" alt="Screenshot of NoSyntaxSim Generate Code button and example Arduino code output for a flashing LED" style="width:100%;max-width:680px;display:block;margin:16px auto;border-radius:8px;">
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-task9">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 9 &mdash; From flowchart to code</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1276,12 +1358,16 @@
             <div class="answer-box answer-box-sm" contenteditable="true" data-key="cs-t9e" data-placeholder="What is wrong and how to fix it..."></div>
           </div>
         </div>
+      
+  <div class="task-download-row">
+    <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task9', 'Task 9 — From flowchart to code')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+  </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Output Drivers</h1>
+      <h1 class="notes-h1" id="section-9b">Output Drivers</h1>
 
       <p class="notes-p">A microcontroller pin can only supply a small current — not enough to directly drive a motor or solenoid. An <strong>output driver</strong> (typically a transistor or relay) amplifies the signal to power the output device. In exam circuits, a <strong>transistor driver circuit</strong> is commonly shown between the microcontroller output pin and the output device.</p>
 
@@ -1290,7 +1376,7 @@
 
       <p class="notes-p">This circuit uses three outputs. <strong>Output5</strong> (LED) and <strong>Output6</strong> (buzzer) both draw very little current, so they run directly from the microcontroller's own supply. <strong>Output7</strong> drives a transistor, which switches a relay coil — the relay's separate contacts then control a motor circuit running from a much higher voltage (24&nbsp;V), since that's more current and voltage than the microcontroller or transistor could handle directly. The diode across the coil protects the transistor from the voltage spike produced when the relay switches off.</p>
 
-      <div class="assignment">
+      <div class="assignment" id="assignment-od">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Output drivers — check your understanding</div></div>
         <div class="assignment-body">
           <div class="task-item">
@@ -1299,14 +1385,20 @@
             <div class="answer-box" contenteditable="true" data-key="cs-t2b" data-placeholder="Explain why a driver is needed..."></div>
           </div>
         </div>
+      
+  <div class="task-download-row">
+    <button class="task-download-btn" onclick="downloadTaskPDF('assignment-od', 'Output drivers — check your understanding')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+  </div>
       </div>
 
       <hr class="divider">
 
       <!-- ═══════════════════════════════════════════════════════════ -->
-      <h1 class="notes-h1">Section 10: Design Challenges</h1>
+      <h1 class="notes-h1" id="section-10">Section 10: Design Challenges</h1>
 
-      <p class="notes-p">For each challenge below, follow the full engineering process: read the specification carefully, draw a flowchart, then build and simulate it in NoSyntaxSim. Once it's working, export your solution and paste it into your notes as a record of your finished system.</p>
+      <p class="notes-p">For each challenge below, follow the full engineering process: read the specification carefully, design a flowchart, then build and simulate it in NoSyntaxSim. Test it against every point in the specification, and once it's working, export your solution and paste it into your notes as a record of your finished system.</p>
+
+      <div class="key-point"><strong>How to approach these:</strong> Design your flowchart first — don't just start dragging blocks into NoSyntaxSim. Build it, then test every condition in the specification in turn (not just the "happy path"). If something doesn't work, work out which part of your flowchart is responsible before changing anything. Finally, evaluate: does your system fully meet the specification, and is there anything you'd improve given more time?</div>
 
       <!-- Final simulator embed — open workspace -->
       <div class="sim-embed-section">
@@ -1320,113 +1412,166 @@
         <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/control.html" title="NoSyntaxSim design challenge workspace" loading="lazy"></iframe></div>
       </div>
 
-      <div class="assignment">
-        <div class="assignment-header"><div class="assignment-title">&#x1F3AF; Design Challenges</div></div>
+      <hr class="divider">
+
+      <h2 class="notes-h2" id="dc1">Challenge 1 &mdash; Fire alarm for a Cairngorms village hall</h2>
+      <p class="notes-p">A village hall in the Cairngorms is having a control system fitted ahead of the winter ceilidh season, so the caretaker can arm the fire alarm overnight without needing a full commercial installation.</p>
+
+      <table class="pin-table">
+        <tr><th>Pin</th><th>Direction</th><th>Device</th></tr>
+        <tr><td>D2</td><td class="pin-in">INPUT</td><td>Master arm switch</td></tr>
+        <tr><td>D3</td><td class="pin-in">INPUT</td><td>Heat sensor</td></tr>
+        <tr><td>D4</td><td class="pin-in">INPUT</td><td>Manual alarm button</td></tr>
+        <tr><td>D5</td><td class="pin-in">INPUT</td><td>Reset switch</td></tr>
+        <tr><td>D8</td><td class="pin-out">OUTPUT</td><td>Alarm</td></tr>
+      </table>
+
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>The master switch (D2) must be pressed to arm the system.</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>Once armed, if the heat sensor (D3) is activated OR the manual alarm button (D4) is pressed, the alarm (D8) sounds.</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>The alarm continues to sound until the reset switch (D5) is pressed.</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>After reset, the system returns to waiting in the armed state.</td></tr>
+      </table>
+
+      <div class="assignment" id="assignment-dc1">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Challenge 1 &mdash; Fire alarm</div></div>
         <div class="assignment-body">
-
           <div class="task-item">
-            <div class="task-q"><strong>Challenge 1 &mdash; Fire alarm system</strong></div>
-            <div class="spec-box">
-              <div class="spec-box-title">&#x1F4CB; Specification</div>
-              <ul>
-                <li>A master switch (D2) must be pressed to arm the system</li>
-                <li>If a heat sensor (D3) is activated OR a manual alarm button (D4) is pressed, the alarm (D8) sounds</li>
-                <li>The alarm continues to sound until a reset switch (D5) is pressed</li>
-                <li>After reset, the system returns to waiting (armed state)</li>
-              </ul>
-            </div>
-            <div class="answer-label">Image of final working system <span class="saved-indicator" id="ind-dc3">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc3" data-placeholder="Sketch or describe your flowchart here..."></div>
-          </div>
-
-          <div class="task-item">
-            <div class="task-q"><strong>Challenge 2 &mdash; Starting signal for a race (exam-style)</strong></div>
-            <div class="spec-box">
-              <div class="spec-box-title">&#x1F4CB; Specification — Pin table</div>
-              <ul style="list-style:none;padding:0;margin:0;">
-                <li>D2 = Start button &nbsp;|&nbsp; D8 = Red LED &nbsp;|&nbsp; D9 = Amber LED &nbsp;|&nbsp; D10 = Green LED &nbsp;|&nbsp; D11 = Buzzer</li>
-              </ul>
-            </div>
-            <div class="spec-box" style="margin-top:8px;">
-              <div class="spec-box-title">&#x1F4CB; Sequence</div>
-              <ol>
-                <li>Wait until start button (D2) is pressed</li>
-                <li>Red LED (D8) ON — Wait 3 s</li>
-                <li>Red (D8) OFF, Amber (D9) ON — Wait 1 s</li>
-                <li>Amber (D9) OFF, Green (D10) ON, Buzzer (D11) ON — Wait 0.5 s</li>
-                <li>Buzzer (D11) OFF — Green LED stays ON</li>
-                <li>System waits for the next race (continuous loop back to wait for button)</li>
-              </ol>
-            </div>
-            <div class="answer-label">Image of final working system <span class="saved-indicator" id="ind-dc4">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc4" data-placeholder="Sketch or describe your flowchart here..."></div>
-          </div>
-
-          <div class="key-point">&#x1F393; <strong>Higher-level content:</strong> Challenges 3 and 4 below involve arithmetic on a variable (adding and subtracting values), which goes beyond the N5 course specification. They're included as stretch challenges — if you're working towards N5, you don't need to complete these to achieve your award, though most students are capable of having a go with some support.</div>
-
-          <div class="task-item">
-            <div class="task-q"><strong>Challenge 3 &mdash; Museum people counter</strong></div>
-            <p style="font-size:13px;color:var(--gray-500);margin:4px 0 8px;">This challenge combines decision boxes, a counted variable and two inputs.</p>
-            <div class="spec-box">
-              <div class="spec-box-title">&#x1F4CB; Specification — Pin table</div>
-              <ul style="list-style:none;padding:0;margin:0 0 6px;">
-                <li>D2 = Entry sensor (ON when person enters) &nbsp;|&nbsp; D3 = Exit sensor (ON when person leaves)</li>
-                <li>D8 = Display / counter output &nbsp;|&nbsp; D9 = Alarm (sounds when museum is full)</li>
-              </ul>
-            </div>
-            <div class="spec-box" style="margin-top:8px;">
-              <div class="spec-box-title">&#x1F4CB; Sequence</div>
-              <ol>
-                <li>Set count = 0</li>
-                <li>Check entry sensor (D2) — if ON, add 1 to count</li>
-                <li>Check exit sensor (D3) — if ON, subtract 1 from count</li>
-                <li>If count &gt; 10 (museum full), turn alarm (D9) ON, otherwise turn alarm OFF</li>
-                <li>Output count value to display (D8)</li>
-                <li>Repeat continuously</li>
-              </ol>
-            </div>
+            <div class="task-q">Design, build and simulate the fire alarm system described above. Test each part of the specification separately, then evaluate your finished system against it.</div>
             <div class="answer-label">Image of final working system <span class="saved-indicator" id="ind-dc1">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc1" data-placeholder="Sketch or describe your flowchart here..."></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc1" data-placeholder="Paste your exported flowchart/simulation here, or describe it..."></div>
           </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc1', 'Challenge 1 — Fire alarm')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
 
+      <hr class="divider">
+
+      <h2 class="notes-h2" id="dc2">Challenge 2 &mdash; Starting signal for the Braemar hill races</h2>
+      <p class="notes-p">The organisers of a Highland Games hill race want an automated starting signal, similar to the red-amber-green sequence used to start races at professional athletics meetings, so a single steward can start each wave of runners consistently.</p>
+
+      <table class="pin-table">
+        <tr><th>Pin</th><th>Direction</th><th>Device</th></tr>
+        <tr><td>D2</td><td class="pin-in">INPUT</td><td>Start button</td></tr>
+        <tr><td>D8</td><td class="pin-out">OUTPUT</td><td>Red LED</td></tr>
+        <tr><td>D9</td><td class="pin-out">OUTPUT</td><td>Amber LED</td></tr>
+        <tr><td>D10</td><td class="pin-out">OUTPUT</td><td>Green LED</td></tr>
+        <tr><td>D11</td><td class="pin-out">OUTPUT</td><td>Buzzer</td></tr>
+      </table>
+
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>Wait until the start button (D2) is pressed.</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>Red LED (D8) ON — wait 3 s.</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>Red (D8) OFF, Amber (D9) ON — wait 1 s.</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>Amber (D9) OFF, Green (D10) ON, Buzzer (D11) ON — wait 0.5 s.</td></tr>
+        <tr><th><span class="data-badge">v</span></th><td>Buzzer (D11) OFF — Green LED stays ON.</td></tr>
+        <tr><th><span class="data-badge">vi</span></th><td>The system waits for the next race (continuous loop back to step i).</td></tr>
+      </table>
+
+      <div class="assignment" id="assignment-dc2">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Challenge 2 &mdash; Race start signal</div></div>
+        <div class="assignment-body">
           <div class="task-item">
-            <div class="task-q"><strong>Challenge 4 &mdash; Coin-operated can dispenser</strong></div>
-            <p style="font-size:13px;color:var(--gray-500);margin:4px 0 8px;">This challenge combines a for…next counted loop with multiple inputs and a sequenced output.</p>
-            <div class="spec-box">
-              <div class="spec-box-title">&#x1F4CB; Specification — Pin table</div>
-              <ul style="list-style:none;padding:0;margin:0 0 6px;">
-                <li>D2 = 10p coin sensor &nbsp;|&nbsp; D3 = 20p coin sensor &nbsp;|&nbsp; D4 = Dispense button</li>
-                <li>D8 = Can dispenser motor &nbsp;|&nbsp; D9 = Change/reject indicator light</li>
-              </ul>
-            </div>
-            <div class="spec-box" style="margin-top:8px;">
-              <div class="spec-box-title">&#x1F4CB; Sequence</div>
-              <ol>
-                <li>Set total = 0</li>
-                <li>Wait for a coin — if D2 pressed (10p) add 10 to total; if D3 pressed (20p) add 20 to total</li>
-                <li>Repeat step 2 until dispense button (D4) is pressed</li>
-                <li>If total &ge; 30p: turn D8 ON (dispense can) — Wait 1 s — turn D8 OFF</li>
-                <li>If total &ne; 30p exactly: flash D9 (change light) 3 times — each flash 0.5 s ON, 0.5 s OFF</li>
-                <li>Reset total to 0 and repeat</li>
-              </ol>
-            </div>
+            <div class="task-q">Design, build and simulate the race starting signal described above. Test that the sequence times are correct and that it's ready to go again for the next race.</div>
             <div class="answer-label">Image of final working system <span class="saved-indicator" id="ind-dc2">&#x2713; Saved</span></div>
-            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc2" data-placeholder="Sketch or describe your flowchart here..."></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc2" data-placeholder="Paste your exported flowchart/simulation here, or describe it..."></div>
           </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc2', 'Challenge 2 — Race start signal')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
 
+      <hr class="divider">
+
+      <div class="key-point">&#x1F393; <strong>Higher-level content:</strong> Challenges 3 and 4 below involve arithmetic on a variable (adding and subtracting values), which goes beyond the N5 course specification. They're included as stretch challenges — if you're working towards N5, you don't need to complete these to achieve your award, though most students are capable of having a go with some support.</div>
+
+      <h2 class="notes-h2" id="dc3">Challenge 3 &mdash; Visitor counter for V&amp;A Dundee</h2>
+      <p class="notes-p">V&amp;A Dundee wants a simple visitor counter fitted at a gallery entrance, so staff can see at a glance how many people are inside and be alerted if the room gets too busy.</p>
+      <p style="font-size:13px;color:var(--gray-500);margin:4px 0 10px;">This challenge combines decision boxes, a counted variable and two inputs.</p>
+
+      <table class="pin-table">
+        <tr><th>Pin</th><th>Direction</th><th>Device</th></tr>
+        <tr><td>D2</td><td class="pin-in">INPUT</td><td>Entry sensor (ON when a person enters)</td></tr>
+        <tr><td>D3</td><td class="pin-in">INPUT</td><td>Exit sensor (ON when a person leaves)</td></tr>
+        <tr><td>D8</td><td class="pin-out">OUTPUT</td><td>Display / counter output</td></tr>
+        <tr><td>D9</td><td class="pin-out">OUTPUT</td><td>Alarm (sounds when the gallery is full)</td></tr>
+      </table>
+
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>Set count = 0.</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>Check the entry sensor (D2) — if ON, add 1 to count.</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>Check the exit sensor (D3) — if ON, subtract 1 from count.</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>If count &gt; 10 (gallery full), turn the alarm (D9) ON, otherwise turn it OFF.</td></tr>
+        <tr><th><span class="data-badge">v</span></th><td>Output the count value to the display (D8).</td></tr>
+        <tr><th><span class="data-badge">vi</span></th><td>Repeat continuously.</td></tr>
+      </table>
+
+      <div class="assignment" id="assignment-dc3">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Challenge 3 &mdash; Visitor counter</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Design, build and simulate the visitor counter described above. Test that the count rises and falls correctly, and that the alarm behaves correctly at the capacity limit.</div>
+            <div class="answer-label">Image of final working system <span class="saved-indicator" id="ind-dc3">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc3" data-placeholder="Paste your exported flowchart/simulation here, or describe it..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc3', 'Challenge 3 — Visitor counter')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h2 class="notes-h2" id="dc4">Challenge 4 &mdash; Can dispenser for a school in Fort William</h2>
+      <p class="notes-p">A school in Fort William is fitting a coin-operated can dispenser in the common room and needs a control system that accepts 10p and 20p coins, dispenses a can once enough money has been inserted, and gives change if too much is paid.</p>
+      <p style="font-size:13px;color:var(--gray-500);margin:4px 0 10px;">This challenge combines a for&hellip;next counted loop with multiple inputs and a sequenced output.</p>
+
+      <table class="pin-table">
+        <tr><th>Pin</th><th>Direction</th><th>Device</th></tr>
+        <tr><td>D2</td><td class="pin-in">INPUT</td><td>10p coin sensor</td></tr>
+        <tr><td>D3</td><td class="pin-in">INPUT</td><td>20p coin sensor</td></tr>
+        <tr><td>D4</td><td class="pin-in">INPUT</td><td>Dispense button</td></tr>
+        <tr><td>D8</td><td class="pin-out">OUTPUT</td><td>Can dispenser motor</td></tr>
+        <tr><td>D9</td><td class="pin-out">OUTPUT</td><td>Change/reject indicator light</td></tr>
+      </table>
+
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>Set total = 0.</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>Wait for a coin — if D2 is pressed (10p) add 10 to total; if D3 is pressed (20p) add 20 to total.</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>Repeat step ii until the dispense button (D4) is pressed.</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>If total &ge; 30p: turn D8 ON (dispense can) — wait 1 s — turn D8 OFF.</td></tr>
+        <tr><th><span class="data-badge">v</span></th><td>If total &ne; 30p exactly: flash D9 (change light) 3 times — each flash 0.5 s ON, 0.5 s OFF.</td></tr>
+        <tr><th><span class="data-badge">vi</span></th><td>Reset total to 0 and repeat.</td></tr>
+      </table>
+
+      <div class="assignment" id="assignment-dc4">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Challenge 4 &mdash; Can dispenser</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Design, build and simulate the can dispenser described above. Test it with exact payment, overpayment and underpayment, then evaluate whether your system handles all three correctly.</div>
+            <div class="answer-label">Image of final working system <span class="saved-indicator" id="ind-dc4">&#x2713; Saved</span></div>
+            <div class="answer-box answer-box-lg" contenteditable="true" data-key="cs-dc4" data-placeholder="Paste your exported flowchart/simulation here, or describe it..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc4', 'Challenge 4 — Can dispenser')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
 
-      <!-- Controls -->
+<!-- Controls -->
       <div class="controls-bar">
         <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-download-all" id="downloadAllBtn" onclick="downloadAllAnswersPDF()">&#x2B07;&#xFE0F; Download ALL my answers (PDF)</button>
         <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8;&#xFE0F; Print page</button>
         <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">&#x1F5D1;&#xFE0F; Clear all answers</button>
       </div>
       <div class="storage-status" id="storage-status">Last saved: never</div>
 
-      <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
+      <div class="page-nav" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
         <button class="ctrl-btn ctrl-btn-print" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});">&#x2B06;&#xFE0F; Back to top</button>
         <a href="index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">&#x2302; Main menu</a>
         <a href="../../mechanisms/drive-systems/course-notes.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">Next section &#x2192;</a>
@@ -1444,18 +1589,19 @@
 
 <script src="../../../../js/site.js"></script>
 <script src="../../../../js/nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
-
 <script>
 const STORAGE_PREFIX='ess_answers_';
 function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
 function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
 function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
-function showSaved(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var lbl=box.previousElementSibling;if(!lbl)return;var ind=lbl.querySelector('.saved-indicator');if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
-function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('.answer-box').forEach(function(b){var k=b.dataset.key;if(k){localStorage.removeItem(STORAGE_PREFIX+k);b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function showSaved(key){var ind=document.getElementById('ind-'+key.replace(/^cs-/,''));if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('[data-key]').forEach(function(b){var k=b.dataset.key;if(k){try{localStorage.removeItem(STORAGE_PREFIX+k);}catch(e){}b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
 function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
 document.addEventListener('DOMContentLoaded',function(){
-  document.querySelectorAll('.answer-box').forEach(function(box){
+  /* Answer boxes AND the editable table cells both autosave */
+  document.querySelectorAll('[data-key]').forEach(function(box){
     var key=box.dataset.key;if(!key)return;
     var saved=loadValue(key);if(saved)box.innerHTML=saved;
     var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
@@ -1463,6 +1609,240 @@ document.addEventListener('DOMContentLoaded',function(){
     box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
   });
 });
+
+/* ── PDF export ─────────────────────────────────────────────── */
+/* jsPDF's built-in font can't show some symbols, so convert them to plain text */
+function pdfSafe(s){
+  if(!s)return '';
+  return String(s)
+    .replace(/[\u2018\u2019\u201B\u2032]/g,"'")
+    .replace(/[\u201C\u201D\u201F\u2033]/g,'"')
+    .replace(/[\u2013\u2014\u2212]/g,'-')
+    .replace(/\u2026/g,'...')
+    .replace(/\u00A0/g,' ')
+    .replace(/\u2713/g,'')
+    .replace(/\u03C3/g,'sigma').replace(/\u03B5/g,'epsilon').replace(/\u0394/g,'delta').replace(/\u03C0/g,'pi')
+    .replace(/[^\x00-\xFF]/g,'');
+}
+
+var PUPIL_NAME_KEY='cs-pupil-name';
+function getPupilName(){try{return localStorage.getItem(PUPIL_NAME_KEY)||'';}catch(e){return '';}}
+
+function pdfNewDoc(){
+  var doc=new window.jspdf.jsPDF({unit:'pt',format:'a4'});
+  var state={margin:48,pageWidth:doc.internal.pageSize.getWidth(),pageHeight:doc.internal.pageSize.getHeight()};
+  state.usableWidth=state.pageWidth-state.margin*2;
+  state.y=state.margin;
+  return {doc:doc,state:state};
+}
+
+function pdfAddHeader(doc,state,taskLabel){
+  doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(15,90,68);
+  doc.text('Engineering Science Scotland',state.margin,state.y);state.y+=20;
+  doc.setFontSize(14);doc.setTextColor(30,30,30);
+  var tLines=doc.splitTextToSize(pdfSafe(taskLabel),state.usableWidth);
+  doc.text(tLines,state.margin,state.y);state.y+=tLines.length*16+6;
+  doc.setFont('helvetica','normal');doc.setFontSize(11);doc.setTextColor(90,90,90);
+  var pupilName=getPupilName();
+  var todayStr=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  var nameLine=pupilName?('Name: '+pdfSafe(pupilName)+'      Date: '+todayStr):('Name: _________________________________      Date: _______________');
+  doc.text(nameLine,state.margin,state.y);state.y+=20;
+  doc.setDrawColor(200,200,200);doc.line(state.margin,state.y,state.pageWidth-state.margin,state.y);state.y+=18;
+}
+
+function pdfEnsureSpace(doc,state,h){if(state.y+h>state.pageHeight-state.margin){doc.addPage();state.y=state.margin;}}
+
+function pdfWriteAnswer(doc,state,el){
+  var img=el.querySelector('img');
+  if(img&&img.src){
+    try{
+      var props=doc.getImageProperties(img.src);
+      var ratio=Math.min(state.usableWidth/props.width,260/props.height,1);
+      var w=props.width*ratio,h=props.height*ratio;
+      pdfEnsureSpace(doc,state,h+14);
+      doc.addImage(img.src,props.fileType||'PNG',state.margin,state.y,w,h);
+      state.y+=h+10;
+    }catch(e){
+      doc.setFont('helvetica','italic');doc.setFontSize(11);doc.setTextColor(160,60,60);
+      pdfEnsureSpace(doc,state,14);doc.text('[Could not embed pasted image]',state.margin,state.y);state.y+=16;
+    }
+  }
+  var text=pdfSafe(el.innerText.trim());
+  if(img&&!text)return;
+  doc.setFontSize(11);
+  if(!text){doc.setFont('helvetica','italic');doc.setTextColor(160,160,160);text='(no answer entered yet)';}
+  else{doc.setFont('helvetica','normal');doc.setTextColor(40,40,40);}
+  var lines=doc.splitTextToSize(text,state.usableWidth);
+  for(var i=0;i<lines.length;i++){pdfEnsureSpace(doc,state,14);doc.text(lines[i],state.margin,state.y);state.y+=14;}
+  state.y+=6;
+}
+
+/* Each task item: question in bold, then every saved field (answer boxes and table cells) in page order */
+function pdfRenderPanelItems(doc,state,panel){
+  var items=panel.querySelectorAll('.task-item');
+  for(var i=0;i<items.length;i++){
+    var qEl=items[i].querySelector('.task-q');
+    var qText=qEl?pdfSafe(qEl.innerText.trim()):'';
+    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(15,90,68);
+    var qLines=doc.splitTextToSize(qText,state.usableWidth);
+    pdfEnsureSpace(doc,state,qLines.length*14+6);
+    doc.text(qLines,state.margin,state.y);state.y+=qLines.length*14+6;
+    var fields=items[i].querySelectorAll('[data-key]');
+    for(var f=0;f<fields.length;f++){
+      var lab=fields[f].dataset.label;
+      if(lab){
+        doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(90,90,90);
+        pdfEnsureSpace(doc,state,28);doc.text(pdfSafe(lab)+':',state.margin,state.y);state.y+=13;
+      }
+      pdfWriteAnswer(doc,state,fields[f]);
+    }
+    state.y+=6;
+  }
+}
+
+function pdfAddFooters(doc,state){
+  var n=doc.internal.getNumberOfPages();
+  for(var p=1;p<=n;p++){
+    doc.setPage(p);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(150,150,150);
+    doc.text('Page '+p+' of '+n+'  -  engineeringsciencescotland.co.uk',state.margin,state.pageHeight-24);
+  }
+}
+
+function downloadTaskPDF(panelId,taskLabel){
+  var panel=document.getElementById(panelId);if(!panel)return;
+  var btn=panel.querySelector('.task-download-btn');var orig=btn?btn.innerHTML:'';
+  if(btn){btn.disabled=true;btn.innerHTML='Building PDF&hellip;';}
+  setTimeout(function(){
+    try{
+      var o=pdfNewDoc();
+      pdfAddHeader(o.doc,o.state,taskLabel);
+      pdfRenderPanelItems(o.doc,o.state,panel);
+      pdfAddFooters(o.doc,o.state);
+      o.doc.save(pdfSafe(taskLabel).replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'-')+'.pdf');
+    }catch(err){console.error(err);alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.');}
+    finally{if(btn){btn.disabled=false;btn.innerHTML=orig;}}
+  },30);
+}
+
+/* Keep this list in sync with the task panels on the page, in page order */
+var ALL_TASK_PANELS=[
+  ['assignment-task1','Task 1 — Control systems'],
+  ['assignment-task3','Task 3 — Flowchart symbols and terminology'],
+  ['assignment-task4','Task 4 — Drawing flowcharts from a specification'],
+  ['assignment-task5','Task 5 — Inputs and decision boxes'],
+  ['assignment-task6','Task 6 — Finite loops'],
+  ['assignment-task7','Task 7 — Reading and correcting flowcharts'],
+  ['assignment-task8','Task 8 — Inputs, outputs and pin tables'],
+  ['assignment-task9','Task 9 — From flowchart to code'],
+  ['assignment-od','Output drivers — check your understanding'],
+  ['assignment-dc1','Challenge 1 — Fire alarm'],
+  ['assignment-dc2','Challenge 2 — Race start signal'],
+  ['assignment-dc3','Challenge 3 — Visitor counter'],
+  ['assignment-dc4','Challenge 4 — Can dispenser']
+];
+
+function downloadAllAnswersPDF(){
+  var btn=document.getElementById('downloadAllBtn');var orig=btn?btn.innerHTML:'';
+  if(btn){btn.disabled=true;btn.innerHTML='Building PDF&hellip;';}
+  setTimeout(function(){
+    try{
+      var o=pdfNewDoc(),doc=o.doc,state=o.state;
+      pdfAddHeader(doc,state,'Control Systems — All my answers');
+      for(var i=0;i<ALL_TASK_PANELS.length;i++){
+        var panel=document.getElementById(ALL_TASK_PANELS[i][0]);if(!panel)continue;
+        pdfEnsureSpace(doc,state,40);
+        doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(194,65,12);
+        doc.text(pdfSafe(ALL_TASK_PANELS[i][1]),state.margin,state.y);state.y+=8;
+        doc.setDrawColor(230,200,180);doc.line(state.margin,state.y,state.pageWidth-state.margin,state.y);state.y+=16;
+        pdfRenderPanelItems(doc,state,panel);state.y+=10;
+      }
+      pdfAddFooters(doc,state);
+      doc.save('Control-Systems-All-My-Answers.pdf');
+    }catch(err){console.error(err);alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.');}
+    finally{if(btn){btn.disabled=false;btn.innerHTML=orig;}}
+  },30);
+}
+
+/* ── Contents panel ─────────────────────────────────────────── */
+function openToc(){document.getElementById('tocPanel').classList.add('open');document.getElementById('tocOverlay').classList.add('open');}
+function closeToc(){document.getElementById('tocPanel').classList.remove('open');document.getElementById('tocOverlay').classList.remove('open');}
+
+/* ── My Name ────────────────────────────────────────────────── */
+function updateNameFabLabel(){var l=document.getElementById('nameFabLabel');if(!l)return;var n=getPupilName();l.textContent=n?n:'My Name';}
+function openNamePanel(){
+  var input=document.getElementById('nameInput');if(input)input.value=getPupilName();
+  var msg=document.getElementById('nameSavedMsg');if(msg)msg.classList.remove('show');
+  document.getElementById('nameOverlay').classList.add('open');
+  if(input)setTimeout(function(){input.focus();},50);
+}
+function closeNamePanel(){document.getElementById('nameOverlay').classList.remove('open');}
+function closeNameOverlayClick(e){if(e.target.id==='nameOverlay')closeNamePanel();}
+function saveNameInput(){
+  var input=document.getElementById('nameInput');var name=input?input.value.trim():'';
+  try{localStorage.setItem(PUPIL_NAME_KEY,name);}catch(e){}
+  updateNameFabLabel();
+  var msg=document.getElementById('nameSavedMsg');if(msg)msg.classList.add('show');
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeToc();closeNamePanel();}});
+</script>
+
+    <button class="toc-fab" id="tocFab" onclick="openToc()">&#x2630; Contents</button>
+
+    <button class="name-fab" id="nameFab" onclick="openNamePanel()"><span class="name-fab-icon">&#x1F464;</span><span id="nameFabLabel">My Name</span></button>
+
+    <div class="name-overlay" id="nameOverlay" onclick="closeNameOverlayClick(event)">
+      <div class="name-panel">
+        <button class="name-panel-close" onclick="closeNamePanel()" aria-label="Close">&times;</button>
+        <h3>Your name</h3>
+        <p>Enter your name once and it&rsquo;ll be added to the top of every task&rsquo;s downloaded PDF &mdash; no need to write it in by hand each time.</p>
+        <input type="text" id="nameInput" placeholder="e.g. Jamie Smith" maxlength="60">
+        <button class="name-panel-save" onclick="saveNameInput()">Save name</button>
+        <div class="name-panel-saved-msg" id="nameSavedMsg">&#x2713; Saved &mdash; it&rsquo;ll now appear on your PDFs</div>
+      </div>
+    </div>
+
+    <div class="toc-overlay" id="tocOverlay" onclick="closeToc()"></div>
+    <div class="toc-panel" id="tocPanel">
+      <div class="toc-panel-header">
+        <h3>Contents</h3>
+        <button class="toc-panel-close" onclick="closeToc()" aria-label="Close">&times;</button>
+      </div>
+      <nav class="toc-list" id="tocList">
+        <a href="#section-1" onclick="closeToc()">Section 1: Electronic Control Systems</a>
+        <a href="#section-2" onclick="closeToc()">Section 2: What is a Microcontroller?</a>
+        <a href="#section-3" onclick="closeToc()">Section 3: Flowcharts</a>
+        <a href="#section-4" onclick="closeToc()">Section 4: Drawing Flowcharts from a Specification</a>
+        <a href="#section-5" onclick="closeToc()">Section 5: Using Inputs — Decision Boxes</a>
+        <a href="#section-6" onclick="closeToc()">Section 6: Finite (Counted) Loops</a>
+        <a href="#section-7" onclick="closeToc()">Section 7: Reading and Correcting Flowcharts</a>
+        <a href="#section-8" onclick="closeToc()">Section 8: Inputs, Outputs and Pin Numbers</a>
+        <a href="#section-9" onclick="closeToc()">Section 9: Generating Code</a>
+        <a href="#section-9b" onclick="closeToc()">Output Drivers</a>
+        <a href="#section-10" onclick="closeToc()">Section 10: Design Challenges</a>
+        <a href="#dc1" class="toc-sub" onclick="closeToc()">Challenge 1 — Fire alarm</a>
+        <a href="#dc2" class="toc-sub" onclick="closeToc()">Challenge 2 — Race start signal</a>
+        <a href="#dc3" class="toc-sub" onclick="closeToc()">Challenge 3 — Visitor counter</a>
+        <a href="#dc4" class="toc-sub" onclick="closeToc()">Challenge 4 — Can dispenser</a>
+      </nav>
+    </div>
+
+<script>
+document.addEventListener('DOMContentLoaded',updateNameFabLabel);
+(function(){
+  var nameInputEl=document.getElementById('nameInput');
+  if(nameInputEl)nameInputEl.addEventListener('keydown',function(e){if(e.key==='Enter')saveNameInput();});
+  /* Scroll-spy: highlight the Contents link for the section in view */
+  var links=Array.prototype.slice.call(document.querySelectorAll('.toc-list a'));
+  var targets=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));}).filter(Boolean);
+  if(!targets.length||!('IntersectionObserver' in window))return;
+  var observer=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      var link=document.querySelector('.toc-list a[href="#'+entry.target.id+'"]');
+      if(link&&entry.isIntersecting){links.forEach(function(a){a.classList.remove('toc-active');});link.classList.add('toc-active');}
+    });
+  },{rootMargin:'-15% 0px -70% 0px',threshold:0});
+  targets.forEach(function(t){observer.observe(t);});
+})();
 </script>
 
 </body>
