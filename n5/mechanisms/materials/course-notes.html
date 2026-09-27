@@ -147,6 +147,8 @@
     .lightbox { position:fixed; inset:0; background:rgba(15,23,42,.85); display:none; align-items:center; justify-content:center; z-index:10010; padding:24px; cursor:zoom-out; }
     .lightbox.open { display:flex; }
     .lightbox img { max-width:100%; max-height:90vh; border-radius:8px; box-shadow:0 10px 40px rgba(0,0,0,.4); background:white; }
+    /* Length symbol l: font with a tail so it isn't mistaken for 1 */
+    .sym-l { font-family:"Trebuchet MS","Atkinson Hyperlegible",sans-serif; font-style:normal; }
     .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
 
     @media print {
@@ -156,6 +158,7 @@
       .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
     }
   </style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap">
 </head>
 <body>
 <nav class="topbar">
@@ -180,7 +183,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 27 September 2026, 09:55</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 27 September 2026, 12:02</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Materials</div>
       <h1 class="hero-title">&#x1F9F1; Materials &mdash; Course Notes</h1>
       <p class="hero-sub">Material properties, selection and justification, stress and strain calculations</p>
@@ -467,8 +470,8 @@
       <p class="notes-p">Every material deforms slightly when a force is applied to it — it stretches under tension or shortens under compression. This change in length, expressed as a <strong>proportion of the original length</strong>, is called <strong>strain</strong>. Strain tells us how much a material has deformed relative to its size.</p>
 
       <div class="formula-box">
-        <div class="formula">Strain (&epsilon;) = <span class="frac"><span class="num">Change in length (&Delta;l)</span><span class="den">Original length (l)</span></span></div>
-        <div class="formula-sub">Strain has <strong>no units</strong> — it is a dimensionless ratio. The symbol is the Greek letter epsilon (&epsilon;).<span style="display:block;margin-top:14px;">Length (l) is measured in <strong>metres (m)</strong>. &Delta;l and l must be in the <strong>same units</strong> before dividing.</span>Rearrangements: &nbsp; &Delta;l = &epsilon; &times; l &nbsp;&nbsp;and&nbsp;&nbsp; l = <span class="frac"><span class="num">&Delta;l</span><span class="den">&epsilon;</span></span></div>
+        <div class="formula">Strain (&epsilon;) = <span class="frac"><span class="num">Change in length (&Delta;<span class="sym-l">l</span>)</span><span class="den">Original length (<span class="sym-l">l</span>)</span></span></div>
+        <div class="formula-sub">Strain has <strong>no units</strong> — it is a dimensionless ratio. The symbol is the Greek letter epsilon (&epsilon;).<span style="display:block;margin-top:14px;">Length (<span class="sym-l">l</span>) is measured in <strong>metres (m)</strong>. &Delta;<span class="sym-l">l</span> and <span class="sym-l">l</span> must be in the <strong>same units</strong> before dividing.</span>Rearrangements: &nbsp; &Delta;<span class="sym-l">l</span> = &epsilon; &times; <span class="sym-l">l</span> &nbsp;&nbsp;and&nbsp;&nbsp; <span class="sym-l">l</span> = <span class="frac"><span class="num">&Delta;<span class="sym-l">l</span></span><span class="den">&epsilon;</span></span></div>
       </div>
 
       <div class="tri-row">
@@ -476,24 +479,24 @@
           <polygon points="65,4 126,108 4,108" fill="#f0fdfa" stroke="#0f766e" stroke-width="2.5" stroke-linejoin="round"/>
           <line x1="33" y1="60" x2="97" y2="60" stroke="#0f766e" stroke-width="2"/>
           <line x1="65" y1="60" x2="65" y2="108" stroke="#0f766e" stroke-width="2"/>
-          <text x="65" y="50" text-anchor="middle" font-size="22" font-weight="700" fill="#134e4a" font-family="Georgia,serif">&#916;l</text>
+          <text x="65" y="50" text-anchor="middle" font-size="22" font-weight="700" fill="#134e4a" font-family="Trebuchet MS, Atkinson Hyperlegible, sans-serif">&#916;l</text>
           <text x="44" y="94" text-anchor="middle" font-size="22" font-weight="700" fill="#134e4a" font-family="Georgia,serif">&#949;</text>
-          <text x="86" y="94" text-anchor="middle" font-size="22" font-weight="700" fill="#134e4a" font-family="Georgia,serif">l</text>
+          <text x="86" y="94" text-anchor="middle" font-size="22" font-weight="700" fill="#134e4a" font-family="Trebuchet MS, Atkinson Hyperlegible, sans-serif">l</text>
         </svg>
-        <p><strong>&Delta;l&epsilon;l formula triangle.</strong> It works exactly like the stress triangle: cover the quantity you want. Cover &epsilon; and you see &Delta;l over l; cover &Delta;l and you see &epsilon; next to l, so multiply.</p>
+        <p><strong>&Delta;<span class="sym-l">l</span>&epsilon;<span class="sym-l">l</span> formula triangle.</strong> It works exactly like the stress triangle: cover the quantity you want. Cover &epsilon; and you see &Delta;<span class="sym-l">l</span> over <span class="sym-l">l</span>; cover &Delta;<span class="sym-l">l</span> and you see &epsilon; next to <span class="sym-l">l</span>, so multiply.</p>
       </div>
 
       <div class="key-point">Strain is always a very small number — often expressed in scientific notation (e.g. 5 &times; 10<sup>&minus;4</sup>). It has no units because it is a ratio of two lengths.</div>
 
 
       <h2 class="notes-h2">Metres or millimetres?</h2>
-      <p class="notes-p">Length (l) is measured in <strong>metres (m)</strong>, so the original length of a member is usually given in m. The change in length (&Delta;l), however, is often tiny and is usually given in <strong>mm</strong>.</p>
-      <p class="notes-p">Because strain is one length divided by another, the units <strong>cancel out</strong>. <strong>As long as &Delta;l and l are in the same unit, the calculation works</strong> &mdash; you get exactly the same answer whether you use metres or millimetres.</p>
+      <p class="notes-p">Length (<span class="sym-l">l</span>) is measured in <strong>metres (m)</strong>, so the original length of a member is usually given in m. The change in length (&Delta;<span class="sym-l">l</span>), however, is often tiny and is usually given in <strong>mm</strong>.</p>
+      <p class="notes-p">Because strain is one length divided by another, the units <strong>cancel out</strong>. <strong>As long as &Delta;<span class="sym-l">l</span> and <span class="sym-l">l</span> are in the same unit, the calculation works</strong> &mdash; you get exactly the same answer whether you use metres or millimetres.</p>
       <p class="notes-p">When the change in length is a small decimal in mm (for example 0.06 mm), converting it to metres gives a number full of zeros (0.00006 m), and it is very easy to lose or add one. In that case it is often <strong>less confusing to convert the original length to mm</strong> instead, and work entirely in millimetres.</p>
       <div class="key-point">Pick one unit and convert <strong>both</strong> lengths into it before dividing. Working in m or in mm gives the same strain &mdash; choose whichever keeps the numbers simplest.</div>
 
       <h2 class="notes-h2">Tensile and compressive strain</h2>
-      <p class="notes-p">If a member is under <strong>tension</strong> (being stretched), &Delta;l is an <strong>increase</strong> in length — the strain is positive. If a member is under <strong>compression</strong> (being shortened), &Delta;l is a <strong>decrease</strong> in length — the strain is sometimes described as compressive.</p>
+      <p class="notes-p">If a member is under <strong>tension</strong> (being stretched), &Delta;<span class="sym-l">l</span> is an <strong>increase</strong> in length — the strain is positive. If a member is under <strong>compression</strong> (being shortened), &Delta;<span class="sym-l">l</span> is a <strong>decrease</strong> in length — the strain is sometimes described as compressive.</p>
 
       <!-- IMAGE SLOT -->
       <img src="images/strain-diagram.png" alt="Diagram showing a bar under tension with original length l and extension delta l labelled, alongside the strain formula" style="width:100%;max-width:600px;display:block;margin:16px auto;border-radius:8px;">
@@ -501,18 +504,18 @@
       <div class="worked-example">
         <div class="worked-example-title">Worked Example 1 &mdash; Strain in a wire</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">A steel wire of length 5 m stretches 2.5 mm when a load is applied. Calculate the strain.</p>
-        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Write the formula:</strong> &epsilon; = <span class="frac"><span class="num">&Delta;l</span><span class="den">l</span></span></div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Method A &mdash; work in metres:</strong> l = 5 m, &Delta;l = 2.5 mm = 0.0025 m<br>&epsilon; = <span class="frac"><span class="num">0.0025</span><span class="den">5</span></span> = 0.0005</div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Method B &mdash; work in millimetres:</strong> l = 5 m = 5 000 mm, &Delta;l = 2.5 mm<br>&epsilon; = <span class="frac"><span class="num">2.5</span><span class="den">5 000</span></span> = 0.0005</div></div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Write the formula:</strong> &epsilon; = <span class="frac"><span class="num">&Delta;<span class="sym-l">l</span></span><span class="den"><span class="sym-l">l</span></span></span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Method A &mdash; work in metres:</strong> <span class="sym-l">l</span> = 5 m, &Delta;<span class="sym-l">l</span> = 2.5 mm = 0.0025 m<br>&epsilon; = <span class="frac"><span class="num">0.0025</span><span class="den">5</span></span> = 0.0005</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Method B &mdash; work in millimetres:</strong> <span class="sym-l">l</span> = 5 m = 5 000 mm, &Delta;<span class="sym-l">l</span> = 2.5 mm<br>&epsilon; = <span class="frac"><span class="num">2.5</span><span class="den">5 000</span></span> = 0.0005</div></div>
         <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Answer:</strong> both methods give <strong>&epsilon; = 0.0005 (= 5 &times; 10<sup>&minus;4</sup>)</strong>. Strain has no units.</div></div>
       </div>
 
       <div class="worked-example">
         <div class="worked-example-title">Worked Example 2 &mdash; Finding change in length</div>
         <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">The allowable strain on a concrete column must not exceed 5 &times; 10<sup>&minus;4</sup>. The column is 3 m tall. Find the maximum reduction in height.</p>
-        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Rearrange:</strong> &Delta;l = &epsilon; &times; l</div></div>
-        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Work in metres:</strong> l = 3 m</div></div>
-        <div class="step"><div class="step-num">3</div><div class="step-content">&Delta;l = 5 &times; 10<sup>&minus;4</sup> &times; 3 = 0.0015 m = <strong>1.5 mm</strong></div></div>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Rearrange:</strong> &Delta;<span class="sym-l">l</span> = &epsilon; &times; <span class="sym-l">l</span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Work in metres:</strong> <span class="sym-l">l</span> = 3 m</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content">&Delta;<span class="sym-l">l</span> = 5 &times; 10<sup>&minus;4</sup> &times; 3 = 0.0015 m = <strong>1.5 mm</strong></div></div>
       </div>
 
       <div class="worked-example">
@@ -521,13 +524,13 @@
         <div class="step"><div class="step-num">1</div><div class="step-content"><strong>Find the force:</strong> F = mg = 2 500 &times; 9.81 = 24 525 N</div></div>
         <div class="step"><div class="step-num">2</div><div class="step-content"><strong>Find the area:</strong> A = 75 &times; 50 = 3 750 mm&sup2;</div></div>
         <div class="step"><div class="step-num">3</div><div class="step-content"><strong>Calculate stress:</strong> &sigma; = <span class="frac"><span class="num">F</span><span class="den">A</span></span> = <span class="frac"><span class="num">24 525</span><span class="den">3 750</span></span> = <strong>6.54 N/mm&sup2;</strong></div></div>
-        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Calculate strain</strong> (working in mm keeps the numbers simple): l = 0.5 m = 500 mm, &Delta;l = 2.5 mm<br>&epsilon; = <span class="frac"><span class="num">2.5</span><span class="den">500</span></span> = <strong>0.005</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>Calculate strain</strong> (working in mm keeps the numbers simple): <span class="sym-l">l</span> = 0.5 m = 500 mm, &Delta;<span class="sym-l">l</span> = 2.5 mm<br>&epsilon; = <span class="frac"><span class="num">2.5</span><span class="den">500</span></span> = <strong>0.005</strong></div></div>
       </div>
 
       <div class="assignment" id="assignment-task4">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Strain calculations</div></div>
         <div class="assignment-body">
-          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Show all working. Remember: &Delta;l and l must be in the same unit before dividing &mdash; if the change in length is a small decimal in mm, it is often easier to convert l to mm. State clearly that strain has no units.</p>
+          <p style="font-size:13px;color:var(--gray-500);margin-bottom:14px;">Show all working. Remember: &Delta;<span class="sym-l">l</span> and <span class="sym-l">l</span> must be in the same unit before dividing &mdash; if the change in length is a small decimal in mm, it is often easier to convert <span class="sym-l">l</span> to mm. State clearly that strain has no units.</p>
           <div class="task-item">
             <div class="task-q">1. A wire 10 m long stretches 5 mm when a force is applied. Find the strain.</div>
             <div class="answer-label">Working <span class="saved-indicator" id="ind-t4a">&#x2713; Saved</span></div>
