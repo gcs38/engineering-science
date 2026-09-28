@@ -217,7 +217,7 @@ var TEACHER_DOCS = {
 
   'systems-approach': [
     { key: 'notes_pdf',         status: 'soon',      id: '',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
-    { key: 'notes_answers',     status: 'soon',      id: '',                              label: 'Answers to course notes \u2014 PDF',         icon: '\u2705' },
+    { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
     { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
@@ -307,7 +307,9 @@ var TEACHER_DOCS = {
    Printable course notes, Answers to course notes and Unit test
    cards on each topic index page.
    - Printable notes and Answers: set in TEACHER_DOCS below
-     (keys notes_pdf and notes_answers)
+     (keys notes_pdf and notes_answers). For a Google Drive file use
+     id: 'FILE-ID'; for a page on this site (the locked HTML answers)
+     use page: 'answers.html'. Then set status: 'available'.
    - Unit test: set in UNIT_TEST_CONFIG below
    ============================================================ */
 
@@ -327,7 +329,13 @@ document.addEventListener('DOMContentLoaded', function () {
     var key = card.getAttribute('data-doc');
     var doc = docs.find(function (d) { return d.key === key; });
     var badge = card.querySelector('.rtc-badge-unavailable');
-    if (doc && doc.status === 'available' && doc.id && badge) {
+    if (doc && doc.status === 'available' && doc.page && badge) {
+      // A page on this site (e.g. the locked HTML answers)
+      card.href = doc.page;
+      card.onclick = null;
+      card.removeAttribute('onclick');
+      markAvailable(card, badge);
+    } else if (doc && doc.status === 'available' && doc.id && badge) {
       card.href = 'https://drive.google.com/file/d/' + doc.id + '/view';
       card.target = '_blank';
       card.onclick = null;
