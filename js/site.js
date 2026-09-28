@@ -524,10 +524,11 @@ function renderTeacherDocs(topicKey, containerId) {
       logoSub.setAttribute('aria-label', 'Scotland');
     }
 
-    // Level tabs: Higher and Advanced Higher greyed out and not clickable
+    // Level tabs: National 5 opens the National 5 menu; Higher and Advanced Higher greyed out and not clickable
     document.querySelectorAll('.level-tab').forEach(function (tab) {
       var href  = tab.getAttribute('href') || '';
       var level = tab.getAttribute('data-level') || '';
+      if (level === 'n5' || /(^|\/)n5\//.test(href)) tab.setAttribute('href', ESS_ROOT + 'n5/index.html');
       if (level === 'higher' || level === 'ah' || /(^|\/)(higher|ah)\//.test(href)) {
         tab.classList.remove('active');
         tab.classList.add('level-tab-disabled');
