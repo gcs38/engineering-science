@@ -216,7 +216,7 @@ var TEACHER_DOCS = {
   // ── Engineering Contexts ──────────────────────────────────
 
   'systems-approach': [
-    { key: 'notes_pdf',         status: 'soon',      id: '',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
+    { key: 'notes_pdf',         status: 'available', id: '', page: 'course-notes.pdf', label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
@@ -332,6 +332,7 @@ document.addEventListener('DOMContentLoaded', function () {
     if (doc && doc.status === 'available' && doc.page && badge) {
       // A page on this site (e.g. the locked HTML answers)
       card.href = doc.page;
+      if (/\.pdf$/i.test(doc.page)) card.target = '_blank';
       card.onclick = null;
       card.removeAttribute('onclick');
       markAvailable(card, badge);
