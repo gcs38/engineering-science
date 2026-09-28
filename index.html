@@ -4,12 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Home — Engineering Science Scotland</title>
-  <link rel="stylesheet" href="css/style.css?v=2">
+  <link rel="stylesheet" href="css/style.css?v=3">
   <script data-goatcounter="https://engineeringsciencescotland.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 </head>
 <body>
 <style>
-.home-full { margin-top: var(--topbar-h); }
+.home-full { margin-top: var(--topbar-h); cursor: pointer; }
+.level-card.level-card-disabled { opacity: .45; filter: grayscale(1); cursor: not-allowed; box-shadow: none; transform: none; }
 </style>
 <nav class="topbar">
   <a href="index.html" class="logo">
@@ -59,7 +60,7 @@
         </div>
         <div class="lc-footer"><span class="lc-status">Resources available now</span><span class="lc-arrow">&rarr;</span></div>
       </a>
-      <a href="higher/mechanisms/index.html" class="level-card">
+      <div class="level-card level-card-disabled" aria-disabled="true">
         <div class="lc-band higher"></div>
         <div class="lc-body">
           <div class="lc-scqf">SCQF Level 6</div>
@@ -67,9 +68,9 @@
           <div class="lc-sub">Extended theory including op-amps, torque calculations and nodal analysis.</div>
           <div class="lc-tags"><span class="lc-tag">Contexts</span><span class="lc-tag">Electronics</span><span class="lc-tag">Mechanisms</span></div>
         </div>
-        <div class="lc-footer"><span class="lc-status">Coming soon</span><span class="lc-arrow">&rarr;</span></div>
-      </a>
-      <a href="ah/mechanisms/index.html" class="level-card">
+        <div class="lc-footer"><span class="lc-status">Coming soon</span></div>
+      </div>
+      <div class="level-card level-card-disabled" aria-disabled="true">
         <div class="lc-band ah"></div>
         <div class="lc-body">
           <div class="lc-scqf">SCQF Level 7</div>
@@ -77,10 +78,19 @@
           <div class="lc-sub">Advanced analysis &mdash; project management, Kirchhoff&rsquo;s laws, beam deflection.</div>
           <div class="lc-tags"><span class="lc-tag">Project mgmt</span><span class="lc-tag">Electronics</span><span class="lc-tag">Mechanisms</span></div>
         </div>
-        <div class="lc-footer"><span class="lc-status">Coming soon</span><span class="lc-arrow">&rarr;</span></div>
-      </a>
+        <div class="lc-footer"><span class="lc-status">Coming soon</span></div>
+      </div>
     </div>
   </div>
 </div>
 <script src="js/site.js"></script>
+<script>
+/* Clicking anywhere on the landing page opens the National 5 course.
+   Buttons, links, the top bar, pop-ups and the greyed-out levels are left alone. */
+document.addEventListener('click', function (e) {
+  if (e.defaultPrevented || e.button !== 0) return;
+  if (e.target.closest('a, button, input, .topbar, .level-card-disabled, .essfb-overlay')) return;
+  window.location.href = 'n5/mechanisms/index.html';
+});
+</script>
 </body></html>

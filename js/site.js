@@ -128,8 +128,8 @@ var UNIT_TEST_CONFIG = {
   // ── Engineering Contexts ──────────────────────────────────
 
   'systems-approach': {
-    status:   'available',
-    id:       '1m6HBJ_8YqNvhZiMKLtgyoRpp7RpCvl1O',
+    status:   'soon',
+    id:       '',
     password: 'loop'               // ← add the pupil password here
   },
   'energy-efficiency': {
@@ -151,13 +151,13 @@ var UNIT_TEST_CONFIG = {
   // ── Electronics and Control ───────────────────────────────
 
   'analogue': {
-    status:   'available',
-    id:       '1ksmCiJ7COA8cocOkVRW9VT1cgUqnPvqI',
+    status:   'soon',
+    id:       '',
     password: 'voltage'
   },
   'digital': {
-    status:   'available',
-    id:       '1Z8IMiFjI_ZuDo7GsLg-vJ2RGj7JvZuJW',
+    status:   'soon',
+    id:       '',
     password: 'hello'
   },
   'control': {
@@ -216,28 +216,28 @@ var TEACHER_DOCS = {
   // ── Engineering Contexts ──────────────────────────────────
 
   'systems-approach': [
-    { key: 'notes_pdf',         status: 'available',      id: '1HacIrf-ItyBXJmdyqJSGfHLyYrGiBf5h',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
+    { key: 'notes_pdf',         status: 'soon',      id: '',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
     { key: 'notes_answers',     status: 'soon',      id: '',                              label: 'Answers to course notes \u2014 PDF',         icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
     { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
   'energy-efficiency': [
-    { key: 'notes_pdf',         status: 'available',      id: '1X7lhCBlDgC0qV_m9viK0Lazv6EwF0eSg',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
+    { key: 'notes_pdf',         status: 'soon',      id: '',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
     { key: 'notes_answers',     status: 'soon',      id: '',                              label: 'Answers to course notes \u2014 PDF',         icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
     { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
   'roles-disciplines': [
-    { key: 'notes_pdf',         status: 'available',      id: '1ZzTMM6FP_P4xQzeiEjqs-kQsDJLDxDae',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
+    { key: 'notes_pdf',         status: 'soon',      id: '',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
     { key: 'notes_answers',     status: 'soon',      id: '',                              label: 'Answers to course notes \u2014 PDF',         icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
     { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
   'impacts': [
-    { key: 'notes_pdf',         status: 'available',      id: '1WeDhVGJ_33X9krD076zG4qwzMFebOOVv',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
+    { key: 'notes_pdf',         status: 'soon',      id: '',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
     { key: 'notes_answers',     status: 'soon',      id: '',                              label: 'Answers to course notes \u2014 PDF',         icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
@@ -251,14 +251,14 @@ var TEACHER_DOCS = {
     { key: 'notes_answers',     status: 'soon',      id: '',                              label: 'Answers to course notes \u2014 PDF',         icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'unit_test_marking', status: 'available', id: '1mcgBs_DMMMGNJg0P5YflEmc6oeOnqj0N', label: 'Marking instructions \u2014 unit test', icon: '\u2705' }
+    { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test', icon: '\u2705' }
   ],
   'digital': [
     { key: 'notes_pdf',         status: 'soon',      id: '',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
     { key: 'notes_answers',     status: 'soon',      id: '',                              label: 'Answers to course notes \u2014 PDF',         icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'unit_test_marking', status: 'available', id: '1Drs8da8RmrLYyEUX2p5o7quAtrzvLCv6', label: 'Marking instructions \u2014 unit test', icon: '\u2705' }
+    { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test', icon: '\u2705' }
   ],
   'control': [
     { key: 'notes_pdf',         status: 'soon',      id: '',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
@@ -271,9 +271,9 @@ var TEACHER_DOCS = {
   // ── Mechanisms and Structures ─────────────────────────────
 
   'drive-systems': [
-    { key: 'notes_pdf',         status: 'available',      id: '1jgz3qDPO1b1zyHkBWiMWCLcVbxjyeVWg',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
+    { key: 'notes_pdf',         status: 'soon',      id: '',                              label: 'Printable course notes \u2014 PDF',           icon: '\u1F5A8' },
     { key: 'notes_answers',     status: 'soon',      id: '',                              label: 'Answers to course notes \u2014 PDF',         icon: '\u2705' },
-    { key: 'ext_marking',       status: 'available', id: '1UVduGkmJ_b479Ru9qu0MJOM_74FzYu_I', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
+    { key: 'ext_marking',       status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
     { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
