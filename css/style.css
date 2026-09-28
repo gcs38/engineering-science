@@ -312,3 +312,33 @@ html, body { font-family: var(--font-body); font-size: 15px; color: var(--gray-9
   /* Notes pages: reduce side padding */
   .notes-wrap { padding: 20px 16px 60px; }
 }
+
+/* ── LOGO: "SCOTLAND" stretched to the exact width of "Engineering Science" ── */
+.logo-text { align-items: stretch; }
+.logo-sub.logo-sub-spread {
+  display: flex; justify-content: space-between;
+  font-size: 11px; font-weight: 600; letter-spacing: 0; margin-top: 1px;
+}
+.logo-sub-spread span { display: inline-block; transform: scaleX(1.25); }
+.logo-sub-spread span:first-child { transform-origin: left center; }
+.logo-sub-spread span:last-child  { transform-origin: right center; }
+
+/* ── LEVEL TABS: Higher and Advanced Higher not yet open ── */
+.level-tab.level-tab-disabled,
+.level-tab.level-tab-disabled:hover {
+  color: var(--gray-400); background: transparent; opacity: 0.45;
+  cursor: not-allowed; pointer-events: none;
+}
+
+/* ── TOPBAR BUTTONS: About ESS matches Teacher area ── */
+button.teacher-btn { font-family: inherit; }
+
+/* Phones: keep the topbar on one line */
+.logo-title, .teacher-btn { white-space: nowrap; }
+@media (max-width: 600px) {
+  .topbar-right { gap: 5px; }
+  .teacher-btn { padding: 5px 8px; font-size: 11px; }
+  .teacher-btn svg { display: none; }
+  .logo { gap: 6px; }
+  .logo img { height: 28px !important; }
+}

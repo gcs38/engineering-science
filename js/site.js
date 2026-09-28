@@ -1,3 +1,9 @@
+// Site root, worked out from where this script is loaded (…/js/site.js)
+var ESS_ROOT = (function () {
+  var src = document.currentScript ? document.currentScript.src : '';
+  return src ? src.replace(/js\/site\.js.*$/, '') : '/';
+})();
+
 // ── SIDEBAR TOGGLE ──
 function toggleSection(id) {
   const children = document.getElementById(id + '-children');
@@ -28,32 +34,18 @@ function setActiveNav() {
 }
 
 // ── TEACHER AUTH ──
-const TEACHER_PASSWORD = 'engsciteacher2025';
-const SESSION_KEY = 'ess_teacher_auth';
-
-function teacherLogin(event) {
-  event.preventDefault();
-  const pw = document.getElementById('teacher-pw').value;
-  const err = document.getElementById('login-error');
-  if (pw === TEACHER_PASSWORD) {
-    sessionStorage.setItem(SESSION_KEY, 'true');
-    window.location.href = 'dashboard.html';
-  } else {
-    err.style.display = 'block';
-    err.textContent = 'Incorrect password. Please try again.';
-    document.getElementById('teacher-pw').value = '';
-  }
-}
+// The old password login has been retired: a password written in this file
+// can be read by anyone. Teachers now request access by email (see
+// teacher/login.html) and teacher documents are shared directly from
+// Google Drive. Any old teacher page now sends visitors to that message.
+function teacherLogin(event) { if (event) event.preventDefault(); }
 
 function checkTeacherAuth() {
-  if (sessionStorage.getItem(SESSION_KEY) !== 'true') {
-    window.location.href = '../teacher/login.html';
-  }
+  window.location.href = ESS_ROOT + 'teacher/login.html';
 }
 
 function teacherLogout() {
-  sessionStorage.removeItem(SESSION_KEY);
-  window.location.href = '../index.html';
+  window.location.href = ESS_ROOT + 'index.html';
 }
 
 document.addEventListener('DOMContentLoaded', setActiveNav);
@@ -382,7 +374,7 @@ function renderTeacherDocs(topicKey, containerId) {
 
 (function () {
 
-  var SHOW_BANNER    = true;
+  var SHOW_BANNER    = false;
   var FEEDBACK_EMAIL = 'engineeringsciencescotland@gmail.com';
 
   // ---- Pop-out feedback panel (shared by banner link and floating button) ----
@@ -469,6 +461,90 @@ function renderTeacherDocs(topicKey, containerId) {
     document.addEventListener('DOMContentLoaded', function(){ document.body.appendChild(feedbackBtn); });
   } else {
     document.body.appendChild(feedbackBtn);
+  }
+
+  // ---- About ESS pop-out (same style as the feedback panel) ----
+  function openAboutPanel(e) {
+    if (e) e.preventDefault();
+    injectFeedbackPanel();              // makes sure the shared panel styles exist
+    var overlay = document.getElementById('essab-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.className = 'essfb-overlay';
+      overlay.id = 'essab-overlay';
+      overlay.addEventListener('click', function(ev){ if (ev.target === overlay) closeAboutPanel(); });
+      overlay.innerHTML =
+        '<div class="essfb-panel">' +
+          '<button class="essfb-close" onclick="window.ESSAbout.close()" aria-label="Close">&times;</button>' +
+          '<h3>About Engineering Science Scotland</h3>' +
+          '<p>Engineering Science Scotland (ESS) aims to improve access to Engineering Science in schools across Scotland.</p>' +
+          '<p>The site has been created by three Engineering Science teachers to support teachers and pupils. All materials have been validated to meet Qualifications Scotland standards.</p>' +
+          '<a class="essfb-email" href="mailto:' + FEEDBACK_EMAIL + '?subject=About%20ESS">&#x2709;&#xFE0F; ' + FEEDBACK_EMAIL + '</a>' +
+        '</div>';
+      document.body.appendChild(overlay);
+    }
+    overlay.classList.add('open');
+  }
+  function closeAboutPanel() {
+    var overlay = document.getElementById('essab-overlay');
+    if (overlay) overlay.classList.remove('open');
+  }
+  window.ESSAbout = { open: openAboutPanel, close: closeAboutPanel };
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') { closeAboutPanel(); closeFeedbackPanel(); }
+  });
+
+  // ---- Topbar tidy-up: logo, level tabs, About button ----
+  // Runs after every other page script so nothing overwrites it.
+  function tidyTopbar() {
+    // Logo: same image and wording on every page
+    var logoMark = document.querySelector('.topbar .logo-mark');
+    if (logoMark) {
+      var img = document.createElement('img');
+      img.src = ESS_ROOT + 'images/logo.png';
+      img.alt = 'Engineering Science Scotland logo';
+      img.style.cssText = 'height:34px;width:auto;display:block;';
+      logoMark.replaceWith(img);
+    }
+    var logoTitle = document.querySelector('.topbar .logo-title');
+    var logoSub   = document.querySelector('.topbar .logo-sub');
+    if (logoTitle) logoTitle.textContent = 'Engineering Science';
+    if (logoSub) {
+      logoSub.innerHTML = 'SCOTLAND'.split('').map(function(c){ return '<span>' + c + '</span>'; }).join('');
+      logoSub.classList.add('logo-sub-spread');
+      logoSub.setAttribute('aria-label', 'Scotland');
+    }
+
+    // Level tabs: Higher and Advanced Higher greyed out and not clickable
+    document.querySelectorAll('.level-tab').forEach(function (tab) {
+      var href  = tab.getAttribute('href') || '';
+      var level = tab.getAttribute('data-level') || '';
+      if (level === 'higher' || level === 'ah' || /(^|\/)(higher|ah)\//.test(href)) {
+        tab.classList.remove('active');
+        tab.classList.add('level-tab-disabled');
+        tab.removeAttribute('href');
+        tab.setAttribute('aria-disabled', 'true');
+        tab.setAttribute('tabindex', '-1');
+        tab.title = 'Coming soon';
+      }
+    });
+
+    // About ESS button, to the left of the Teacher area button
+    var right = document.querySelector('.topbar .topbar-right');
+    if (right && !document.getElementById('ess-about-btn')) {
+      var about = document.createElement('button');
+      about.type = 'button';
+      about.className = 'teacher-btn';
+      about.id = 'ess-about-btn';
+      about.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.3"/><path d="M8 7.2v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="4.9" r="0.8" fill="currentColor"/></svg>About ESS';
+      about.addEventListener('click', openAboutPanel);
+      right.insertBefore(about, right.firstChild);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(tidyTopbar, 0); });
+  } else {
+    setTimeout(tidyTopbar, 0);
   }
 
 })();
