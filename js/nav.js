@@ -10,7 +10,7 @@ function buildSidebar(level, depth) {
     var gc = document.createElement('script');
     gc.setAttribute('data-goatcounter', 'https://engineeringsciencescotland.goatcounter.com/count');
     gc.async = true;
-    gc.src = '//gc.zgo.at/count.js';
+    gc.src = 'https://gc.zgo.at/count.js';
     document.head.appendChild(gc);
 
     // Replace SVG logo-mark with custom logo image
