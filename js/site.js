@@ -105,91 +105,12 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /* ============================================================
-   UNIT TEST CONFIG
-   Controls the password-protected unit tests on each topic page.
-
-   HOW TO ACTIVATE A UNIT TEST FOR A TOPIC:
-   1. Upload the test PDF to Google Drive
-   2. Set sharing to "Anyone with the link can view"
-   3. Copy the file ID from the share URL
-      (it's the long string between /d/ and /view in the URL)
-   4. Find the topic below
-   5. Replace '' in id: '' with your file ID (keep the quotes)
-   6. Replace '' in password: '' with the password for pupils
-   7. Change status: 'soon' to status: 'available'
-   8. Save and push via GitHub Desktop
-
-   The password will appear automatically in the Teacher Area
-   and the test will become accessible to pupils on the topic page.
+   UNIT TESTS
+   Unit tests and their marking instructions are no longer on the
+   website. They are kept in the restricted ESS Teacher Materials
+   folder in Google Drive and shared directly with teachers.
    ============================================================ */
 
-var UNIT_TEST_CONFIG = {
-
-  // ── Engineering Contexts ──────────────────────────────────
-
-  'systems-approach': {
-    status:   'soon',
-    id:       '',
-    password: 'loop'               // ← add the pupil password here
-  },
-  'energy-efficiency': {
-    status:   'soon',
-    id:       '',              // ← paste Google Drive file ID here
-    password: ''               // ← add the pupil password here
-  },
-  'roles-disciplines': {
-    status:   'soon',
-    id:       '',              // ← paste Google Drive file ID here
-    password: ''               // ← add the pupil password here
-  },
-  'impacts': {
-    status:   'soon',
-    id:       '',              // ← paste Google Drive file ID here
-    password: ''               // ← add the pupil password here
-  },
-
-  // ── Electronics and Control ───────────────────────────────
-
-  'analogue': {
-    status:   'soon',
-    id:       '',
-    password: 'voltage'
-  },
-  'digital': {
-    status:   'soon',
-    id:       '',
-    password: 'hello'
-  },
-  'control': {
-    status:   'soon',
-    id:       '',              // ← paste Google Drive file ID here
-    password: ''               // ← add the pupil password here
-  },
-
-  // ── Mechanisms and Structures ─────────────────────────────
-
-  'drive-systems': {
-    status:   'soon',
-    id:       '',              // ← paste Google Drive file ID here
-    password: ''               // ← add the pupil password here
-  },
-  'pneumatics': {
-    status:   'soon',
-    id:       '',              // ← paste Google Drive file ID here
-    password: ''               // ← add the pupil password here
-  },
-  'structures-forces': {
-    status:   'soon',
-    id:       '',              // ← paste Google Drive file ID here
-    password: ''               // ← add the pupil password here
-  },
-  'materials': {
-    status:   'soon',
-    id:       '',              // ← paste Google Drive file ID here
-    password: ''               // ← add the pupil password here
-  }
-
-};
 
 /* ============================================================
    TEACHER DOCUMENTS
@@ -208,7 +129,6 @@ var UNIT_TEST_CONFIG = {
    notes_pdf         = Printable course notes (PDF)
    ext_marking       = Marking instructions — extension tasks
    hw_marking        = Marking instructions — homework
-   unit_test_marking = Marking instructions — unit test
    ============================================================ */
 
 var TEACHER_DOCS = {
@@ -220,28 +140,24 @@ var TEACHER_DOCS = {
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
   'energy-efficiency': [
     { key: 'notes_pdf',         status: 'available', id: '', page: 'course-notes.pdf', label: 'Printable course notes \u2014 PDF',           icon: '\uD83D\uDDA8' },
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
   'roles-disciplines': [
     { key: 'notes_pdf',         status: 'available', id: '', page: 'course-notes.pdf', label: 'Printable course notes \u2014 PDF',           icon: '\uD83D\uDDA8' },
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
   'impacts': [
     { key: 'notes_pdf',         status: 'available', id: '', page: 'course-notes.pdf', label: 'Printable course notes \u2014 PDF',           icon: '\uD83D\uDDA8' },
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
 
   // ── Electronics and Control ───────────────────────────────
@@ -251,21 +167,18 @@ var TEACHER_DOCS = {
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test', icon: '\u2705' }
   ],
   'digital': [
     { key: 'notes_pdf',         status: 'available', id: '', page: 'course-notes.pdf', label: 'Printable course notes \u2014 PDF',           icon: '\uD83D\uDDA8' },
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'unit_test_marking', status: 'soon', id: '', label: 'Marking instructions \u2014 unit test', icon: '\u2705' }
   ],
   'control': [
     { key: 'notes_pdf',         status: 'available', id: '', page: 'course-notes.pdf', label: 'Printable course notes \u2014 PDF',           icon: '\uD83D\uDDA8' },
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
 
   // ── Mechanisms and Structures ─────────────────────────────
@@ -275,28 +188,24 @@ var TEACHER_DOCS = {
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon', id: '', label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
   'pneumatics': [
     { key: 'notes_pdf',         status: 'available', id: '', page: 'course-notes.pdf', label: 'Printable course notes \u2014 PDF',           icon: '\uD83D\uDDA8' },
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
   'structures-forces': [
     { key: 'notes_pdf',         status: 'available', id: '', page: 'course-notes.pdf', label: 'Printable course notes \u2014 PDF',           icon: '\uD83D\uDDA8' },
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ],
   'materials': [
     { key: 'notes_pdf',         status: 'available', id: '', page: 'course-notes.pdf', label: 'Printable course notes \u2014 PDF',           icon: '\uD83D\uDDA8' },
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
     { key: 'ext_marking',       status: 'soon',      id: '',                              label: 'Marking instructions \u2014 extension tasks', icon: '\u2705' },
     { key: 'hw_marking',        status: 'soon',      id: '',                              label: 'Marking instructions \u2014 homework',        icon: '\u2705' },
-    { key: 'unit_test_marking', status: 'soon',      id: '',                              label: 'Marking instructions \u2014 unit test',       icon: '\u2705' }
   ]
 
 };
@@ -304,13 +213,12 @@ var TEACHER_DOCS = {
 /* ============================================================
    TOPIC PAGE CARDS
    Sets the Available / Not yet available badges on the
-   Printable course notes, Answers to course notes and Unit test
-   cards on each topic index page.
+   Printable course notes and Answers to course notes cards on each
+   topic index page.
    - Printable notes and Answers: set in TEACHER_DOCS below
      (keys notes_pdf and notes_answers). For a Google Drive file use
      id: 'FILE-ID'; for a page on this site (the locked HTML answers)
      use page: 'answers.html'. Then set status: 'available'.
-   - Unit test: set in UNIT_TEST_CONFIG below
    ============================================================ */
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -345,13 +253,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
-  // Unit test
-  var utCard = document.getElementById('unit-test-card');
-  var utBadge = document.getElementById('unit-test-badge');
-  var ut = (typeof UNIT_TEST_CONFIG !== 'undefined') ? UNIT_TEST_CONFIG[TOPIC] : null;
-  if (utCard && utBadge && ut && ut.status === 'available' && ut.id) {
-    markAvailable(utCard, utBadge);
-  }
+
 });
 
 function renderTeacherDocs(topicKey, containerId) {

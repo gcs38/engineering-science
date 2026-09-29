@@ -13,18 +13,6 @@
     .tab-note { font-size:12px; color:var(--gray-400); margin-bottom:16px; }
     .rtc-badge-unavailable { display:inline-block; font-size:10px; font-weight:500; background:#fef2f2; color:#b91c1c; padding:2px 7px; border-radius:20px; margin-top:6px; }
     .rtc-photo { width:52px; height:52px; border-radius:50%; object-fit:cover; border:2px solid var(--teal-100); background:var(--teal-50); display:block; margin:0 auto 10px; }
-    .ut-modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.45); z-index:999; align-items:center; justify-content:center; }
-    .ut-modal-overlay.open { display:flex; }
-    .ut-modal { background:var(--white); border-radius:var(--radius-lg); padding:28px 28px 24px; max-width:340px; width:90%; box-shadow:0 8px 32px rgba(0,0,0,0.18); }
-    .ut-modal-title { font-size:16px; font-weight:700; color:var(--teal-800); margin-bottom:6px; }
-    .ut-modal-sub { font-size:13px; color:var(--gray-600); margin-bottom:18px; line-height:1.5; }
-    .ut-modal-input { width:100%; padding:9px 12px; font-size:14px; border:1px solid var(--gray-200); border-radius:var(--radius-md); margin-bottom:10px; font-family:inherit; outline:none; transition:border-color 0.15s; }
-    .ut-modal-input:focus { border-color:var(--teal-400); }
-    .ut-modal-btn { width:100%; padding:10px; font-size:13px; font-weight:600; background:var(--teal-400); color:var(--white); border:none; border-radius:var(--radius-md); cursor:pointer; font-family:inherit; transition:background 0.15s; }
-    .ut-modal-btn:hover { background:var(--teal-600); }
-    .ut-modal-error { font-size:12px; color:#b91c1c; margin-top:8px; display:none; }
-    .ut-modal-cancel { width:100%; margin-top:8px; padding:8px; font-size:12px; font-weight:500; background:transparent; color:var(--gray-400); border:none; cursor:pointer; font-family:inherit; }
-    .ut-card-notice { font-size:11px; color:var(--gray-400); margin-top:6px; line-height:1.4; }
   </style>
 </head>
 <body>
@@ -65,27 +53,8 @@
             <div class="rtc-sub">Answers to the questions and tasks in the course notes.</div>
             <span class="rtc-badge-unavailable">Not yet available</span>
           </a>
-          <div class="resource-type-card" id="unit-test-card" onclick="openUnitTestModal()" style="cursor:pointer;opacity:0.5;">
-            <img class="rtc-photo" src="../../../../images/icons/unit-test.jpg" alt="" onerror="if(this.src.indexOf('.jpeg')===-1){this.src=this.src.replace('.jpg','.jpeg')}else{this.style.display='none'}">
-            <div class="rtc-title">Unit test</div>
-            <div class="rtc-sub">Password-protected assessment for this topic.</div>
-            <span class="rtc-badge-unavailable" id="unit-test-badge">Not yet available</span>
-            <div class="ut-card-notice">&#x1F512; Ask your teacher for the password</div>
-          </div>
       </div>
     </div>
-  </div>
-</div>
-
-<!-- UNIT TEST MODAL -->
-<div class="ut-modal-overlay" id="ut-modal-overlay">
-  <div class="ut-modal">
-    <div class="ut-modal-title">&#x1F4DD; Unit Test &mdash; Digital Electronics</div>
-    <div class="ut-modal-sub">This test is password protected. Ask your teacher for the password to access it.</div>
-    <input class="ut-modal-input" id="ut-password-input" type="password" placeholder="Enter password" autocomplete="off">
-    <div class="ut-modal-error" id="ut-modal-error">Incorrect password. Please try again.</div>
-    <button class="ut-modal-btn" onclick="checkUnitTestPassword()">Open test</button>
-    <button class="ut-modal-cancel" onclick="closeUnitTestModal()">Cancel</button>
   </div>
 </div>
 
@@ -94,33 +63,6 @@
 <script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
 <script>
   var TOPIC = 'digital';
-</script>
-<script>
-function openUnitTestModal() {
-  var cfg = (typeof UNIT_TEST_CONFIG !== 'undefined') ? UNIT_TEST_CONFIG['digital'] : null;
-  if (!cfg || cfg.status !== 'available' || !cfg.id) {
-    alert('The unit test is not yet available. Check back later or ask your teacher.');
-    return;
-  }
-  document.getElementById('ut-modal-overlay').classList.add('open');
-  document.getElementById('ut-password-input').value = '';
-  document.getElementById('ut-modal-error').style.display = 'none';
-  setTimeout(function(){ document.getElementById('ut-password-input').focus(); }, 100);
-}
-function closeUnitTestModal() { document.getElementById('ut-modal-overlay').classList.remove('open'); }
-function checkUnitTestPassword() {
-  var cfg = UNIT_TEST_CONFIG['digital'];
-  var entered = document.getElementById('ut-password-input').value;
-  if (entered === cfg.password) {
-    closeUnitTestModal();
-    window.open('https://drive.google.com/file/d/' + cfg.id + '/view', '_blank');
-  } else {
-    document.getElementById('ut-modal-error').style.display = 'block';
-    document.getElementById('ut-password-input').value = '';
-    document.getElementById('ut-password-input').focus();
-  }
-}
-document.getElementById('ut-password-input').addEventListener('keydown', function(e){ if (e.key === 'Enter') checkUnitTestPassword(); });
 </script>
 </body>
 </html>
