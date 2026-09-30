@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Teacher Resources — Engineering Science Scotland</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .tr-wrap{max-width:980px;margin:0 auto;padding:26px 24px 40px;}
+    .lock-card{max-width:460px;margin:10px auto;background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px 26px 24px;text-align:center;}
+    .lock-icon{width:46px;height:46px;border-radius:50%;background:var(--teal-50);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:22px;}
+    .lock-card h1{font-size:19px;margin:0 0 6px;color:var(--gray-900);}
+    .lock-card p{font-size:13px;color:var(--gray-600);line-height:1.6;margin:0 0 16px;}
+    .lock-input{width:100%;padding:10px 12px;font-size:15px;border:1px solid var(--gray-200);border-radius:var(--radius-md);margin-bottom:10px;font-family:inherit;box-sizing:border-box;text-align:center;}
+    .lock-input:focus{outline:none;border-color:var(--teal-400);}
+    .lock-btn{width:100%;padding:11px;font-size:14px;font-weight:600;background:var(--teal-400);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-family:inherit;}
+    .lock-btn:disabled{opacity:.6;cursor:wait;}
+    .lock-error{font-size:12px;color:#b91c1c;margin-top:10px;min-height:16px;}
+    .tr-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
+    .tr-head h1{font-size:22px;margin:0;color:var(--gray-900);}
+    .tr-head p{font-size:13px;color:var(--gray-600);margin:4px 0 0;}
+    .tr-head button{font-size:12px;padding:6px 12px;border:1px solid var(--gray-200);background:var(--white);border-radius:var(--radius-md);cursor:pointer;font-family:inherit;color:var(--gray-600);}
+    .tr-note{font-size:12.5px;background:#fef3c7;color:#78350f;border-radius:var(--radius-md);padding:9px 12px;margin-bottom:18px;line-height:1.5;}
+    .tr-area{font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--gray-600);margin:20px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--gray-200);}
+    .tr-row{display:grid;grid-template-columns:230px 1fr;gap:10px;align-items:center;background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:10px 14px;margin-bottom:8px;}
+    .tr-topic{font-size:14px;font-weight:600;color:var(--gray-900);}
+    .tr-files{display:flex;gap:8px;flex-wrap:wrap;}
+    .tr-files button{font-family:inherit;font-size:12.5px;padding:7px 11px;border:1px solid var(--teal-400);color:var(--teal-800);background:var(--teal-50);border-radius:var(--radius-md);cursor:pointer;}
+    .tr-files button:hover{background:#d1efe3;}
+    .tr-files button:disabled{opacity:.6;cursor:wait;}
+    .tr-files small{color:var(--gray-400);}
+    @media (max-width:640px){.tr-row{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<nav class="topbar"><a href="../index.html" class="logo"><div class="logo-mark"></div><div class="logo-text"><span class="logo-title">Engineering Science</span><span class="logo-sub">Scotland</span></div></a><div class="topbar-right"></div></nav>
+<div style="margin-top:var(--topbar-h,52px);">
+  <div class="tr-wrap">
+    <div class="lock-card" id="lock-card">
+      <div class="lock-icon">&#x1F512;</div>
+      <h1>Teacher resources</h1>
+      <p>Enter the teacher password to open the unit tests, marking instructions and teacher copies of the answers. Teachers can request the password from the <a href="login.html" style="color:var(--teal-600);">Teacher area</a> page.</p>
+      <form id="lock-form" autocomplete="off">
+        <input class="lock-input" id="lock-pw" type="password" placeholder="Teacher password" aria-label="Teacher password">
+        <button class="lock-btn" id="lock-btn" type="submit">Open teacher resources</button>
+      </form>
+      <div class="lock-error" id="lock-error"></div>
+    </div>
+    <div id="res" hidden>
+      <div class="tr-head"><div><h1>Teacher resources — National 5</h1><p>Click a file to open or download it.</p></div><button type="button" id="relock">&#x1F512; Lock</button></div>
+      <div class="tr-note"><strong>Please do not share these files or the teacher password with pupils.</strong> The teacher copies of the answers include the password for each topic&rsquo;s online answers page.</div>
+      <div id="res-body"></div>
+    </div>
+  </div>
+</div>
+<script src="../js/site.js"></script>
+<script>
+/* Files are encrypted (AES-256-GCM; key derived from the password with PBKDF2). Built 2026-09-30. */
+var ESS_TEACHER = {"it": 600000, "s": "nMf8OAd0tqM25h7Jo3iGsA==", "i": "q6x61P5FF4kSJ1/j", "c": "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"};
+(function () {
+  var KEY = 'ess-teacher-pw', aesKey = null;
+  function b64(s){ var b=atob(s), u=new Uint8Array(b.length); for (var i=0;i<b.length;i++) u[i]=b.charCodeAt(i); return u; }
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  async function deriveKey(pw) {
+    var base = await crypto.subtle.importKey('raw', new TextEncoder().encode(pw), 'PBKDF2', false, ['deriveKey']);
+    return crypto.subtle.deriveKey({name:'PBKDF2', salt:b64(ESS_TEACHER.s), iterations:ESS_TEACHER.it, hash:'SHA-256'}, base, {name:'AES-GCM', length:256}, false, ['decrypt']);
+  }
+  function render(index) {
+    var h = '';
+    index.forEach(function (sec) {
+      h += '<div class="tr-area">' + esc(sec.area) + '</div>';
+      sec.topics.forEach(function (t) {
+        h += '<div class="tr-row"><div class="tr-topic">' + esc(t.title) + '</div><div class="tr-files">';
+        t.items.forEach(function (it) {
+          h += '<button type="button" data-blob="' + esc(it.blob) + '" data-name="' + esc(it.filename) + '">&#x1F4C4; ' + esc(it.label) + ' <small>(' + it.kb + ' KB)</small></button>';
+        });
+        h += '</div></div>';
+      });
+    });
+    var body = document.getElementById('res-body');
+    body.innerHTML = h;
+    body.querySelectorAll('button[data-blob]').forEach(function (b) { b.addEventListener('click', function () { openFile(b); }); });
+  }
+  async function openFile(btn) {
+    btn.disabled = true;
+    try {
+      var r = await fetch('files/' + btn.getAttribute('data-blob'));
+      if (!r.ok) throw new Error('missing');
+      var buf = new Uint8Array(await r.arrayBuffer());
+      var plain = await crypto.subtle.decrypt({name:'AES-GCM', iv:buf.slice(0, 12)}, aesKey, buf.slice(12));
+      var url = URL.createObjectURL(new Blob([plain], {type:'application/pdf'}));
+      var a = document.createElement('a');
+      a.href = url; a.download = btn.getAttribute('data-name');
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+    } catch (e) {
+      alert('Sorry, this file could not be opened. Please try again, or let us know using the Feedback button.');
+    }
+    btn.disabled = false;
+  }
+  async function unlock(pw, quiet) {
+    var btn = document.getElementById('lock-btn'), err = document.getElementById('lock-error');
+    btn.disabled = true; err.textContent = quiet ? '' : 'Checking…';
+    try {
+      aesKey = await deriveKey(pw);
+      var plain = await crypto.subtle.decrypt({name:'AES-GCM', iv:b64(ESS_TEACHER.i)}, aesKey, b64(ESS_TEACHER.c));
+      render(JSON.parse(new TextDecoder().decode(plain)));
+      document.getElementById('lock-card').hidden = true;
+      document.getElementById('res').hidden = false;
+      err.textContent = '';
+      try { sessionStorage.setItem(KEY, pw); } catch (e) {}
+    } catch (e) {
+      aesKey = null;
+      err.textContent = quiet ? '' : 'That password is not correct. Please try again.';
+      try { sessionStorage.removeItem(KEY); } catch (e2) {}
+    }
+    btn.disabled = false;
+  }
+  function clean(pw){ return (pw || '').trim().toLowerCase(); }
+  document.getElementById('lock-form').addEventListener('submit', function (e) { e.preventDefault(); unlock(clean(document.getElementById('lock-pw').value)); });
+  document.getElementById('relock').addEventListener('click', function () {
+    try { sessionStorage.removeItem(KEY); } catch (e) {}
+    aesKey = null; document.getElementById('res-body').innerHTML = '';
+    document.getElementById('res').hidden = true; document.getElementById('lock-card').hidden = false; document.getElementById('lock-pw').value = '';
+  });
+  var saved = null; try { saved = sessionStorage.getItem(KEY); } catch (e) {}
+  if (saved) unlock(saved, true);
+})();
+</script>
+</body>
+</html>
