@@ -29,6 +29,9 @@
     .tr-files button:hover{background:#d1efe3;}
     .tr-files button:disabled{opacity:.6;cursor:wait;}
     .tr-files small{color:var(--gray-400);}
+    .tr-file{display:inline-flex;}
+    .tr-file .tr-open{border-radius:var(--radius-md) 0 0 var(--radius-md);}
+    .tr-file .tr-dl{border-left:none;border-radius:0 var(--radius-md) var(--radius-md) 0;padding:7px 9px;}
     @media (max-width:640px){.tr-row{grid-template-columns:1fr;}}
   </style>
 </head>
@@ -47,7 +50,7 @@
       <div class="lock-error" id="lock-error"></div>
     </div>
     <div id="res" hidden>
-      <div class="tr-head"><div><h1>Teacher resources — National 5</h1><p>Click a file to open or download it.</p></div><button type="button" id="relock">&#x1F512; Lock</button></div>
+      <div class="tr-head"><div><h1>Teacher resources — National 5</h1><p>Click a file to open it in a new tab, or &#x2B07;&#xFE0F; to download it.</p></div><button type="button" id="relock">&#x1F512; Lock</button></div>
       <div class="tr-note"><strong>Please do not share these files or the teacher password with pupils.</strong> The teacher copies of the answers include the password for each topic&rsquo;s online answers page.</div>
       <div id="res-body"></div>
     </div>
@@ -72,28 +75,41 @@ var ESS_TEACHER = {"it": 600000, "s": "nMf8OAd0tqM25h7Jo3iGsA==", "i": "q6x61P5F
       sec.topics.forEach(function (t) {
         h += '<div class="tr-row"><div class="tr-topic">' + esc(t.title) + '</div><div class="tr-files">';
         t.items.forEach(function (it) {
-          h += '<button type="button" data-blob="' + esc(it.blob) + '" data-name="' + esc(it.filename) + '">&#x1F4C4; ' + esc(it.label) + ' <small>(' + it.kb + ' KB)</small></button>';
+          h += '<span class="tr-file"><button type="button" class="tr-open" data-blob="' + esc(it.blob) + '" data-name="' + esc(it.filename) + '">&#x1F4C4; ' + esc(it.label) + ' <small>(' + it.kb + ' KB)</small></button>' +
+               '<button type="button" class="tr-dl" title="Download" aria-label="Download ' + esc(it.label) + '" data-blob="' + esc(it.blob) + '" data-name="' + esc(it.filename) + '">&#x2B07;&#xFE0F;</button></span>';
         });
         h += '</div></div>';
       });
     });
     var body = document.getElementById('res-body');
     body.innerHTML = h;
-    body.querySelectorAll('button[data-blob]').forEach(function (b) { b.addEventListener('click', function () { openFile(b); }); });
+    body.querySelectorAll('button.tr-open').forEach(function (b) { b.addEventListener('click', function () { openFile(b, false); }); });
+    body.querySelectorAll('button.tr-dl').forEach(function (b) { b.addEventListener('click', function () { openFile(b, true); }); });
   }
-  async function openFile(btn) {
+  async function getPdf(btn) {
+    var r = await fetch('files/' + btn.getAttribute('data-blob'));
+    if (!r.ok) throw new Error('missing');
+    var buf = new Uint8Array(await r.arrayBuffer());
+    var plain = await crypto.subtle.decrypt({name:'AES-GCM', iv:buf.slice(0, 12)}, aesKey, buf.slice(12));
+    return URL.createObjectURL(new Blob([plain], {type:'application/pdf'}));
+  }
+  function download(url, name) {
+    var a = document.createElement('a');
+    a.href = url; a.download = name;
+    document.body.appendChild(a); a.click(); a.remove();
+  }
+  async function openFile(btn, asDownload) {
+    // open the new tab straight away (inside the click) so pop-up blockers allow it
+    var win = asDownload ? null : window.open('', '_blank');
+    if (win) { try { win.document.write('<p style="font-family:Arial;padding:20px;color:#555">Opening ' + esc(btn.getAttribute('data-name')) + '…</p>'); } catch (e) {} }
     btn.disabled = true;
     try {
-      var r = await fetch('files/' + btn.getAttribute('data-blob'));
-      if (!r.ok) throw new Error('missing');
-      var buf = new Uint8Array(await r.arrayBuffer());
-      var plain = await crypto.subtle.decrypt({name:'AES-GCM', iv:buf.slice(0, 12)}, aesKey, buf.slice(12));
-      var url = URL.createObjectURL(new Blob([plain], {type:'application/pdf'}));
-      var a = document.createElement('a');
-      a.href = url; a.download = btn.getAttribute('data-name');
-      document.body.appendChild(a); a.click(); a.remove();
-      setTimeout(function () { URL.revokeObjectURL(url); }, 60000);
+      var url = await getPdf(btn);
+      if (win) win.location.href = url;
+      else download(url, btn.getAttribute('data-name'));
+      setTimeout(function () { URL.revokeObjectURL(url); }, 10 * 60 * 1000);
     } catch (e) {
+      if (win) win.close();
       alert('Sorry, this file could not be opened. Please try again, or let us know using the Feedback button.');
     }
     btn.disabled = false;
