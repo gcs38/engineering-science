@@ -385,11 +385,22 @@ function renderTeacherDocs(topicKey, containerId) {
       overlay.id = 'essab-overlay';
       overlay.addEventListener('click', function(ev){ if (ev.target === overlay) closeAboutPanel(); });
       overlay.innerHTML =
-        '<div class="essfb-panel">' +
+        '<div class="essfb-panel" style="max-height:90vh;overflow-y:auto;font-size:13.5px;width:min(680px,94vw);max-width:none;box-sizing:border-box;">' +
           '<button class="essfb-close" onclick="window.ESSAbout.close()" aria-label="Close">&times;</button>' +
           '<h3>About Engineering Science Scotland</h3>' +
-          '<p>Engineering Science Scotland (ESS) aims to improve access to Engineering Science in schools across Scotland.</p>' +
-          '<p>The site has been created by three Engineering Science teachers to support teachers and pupils. All materials have been validated to meet Qualifications Scotland standards.</p>' +
+          '<p>Engineering Science Scotland (ESS) is a free online resource for National 5 Engineering Science, written by three Engineering Science teachers to support teachers and pupils in schools across Scotland.</p>' +
+          '<p>It brings together course notes, simulators, printable resources and answers, with the aim of making Engineering Science easier to teach, easier to learn, and open to more pupils in more schools.</p>' +
+          '<p>The site has been developed thanks to the generous funders of the Edinburgh Computing &amp; Engineering Science in Schools (ECSES) project, which exists to broaden access to digital and engineering futures.</p>' +
+          '<p>All materials are written to follow the Qualifications Scotland course specification for National 5 Engineering Science.</p>' +
+          '<h4 style="margin:16px 0 6px;font-size:14px;">Get in touch</h4>' +
+          '<p style="margin-bottom:6px;">We&rsquo;d love to hear from you, especially if:</p>' +
+          '<ul style="margin:0 0 10px 18px;padding:0;font-size:13px;line-height:1.6;color:inherit;">' +
+            '<li>you&rsquo;ve spotted a typo, a broken link, a confusing explanation or a mistake;</li>' +
+            '<li>you have an idea for a resource, or a suggestion to improve the site;</li>' +
+            '<li>you&rsquo;re using ESS with your classes and would like to tell us how it&rsquo;s going;</li>' +
+            '<li><strong>you could help us develop materials for Higher and Advanced Higher</strong>, which are coming next.</li>' +
+          '</ul>' +
+          '<p>Every message is read.</p>' +
           '<a class="essfb-email" href="mailto:' + FEEDBACK_EMAIL + '?subject=About%20ESS">&#x2709;&#xFE0F; ' + FEEDBACK_EMAIL + '</a>' +
         '</div>';
       document.body.appendChild(overlay);
