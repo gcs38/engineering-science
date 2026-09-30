@@ -149,6 +149,29 @@
     .lightbox img { max-width:100%; max-height:90vh; border-radius:8px; box-shadow:0 10px 40px rgba(0,0,0,.4); background:white; }
     /* Length symbol l: font with a tail so it isn't mistaken for 1 */
     .sym-l { font-family:"Trebuchet MS","Atkinson Hyperlegible",sans-serif; font-style:normal; }
+    /* Green note box (e.g. wood) */
+    .green-box { background:#f0fdf4; border:2px solid #86efac; border-radius:10px; padding:16px 18px; margin:18px 0 8px; font-size:13.5px; color:var(--gray-700); line-height:1.7; }
+    .green-box-title { font-weight:700; color:#166534; font-size:15px; margin-bottom:6px; }
+    .green-box p { margin:0 0 8px; }
+    .green-box ul { list-style:disc; margin:4px 0 8px; padding-left:22px; }
+    .green-box li { margin-bottom:4px; }
+    /* QS assessment callout */
+    .qs-box { background:#fffbeb; border:2px solid #fcd34d; border-radius:10px; padding:14px 18px; margin:18px 0; font-size:13.5px; color:var(--gray-700); line-height:1.7; }
+    .qs-box-title { font-weight:700; color:#92400e; font-size:15px; margin-bottom:6px; }
+    .qs-box ol { margin:4px 0 8px; padding-left:22px; }
+    /* Formula-triangle instructions */
+    .tri-steps { font-size:13px; color:var(--gray-600); line-height:1.6; }
+    .tri-steps .tri-title { margin:0 0 6px; }
+    .tri-steps ul { list-style:none; margin:0; padding:0; }
+    .tri-steps li { margin:0 0 4px; }
+    .tri-steps .frac { margin:2px 0.4em; }
+    /* Material data sheet */
+    .table-scroll { overflow-x:auto; margin:10px 0 16px; }
+    .data-sheet { width:100%; border-collapse:collapse; font-size:12px; min-width:760px; }
+    .data-sheet th { background:var(--teal-800); color:white; padding:7px 8px; text-align:left; font-weight:600; vertical-align:bottom; }
+    .data-sheet td { padding:6px 8px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
+    .data-sheet tr:nth-child(even) td { background:var(--gray-50); }
+    .data-sheet td:first-child { font-weight:600; color:var(--gray-900); min-width:120px; }
     .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
 
     @media print {
@@ -183,7 +206,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 27 September 2026, 12:02</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 30 September 2026, 11:18</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Materials</div>
       <h1 class="hero-title">&#x1F9F1; Materials &mdash; Course Notes</h1>
       <p class="hero-sub">Material properties, selection and justification, stress and strain calculations</p>
@@ -245,9 +268,23 @@
               <li><strong>Carbon fibre reinforced polymer (CFRP)</strong> — aircraft, F1 cars, bikes</li>
               <li><strong>Glass fibre (GRP/fibreglass)</strong> — boat hulls, helmets</li>
               <li><strong>Reinforced concrete</strong> — buildings, bridges</li>
+              <li><strong>Wood (timber)</strong> — a <em>natural</em> composite: houses, bridges, furniture</li>
             </ul>
           </div>
         </div>
+      </div>
+
+      <div class="green-box">
+        <div class="green-box-title">&#x1F332; Wood &mdash; the engineering material everyone overlooks</div>
+        <p>When people think of &ldquo;engineering materials&rdquo; they picture steel, concrete and carbon fibre, but wood is one of the most widely used engineering materials in the world. It is a <strong>natural composite</strong>: long, strong <strong>cellulose fibres</strong> held together by a matrix called <strong>lignin</strong>, in the same way that glass fibres are held in resin in GRP. Like other fibre composites, it is much stronger <strong>along the grain</strong> than across it.</p>
+        <ul>
+          <li><strong>Versatile:</strong> it is used in house frames, roof trusses, floors, bridges, boats, furniture, tool handles and sports equipment.</li>
+          <li><strong>Engineered wood:</strong> products such as plywood, glulam (glued laminated timber) beams and cross-laminated timber (CLT) panels let engineers build large spans and even multi-storey buildings from timber. Timber-frame construction is very common for new homes in Scotland.</li>
+          <li><strong>Good strength-to-weight ratio</strong>, easy to cut and join, and a good thermal insulator.</li>
+          <li><strong>Sustainable:</strong> it is renewable if forests are replanted, and it locks up carbon for as long as the timber is in use.</li>
+          <li><strong>Drawbacks:</strong> it can rot or be attacked by insects unless treated or kept dry, it swells and shrinks with moisture, and it burns.</li>
+        </ul>
+        <p><strong>Softwood or hardwood?</strong> The names describe the <em>type of tree</em>, not how hard the wood is. <strong>Softwoods</strong> come from coniferous trees such as pine, spruce and larch. They grow quickly, so they are usually cheaper, and they are the main construction timber in the UK. <strong>Hardwoods</strong> come from broadleaf trees such as oak, beech and ash. They grow more slowly and are often denser, tougher and more durable, so they are used for furniture, flooring and tool handles. But watch out: <strong>balsa</strong>, one of the softest and lightest woods of all, is a hardwood!</p>
       </div>
 
       <hr class="divider">
@@ -255,17 +292,19 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1" id="section-2">Section 2: Material Properties</h1>
 
-      <p class="notes-p">To choose the right material, engineers consider a range of <strong>mechanical, physical and other properties</strong>. Understanding these properties allows you to justify a material choice in the exam.</p>
+      <p class="notes-p">To choose the right material, engineers consider a range of <strong>mechanical, physical and other properties</strong>. These properties give you the words you need to justify a material choice.</p>
 
       <table class="mat-table">
         <tr><th>Property</th><th>Definition</th><th>Example where important</th></tr>
         <tr><td>Strength</td><td>Ability to withstand a force without breaking</td><td>Structural beams, lifting cables</td></tr>
         <tr><td>Hardness</td><td>Resistance to scratching or indentation</td><td>Cutting tools, drill bits, gear teeth</td></tr>
-        <tr><td>Toughness</td><td>Ability to absorb impact energy without fracturing</td><td>Helmets, crash barriers, tool handles</td></tr>
+        <tr><td>Toughness</td><td>Ability to absorb energy (for example from an impact) without fracturing</td><td>Helmets, crash barriers, tool handles</td></tr>
+        <tr><td>Brittleness</td><td>Tendency to crack or shatter suddenly with little or no bending or stretching first. A brittle material absorbs very little energy before it breaks, so it is the opposite of tough</td><td>Glass, ceramics and cast iron &mdash; take care where impacts are likely</td></tr>
         <tr><td>Ductility</td><td>Ability to be drawn into wires or bent without breaking</td><td>Electrical wiring, bent brackets</td></tr>
         <tr><td>Malleability</td><td>Ability to be hammered or pressed into shape</td><td>Aluminium car body panels, coins</td></tr>
         <tr><td>Stiffness (rigidity)</td><td>Resistance to bending or deformation under load</td><td>Machine frames, structural columns</td></tr>
-        <tr><td>Elasticity</td><td>Ability to return to original shape after a force is removed</td><td>Springs, rubber seals</td></tr>
+        <tr><td>Elasticity</td><td>Ability to return to its original shape after the load is removed. While it is loaded, an elastic material <strong>stores energy</strong>, which it gives back when the load is removed</td><td>Springs, rubber seals, archery bows</td></tr>
+        <tr><td>Plasticity</td><td>Ability to be permanently deformed (reshaped) without breaking. As a material deforms plastically it <strong>absorbs energy</strong>, which is why materials that can deform plastically before breaking tend to be tough</td><td>Pressing car body panels, bending brackets, modelling clay</td></tr>
         <tr><td>Density</td><td>Mass per unit volume — how heavy the material is</td><td>Aircraft components — low density preferred</td></tr>
         <tr><td>Thermal conductivity</td><td>How well the material conducts heat</td><td>Heat sinks, cooking pans, insulators</td></tr>
         <tr><td>Electrical conductivity</td><td>How well the material conducts electricity</td><td>Wiring (conductors), casings (insulators)</td></tr>
@@ -273,15 +312,26 @@
         <tr><td>Cost</td><td>Material and processing cost per unit</td><td>Always a factor in real engineering decisions</td></tr>
       </table>
 
+      <div class="qs-box">
+        <div class="qs-box-title">&#x2B50; What Qualifications Scotland assesses</div>
+        <p style="margin:0 0 6px;">For materials, the N5 course specification lists three things:</p>
+        <ol>
+          <li><strong>Selecting an appropriate material</strong> for a given application, <strong>with justification</strong></li>
+          <li><strong>Calculating direct stress</strong> from force and area (Section 4)</li>
+          <li><strong>Calculating strain</strong> (Section 5)</li>
+        </ol>
+        <p style="margin:0;">There is <strong>no fixed list of properties</strong> to learn off by heart. Exam questions usually give you a <strong>table of data</strong> about several materials and ask you to choose one and justify your choice. The properties above are the vocabulary you use to write that justification.</p>
+      </div>
+
       <img src="images/material-photos.png" alt="Photographs showing each property in use: steel frames and lifting cables (strength), cutting tools and gears (hardness), a hard hat and crash barrier (toughness), wiring (ductility), a bracket and car panels (malleability), springs and seals (elasticity), machine frames (stiffness), aircraft-style parts and pans (density and thermal conductivity), insulators and cable casing (electrical conductivity), a pergola and boat (corrosion resistance), and wind turbines and farm machinery (cost)" style="width:100%;height:auto;display:block;margin:18px 0 8px;border-radius:8px;">
 
       <div class="assignment" id="assignment-task1">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Material categories and properties</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <div class="task-q">1. State which category (metal, polymer, ceramic or composite) each of the following belongs to: (a) copper, (b) nylon, (c) concrete, (d) carbon fibre reinforced polymer, (e) glass.</div>
+            <div class="task-q">1. State which category (metal, polymer, ceramic or composite) each of the following belongs to: (a) copper, (b) nylon, (c) concrete, (d) carbon fibre reinforced polymer, (e) glass, (f) oak.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t1a">&#x2713; Saved</span></div>
-            <div class="answer-box" contenteditable="true" data-key="mat-t1a" data-placeholder="(a) copper: ... (b) nylon: ... (c) concrete: ... (d) CFRP: ... (e) glass: ..."></div>
+            <div class="answer-box" contenteditable="true" data-key="mat-t1a" data-placeholder="(a) copper: ... (b) nylon: ... (c) concrete: ... (d) CFRP: ... (e) glass: ... (f) oak: ..."></div>
           </div>
           <div class="task-item">
             <div class="task-q">2. Explain the difference between strength and toughness. Give an example of a material that is strong but brittle (not tough).</div>
@@ -301,7 +351,7 @@
       <!-- ═══════════════════════════════════════════════════════════ -->
       <h1 class="notes-h1" id="section-3">Section 3: Selecting a Material</h1>
 
-      <p class="notes-p">In the SQA exam you will be given a scenario and asked to select a suitable material and <strong>justify your choice</strong>. A good justification always links the properties of the material directly to the demands of the application.</p>
+      <p class="notes-p">In the Qualifications Scotland exam you will be given a scenario and asked to select a suitable material and <strong>justify your choice</strong>. A good justification always links the properties of the material directly to the demands of the application.</p>
 
       <div class="key-point">A complete material selection answer always has two parts: <strong>(1) name the material</strong> and <strong>(2) state the specific property or properties that make it suitable</strong>, linked clearly to the application.</div>
 
@@ -343,6 +393,25 @@
       <div class="assignment" id="assignment-task2">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Material selection and justification</div></div>
         <div class="assignment-body">
+          <p class="challenge-context"><strong>&#x1F4CB; Material data sheet.</strong> Use this table to justify your answers. The ratings compare the materials with each other, from very low to very high. In the exam you will be given a table like this in the question, so practise picking out the properties that matter for each application. You may also research materials online if you want to go further, but be aware that values vary between sources.</p>
+          <div class="table-scroll">
+          <table class="data-sheet">
+          <tr><th>Material</th><th>Category</th><th>Density</th><th>Strength</th><th>Hardness</th><th>Toughness</th><th>Conducts heat &amp; electricity</th><th>Corrosion resistance</th><th>Cost</th><th>Typical uses and notes</th></tr>
+          <tr><td>Mild steel</td><td>Metal</td><td>High</td><td>High</td><td>Medium</td><td>High</td><td>Good</td><td>Poor (rusts)</td><td>Low</td><td>General structures, frames, brackets</td></tr>
+          <tr><td>Stainless steel</td><td>Metal</td><td>High</td><td>High</td><td>Medium</td><td>High</td><td>Good</td><td>Very good</td><td>Medium</td><td>Kitchenware, marine fittings</td></tr>
+          <tr><td>High-speed steel</td><td>Metal</td><td>High</td><td>High</td><td>Very high</td><td>Medium</td><td>Good</td><td>Medium</td><td>Medium</td><td>Drill bits and cutting tools; stays hard when hot</td></tr>
+          <tr><td>Aluminium alloy</td><td>Metal</td><td>Low</td><td>Medium</td><td>Low</td><td>Medium</td><td>Very good</td><td>Good</td><td>Medium</td><td>Easily formed; aircraft, car panels, pans</td></tr>
+          <tr><td>Copper</td><td>Metal</td><td>High</td><td>Medium</td><td>Low</td><td>High</td><td>Excellent</td><td>Good</td><td>High</td><td>Wiring, heat exchangers, pan bases</td></tr>
+          <tr><td>Tungsten carbide</td><td>Composite (ceramic in metal)</td><td>Very high</td><td>High</td><td>Extremely high</td><td>Low</td><td>Medium</td><td>Good</td><td>High</td><td>Tool tips for cutting hard metals; brittle</td></tr>
+          <tr><td>CFRP</td><td>Composite</td><td>Low</td><td>Very high</td><td>Medium</td><td>Medium</td><td>Medium</td><td>Very good</td><td>Very high</td><td>Very stiff and light; racing cars, bikes, turbine blades</td></tr>
+          <tr><td>GRP (fibreglass)</td><td>Composite</td><td>Low</td><td>High</td><td>Medium</td><td>Medium</td><td>Poor (insulator)</td><td>Very good</td><td>Medium</td><td>Boat hulls, car panels, turbine blades</td></tr>
+          <tr><td>Hardwood (e.g. oak, beech)</td><td>Composite (natural)</td><td>Very low</td><td>Medium</td><td>Medium</td><td>High</td><td>Poor (insulator)</td><td>Medium (rots if untreated)</td><td>Medium</td><td>Furniture, tool handles</td></tr>
+          <tr><td>PET</td><td>Polymer</td><td>Very low</td><td>Medium</td><td>Low</td><td>High</td><td>Poor (insulator)</td><td>Very good</td><td>Very low</td><td>Transparent and food-safe; drinks bottles</td></tr>
+          <tr><td>PVC</td><td>Polymer</td><td>Very low</td><td>Medium</td><td>Low</td><td>Medium</td><td>Poor (insulator)</td><td>Very good</td><td>Low</td><td>Cable insulation, pipes, window frames</td></tr>
+          <tr><td>Thermosetting plastic (e.g. phenol formaldehyde)</td><td>Polymer</td><td>Very low</td><td>Medium</td><td>Medium</td><td>Low</td><td>Very poor (insulator)</td><td>Very good</td><td>Low</td><td>Does not soften when heated; pan handles, sockets</td></tr>
+          <tr><td>Glass</td><td>Ceramic</td><td>Low</td><td>Medium (weak in tension)</td><td>High</td><td>Very low (brittle)</td><td>Poor (insulator)</td><td>Excellent</td><td>Low</td><td>Transparent; windows, bottles</td></tr>
+          </table>
+          </div>
           <div class="task-item">
             <div class="task-q">1. A cutting tool is used to machine hard metals in a factory. Select a suitable material for the cutting tool and justify your choice by referring to at least two properties.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-t2a">&#x2713; Saved</span></div>
@@ -392,7 +461,14 @@
           <text x="44" y="94" text-anchor="middle" font-size="22" font-weight="700" fill="#134e4a" font-family="Georgia,serif">&#963;</text>
           <text x="86" y="94" text-anchor="middle" font-size="22" font-weight="700" fill="#134e4a" font-family="Georgia,serif">A</text>
         </svg>
-        <p><strong>F&sigma;A formula triangle.</strong> Cover up the quantity you want to find. If the two that are left sit <strong>side by side</strong>, multiply them. If one sits <strong>above</strong> the other, divide the top by the bottom. Cover &sigma; and you see F over A; cover F and you see &sigma; next to A.</p>
+        <div class="tri-steps">
+          <p class="tri-title"><strong>Using the stress triangle:</strong> cover the quantity you want to find with your finger, then look at what is left.</p>
+          <ul>
+            <li>To find <strong>&sigma;</strong>: F is <em>above</em> A, so divide &rarr; &sigma; = <span class="frac"><span class="num">F</span><span class="den">A</span></span></li>
+            <li>To find <strong>F</strong>: &sigma; and A are <em>side by side</em>, so multiply &rarr; F = &sigma; &times; A</li>
+            <li>To find <strong>A</strong>: F is <em>above</em> &sigma;, so divide &rarr; A = <span class="frac"><span class="num">F</span><span class="den">&sigma;</span></span></li>
+          </ul>
+        </div>
       </div>
 
       <p class="notes-p">The <strong>cross-sectional area</strong> is the area of the cut face of the member — perpendicular to the direction of the force. A smaller cross-section experiences <strong>greater stress</strong> for the same force. This is why load-bearing columns and cables are sized carefully.</p>
@@ -483,7 +559,14 @@
           <text x="44" y="94" text-anchor="middle" font-size="22" font-weight="700" fill="#134e4a" font-family="Georgia,serif">&#949;</text>
           <text x="86" y="94" text-anchor="middle" font-size="22" font-weight="700" fill="#134e4a" font-family="Trebuchet MS, Atkinson Hyperlegible, sans-serif">l</text>
         </svg>
-        <p><strong>&Delta;<span class="sym-l">l</span>&epsilon;<span class="sym-l">l</span> formula triangle.</strong> It works exactly like the stress triangle: cover the quantity you want. Cover &epsilon; and you see &Delta;<span class="sym-l">l</span> over <span class="sym-l">l</span>; cover &Delta;<span class="sym-l">l</span> and you see &epsilon; next to <span class="sym-l">l</span>, so multiply.</p>
+        <div class="tri-steps">
+          <p class="tri-title"><strong>Using the strain triangle:</strong> cover the quantity you want to find with your finger, then look at what is left.</p>
+          <ul>
+            <li>To find <strong>&epsilon;</strong>: &Delta;<span class="sym-l">l</span> is <em>above</em> <span class="sym-l">l</span>, so divide &rarr; &epsilon; = <span class="frac"><span class="num">&Delta;<span class="sym-l">l</span></span><span class="den"><span class="sym-l">l</span></span></span></li>
+            <li>To find <strong>&Delta;<span class="sym-l">l</span></strong>: &epsilon; and <span class="sym-l">l</span> are <em>side by side</em>, so multiply &rarr; &Delta;<span class="sym-l">l</span> = &epsilon; &times; <span class="sym-l">l</span></li>
+            <li>To find <strong><span class="sym-l">l</span></strong>: &Delta;<span class="sym-l">l</span> is <em>above</em> &epsilon;, so divide &rarr; <span class="sym-l">l</span> = <span class="frac"><span class="num">&Delta;<span class="sym-l">l</span></span><span class="den">&epsilon;</span></span></li>
+          </ul>
+        </div>
       </div>
 
       <div class="key-point">Strain is always a very small number — often expressed in scientific notation (e.g. 5 &times; 10<sup>&minus;4</sup>). It has no units because it is a ratio of two lengths.</div>
