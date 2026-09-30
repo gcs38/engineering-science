@@ -167,15 +167,24 @@
     .tri-steps .frac { margin:2px 0.4em; }
     /* Material data sheet */
     .table-scroll { overflow-x:auto; margin:10px 0 16px; }
-    .data-sheet { width:100%; border-collapse:collapse; font-size:12px; min-width:760px; }
+    .data-sheet { width:100%; border-collapse:collapse; font-size:12px; min-width:640px; }
     .data-sheet th { background:var(--teal-800); color:white; padding:7px 8px; text-align:left; font-weight:600; vertical-align:bottom; }
     .data-sheet td { padding:6px 8px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
     .data-sheet tr:nth-child(even) td { background:var(--gray-50); }
     .data-sheet td:first-child { font-weight:600; color:var(--gray-900); min-width:120px; }
+    .green-box .ctrl-btn { margin-top:2px; }
+    .info-pop-backdrop { position:fixed; inset:0; background:rgba(15,23,42,.55); display:none; align-items:center; justify-content:center; padding:20px; z-index:10005; }
+    .info-pop-backdrop.open { display:flex; }
+    .info-pop { position:relative; background:#f0fdf4; border:2px solid #86efac; border-radius:12px; max-width:680px; width:100%; max-height:85vh; overflow-y:auto; padding:22px 24px; font-size:13.5px; color:var(--gray-700); line-height:1.7; box-shadow:0 20px 50px rgba(0,0,0,.3); }
+    .info-pop p { margin:0 0 8px; }
+    .info-pop ul { list-style:disc; margin:4px 0 8px; padding-left:22px; }
+    .info-pop li { margin-bottom:4px; }
+    .info-pop .green-box-title { padding-right:30px; }
+    .info-pop-close { position:absolute; top:10px; right:12px; background:none; border:none; font-size:26px; line-height:1; cursor:pointer; color:#166534; }
     .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
 
     @media print {
-      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.float-btn,.toc-panel,.toc-backdrop,.name-pop,.assignment-footer,.lightbox,.page-nav { display:none!important; }
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.float-btn,.info-pop-backdrop,.green-box .ctrl-btn,.toc-panel,.toc-backdrop,.name-pop,.assignment-footer,.lightbox,.page-nav { display:none!important; }
       .layout { display:block!important; }
       .main { margin:0!important; padding:0!important; }
       .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
@@ -206,7 +215,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 30 September 2026, 11:18</div>
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 30 September 2026, 11:52</div>
       <div class="hero-label">National 5 &middot; Mechanisms and Structures &rsaquo; Materials</div>
       <h1 class="hero-title">&#x1F9F1; Materials &mdash; Course Notes</h1>
       <p class="hero-sub">Material properties, selection and justification, stress and strain calculations</p>
@@ -275,16 +284,9 @@
       </div>
 
       <div class="green-box">
-        <div class="green-box-title">&#x1F332; Wood &mdash; the engineering material everyone overlooks</div>
-        <p>When people think of &ldquo;engineering materials&rdquo; they picture steel, concrete and carbon fibre, but wood is one of the most widely used engineering materials in the world. It is a <strong>natural composite</strong>: long, strong <strong>cellulose fibres</strong> held together by a matrix called <strong>lignin</strong>, in the same way that glass fibres are held in resin in GRP. Like other fibre composites, it is much stronger <strong>along the grain</strong> than across it.</p>
-        <ul>
-          <li><strong>Versatile:</strong> it is used in house frames, roof trusses, floors, bridges, boats, furniture, tool handles and sports equipment.</li>
-          <li><strong>Engineered wood:</strong> products such as plywood, glulam (glued laminated timber) beams and cross-laminated timber (CLT) panels let engineers build large spans and even multi-storey buildings from timber. Timber-frame construction is very common for new homes in Scotland.</li>
-          <li><strong>Good strength-to-weight ratio</strong>, easy to cut and join, and a good thermal insulator.</li>
-          <li><strong>Sustainable:</strong> it is renewable if forests are replanted, and it locks up carbon for as long as the timber is in use.</li>
-          <li><strong>Drawbacks:</strong> it can rot or be attacked by insects unless treated or kept dry, it swells and shrinks with moisture, and it burns.</li>
-        </ul>
-        <p><strong>Softwood or hardwood?</strong> The names describe the <em>type of tree</em>, not how hard the wood is. <strong>Softwoods</strong> come from coniferous trees such as pine, spruce and larch. They grow quickly, so they are usually cheaper, and they are the main construction timber in the UK. <strong>Hardwoods</strong> come from broadleaf trees such as oak, beech and ash. They grow more slowly and are often denser, tougher and more durable, so they are used for furniture, flooring and tool handles. But watch out: <strong>balsa</strong>, one of the softest and lightest woods of all, is a hardwood!</p>
+        <div class="green-box-title">&#x1F332; Wood &mdash; the overlooked engineering material</div>
+        <p>Wood is a <strong>natural composite</strong>: strong cellulose fibres held together by lignin. It is one of the most widely used engineering materials in the world, from house frames to bridges, yet it is often forgotten when people think about engineering.</p>
+        <button type="button" class="ctrl-btn ctrl-btn-pdf" onclick="openWoodPop()">&#x1F332; Read more about wood</button>
       </div>
 
       <hr class="divider">
@@ -396,20 +398,18 @@
           <p class="challenge-context"><strong>&#x1F4CB; Material data sheet.</strong> Use this table to justify your answers. The ratings compare the materials with each other, from very low to very high. In the exam you will be given a table like this in the question, so practise picking out the properties that matter for each application. You may also research materials online if you want to go further, but be aware that values vary between sources.</p>
           <div class="table-scroll">
           <table class="data-sheet">
-          <tr><th>Material</th><th>Category</th><th>Density</th><th>Strength</th><th>Hardness</th><th>Toughness</th><th>Conducts heat &amp; electricity</th><th>Corrosion resistance</th><th>Cost</th><th>Typical uses and notes</th></tr>
-          <tr><td>Mild steel</td><td>Metal</td><td>High</td><td>High</td><td>Medium</td><td>High</td><td>Good</td><td>Poor (rusts)</td><td>Low</td><td>General structures, frames, brackets</td></tr>
-          <tr><td>Stainless steel</td><td>Metal</td><td>High</td><td>High</td><td>Medium</td><td>High</td><td>Good</td><td>Very good</td><td>Medium</td><td>Kitchenware, marine fittings</td></tr>
-          <tr><td>High-speed steel</td><td>Metal</td><td>High</td><td>High</td><td>Very high</td><td>Medium</td><td>Good</td><td>Medium</td><td>Medium</td><td>Drill bits and cutting tools; stays hard when hot</td></tr>
-          <tr><td>Aluminium alloy</td><td>Metal</td><td>Low</td><td>Medium</td><td>Low</td><td>Medium</td><td>Very good</td><td>Good</td><td>Medium</td><td>Easily formed; aircraft, car panels, pans</td></tr>
-          <tr><td>Copper</td><td>Metal</td><td>High</td><td>Medium</td><td>Low</td><td>High</td><td>Excellent</td><td>Good</td><td>High</td><td>Wiring, heat exchangers, pan bases</td></tr>
-          <tr><td>Tungsten carbide</td><td>Composite (ceramic in metal)</td><td>Very high</td><td>High</td><td>Extremely high</td><td>Low</td><td>Medium</td><td>Good</td><td>High</td><td>Tool tips for cutting hard metals; brittle</td></tr>
-          <tr><td>CFRP</td><td>Composite</td><td>Low</td><td>Very high</td><td>Medium</td><td>Medium</td><td>Medium</td><td>Very good</td><td>Very high</td><td>Very stiff and light; racing cars, bikes, turbine blades</td></tr>
-          <tr><td>GRP (fibreglass)</td><td>Composite</td><td>Low</td><td>High</td><td>Medium</td><td>Medium</td><td>Poor (insulator)</td><td>Very good</td><td>Medium</td><td>Boat hulls, car panels, turbine blades</td></tr>
-          <tr><td>Hardwood (e.g. oak, beech)</td><td>Composite (natural)</td><td>Very low</td><td>Medium</td><td>Medium</td><td>High</td><td>Poor (insulator)</td><td>Medium (rots if untreated)</td><td>Medium</td><td>Furniture, tool handles</td></tr>
-          <tr><td>PET</td><td>Polymer</td><td>Very low</td><td>Medium</td><td>Low</td><td>High</td><td>Poor (insulator)</td><td>Very good</td><td>Very low</td><td>Transparent and food-safe; drinks bottles</td></tr>
-          <tr><td>PVC</td><td>Polymer</td><td>Very low</td><td>Medium</td><td>Low</td><td>Medium</td><td>Poor (insulator)</td><td>Very good</td><td>Low</td><td>Cable insulation, pipes, window frames</td></tr>
-          <tr><td>Thermosetting plastic (e.g. phenol formaldehyde)</td><td>Polymer</td><td>Very low</td><td>Medium</td><td>Medium</td><td>Low</td><td>Very poor (insulator)</td><td>Very good</td><td>Low</td><td>Does not soften when heated; pan handles, sockets</td></tr>
-          <tr><td>Glass</td><td>Ceramic</td><td>Low</td><td>Medium (weak in tension)</td><td>High</td><td>Very low (brittle)</td><td>Poor (insulator)</td><td>Excellent</td><td>Low</td><td>Transparent; windows, bottles</td></tr>
+          <tr><th>Material</th><th>Category</th><th>Density</th><th>Strength</th><th>Hardness</th><th>Toughness</th><th>Conducts heat &amp; electricity</th><th>Notes and typical uses</th></tr>
+          <tr><td>Mild steel</td><td>Metal</td><td>High</td><td>High</td><td>Medium</td><td>High</td><td>Good</td><td>Cheap; rusts unless protected; frames, brackets</td></tr>
+          <tr><td>Stainless steel</td><td>Metal</td><td>High</td><td>High</td><td>Medium</td><td>High</td><td>Good</td><td>Does not rust; kitchenware, marine fittings</td></tr>
+          <tr><td>High-speed steel</td><td>Metal</td><td>High</td><td>High</td><td>Very high</td><td>Medium</td><td>Good</td><td>Stays hard when hot; drill bits, cutting tools</td></tr>
+          <tr><td>Aluminium alloy</td><td>Metal</td><td>Low</td><td>Medium</td><td>Low</td><td>Medium</td><td>Very good</td><td>Easily formed; aircraft, car panels, pans</td></tr>
+          <tr><td>Copper</td><td>Metal</td><td>High</td><td>Medium</td><td>Low</td><td>High</td><td>Excellent</td><td>Expensive; wiring, pan bases</td></tr>
+          <tr><td>CFRP</td><td>Composite</td><td>Low</td><td>Very high</td><td>Medium</td><td>Medium</td><td>Medium</td><td>Very stiff and light but expensive; racing cars, bikes, turbine blades</td></tr>
+          <tr><td>GRP (fibreglass)</td><td>Composite</td><td>Low</td><td>High</td><td>Medium</td><td>Medium</td><td>Poor (insulator)</td><td>Stiff, light, does not corrode; boat hulls, turbine blades</td></tr>
+          <tr><td>Hardwood (e.g. oak, beech)</td><td>Composite (natural)</td><td>Very low</td><td>Medium</td><td>Medium</td><td>High</td><td>Poor (insulator)</td><td>Furniture, tool handles</td></tr>
+          <tr><td>PET</td><td>Polymer</td><td>Very low</td><td>Medium</td><td>Low</td><td>High</td><td>Poor (insulator)</td><td>Very cheap, transparent, food-safe; drinks bottles</td></tr>
+          <tr><td>Thermosetting plastic (e.g. phenol formaldehyde)</td><td>Polymer</td><td>Very low</td><td>Medium</td><td>Medium</td><td>Low</td><td>Very poor (insulator)</td><td>Does not soften when heated; pan handles, sockets</td></tr>
+          <tr><td>Glass</td><td>Ceramic</td><td>Low</td><td>Medium (weak in tension)</td><td>High</td><td>Very low (brittle)</td><td>Poor (insulator)</td><td>Transparent; windows, bottles</td></tr>
           </table>
           </div>
           <div class="task-item">
@@ -779,6 +779,27 @@ document.addEventListener('DOMContentLoaded',function(){
     box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
   });
 });
+</script>
+
+<div class="info-pop-backdrop" id="wood-pop" onclick="if(event.target===this)closeWoodPop()" role="dialog" aria-modal="true" aria-labelledby="wood-pop-h">
+  <div class="info-pop">
+    <button type="button" class="info-pop-close" onclick="closeWoodPop()" aria-label="Close">&times;</button>
+    <div class="green-box-title" id="wood-pop-h">&#x1F332; Wood &mdash; the engineering material everyone overlooks</div>
+        <p>When people think of &ldquo;engineering materials&rdquo; they picture steel, concrete and carbon fibre, but wood is one of the most widely used engineering materials in the world. It is a <strong>natural composite</strong>: long, strong <strong>cellulose fibres</strong> held together by a matrix called <strong>lignin</strong>, in the same way that glass fibres are held in resin in GRP. Like other fibre composites, it is much stronger <strong>along the grain</strong> than across it.</p>
+        <ul>
+          <li><strong>Versatile:</strong> it is used in house frames, roof trusses, floors, bridges, boats, furniture, tool handles and sports equipment.</li>
+          <li><strong>Engineered wood:</strong> products such as plywood, glulam (glued laminated timber) beams and cross-laminated timber (CLT) panels let engineers build large spans and even multi-storey buildings from timber. Timber-frame construction is very common for new homes in Scotland.</li>
+          <li><strong>Good strength-to-weight ratio</strong>, easy to cut and join, and a good thermal insulator.</li>
+          <li><strong>Sustainable:</strong> it is renewable if forests are replanted, and it locks up carbon for as long as the timber is in use.</li>
+          <li><strong>Drawbacks:</strong> it can rot or be attacked by insects unless treated or kept dry, it swells and shrinks with moisture, and it burns.</li>
+        </ul>
+        <p><strong>Softwood or hardwood?</strong> The names describe the <em>type of tree</em>, not how hard the wood is. <strong>Softwoods</strong> come from coniferous trees such as pine, spruce and larch. They grow quickly, so they are usually cheaper, and they are the main construction timber in the UK. <strong>Hardwoods</strong> come from broadleaf trees such as oak, beech and ash. They grow more slowly and are often denser, tougher and more durable, so they are used for furniture, flooring and tool handles. But watch out: <strong>balsa</strong>, one of the softest and lightest woods of all, is a hardwood!</p>
+        </div>
+</div>
+<script>
+function openWoodPop(){ var p=document.getElementById('wood-pop'); p.classList.add('open'); p.querySelector('.info-pop-close').focus(); }
+function closeWoodPop(){ document.getElementById('wood-pop').classList.remove('open'); }
+document.addEventListener('keydown',function(e){ if(e.key==='Escape') closeWoodPop(); });
 </script>
 
 <!-- ═══ Floating buttons, Contents panel, My Name popup, exemplar lightbox ═══ -->
