@@ -6,7 +6,7 @@
   <title>Teacher Resources — Engineering Science Scotland</title>
   <link rel="stylesheet" href="../css/style.css">
   <style>
-    .tr-wrap{max-width:980px;margin:0 auto;padding:26px 24px 40px;}
+    .tr-wrap{max-width:1180px;margin:0 auto;padding:26px 24px 40px;}
     .lock-card{max-width:460px;margin:10px auto;background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px 26px 24px;text-align:center;}
     .lock-icon{width:46px;height:46px;border-radius:50%;background:var(--teal-50);display:flex;align-items:center;justify-content:center;margin:0 auto 14px;font-size:22px;}
     .lock-card h1{font-size:19px;margin:0 0 6px;color:var(--gray-900);}
@@ -22,17 +22,19 @@
     .tr-head button{font-size:12px;padding:6px 12px;border:1px solid var(--gray-200);background:var(--white);border-radius:var(--radius-md);cursor:pointer;font-family:inherit;color:var(--gray-600);}
     .tr-note{font-size:12.5px;background:#fef3c7;color:#78350f;border-radius:var(--radius-md);padding:9px 12px;margin-bottom:18px;line-height:1.5;}
     .tr-area{font-size:11px;font-weight:700;letter-spacing:.7px;text-transform:uppercase;color:var(--gray-600);margin:20px 0 8px;padding-bottom:6px;border-bottom:1px solid var(--gray-200);}
-    .tr-row{display:grid;grid-template-columns:230px 1fr;gap:10px;align-items:center;background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:10px 14px;margin-bottom:8px;}
+    .tr-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;}
+    .tr-row{display:flex;flex-direction:column;gap:8px;background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 12px;}
     .tr-topic{font-size:14px;font-weight:600;color:var(--gray-900);}
-    .tr-files{display:flex;gap:8px;flex-wrap:wrap;}
+    .tr-files{display:flex;flex-direction:column;gap:6px;}
     .tr-files button{font-family:inherit;font-size:12.5px;padding:7px 11px;border:1px solid var(--teal-400);color:var(--teal-800);background:var(--teal-50);border-radius:var(--radius-md);cursor:pointer;}
     .tr-files button:hover{background:#d1efe3;}
     .tr-files button:disabled{opacity:.6;cursor:wait;}
     .tr-files small{color:var(--gray-400);}
-    .tr-file{display:inline-flex;}
+    .tr-file{display:flex;}
+    .tr-file .tr-open{flex:1;text-align:left;}
     .tr-file .tr-open{border-radius:var(--radius-md) 0 0 var(--radius-md);}
     .tr-file .tr-dl{border-left:none;border-radius:0 var(--radius-md) var(--radius-md) 0;padding:7px 9px;}
-    @media (max-width:640px){.tr-row{grid-template-columns:1fr;}}
+    
   </style>
 </head>
 <body>
@@ -71,7 +73,7 @@ var ESS_TEACHER = {"it": 600000, "s": "nMf8OAd0tqM25h7Jo3iGsA==", "i": "q6x61P5F
   function render(index) {
     var h = '';
     index.forEach(function (sec) {
-      h += '<div class="tr-area">' + esc(sec.area) + '</div>';
+      h += '<div class="tr-area">' + esc(sec.area) + '</div><div class="tr-grid">';
       sec.topics.forEach(function (t) {
         h += '<div class="tr-row"><div class="tr-topic">' + esc(t.title) + '</div><div class="tr-files">';
         t.items.forEach(function (it) {
@@ -80,6 +82,7 @@ var ESS_TEACHER = {"it": 600000, "s": "nMf8OAd0tqM25h7Jo3iGsA==", "i": "q6x61P5F
         });
         h += '</div></div>';
       });
+      h += '</div>';
     });
     var body = document.getElementById('res-body');
     body.innerHTML = h;
