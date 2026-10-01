@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- DRAFT: Higher section not yet launched. Remove the robots line below when it goes live. -->
+<meta name="robots" content="noindex, nofollow">
+<title>Higher Engineering Science – Structures (draft)</title>
+<style>
+  :root { --ink:#111; --paper:#fff; --bg:#e9ebee; --rule:#c8ccd2; --accent:#1c3f94; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--ink); font-family:Tahoma, Verdana, "Segoe UI", sans-serif; font-size:15px; line-height:1.45; }
+  .draft-banner { background:#fff3cd; color:#5c4400; text-align:center; padding:.5rem 1rem; font-size:.85rem; border-bottom:1px solid #e0c97a; }
+  main { max-width:820px; margin:1.5rem auto; padding:0 .75rem; }
+  .page { background:var(--paper); padding:2.2rem 3rem 3rem; margin-bottom:1.5rem; box-shadow:0 1px 4px rgba(0,0,0,.12); position:relative; }
+  .page[data-page]::after { content:attr(data-page); position:absolute; bottom:.8rem; left:0; right:0; text-align:center; font-size:.85rem; color:#555; }
+  h3 { font-size:1.05rem; margin:1.4rem 0 .6rem; }
+  h4 { font-size:1rem; margin:1.2rem 0 .5rem; }
+  h3:first-child, h4:first-child { margin-top:0; }
+  p { margin:.55rem 0; }
+  ul, ol { padding-left:1.6rem; } li { margin:.35rem 0; }
+  .indent { padding-left:3rem; }
+  figure.fig { margin:1rem auto; text-align:center; }
+  figure.fig img { max-width:100%; height:auto; }
+  .calc { margin:.8rem 0 .8rem 3rem; line-height:1.9; }
+  .calc.center { margin-left:0; text-align:center; }
+  .ql { font-weight:normal; margin:.6rem 0 0; }
+  .grid2 { display:grid; grid-template-columns:1fr 1fr; gap:.5rem 1.5rem; align-items:start; }
+  .grid2 figure.fig { margin:.5rem auto; }
+  .heads p { margin:0 0 0 3rem; }
+  .side { display:grid; grid-template-columns:1fr 210px; gap:1rem; align-items:center; margin:1rem 0; }
+  .side figure.fig { margin:0; }
+  table { border-collapse:collapse; }
+  table.defs td { padding:.4rem 1.5rem .4rem 0; vertical-align:top; }
+  table.conds { margin:.8rem 0; } table.conds td { padding:.3rem 1.2rem .3rem 0; }
+  table.results { margin:1rem auto; min-width:60%; }
+  table.results th, table.results td { border:1px solid #333; padding:.35rem 1rem; text-align:center; font-size:.85rem; }
+  .cover { text-align:center; padding-top:3rem; }
+  .cover-title { font-weight:normal; font-size:2.3rem; margin:0 0 2rem; }
+  .cover-sub { font-weight:normal; font-size:2rem; margin:0 0 .5rem; }
+  .cover-small { font-size:1.15rem; margin:0 0 2rem; line-height:1.7; }
+  .cover-foot { display:flex; justify-content:space-between; align-items:flex-end; gap:1rem; margin-top:2rem; text-align:left; }
+  .name-lines p { font-size:1.6rem; margin:.4rem 0; }
+  .cover-foot figure.fig { margin:0; }
+  @media (max-width:640px) {
+    .page { padding:1.5rem 1.1rem 2.6rem; }
+    .grid2, .side { grid-template-columns:1fr; }
+    .indent, .calc { padding-left:0; margin-left:1rem; }
+    .name-lines p { font-size:1.1rem; }
+    .cover-foot { flex-direction:column; align-items:center; }
+  }
+  @media print { body { background:#fff; } .draft-banner { display:none; } .page { box-shadow:none; break-after:page; } }
+</style>
+</head>
+<body>
+<div class="draft-banner">Draft – Higher Structures notes, not yet published.</div>
+<main>
+<section class="page cover">
+  <h1 class="cover-title">Higher Engineering Science</h1>
+  <h2 class="cover-sub">Structures</h2>
+  <p class="cover-small">Including UDLs, Nodal Analysis &amp;<br>Simultaneous Equations</p>
+  <figure class="fig"><img src="images/p00-1.png" width="404" height="237" alt="Diagram from page 0" loading="lazy"></figure>
+  <div class="cover-foot">
+    <div class="name-lines"><p>Name: ____________________</p><p>Teacher: __________________</p><p>Class: ____________________</p></div>
+    <figure class="fig"><img src="images/p00-2.png" width="114" height="173" alt="Diagram from page 0" loading="lazy"></figure>
+  </div>
+</section>
+
+<section class="page" data-page="1">
+  <h3>Learning Intentions</h3>
+  <ul>
+    <li>Resolving triangle/polygon of forces</li>
+    <li>Resolving resultant forces for systems in equilibrium</li>
+    <li>Solving reaction forces in simply supported beams:
+      <ul><li>where loads are not exclusively vertical or horizontal</li><li>with hinge and roller supports</li><li>With uniformly distributed loads</li></ul></li>
+    <li>Nodal analysis of a frame</li>
+    <li>Simultaneous equations of structures</li>
+  </ul>
+  <h3>Success Criteria</h3>
+  <ul>
+    <li>I can resolve forces at and angle into their vertical and horizontal components using Pythagoras.</li>
+    <li>I can find the unknown forces in a system by using one of 3 equations.</li>
+    <li>I can solve equations with loads at an angle, hinge and roller supports and UDLs.</li>
+    <li>I can complete a nodal analysis question to work out internal forces and their nature.</li>
+    <li>I can complete simultaneous equations using my knowledge of Pythagoras and the 3 equations for equilibrium.</li>
+  </ul>
+  <p>In this unit we will build on the skills learned in National 5 Engineering Science.</p>
+</section>
+
+<section class="page" data-page="2">
+  <h3>STRUCTURES</h3>
+  <p>There are three main types of structure - mass, framed and shells.</p>
+  <div class="side"><div><p><b>Mass structures</b> perform due to their own weight.<br>An example would be a dam.</p></div><figure class="fig"><img src="images/p02-1.png" width="196" height="123" alt="Diagram from page 2" loading="lazy"></figure></div>
+  <div class="side"><div><p><b>Frame structures</b> resist loads due to the arrangement of its members. A house roof truss can support a load many times its own weight. Electricity pylons are good examples of frame structures.</p></div><figure class="fig"><img src="images/p02-2.png" width="179" height="270" alt="Diagram from page 2" loading="lazy"></figure></div>
+  <div class="side"><div><p><b>Shells</b> are structures where its strength comes from the formation of sheets to give strength. A car body is an example of a shell structure.</p></div><figure class="fig"><img src="images/p02-3.png" width="238" height="111" alt="Diagram from page 2" loading="lazy"></figure></div>
+  <p>It is very important with any structure that we can calculate the forces acting within it so that a safe structure can be designed. Early structures were found to be successful due to the fact that they stayed up and many early structures are still with us, but many are not. The science of structures has been progressively improving over the centuries and it is now possible to predict structures behaviour by analysis and calculation. Errors can still be made, sometimes with catastrophic results.</p>
+  <p>These are the 3 equations we will use throughout this topic.</p>
+  <figure class="fig"><img src="images/p02-4.png" width="557" height="105" alt="Diagram from page 2" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="3">
+  <h3>FORCES</h3>
+  <p>In the structure below, three forces are acting on it.</p>
+  <figure class="fig"><img src="images/p03-1.png" width="300" height="85" alt="Diagram from page 3" loading="lazy"></figure>
+  <p>The diagram shown below can represent the forces in the above diagram.</p>
+  <figure class="fig"><img src="images/p03-2.png" width="299" height="71" alt="Diagram from page 3" loading="lazy"></figure>
+  <p>F<sub>L1</sub> and F<sub>L2</sub> represent the force exerted due to the mass of the people. F<sub>R</sub> is the reaction force. This type of diagram is known as a <b>free-body diagram.</b></p>
+  <p>The reaction load F<sub>R</sub> is found by adding the two downward forces together.</p>
+  <p>In any force system the sum of the vertical forces must be equal to zero.</p>
+  <div class="calc">ΣF<sub>V</sub>↑ = ΣF<sub>V</sub>↓<br>F<sub>R</sub> = F<sub>L1</sub> + F<sub>L2</sub><br>F<sub>R</sub> = 810N + 740N<br>F<sub>R</sub> = 1550N</div>
+</section>
+
+<section class="page" data-page="4">
+  <h3>RESOLUTION OF A FORCE</h3>
+  <p>In some cases the loads may not be acting in the same direction, and cannot therefore be added together directly.</p>
+  <p>In the situation shown below the force is acting down at an angle.</p>
+  <figure class="fig"><img src="images/p04-1.png" width="268" height="105" alt="Diagram from page 4" loading="lazy"></figure>
+  <p>This force can be split into two separate components:</p>
+  <p>A vertical component F<sub>V</sub>.<br>A horizontal component F<sub>H</sub>.</p>
+  <figure class="fig"><img src="images/p04-2.png" width="223" height="120" alt="Diagram from page 4" loading="lazy"></figure>
+  <p>To resolve a force into its components you will have to know two things, its magnitude and direction.</p>
+  <p>Trigonometry is used to resolve forces.</p>
+  <p>Where - Hypotenuse = force, F</p>
+  <p class="indent">Opposite = vertical component, F<sub>V</sub><br>Adjacent = horizontal component, F<sub>H</sub></p>
+</section>
+
+<section class="page" data-page="5">
+  <p>The diagram above can be redrawn as below.</p>
+  <figure class="fig"><img src="images/p05-1.png" width="212" height="131" alt="Diagram from page 5" loading="lazy"></figure>
+  <p>To find the horizontal force, F<sub>H</sub></p>
+  <figure class="fig"><img src="images/p05-2.png" width="165" height="92" alt="Diagram from page 5" loading="lazy"></figure>
+  <p>Horizontal force = 77.94 N</p>
+  <p>To find the vertical force, F<sub>V</sub></p>
+  <figure class="fig"><img src="images/p05-3.png" width="172" height="95" alt="Diagram from page 5" loading="lazy"></figure>
+  <p>Vertical force = 45 N</p>
+</section>
+
+<section class="page" data-page="6">
+  <h4>Task - Resolution of Forces</h4>
+  <p>1. Resolve the following forces into their horizontal and vertical components.</p>
+  <div class="grid2">
+    <div><span class="ql">a)</span><figure class="fig"><img src="images/p06-1.png" width="203" height="122" alt="Diagram from page 6" loading="lazy"></figure></div>
+    <div><span class="ql">b)</span><figure class="fig"><img src="images/p06-2.png" width="135" height="141" alt="Diagram from page 6" loading="lazy"></figure></div>
+    <div><span class="ql">c)</span><figure class="fig"><img src="images/p06-3.png" width="134" height="109" alt="Diagram from page 6" loading="lazy"></figure></div>
+    <div><span class="ql">d)</span><figure class="fig"><img src="images/p06-4.png" width="134" height="152" alt="Diagram from page 6" loading="lazy"></figure></div>
+  </div>
+  <p>2. Find the resultant for these force systems. Find the horizontal and vertical components of each - add them up to find the overall component forces and then find the resultant.</p>
+  <div class="grid2">
+    <div><span class="ql">a)</span><figure class="fig"><img src="images/p06-5.png" width="235" height="168" alt="Diagram from page 6" loading="lazy"></figure></div>
+    <div><span class="ql">b)</span><figure class="fig"><img src="images/p06-6.png" width="254" height="168" alt="Diagram from page 6" loading="lazy"></figure></div>
+  </div>
+</section>
+
+<section class="page" data-page="7">
+  <h4>Task 1</h4>
+  <figure class="fig wide"><img src="images/p07-1.png" width="671" height="567" alt="Diagram from page 7" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="8">
+  <h4>Task 2</h4>
+  <figure class="fig wide"><img src="images/p08-1.png" width="695" height="763" alt="Diagram from page 8" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="9">
+  <h3>MOMENT OF A FORCE</h3>
+  <p>The moment of a force is the turning effect of that force when it acts on a body</p>
+  <figure class="fig"><img src="images/p09-1.png" width="348" height="146" alt="Diagram from page 9" loading="lazy"></figure>
+  <p>The load acting on the frame structure above will have a turning effect on the structure.</p>
+  <p>The Principle of Moments states that if a body is in Equilibrium the sum of the clockwise moments is equal to the sum of anti-clockwise moments.</p>
+  <h4>Worked Examples</h4>
+  <h4>Example 1</h4>
+  <figure class="fig"><img src="images/p09-2.png" width="363" height="112" alt="Diagram from page 9" loading="lazy"></figure>
+  <div class="calc">∑ CwM = ∑ ACwM<br>F x d = F x d<br>5 x 2 = 10 x 1</div>
+  <p>The above example is in equilibrium.</p>
+</section>
+
+<section class="page" data-page="10">
+  <p>We can use this principle to find an unknown force or unknown distance.</p>
+  <h4>Example 2</h4>
+  <figure class="fig"><img src="images/p10-1.png" width="366" height="284" alt="Diagram from page 10" loading="lazy"></figure>
+  <h4>Assignments: Moments</h4>
+  <p>The beams shown below are in equilibrium. Find the unknown quantity for each arrangement.</p>
+  <h4>Question 1</h4>
+  <div class="grid2">
+    <div><span class="ql">a)</span><figure class="fig"><img src="images/p10-3.png" width="266" height="106" alt="Diagram from page 10" loading="lazy"></figure></div>
+    <div><span class="ql">b)</span><figure class="fig"><img src="images/p10-2.png" width="305" height="136" alt="Diagram from page 10" loading="lazy"></figure></div>
+    <div><span class="ql">c)</span><figure class="fig"><img src="images/p10-4.png" width="310" height="129" alt="Diagram from page 10" loading="lazy"></figure></div>
+    <div><span class="ql">d)</span><figure class="fig"><img src="images/p10-5.png" width="299" height="191" alt="Diagram from page 10" loading="lazy"></figure></div>
+  </div>
+</section>
+
+<section class="page" data-page="11">
+  <p>The following beams, in equilibrium, have inclined forces. Find the unknown quantity.</p>
+  <h4>Question 2</h4>
+  <p class="ql">a)</p><figure class="fig"><img src="images/p11-1.png" width="382" height="120" alt="Diagram from page 11" loading="lazy"></figure>
+  <p class="ql">b)</p><figure class="fig"><img src="images/p11-2.png" width="354" height="129" alt="Diagram from page 11" loading="lazy"></figure>
+  <p class="ql">c)</p><figure class="fig"><img src="images/p11-3.png" width="530" height="172" alt="Diagram from page 11" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="12">
+  <h3>BEAM REACTIONS</h3>
+  <p>We are now going to study beams with external forces acting on them. We shall resolve forces into their components and use moments to find the support reactions.</p>
+  <p>Definitions of some of the terms you have met already:</p>
+  <table class="defs">
+    <tr><td>RESULTANT</td><td>The resultant is that single force that replaces a system of forces.</td></tr>
+    <tr><td>EQUILIBRIUM</td><td>Equilibrium is the word used to mean balanced forces.</td></tr>
+  </table>
+  <h3>Conditions of Equilibrium</h3>
+  <ol>
+    <li>The sum of the Clockwise Moments = the sum of the Anti-Clockwise Moments<figure class="fig"><img src="images/p12-1.png" width="250" height="38" alt="Diagram from page 12" loading="lazy"></figure></li>
+    <li>The sum of the forces acting upwards equals the sum of the forces acting downwards.<figure class="fig"><img src="images/p12-2.png" width="155" height="46" alt="Diagram from page 12" loading="lazy"></figure></li>
+    <li>The sum of the forces acting to the right equal the sum of the forces acting to the left.<figure class="fig"><img src="images/p12-3.png" width="157" height="34" alt="Diagram from page 12" loading="lazy"></figure></li>
+  </ol>
+</section>
+
+<section class="page" data-page="13">
+  <h3>Beam Reactions</h3>
+  <p>A beam is usually supported at two points. There are two main ways of supporting a beam -</p>
+  <p class="indent">1. Simple supports (knife edge)</p>
+  <figure class="fig"><img src="images/p13-1.png" width="394" height="114" alt="Diagram from page 13" loading="lazy"></figure>
+  <p class="indent">2. Hinge and roller</p>
+  <figure class="fig"><img src="images/p13-2.png" width="416" height="105" alt="Diagram from page 13" loading="lazy"></figure>
+  <h3>Worked Examples</h3>
+  <h4>1. SIMPLE SUPPORTS</h4>
+  <p>Simple supports are used when there is no sideways tendency to move the beam.</p>
+  <p>Consider this loaded beam, “simply” supported.</p>
+  <figure class="fig"><img src="images/p13-3.png" width="358" height="136" alt="Diagram from page 13" loading="lazy"></figure>
+  <p>1. The forces at the supports called reactions, always act vertically.</p>
+</section>
+
+<section class="page" data-page="14">
+  <p>2. The beam is in equilibrium; therefore the conditions of equilibrium apply.</p>
+  <p>The value of Reactions <b>R<sub>A</sub></b> and <b>R<sub>B</sub></b> are found as follows.</p>
+  <p>Take moments about R<sub>A</sub></p>
+  <figure class="fig"><img src="images/p14-1.png" width="236" height="192" alt="Diagram from page 14" loading="lazy"></figure>
+  <p>To find R<sub>A</sub></p>
+  <div class="calc">∑F↑ = ∑F↓<br>R<sub>a</sub> + R<sub>b</sub> = 10 + 8<br>R<sub>a</sub> = 18 - R<sub>b</sub><br>R<sub>a</sub> = 18 – 0.88<br>R<sub>a</sub> = 17.12kN</div>
+  <h4>2. HINGE AND ROLLER SUPPORTS</h4>
+  <p>Hinge and roller supports are used when there is a possibility that the beam may move sideways.</p>
+  <figure class="fig"><img src="images/p14-2.png" width="490" height="140" alt="Diagram from page 14" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="15">
+  <p><b>Note</b>: The reaction at a roller support is always at right angles to the surface. The direction of <b>R<sub>A</sub></b> is assumed. If any of the components work out as negative values then the direction will be opposite the assumed direction.</p>
+  <p>The reaction at the hinge support can be any direction.</p>
+  <p>(Find the two components of the hinge reaction, then the resultant)</p>
+  <p>There are three unknown quantities above: -</p>
+  <ol><li>The magnitude of Reaction <b>R<sub>B</sub></b>.</li><li>The magnitude of Reaction <b>R<sub>A</sub></b>.</li><li>The direction of Reaction <b>R<sub>A</sub></b>.</li></ol>
+  <p>Redraw as a free-body diagram showing vertical and horizontal components of the forces.</p>
+  <figure class="fig"><img src="images/p15-1.png" width="502" height="155" alt="Diagram from page 15" loading="lazy"></figure>
+  <p>The vertical and horizontal components of the 40N force are found.</p>
+  <div class="grid2"><figure class="fig"><img src="images/p15-2.png" width="120" height="79" alt="Diagram from page 15" loading="lazy"></figure><figure class="fig"><img src="images/p15-3.png" width="135" height="76" alt="Diagram from page 15" loading="lazy"></figure></div>
+  <p>To find <b>R<sub>B</sub></b> -take moments about <b>V<sub>RA</sub></b>, this eliminates one of the unknown vertical forces.</p>
+  <figure class="fig"><img src="images/p15-4.png" width="195" height="147" alt="Diagram from page 15" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="16">
+  <div class="grid2 heads"><p>Vertical forces</p><p>Horizontal forces</p></div>
+  <figure class="fig"><img src="images/p16-1.png" width="441" height="160" alt="Diagram from page 16" loading="lazy"></figure>
+  <p>Use V<sub>RA</sub> and H<sub>RA</sub> to find R<sub>A</sub></p>
+  <figure class="fig"><img src="images/p16-2.png" width="196" height="108" alt="Diagram from page 16" loading="lazy"></figure>
+  <figure class="fig"><img src="images/p16-3.png" width="163" height="77" alt="Diagram from page 16" loading="lazy"></figure>
+  <p>Find direction of R<sub>A</sub></p>
+  <figure class="fig"><img src="images/p16-4.png" width="492" height="276" alt="Diagram from page 16" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="17">
+  <h4>Assignments: Beam Reaction</h4>
+  <p>1 Find the reactions at supports A and B for each of the loaded beams shown below.</p>
+  <p class="ql">a)</p><figure class="fig"><img src="images/p17-1.png" width="275" height="102" alt="Diagram from page 17" loading="lazy"></figure>
+  <p class="ql">b)</p><figure class="fig"><img src="images/p17-2.png" width="314" height="100" alt="Diagram from page 17" loading="lazy"></figure>
+  <p class="ql">c)</p><figure class="fig"><img src="images/p17-3.png" width="377" height="99" alt="Diagram from page 17" loading="lazy"></figure>
+  <p class="ql">d)</p><figure class="fig"><img src="images/p17-4.png" width="443" height="137" alt="Diagram from page 17" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="18">
+  <h4>Task - Beam Reaction (continued)</h4>
+  <p>2) Find the reactions at supports A and B for each of the loaded beams shown below.</p>
+  <p class="ql">a)</p><figure class="fig"><img src="images/p18-1.png" width="378" height="335" alt="Diagram from page 18" loading="lazy"></figure>
+  <p class="ql">b)</p><figure class="fig"><img src="images/p18-2.png" width="336" height="312" alt="Diagram from page 18" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="19">
+  <h3>FRAMED STRUCTURES</h3>
+  <p>A frame structure is an assembly of members and joints (usually called Nodes) which is designed to support a load. Examples of frame structures include roof trusses, bridges, pylon towers.</p>
+  <figure class="fig"><img src="images/p19-1.png" width="313" height="191" alt="Diagram from page 19" loading="lazy"></figure>
+  <p>The members in this framed structure can be as ties or struts, depending on the type of force they support.</p>
+  <h3>STRUTS AND TIES</h3>
+  <p>When solving problems in frame structures you will be required to determine the Magnitude and Nature of the forces in the members of the frame. That is, determine, in addition to the size of the force in the member, whether the member is a Strut or a Tie.</p>
+  <h3>Strut</h3>
+  <p>Members that are in compression, due to external forces trying to compress them, are known as Struts.</p>
+  <figure class="fig"><img src="images/p19-2.png" width="497" height="36" alt="Diagram from page 19" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="20">
+  <h3>Tie</h3>
+  <p>Members that are in tension, due to external forces trying to pull them apart, are known as Ties.</p>
+  <figure class="fig"><img src="images/p20-1.png" width="497" height="36" alt="Diagram from page 20" loading="lazy"></figure>
+  <h3>Nodal Analysis</h3>
+  <p>There are several methods of solving frame structure problems. The method we shall use is called Nodal Analysis.</p>
+  <p>Any joint where members meet is known as a node.</p>
+  <p>This method relies on the fact that if structures are in equilibrium then each node will be in equilibrium. The sum of the forces acting on any the node will equal zero.</p>
+  <h3>Nodes</h3>
+  <p>The members are either in compression (strut) or tension (tie). They can be represented at the node as shown below –</p>
+  <figure class="fig"><img src="images/p20-2.png" width="252" height="225" alt="Diagram from page 20" loading="lazy"></figure>
+  <p>F<sub>B</sub> is under compression and pushes into the node, F<sub>A</sub> is under tension and pulls away from the node.</p>
+</section>
+
+<section class="page" data-page="21">
+  <h3>Conditions of Static Equilibrium</h3>
+  <table class="conds">
+    <tr><td>SUM OF THE MOMENTS = 0</td><td>(∑M<sub>o</sub> = 0)</td><td>∑CWM = ∑ACWM</td></tr>
+    <tr><td>SUM OF THE VERTICAL FORCES = 0</td><td>(∑F<sub>V</sub> = 0)</td><td>∑F↑ = ∑F↓</td></tr>
+    <tr><td>SUM OF THE HORIZONTAL FORCES = 0</td><td>(∑F<sub>H</sub> = 0)</td><td>∑F→ = ∑F←</td></tr>
+  </table>
+  <p>When solving frame structures some analysis of the structure is required to determine the best starting point and which of the conditions of static equilibrium to apply first.</p>
+  <h3>Solving Simple Frame Structures</h3>
+  <p>To help solve frame structure problems there are some simple rules to follow depending on the type of structure.</p>
+  <h4>Cantilevered frame structures</h4>
+  <p>For this frame structure it is not necessary to use moments to help find the forces in the members.</p>
+  <p>The node with the 900N load acting has only one unknown vertical component.</p>
+  <figure class="fig"><img src="images/p21-1.png" width="317" height="244" alt="Diagram from page 21" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="22">
+  <p>As all vertical forces acting on the node must equal zero then F<sub>V</sub> must equal 900N.</p>
+  <p>By using trigonometry it is now possible to find the other forces acting on this node.</p>
+  <figure class="fig"><img src="images/p22-1.png" width="197" height="120" alt="Diagram from page 22" loading="lazy"></figure>
+  <p>In this example all nodes have more than one unknown force or component of a force.</p>
+  <p>To solve this frame structure take moments about the top support to find the reaction force at the roller support.</p>
+  <figure class="fig"><img src="images/p22-2.png" width="232" height="168" alt="Diagram from page 22" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="23">
+  <h4>Truss frame structures</h4>
+  <figure class="fig"><img src="images/p23-1.png" width="283" height="143" alt="Diagram from page 23" loading="lazy"></figure>
+  <p>Treat structure like this as a beam and use moments to find reactions. Until the reaction forces are found all nodes have more than one unknown force or component.</p>
+  <p>Then start analysis at R<sub>1</sub> or R<sub>2</sub>, which will now have only one unknown component.</p>
+  <h4>Worked Example</h4>
+  <p>For the crane shown below we shall find the forces in the members and the reaction forces at the wall.</p>
+  <figure class="fig"><img src="images/p23-2.png" width="313" height="191" alt="Diagram from page 23" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="24">
+  <p>Draw a free body diagram of the frame structure.</p>
+  <figure class="fig"><img src="images/p24-1.png" width="310" height="192" alt="Diagram from page 24" loading="lazy"></figure>
+  <p>The framework is supported at two points. The hinge support at the top is being pulled away from the wall. R<sub>1</sub> will act against this pull and keep the hinge attached to the wall. The roller support is being pushed into the wall. R<sub>2</sub> will act against this force and in the opposite direction as shown below.</p>
+  <p>As member <b>B</b> is acting on a roller then <b>R<sub>2</sub></b> will be at 90º to member <b>C</b></p>
+  <p>As R<sub>1</sub> is acting at a hinge support there will be a vertical and horizontal component. At this stage guess the direction of R<sub>1</sub>.</p>
+  <figure class="fig"><img src="images/p24-2.png" width="335" height="195" alt="Diagram from page 24" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="25">
+  <p>If a wrong assumption about the member being in tension or compression or the direction of a force is made then a negative value will be produced from the calculation. If this is the case the direction of the force is simply reversed</p>
+  <p>To find the forces in the members and the reactions at the supports, study each of the structure nodes separately.</p>
+  <figure class="fig"><img src="images/p25-1.png" width="304" height="186" alt="Diagram from page 25" loading="lazy"></figure>
+  <p>Each node is in equilibrium so we can use the conditions of equilibrium.</p>
+  <table class="conds">
+    <tr><td>SUM OF THE VERTICAL FORCES = 0</td><td>∑F<sub>V</sub> = 0</td><td>∑F↑ = ∑F↓</td></tr>
+    <tr><td>SUM OF THE HORIZONTAL FORCES = 0</td><td>∑F<sub>H</sub> = 0</td><td>∑F→ = ∑F←</td></tr>
+    <tr><td>SUM OF THE MOMENTS = 0</td><td>∑M<sub>o</sub> = 0</td><td>∑CWM = ∑ACWM</td></tr>
+  </table>
+  <p>In this sort of problem where the structure is cantilevered out from the wall, it is normally solvable without considering the moments. Start by finding a node that has only one unknown vertical or horizontal component.</p>
+</section>
+
+<section class="page" data-page="26">
+  <h4>Node 1</h4>
+  <p>The forces acting on node 1 are shown below.</p>
+  <figure class="fig"><img src="images/p26-1.png" width="209" height="116" alt="Diagram from page 26" loading="lazy"></figure>
+  <p>Note - an assumption has been made about the direction of <b>F<sub>A</sub></b> and <b>F<sub>B</sub></b>.</p>
+  <p><b>F<sub>A</sub></b> is assumed to be in tension and acting away from the node 1.</p>
+  <p><b>F<sub>B</sub></b> is assumed to be in compression and acting in towards the node 1.</p>
+  <p>Split <b>F<sub>B</sub></b> into its horizontal (<b>F<sub>HB</sub></b>) and vertical (<b>F<sub>VB</sub></b>) components.</p>
+  <figure class="fig"><img src="images/p26-2.png" width="211" height="141" alt="Diagram from page 26" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="27">
+  <p>Apply a condition of static equilibrium -</p>
+  <div class="calc center">∑F<sub>V</sub> = 0</div>
+  <p>As the sum of Vertical forces is equal to zero then the vertical component of <b>F<sub>B</sub></b> (<b>F<sub>VB</sub></b>) is 1000N acting up.</p>
+  <p>From this we can find <b>F<sub>B</sub></b> - we can redraw <b>F<sub>B</sub></b> and the two components <b>F<sub>HB</sub></b> and <b>F<sub>VB</sub></b> to form a triangle as shown below.</p>
+  <figure class="fig"><img src="images/p27-1.png" width="263" height="125" alt="Diagram from page 27" loading="lazy"></figure>
+  <figure class="fig"><img src="images/p27-2.png" width="195" height="198" alt="Diagram from page 27" loading="lazy"></figure>
+  <p>The force in member <b>A</b> (<b>F<sub>A</sub></b>) will equal and opposite to <b>F<sub>HB</sub></b>.</p>
+</section>
+
+<section class="page" data-page="28">
+  <figure class="fig"><img src="images/p28-1.png" width="211" height="141" alt="Diagram from page 28" loading="lazy"></figure>
+  <p><b>Find F<sub>HB</sub></b></p>
+  <figure class="fig"><img src="images/p28-2.png" width="259" height="147" alt="Diagram from page 28" loading="lazy"></figure>
+  <figure class="fig"><img src="images/p28-3.png" width="181" height="147" alt="Diagram from page 28" loading="lazy"></figure>
+  <p>From above <b>F<sub>A</sub></b> = 1732N</p>
+  <p>This diagram shows all the forces acting at node 1.</p>
+</section>
+
+<section class="page" data-page="29">
+  <figure class="fig"><img src="images/p29-1.png" width="203" height="123" alt="Diagram from page 29" loading="lazy"></figure>
+  <h4>Worked Example (continued)</h4>
+  <h4>Node 2</h4>
+  <p>There are three forces acting at node 2.</p>
+  <figure class="fig"><img src="images/p29-2.png" width="219" height="159" alt="Diagram from page 29" loading="lazy"></figure>
+  <p>During analysis of node 1, <b>F<sub>B</sub></b> was found to be 2000N and was not negative so the assumed direction towards the node (compression) was correct.</p>
+  <p>In node 1, <b>F<sub>B</sub></b> is shown to be acting as a compressive force towards the node with a magnitude of 2000N.</p>
+  <figure class="fig"><img src="images/p29-3.png" width="190" height="142" alt="Diagram from page 29" loading="lazy"></figure>
+  <p>F<sub>C</sub> will be equal and opposite to the Vertical component of F<sub>B</sub> (F<sub>VB</sub>).</p>
+</section>
+
+<section class="page" data-page="30">
+  <p>From analysis of node 1 F<sub>VB</sub> was equal to 1000 N therefore -</p>
+  <div class="calc center">F<sub>C</sub> = 1000 N</div>
+  <p>As R<sub>2</sub> is a roller support the reaction will be at 90° to the surface.</p>
+  <p>R<sub>2</sub> will be equal to the Horizontal component of F<sub>B</sub>.</p>
+  <figure class="fig"><img src="images/p30-1.png" width="218" height="140" alt="Diagram from page 30" loading="lazy"></figure>
+  <p>From above H<sub>B</sub> was equal to 1732 N therefore -</p>
+  <div class="calc center">R<sub>2</sub> = 1732N</div>
+  <p>The forces acting at node 2 are shown below.</p>
+  <figure class="fig"><img src="images/p30-2.png" width="239" height="156" alt="Diagram from page 30" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="31">
+  <h4>Node 3</h4>
+  <p>Node 3 has three forces acting on it.</p>
+  <figure class="fig"><img src="images/p31-1.png" width="215" height="184" alt="Diagram from page 31" loading="lazy"></figure>
+  <p>R<sub>1</sub> will be equal and opposite to the resultant of F<sub>A</sub> and F<sub>C</sub>.</p>
+  <p>From analysis of node 1 F<sub>A</sub> was found to be 1732N.</p>
+  <p>From analysis of node 2 F<sub>C</sub> was found to be 1000N</p>
+  <p>Find resultant of F<sub>A</sub> &amp; F<sub>C</sub> - F<sub>R</sub></p>
+  <figure class="fig"><img src="images/p31-2.png" width="234" height="120" alt="Diagram from page 31" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="32">
+  <figure class="fig"><img src="images/p32-1.png" width="172" height="69" alt="Diagram from page 32" loading="lazy"></figure>
+  <p>Find angle of resultant (θ) -</p>
+  <figure class="fig"><img src="images/p32-2.png" width="142" height="131" alt="Diagram from page 32" loading="lazy"></figure>
+  <p>The task was to find the forces in the members and the reactions forces at the supports. The results can be shown as below -</p>
+  <figure class="fig"><img src="images/p32-3.png" width="350" height="213" alt="Diagram from page 32" loading="lazy"></figure>
+  <table class="results">
+    <tr><th>MEMBER</th><th>FORCE</th><th>TYPE OF FORCE</th></tr>
+    <tr><td>A</td><td>1732N</td><td>TENSION</td></tr>
+    <tr><td>B</td><td>2000N</td><td>COMPRESSION</td></tr>
+    <tr><td>C</td><td>1000N</td><td>TENSION</td></tr>
+  </table>
+</section>
+
+<section class="page" data-page="33">
+  <h3>Assignment 1</h3>
+  <p>Find the reactions R<sub>1</sub> and R<sub>2</sub> and the forces for the members in the frame structure shown below.</p>
+  <figure class="fig"><img src="images/p33-1.png" width="307" height="211" alt="Diagram from page 33" loading="lazy"></figure>
+  <p>The free body diagram with the nodes and members labelled is given below.</p>
+  <figure class="fig"><img src="images/p33-2.png" width="375" height="205" alt="Diagram from page 33" loading="lazy"></figure>
+  <p>In this type of problem where the structure is acting as a beam, find R1 and R<sub>2</sub> using moments.</p>
+  <p>Take moments about R<sub>1</sub> -</p>
+  <figure class="fig"><img src="images/p33-3.png" width="174" height="167" alt="Diagram from page 33" loading="lazy"></figure>
+  <p>Now complete this task and find R<sub>1</sub> and the forces in A, B and C.</p>
+</section>
+
+<section class="page" data-page="34">
+  <h3>Assignment 3</h3>
+  <p>Calculate reactions and find the magnitude and nature of forces in the members in the lighting gantry structure shown below.</p>
+  <figure class="fig"><img src="images/p34-1.png" width="309" height="328" alt="Diagram from page 34" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="35">
+  <p>Frame Structures</p>
+  <h4>Task 1</h4>
+  <figure class="fig wide"><img src="images/p35-1.png" width="655" height="727" alt="Diagram from page 35" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="36">
+  <h4>Task 2</h4>
+  <figure class="fig wide"><img src="images/p36-1.png" width="682" height="471" alt="Diagram from page 36" loading="lazy"></figure>
+  <h4>Task 3</h4>
+  <figure class="fig wide"><img src="images/p36-2.png" width="676" height="366" alt="Diagram from page 36" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="37">
+  <h4>Task 4</h4>
+  <figure class="fig wide"><img src="images/p37-1.png" width="702" height="621" alt="Diagram from page 37" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="38">
+  <h4>Uniformly distributed load</h4>
+  <figure class="fig"><img src="images/p38-1.png" width="239" height="44" alt="Diagram from page 38" loading="lazy"></figure>
+  <p>A uniformly distributed load (UDL) is a load which is spread constantly along the length of a beam. In practice, this is the usual type of load a beam will require to support.</p>
+  <p>The load is given in terms of the total force acting on each metre length of the beam i.e. <b>kN m<sup>-1</sup>.</b></p>
+  <p>In order to calculate the forces acting on the beam, it is assumed that the UDL acts centrally on the beam as a single force.</p>
+  <h4>Worked Example</h4>
+  <p>Calculate the force acting on the beam.</p>
+  <figure class="fig"><img src="images/p38-2.png" width="336" height="115" alt="Diagram from page 38" loading="lazy"></figure>
+  <p>200 x 3 = 600 N acting in the centre of the beam (i.e. 1.5 m from the end).</p>
+  <p>The diagram can be redrawn as shown below.</p>
+  <figure class="fig"><img src="images/p38-3.png" width="346" height="152" alt="Diagram from page 38" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="39">
+  <p>UDLs</p>
+  <p>Calculate R<sub>A</sub> and R<sub>B</sub> for each of the questions below.</p>
+  <figure class="fig wide"><img src="images/p39-1.png" width="595" height="904" alt="Diagram from page 39" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="40">
+  <p>Simultaneous Equations</p>
+  <figure class="fig wide"><img src="images/p40-1.png" width="688" height="927" alt="Diagram from page 40" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="41">
+  <h4>Task 1</h4>
+  <figure class="fig wide"><img src="images/p41-1.png" width="658" height="344" alt="Diagram from page 41" loading="lazy"></figure>
+  <h4>Task 2</h4>
+  <figure class="fig wide"><img src="images/p41-2.png" width="662" height="436" alt="Diagram from page 41" loading="lazy"></figure>
+</section>
+
+<section class="page" data-page="42"><p>2023 Past Paper</p><figure class="fig wide"><img src="images/p42-1.png" width="672" height="906" alt="Diagram from page 42" loading="lazy"></figure></section>
+<section class="page" data-page="43"><p>2023 Past Paper</p><figure class="fig wide"><img src="images/p43-1.png" width="665" height="975" alt="Diagram from page 43" loading="lazy"></figure></section>
+<section class="page" data-page="44"><p>2023 Past Paper</p><figure class="fig wide"><img src="images/p44-1.png" width="677" height="912" alt="Diagram from page 44" loading="lazy"></figure></section>
+<section class="page" data-page="45"><p>2023 Past Paper</p><figure class="fig wide"><img src="images/p45-1.png" width="622" height="963" alt="Diagram from page 45" loading="lazy"></figure></section>
+<section class="page" data-page="46"><p>2023 Past Paper</p><figure class="fig wide"><img src="images/p46-1.png" width="661" height="956" alt="Diagram from page 46" loading="lazy"></figure></section>
+<section class="page" data-page="47"><p>2023 Past Paper</p><figure class="fig wide"><img src="images/p47-1.png" width="674" height="978" alt="Diagram from page 47" loading="lazy"></figure></section>
+
+</main>
+</body>
+</html>
