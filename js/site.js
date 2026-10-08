@@ -471,3 +471,19 @@ function renderTeacherDocs(topicKey, containerId) {
   }
 
 })();
+
+
+/* ============================================================
+   COURSE NOTES: answer tools (load answers from a PDF on another
+   device; reveal model answers after the topic password).
+   The topics it is switched on for are listed in js/answer-tools.js.
+   ============================================================ */
+(function () {
+  if (!/\/course-notes\.html$/.test(location.pathname)) return;
+  function load() {
+    var s = document.createElement('script');
+    s.src = ESS_ROOT + 'js/answer-tools.js';
+    document.body.appendChild(s);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', load); else load();
+})();
