@@ -9,7 +9,9 @@
    Switch a topic on by adding its folder to ENABLED below.
    ============================================================ */
 (function () {
-  var ENABLED = ['n5/contexts/systems-approach'];
+  var ENABLED = ['n5/contexts/systems-approach', 'n5/contexts/energy-efficiency', 'n5/contexts/roles-disciplines', 'n5/contexts/impacts',
+                 'n5/electronics/analogue', 'n5/electronics/digital', 'n5/electronics/control',
+                 'n5/mechanisms/drive-systems', 'n5/mechanisms/pneumatics', 'n5/mechanisms/structures-forces', 'n5/mechanisms/materials'];
 
   var m = location.pathname.match(/(n5|higher|ah)\/[a-z-]+\/[a-z-]+(?=\/course-notes\.html$)/);
   if (!m || ENABLED.indexOf(m[0]) < 0) return;
@@ -58,27 +60,52 @@
   function toB64(str) { return btoa(unescape(encodeURIComponent(str))); }
   function fromB64(b) { return decodeURIComponent(escape(atob(b))); }
   function b64bytes(s) { var b = atob(s), u = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) u[i] = b.charCodeAt(i); return u; }
-  function nameKey() { return (typeof NAME_KEY !== 'undefined') ? NAME_KEY : null; }
+  function nameKey() {
+    if (typeof NAME_KEY !== 'undefined') return NAME_KEY;
+    if (typeof PUPIL_NAME_KEY !== 'undefined') return PUPIL_NAME_KEY;
+    if (typeof SF_NAME_KEY !== 'undefined') return SF_NAME_KEY;
+    return null;
+  }
+  function pageKeys() {
+    var seen = {}, out = [];
+    document.querySelectorAll('[data-key]').forEach(function (el) { var k = el.dataset.key; if (k && !seen[k]) { seen[k] = 1; out.push(k); } });
+    return out;
+  }
 
   // ════════ 1. answers travel inside the downloaded PDF ════════
   function snapshot() {
     var answers = {};
-    boxes().forEach(function (b) { var h = b.innerHTML; if (h && h.replace(/<br\s*\/?>|&nbsp;|\s/g, '')) answers[b.dataset.key] = h; });
+    pageKeys().forEach(function (k) {
+      var el = document.querySelector('[contenteditable="true"][data-key="' + k + '"]'), v = '';
+      if (el) v = el.innerHTML;
+      if (!v || !v.replace(/<br\s*\/?>|&nbsp;|\s/g, '')) { try { v = localStorage.getItem(PREFIX + k) || ''; } catch (e) { v = ''; } }
+      if (v && v.replace(/<br\s*\/?>|&nbsp;|\s/g, '')) answers[k] = v;
+    });
     var nk = nameKey(), name = '';
     try { name = nk ? (localStorage.getItem(nk) || '') : ''; } catch (e) {}
     return { v: 1, topic: TOPIC, saved: new Date().toISOString(), name: name, answers: answers };
   }
-  if (typeof PdfWriter !== 'undefined' && PdfWriter.prototype.finish && !PdfWriter.prototype._essWrapped) {
-    var origFinish = PdfWriter.prototype.finish;
-    PdfWriter.prototype.finish = function (fname) {
-      try {
-        this.doc.setProperties({ title: 'Engineering Science Scotland — my answers', subject: 'ESS answers (' + TOPIC + ')',
-                                 keywords: MARK + toB64(JSON.stringify(snapshot())) + END });
-      } catch (e) {}
-      return origFinish.call(this, fname);
+  // Every PDF the page makes gets a hidden copy of the answers (wraps the PDF library's save).
+  function patchPdf() {
+    var lib = window.jspdf;
+    if (!lib || !lib.jsPDF || lib.jsPDF._ess) return !!(lib && lib.jsPDF && lib.jsPDF._ess);
+    var Orig = lib.jsPDF;
+    var Wrapped = function () {
+      var doc = new (Function.prototype.bind.apply(Orig, [null].concat([].slice.call(arguments))))();
+      var save = doc.save;
+      doc.save = function () {
+        try { doc.setProperties({ title: 'Engineering Science Scotland — my answers', subject: 'ESS answers (' + TOPIC + ')',
+                                  keywords: MARK + toB64(JSON.stringify(snapshot())) + END }); } catch (e) {}
+        return save.apply(doc, arguments);
+      };
+      return doc;
     };
-    PdfWriter.prototype._essWrapped = true;
+    for (var k in Orig) { try { Wrapped[k] = Orig[k]; } catch (e) {} }
+    Wrapped.API = Orig.API; Wrapped.prototype = Orig.prototype; Wrapped._ess = true;
+    lib.jsPDF = Wrapped;
+    return true;
   }
+  if (!patchPdf()) { var tries = 0, t = setInterval(function () { if (patchPdf() || ++tries > 40) clearInterval(t); }, 250); }
 
   function loadFromFile(file, msgEl) {
     var r = new FileReader();
@@ -96,13 +123,11 @@
       if (!confirm('Load ' + keys.length + ' answer' + (keys.length > 1 ? 's' : '') + ' saved on ' + when + (data.name ? ' by ' + data.name : '') +
                    '?\n\nAny answers to the same questions on this device will be replaced.')) return;
       var n = 0;
-      boxes().forEach(function (b) {
-        var k = b.dataset.key;
-        if (data.answers[k] != null) { b.innerHTML = data.answers[k]; try { localStorage.setItem(PREFIX + k, data.answers[k]); } catch (e) {} n++; }
-      });
+      keys.forEach(function (k) { try { localStorage.setItem(PREFIX + k, data.answers[k]); n++; } catch (e) {} });
       var nk = nameKey();
-      if (nk && data.name) { try { localStorage.setItem(nk, data.name); } catch (e) {} if (typeof refreshNameBtn === 'function') refreshNameBtn(); }
-      say(msgEl, '✅ ' + n + ' answer' + (n === 1 ? '' : 's') + ' loaded and saved on this device.', false);
+      if (nk && data.name) { try { localStorage.setItem(nk, data.name); } catch (e) {} }
+      try { sessionStorage.setItem('ess-loaded-msg', '✅ ' + n + ' answer' + (n === 1 ? '' : 's') + ' loaded and saved on this device.'); } catch (e) {}
+      location.reload();
     };
     r.readAsArrayBuffer(file);
   }
@@ -124,11 +149,17 @@
   function modelFor(keys) {
     var els = keys.map(function (k) { return answersDoc.querySelector('[data-key="' + k + '"]'); }).filter(Boolean);
     if (!els.length) return '';
-    // answers held in a table: show the whole table once
     var tbl = els[0].closest('table');
     if (tbl && els.every(function (e) { return e.closest('table') === tbl; })) {
-      var wrap = tbl.closest('.ans-table-wrap') || tbl, intro = wrap.previousElementSibling;
-      return (intro && intro.classList.contains('ans-q') ? '<div class="ess-model-q">' + intro.innerHTML + '</div>' : '') + wrap.outerHTML;
+      // only the rows that hold these answers (plus the header row)
+      var t = tbl.cloneNode(true);
+      [].slice.call(t.rows).forEach(function (row, i) {
+        if (i === 0 && row.querySelector('th')) return;
+        if (!keys.some(function (k) { return row.querySelector('[data-key="' + k + '"]'); })) row.remove();
+      });
+      var wrap = tbl.closest('.ans-table-wrap') || tbl, intro = wrap.previousElementSibling, note = wrap.nextElementSibling;
+      return (intro && intro.classList.contains('ans-q') ? '<div class="ess-model-q">' + intro.innerHTML + '</div>' : '') + t.outerHTML +
+             (note && note.classList.contains('ans-note') ? note.outerHTML : '');
     }
     if (els.length === 1) { var a = els[0].querySelector('.ans-a'); return a ? a.innerHTML : els[0].innerHTML; }
     return els.map(function (e) {
@@ -136,15 +167,23 @@
       return (q && q.textContent.trim() ? '<div class="ess-model-q">' + esc(q.textContent) + '</div>' : '') + (a ? a.innerHTML : e.innerHTML);
     }).join('');
   }
+  function anchorFor(el) {
+    var item = el.closest('.task-item'), a = el;
+    if (item) { while (a.parentElement && a.parentElement !== item) a = a.parentElement; return a; }
+    var svg = el.closest('svg'); if (svg) a = svg;
+    var tbl = a.closest('table'); if (tbl) a = tbl.closest('.table-wrap, .data-table-wrap') || tbl;
+    return a;
+  }
 
   function addRevealButtons() {
     document.querySelectorAll('.ess-reveal').forEach(function (e) { e.remove(); });
     var groups = [], byAnchor = new Map();
-    boxes().forEach(function (b) {
-      var item = b.closest('.task-item'), a = b;
-      if (item) { while (a.parentElement && a.parentElement !== item) a = a.parentElement; }
+    document.querySelectorAll('[data-key]').forEach(function (b) {
+      var k = b.dataset.key;
+      if (!k || !answersDoc.querySelector('[data-key="' + k + '"]') || b.closest('.ess-tools, .ess-reveal')) return;
+      var a = anchorFor(b);
       if (!byAnchor.has(a)) { var g = { anchor: a, keys: [], boxes: [] }; byAnchor.set(a, g); groups.push(g); }
-      byAnchor.get(a).keys.push(b.dataset.key); byAnchor.get(a).boxes.push(b);
+      var g2 = byAnchor.get(a); if (g2.keys.indexOf(k) < 0) { g2.keys.push(k); g2.boxes.push(b); }
     });
     groups.forEach(function (g) {
       var html = modelFor(g.keys);
@@ -174,11 +213,13 @@
 
   // ── tools panel ──
   function build() {
+    // sits immediately before the first task (falls back to the top of the notes)
+    var firstTask = document.querySelector('.assignment');
     var host = document.querySelector('.notes-wrap') || document.querySelector('.content');
-    if (!host) return;
+    if (!firstTask && !host) return;
     var p = document.createElement('div'); p.className = 'ess-tools';
     p.innerHTML =
-      '<h3>Your answers</h3>' +
+      '<h3>Your answers to tasks</h3>' +
       '<div class="ess-tools-row"><span class="t">&#x1F4BE; Answers save on this device only. <strong>Using a different device?</strong> Load the PDF you downloaded last time (any &ldquo;Download my answers&rdquo; PDF from these notes) to carry on where you left off.</span>' +
       '<button type="button" class="ess-tbtn" data-act="load">&#x1F4C2; Load my answers</button><input type="file" accept=".pdf,application/pdf" hidden>' +
       '<div class="ess-msg" data-msg="load"></div></div>' +
@@ -187,9 +228,10 @@
       '<div class="ess-msg" data-msg="lock"></div></div>' +
       '<div class="ess-tools-row" data-row="open" hidden><span class="t">&#x2705; <strong>Model answers unlocked.</strong> Use the &ldquo;Show answer&rdquo; button under each task.</span>' +
       '<button type="button" class="ess-tbtn" data-act="all">Show all</button><button type="button" class="ess-tbtn" data-act="none">Hide all</button><button type="button" class="ess-tbtn" data-act="lock">&#x1F512; Lock</button></div>';
-    host.insertBefore(p, host.firstChild);
+    if (firstTask) firstTask.parentNode.insertBefore(p, firstTask); else host.insertBefore(p, host.firstChild);
 
     var fileIn = p.querySelector('input[type=file]'), loadMsg = p.querySelector('[data-msg=load]'), lockMsg = p.querySelector('[data-msg=lock]');
+    try { var lm = sessionStorage.getItem('ess-loaded-msg'); if (lm) { say(loadMsg, lm, false); sessionStorage.removeItem('ess-loaded-msg'); } } catch (e) {}
     p.querySelector('[data-act=load]').addEventListener('click', function () { fileIn.value = ''; fileIn.click(); });
     fileIn.addEventListener('change', function () { if (fileIn.files[0]) loadFromFile(fileIn.files[0], loadMsg); });
 
