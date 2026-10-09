@@ -412,6 +412,37 @@ function renderTeacherDocs(topicKey, containerId) {
     if (overlay) overlay.classList.remove('open');
   }
   window.ESSAbout = { open: openAboutPanel, close: closeAboutPanel };
+  // ---- User guide pop-out (same style as About ESS) ----
+  function openGuidePanel(e) {
+    if (e) e.preventDefault();
+    injectFeedbackPanel();
+    var overlay = document.getElementById('essug-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.className = 'essfb-overlay';
+      overlay.id = 'essug-overlay';
+      overlay.addEventListener('click', function(ev){ if (ev.target === overlay) closeGuidePanel(); });
+      overlay.innerHTML =
+        '<div class="essfb-panel essug-panel" style="max-height:90vh;overflow-y:auto;font-size:13.5px;width:min(760px,94vw);max-width:none;box-sizing:border-box;">' +
+          '<button class="essfb-close" onclick="window.ESSGuide.close()" aria-label="Close">&times;</button>' +
+          '<h3>User guide</h3><p>Engineering Science Scotland (ESS) is a free resource for National 5 Engineering Science. It covers all 11 topics, with everything a class needs to work through the course, and a password-protected area for teachers.</p><h4>The course notes: the heart of the site</h4><p>The online course notes are the main part of ESS. Each topic&rsquo;s notes take pupils through the content step by step, with explanations, diagrams, worked examples, built-in simulators, tasks and design challenges.</p><p><strong>They&rsquo;re designed to be taught from</strong> &mdash; shown on a projector or smartboard so you can talk the class through explanations, go over worked examples and demonstrate the simulators live, then set the tasks that follow. <strong>They also work for independent study:</strong> each topic is self-contained, so pupils can work through the notes on their own for catch-up, homework, working at their own pace or revision.</p><h4>Finding your way around</h4><p>Click <strong>National 5</strong> at the top of any page to see all 11 topics. Each topic page has up to four cards:</p><ul><li><strong>Course notes</strong> &mdash; the main online notes.</li><li><strong>Printable course notes</strong> &mdash; a PDF version for pupils without a device or who prefer paper.</li><li><strong>Simulator</strong> &mdash; for topics that have one (electronics, pneumatics, drive systems and structures).</li><li><strong>Answers to course notes</strong> &mdash; all the answers for the topic on one page, locked with a password.</li></ul><h4>Learning outcomes</h4><p>Each topic&rsquo;s course notes open with a <strong>Learning outcomes</strong> box: a list of &ldquo;I can&hellip;&rdquo; statements for the topic. Pupils tick each one when they feel confident, and the box shows how many they&rsquo;ve ticked. Each outcome has a <strong>Go to section</strong> link to the matching part of the notes. Outcomes that are not examined are shown in grey.</p><h4>How pupils complete the tasks</h4><ul><li><strong>Answers save automatically</strong> in the browser on that device, so pupils can close the page and carry on later on the same device.</li><li><strong>Handing in work:</strong> <strong>Download my answers (PDF)</strong> creates a PDF of the pupil&rsquo;s name and answers to submit through Teams, Google Classroom or email.</li><li><strong>Moving between devices:</strong> answers aren&rsquo;t stored online, but every downloaded answers PDF carries a hidden copy of all the pupil&rsquo;s answers and learning outcome ticks. On another device, pupils click <strong>Load my answers</strong> (in the &ldquo;Your answers to tasks&rdquo; box before the first task) and choose that PDF to carry on where they left off. Pupils should keep the original downloaded file &mdash; a PDF edited and re-saved in another app may lose its hidden answers.</li><li><strong>Shared devices:</strong> other pupils using the same browser profile could see saved answers, so ask pupils to download their answers at the end of each lesson.</li><li><strong>Simulators</strong> are built into many tasks; use the full-screen button for more space.</li></ul><h4>Checking answers</h4><p>Each topic has its own <strong>answers password</strong>, so teachers decide when pupils can check their work. Once a pupil enters it, they can:</p><ul><li>use the <strong>Show answer</strong> button that appears under each task in the course notes, to check their work as they go (pupils are asked to try a task before revealing its answer), or <strong>Show all</strong> answers at once &mdash; useful on the smartboard; or</li><li>open the <strong>Answers to course notes</strong> page for the whole topic.</li></ul><p>Teachers can find each topic&rsquo;s answers password at the top of the teacher copy of its answers in the Teacher area. Once a pupil knows a password it may spread around the class, so release it only when you&rsquo;re happy for everyone to see the answers.</p><h4>Printable notes</h4><p>Each topic&rsquo;s printable notes start with a <strong>cover sheet</strong>: space for the pupil&rsquo;s name and class, and the learning outcomes with tick boxes for pupils to track their progress. The cover also has a QR code to the online notes. Pupils without a device write their answers in their jotters; QR codes throughout the notes open each simulator on a phone or tablet.</p><h4>The Teacher area</h4><p>Click <strong>Teacher area</strong> (top right), then <strong>Open teacher resources</strong>, and enter the <strong>teacher password</strong> we send to verified teachers. For each topic you&rsquo;ll find the teacher copy of the answers (with the topic&rsquo;s answers password), a 25-mark unit test and its marking instructions, plus a summary of all the learning outcomes for course planning. <strong>Please never share the teacher password, or any of these files, with pupils.</strong></p><h4>Suggested ways to use ESS</h4><ul><li><strong>Teaching from the front</strong> with the course notes on the projector or smartboard.</li><li><strong>Classwork:</strong> pupils work through the tasks on their own devices, checking answers when you release the password.</li><li><strong>Independent study</strong> for catch-up, homework or working at their own pace.</li><li><strong>Self-assessment</strong> with the learning outcome ticks.</li><li><strong>End of topic:</strong> the unit test and marking instructions from the Teacher area.</li><li><strong>Revision</strong> with the printable notes.</li></ul><h4>Feedback and help</h4><p>If you spot a mistake, a broken link or anything confusing, or have an idea for something new, please use the <strong>Feedback</strong> button or email us. We&rsquo;d also love to hear from anyone who could help develop materials for <strong>Higher and Advanced Higher</strong>.</p>' +
+          '<a class="essfb-email" href="mailto:' + FEEDBACK_EMAIL + '?subject=ESS%20user%20guide">&#x2709;&#xFE0F; ' + FEEDBACK_EMAIL + '</a>' +
+        '</div>';
+      var st = document.createElement('style');
+      st.textContent = '.essug-panel h4{margin:16px 0 6px;font-size:14px;color:#0f766e;}.essug-panel ul{margin:0 0 10px 18px;padding:0;}.essug-panel li{margin:3px 0;line-height:1.55;}.essug-panel p{line-height:1.6;}';
+      document.head.appendChild(st);
+      document.body.appendChild(overlay);
+    }
+    overlay.classList.add('open');
+    var pnl = overlay.querySelector('.essug-panel'); if (pnl) pnl.scrollTop = 0;
+  }
+  function closeGuidePanel() {
+    var overlay = document.getElementById('essug-overlay');
+    if (overlay) overlay.classList.remove('open');
+  }
+  window.ESSGuide = { open: openGuidePanel, close: closeGuidePanel };
+  document.addEventListener('keydown', function(e){ if (e.key === 'Escape') closeGuidePanel(); });
+
   document.addEventListener('keydown', function(e){
     if (e.key === 'Escape') { closeAboutPanel(); closeFeedbackPanel(); }
   });
@@ -459,9 +490,16 @@ function renderTeacherDocs(topicKey, containerId) {
       about.type = 'button';
       about.className = 'teacher-btn';
       about.id = 'ess-about-btn';
-      about.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.3"/><path d="M8 7.2v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="4.9" r="0.8" fill="currentColor"/></svg>About ESS';
+      about.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.2" stroke="currentColor" stroke-width="1.3"/><path d="M8 7.2v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="4.9" r="0.8" fill="currentColor"/></svg><span class="tb-label">About ESS</span>';
       about.addEventListener('click', openAboutPanel);
       right.insertBefore(about, right.firstChild);
+      var guide = document.createElement('button');
+      guide.type = 'button';
+      guide.className = 'teacher-btn';
+      guide.id = 'ess-guide-btn';
+      guide.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><path d="M3 2.5h7.5a2 2 0 012 2v9H5a2 2 0 01-2-2v-9z" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 5.5h4.5M5.5 8h4.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span class="tb-label">User Guide</span>';
+      guide.addEventListener('click', openGuidePanel);
+      right.insertBefore(guide, about);
     }
   }
   if (document.readyState === 'loading') {
