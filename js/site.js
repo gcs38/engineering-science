@@ -82,7 +82,20 @@ var RESOURCE_STATUS = {
   'drive-systems':     { notes:'available', extension:'soon',      homework:'soon', presentation:'soon', practical:'soon' },
   'pneumatics':        { notes:'available', extension:'soon',      homework:'soon', presentation:'available', practical:'soon' },
   'structures-forces': { notes:'available', extension:'soon',      homework:'soon', presentation:'soon', practical:'soon' },
-  'materials':         { notes:'available', extension:'soon',      homework:'soon', presentation:'soon', practical:'soon' }
+  'materials':         { notes:'available', extension:'soon',      homework:'soon', presentation:'soon', practical:'soon' },
+
+  // ── Higher (topic names start with 'higher-' so they never mix with National 5) ──
+  'higher-systems-approach':   { notes:'soon' },
+  'higher-energy-efficiency':  { notes:'soon' },
+  'higher-roles-disciplines':  { notes:'soon' },
+  'higher-impacts':            { notes:'soon' },
+  'higher-analogue':           { notes:'available' },
+  'higher-digital':            { notes:'soon' },
+  'higher-control':            { notes:'soon' },
+  'higher-drive-systems':      { notes:'soon' },
+  'higher-pneumatics':         { notes:'soon' },
+  'higher-structures-forces':  { notes:'soon' },
+  'higher-materials':          { notes:'soon' }
 };
 
 // Reads the TOPIC variable declared on each index page and sets badges accordingly

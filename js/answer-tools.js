@@ -15,7 +15,12 @@
 
   var m = location.pathname.match(/(n5|higher|ah)\/[a-z-]+\/[a-z-]+(?=\/course-notes\.html$)/);
   if (!m || ENABLED.indexOf(m[0]) < 0) return;
-  var TOPIC = m[0].split('/').pop();
+  // National 5 topics keep their plain names (e.g. 'analogue') so saved answers are untouched.
+  // Higher and Advanced Higher topics get the level in front (e.g. 'higher-analogue') so they
+  // never share saved answers, outcome ticks or passwords with National 5.
+  var LEVEL = m[0].split('/')[0];
+  var TOPIC = (LEVEL === 'n5' ? '' : LEVEL + '-') + m[0].split('/').pop();
+  var LO_KEY = LEVEL === 'n5' ? 'lo-' : 'lo-' + TOPIC + '-';
   var PREFIX = 'ess_answers_';
   var MARK = 'ESSDATA1:', END = ':ESSEND';
   var PW_KEY = 'ess-answers-pw-' + TOPIC;
@@ -233,7 +238,7 @@
     var html = '<summary><span>&#x1F3AF; Learning outcomes</span><span class="c"></span></summary><div class="ess-lo-body">' +
       '<p class="ess-lo-hint">Tick each outcome when you feel confident you can do it. Your ticks are saved on this device and included in your downloaded answers PDF.</p>';
     lo.items.forEach(function (it, i) {
-      var id = 'ess-lo-' + i, key = 'lo-' + i, sec = document.getElementById(it[1]);
+      var id = 'ess-lo-' + i, key = LO_KEY + i, sec = document.getElementById(it[1]);
       html += '<div class="ess-lo-item' + (it[2] ? ' ne' : '') + '"><input type="checkbox" id="' + id + '" data-key="' + key + '">' +
               '<label for="' + id + '">' + it[0] + (it[2] ? ' <span class="ne-tag">(not examined)</span>' : '') + '</label>' +
               (sec ? '<a href="#' + it[1] + '">Go to section &rarr;</a>' : '') + '</div>';
