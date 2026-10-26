@@ -146,6 +146,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 var TEACHER_DOCS = {
 
+  // ── Higher ─────────────────────────────────────────────────
+
+  'higher-analogue': [
+    { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
+  ],
+
   // ── Engineering Contexts ──────────────────────────────────
 
   'systems-approach': [
@@ -481,12 +487,20 @@ function renderTeacherDocs(topicKey, containerId) {
       logoSub.setAttribute('aria-label', 'Scotland');
     }
 
-    // Level tabs: National 5 opens the National 5 menu; Higher and Advanced Higher greyed out and not clickable
+    // Level tabs: National 5 opens the National 5 menu; Higher opens the Higher menu (with the
+    // under-development warning when arriving from outside Higher); Advanced Higher greyed out
+    var onHigher = /\/higher\//.test(location.pathname);
     document.querySelectorAll('.level-tab').forEach(function (tab) {
       var href  = tab.getAttribute('href') || '';
       var level = tab.getAttribute('data-level') || '';
       if (level === 'n5' || /(^|\/)n5\//.test(href)) tab.setAttribute('href', ESS_ROOT + 'n5/index.html');
-      if (level === 'higher' || level === 'ah' || /(^|\/)(higher|ah)\//.test(href)) {
+      if (level === 'higher' || /(^|\/)higher\//.test(href)) {
+        tab.setAttribute('href', ESS_ROOT + 'higher/index.html');
+        tab.classList.toggle('active', onHigher);
+        if (!onHigher) tab.setAttribute('data-ess-higher-warning', '');
+        return;
+      }
+      if (level === 'ah' || /(^|\/)ah\//.test(href)) {
         tab.classList.remove('active');
         tab.classList.add('level-tab-disabled');
         tab.removeAttribute('href');
@@ -537,4 +551,69 @@ function renderTeacherDocs(topicKey, containerId) {
     document.body.appendChild(s);
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', load); else load();
+})();
+
+
+/* ============================================================
+   HIGHER: UNDER-DEVELOPMENT WARNING
+   Any link marked data-ess-higher-warning (the Higher card on the
+   home page and the Higher tab outside the Higher section) shows a
+   pop-up before going to Higher. Every Higher page also shows a
+   slim notice at the top. Remove both when Higher is finished:
+   set HIGHER_IN_DEVELOPMENT = false.
+   ============================================================ */
+var HIGHER_IN_DEVELOPMENT = true;
+(function () {
+  if (!HIGHER_IN_DEVELOPMENT) return;
+  var css = document.createElement('style');
+  css.textContent =
+    '.esshw-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:2000000;display:flex;align-items:center;justify-content:center;padding:20px;}' +
+    '.esshw-box{background:#fff;border-radius:14px;max-width:460px;width:100%;padding:26px 26px 22px;box-shadow:0 20px 60px rgba(0,0,0,.35);font-family:inherit;}' +
+    '.esshw-box h2{margin:0 0 10px;font-size:18px;color:#9a3412;display:flex;align-items:center;gap:8px;}' +
+    '.esshw-box p{margin:0 0 12px;font-size:14px;line-height:1.6;color:#334155;}' +
+    '.esshw-btns{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px;}' +
+    '.esshw-btns button{font-family:inherit;font-size:14px;font-weight:600;padding:10px 16px;border-radius:8px;cursor:pointer;}' +
+    '.esshw-back{background:#fff;color:#334155;border:1.5px solid #cbd5e1;}' +
+    '.esshw-go{background:#c2410c;color:#fff;border:1.5px solid #c2410c;}' +
+    '.esshw-go:hover{background:#9a3412;}' +
+    '.esshw-bar{background:#fff7ed;border-bottom:1px solid #fed7aa;color:#9a3412;font-size:12.5px;line-height:1.5;padding:8px 20px;text-align:center;}' +
+    '@media print{.esshw-bar{display:none!important;}}';
+  document.head.appendChild(css);
+
+  function showWarning(url) {
+    if (document.getElementById('esshw-overlay')) return;
+    var o = document.createElement('div');
+    o.className = 'esshw-overlay'; o.id = 'esshw-overlay';
+    o.innerHTML = '<div class="esshw-box" role="dialog" aria-modal="true" aria-labelledby="esshw-title">' +
+      '<h2 id="esshw-title">&#x26A0;&#xFE0F; Higher is under development</h2>' +
+      '<p>The Higher section of Engineering Science Scotland is still being written. Some topics are incomplete, and the content has <strong>not yet been checked</strong>.</p>' +
+      '<p>It <strong>cannot be relied upon</strong> to meet Qualifications Scotland standards. Please treat it as an early preview, and use the Feedback button to tell us about anything that needs fixing.</p>' +
+      '<div class="esshw-btns"><button type="button" class="esshw-back">Go back</button><button type="button" class="esshw-go">I understand &mdash; continue to Higher</button></div></div>';
+    function close() { o.remove(); document.removeEventListener('keydown', onKey); }
+    function onKey(e) { if (e.key === 'Escape') close(); }
+    o.addEventListener('click', function (e) { if (e.target === o) close(); });
+    o.querySelector('.esshw-back').addEventListener('click', close);
+    o.querySelector('.esshw-go').addEventListener('click', function () { window.location.href = url; });
+    document.addEventListener('keydown', onKey);
+    document.body.appendChild(o);
+    o.querySelector('.esshw-go').focus();
+  }
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[data-ess-higher-warning]');
+    if (!a || e.button !== 0 || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    e.preventDefault();
+    showWarning(a.href);
+  });
+
+  // Slim notice on every Higher page
+  if (/\/higher\//.test(location.pathname)) {
+    document.addEventListener('DOMContentLoaded', function () {
+      var main = document.querySelector('.main');
+      if (!main || document.querySelector('.esshw-bar')) return;
+      var bar = document.createElement('div');
+      bar.className = 'esshw-bar';
+      bar.innerHTML = '&#x26A0;&#xFE0F; <strong>Higher is under development.</strong> Content may be incomplete, has not yet been checked and cannot be relied upon to meet Qualifications Scotland standards.';
+      main.insertBefore(bar, main.firstChild);
+    });
+  }
 })();
