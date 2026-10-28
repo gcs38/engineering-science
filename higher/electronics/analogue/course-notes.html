@@ -200,7 +200,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute;top:14px;right:20px;font-size:11px;color:#94a3b8;">Last updated: 28 October 2026, 17:04</div>
+      <div style="position:absolute;top:14px;right:20px;font-size:11px;color:#94a3b8;">Last updated: 28 October 2026, 19:42</div>
       <div class="hero-label">Higher &middot; Electronics and Control &rsaquo; Analogue Electronics</div>
       <h1 class="hero-title">&#x26A1; Analogue Electronics &mdash; Course Notes</h1>
       <p class="hero-sub">Sensor voltage dividers, BJTs, MOSFETs and op-amp configurations</p>
@@ -223,7 +223,7 @@
       <hr class="divider">
 
       <h1 class="notes-h1" id="section-1">Section 1: Voltage Dividers with Sensors</h1>
-      <p class="notes-p">Most electronic control systems start with an <strong>input sub-system</strong> that turns a physical quantity (light, temperature, position) into a voltage. At Higher this is almost always a <strong>voltage divider</strong> made from a sensor and a fixed or variable resistor. The output voltage is then passed to a transistor, a MOSFET or an op-amp.</p>
+      <p class="notes-p">Most electronic control systems start with an <strong>input sub-system</strong> that turns a physical quantity (light, temperature, position) into a voltage. At Higher this is almost always a <strong>voltage divider</strong> made from a sensor and a fixed or variable resistor. The output voltage is then passed on to the next stage of the system &mdash; for example, to switch on a transistor that drives a lamp, motor or buzzer.</p>
       <div class="formula-box"><div class="formula" style="font-size:18px;font-weight:700;color:var(--teal-800);">V<sub>out</sub> = <span class="frac"><span class="frac-n">R<sub>2</sub></span><span class="frac-d">R<sub>1</sub> + R<sub>2</sub></span></span> &times; V<sub>S</sub></div></div>
       <p class="notes-p">where R<sub>2</sub> is the resistor <em>across which V<sub>out</sub> is measured</em> (normally the lower one). You can also use the fact that the supply voltage divides between the two resistors in the same ratio as their resistances: <span class="frac"><span class="frac-n">V<sub>1</sub></span><span class="frac-d">V<sub>2</sub></span></span> = <span class="frac"><span class="frac-n">R<sub>1</sub></span><span class="frac-d">R<sub>2</sub></span></span>.</p>
       <h2 class="notes-h2">Which way round?</h2>
@@ -369,9 +369,8 @@
       <h1 class="notes-h1" id="section-4">Section 4: Transistor Circuit Calculations</h1>
       <p class="notes-p">Exam questions often ask you to calculate the base current, collector current, gain or power in a transistor circuit. There are two common ways the base is driven, and they are calculated differently.</p>
       <h2 class="notes-h2">1. Base driven through a base resistor</h2>
-      <p class="notes-p">When the base is fed from an op-amp, a microcontroller or a switch through a base resistor R<sub>B</sub>, the base sits at 0.7 V when the transistor is on. So the base resistor has (V<sub>in</sub> &minus; 0.7) V across it:</p>
+      <p class="notes-p">When the base is fed from a microcontroller output or a switch through a base resistor R<sub>B</sub>, the base sits at 0.7 V when the transistor is on. So the base resistor has (V<sub>in</sub> &minus; 0.7) V across it:</p>
       <div class="formula-box"><div class="formula" style="font-size:18px;font-weight:700;color:var(--teal-800);">I<sub>B</sub> = <span class="frac"><span class="frac-n">V<sub>in</sub> &minus; 0.7</span><span class="frac-d">R<sub>B</sub></span></span></div></div>
-      <p class="notes-p">If the base is driven by an op-amp, V<sub>in</sub> is the op-amp&rsquo;s <strong>saturation voltage</strong> &mdash; the percentage of the supply given in the question.</p>
       <h2 class="notes-h2">2. Sensor voltage divider driving the base directly</h2>
 <figure class="circuit-figure" style="max-width:540px;margin:16px auto;">
 <svg width="520" viewBox="0 0 520 340" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><polyline points="60,30 470,30" fill="none" stroke="#6b8cae" stroke-width="2.5" stroke-linejoin="round"/><polyline points="60,310 470,310" fill="none" stroke="#6b8cae" stroke-width="2.5" stroke-linejoin="round"/><text x="54" y="35" text-anchor="end" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">+V<tspan font-size="9" dy="3">S</tspan></text><text x="54" y="315" text-anchor="end" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">0 V</text><circle cx="140" cy="30" r="4" fill="#1e293b"/><polyline points="140,30 140,70" fill="none" stroke="#6b8cae" stroke-width="2.5" stroke-linejoin="round"/><rect x="130" y="70" width="20" height="50" rx="2" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="116,121 124,121 158,67" fill="none" stroke="#1e293b" stroke-width="2"/><text x="124" y="100" text-anchor="end" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">R<tspan font-size="9" dy="3">1</tspan> (sensor)</text><polyline points="140,120 140,215" fill="none" stroke="#6b8cae" stroke-width="2.5" stroke-linejoin="round"/><rect x="130" y="215" width="20" height="50" rx="2" fill="white" stroke="#1e293b" stroke-width="2"/><text x="124" y="245" text-anchor="end" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">R<tspan font-size="9" dy="3">2</tspan></text><polyline points="140,265 140,310" fill="none" stroke="#6b8cae" stroke-width="2.5" stroke-linejoin="round"/><circle cx="140" cy="310" r="4" fill="#1e293b"/><circle cx="334" cy="180" r="26" fill="white" stroke="#1e293b" stroke-width="2"/><line x1="322" y1="165" x2="322" y2="195" stroke="#1e293b" stroke-width="3"/><line x1="300" y1="180" x2="322" y2="180" stroke="#1e293b" stroke-width="2.5"/><polyline points="322,174 344,160 344,140" fill="none" stroke="#1e293b" stroke-width="2.5"/><polyline points="322,186 344,200 344,220" fill="none" stroke="#1e293b" stroke-width="2.5"/><polygon points="344,200 333,198 339,191" fill="#1e293b"/><circle cx="140" cy="180" r="4" fill="#1e293b"/><polyline points="140,180 300,180" fill="none" stroke="#6b8cae" stroke-width="2.5" stroke-linejoin="round"/><circle cx="344" cy="30" r="4" fill="#1e293b"/><polyline points="344,30 344,60" fill="none" stroke="#6b8cae" stroke-width="2.5" stroke-linejoin="round"/><rect x="334" y="60" width="20" height="50" rx="2" fill="white" stroke="#1e293b" stroke-width="2"/><text x="360" y="90" text-anchor="start" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">R<tspan font-size="9" dy="3">L</tspan></text><polyline points="344,110 344,140" fill="none" stroke="#6b8cae" stroke-width="2.5" stroke-linejoin="round"/><polyline points="344,220 344,310" fill="none" stroke="#6b8cae" stroke-width="2.5" stroke-linejoin="round"/><circle cx="344" cy="310" r="4" fill="#1e293b"/><line x1="156" y1="135" x2="156" y2="160" stroke="#dc2626" stroke-width="2"/><polygon points="156,160 152.495,151.71 159.505,151.71" fill="#dc2626"/><text x="164" y="154" text-anchor="start" font-size="13" font-weight="700" fill="#dc2626" font-family="Arial,Helvetica,sans-serif">I<tspan font-size="9" dy="3">1</tspan></text><line x1="156" y1="200" x2="156" y2="225" stroke="#dc2626" stroke-width="2"/><polygon points="156,225 152.495,216.71 159.505,216.71" fill="#dc2626"/><text x="164" y="219" text-anchor="start" font-size="13" font-weight="700" fill="#dc2626" font-family="Arial,Helvetica,sans-serif">I<tspan font-size="9" dy="3">2</tspan></text><line x1="215" y1="166" x2="250" y2="166" stroke="#dc2626" stroke-width="2"/><polygon points="250,166 241.71,169.505 241.71,162.495" fill="#dc2626"/><text x="232" y="158" text-anchor="middle" font-size="13" font-weight="700" fill="#dc2626" font-family="Arial,Helvetica,sans-serif">I<tspan font-size="9" dy="3">B</tspan></text><text x="282" y="222" text-anchor="middle" font-size="12" font-weight="700" fill="#7c3aed" font-family="Arial,Helvetica,sans-serif">0.7 V</text><line x1="304" y1="190" x2="304" y2="300" stroke="#7c3aed" stroke-width="1.5" stroke-dasharray="4 3"/><text x="354" y="148" text-anchor="start" font-size="13" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">c</text><text x="354" y="212" text-anchor="start" font-size="13" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">e</text><text x="292" y="197" text-anchor="middle" font-size="13" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">b</text></svg>
@@ -382,8 +381,9 @@
       <div class="formula-box"><div class="formula" style="font-size:18px;font-weight:700;color:var(--teal-800);">I<sub>1</sub> = <span class="frac"><span class="frac-n">V<sub>S</sub> &minus; 0.7</span><span class="frac-d">R<sub>1</sub></span></span> &nbsp;&nbsp;&nbsp; I<sub>2</sub> = <span class="frac"><span class="frac-n">0.7</span><span class="frac-d">R<sub>2</sub></span></span> &nbsp;&nbsp;&nbsp; I<sub>B</sub> = I<sub>1</sub> &minus; I<sub>2</sub></div></div>
       <p class="notes-p">If I<sub>1</sub> is <em>smaller</em> than I<sub>2</sub>, there is not enough current to turn the transistor on: the base voltage stays below 0.7 V and I<sub>B</sub> = 0.</p>
       <h2 class="notes-h2">3. The collector side</h2>
-      <ul class="notes-ul"><li><strong>Collector current:</strong> I<sub>C</sub> = h<sub>FE</sub> &times; I<sub>B</sub>.</li><li><strong>Voltage across the load:</strong> V<sub>L</sub> = I<sub>C</sub> &times; R<sub>L</sub>, and V<sub>CE</sub> = V<sub>CC</sub> &minus; V<sub>L</sub>.</li><li><strong>Power dissipated in the transistor:</strong> P = V<sub>CE</sub> &times; I<sub>C</sub>.</li><li><strong>Saturation:</strong> the collector current can never be more than V<sub>CC</sub> / R<sub>L</sub> (the current with the whole supply across the load). If h<sub>FE</sub> &times; I<sub>B</sub> is bigger than this, the transistor is <strong>saturated</strong> (fully on) and I<sub>C</sub> = V<sub>CC</sub> / R<sub>L</sub>. The <strong>minimum h<sub>FE</sub></strong> needed to saturate the transistor is (V<sub>CC</sub> / R<sub>L</sub>) &divide; I<sub>B</sub>.</li></ul>
-      <div class="worked-example"><div class="worked-example-title">Worked example 1 &mdash; op-amp driving a relay</div><div class="step"><div class="step-num">1</div><div class="step-content">A comparator on a 9 V supply saturates at 80% of its supply. It drives a transistor (h<sub>FE</sub> = 120) through a 10 k&Omega; base resistor. The relay coil (60 &Omega;) is on the 9 V supply. V<sub>BE</sub> = 0.70 V. Find I<sub>B</sub>, I<sub>C</sub> and the power dissipated in the transistor.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">Op-amp output: V<sub>sat</sub> = 9 &times; 0.80 = 7.2 V.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">I<sub>B</sub> = (7.2 &minus; 0.70) / 10 000 = 0.65 mA.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">I<sub>C</sub> = 120 &times; 0.65 mA = <strong>78 mA</strong>.</div></div><div class="step"><div class="step-num">5</div><div class="step-content">V<sub>relay</sub> = 0.078 &times; 60 = 4.68 V, so V<sub>CE</sub> = 9 &minus; 4.68 = 4.32 V. P = 4.32 &times; 0.078 = <strong>0.34 W</strong> (2 s.f.).</div></div></div>
+      <ul class="notes-ul"><li><strong>Collector current:</strong> I<sub>C</sub> = h<sub>FE</sub> &times; I<sub>B</sub>.</li><li><strong>Voltage across the load:</strong> V<sub>L</sub> = I<sub>C</sub> &times; R<sub>L</sub>, and V<sub>CE</sub> = V<sub>CC</sub> &minus; V<sub>L</sub>.</li><li><strong>Power dissipated in the transistor:</strong> P = V<sub>CE</sub> &times; I<sub>C</sub>.</li><li><strong>Saturation:</strong> the collector current can never be more than I<sub>C(max)</sub>, the current that flows with the whole supply across the load.<br>If h<sub>FE</sub> &times; I<sub>B</sub> is bigger than this, the transistor is <strong>saturated</strong> (fully on) and I<sub>C</sub> = I<sub>C(max)</sub>. The <strong>minimum h<sub>FE</sub></strong> needed to saturate the transistor is shown below.</li></ul>
+      <div class="formula-box"><div class="formula" style="font-size:18px;font-weight:700;color:var(--teal-800);">I<sub>C(max)</sub> = <span class="frac"><span class="frac-n">V<sub>CC</sub></span><span class="frac-d">R<sub>L</sub></span></span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; h<sub>FE(min)</sub> = <span class="frac"><span class="frac-n">I<sub>C(max)</sub></span><span class="frac-d">I<sub>B</sub></span></span></div></div>
+      <div class="worked-example"><div class="worked-example-title">Worked example 1 &mdash; microcontroller driving a relay</div><div class="step"><div class="step-num">1</div><div class="step-content">A microcontroller output pin (5 V) drives a transistor (h<sub>FE</sub> = 120) through a 6.8 k&Omega; base resistor. The relay coil (60 &Omega;) is on a 9 V supply. V<sub>BE</sub> = 0.70 V. Find I<sub>B</sub>, I<sub>C</sub> and the power dissipated in the transistor.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">I<sub>B</sub> = (5 &minus; 0.70) / 6800 = 0.632 mA.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">I<sub>C</sub> = 120 &times; 0.632 mA = <strong>76 mA</strong> (2 s.f.).</div></div><div class="step"><div class="step-num">4</div><div class="step-content">V<sub>relay</sub> = 0.0759 &times; 60 = 4.55 V, so V<sub>CE</sub> = 9 &minus; 4.55 = 4.45 V.</div></div><div class="step"><div class="step-num">5</div><div class="step-content">P = V<sub>CE</sub> &times; I<sub>C</sub> = 4.45 &times; 0.0759 = <strong>0.34 W</strong> (2 s.f.).</div></div></div>
       <div class="worked-example"><div class="worked-example-title">Worked example 2 &mdash; thermistor divider driving the base</div><div class="step"><div class="step-num">1</div><div class="step-content">In the circuit above, V<sub>S</sub> = 6 V, R<sub>1</sub> is a curve 3 thermistor and R<sub>2</sub> = 1.0 k&Omega;. Calculate the base current at 50 &deg;C.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">From curve 3, R<sub>1</sub> = 4.0 k&Omega; at 50 &deg;C. I<sub>1</sub> = (6 &minus; 0.7) / 4000 = 1.325 mA.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">I<sub>2</sub> = 0.7 / 1000 = 0.70 mA.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">I<sub>B</sub> = I<sub>1</sub> &minus; I<sub>2</sub> = 1.325 &minus; 0.70 = <strong>0.63 mA</strong> (2 s.f.).</div></div><div class="step"><div class="step-num">5</div><div class="step-content">Note: the voltage divider rule would give 6 &times; 1.0 / 5.0 = 1.2 V across R<sub>2</sub> &mdash; impossible, because the base clamps it at 0.7 V.</div></div></div>
       <div class="worked-example"><div class="worked-example-title">Worked example 3 &mdash; minimum gain to saturate</div><div class="step"><div class="step-num">1</div><div class="step-content">A microcontroller pin (5 V) drives a transistor through a 2.2 k&Omega; base resistor. The load is a 24 &Omega; motor on a 12 V supply. Calculate the minimum h<sub>FE</sub> for the transistor to be saturated.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">I<sub>B</sub> = (5 &minus; 0.7) / 2200 = 1.955 mA.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">Largest possible collector current: I<sub>C(max)</sub> = 12 / 24 = 0.50 A.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">h<sub>FE(min)</sub> = 0.50 / 0.001955 = 255.8 = <strong>260</strong> (2 s.f.). Any transistor with a higher gain will also be saturated.</div></div></div>
       <div class="worked-example"><div class="worked-example-title">Worked example 4 &mdash; the switching point</div><div class="step"><div class="step-num">1</div><div class="step-content">A 47 k&Omega; resistor (top) and an ORP12 LDR (bottom, between base and 0 V) control a transistor on a 5 V supply. At what light level does the transistor <em>start</em> to switch on?</div></div><div class="step"><div class="step-num">2</div><div class="step-content">The transistor starts to conduct when the voltage across the LDR reaches 0.7 V. At that exact point the base current is still zero, so here &mdash; and only here &mdash; the voltage divider rule applies.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">0.7 / 4.3 = R<sub>LDR</sub> / 47 000, so R<sub>LDR</sub> = 0.7 &times; 47 000 / 4.3 = 7.65 k&Omega;.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">From the ORP12 graph, 7.65 k&Omega; is about <strong>13 lux</strong>. Below this light level the LDR&rsquo;s resistance rises and the transistor turns on.</div></div></div>
@@ -392,7 +392,7 @@
         <div class="assignment-body">
           <div style="margin:10px 0 14px;"><button type="button" class="graph-btn" onclick="openSensorGraphs()">&#x1F4C8; Open the sensor graphs</button></div>
           <div class="task-item">
-            <div class="task-q">a) A comparator on a 9 V supply saturates at 75% of its supply voltage. It drives a transistor through a 3.9 k&Omega; base resistor. V<sub>BE</sub> is 0.70 V. Calculate the base current.</div>
+            <div class="task-q">a) A push switch connects a 9 V supply to the base of a transistor through a 3.9 k&Omega; base resistor. V<sub>BE</sub> is 0.70 V. Calculate the base current when the switch is pressed.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-tc-a"></span></div>
             <div class="answer-box" contenteditable="true" data-key="hae-tc-a" data-placeholder="Type your answer here..."></div>
           </div>
@@ -402,7 +402,7 @@
             <div class="answer-box" contenteditable="true" data-key="hae-tc-b" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">c) An op-amp on a 12 V supply saturates at 82% of its supply. A relay needs 120 mA and the transistor has h<sub>FE</sub> = 200. Calculate the base resistor needed (V<sub>BE</sub> = 0.70 V).</div>
+            <div class="task-q">c) A microcontroller output (5 V) switches a relay that needs 120 mA. The transistor has h<sub>FE</sub> = 200. Calculate the base resistor needed (V<sub>BE</sub> = 0.70 V).</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-tc-c"></span></div>
             <div class="answer-box" contenteditable="true" data-key="hae-tc-c" data-placeholder="Type your answer here..."></div>
           </div>
@@ -716,6 +716,34 @@
           <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task10', 'Task 11 &mdash; Comparator')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
+      <h2 class="notes-h2">Comparators driving transistors</h2>
+      <p class="notes-p">A comparator&rsquo;s output can rarely supply enough current for a lamp, motor or relay, so it usually drives a transistor through a base resistor. When the output is high, the voltage applied to the base resistor is the op-amp&rsquo;s <strong>saturation voltage</strong> &mdash; the percentage of the supply given in the question &mdash; so:</p>
+      <div class="formula-box"><div class="formula" style="font-size:18px;font-weight:700;color:var(--teal-800);">I<sub>B</sub> = <span class="frac"><span class="frac-n">V<sub>sat</sub> &minus; 0.7</span><span class="frac-d">R<sub>B</sub></span></span></div></div>
+      <p class="notes-p">Everything else is calculated exactly as in Section 4: I<sub>C</sub> = h<sub>FE</sub> &times; I<sub>B</sub>, check against I<sub>C(max)</sub>, and P = V<sub>CE</sub> &times; I<sub>C</sub>.</p>
+      <div class="worked-example"><div class="worked-example-title">Worked example &mdash; comparator driving a relay</div><div class="step"><div class="step-num">1</div><div class="step-content">A comparator on a 9 V supply saturates at 80% of its supply. It drives a transistor (h<sub>FE</sub> = 120) through a 10 k&Omega; base resistor. The relay coil (60 &Omega;) is on the 9 V supply. V<sub>BE</sub> = 0.70 V. Find I<sub>B</sub>, I<sub>C</sub> and the power dissipated in the transistor.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">Op-amp output: V<sub>sat</sub> = 9 &times; 0.80 = 7.2 V.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">I<sub>B</sub> = (7.2 &minus; 0.70) / 10 000 = 0.65 mA.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">I<sub>C</sub> = 120 &times; 0.65 mA = <strong>78 mA</strong>.</div></div><div class="step"><div class="step-num">5</div><div class="step-content">V<sub>relay</sub> = 0.078 &times; 60 = 4.68 V, so V<sub>CE</sub> = 9 &minus; 4.68 = 4.32 V. P = 4.32 &times; 0.078 = <strong>0.34 W</strong> (2 s.f.).</div></div></div>
+      <div class="assignment" id="assignment-compdrive">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 12 &mdash; Comparators driving transistors</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) A comparator on a 9 V supply saturates at 75% of its supply voltage. It drives a transistor (h<sub>FE</sub> = 150) through a 3.9 k&Omega; base resistor; the transistor switches a 40 &Omega; lamp from the 9 V supply. V<sub>BE</sub> is 0.70 V. Calculate the base current and show whether the transistor is saturated.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-cd-a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-cd-a" data-placeholder="Show your working..." style="min-height:100px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) An op-amp on a 12 V supply saturates at 82% of its supply. A relay needs 120 mA and the transistor has h<sub>FE</sub> = 200. Calculate the base resistor needed (V<sub>BE</sub> = 0.70 V).</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-cd-b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-cd-b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) A comparator on a 12 V supply saturates at 78% of its supply. It drives a transistor (h<sub>FE</sub> = 54) through a 10 k&Omega; base resistor. The relay coil has a resistance of 85 &Omega; and is on the 12 V supply. Calculate (i) the base current, (ii) the collector current, (iii) the power dissipated in the transistor.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-cd-c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-cd-c" data-placeholder="Show your working..." style="min-height:110px;"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-compdrive', 'Task 12 &mdash; Comparators driving transistors')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
       <h2 class="notes-h2">Finding the switching point: the balance method</h2>
       <p class="notes-p">When both comparator inputs come from voltage dividers on the <strong>same supply</strong>, the output switches when the two input voltages are equal. That happens when the two dividers have the same <strong>ratio</strong> &mdash; so you don&rsquo;t need to calculate the voltages at all:</p>
       <div class="formula-box"><div class="formula" style="font-size:18px;font-weight:700;color:var(--teal-800);"><span class="frac"><span class="frac-n">R<sub>top 1</sub></span><span class="frac-d">R<sub>bottom 1</sub></span></span> = <span class="frac"><span class="frac-n">R<sub>top 2</sub></span><span class="frac-d">R<sub>bottom 2</sub></span></span></div></div>
@@ -729,7 +757,7 @@
       <table class="data-table"><tr><th>V<sub>in</sub></th><th>Op-amp A</th><th>Op-amp B</th></tr><tr><td>below V<sub>refB</sub></td><td>saturates negatively (low)</td><td>saturates positively (high)</td></tr><tr><td>between V<sub>refB</sub> and V<sub>refA</sub></td><td>low</td><td>low</td></tr><tr><td>above V<sub>refA</sub></td><td>saturates positively (high)</td><td>low</td></tr></table>
       <div class="key-point">In exam questions describing a circuit like this, say what <strong>each op-amp</strong> does and what <strong>each output device</strong> does for <strong>each range</strong> of input voltage, and refer to the reference voltages by name or value.</div>
       <div class="assignment" id="assignment-task10b">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 12 &mdash; Balance method and window comparators</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 13 &mdash; Balance method and window comparators</div></div>
         <div class="assignment-body">
           <div style="margin:10px 0 14px;"><button type="button" class="graph-btn" onclick="openSensorGraphs()">&#x1F4C8; Open the sensor graphs</button></div>
           <div class="task-item">
@@ -749,7 +777,7 @@
           </div>
         </div>
         <div class="task-download-row">
-          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task10b', 'Task 12 &mdash; Balance method and window comparators')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task10b', 'Task 13 &mdash; Balance method and window comparators')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -765,7 +793,7 @@
       <div class="key-point"><strong>Proportional control and error detection.</strong> If V<sub>1</sub> is a set point (what we want) and V<sub>2</sub> comes from a sensor (what we have), V<sub>2</sub> &minus; V<sub>1</sub> is the <strong>error</strong>. A large error gives a large output; as the system approaches the set point the output falls, and at the set point it is zero. This is how a closed-loop system can respond gradually instead of switching on and off.</div>
       <div class="worked-example"><div class="worked-example-title">Worked example &mdash; incubator heater</div><div class="step"><div class="step-num">1</div><div class="step-content">A temperature sensor gives V<sub>2</sub> = 3.4 V; the set point is V<sub>1</sub> = 3.0 V; R<sub>1</sub> = 10 k&Omega; and R<sub>f</sub> = 100 k&Omega;.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">V<sub>o</sub> = (100/10) &times; (3.4 &minus; 3.0) = <strong>4.0 V</strong>.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">As the error shrinks, V<sub>o</sub> falls in proportion &mdash; at an error of 0.1 V, V<sub>o</sub> is only 1.0 V.</div></div></div>
       <div class="assignment" id="assignment-task11">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 13 &mdash; Difference amplifier</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 14 &mdash; Difference amplifier</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">a) R<sub>1</sub> = R<sub>f</sub> = 10 k&Omega;. V<sub>1</sub> = 2.5 V and V<sub>2</sub> = 3.1 V. Calculate V<sub>o</sub>.</div>
@@ -784,14 +812,14 @@
           </div>
         </div>
         <div class="task-download-row">
-          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task11', 'Task 13 &mdash; Difference amplifier')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task11', 'Task 14 &mdash; Difference amplifier')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
       <h2 class="notes-h2">Exam-style difference amplifier calculations</h2>
       <p class="notes-p">In exam questions, one input is usually a <strong>reference voltage</strong> from a voltage divider and the other is a sensor or feedback signal. You may be asked to find a resistor value for a given output, or the input voltage at which the output saturates.</p>
       <div class="worked-example"><div class="worked-example-title">Worked example &mdash; when does the output saturate?</div><div class="step"><div class="step-num">1</div><div class="step-content">A difference amplifier has R<sub>f</sub> = 22 k&Omega; and R<sub>1</sub> = 10 k&Omega;. V<sub>1</sub> = 2.0 V is a reference and V<sub>2</sub> = V<sub>in</sub>. The op-amp is on a 9 V supply and saturates at 80%. It drives a motor. Find the value of V<sub>in</sub> at which the output saturates.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">V<sub>sat</sub> = 9 &times; 0.80 = 7.2 V.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">7.2 = (22/10) &times; (V<sub>in</sub> &minus; 2.0), so V<sub>in</sub> &minus; 2.0 = 3.273 V.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">V<sub>in</sub> = <strong>5.3 V</strong> (2 s.f.).</div></div><div class="step"><div class="step-num">5</div><div class="step-content">So: above 5.3 V the motor runs at full speed; as V<sub>in</sub> falls below 5.3 V the motor slows in proportion; at 2.0 V it stops. This is <strong>proportional control</strong>.</div></div></div>
       <div class="assignment" id="assignment-task11b">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 14 &mdash; Exam-style difference amplifier</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 15 &mdash; Exam-style difference amplifier</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">a) The reference V<sub>1</sub> of a difference amplifier comes from a 5 V divider with 10 k&Omega; at the top and 15 k&Omega; at the bottom. R<sub>1</sub> = 10 k&Omega;. When V<sub>2</sub> = 2.0 V the output must be &minus;2.4 V. Calculate V<sub>1</sub> and R<sub>f</sub>.</div>
@@ -815,7 +843,7 @@
           </div>
         </div>
         <div class="task-download-row">
-          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task11b', 'Task 14 &mdash; Exam-style difference amplifier')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task11b', 'Task 15 &mdash; Exam-style difference amplifier')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -830,7 +858,7 @@
       <div class="warning">The output is <strong>inverted</strong>. To get a positive result, feed the output through a second inverting amplifier with a gain of &minus;1 (R<sub>1</sub> = R<sub>f</sub>).</div>
       <div class="worked-example"><div class="worked-example-title">Worked example</div><div class="step"><div class="step-num">1</div><div class="step-content">V<sub>1</sub> = 4 V (R<sub>1</sub> = 10 k&Omega;), V<sub>2</sub> = 2 V (R<sub>2</sub> = 5 k&Omega;), V<sub>3</sub> = 1 V (R<sub>3</sub> = 2 k&Omega;), R<sub>f</sub> = 5 k&Omega;, supply &plusmn;15 V.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">V<sub>o</sub> = &minus;5000 &times; (4/10 000 + 2/5000 + 1/2000)</div></div><div class="step"><div class="step-num">3</div><div class="step-content">= &minus;5000 &times; 0.0013 = <strong>&minus;6.5 V</strong> (inside the &plusmn;12.75 V limit).</div></div></div>
       <div class="assignment" id="assignment-task12">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 15 &mdash; Summing amplifier</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 16 &mdash; Summing amplifier</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">a) R<sub>f</sub> = 10 k&Omega;. Three inputs of 1 V, 2 V and 3 V are each connected through 10 k&Omega;. Calculate V<sub>o</sub>.</div>
@@ -849,7 +877,7 @@
           </div>
         </div>
         <div class="task-download-row">
-          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task12', 'Task 15 &mdash; Summing amplifier')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task12', 'Task 16 &mdash; Summing amplifier')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -858,7 +886,7 @@
       <h1 class="notes-h1" id="section-14">Section 14: Choosing the Right Configuration</h1>
       <table class="data-table"><tr><th>Configuration</th><th>Output</th><th>Control type</th><th>Typical use</th></tr><tr><td>Inverting amplifier</td><td>inverted, amplified</td><td>signal conditioning</td><td>amplifying a sensor signal</td></tr><tr><td>Non-inverting amplifier</td><td>same polarity, amplified</td><td>signal conditioning</td><td>amplifying a sensor that cannot supply much current</td></tr><tr><td>Voltage follower</td><td>equal to input (gain 1)</td><td>buffering</td><td>isolating a sensor from the next stage</td></tr><tr><td>Comparator</td><td>+V<sub>sat</sub> or &minus;V<sub>sat</sub></td><td>two-state (on/off)</td><td>street lamp, frost alarm, thermostat</td></tr><tr><td>Difference amplifier</td><td>proportional to V<sub>2</sub> &minus; V<sub>1</sub></td><td>proportional</td><td>strain gauges, precise temperature or speed control</td></tr><tr><td>Summing amplifier</td><td>inverted, weighted sum</td><td>mixing</td><td>audio mixer, digital-to-analogue conversion</td></tr></table>
       <div class="assignment" id="assignment-task13">
-        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 16 &mdash; Choosing a configuration</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 17 &mdash; Choosing a configuration</div></div>
         <div class="assignment-body">
           <div class="task-item">
             <div class="task-q">a) An automatic street light switches on at dusk and off at dawn. Name the most suitable op-amp configuration and explain your choice.</div>
@@ -882,7 +910,7 @@
           </div>
         </div>
         <div class="task-download-row">
-          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task13', 'Task 16 &mdash; Choosing a configuration')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task13', 'Task 17 &mdash; Choosing a configuration')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -1188,11 +1216,12 @@ const ALL_TASK_PANELS = [
   ['assignment-task8', 'Task 9 \u2014 Non-inverting amplifier'],
   ['assignment-task9', 'Task 10 \u2014 Voltage follower'],
   ['assignment-task10', 'Task 11 \u2014 Comparator'],
-  ['assignment-task10b', 'Task 12 \u2014 Balance method and window comparators'],
-  ['assignment-task11', 'Task 13 \u2014 Difference amplifier'],
-  ['assignment-task11b', 'Task 14 \u2014 Exam-style difference amplifier'],
-  ['assignment-task12', 'Task 15 \u2014 Summing amplifier'],
-  ['assignment-task13', 'Task 16 \u2014 Choosing a configuration'],
+  ['assignment-compdrive', 'Task 12 \u2014 Comparators driving transistors'],
+  ['assignment-task10b', 'Task 13 \u2014 Balance method and window comparators'],
+  ['assignment-task11', 'Task 14 \u2014 Difference amplifier'],
+  ['assignment-task11b', 'Task 15 \u2014 Exam-style difference amplifier'],
+  ['assignment-task12', 'Task 16 \u2014 Summing amplifier'],
+  ['assignment-task13', 'Task 17 \u2014 Choosing a configuration'],
   ['assignment-dc1', 'Design Challenge 1 \u2014 Warehouse temperature alarm'],
   ['assignment-dc2', 'Design Challenge 2 \u2014 Cable strain monitor'],
   ['assignment-dc3', 'Design Challenge 3 \u2014 Tide gauge signal conditioning']
