@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://engineeringsciencescotland.goatcounter.com; connect-src 'self' https://engineeringsciencescotland.goatcounter.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top Tips — significant figures, units and prefixes — Engineering Science Scotland</title>
+  <link rel="stylesheet" href="css/style.css?v=4">
+</head>
+<body>
+
+<style>
+.tt-wrap{margin-top:var(--topbar-h);}
+.tt-body{max-width:900px;margin:0 auto;padding:22px 28px 70px;}
+.tt-intro{font-size:15px;line-height:1.7;color:var(--gray-600);margin:0 0 18px;}
+.tt-nav{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 26px;}
+.tt-nav a{font-size:13px;font-weight:700;color:var(--teal-800);background:var(--teal-50);border:1px solid var(--teal-100);border-radius:999px;padding:6px 13px;text-decoration:none;}
+.tt-nav a:hover{background:var(--teal-100);}
+.tt-card{background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:22px 24px;margin:0 0 22px;scroll-margin-top:calc(var(--topbar-h) + 16px);}
+.tt-card h2{font-family:"DM Serif Display",serif;font-size:23px;color:var(--teal-800);margin:0 0 4px;display:flex;align-items:center;gap:10px;}
+.tt-card h3{font-size:15px;color:var(--gray-900);margin:20px 0 8px;}
+.tt-card p,.tt-card li{font-size:14px;line-height:1.75;color:var(--gray-600);}
+.tt-card p{margin:0 0 10px;} .tt-card ul,.tt-card ol{margin:0 0 12px;padding-left:22px;} .tt-card li{margin-bottom:5px;}
+.tt-card strong{color:var(--gray-900);}
+.tt-lead{font-size:13px;color:var(--gray-400);margin:0 0 14px!important;}
+.tt-rule{background:var(--teal-50);border-left:4px solid var(--teal-400);border-radius:0 10px 10px 0;padding:12px 16px;margin:12px 0 16px;font-size:14.5px;line-height:1.65;color:var(--teal-800);font-weight:600;}
+.tt-warn{background:#fff7ed;border-left:4px solid #f97316;border-radius:0 10px 10px 0;padding:12px 16px;margin:12px 0 16px;font-size:14px;line-height:1.6;color:#9a3412;}
+.tt-src{font-size:12px;color:var(--gray-400);font-style:italic;margin-top:6px!important;}
+.tt-table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0 16px;}
+.tt-table th{background:var(--teal-800);color:#fff;text-align:left;padding:8px 11px;font-size:12.5px;}
+.tt-table td{border-bottom:1px solid var(--gray-200);padding:8px 11px;color:var(--gray-600);vertical-align:top;}
+.tt-table tr:nth-child(even) td{background:var(--gray-50);}
+.tt-table-wrap{overflow-x:auto;}
+.tt-table td.ok{color:#15803d;font-weight:700;} .tt-table td.no{color:#b91c1c;font-weight:700;}
+.mono{font-family:"JetBrains Mono",Consolas,monospace;font-size:13px;}
+.tt-tool{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:12px;padding:16px 18px;margin:14px 0 6px;}
+.tt-tool-title{font-size:12px;font-weight:700;color:var(--teal-600);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
+.tt-tool label{font-size:13px;color:var(--gray-600);font-weight:600;margin-right:6px;}
+.tt-tool input,.tt-tool select{font:inherit;font-size:14px;padding:7px 10px;border:1.5px solid var(--gray-200);border-radius:8px;background:#fff;margin:0 12px 8px 0;}
+.tt-tool input{width:170px;}
+.tt-out{font-size:14px;line-height:1.7;color:var(--gray-900);margin-top:6px;}
+.tt-out .big{font-size:20px;font-weight:700;color:var(--teal-800);}
+@media print{.topbar,.tt-nav,.tt-tool,.footer{display:none!important;} .tt-card{break-inside:avoid;}}
+</style>
+<nav class="topbar">
+  <a href="index.html" class="logo">
+    <img src="images/logo.png" alt="Engineering Science Scotland logo" style="height:34px;width:auto;display:block;">
+    <div class="logo-text">
+      <span class="logo-title">Engineering Science</span>
+      <span class="logo-sub">S C O T L A N D</span>
+    </div>
+  </a>
+  <div class="level-tabs"><a href="n5/index.html" class="level-tab" data-level="n5">National 5</a><a href="higher/mechanisms/index.html" class="level-tab" data-level="higher">Higher</a><a href="ah/mechanisms/index.html" class="level-tab" data-level="ah">Advanced Higher</a></div>
+  <div class="topbar-right">
+    <a href="teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
+<div class="tt-wrap">
+  <div class="home-hero" style="padding-bottom:26px;">
+    <h1 class="home-hero-title">Top <span>Tips</span></h1>
+    <p class="home-hero-sub" style="max-width:none;">How to set out numerical answers so you don&rsquo;t lose marks &mdash; significant figures, units and prefixes. These apply at National&nbsp;5, Higher and Advanced Higher.</p>
+  </div>
+  <div class="tt-body">
+    <p class="tt-intro">The advice below is based on the general marking principles that Qualifications Scotland (formerly SQA) publishes with every Engineering Science marking scheme. The principles are the same at all three levels.</p>
+    <nav class="tt-nav">
+      <a href="#sig-figs">Significant figures</a><a href="#rounding">When to round</a><a href="#units">Units</a><a href="#prefixes">Prefixes</a><a href="#working">Showing working</a><a href="#checklist">Exam checklist</a>
+    </nav>
+
+    <section class="tt-card" id="sig-figs">
+      <h2>&#x1F522; Significant figures</h2>
+      <p class="tt-lead">Rounding your final answer is expected &mdash; but there is a generous tolerance.</p>
+      <div class="tt-rule">Round your final answer to a sensible number of significant figures. In recent exams the marking schemes almost always give the expected answer to <strong>2 significant figures</strong>, and accept anything from <strong>one figure fewer to two figures more</strong>.</div>
+      <p>So if the expected answer is given to 2 significant figures, answers with <strong>1, 2, 3 or 4</strong> significant figures get the mark (if the value is right). Copying down every digit on your calculator can <strong>lose</strong> the mark, because it has far more than two extra figures.</p>
+      <div class="tt-table-wrap"><table class="tt-table">
+        <tr><th>Calculator shows 23.78397106&nbsp;kN<br>(expected answer: 24&nbsp;kN, 2&nbsp;s.f.)</th><th>Significant figures</th><th>Mark?</th></tr>
+        <tr><td class="mono">20 kN</td><td>1</td><td class="ok">&#x2713; accepted (one fewer)</td></tr>
+        <tr><td class="mono">24 kN</td><td>2</td><td class="ok">&#x2713; expected answer</td></tr>
+        <tr><td class="mono">23.8 kN</td><td>3</td><td class="ok">&#x2713; accepted</td></tr>
+        <tr><td class="mono">23.78 kN</td><td>4</td><td class="ok">&#x2713; accepted (two more)</td></tr>
+        <tr><td class="mono">23.784 kN</td><td>5</td><td class="no">&#x2717; too many figures</td></tr>
+        <tr><td class="mono">23.78397106 kN</td><td>10</td><td class="no">&#x2717; too many figures</td></tr>
+        <tr><td>23.8 with a recurring dot over the 8</td><td>infinite</td><td class="no">&#x2717; not accepted</td></tr>
+      </table></div>
+      <h3>Counting significant figures</h3>
+      <ul>
+        <li>Start counting at the <strong>first non-zero digit</strong>. Zeros in front don&rsquo;t count: 0.018&nbsp;A has <strong>2</strong> s.f.</li>
+        <li>Zeros between other digits count: 4.07&nbsp;V has <strong>3</strong> s.f.</li>
+        <li>Zeros at the end of a whole number are unclear: is 210&nbsp;000&nbsp;J two figures or six? Writing <strong>210&nbsp;kJ</strong> or <strong>2.1&nbsp;&times;&nbsp;10<sup>5</sup>&nbsp;J</strong> makes it clear &mdash; another good reason to use prefixes.</li>
+        <li>To round, look at the next digit: <strong>5 or more, round up</strong>; 4 or less, leave it.</li>
+      </ul>
+      <h3>How many should I use?</h3>
+      <p><strong>2 significant figures</strong> is a safe default &mdash; it matches the recent marking schemes and sits in the middle of the accepted window. If a question asks for a specific number of figures or decimal places, do exactly what it asks.</p>
+      <div class="tt-tool" id="sf-tool">
+        <div class="tt-tool-title">Try it &mdash; rounding checker</div>
+        <label for="sf-num">Calculator answer</label><input id="sf-num" type="text" inputmode="decimal" value="23.78397106">
+        <label for="sf-n">Round to</label><select id="sf-n"><option>1</option><option selected>2</option><option>3</option><option>4</option></select><span style="font-size:13px;color:var(--gray-600);">significant figures</span>
+        <div class="tt-out" id="sf-out"></div>
+      </div>
+      <p class="tt-src">Source: general marking principle (e) in the National 5, Higher and Advanced Higher Engineering Science marking instructions.</p>
+    </section>
+
+    <section class="tt-card" id="rounding">
+      <h2>&#x23F1;&#xFE0F; When to round</h2>
+      <div class="tt-rule">Round the <strong>final answer only</strong>. Keep the full calculator value for every step in between.</div>
+      <p>The marking schemes carry the full calculator value through each stage (for example 23.78397106), and only round at the end. If you round too early, your final answer can drift outside the accepted range.</p>
+      <ul>
+        <li>Use your calculator&rsquo;s <strong>Ans</strong> key or memory to carry values forward rather than retyping a rounded number.</li>
+        <li>If you do write an intermediate value down, write it to at least 4 significant figures.</li>
+        <li>If you make an error (or round) early, you can still earn marks for later steps that are done correctly using your value &mdash; markers apply &ldquo;follow-through&rdquo;. But it is safer not to rely on it.</li>
+      </ul>
+    </section>
+
+    <section class="tt-card" id="units">
+      <h2>&#x1F4CF; Units</h2>
+      <div class="tt-rule">A final answer needs its <strong>unit</strong>. Marks are usually given for &ldquo;final answer <em>with unit</em>&rdquo; &mdash; a correct number with no unit, or the wrong unit, may not get the mark.</div>
+      <ul>
+        <li>Any clear format is accepted: <span class="mono">m s<sup>&minus;1</sup></span>, <span class="mono">m/s</span> or <em>metres per second</em>.</li>
+        <li>Some quantities are ratios and have <strong>no unit</strong>: efficiency, velocity ratio, gear ratio, current gain h<sub>FE</sub>, voltage gain, strain and factor of safety.</li>
+        <li>Rotational speed: write <span class="mono">rev min<sup>&minus;1</sup></span> or <span class="mono">rev s<sup>&minus;1</sup></span>. Marking schemes have specifically said <strong>do not accept RPM</strong>.</li>
+        <li>Stress is often in <span class="mono">N mm<sup>&minus;2</sup></span> and Young&rsquo;s modulus in <span class="mono">kN mm<sup>&minus;2</sup></span> &mdash; make sure the units of stress and E match before dividing.</li>
+      </ul>
+    </section>
+
+    <section class="tt-card" id="prefixes">
+      <h2>&#x1F50D; Prefixes</h2>
+      <p class="tt-lead">Prefixes stop you writing long strings of zeros &mdash; and make your significant figures clear.</p>
+      <div class="tt-table-wrap"><table class="tt-table">
+        <tr><th>Prefix</th><th>Symbol</th><th>Multiply by</th><th>Power of ten</th><th>Examples in Engineering Science</th></tr>
+        <tr><td>giga</td><td>G</td><td>1&nbsp;000&nbsp;000&nbsp;000</td><td>10<sup>9</sup></td><td>GW (power stations), GJ</td></tr>
+        <tr><td>mega</td><td>M</td><td>1&nbsp;000&nbsp;000</td><td>10<sup>6</sup></td><td>M&Omega;, MJ, MW, MPa</td></tr>
+        <tr><td>kilo</td><td>k</td><td>1&nbsp;000</td><td>10<sup>3</sup></td><td>k&Omega;, kN, kJ, kW</td></tr>
+        <tr><td><em>(none)</em></td><td></td><td>1</td><td>10<sup>0</sup></td><td>&Omega;, N, J, W, V, A</td></tr>
+        <tr><td>milli</td><td>m</td><td>0.001</td><td>10<sup>&minus;3</sup></td><td>mA, mV, mm, ms</td></tr>
+        <tr><td>micro</td><td>&micro;</td><td>0.000&nbsp;001</td><td>10<sup>&minus;6</sup></td><td>&micro;A (base currents), &micro;F, &micro;s</td></tr>
+        <tr><td>nano</td><td>n</td><td>0.000&nbsp;000&nbsp;001</td><td>10<sup>&minus;9</sup></td><td>nF, ns</td></tr>
+        <tr><td>pico</td><td>p</td><td>0.000&nbsp;000&nbsp;000&nbsp;001</td><td>10<sup>&minus;12</sup></td><td>pF</td></tr>
+      </table></div>
+      <div class="tt-warn"><strong>Capital or small letter matters.</strong> <strong>M</strong> (mega, a million) and <strong>m</strong> (milli, a thousandth) differ by a factor of a billion. A 2.2&nbsp;M&Omega; resistor is not a 2.2&nbsp;m&Omega; resistor!</div>
+      <h3>Converting</h3>
+      <ul>
+        <li><strong>Big unit &rarr; small unit: multiply.</strong> 4.7&nbsp;k&Omega; = 4.7 &times; 1000 = 4700&nbsp;&Omega;.</li>
+        <li><strong>Small unit &rarr; big unit: divide.</strong> 18&nbsp;mA = 18 &divide; 1000 = 0.018&nbsp;A.</li>
+        <li>On a calculator, type 4.7&nbsp;k&Omega; as <span class="mono">4.7&times;10<sup>3</sup></span> (the <span class="mono">&times;10<sup>x</sup></span> or <span class="mono">EXP</span> key). The <span class="mono">ENG</span> key shows answers in steps of 10<sup>3</sup>, which match the prefixes.</li>
+        <li><strong>Squared units square the prefix:</strong> 1&nbsp;m = 1000&nbsp;mm, but 1&nbsp;m<sup>2</sup> = 1&nbsp;000&nbsp;000&nbsp;mm<sup>2</sup>. 1&nbsp;N&nbsp;mm<sup>&minus;2</sup> = 1&nbsp;MPa.</li>
+      </ul>
+      <h3>Shortcuts that keep the prefixes</h3>
+      <p>Some prefix pairs work together, so you can skip the conversion: <strong>V &divide; k&Omega; = mA</strong>, and <strong>mA &times; k&Omega; = V</strong>. For example, 12&nbsp;V &divide; 4.7&nbsp;k&Omega; = 2.55&nbsp;mA. If in doubt, convert everything to base units first.</p>
+      <div class="tt-tool" id="px-tool">
+        <div class="tt-tool-title">Try it &mdash; prefix converter</div>
+        <input id="px-num" type="text" inputmode="decimal" value="0.000556667" aria-label="Value">
+        <select id="px-from" aria-label="From prefix"></select>
+        <span style="font-size:13px;color:var(--gray-600);margin-right:12px;">to</span>
+        <select id="px-to" aria-label="To prefix"></select>
+        <div class="tt-out" id="px-out"></div>
+      </div>
+    </section>
+
+    <section class="tt-card" id="working">
+      <h2>&#x270D;&#xFE0F; Showing your working</h2>
+      <p>Unless a question asks you to show working, a correct final answer with its unit gets <strong>full marks on its own</strong>. But if the final answer is wrong, working is the only way to pick up marks &mdash; marking schemes give marks for the steps along the way.</p>
+      <ol>
+        <li>Write the <strong>formula</strong>.</li>
+        <li><strong>Substitute</strong> the numbers (in consistent units).</li>
+        <li><strong>Rearrange</strong> (transpose) if needed.</li>
+        <li>Give the <strong>final answer, rounded, with its unit</strong>.</li>
+      </ol>
+      <p>If a separate box is given for the final answer, only that box is marked &mdash; make sure your answer is in it.</p>
+    </section>
+
+    <section class="tt-card" id="checklist">
+      <h2>&#x2705; Exam checklist</h2>
+      <ul>
+        <li>Kept the full calculator value until the end?</li>
+        <li>Rounded the final answer &mdash; 2 significant figures is a safe default?</li>
+        <li>Unit included, with the right prefix (and capital/small letter)?</li>
+        <li>Ratio answers (efficiency, gain, factor of safety) left without a unit?</li>
+        <li>Does the answer make sense? (A base current of 3&nbsp;A, or an efficiency of 140%, means something has gone wrong.)</li>
+      </ul>
+    </section>
+  </div>
+</div>
+<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span><a href="teacher/login.html">Teacher area</a></footer>
+<script src="js/site.js"></script>
+<script>
+(function () {
+  function fmt(x, n) {
+    if (!isFinite(x)) return '';
+    if (x === 0) return '0';
+    var e = Math.floor(Math.log10(Math.abs(x)));
+    var dp = Math.max(0, n - 1 - e);
+    var r = Number(x.toPrecision(n));
+    return dp > 0 ? r.toFixed(Math.min(dp, 12)) : String(Math.round(r));
+  }
+  var num = document.getElementById('sf-num'), sel = document.getElementById('sf-n'), out = document.getElementById('sf-out');
+  function sf() {
+    var x = parseFloat(String(num.value).replace(/,/g, '').replace(/\s/g, ''));
+    if (isNaN(x)) { out.textContent = 'Type a number.'; return; }
+    var n = +sel.value;
+    var h = 'Rounded to ' + n + ' s.f.: <span class="big">' + fmt(x, n) + '</span>';
+    var lo = Math.max(1, n - 1), hi = n + 2, acc = [];
+    for (var k = lo; k <= hi; k++) acc.push(fmt(x, k));
+    h += '<br>If the expected answer is given to ' + n + ' s.f., all of these get the mark: <strong>' + acc.join(', ') + '</strong>.';
+    out.innerHTML = h;
+  }
+  num.addEventListener('input', sf); sel.addEventListener('change', sf); sf();
+
+  var P = [['G', 9, 'giga (G)'], ['M', 6, 'mega (M)'], ['k', 3, 'kilo (k)'], ['', 0, 'no prefix'], ['m', -3, 'milli (m)'], ['\u00B5', -6, 'micro (\u00B5)'], ['n', -9, 'nano (n)'], ['p', -12, 'pico (p)']];
+  var f = document.getElementById('px-from'), t = document.getElementById('px-to'), pn = document.getElementById('px-num'), po = document.getElementById('px-out');
+  P.forEach(function (p, i) { f.add(new Option(p[2], i)); t.add(new Option(p[2], i)); });
+  f.value = 3; t.value = 4;
+  function px() {
+    var x = parseFloat(String(pn.value).replace(/,/g, '').replace(/\s/g, ''));
+    if (isNaN(x)) { po.textContent = 'Type a number.'; return; }
+    var a = P[f.value], b = P[t.value], y = x * Math.pow(10, a[1] - b[1]);
+    var s = Math.abs(y) >= 1e-4 && Math.abs(y) < 1e9 ? String(Number(y.toPrecision(10))) : y.toExponential(4);
+    var op = a[1] > b[1] ? 'multiply by ' + Math.pow(10, a[1] - b[1]).toLocaleString('en-GB') : (a[1] < b[1] ? 'divide by ' + Math.pow(10, b[1] - a[1]).toLocaleString('en-GB') : 'no change');
+    po.innerHTML = '<span class="big">' + s + ' ' + b[0] + '</span> &nbsp;(' + op + ')';
+  }
+  [pn, f, t].forEach(function (el) { el.addEventListener('input', px); el.addEventListener('change', px); }); px();
+})();
+</script>
+</body>
+</html>
