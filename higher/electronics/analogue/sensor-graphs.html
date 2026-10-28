@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Sensor graphs &mdash; ORP12 LDR and thermistor curve 3 &mdash; Engineering Science Scotland</title>
+  <style>
+    body{margin:0;font-family:"Lato",Arial,Helvetica,sans-serif;background:#f5f5f4;color:#1e293b;}
+    header{position:sticky;top:0;background:#0f4c3a;color:#fff;padding:10px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;z-index:2;}
+    header h1{font-size:15px;margin:0 auto 0 0;font-weight:700;}
+    .tab{font:inherit;font-size:13px;font-weight:700;padding:7px 12px;border-radius:999px;border:1.5px solid #9fe1cb;background:transparent;color:#fff;cursor:pointer;}
+    .tab.on{background:#fff;color:#0f4c3a;border-color:#fff;}
+    .tool{font:inherit;font-size:12px;padding:6px 10px;border-radius:8px;border:1px solid #9fe1cb;background:transparent;color:#fff;cursor:pointer;}
+    main{padding:14px;}
+    .graph{display:none;background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:12px;max-width:900px;margin:0 auto;}
+    .graph.on{display:block;}
+    .graph img{width:100%;height:auto;display:block;}
+    .tip{font-size:13px;line-height:1.5;background:#e1f5ee;border-left:4px solid #1d9e75;border-radius:0 8px 8px 0;padding:8px 12px;margin:0 0 10px;}
+    body.both .graph{display:block;margin-bottom:14px;}
+    @media print{header{display:none;} .graph{display:block;break-inside:avoid;border:none;}}
+  </style>
+</head>
+<body>
+<header>
+  <h1>Sensor graphs</h1>
+  <button type="button" class="tab on" data-g="ldr">ORP12 LDR</button>
+  <button type="button" class="tab" data-g="th">Thermistor (curve 3)</button>
+  <button type="button" class="tool" id="both">Show both</button>
+  <button type="button" class="tool" onclick="window.print()">&#x1F5A8; Print</button>
+</header>
+<main>
+  <section class="graph on" id="g-ldr">
+    <p class="tip"><strong>ORP12 LDR.</strong> Both axes are logarithmic. Go up from the illumination (lux) to the line, then across to read the resistance in <strong>k&Omega;</strong>.</p>
+    <img src="../../../n5/electronics/analogue/ldr-graph.png" alt="ORP12 LDR characteristic graph: cell resistance in kilohms against illumination in lux, log-log scale">
+  </section>
+  <section class="graph" id="g-th">
+    <p class="tip"><strong>Thermistor &mdash; use curve 3.</strong> Go up from the temperature to curve 3 (labelled at its right-hand end), then across to read the resistance. The y-axis uses k (&times;&nbsp;1000) and M (&times;&nbsp;1&nbsp;000&nbsp;000).</p>
+    <img src="../../../n5/electronics/analogue/thermistor-graph.png" alt="Thermistor characteristic graph: resistance in ohms against temperature, six curves labelled 1 to 6">
+  </section>
+</main>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('.tab');
+  function show(g) {
+    document.body.classList.remove('both');
+    tabs.forEach(function (t) { t.classList.toggle('on', t.dataset.g === g); });
+    document.getElementById('g-ldr').classList.toggle('on', g === 'ldr');
+    document.getElementById('g-th').classList.toggle('on', g === 'th');
+  }
+  tabs.forEach(function (t) { t.addEventListener('click', function () { show(t.dataset.g); }); });
+  document.getElementById('both').addEventListener('click', function () { document.body.classList.add('both'); tabs.forEach(function (t) { t.classList.remove('on'); }); });
+  var h = (location.hash || '').slice(1);
+  if (h === 'th' || h === 'ldr') show(h);
+})();
+</script>
+</body>
+</html>
