@@ -176,11 +176,11 @@
     .graph-btn:hover { background:#9a3412; }
     .sym-wrap { display:flex; gap:8px; align-items:flex-start; }
     .sym-wrap .answer-box { flex:1; min-width:0; align-self:stretch; }
-    .sym-bar { width:104px; flex-shrink:0; display:grid; grid-template-columns:repeat(3,1fr); gap:4px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; padding:5px; }
-    .sym-title { grid-column:1/-1; font-size:9.5px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.4px; text-align:center; }
-    .sym-btn { font:inherit; font-size:14px; line-height:1; padding:6px 0; border:1px solid var(--gray-200); border-radius:6px; background:white; color:var(--gray-900); cursor:pointer; }
+    .sym-bar { flex-shrink:0; display:flex; flex-direction:column; gap:4px; align-items:center; }
+    .sym-title { font-size:9px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.4px; }
+    .sym-btn { font:inherit; font-size:13px; line-height:1; width:28px; height:26px; padding:0; border:1px solid var(--gray-200); border-radius:6px; background:white; color:var(--gray-900); cursor:pointer; }
     .sym-btn:hover { background:var(--teal-50); border-color:var(--teal-400); }
-    @media (max-width:640px) { .sym-wrap { flex-direction:column; align-items:stretch; } .sym-bar { width:100%; grid-template-columns:repeat(7,1fr); } }
+    @media (max-width:640px) { .sym-wrap { flex-direction:column; align-items:stretch; } .sym-bar { flex-direction:row; justify-content:flex-end; } }
     @media print { .sym-bar { display:none!important; } }
     @media print { .graph-btn { display:none!important; } }
   </style>
@@ -208,7 +208,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute;top:14px;right:20px;font-size:11px;color:#94a3b8;">Last updated: 30 October 2026, 15:52</div>
+      <div style="position:absolute;top:14px;right:20px;font-size:11px;color:#94a3b8;">Last updated: 30 October 2026, 16:04</div>
       <div class="hero-label">Higher &middot; Electronics and Control &rsaquo; Analogue Electronics</div>
       <h1 class="hero-title">&#x26A1; Analogue Electronics &mdash; Course Notes</h1>
       <p class="hero-sub">Sensor voltage dividers, BJTs, MOSFETs and op-amp configurations</p>
@@ -1389,7 +1389,7 @@ function openSensorGraphs(which) {
 <script>
 /* Symbol buttons beside calculation answer boxes: click to insert at the cursor */
 (function () {
-  var SYM = [['Ω','ohms (Ω)'],['µ','micro (µA, µF)'],['°','degrees (°C)'],['×','multiply'],['÷','divide'],['−','minus'],['±','plus or minus'],['²','squared'],['√','square root'],['≈','approximately equal'],['→','gives / leads to']];
+  var SYM = [['Ω','ohms (Ω)'],['°','degrees (°C)'],['²','squared (²)']];
   function place(box) {
     var sel = window.getSelection();
     if (!sel.rangeCount || !box.contains(sel.anchorNode)) {
@@ -1405,12 +1405,10 @@ function openSensorGraphs(which) {
     var wrap = document.createElement('div'); wrap.className = 'sym-wrap';
     box.parentNode.insertBefore(wrap, box); wrap.appendChild(box);
     var bar = document.createElement('div'); bar.className = 'sym-bar';
-    var t = document.createElement('div'); t.className = 'sym-title'; t.textContent = 'Click to add'; bar.appendChild(t);
+    var t = document.createElement('div'); t.className = 'sym-title'; t.textContent = 'Add'; bar.appendChild(t);
     SYM.forEach(function (s) {
       bar.appendChild(btn(s[0], s[1], function () { box.focus(); place(box); document.execCommand('insertText', false, s[0]); }));
     });
-    bar.appendChild(btn('x<sub>2</sub>', 'subscript, e.g. V out (click again to switch off)', function () { box.focus(); place(box); document.execCommand('subscript'); box.dispatchEvent(new Event('input')); }));
-    bar.appendChild(btn('x<sup>2</sup>', 'superscript, e.g. 10 to the power 3 (click again to switch off)', function () { box.focus(); place(box); document.execCommand('superscript'); box.dispatchEvent(new Event('input')); }));
     wrap.appendChild(bar);
   });
 })();
