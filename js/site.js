@@ -535,7 +535,7 @@ function renderTeacherDocs(topicKey, containerId) {
       tips.className = 'teacher-btn';
       tips.id = 'ess-tips-btn';
       tips.href = ESS_ROOT + 'top-tips.html';
-      tips.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><path d="M8 1.8a4.4 4.4 0 00-2.6 7.9c.5.4.8 1 .8 1.6v.5h3.6v-.5c0-.6.3-1.2.8-1.6A4.4 4.4 0 008 1.8z" stroke="currentColor" stroke-width="1.3"/><path d="M6.3 13.6h3.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Top tips';
+      tips.innerHTML = '<svg viewBox="0 0 16 16" fill="none"><path d="M8 1.8a4.4 4.4 0 00-2.6 7.9c.5.4.8 1 .8 1.6v.5h3.6v-.5c0-.6.3-1.2.8-1.6A4.4 4.4 0 008 1.8z" stroke="currentColor" stroke-width="1.3"/><path d="M6.3 13.6h3.4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg><span class="tb-label">Top tips</span>';
       right.insertBefore(tips, guide);
     }
   }

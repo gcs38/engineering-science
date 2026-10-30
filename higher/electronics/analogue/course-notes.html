@@ -174,6 +174,14 @@
     }
     .graph-btn { display:inline-flex; align-items:center; gap:6px; background:#c2410c; color:white; border:none; border-radius:999px; padding:8px 14px; font-size:12.5px; font-weight:700; cursor:pointer; font-family:inherit; }
     .graph-btn:hover { background:#9a3412; }
+    .sym-wrap { display:flex; gap:8px; align-items:flex-start; }
+    .sym-wrap .answer-box { flex:1; min-width:0; align-self:stretch; }
+    .sym-bar { width:104px; flex-shrink:0; display:grid; grid-template-columns:repeat(3,1fr); gap:4px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; padding:5px; }
+    .sym-title { grid-column:1/-1; font-size:9.5px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.4px; text-align:center; }
+    .sym-btn { font:inherit; font-size:14px; line-height:1; padding:6px 0; border:1px solid var(--gray-200); border-radius:6px; background:white; color:var(--gray-900); cursor:pointer; }
+    .sym-btn:hover { background:var(--teal-50); border-color:var(--teal-400); }
+    @media (max-width:640px) { .sym-wrap { flex-direction:column; align-items:stretch; } .sym-bar { width:100%; grid-template-columns:repeat(7,1fr); } }
+    @media print { .sym-bar { display:none!important; } }
     @media print { .graph-btn { display:none!important; } }
   </style>
 </head>
@@ -200,7 +208,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute;top:14px;right:20px;font-size:11px;color:#94a3b8;">Last updated: 28 October 2026, 19:42</div>
+      <div style="position:absolute;top:14px;right:20px;font-size:11px;color:#94a3b8;">Last updated: 30 October 2026, 15:52</div>
       <div class="hero-label">Higher &middot; Electronics and Control &rsaquo; Analogue Electronics</div>
       <h1 class="hero-title">&#x26A1; Analogue Electronics &mdash; Course Notes</h1>
       <p class="hero-sub">Sensor voltage dividers, BJTs, MOSFETs and op-amp configurations</p>
@@ -247,17 +255,17 @@
           <div class="task-item">
             <div class="task-q">a) A 9 V supply feeds a voltage divider with a 10 k&Omega; fixed resistor at the top and an LDR at the bottom. Using the ORP12 graph, calculate V<sub>out</sub> at <strong>20 lux</strong> and at <strong>200 lux</strong>. Is this a light sensor or a dark sensor?</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t1a"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t1a" data-placeholder="Show your working..." style="min-height:90px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t1a" data-placeholder="Show your working..." style="min-height:90px;" data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">b) A 12 V supply feeds a 10 k&Omega; fixed resistor (top) and a curve 3 thermistor (bottom). Calculate V<sub>out</sub> at <strong>0 &deg;C</strong> and at <strong>40 &deg;C</strong>, and state what kind of sensor this is.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t1b"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t1b" data-placeholder="Show your working..." style="min-height:90px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t1b" data-placeholder="Show your working..." style="min-height:90px;" data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">c) A variable resistor (top) and a fixed 2.2 k&Omega; resistor (bottom) form a voltage divider on a 6 V supply. V<sub>out</sub> is measured across the fixed resistor. What value must the variable resistor be set to for V<sub>out</sub> = 2 V?</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t1c"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t1c" data-placeholder="Show your working..." style="min-height:90px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t1c" data-placeholder="Show your working..." style="min-height:90px;" data-symbols="1"></div>
           </div>
         </div>
         <div class="task-download-row">
@@ -278,12 +286,12 @@
           <div class="task-item">
             <div class="task-q">a) A greenhouse frost warning needs a voltage that <strong>rises as it gets colder</strong>. The supply is 5 V and V<sub>out</sub> must be 2.5 V at 0 &deg;C. State where the thermistor goes and calculate the fixed resistor value. Then find V<sub>out</sub> at 10 &deg;C.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t2a"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t2a" data-placeholder="Position, working and answers..." style="min-height:100px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t2a" data-placeholder="Position, working and answers..." style="min-height:100px;" data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">b) A street lamp control needs a voltage that <strong>rises as it gets darker</strong>. The supply is 9 V and V<sub>out</sub> must be 6.0 V at 10 lux. State where the LDR goes and calculate the fixed resistor. The nearest available value is 4.7 k&Omega; &mdash; calculate V<sub>out</sub> at 10 lux using this resistor.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t2b"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t2b" data-placeholder="Working and answers..." style="min-height:100px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t2b" data-placeholder="Working and answers..." style="min-height:100px;" data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">c) Explain why a variable resistor is often used instead of a fixed resistor in a sensor voltage divider in a real installation.</div>
@@ -341,17 +349,17 @@
           <div class="task-item">
             <div class="task-q">a) A transistor has I<sub>C</sub> = 75 mA when I<sub>B</sub> = 0.5 mA. Calculate h<sub>FE</sub>.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t3a"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t3a" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t3a" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">b) A transistor (h<sub>FE</sub> = 100) has V<sub>CC</sub> = 12 V, R<sub>L</sub> = 220 &Omega; and R<sub>B</sub> = 47 k&Omega; with a 5 V input. Calculate (i) I<sub>B</sub>, (ii) I<sub>C</sub>, (iii) V<sub>L</sub>, (iv) V<sub>CE</sub>.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t3b"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t3b" data-placeholder="Show your working..." style="min-height:100px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t3b" data-placeholder="Show your working..." style="min-height:100px;" data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">c) A 6 V, 60 mA lamp is switched by a transistor (h<sub>FE</sub> = 30). The base is driven from the 6 V supply. Calculate the base current needed and the value of R<sub>B</sub>.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t3c"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t3c" data-placeholder="Show your working..." style="min-height:90px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t3c" data-placeholder="Show your working..." style="min-height:90px;" data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">d) Explain why a diode is connected across a relay coil that is switched by a transistor.</div>
@@ -394,42 +402,42 @@
           <div class="task-item">
             <div class="task-q">a) A push switch connects a 9 V supply to the base of a transistor through a 3.9 k&Omega; base resistor. V<sub>BE</sub> is 0.70 V. Calculate the base current when the switch is pressed.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-tc-a"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-tc-a" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-tc-a" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">b) The transistor in (a) has h<sub>FE</sub> = 150 and switches a 40 &Omega; lamp from the 9 V supply. Show that the transistor is saturated, and state the lamp current.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-tc-b"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-tc-b" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-tc-b" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">c) A microcontroller output (5 V) switches a relay that needs 120 mA. The transistor has h<sub>FE</sub> = 200. Calculate the base resistor needed (V<sub>BE</sub> = 0.70 V).</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-tc-c"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-tc-c" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-tc-c" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">d) A curve 3 thermistor (top) and a 1.5 k&Omega; resistor (bottom, between base and 0 V) drive a transistor from a 5 V supply. (i) Calculate the base current at 75 &deg;C. (ii) Show that the transistor is off at 25 &deg;C.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-tc-d"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-tc-d" data-placeholder="Show your working..." style="min-height:120px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-tc-d" data-placeholder="Show your working..." style="min-height:120px;" data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">e) A 22 k&Omega; resistor (top) and an ORP12 LDR (bottom, between base and 0 V) drive a transistor (h<sub>FE</sub> = 250) from a 9 V supply. Calculate the base current and the collector current at 5 lux.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-tc-e"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-tc-e" data-placeholder="Show your working..." style="min-height:110px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-tc-e" data-placeholder="Show your working..." style="min-height:110px;" data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">f) The collector current in (e) flows through a 60 &Omega; relay coil on the 9 V supply. Calculate the power dissipated in the transistor.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-tc-f"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-tc-f" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-tc-f" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">g) A microcontroller output (5 V) drives a transistor through a 1.0 k&Omega; base resistor. The load is a 15 &Omega; solenoid on a 12 V supply. Calculate the minimum h<sub>FE</sub> needed for the transistor to be saturated.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-tc-g"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-tc-g" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-tc-g" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">h) A curve 3 thermistor (top) and a 470 &Omega; resistor (bottom, between base and 0 V) control a transistor on a 6 V supply. Use the thermistor graph to find the temperature at which the transistor starts to switch on.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-tc-h"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-tc-h" data-placeholder="Show your working..." style="min-height:100px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-tc-h" data-placeholder="Show your working..." style="min-height:100px;" data-symbols="1"></div>
           </div>
         </div>
         <div class="task-download-row">
@@ -462,17 +470,17 @@
           <div class="task-item">
             <div class="task-q">b) A microcontroller output gives 5 V to the gate of a MOSFET with V<sub>T</sub> = 2 V. The load is a 20 &Omega; motor on a 12 V supply. Is the MOSFET on? If so, calculate the motor current.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t4b"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t4b" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t4b" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">c) A lamp must switch on when it gets dark. An LDR and a fixed resistor drive the gate of a MOSFET (V<sub>T</sub> = 2.4 V) from a 6 V supply. The lamp should come on at 10 lux. Using the ORP12 graph, state where the LDR goes and calculate the fixed resistor.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t4c"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t4c" data-placeholder="Position, working and answer..." style="min-height:100px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t4c" data-placeholder="Position, working and answer..." style="min-height:100px;" data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">d) A motor rated 5.0 W at 12 V is switched by a MOSFET with an on-resistance of 1.2 &Omega;, from a 12 V supply. Calculate (i) the drain current, (ii) the power dissipated in the MOSFET.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t4e"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t4e" data-placeholder="Show your working..." style="min-height:100px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t4e" data-placeholder="Show your working..." style="min-height:100px;" data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">e) Explain why, when designing the voltage divider for a MOSFET, you do not need to allow for any current flowing into the gate.</div>
@@ -532,17 +540,17 @@
           <div class="task-item">
             <div class="task-q">a) An op-amp runs from a &plusmn;15 V supply. State the largest output voltage it can produce.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t6a"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t6a" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t6a" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">b) An op-amp on a 9 V supply saturates at 78% of its supply voltage. Calculate its saturation voltage.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t6c"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t6c" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t6c" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">c) An amplifier has a gain of &minus;20 and runs from &plusmn;12 V. Calculate the output for an input of +0.8 V.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t6b"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t6b" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t6b" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
         </div>
         <div class="task-download-row">
@@ -566,27 +574,27 @@
           <div class="task-item">
             <div class="task-q">a) R<sub>1</sub> = 10 k&Omega;, R<sub>f</sub> = 100 k&Omega;, supply &plusmn;12 V, V<sub>in</sub> = +0.8 V. Calculate V<sub>o</sub>. Is the op-amp saturated?</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t7a"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t7a" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t7a" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">b) Calculate the value of R<sub>f</sub> needed to give a gain of &minus;25 when R<sub>1</sub> = 4.7 k&Omega;.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t7b"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t7b" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t7b" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">c) Two inverting amplifiers are connected one after the other. Stage 1 has R<sub>f</sub> = 47 k&Omega; and R<sub>1</sub> = 10 k&Omega;; stage 2 has R<sub>f</sub> = R<sub>1</sub> = 22 k&Omega;. Calculate the overall gain and the final output for an input of 0.50 V.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t7d"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t7d" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t7d" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">d) An oscilloscope shows the input and output of an inverting amplifier. When the input is +0.20 V the output is &minus;1.2 V. When the input rises to +0.60 V the output stays at &minus;3.0 V and its peaks look flattened. (i) Calculate the gain. (ii) Explain what is happening to the output.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t7e"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t7e" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t7e" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">e) A sensor gives 0.25 V. An inverting amplifier with R<sub>1</sub> = 2.2 k&Omega; must turn this into &minus;4.0 V. Calculate the gain needed and R<sub>f</sub>.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t7c"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t7c" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t7c" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
         </div>
         <div class="task-download-row">
@@ -635,17 +643,17 @@
           <div class="task-item">
             <div class="task-q">a) R<sub>1</sub> = 10 k&Omega;, R<sub>f</sub> = 39 k&Omega;, V<sub>in</sub> = 1.5 V. Calculate the gain and V<sub>o</sub>.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t8a"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t8a" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t8a" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">b) An LDR voltage divider produces 0.6 V. A non-inverting amplifier on a &plusmn;9 V supply must boost this to at least 3 V. Choose suitable values for R<sub>1</sub> and R<sub>f</sub> and show that your design works.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t8b"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t8b" data-placeholder="Values chosen and working..." style="min-height:100px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t8b" data-placeholder="Values chosen and working..." style="min-height:100px;" data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">c) Calculate R<sub>f</sub> for a gain of 11 when R<sub>1</sub> = 1 k&Omega;.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t8c"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t8c" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t8c" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
         </div>
         <div class="task-download-row">
@@ -699,7 +707,7 @@
           <div class="task-item">
             <div class="task-q">a) A comparator runs from &plusmn;9 V. A 3 V reference is on the non-inverting input. State V<sub>o</sub> when the sensor voltage on the inverting input is (i) 2 V, (ii) 4 V.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t10a"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t10a" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t10a" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">b) Explain why a comparator gives <strong>two-state</strong> control rather than proportional control.</div>
@@ -709,7 +717,7 @@
           <div class="task-item">
             <div class="task-q">c) A street lamp must switch on below 50 lux. The sensing divider runs from 12 V with an ORP12 LDR at the top and a 2.2 k&Omega; resistor at the bottom. (i) Use the ORP12 graph to calculate the sensor voltage at 50 lux. (ii) Design a reference divider (from 12 V) to set this switching point. (iii) State which comparator input each divider should go to so the output goes high when it is dark.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t10c"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t10c" data-placeholder="Working and answers..." style="min-height:120px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t10c" data-placeholder="Working and answers..." style="min-height:120px;" data-symbols="1"></div>
           </div>
         </div>
         <div class="task-download-row">
@@ -727,17 +735,17 @@
           <div class="task-item">
             <div class="task-q">a) A comparator on a 9 V supply saturates at 75% of its supply voltage. It drives a transistor (h<sub>FE</sub> = 150) through a 3.9 k&Omega; base resistor; the transistor switches a 40 &Omega; lamp from the 9 V supply. V<sub>BE</sub> is 0.70 V. Calculate the base current and show whether the transistor is saturated.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-cd-a"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-cd-a" data-placeholder="Show your working..." style="min-height:100px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-cd-a" data-placeholder="Show your working..." style="min-height:100px;" data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">b) An op-amp on a 12 V supply saturates at 82% of its supply. A relay needs 120 mA and the transistor has h<sub>FE</sub> = 200. Calculate the base resistor needed (V<sub>BE</sub> = 0.70 V).</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-cd-b"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-cd-b" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-cd-b" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">c) A comparator on a 12 V supply saturates at 78% of its supply. It drives a transistor (h<sub>FE</sub> = 54) through a 10 k&Omega; base resistor. The relay coil has a resistance of 85 &Omega; and is on the 12 V supply. Calculate (i) the base current, (ii) the collector current, (iii) the power dissipated in the transistor.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-cd-c"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-cd-c" data-placeholder="Show your working..." style="min-height:110px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-cd-c" data-placeholder="Show your working..." style="min-height:110px;" data-symbols="1"></div>
           </div>
         </div>
         <div class="task-download-row">
@@ -763,12 +771,12 @@
           <div class="task-item">
             <div class="task-q">a) A comparator has a sensor divider made from a curve 3 thermistor (top) and a 4.7 k&Omega; resistor (bottom). The reference divider is a 10 k&Omega; resistor (top) and R (bottom). Calculate R so that the comparator switches at 40 &deg;C.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-wc-a"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-wc-a" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-wc-a" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">b) A window comparator uses R<sub>A</sub> = 1.0 k&Omega;, R<sub>B</sub> = 6.8 k&Omega; and R<sub>C</sub> = 2.2 k&Omega; on a 12 V supply. Calculate V<sub>refA</sub> and V<sub>refB</sub>.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-wc-b"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-wc-b" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-wc-b" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">c) In the window comparator in (b), output A switches on a cooling fan and output B switches on a heater, each through a transistor. Describe how the circuit operates as V<sub>in</sub> rises from 0 V to 12 V.</div>
@@ -798,7 +806,7 @@
           <div class="task-item">
             <div class="task-q">a) R<sub>1</sub> = R<sub>f</sub> = 10 k&Omega;. V<sub>1</sub> = 2.5 V and V<sub>2</sub> = 3.1 V. Calculate V<sub>o</sub>.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t11a"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t11a" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t11a" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">b) Explain why a difference amplifier gives <strong>proportional</strong> control, and give one application where this matters.</div>
@@ -808,7 +816,7 @@
           <div class="task-item">
             <div class="task-q">c) Two strain gauges each form the bottom half of a voltage divider, with a 200 &Omega; resistor at the top, on a 6 V supply. Unstrained, both gauges are 200 &Omega;. Under load, gauge 2 rises to 205 &Omega; while gauge 1 stays at 200 &Omega;. The divider outputs go to a difference amplifier with R<sub>1</sub> = 1 k&Omega; and R<sub>f</sub> = 100 k&Omega;. Calculate V<sub>1</sub>, V<sub>2</sub> and V<sub>o</sub>. (Assume the amplifier does not load the dividers.)</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t11c"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t11c" data-placeholder="Show your working..." style="min-height:110px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t11c" data-placeholder="Show your working..." style="min-height:110px;" data-symbols="1"></div>
           </div>
         </div>
         <div class="task-download-row">
@@ -824,12 +832,12 @@
           <div class="task-item">
             <div class="task-q">a) The reference V<sub>1</sub> of a difference amplifier comes from a 5 V divider with 10 k&Omega; at the top and 15 k&Omega; at the bottom. R<sub>1</sub> = 10 k&Omega;. When V<sub>2</sub> = 2.0 V the output must be &minus;2.4 V. Calculate V<sub>1</sub> and R<sub>f</sub>.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-da-a"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-da-a" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-da-a" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">b) A difference amplifier (R<sub>f</sub> = 33 k&Omega;, R<sub>1</sub> = 15 k&Omega;) on a 12 V supply saturates at 85% of its supply. V<sub>1</sub> = 3.0 V. Calculate the input V<sub>2</sub> at which the output saturates.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-da-b"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-da-b" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-da-b" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">c) The output in (b) controls the speed of a motor. Describe how the motor behaves as V<sub>2</sub> falls from 10 V to 2 V.</div>
@@ -863,7 +871,7 @@
           <div class="task-item">
             <div class="task-q">a) R<sub>f</sub> = 10 k&Omega;. Three inputs of 1 V, 2 V and 3 V are each connected through 10 k&Omega;. Calculate V<sub>o</sub>.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t12a"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t12a" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t12a" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">b) How could the circuit in (a) be changed so that the output is +6 V?</div>
@@ -873,7 +881,7 @@
           <div class="task-item">
             <div class="task-q">c) Three switches each give 5 V when on. They are connected through R<sub>1</sub> = 10 k&Omega;, R<sub>2</sub> = 20 k&Omega; and R<sub>3</sub> = 40 k&Omega;, with R<sub>f</sub> = 8 k&Omega; and a &plusmn;12 V supply. Calculate V<sub>o</sub> with all three switches on.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-t12c"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-t12c" data-placeholder="Show your working..." style="min-height:100px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-t12c" data-placeholder="Show your working..." style="min-height:100px;" data-symbols="1"></div>
           </div>
         </div>
         <div class="task-download-row">
@@ -934,7 +942,7 @@
           <div class="task-item">
             <div class="task-q">b) <strong>Design.</strong> Design the sensor and reference voltage dividers, decide which comparator input each goes to, and show that the comparator output can switch on the MOSFET. Show your calculations.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-dc1b"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-dc1b" data-placeholder="Your design and calculations..." style="min-height:140px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-dc1b" data-placeholder="Your design and calculations..." style="min-height:140px;" data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">c) <strong>Build.</strong> Build your circuit in the simulator. Describe or paste your completed circuit.</div>
@@ -970,7 +978,7 @@
           <div class="task-item">
             <div class="task-q">b) <strong>Design.</strong> Calculate V<sub>1</sub> and V<sub>2</sub> at the maximum safe load, the gain needed, and choose R<sub>1</sub> and R<sub>f</sub> from the available values. Show that your output meets point iii.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-dc2b"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-dc2b" data-placeholder="Your calculations and choice..." style="min-height:140px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-dc2b" data-placeholder="Your calculations and choice..." style="min-height:140px;" data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">c) <strong>Build and test.</strong> Simulate your circuit using resistors in place of the gauges. Record V<sub>o</sub> with the active gauge at 120, 120.6 and 121.2 &Omega;.</div>
@@ -1001,7 +1009,7 @@
           <div class="task-item">
             <div class="task-q">b) <strong>Design.</strong> Calculate the ideal gain, then choose R<sub>1</sub> and R<sub>f</sub> from the available values to meet point ii. Show the output at the highest tide.</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-dc3b"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-dc3b" data-placeholder="Gain, resistor choice and output..." style="min-height:140px;"></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-dc3b" data-placeholder="Gain, resistor choice and output..." style="min-height:140px;" data-symbols="1"></div>
           </div>
           <div class="task-item">
             <div class="task-q">c) <strong>Test.</strong> Simulate your design and record V<sub>o</sub> for sensor outputs of 0, 0.10, 0.20, 0.30 and 0.40 V.</div>
@@ -1099,7 +1107,7 @@ function pdfSafe(s) {
     .replace(/\u2026/g, '...')
     .replace(/\u00A0/g, ' ')
     .replace(/\u2713/g, '')
-    .replace(/\u03A9/g, 'ohm').replace(/\u03C3/g, 'sigma').replace(/\u03B5/g, 'epsilon').replace(/\u0394/g, 'delta').replace(/\u03C0/g, 'pi')
+    .replace(/\u221A/g, 'sqrt').replace(/\u2248/g, '~').replace(/\u2192/g, '->').replace(/\u03A9/g, 'ohm').replace(/\u03C3/g, 'sigma').replace(/\u03B5/g, 'epsilon').replace(/\u0394/g, 'delta').replace(/\u03C0/g, 'pi')
     .replace(/[^\x00-\xFF]/g, '');
 }
 
@@ -1377,6 +1385,35 @@ function openSensorGraphs(which) {
   var w = window.open(url, 'essSensorGraphs', 'width=860,height=940,resizable=yes,scrollbars=yes');
   if (w) { try { w.focus(); } catch (e) {} } else { window.location.href = url; }
 }
+</script>
+<script>
+/* Symbol buttons beside calculation answer boxes: click to insert at the cursor */
+(function () {
+  var SYM = [['Ω','ohms (Ω)'],['µ','micro (µA, µF)'],['°','degrees (°C)'],['×','multiply'],['÷','divide'],['−','minus'],['±','plus or minus'],['²','squared'],['√','square root'],['≈','approximately equal'],['→','gives / leads to']];
+  function place(box) {
+    var sel = window.getSelection();
+    if (!sel.rangeCount || !box.contains(sel.anchorNode)) {
+      var r = document.createRange(); r.selectNodeContents(box); r.collapse(false); sel.removeAllRanges(); sel.addRange(r);
+    }
+  }
+  function btn(label, title, fn) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'sym-btn'; b.innerHTML = label; b.title = title; b.setAttribute('aria-label', title);
+    b.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    b.addEventListener('click', fn); return b;
+  }
+  document.querySelectorAll('.answer-box[data-symbols]').forEach(function (box) {
+    var wrap = document.createElement('div'); wrap.className = 'sym-wrap';
+    box.parentNode.insertBefore(wrap, box); wrap.appendChild(box);
+    var bar = document.createElement('div'); bar.className = 'sym-bar';
+    var t = document.createElement('div'); t.className = 'sym-title'; t.textContent = 'Click to add'; bar.appendChild(t);
+    SYM.forEach(function (s) {
+      bar.appendChild(btn(s[0], s[1], function () { box.focus(); place(box); document.execCommand('insertText', false, s[0]); }));
+    });
+    bar.appendChild(btn('x<sub>2</sub>', 'subscript, e.g. V out (click again to switch off)', function () { box.focus(); place(box); document.execCommand('subscript'); box.dispatchEvent(new Event('input')); }));
+    bar.appendChild(btn('x<sup>2</sup>', 'superscript, e.g. 10 to the power 3 (click again to switch off)', function () { box.focus(); place(box); document.execCommand('superscript'); box.dispatchEvent(new Event('input')); }));
+    wrap.appendChild(bar);
+  });
+})();
 </script>
 </body>
 </html>
