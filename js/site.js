@@ -90,7 +90,7 @@ var RESOURCE_STATUS = {
   'higher-roles-disciplines':  { notes:'soon' },
   'higher-impacts':            { notes:'soon' },
   'higher-analogue':           { notes:'available' },
-  'higher-digital':            { notes:'soon' },
+  'higher-digital':            { notes:'available' },
   'higher-control':            { notes:'soon' },
   'higher-drive-systems':      { notes:'soon' },
   'higher-pneumatics':         { notes:'soon' },
@@ -149,6 +149,10 @@ var TEACHER_DOCS = {
   // ── Higher ─────────────────────────────────────────────────
 
   'higher-analogue': [
+    { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
+  ],
+
+  'higher-digital': [
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
   ],
 

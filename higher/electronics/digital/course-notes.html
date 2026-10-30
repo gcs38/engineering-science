@@ -1,45 +1,1019 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Course notes &mdash; Digital Electronics &mdash; Engineering Science Scotland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Digital Electronics &mdash; Higher Course Notes &mdash; Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .resource-page{max-width:680px;margin:0 auto;padding:32px 32px 64px;}
-    .open-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px 24px;text-align:center;margin-bottom:16px;}
-    .open-card-icon{font-size:36px;margin-bottom:10px;}
-    .open-card-title{font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:-.4px;margin-bottom:6px;}
-    .open-card-sub{font-size:13px;color:var(--gray-600);margin-bottom:20px;line-height:1.5;}
-    .open-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-400);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .open-btn:hover{background:var(--teal-600);}
-    .sim-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-800);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .sim-btn:hover{background:var(--teal-600);}
-    .back-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:20px;}
-    .back-link:hover{color:var(--teal-800);}
-    .info-note{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;margin-top:12px;}
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 28px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:24px; }
+    .back-link:hover { color:var(--teal-800); }
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); scroll-margin-top:100px; }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:22px 0 10px; scroll-margin-top:100px; }
+    .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:14px 0 6px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+
+    /* Gate reference cards */
+    .gate-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:14px; margin:16px 0 20px; }
+    .gate-card { background:white; border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; }
+    .gate-card-header { padding:10px 14px; font-size:13px; font-weight:700; color:white; display:flex; align-items:center; gap:8px; }
+    .gate-card-body { padding:12px 14px; }
+    .gate-card-body p { font-size:13px; color:var(--gray-600); line-height:1.5; margin-bottom:8px; }
+    .gate-card-body .bool { font-size:14px; font-weight:700; color:var(--teal-800); font-family:monospace; }
+
+    /* Truth tables */
+    .truth-table { border-collapse:collapse; font-size:13px; margin:12px 0; }
+    .truth-table th { background:var(--teal-800); color:white; padding:6px 14px; text-align:center; white-space:nowrap; }
+    .truth-table td { padding:6px 14px; border:1px solid var(--gray-200); text-align:center; color:var(--gray-700); }
+    .truth-table td.hi { color:#15803d; }
+    .truth-table td.lo { color:var(--gray-400); }
+    .truth-table td.hi-out { color:#15803d; font-weight:700; }
+    .truth-table tr:nth-child(even) td { background:var(--gray-50); }
+
+    /* Diagram placeholders — images replace these */
+    .diagram-placeholder { background:#f0f9ff; border:2px dashed #7dd3fc; border-radius:10px; padding:18px 20px; margin:16px 0; text-align:center; }
+    .diagram-placeholder-icon { font-size:28px; margin-bottom:6px; }
+    .diagram-placeholder-text { font-size:13px; color:#0369a1; font-weight:600; }
+    .diagram-placeholder-sub { font-size:11px; color:#7dd3fc; margin-top:4px; font-style:italic; }
+
+    /* Worked examples */
+    .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:10px; padding:18px 20px; margin:16px 0; }
+    .worked-example-title { font-size:13px; font-weight:600; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+    .step { display:flex; gap:12px; margin-bottom:10px; }
+    .step-num { width:24px; height:24px; border-radius:50%; background:var(--teal-400); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .step-content { font-size:13px; color:var(--gray-600); line-height:1.6; flex:1; }
+    .step-content strong { color:var(--gray-900); }
+
+    /* Boolean expression display */
+    .bool-box { background:white; border:2px solid var(--teal-100); border-radius:10px; padding:14px 20px; margin:14px 0; text-align:center; }
+    .bool-expr { font-size:18px; font-weight:700; color:var(--teal-800); font-family:monospace; }
+    .bool-note { font-size:12px; color:var(--gray-400); margin-top:6px; }
+
+    /* Applications cards */
+    .app-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:16px 0; }
+    .app-card { background:white; border:1px solid var(--gray-200); border-radius:8px; padding:12px 14px; }
+    .app-card-title { font-size:13px; font-weight:700; color:var(--teal-800); margin-bottom:4px; }
+    .app-card-desc { font-size:12px; color:var(--gray-500); line-height:1.5; }
+
+    /* Data table for IC reference */
+    .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; white-space:nowrap; }
+    .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .data-table tr:nth-child(even) td { background:var(--gray-50); }
+
+    /* Simulator embed */
+    .sim-embed-section { margin:24px 0; }
+    .sim-embed-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+    .sim-embed-title { font-size:14px; font-weight:500; color:var(--gray-900); display:flex; align-items:center; gap:8px; }
+    .sim-embed-title span { font-size:18px; }
+    .sim-fullscreen-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 14px; background:var(--teal-800); color:white; border-radius:var(--radius-md); font-size:12px; font-weight:500; text-decoration:none; transition:all var(--transition); }
+    .sim-fullscreen-btn:hover { background:var(--teal-600); }
+    .sim-wrap { border-radius:10px; overflow:hidden; border:2px solid var(--teal-100); }
+    .sim-iframe { width:100%; height:560px; border:none; display:block; }
+    .sim-credit { font-size:11px; color:var(--gray-400); margin-top:5px; text-align:right; }
+    .sim-instruction { background:var(--teal-50); border:1px solid var(--teal-100); border-radius:8px; padding:10px 14px; margin-bottom:10px; font-size:13px; color:var(--teal-800); }
+
+    /* Tasks */
+    .assignment { background:white; border:2px solid var(--teal-400); border-radius:12px; margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:6px; font-weight:500; }
+    .task-q-sub { font-size:13px; color:var(--gray-700); margin:5px 0 5px 16px; }
+
+    /* Answer boxes */
+    .answer-label { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin:8px 0 3px; display:flex; align-items:center; gap:6px; }
+    .saved-indicator { font-size:11px; color:#10b981; font-weight:600; opacity:0; transition:opacity .3s; text-transform:none; letter-spacing:0; }
+    .saved-indicator.show { opacity:1; }
+    .answer-box { background:#f8faff; border:2px solid #c7d7f5; border-radius:8px; padding:10px 12px; min-height:68px; font-size:14px; color:var(--gray-700); line-height:1.7; outline:none; transition:border-color .2s, box-shadow .2s; display:block; width:100%; box-sizing:border-box; }
+    .answer-box:focus { border-color:var(--teal-400); box-shadow:0 0 0 3px rgba(45,212,191,0.12); }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-sm { min-height:44px; }
+    .answer-box-lg { min-height:110px; }
+
+    /* Truth table answer grids */
+    .tt-answer { border-collapse:collapse; font-size:13px; margin:10px 0; }
+    .tt-answer th { background:var(--teal-800); color:white; padding:6px 20px; text-align:center; white-space:nowrap; }
+    .tt-answer td { padding:0; border:1px solid var(--gray-200); text-align:center; }
+    .tt-answer td.input { padding:6px 20px; color:var(--gray-700); }
+    .tt-answer td.blank { width:60px; height:36px; background:#f8faff; border:1px solid #c7d7f5; }
+    .expr-builder-toggle { display:inline-block; margin-top:6px; font-size:12px; color:var(--teal-800); background:var(--teal-50); border:1px solid var(--teal-100); border-radius:6px; padding:4px 10px; cursor:pointer; }
+    .expr-builder-toggle:hover { background:var(--teal-100); }
+    .expr-builder-panel { display:none; margin-top:8px; padding:12px; background:#f8faff; border:1px solid #c7d7f5; border-radius:8px; }
+    .expr-builder-panel.open { display:block; }
+    .expr-btn-row { display:flex; flex-wrap:wrap; gap:6px; }
+    .expr-btn-row + .expr-btn-row { margin-top:6px; }
+    .expr-btn { min-width:36px; padding:6px 10px; font-size:14px; background:white; border:1px solid var(--gray-200); border-radius:6px; cursor:pointer; color:var(--gray-700); }
+    .expr-btn:hover { background:var(--teal-50); border-color:var(--teal-100); }
+    .expr-btn-warn { color:#b91c1c; border-color:#fecaca; }
+    .info-toggle { display:inline-block; margin:4px 0 8px; font-size:13px; color:var(--teal-800); background:var(--teal-50); border:1px solid var(--teal-100); border-radius:6px; padding:6px 14px; cursor:pointer; }
+    .info-toggle:hover { background:var(--teal-100); }
+    .info-panel { display:none; margin:0 0 16px; padding:16px 18px; background:#f8faff; border:1px solid #c7d7f5; border-radius:10px; font-size:14px; color:var(--gray-700); line-height:1.7; }
+    .info-panel.open { display:block; }
+    .info-panel p { margin-bottom:10px; }
+    .info-panel table.truth-table { margin:10px 0; }
+
+    .controls-bar { display:flex; gap:10px; align-items:center; flex-wrap:wrap; margin:32px 0 8px; padding:12px 14px; background:var(--gray-50); border:1px solid var(--gray-200); border-radius:8px; }
+    .controls-label { font-size:12px; color:var(--gray-500); font-weight:600; flex:1; min-width:140px; }
+    .ctrl-btn { display:inline-flex; align-items:center; gap:5px; padding:7px 14px; border-radius:7px; font-size:12px; font-weight:600; cursor:pointer; border:none; transition:all .15s; }
+    .ctrl-btn-clear { background:#fef2f2; color:#ef4444; }
+    .ctrl-btn-clear:hover { background:#fee2e2; }
+    .ctrl-btn-print { background:var(--teal-50); color:var(--teal-800); }
+    .ctrl-btn-print:hover { background:var(--teal-100); }
+    .storage-status { font-size:11px; color:var(--gray-400); text-align:right; }
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+
+    .answer-box img { max-width:100%; height:auto; }
+    .cell-answer { outline:none; background:#f8faff; min-height:36px; }
+    .cell-answer:focus { box-shadow:inset 0 0 0 2px var(--teal-400); background:white; }
+    .data-table tr:nth-child(even) td.cell-answer { background:#f8faff; }
+    .task-download-row { background:var(--gray-50); border-top:1px solid var(--gray-200); padding:9px 20px; text-align:right; }
+    .task-download-btn { display:inline-flex; align-items:center; gap:6px; background:white; border:1.2px solid var(--teal-400); color:var(--teal-800); font-size:10px; font-weight:700; padding:7px 12px; border-radius:999px; cursor:pointer; transition:background .15s; }
+    .task-download-btn:hover { background:var(--teal-50); }
+    .task-download-btn:disabled { opacity:.6; cursor:wait; }
+    .spec-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .spec-table th { background:transparent; padding:8px 6px 8px 0; width:32px; vertical-align:top; }
+    .spec-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
+    .data-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:var(--teal-50); color:var(--teal-800); border:1px solid var(--teal-100); font-size:11px; font-weight:700; }
+    .ctrl-btn-download-all { background:#eef2ff; color:#4338ca; }
+    .ctrl-btn-download-all:hover { background:#e0e7ff; }
+
+    .toc-fab { position:fixed; right:24px; bottom:76px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#c2410c; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+    .toc-fab:hover { background:#9a3412; }
+    .toc-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; }
+    .toc-overlay.open { display:block; }
+    .toc-panel { position:fixed; top:0; right:-340px; width:320px; max-width:85vw; height:100%; background:white; z-index:999998; box-shadow:-8px 0 30px rgba(0,0,0,.2); transition:right .25s ease; display:flex; flex-direction:column; }
+    .toc-panel.open { right:0; }
+    .toc-panel-header { padding:18px 20px 14px; border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; }
+    .toc-panel-header h3 { margin:0; font-size:16px; color:var(--teal-800); }
+    .toc-panel-close { background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .toc-panel-close:hover { color:var(--gray-700); }
+    .toc-list { overflow-y:auto; padding:8px 0 20px; }
+    .toc-list a { display:block; padding:10px 20px; font-size:14px; color:var(--gray-700); text-decoration:none; border-left:3px solid transparent; }
+    .toc-list a:hover { background:var(--teal-50); color:var(--teal-800); }
+    .toc-list a.toc-active { border-left-color:var(--teal-500,var(--teal-600)); background:var(--teal-50); color:var(--teal-800); font-weight:700; }
+    .toc-list a.toc-sub { padding-left:36px; font-size:13px; color:var(--gray-500); }
+
+    .name-fab { position:fixed; right:24px; bottom:132px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#4f46e5; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); overflow:hidden; }
+    .name-fab-icon { font-size:14px; line-height:1; flex-shrink:0; }
+    #nameFabLabel { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:78px; text-align:left; }
+    .name-fab:hover { background:#3730a3; }
+    .name-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; align-items:center; justify-content:center; padding:20px; }
+    .name-overlay.open { display:flex; }
+    .name-panel { background:white; border-radius:14px; max-width:360px; width:100%; padding:24px 24px 22px; box-shadow:0 20px 60px rgba(0,0,0,.35); position:relative; }
+    .name-panel-close { position:absolute; top:10px; right:12px; background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .name-panel-close:hover { color:var(--gray-700); }
+    .name-panel h3 { margin:0 0 8px; font-size:16px; color:#4338ca; }
+    .name-panel p { margin:0 0 14px; font-size:13px; line-height:1.5; color:var(--gray-600); }
+    .name-panel input { width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid var(--gray-200); border-radius:8px; font-size:14px; margin-bottom:12px; }
+    .name-panel input:focus { outline:none; border-color:#4338ca; }
+    .name-panel-save { width:100%; background:#4338ca; color:white; border:none; border-radius:8px; padding:10px; font-size:14px; font-weight:700; cursor:pointer; }
+    .name-panel-save:hover { background:#3730a3; }
+    .name-panel-saved-msg { font-size:12px; color:#16a34a; margin-top:8px; text-align:center; display:none; }
+    .name-panel-saved-msg.show { display:block; }
+
+    @media print {
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.sim-embed-section,.toc-fab,.toc-panel,.toc-overlay,.name-fab,.name-overlay,.task-download-row,.page-nav,.exemplar-thumb,.exemplar-modal { display:none!important; }
+      .layout { display:block!important; }
+      .main { margin:0!important; padding:0!important; }
+      .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
+      .tt-answer td.blank { border:1px solid #94a3b8!important; background:white!important; }
+      .cell-answer { background:white!important; }
+      .diagram-placeholder { border:1.5px dashed #7dd3fc!important; }
+    }
+    .gate-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:14px; margin:16px 0 20px; }
+    .gate-card { background:white; border:1px solid var(--gray-200); border-radius:12px; padding:14px 16px; }
+    .gate-card-name { font-weight:700; color:var(--teal-800); font-size:15px; margin-bottom:4px; }
+    .gate-card-sym svg { width:170px; max-width:100%; display:block; margin:0 auto; }
+    .gate-card-expr { text-align:center; font-weight:700; font-size:15px; color:var(--gray-900); margin:4px 0 2px; }
+    .gate-card .truth-table { margin:6px auto; }
+    .gate-card-desc { font-size:13px; line-height:1.55; color:var(--gray-600); margin:6px 0 0; }
+    .neq-table { background:white; border:1px solid var(--gray-200); border-radius:12px; padding:6px 14px; margin:14px 0 20px; }
+    .neq-row { display:flex; align-items:center; gap:10px; border-bottom:1px solid var(--gray-100); padding:8px 0; flex-wrap:wrap; }
+    .neq-row:last-child { border-bottom:none; }
+    .neq-name { width:52px; font-weight:700; color:var(--teal-800); }
+    .neq-sym svg { width:150px; } .neq-eq { font-size:20px; font-weight:700; color:var(--gray-400); }
+    .neq-nand { flex:1; min-width:240px; } .neq-nand svg { max-width:100%; height:auto; }
+    .neq-count { font-size:12px; color:var(--gray-400); margin-top:2px; }
+    .ess-model svg { max-width:100%; height:auto; }
   </style>
 </head>
 <body>
-<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../../../n5/index.html" class="level-tab" data-level="n5">National 5</a><a href="../../../../higher/index.html" class="level-tab active" data-level="higher">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab" data-level="ah">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/index.html" class="level-tab" data-level="n5">National 5</a>
+    <a href="../../../../higher/index.html" class="level-tab active" data-level="higher">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab" data-level="ah">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
+
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
-    <div class="hero">
-      <div class="hero-label">Higher &middot; Electronics and Control</div>
-      <h1 class="hero-title">Digital Electronics</h1>
-      <p class="hero-sub">Course notes</p>
-      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../../../../higher/index.html">Higher</a> &rsaquo; <a href="../index.html">Electronics and Control</a> &rsaquo; <a href="index.html">Digital Electronics</a> &rsaquo; <span>Course notes</span></div>
-    </div>
-    <div class="content">
-      <div class="resource-page">
-        <a href="index.html" class="back-link">&larr; Back to Digital Electronics</a>
-        <div class="open-card" style="background:var(--gray-50);border:1px dashed var(--gray-200);"><div class="open-card-icon">&#x1F4C2;</div><div class="open-card-title" style="color:var(--gray-600);">Course notes in preparation</div><div class="open-card-sub">The Higher course notes for this topic are being written and will appear here.</div></div>
+    <div class="hero" id="top" style="position:relative;">
+      <div style="position:absolute; top:14px; right:20px; font-size:11px; color:#94a3b8;">Last updated: 30 October 2026, 14:39</div>
+      <div class="hero-label">Higher &middot; Electronics and Control &rsaquo; Digital Electronics</div>
+      <h1 class="hero-title">Digital Electronics &mdash; Course Notes</h1>
+      <p class="hero-sub">Six logic gates, Boolean expressions, truth tables, design from a specification and NAND equivalents</p>
+      <div class="breadcrumb">
+        <a href="../../../../index.html">Home</a> &rsaquo;
+        <a href="../../index.html">Higher</a> &rsaquo;
+        <a href="../index.html">Electronics and Control</a> &rsaquo;
+        <a href="index.html">Digital Electronics</a> &rsaquo;
+        <span>Course notes</span>
       </div>
+    </div>
+
+    <div class="content">
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to Digital Electronics</a>
+
+      <div class="key-point"><strong>Before you start.</strong> This topic builds on National 5, where you met NOT, AND and OR gates, truth tables and Boolean expressions. At Higher you add the <strong>NAND, NOR and EOR</strong> gates, work with up to <strong>four inputs</strong>, and learn to build any circuit from NAND gates alone. To revise, use the <a href="../../../n5/electronics/digital/course-notes.html" style="color:var(--teal-800);">National 5 Digital Electronics notes</a>.</div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-1">Section 1: Digital Signals and Logic Levels</h1>
+      <p class="notes-p">In Analogue Electronics, a sensor voltage divider produced an <strong>analogue</strong> signal: a voltage that can take any value between 0 V and the supply, changing smoothly as the light or temperature changes. That gives fine control, but many control decisions only need to know whether something is <em>on</em> or <em>off</em>.</p>
+      <p class="notes-p">A <strong>digital</strong> signal has only two states. Rather than working with actual voltages, we call the low state <strong>logic 0</strong> and the high state <strong>logic 1</strong>. A comparator is a common way to turn an analogue sensor signal into a digital one: its output is either high or low depending on whether the sensor voltage is above or below a reference.</p>
+      <table class="data-table"><tr><th></th><th>Analogue signal</th><th>Digital signal</th></tr><tr><td>Values</td><td>any value within a range</td><td>only two: logic 0 and logic 1</td></tr><tr><td>Example</td><td>output of a thermistor voltage divider</td><td>output of a comparator, a push switch or a logic gate</td></tr><tr><td>Best for</td><td>measuring how much</td><td>deciding yes or no</td></tr></table>
+      <div class="key-point">A digital electronic system is often called a <strong>logic system</strong>. Its signals are combined using <strong>logic gates</strong>.</div>
+      <div class="assignment" id="assignment-task1">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Analogue and digital</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) State whether each signal is analogue or digital: (i) the voltage across a thermistor as a room warms up, (ii) the output of a door switch, (iii) the output of a comparator.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t1a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t1a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Explain why a digital signal is suitable for a system that only needs to decide whether a greenhouse window should be open or closed.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t1b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t1b" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task1', 'Task 1 &mdash; Analogue and digital')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-2">Section 2: Logic Gates</h1>
+      <p class="notes-p">At Higher you need to know six logic gates. For each one, learn the <strong>symbol</strong>, the <strong>Boolean expression</strong> and the <strong>truth table</strong> &mdash; and be able to say in words when the output is 1.</p>
+      <div class="gate-grid">
+        <div class="gate-card"><div class="gate-card-name">NOT gate</div><div class="gate-card-sym"><svg width="170" viewBox="0 0 170 80" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><polygon points="60,25 60,55 90,40" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="94.5" cy="40" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="48,40 60,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="20,40 48,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="99,40 150,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="158" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg></div><div class="gate-card-expr">Z = <span style="text-decoration:overline;">A</span></div><table class="truth-table"><tr><th>A</th><th>Z</th></tr><tr><td class="lo">0</td><td class="hi-out">1</td></tr><tr><td class="hi">1</td><td class="lo">0</td></tr></table><p class="gate-card-desc">The output is the <strong>opposite</strong> of the input. Also called an <strong>inverter</strong>.</p></div>
+        <div class="gate-card"><div class="gate-card-name">AND gate</div><div class="gate-card-sym"><svg width="170" viewBox="0 0 170 80" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><path d="M60,16 L86,16 A24,24 0 0 1 86,64 L60,64 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="46,32 60,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="46,48 60,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="110,40 118,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="20,32 46,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="37" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="20,48 46,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="53" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="118,40 150,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="158" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg></div><div class="gate-card-expr">Z = A &middot; B</div><table class="truth-table"><tr><th>A</th><th>B</th><th>Z</th></tr><tr><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td></tr><tr><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td></tr><tr><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td></tr><tr><td class="hi">1</td><td class="hi">1</td><td class="hi-out">1</td></tr></table><p class="gate-card-desc">The output is 1 only when <strong>all</strong> inputs are 1.</p></div>
+        <div class="gate-card"><div class="gate-card-name">OR gate</div><div class="gate-card-sym"><svg width="170" viewBox="0 0 170 80" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><path d="M60,16 Q92.24,16 112,40 Q92.24,64 60,64 Q71,40 60,16 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="46,32 64.8889,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="46,48 64.8889,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="112,40 120,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="20,32 46,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="37" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="20,48 46,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="53" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="120,40 150,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="158" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg></div><div class="gate-card-expr">Z = A + B</div><table class="truth-table"><tr><th>A</th><th>B</th><th>Z</th></tr><tr><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td></tr><tr><td class="lo">0</td><td class="hi">1</td><td class="hi-out">1</td></tr><tr><td class="hi">1</td><td class="lo">0</td><td class="hi-out">1</td></tr><tr><td class="hi">1</td><td class="hi">1</td><td class="hi-out">1</td></tr></table><p class="gate-card-desc">The output is 1 when <strong>any</strong> input is 1 (including all of them).</p></div>
+        <div class="gate-card"><div class="gate-card-name">NAND gate</div><div class="gate-card-sym"><svg width="170" viewBox="0 0 170 80" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><path d="M60,16 L86,16 A24,24 0 0 1 86,64 L60,64 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="114.5" cy="40" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="46,32 60,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="46,48 60,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="119,40 127,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="20,32 46,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="37" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="20,48 46,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="53" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="127,40 150,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="158" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg></div><div class="gate-card-expr">Z = <span style="text-decoration:overline;">A &middot; B</span></div><table class="truth-table"><tr><th>A</th><th>B</th><th>Z</th></tr><tr><td class="lo">0</td><td class="lo">0</td><td class="hi-out">1</td></tr><tr><td class="lo">0</td><td class="hi">1</td><td class="hi-out">1</td></tr><tr><td class="hi">1</td><td class="lo">0</td><td class="hi-out">1</td></tr><tr><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td></tr></table><p class="gate-card-desc">NOT AND: the output is 1 <strong>unless all</strong> inputs are 1.</p></div>
+        <div class="gate-card"><div class="gate-card-name">NOR gate</div><div class="gate-card-sym"><svg width="170" viewBox="0 0 170 80" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><path d="M60,16 Q92.24,16 112,40 Q92.24,64 60,64 Q71,40 60,16 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="116.5" cy="40" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="46,32 64.8889,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="46,48 64.8889,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="121,40 129,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="20,32 46,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="37" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="20,48 46,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="53" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="129,40 150,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="158" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg></div><div class="gate-card-expr">Z = <span style="text-decoration:overline;">A + B</span></div><table class="truth-table"><tr><th>A</th><th>B</th><th>Z</th></tr><tr><td class="lo">0</td><td class="lo">0</td><td class="hi-out">1</td></tr><tr><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td></tr><tr><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td></tr><tr><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td></tr></table><p class="gate-card-desc">NOT OR: the output is 1 only when <strong>all</strong> inputs are 0.</p></div>
+        <div class="gate-card"><div class="gate-card-name">EOR (XOR) gate</div><div class="gate-card-sym"><svg width="170" viewBox="0 0 170 80" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><path d="M60,16 Q92.24,16 112,40 Q92.24,64 60,64 Q71,40 60,16 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><path d="M53,16 Q64,40 53,64" fill="none" stroke="#1e293b" stroke-width="2.2"/><polyline points="46,32 57.8889,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="46,48 57.8889,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="112,40 120,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="20,32 46,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="37" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="20,48 46,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="53" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="120,40 150,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="158" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg></div><div class="gate-card-expr">Z = A &oplus; B</div><table class="truth-table"><tr><th>A</th><th>B</th><th>Z</th></tr><tr><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td></tr><tr><td class="lo">0</td><td class="hi">1</td><td class="hi-out">1</td></tr><tr><td class="hi">1</td><td class="lo">0</td><td class="hi-out">1</td></tr><tr><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td></tr></table><p class="gate-card-desc">Exclusive OR: the output is 1 when the inputs are <strong>different</strong> &mdash; like OR, but not when both are 1.</p></div>
+      </div>
+      <h2 class="notes-h2">Gates with three or four inputs</h2>
+      <p class="notes-p">AND, OR, NAND and NOR gates can have more than two inputs, and exam questions use up to <strong>four</strong>. They follow exactly the same rules: a 4-input AND gate gives 1 only when all four inputs are 1; a 3-input NOR gate gives 1 only when all three inputs are 0. A 3-input AND is written Z = A &middot; B &middot; C.</p>
+      <div class="key-point"><strong>How many rows?</strong> Every extra input doubles the number of rows in a truth table: 2 inputs &rarr; 4 rows, 3 inputs &rarr; 8 rows, 4 inputs &rarr; 16 rows. Always list the inputs by counting up in binary from 0000 to 1111.</div>
+      <div class="assignment" id="assignment-task2">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Logic gates</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) Name the gate whose output is 0 <strong>only</strong> when all of its inputs are 1.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t2a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t2a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Name the gate whose output is 1 only when its two inputs are different.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t2b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t2b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) A logic system has four inputs. How many rows does its truth table need?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t2c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t2c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) Complete the truth table for a 3-input NOR gate.</div>
+            <table class="tt-answer" style="margin-top:8px;"><tr><th>A</th><th>B</th><th>C</th><th>Z</th></tr><tr><td class="input">0</td><td class="input">0</td><td class="input">0</td><td class="blank" contenteditable="true" data-key="hde-t2d-000-Z"></td></tr><tr><td class="input">0</td><td class="input">0</td><td class="input">1</td><td class="blank" contenteditable="true" data-key="hde-t2d-001-Z"></td></tr><tr><td class="input">0</td><td class="input">1</td><td class="input">0</td><td class="blank" contenteditable="true" data-key="hde-t2d-010-Z"></td></tr><tr><td class="input">0</td><td class="input">1</td><td class="input">1</td><td class="blank" contenteditable="true" data-key="hde-t2d-011-Z"></td></tr><tr><td class="input">1</td><td class="input">0</td><td class="input">0</td><td class="blank" contenteditable="true" data-key="hde-t2d-100-Z"></td></tr><tr><td class="input">1</td><td class="input">0</td><td class="input">1</td><td class="blank" contenteditable="true" data-key="hde-t2d-101-Z"></td></tr><tr><td class="input">1</td><td class="input">1</td><td class="input">0</td><td class="blank" contenteditable="true" data-key="hde-t2d-110-Z"></td></tr><tr><td class="input">1</td><td class="input">1</td><td class="input">1</td><td class="blank" contenteditable="true" data-key="hde-t2d-111-Z"></td></tr></table>
+            <div data-key="hde-t2d" style="display:none;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">e) Explain the difference between an OR gate and an EOR gate.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t2e"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t2e" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task2', 'Task 2 &mdash; Logic gates')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-3">Section 3: Boolean Notation</h1>
+      <p class="notes-p">Boolean algebra is a short way of writing what a logic circuit does. You must use the notation exactly, because one misplaced bar changes the meaning.</p>
+      <table class="data-table"><tr><th>Symbol</th><th>Meaning</th><th>Example</th><th>Read as</th></tr><tr><td>&middot;</td><td>AND</td><td>A &middot; B</td><td>A and B</td></tr><tr><td>+</td><td>OR</td><td>A + B</td><td>A or B</td></tr><tr><td>bar over</td><td>NOT</td><td><span style="text-decoration:overline;">A</span></td><td>not A (A bar)</td></tr><tr><td>&oplus;</td><td>EOR</td><td>A &oplus; B</td><td>A exclusive-or B</td></tr><tr><td>( )</td><td>grouping</td><td>(A &middot; B) + C</td><td>do A and B first</td></tr></table>
+      <div class="warning"><strong>+ means OR, not add.</strong> In Boolean algebra 1 + 1 = 1.</div>
+      <h2 class="notes-h2">Where the bar goes matters</h2>
+      <p class="notes-p">A bar over a <strong>whole expression</strong> means the whole result is inverted (a NAND or NOR). A bar over <strong>each letter</strong> means each input is inverted first. These are <em>not</em> the same:</p>
+<table class="truth-table"><tr><th>A</th><th>B</th><th><span style="text-decoration:overline;">A &middot; B</span> (NAND)</th><th><span style="text-decoration:overline;">A</span> &middot; <span style="text-decoration:overline;">B</span></th></tr><tr><td class="lo">0</td><td class="lo">0</td><td class="hi-out">1</td><td class="hi-out">1</td></tr><tr><td class="lo">0</td><td class="hi">1</td><td class="hi-out">1</td><td class="lo">0</td></tr><tr><td class="hi">1</td><td class="lo">0</td><td class="hi-out">1</td><td class="lo">0</td></tr><tr><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td></tr></table>      <p class="notes-p">The two right-hand columns differ in two rows, so <span style="text-decoration:overline;">A &middot; B</span> &ne; <span style="text-decoration:overline;">A</span> &middot; <span style="text-decoration:overline;">B</span>.</p>
+      <div class="key-point"><strong>Use brackets</strong> to show which parts belong together, e.g. Z = (A &middot; B) + (<span style="text-decoration:overline;">B</span> &middot; C). Markers look for brackets in the right place. You do not need to simplify expressions at Higher.</div>
+      <div class="assignment" id="assignment-task3">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Writing Boolean expressions</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) Write a Boolean expression for: Z is 1 when A is 1 and B is 0.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t3a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t3a" data-placeholder="Type your answer here..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('hde-t3a')">Boolean expression builder</button><div class="expr-builder-panel" id="expr-panel-hde-t3a"><div class="expr-btn-row"><button type="button" class="expr-btn" onclick="exprAppend('hde-t3a','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3a','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3a','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3a','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3a','ch','Z')">Z</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3a','ch','=')">=</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3a','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3a','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3a','ch','⊕')">&oplus;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3a','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3a','ch',')')">)</button></div><div class="expr-btn-row"><button type="button" class="expr-btn" onmousedown="event.preventDefault()" onclick="exprOverlineSelection('hde-t3a')">Bar over selection</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('hde-t3a')">Backspace</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('hde-t3a')">Clear all</button></div></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Write a Boolean expression for: Z is 1 when either A or B is 1, as long as C is 0.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t3b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t3b" data-placeholder="Type your answer here..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('hde-t3b')">Boolean expression builder</button><div class="expr-builder-panel" id="expr-panel-hde-t3b"><div class="expr-btn-row"><button type="button" class="expr-btn" onclick="exprAppend('hde-t3b','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3b','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3b','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3b','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3b','ch','C')">C</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3b','ov','C')"><span style="text-decoration:overline;">C</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3b','ch','Z')">Z</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3b','ch','=')">=</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3b','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3b','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3b','ch','⊕')">&oplus;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3b','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3b','ch',')')">)</button></div><div class="expr-btn-row"><button type="button" class="expr-btn" onmousedown="event.preventDefault()" onclick="exprOverlineSelection('hde-t3b')">Bar over selection</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('hde-t3b')">Backspace</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('hde-t3b')">Clear all</button></div></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) Write a Boolean expression for a 3-input NAND gate with inputs A, B and C.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t3c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t3c" data-placeholder="Type your answer here..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('hde-t3c')">Boolean expression builder</button><div class="expr-builder-panel" id="expr-panel-hde-t3c"><div class="expr-btn-row"><button type="button" class="expr-btn" onclick="exprAppend('hde-t3c','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3c','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3c','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3c','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3c','ch','C')">C</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3c','ov','C')"><span style="text-decoration:overline;">C</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3c','ch','Z')">Z</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3c','ch','=')">=</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3c','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3c','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3c','ch','⊕')">&oplus;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3c','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t3c','ch',')')">)</button></div><div class="expr-btn-row"><button type="button" class="expr-btn" onmousedown="event.preventDefault()" onclick="exprOverlineSelection('hde-t3c')">Bar over selection</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('hde-t3c')">Backspace</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('hde-t3c')">Clear all</button></div></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) Is <span style="text-decoration:overline;">A + B</span> the same as <span style="text-decoration:overline;">A</span> + <span style="text-decoration:overline;">B</span>? Explain using a truth table or otherwise.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t3d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t3d" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task3', 'Task 3 &mdash; Writing Boolean expressions')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-4">Section 4: Analysing Logic Circuits</h1>
+      <p class="notes-p">A circuit made from several gates is a <strong>combinational logic circuit</strong>. Exam questions often give you the logic diagram and ask you to complete a truth table &mdash; usually with columns for points <em>inside</em> the circuit &mdash; and to write its Boolean expression.</p>
+      <ul class="notes-ul"><li><strong>Label</strong> the output of each gate (D, E, F&hellip;) before you start. Use letters that are not already inputs.</li><li><strong>Fill in one column at a time</strong>, working from the inputs towards the output. Each column only depends on the columns feeding that gate.</li><li><strong>Build the Boolean expression the same way</strong>: write an expression for each labelled point, then substitute. Your final answer must use only the inputs.</li></ul>
+<figure class="circuit-figure" style="max-width:540px;margin:16px auto;">
+<svg width="520" viewBox="0 0 520 170" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><text x="30" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="30,26 30,158" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="58" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="58,26 58,158" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="86" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">C</text><polyline points="86,26 86,158" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polygon points="164,40 164,70 194,55" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="198.5" cy="55" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="152,55 164,55" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M284,51 L310,51 A24,24 0 0 1 310,99 L284,99 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="270,67 284,67" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="270,83 284,83" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="334,75 342,75" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M404,86 Q436.24,86 456,110 Q436.24,134 404,134 Q415,110 404,86 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="460.5" cy="110" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="390,102 408.889,102" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="390,118 408.889,118" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="465,110 473,110" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="30,55 152,55" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="30" cy="55" r="3.6" fill="#1e293b"/><polyline points="203,55 260,55 260,67 270,67" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="58,83 270,83" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="58" cy="83" r="3.6" fill="#1e293b"/><polyline points="342,75 380,75 380,102 390,102" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="86,118 390,118" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="86" cy="118" r="3.6" fill="#1e293b"/><polyline points="473,110 490,110" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="496" y="115" text-anchor="start" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text><text x="205" y="48" text-anchor="start" font-size="13" font-weight="700" fill="#7c3aed" font-family="Arial,Helvetica,sans-serif">D</text><text x="344" y="68" text-anchor="start" font-size="13" font-weight="700" fill="#7c3aed" font-family="Arial,Helvetica,sans-serif">E</text></svg>
+<figcaption>Worked example circuit. The intermediate points D and E are labelled in purple.</figcaption>
+</figure>      <div class="worked-example"><div class="worked-example-title">Worked example &mdash; truth table and Boolean expression</div><div class="step"><div class="step-num">1</div><div class="step-content">Column D is the NOT gate: D = <span style="text-decoration:overline;">A</span>, so D is the opposite of A.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">Column E is the AND gate fed by D and B: E = 1 only where D = 1 <em>and</em> B = 1. So E = <span style="text-decoration:overline;">A</span> &middot; B.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">Column Z is the NOR gate fed by E and C: Z = 1 only where E = 0 <em>and</em> C = 0.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">Boolean expression: Z = <span style="text-decoration:overline;">(<span style="text-decoration:overline;">A</span> &middot; B) + C</span></div></div><div class="step"><div class="step-num">5</div><div class="step-content"><table class="truth-table"><tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>Z</th></tr><tr><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td><td class="hi-out">1</td></tr><tr><td class="lo">0</td><td class="lo">0</td><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td></tr><tr><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td></tr><tr><td class="lo">0</td><td class="hi">1</td><td class="hi">1</td><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td></tr><tr><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td><td class="hi-out">1</td></tr><tr><td class="hi">1</td><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td></tr><tr><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td><td class="hi-out">1</td></tr><tr><td class="hi">1</td><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td></tr></table></div></div></div>
+      <p class="notes-p"><strong>Task 4</strong> uses the three circuits below.</p>
+<figure class="circuit-figure" style="max-width:450px;margin:16px auto;">
+<svg width="430" viewBox="0 0 430 190" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><text x="30" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="30,26 30,178" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="58" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="58,26 58,178" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="86" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">C</text><polyline points="86,26 86,178" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M164,36 Q196.24,36 216,60 Q196.24,84 164,84 Q175,60 164,36 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="220.5" cy="60" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="150,52 168.889,52" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="150,68 168.889,68" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="225,60 233,60" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M164,116 L190,116 A24,24 0 0 1 190,164 L164,164 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="150,132 164,132" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="150,148 164,148" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="214,140 222,140" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M284,76 Q316.24,76 336,100 Q316.24,124 284,124 Q295,100 284,76 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="270,92 288.889,92" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="270,108 288.889,108" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="336,100 344,100" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="30,52 150,52" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="30" cy="52" r="3.6" fill="#1e293b"/><polyline points="58,68 150,68" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="58" cy="68" r="3.6" fill="#1e293b"/><polyline points="58,132 150,132" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="58" cy="132" r="3.6" fill="#1e293b"/><polyline points="86,148 150,148" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="86" cy="148" r="3.6" fill="#1e293b"/><polyline points="233,60 260,60 260,92 270,92" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="222,140 260,140 260,108 270,108" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="344,100 400,100" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="406" y="105" text-anchor="start" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text><text x="235" y="53" text-anchor="start" font-size="13" font-weight="700" fill="#7c3aed" font-family="Arial,Helvetica,sans-serif">D</text><text x="224" y="133" text-anchor="start" font-size="13" font-weight="700" fill="#7c3aed" font-family="Arial,Helvetica,sans-serif">E</text></svg>
+<figcaption>Circuit for Task (a).</figcaption>
+</figure><figure class="circuit-figure" style="max-width:580px;margin:16px auto;">
+<svg width="560" viewBox="0 0 560 215" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><text x="30" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="30,26 30,203" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="58" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="58,26 58,203" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="86" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">C</text><polyline points="86,26 86,203" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="114" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">D</text><polyline points="114,26 114,203" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polygon points="192,65 192,95 222,80" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="226.5" cy="80" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="180,80 192,80" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M312,46 L338,46 A24,24 0 0 1 338,94 L312,94 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="298,62 312,62" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="298,78 312,78" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="362,70 370,70" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M312,146 Q344.24,146 364,170 Q344.24,194 312,194 Q323,170 312,146 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><path d="M305,146 Q316,170 305,194" fill="none" stroke="#1e293b" stroke-width="2.2"/><polyline points="298,162 309.889,162" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="298,178 309.889,178" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="364,170 372,170" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M432,96 L458,96 A24,24 0 0 1 458,144 L432,144 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="418,112 432,112" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="418,128 432,128" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="482,120 490,120" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="58,80 180,80" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="58" cy="80" r="3.6" fill="#1e293b"/><polyline points="30,62 298,62" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="30" cy="62" r="3.6" fill="#1e293b"/><polyline points="231,80 288,80 288,78 298,78" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="86,162 298,162" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="86" cy="162" r="3.6" fill="#1e293b"/><polyline points="114,178 298,178" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="114" cy="178" r="3.6" fill="#1e293b"/><polyline points="370,70 408,70 408,112 418,112" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="372,170 408,170 408,128 418,128" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="490,120 530,120" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="536" y="125" text-anchor="start" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text><text x="233" y="73" text-anchor="start" font-size="13" font-weight="700" fill="#7c3aed" font-family="Arial,Helvetica,sans-serif">E</text><text x="372" y="63" text-anchor="start" font-size="13" font-weight="700" fill="#7c3aed" font-family="Arial,Helvetica,sans-serif">F</text><text x="374" y="163" text-anchor="start" font-size="13" font-weight="700" fill="#7c3aed" font-family="Arial,Helvetica,sans-serif">G</text></svg>
+<figcaption>Circuit for Task (b).</figcaption>
+</figure><figure class="circuit-figure" style="max-width:580px;margin:16px auto;">
+<svg width="560" viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><text x="30" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="30,26 30,188" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="58" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="58,26 58,188" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="86" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">C</text><polyline points="86,26 86,188" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="114" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">D</text><polyline points="114,26 114,188" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M192,71 Q224.24,71 244,95 Q224.24,119 192,119 Q203,95 192,71 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="248.5" cy="95" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="178,87 196.889,87" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="178,103 196.889,103" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="253,95 261,95" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M312,101 Q344.24,101 364,125 Q344.24,149 312,149 Q323,125 312,101 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="298,117 316.889,117" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="298,133 316.889,133" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="364,125 372,125" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M432,61 L458,61 A24,24 0 0 1 458,109 L432,109 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="418,77 432,77" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="418,93 432,93" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="482,85 490,85" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="58,87 178,87" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="58" cy="87" r="3.6" fill="#1e293b"/><polyline points="86,103 178,103" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="86" cy="103" r="3.6" fill="#1e293b"/><polyline points="261,95 288,95 288,117 298,117" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="114,133 298,133" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="114" cy="133" r="3.6" fill="#1e293b"/><polyline points="30,77 418,77" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="30" cy="77" r="3.6" fill="#1e293b"/><polyline points="372,125 408,125 408,93 418,93" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="490,85 530,85" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="536" y="90" text-anchor="start" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text><text x="263" y="88" text-anchor="start" font-size="13" font-weight="700" fill="#7c3aed" font-family="Arial,Helvetica,sans-serif">E</text><text x="374" y="118" text-anchor="start" font-size="13" font-weight="700" fill="#7c3aed" font-family="Arial,Helvetica,sans-serif">F</text></svg>
+<figcaption>Circuit for Task (c).</figcaption>
+</figure>      <div class="assignment" id="assignment-task4">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Analysing logic circuits</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) (i) For circuit (a), complete the truth table, including columns D and E.</div>
+            <table class="tt-answer" style="margin-top:8px;"><tr><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>Z</th></tr><tr><td class="input">0</td><td class="input">0</td><td class="input">0</td><td class="blank" contenteditable="true" data-key="hde-t4a1-000-D"></td><td class="blank" contenteditable="true" data-key="hde-t4a1-000-E"></td><td class="blank" contenteditable="true" data-key="hde-t4a1-000-Z"></td></tr><tr><td class="input">0</td><td class="input">0</td><td class="input">1</td><td class="blank" contenteditable="true" data-key="hde-t4a1-001-D"></td><td class="blank" contenteditable="true" data-key="hde-t4a1-001-E"></td><td class="blank" contenteditable="true" data-key="hde-t4a1-001-Z"></td></tr><tr><td class="input">0</td><td class="input">1</td><td class="input">0</td><td class="blank" contenteditable="true" data-key="hde-t4a1-010-D"></td><td class="blank" contenteditable="true" data-key="hde-t4a1-010-E"></td><td class="blank" contenteditable="true" data-key="hde-t4a1-010-Z"></td></tr><tr><td class="input">0</td><td class="input">1</td><td class="input">1</td><td class="blank" contenteditable="true" data-key="hde-t4a1-011-D"></td><td class="blank" contenteditable="true" data-key="hde-t4a1-011-E"></td><td class="blank" contenteditable="true" data-key="hde-t4a1-011-Z"></td></tr><tr><td class="input">1</td><td class="input">0</td><td class="input">0</td><td class="blank" contenteditable="true" data-key="hde-t4a1-100-D"></td><td class="blank" contenteditable="true" data-key="hde-t4a1-100-E"></td><td class="blank" contenteditable="true" data-key="hde-t4a1-100-Z"></td></tr><tr><td class="input">1</td><td class="input">0</td><td class="input">1</td><td class="blank" contenteditable="true" data-key="hde-t4a1-101-D"></td><td class="blank" contenteditable="true" data-key="hde-t4a1-101-E"></td><td class="blank" contenteditable="true" data-key="hde-t4a1-101-Z"></td></tr><tr><td class="input">1</td><td class="input">1</td><td class="input">0</td><td class="blank" contenteditable="true" data-key="hde-t4a1-110-D"></td><td class="blank" contenteditable="true" data-key="hde-t4a1-110-E"></td><td class="blank" contenteditable="true" data-key="hde-t4a1-110-Z"></td></tr><tr><td class="input">1</td><td class="input">1</td><td class="input">1</td><td class="blank" contenteditable="true" data-key="hde-t4a1-111-D"></td><td class="blank" contenteditable="true" data-key="hde-t4a1-111-E"></td><td class="blank" contenteditable="true" data-key="hde-t4a1-111-Z"></td></tr></table>
+            <div data-key="hde-t4a1" style="display:none;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(ii) Write the Boolean expression for circuit (a).</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t4a2"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t4a2" data-placeholder="Type your answer here..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('hde-t4a2')">Boolean expression builder</button><div class="expr-builder-panel" id="expr-panel-hde-t4a2"><div class="expr-btn-row"><button type="button" class="expr-btn" onclick="exprAppend('hde-t4a2','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4a2','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4a2','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4a2','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4a2','ch','C')">C</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4a2','ov','C')"><span style="text-decoration:overline;">C</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4a2','ch','Z')">Z</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4a2','ch','=')">=</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4a2','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4a2','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4a2','ch','⊕')">&oplus;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4a2','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4a2','ch',')')">)</button></div><div class="expr-btn-row"><button type="button" class="expr-btn" onmousedown="event.preventDefault()" onclick="exprOverlineSelection('hde-t4a2')">Bar over selection</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('hde-t4a2')">Backspace</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('hde-t4a2')">Clear all</button></div></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Write the Boolean expression for circuit (b).</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t4b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t4b" data-placeholder="Type your answer here..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('hde-t4b')">Boolean expression builder</button><div class="expr-builder-panel" id="expr-panel-hde-t4b"><div class="expr-btn-row"><button type="button" class="expr-btn" onclick="exprAppend('hde-t4b','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4b','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4b','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4b','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4b','ch','C')">C</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4b','ov','C')"><span style="text-decoration:overline;">C</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4b','ch','D')">D</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4b','ov','D')"><span style="text-decoration:overline;">D</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4b','ch','Z')">Z</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4b','ch','=')">=</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4b','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4b','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4b','ch','⊕')">&oplus;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4b','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4b','ch',')')">)</button></div><div class="expr-btn-row"><button type="button" class="expr-btn" onmousedown="event.preventDefault()" onclick="exprOverlineSelection('hde-t4b')">Bar over selection</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('hde-t4b')">Backspace</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('hde-t4b')">Clear all</button></div></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) Write the Boolean expression for circuit (c).</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t4c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t4c" data-placeholder="Type your answer here..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('hde-t4c')">Boolean expression builder</button><div class="expr-builder-panel" id="expr-panel-hde-t4c"><div class="expr-btn-row"><button type="button" class="expr-btn" onclick="exprAppend('hde-t4c','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4c','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4c','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4c','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4c','ch','C')">C</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4c','ov','C')"><span style="text-decoration:overline;">C</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4c','ch','D')">D</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4c','ov','D')"><span style="text-decoration:overline;">D</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4c','ch','Z')">Z</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4c','ch','=')">=</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4c','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4c','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4c','ch','⊕')">&oplus;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4c','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t4c','ch',')')">)</button></div><div class="expr-btn-row"><button type="button" class="expr-btn" onmousedown="event.preventDefault()" onclick="exprOverlineSelection('hde-t4c')">Bar over selection</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('hde-t4c')">Backspace</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('hde-t4c')">Clear all</button></div></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) For circuit (c), state the combinations of B, C and D that make Z = 1 when A = 1.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t4d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t4d" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task4', 'Task 4 &mdash; Analysing logic circuits')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-5">Section 5: Boolean Expressions from Truth Tables</h1>
+      <p class="notes-p">Sometimes you are given a truth table and asked for the Boolean expression. Use the <strong>sum of products</strong> method:</p>
+      <ul class="notes-ul"><li>Find every row where the <strong>output is 1</strong>.</li><li>For each of those rows, AND the inputs together, putting a <strong>bar over any input that is 0</strong> in that row.</li><li><strong>OR</strong> all of these terms together, using brackets around each term.</li></ul>
+      <div class="worked-example"><div class="worked-example-title">Worked example</div><div class="step"><div class="step-num">1</div><div class="step-content"><table class="truth-table"><tr><th>A</th><th>B</th><th>C</th><th>Z</th></tr><tr><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td></tr><tr><td class="lo">0</td><td class="lo">0</td><td class="hi">1</td><td class="hi-out">1</td></tr><tr><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td></tr><tr><td class="lo">0</td><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td></tr><tr><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td><td class="hi-out">1</td></tr><tr><td class="hi">1</td><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td></tr><tr><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td><td class="hi-out">1</td></tr><tr><td class="hi">1</td><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td></tr></table></div></div><div class="step"><div class="step-num">2</div><div class="step-content">The output is 1 in rows 001, 100 and 110.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">Row 001 gives <span style="text-decoration:overline;">A</span> &middot; <span style="text-decoration:overline;">B</span> &middot; C; row 100 gives A &middot; <span style="text-decoration:overline;">B</span> &middot; <span style="text-decoration:overline;">C</span>; row 110 gives A &middot; B &middot; <span style="text-decoration:overline;">C</span>.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">Z = (<span style="text-decoration:overline;">A</span> &middot; <span style="text-decoration:overline;">B</span> &middot; C) + (A &middot; <span style="text-decoration:overline;">B</span> &middot; <span style="text-decoration:overline;">C</span>) + (A &middot; B &middot; <span style="text-decoration:overline;">C</span>)</div></div></div>
+      <div class="key-point">You do not need to simplify. A correct simplified expression also gains the marks, but a correct unsimplified one is the safe answer.</div>
+      <div class="assignment" id="assignment-task5">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Expressions from truth tables</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) Write the Boolean expression for this truth table.<table class="truth-table"><tr><th>A</th><th>B</th><th>C</th><th>Z</th></tr><tr><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td></tr><tr><td class="lo">0</td><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td></tr><tr><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td></tr><tr><td class="lo">0</td><td class="hi">1</td><td class="hi">1</td><td class="hi-out">1</td></tr><tr><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td></tr><tr><td class="hi">1</td><td class="lo">0</td><td class="hi">1</td><td class="hi-out">1</td></tr><tr><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td><td class="hi-out">1</td></tr><tr><td class="hi">1</td><td class="hi">1</td><td class="hi">1</td><td class="hi-out">1</td></tr></table></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t5a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t5a" data-placeholder="Type your answer here..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('hde-t5a')">Boolean expression builder</button><div class="expr-builder-panel" id="expr-panel-hde-t5a"><div class="expr-btn-row"><button type="button" class="expr-btn" onclick="exprAppend('hde-t5a','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5a','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5a','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5a','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5a','ch','C')">C</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5a','ov','C')"><span style="text-decoration:overline;">C</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5a','ch','Z')">Z</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5a','ch','=')">=</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5a','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5a','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5a','ch','⊕')">&oplus;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5a','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5a','ch',')')">)</button></div><div class="expr-btn-row"><button type="button" class="expr-btn" onmousedown="event.preventDefault()" onclick="exprOverlineSelection('hde-t5a')">Bar over selection</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('hde-t5a')">Backspace</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('hde-t5a')">Clear all</button></div></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) A machine has four sensors A, B, C and D. Its output is 1 only for the input combinations 0111, 1110 and 1111. Write the Boolean expression.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t5b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t5b" data-placeholder="Type your answer here..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('hde-t5b')">Boolean expression builder</button><div class="expr-builder-panel" id="expr-panel-hde-t5b"><div class="expr-btn-row"><button type="button" class="expr-btn" onclick="exprAppend('hde-t5b','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5b','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5b','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5b','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5b','ch','C')">C</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5b','ov','C')"><span style="text-decoration:overline;">C</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5b','ch','D')">D</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5b','ov','D')"><span style="text-decoration:overline;">D</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5b','ch','Z')">Z</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5b','ch','=')">=</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5b','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5b','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5b','ch','⊕')">&oplus;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5b','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-t5b','ch',')')">)</button></div><div class="expr-btn-row"><button type="button" class="expr-btn" onmousedown="event.preventDefault()" onclick="exprOverlineSelection('hde-t5b')">Bar over selection</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('hde-t5b')">Backspace</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('hde-t5b')">Clear all</button></div></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) Explain why it is useful to write the truth table <em>before</em> the Boolean expression when designing a logic system.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t5c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t5c" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task5', 'Task 5 &mdash; Expressions from truth tables')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-6">Section 6: Designing from a Written Specification</h1>
+      <p class="notes-p">Real design problems start as a description in words. Turn it into a circuit in four steps: <strong>truth table &rarr; Boolean expression &rarr; logic diagram &rarr; test</strong>. Decide first what logic 1 and logic 0 mean for each input and output.</p>
+      <div class="worked-example"><div class="worked-example-title">Worked example &mdash; hydraulic ram safety system</div><div class="step"><div class="step-num">1</div><div class="step-content"><em>The ram may only operate (Z = 1) when the safety guard is closed (A = 1), the operate button is pressed (B = 1) and the emergency stop is not activated (C = 0).</em></div></div><div class="step"><div class="step-num">2</div><div class="step-content">Truth table: work through each condition. Only one row meets all three: A = 1, B = 1, C = 0.<table class="truth-table"><tr><th>A</th><th>B</th><th>C</th><th>Z</th></tr><tr><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td></tr><tr><td class="lo">0</td><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td></tr><tr><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td></tr><tr><td class="lo">0</td><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td></tr><tr><td class="hi">1</td><td class="lo">0</td><td class="lo">0</td><td class="lo">0</td></tr><tr><td class="hi">1</td><td class="lo">0</td><td class="hi">1</td><td class="lo">0</td></tr><tr><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td><td class="hi-out">1</td></tr><tr><td class="hi">1</td><td class="hi">1</td><td class="hi">1</td><td class="lo">0</td></tr></table></div></div><div class="step"><div class="step-num">3</div><div class="step-content">Boolean expression: Z = A &middot; B &middot; <span style="text-decoration:overline;">C</span></div></div><div class="step"><div class="step-num">4</div><div class="step-content">Logic diagram: C goes through a NOT gate, then A, B and <span style="text-decoration:overline;">C</span> go into a 3-input AND gate (or two 2-input AND gates).</div></div></div>
+      <div class="assignment" id="assignment-task6">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Designing from a specification</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) A distillery bottling line conveyor (Z) must run when a bottle is in position (P = 1) and the capper is ready (R = 1), or whenever the manual override (M = 1) is pressed. Write the Boolean expression and describe the logic diagram.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t6a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t6a" data-placeholder="Expression and description..." style="min-height:90px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) A lift door may close (Z = 1) when the close button is pressed (C = 1), unless something is blocking the door sensor (S = 1) or the open button is pressed (O = 1). Complete a truth table, then write the Boolean expression.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t6b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t6b" data-placeholder="Truth table and expression..." style="min-height:110px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) A warning lamp (W) on a quarry machine must light when exactly one of two guards (A, B) is open (logic 1). Which single gate does this? Write the expression.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t6c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t6c" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task6', 'Task 6 &mdash; Designing from a specification')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-7">Section 7: NAND Equivalent Circuits</h1>
+      <p class="notes-p">Logic gates are bought as <strong>integrated circuits (ICs)</strong>, each containing several gates of one type. A circuit needing one AND, one OR and one NOT gate would need three different ICs, most of whose gates would sit unused.</p>
+      <p class="notes-p">Any logic function can be built from <strong>NAND gates only</strong>. Using a single type of gate means:</p>
+      <ul class="notes-ul"><li>only one type of IC (the <strong>7400</strong>, which contains four 2-input NAND gates) needs to be bought and stocked &mdash; and it can be bought in bulk, so it is cheaper;</li><li>fewer ICs are often needed, so the circuit board is <strong>smaller and cheaper</strong> to make;</li><li>assembly is simpler, with fewer different parts.</li></ul>
+      <h2 class="notes-h2">The NAND equivalents to learn</h2>
+      <p class="notes-p">These are knowledge items for the exam &mdash; learn them. You can check each one in the simulator.</p>
+<div class="neq-table"><div class="neq-row"><div class="neq-name">NOT</div><div class="neq-sym"><svg width="170" viewBox="0 0 170 80" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><polygon points="60,25 60,55 90,40" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="94.5" cy="40" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="48,40 60,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="20,40 48,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="99,40 150,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="158" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg></div><div class="neq-eq">=</div><div class="neq-nand"><svg width="330" viewBox="0 0 330 100" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><path d="M70,26 L96,26 A24,24 0 0 1 96,74 L70,74 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="124.5" cy="50" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="54,42 70,42" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="54,58 70,58" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="54,42 54,58" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="54" cy="50" r="3.6" fill="#1e293b"/><polyline points="44,50 54,50" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="129,50 137,50" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="14,50 44,50" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="8" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="137,50 308,50" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="314" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg><div class="neq-count">1 NAND gate</div></div></div><div class="neq-row"><div class="neq-name">AND</div><div class="neq-sym"><svg width="170" viewBox="0 0 170 80" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><path d="M60,16 L86,16 A24,24 0 0 1 86,64 L60,64 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="46,32 60,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="46,48 60,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="110,40 118,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="20,32 46,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="37" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="20,48 46,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="53" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="118,40 150,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="158" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg></div><div class="neq-eq">=</div><div class="neq-nand"><svg width="330" viewBox="0 0 330 100" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><path d="M60,26 L86,26 A24,24 0 0 1 86,74 L60,74 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="114.5" cy="50" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="46,42 60,42" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="46,58 60,58" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="119,50 127,50" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="14,42 46,42" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="8" y="47" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="14,58 46,58" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="8" y="63" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><path d="M170,26 L196,26 A24,24 0 0 1 196,74 L170,74 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="224.5" cy="50" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="154,42 170,42" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="154,58 170,58" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="154,42 154,58" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="154" cy="50" r="3.6" fill="#1e293b"/><polyline points="144,50 154,50" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="229,50 237,50" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="127,50 144,50" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="237,50 308,50" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="314" y="55" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg><div class="neq-count">2 NAND gates</div></div></div><div class="neq-row"><div class="neq-name">OR</div><div class="neq-sym"><svg width="170" viewBox="0 0 170 80" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><path d="M60,16 Q92.24,16 112,40 Q92.24,64 60,64 Q71,40 60,16 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="46,32 64.8889,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="46,48 64.8889,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="112,40 120,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="20,32 46,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="37" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="20,48 46,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="53" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="120,40 150,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="158" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg></div><div class="neq-eq">=</div><div class="neq-nand"><svg width="330" viewBox="0 0 330 125" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><path d="M60,6 L86,6 A24,24 0 0 1 86,54 L60,54 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="114.5" cy="30" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="44,22 60,22" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="44,38 60,38" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="44,22 44,38" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="44" cy="30" r="3.6" fill="#1e293b"/><polyline points="34,30 44,30" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="119,30 127,30" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M60,71 L86,71 A24,24 0 0 1 86,119 L60,119 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="114.5" cy="95" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="44,87 60,87" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="44,103 60,103" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="44,87 44,103" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="44" cy="95" r="3.6" fill="#1e293b"/><polyline points="34,95 44,95" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="119,95 127,95" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="14,30 34,30" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="8" y="35" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="14,95 34,95" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="8" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><path d="M190,38 L216,38 A24,24 0 0 1 216,86 L190,86 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="244.5" cy="62" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="176,54 190,54" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="176,70 190,70" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="249,62 257,62" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="127,30 172,30 172,54 176,54" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="127,95 172,95 172,70 176,70" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="257,62 308,62" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="314" y="67" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg><div class="neq-count">3 NAND gates</div></div></div><div class="neq-row"><div class="neq-name">NOR</div><div class="neq-sym"><svg width="170" viewBox="0 0 170 80" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><path d="M60,16 Q92.24,16 112,40 Q92.24,64 60,64 Q71,40 60,16 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="116.5" cy="40" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="46,32 64.8889,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="46,48 64.8889,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="121,40 129,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="20,32 46,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="37" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="20,48 46,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="53" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="129,40 150,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="158" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg></div><div class="neq-eq">=</div><div class="neq-nand"><svg width="400" viewBox="0 0 400 125" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><path d="M50,6 L76,6 A24,24 0 0 1 76,54 L50,54 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="104.5" cy="30" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="34,22 50,22" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="34,38 50,38" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="34,22 34,38" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="34" cy="30" r="3.6" fill="#1e293b"/><polyline points="24,30 34,30" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="109,30 117,30" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M50,71 L76,71 A24,24 0 0 1 76,119 L50,119 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="104.5" cy="95" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="34,87 50,87" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="34,103 50,103" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="34,87 34,103" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="34" cy="95" r="3.6" fill="#1e293b"/><polyline points="24,95 34,95" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="109,95 117,95" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="14,30 24,30" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="8" y="35" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="14,95 24,95" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="8" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><path d="M160,38 L186,38 A24,24 0 0 1 186,86 L160,86 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="214.5" cy="62" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="146,54 160,54" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="146,70 160,70" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="219,62 227,62" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="117,30 142,30 142,54 146,54" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="117,95 142,95 142,70 146,70" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M270,38 L296,38 A24,24 0 0 1 296,86 L270,86 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="324.5" cy="62" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="254,54 270,54" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="254,70 270,70" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="254,54 254,70" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="254" cy="62" r="3.6" fill="#1e293b"/><polyline points="244,62 254,62" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="329,62 337,62" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="227,62 244,62" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="337,62 378,62" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="384" y="67" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg><div class="neq-count">4 NAND gates</div></div></div><div class="neq-row"><div class="neq-name">EOR</div><div class="neq-sym"><svg width="170" viewBox="0 0 170 80" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><path d="M60,16 Q92.24,16 112,40 Q92.24,64 60,64 Q71,40 60,16 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><path d="M53,16 Q64,40 53,64" fill="none" stroke="#1e293b" stroke-width="2.2"/><polyline points="46,32 57.8889,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="46,48 57.8889,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="112,40 120,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="20,32 46,32" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="37" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="20,48 46,48" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="12" y="53" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="120,40 150,40" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="158" y="45" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg></div><div class="neq-eq">=</div><div class="neq-nand"><svg width="460" viewBox="0 0 460 150" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><polyline points="14,25 40,25" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="8" y="30" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="14,125 40,125" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="8" y="130" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><path d="M100,51 L126,51 A24,24 0 0 1 126,99 L100,99 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="154.5" cy="75" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="86,67 100,67" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="86,83 100,83" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="159,75 167,75" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="40,25 40,67 86,67" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="40,125 40,83 86,83" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M210,11 L236,11 A24,24 0 0 1 236,59 L210,59 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="264.5" cy="35" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="196,27 210,27" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="196,43 210,43" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="269,35 277,35" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M210,91 L236,91 A24,24 0 0 1 236,139 L210,139 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="264.5" cy="115" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="196,107 210,107" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="196,123 210,123" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="269,115 277,115" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="40,25 180,25 180,27 196,27" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="40,125 180,125 180,123 196,123" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="167,75 172,75 172,43 196,43" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="172,75 172,107 196,107" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="172" cy="75" r="3.6" fill="#1e293b"/><circle cx="40" cy="25" r="3.6" fill="#1e293b"/><circle cx="40" cy="125" r="3.6" fill="#1e293b"/><path d="M320,51 L346,51 A24,24 0 0 1 346,99 L320,99 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="374.5" cy="75" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="306,67 320,67" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="306,83 320,83" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="379,75 387,75" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="277,35 305,35 305,67 306,67" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="277,115 305,115 305,83 306,83" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="387,75 438,75" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="444" y="80" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg><div class="neq-count">4 NAND gates</div></div></div></div>      <h2 class="notes-h2">Converting a circuit: three stages</h2>
+      <ul class="notes-ul"><li><strong>Stage 1:</strong> replace every gate with its full NAND equivalent.</li><li><strong>Stage 2:</strong> connect them up exactly as in the original circuit.</li><li><strong>Stage 3:</strong> look for <strong>two NAND inverters in a row</strong>. Two inverters cancel each other out, so remove both. Show this by crossing them out &mdash; do not simplify in your head.</li></ul>
+<figure class="circuit-figure" style="max-width:380px;margin:16px auto;">
+<svg width="400" viewBox="0 0 400 150" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><text x="30" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="30,26 30,138" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="58" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="58,26 58,138" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="86" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">C</text><polyline points="86,26 86,138" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M164,36 L190,36 A24,24 0 0 1 190,84 L164,84 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="150,52 164,52" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="150,68 164,68" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="214,60 222,60" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M284,61 Q316.24,61 336,85 Q316.24,109 284,109 Q295,85 284,61 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="270,77 288.889,77" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="270,93 288.889,93" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="336,85 344,85" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="30,52 150,52" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="30" cy="52" r="3.6" fill="#1e293b"/><polyline points="58,68 150,68" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="58" cy="68" r="3.6" fill="#1e293b"/><polyline points="222,60 260,60 260,77 270,77" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="86,93 270,93" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="86" cy="93" r="3.6" fill="#1e293b"/><polyline points="344,85 370,85" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="376" y="90" text-anchor="start" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text><text x="224" y="53" text-anchor="start" font-size="13" font-weight="700" fill="#7c3aed" font-family="Arial,Helvetica,sans-serif">E</text></svg>
+<figcaption>Stage 0: the original circuit, Z = (A&middot;B) + C.</figcaption>
+</figure><figure class="circuit-figure" style="max-width:630px;margin:16px auto;">
+<svg width="610" viewBox="0 0 610 170" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><text x="30" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="30,26 30,158" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="58" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="58,26 58,158" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="86" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">C</text><polyline points="86,26 86,158" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M164,31 L190,31 A24,24 0 0 1 190,79 L164,79 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="218.5" cy="55" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="150,47 164,47" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="150,63 164,63" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="223,55 231,55" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M279,31 L305,31 A24,24 0 0 1 305,79 L279,79 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="333.5" cy="55" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="263,55 279,55" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="263,55 263,55" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="263" cy="55" r="3.6" fill="#1e293b"/><polyline points="253,55 263,55" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="338,55 346,55" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><line x1="284" y1="35" x2="324" y2="75" stroke="#dc2626" stroke-width="3"/><line x1="284" y1="75" x2="324" y2="35" stroke="#dc2626" stroke-width="3"/><path d="M394,31 L420,31 A24,24 0 0 1 420,79 L394,79 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="448.5" cy="55" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="378,55 394,55" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="378,55 378,55" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="378" cy="55" r="3.6" fill="#1e293b"/><polyline points="368,55 378,55" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="453,55 461,55" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><line x1="399" y1="35" x2="439" y2="75" stroke="#dc2626" stroke-width="3"/><line x1="399" y1="75" x2="439" y2="35" stroke="#dc2626" stroke-width="3"/><path d="M394,106 L420,106 A24,24 0 0 1 420,154 L394,154 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="448.5" cy="130" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="378,130 394,130" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="378,130 378,130" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="378" cy="130" r="3.6" fill="#1e293b"/><polyline points="368,130 378,130" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="453,130 461,130" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M509,68 L535,68 A24,24 0 0 1 535,116 L509,116 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="563.5" cy="92" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="495,84 509,84" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="495,100 509,100" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="568,92 576,92" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="30,47 150,47" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="30" cy="47" r="3.6" fill="#1e293b"/><polyline points="58,63 150,63" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="58" cy="63" r="3.6" fill="#1e293b"/><polyline points="231,55 253,55" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="346,55 368,55" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="86,130 368,130" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="86" cy="130" r="3.6" fill="#1e293b"/><polyline points="461,55 485,55 485,84 495,84" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="461,130 485,130 485,100 495,100" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="576,92 580,92" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="586" y="97" text-anchor="start" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg>
+<figcaption>Stages 1 and 2: every gate replaced by its NAND equivalent and connected up. The two NAND inverters in a row (crossed out in red) cancel each other.</figcaption>
+</figure><figure class="circuit-figure" style="max-width:400px;margin:16px auto;">
+<svg width="380" viewBox="0 0 380 170" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><text x="30" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="30,26 30,158" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="58" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="58,26 58,158" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="86" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">C</text><polyline points="86,26 86,158" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M164,31 L190,31 A24,24 0 0 1 190,79 L164,79 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="218.5" cy="55" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="150,47 164,47" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="150,63 164,63" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="223,55 231,55" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M164,106 L190,106 A24,24 0 0 1 190,154 L164,154 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="218.5" cy="130" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="148,130 164,130" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="148,130 148,130" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="148" cy="130" r="3.6" fill="#1e293b"/><polyline points="138,130 148,130" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="223,130 231,130" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M284,68 L310,68 A24,24 0 0 1 310,116 L284,116 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="338.5" cy="92" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="270,84 284,84" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="270,100 284,100" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="343,92 351,92" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="30,47 150,47" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="30" cy="47" r="3.6" fill="#1e293b"/><polyline points="58,63 150,63" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="58" cy="63" r="3.6" fill="#1e293b"/><polyline points="86,130 138,130" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="86" cy="130" r="3.6" fill="#1e293b"/><polyline points="231,55 260,55 260,84 270,84" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="231,130 260,130 260,100 270,100" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="351,92 350,92" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="356" y="97" text-anchor="start" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg>
+<figcaption>Stage 3: the simplified NAND equivalent &mdash; just 3 NAND gates, so one 7400 IC does the whole job (with one gate to spare).</figcaption>
+</figure>      <div class="key-point">Double inverters appear wherever an <strong>AND</strong> (which ends with an inverter) feeds an <strong>OR</strong> (which starts with inverters). Look there first.</div>
+      <p class="notes-p"><strong>Task 7</strong> uses the three circuits below. Draw your NAND equivalents on paper or build them in the simulator, then answer the questions.</p>
+<figure class="circuit-figure" style="max-width:380px;margin:16px auto;">
+<svg width="360" viewBox="0 0 360 165" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><text x="30" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="30,26 30,153" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="58" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="58,26 58,153" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M136,31 Q168.24,31 188,55 Q168.24,79 136,79 Q147,55 136,31 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="122,47 140.889,47" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="122,63 140.889,63" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="188,55 196,55" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polygon points="136,110 136,140 166,125" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="170.5" cy="125" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="124,125 136,125" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M256,66 L282,66 A24,24 0 0 1 282,114 L256,114 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="310.5" cy="90" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="242,82 256,82" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="242,98 256,98" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="315,90 323,90" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="30,47 122,47" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="30" cy="47" r="3.6" fill="#1e293b"/><polyline points="58,63 122,63" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="58" cy="63" r="3.6" fill="#1e293b"/><polyline points="58,125 124,125" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="58" cy="125" r="3.6" fill="#1e293b"/><polyline points="196,55 232,55 232,82 242,82" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="175,125 232,125 232,98 242,98" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="323,90 330,90" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="336" y="95" text-anchor="start" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg>
+<figcaption>NAND task 1.</figcaption>
+</figure><figure class="circuit-figure" style="max-width:410px;margin:16px auto;">
+<svg width="390" viewBox="0 0 390 175" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><text x="30" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="30,26 30,163" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="58" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="58,26 58,163" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="86" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">C</text><polyline points="86,26 86,163" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M164,31 Q196.24,31 216,55 Q196.24,79 164,79 Q175,55 164,31 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="150,47 168.889,47" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="150,63 168.889,63" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="216,55 224,55" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M164,106 Q196.24,106 216,130 Q196.24,154 164,154 Q175,130 164,106 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="220.5" cy="130" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="150,122 168.889,122" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="150,138 168.889,138" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="225,130 233,130" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M284,68 L310,68 A24,24 0 0 1 310,116 L284,116 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="338.5" cy="92" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="270,84 284,84" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="270,100 284,100" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="343,92 351,92" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="30,47 150,47" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="30" cy="47" r="3.6" fill="#1e293b"/><polyline points="58,63 150,63" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="58" cy="63" r="3.6" fill="#1e293b"/><polyline points="58,122 150,122" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="58" cy="122" r="3.6" fill="#1e293b"/><polyline points="86,138 150,138" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="86" cy="138" r="3.6" fill="#1e293b"/><polyline points="224,55 260,55 260,84 270,84" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="233,130 260,130 260,100 270,100" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="351,92 360,92" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="366" y="97" text-anchor="start" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg>
+<figcaption>NAND task 2.</figcaption>
+</figure><figure class="circuit-figure" style="max-width:540px;margin:16px auto;">
+<svg width="520" viewBox="0 0 520 180" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><text x="30" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">A</text><polyline points="30,26 30,168" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="58" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">B</text><polyline points="58,26 58,168" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="86" y="18" text-anchor="middle" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">C</text><polyline points="86,26 86,168" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polygon points="164,35 164,65 194,50" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><circle cx="198.5" cy="50" r="4.5" fill="white" stroke="#1e293b" stroke-width="2"/><polyline points="152,50 164,50" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M284,36 L310,36 A24,24 0 0 1 310,84 L284,84 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="270,52 284,52" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="270,68 284,68" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="334,60 342,60" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M284,111 L310,111 A24,24 0 0 1 310,159 L284,159 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="270,127 284,127" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="270,143 284,143" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="334,135 342,135" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><path d="M404,74 Q436.24,74 456,98 Q436.24,122 404,122 Q415,98 404,74 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="390,90 408.889,90" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="390,106 408.889,106" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="456,98 464,98" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="30,50 152,50" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="30" cy="50" r="3.6" fill="#1e293b"/><polyline points="203,50 260,50 260,52 270,52" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="58,68 270,68" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="58" cy="68" r="3.6" fill="#1e293b"/><polyline points="30,127 270,127" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="30" cy="127" r="3.6" fill="#1e293b"/><polyline points="86,143 270,143" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><circle cx="86" cy="143" r="3.6" fill="#1e293b"/><polyline points="342,60 380,60 380,90 390,90" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="342,135 380,135 380,106 390,106" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="464,98 490,98" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="496" y="103" text-anchor="start" font-size="15" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">Z</text></svg>
+<figcaption>NAND task 3.</figcaption>
+</figure>      <div class="assignment" id="assignment-task7">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; NAND equivalents</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) Draw the NAND equivalent of NAND task 1. How many NAND gates does it need, and how many 7400 ICs?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t7a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t7a" data-placeholder="Number of gates, ICs and any simplification..." style="min-height:90px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Draw the NAND equivalent of NAND task 2. How many NAND gates does it need?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t7b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t7b" data-placeholder="Number of gates and ICs..." style="min-height:80px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) Draw the NAND equivalent of NAND task 3, simplifying it fully. How many NAND gates and 7400 ICs are needed?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t7c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t7c" data-placeholder="Number of gates, ICs and simplification..." style="min-height:90px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) Draw the simplified NAND equivalent of Z = (<span style="text-decoration:overline;">A</span> &middot; B) + C. How many 7400 ICs are needed?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t7d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t7d" data-placeholder="Number of gates and ICs..." style="min-height:80px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">e) Give two reasons why a manufacturer might build a logic circuit entirely from NAND gates.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t7e"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t7e" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task7', 'Task 7 &mdash; NAND equivalents')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-8">Section 8: Logic ICs and Practical Circuits</h1>
+      <p class="notes-p">Logic gates are built into 14-pin ICs. In the 7400 family, <strong>pin 14 connects to +V<sub>CC</sub> (5 V)</strong> and <strong>pin 7 to 0 V</strong>. Common ICs:</p>
+      <table class="data-table"><tr><th>IC</th><th>Contents</th></tr><tr><td>7400</td><td>four 2-input NAND gates</td></tr><tr><td>7402</td><td>four 2-input NOR gates</td></tr><tr><td>7404</td><td>six NOT gates (inverters)</td></tr><tr><td>7408</td><td>four 2-input AND gates</td></tr><tr><td>7432</td><td>four 2-input OR gates</td></tr><tr><td>7486</td><td>four 2-input EOR gates</td></tr><tr><td>7420</td><td>two 4-input NAND gates</td></tr><tr><td>7421</td><td>two 4-input AND gates</td></tr><tr><td>7427</td><td>three 3-input NOR gates</td></tr></table>
+      <h2 class="notes-h2">TTL and CMOS</h2>
+      <table class="data-table"><tr><th></th><th>7400 series (TTL)</th><th>4000 series (CMOS)</th></tr><tr><td>Supply voltage</td><td>5 V only (4.75&ndash;5.25 V)</td><td>wide range, about 3&ndash;15 V</td></tr><tr><td>Power use</td><td>higher</td><td>very low &mdash; good for batteries</td></tr><tr><td>Output current</td><td>can drive an LED directly</td><td>small; may need a driver</td></tr><tr><td>Handling</td><td>robust</td><td>easily damaged by static; unused inputs must be connected</td></tr></table>
+      <h2 class="notes-h2">Connecting an LED: source and sink</h2>
+<figure class="circuit-figure" style="max-width:540px;margin:16px auto;">
+<svg width="520" viewBox="0 0 520 190" xmlns="http://www.w3.org/2000/svg" style="max-width:100%;height:auto;" role="img"><path d="M50,96 L76,96 A24,24 0 0 1 76,144 L50,144 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="36,112 50,112" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="36,128 50,128" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="100,120 108,120" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="10,112 36,112" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="10,128 36,128" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="108,120 190,120 190,105" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><rect x="180" y="45" width="20" height="40" rx="2" fill="white" stroke="#1e293b" stroke-width="2"/><text x="215" y="70" text-anchor="start" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">R</text><polyline points="190,85 190,92" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polygon points="180,92 200,92 190,104" fill="#1e293b"/><line x1="180" y1="104" x2="200" y2="104" stroke="#1e293b" stroke-width="2.5"/><polyline points="190,45 190,22" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><text x="190" y="16" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">+5 V</text><text x="95" y="180" text-anchor="middle" font-size="12" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">SINK: LED on when output is 0</text><path d="M300,36 L326,36 A24,24 0 0 1 326,84 L300,84 Z" fill="white" stroke="#1e293b" stroke-width="2.2" stroke-linejoin="round"/><polyline points="286,52 300,52" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="286,68 300,68" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="350,60 358,60" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="265,52 286,52" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="265,68 286,68" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polyline points="358,60 440,60 440,85" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><rect x="430" y="85" width="20" height="40" rx="2" fill="white" stroke="#1e293b" stroke-width="2"/><text x="465" y="110" text-anchor="start" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">R</text><polyline points="440,125 440,134" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><polygon points="430,134 450,134 440,146" fill="#1e293b"/><line x1="430" y1="146" x2="450" y2="146" stroke="#1e293b" stroke-width="2.5"/><polyline points="440,146 440,160" fill="none" stroke="#6b8cae" stroke-width="2.2" stroke-linejoin="round"/><line x1="425" y1="160" x2="455" y2="160" stroke="#1e293b" stroke-width="2.5"/><text x="470" y="165" text-anchor="start" font-size="13" font-weight="700" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">0 V</text><text x="380" y="180" text-anchor="middle" font-size="12" fill="#1e293b" font-family="Arial,Helvetica,sans-serif">SOURCE: LED on when output is 1</text></svg>
+<figcaption>Connecting an LED to a logic gate output. Always include a series resistor to limit the current.</figcaption>
+</figure>      <ul class="notes-ul"><li><strong>Source:</strong> LED and resistor from the output to 0 V. Current flows out of the gate, so the LED lights when the output is <strong>1</strong>.</li><li><strong>Sink:</strong> LED and resistor from +V<sub>CC</sub> to the output. Current flows into the gate, so the LED lights when the output is <strong>0</strong>.</li></ul>
+      <p class="notes-p">The series resistor drops the voltage the LED does not use: R = (V<sub>supply</sub> &minus; V<sub>LED</sub>) / I<sub>LED</sub>. For higher-current loads such as motors or relays, the gate drives a transistor or MOSFET, as in Analogue Electronics.</p>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F522;</span> NoNANDSense simulator &mdash; logic circuits</div>
+          <a href="../../../../simulators/digital.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Build the NAND equivalent of an OR gate (two NAND inverters feeding a third NAND). Use switches for A and B and an indicator on the output, and check every row of the OR truth table.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" title="NoNANDSense logic simulator" src="../../../../simulators/digital.html" loading="lazy"></iframe></div>
+      </div>
+      <div class="assignment" id="assignment-inv1">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 1 &mdash; Proving a NAND equivalent</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) Record the truth table of your NAND-only circuit. Which single gate does it behave like?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-inv1a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-inv1a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Now add a fourth NAND, wired as an inverter, on the output. What gate have you made?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-inv1b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-inv1b" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv1', 'Investigation 1 &mdash; Proving a NAND equivalent')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <div class="assignment" id="assignment-task8">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; Logic ICs</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) An LED (2.0 V, 15 mA) is connected in source mode to a 5 V logic gate output. Calculate the series resistor.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t8a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t8a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) An LED is connected between +5 V and a gate output (sink mode). When does it light? Explain.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t8b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t8b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) A circuit needs 6 NAND gates. How many 7400 ICs are needed, and how many gates are left spare?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t8c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t8c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) Give one advantage of CMOS (4000 series) over TTL (7400 series) for a battery-powered alarm.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-t8d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-t8d" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task8', 'Task 8 &mdash; Logic ICs')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-9">Section 9: Design Challenges</h1>
+      <p class="notes-p">Each challenge gives a real context and a written specification. Work through the same stages as the Higher assignment: analyse, design, build or simulate, test and evaluate.</p>
+      <div class="key-point"><strong>How to approach these:</strong> decide what logic 1 and 0 mean for every input and output. Write the truth table first, then the Boolean expression, then the logic diagram. Convert to NAND gates and count the ICs. In your evaluation, refer back to every numbered point in the specification.</div>
+      <h2 class="notes-h2" id="dc1">Design Challenge 1 &mdash; Print-works guillotine, Dundee</h2>
+      <p class="notes-p">A guillotine that trims printed comics must only operate when the operator has both hands clear of the blade. Two buttons, A and B, are mounted a metre apart, and both must be pressed.</p>
+      <table class="spec-table"><tr><th><span class="data-badge">i</span></th><td>Each button gives logic 1 when pressed.</td></tr><tr><th><span class="data-badge">ii</span></th><td>A green lamp (G) lights when both buttons are pressed &mdash; the blade can operate.</td></tr><tr><th><span class="data-badge">iii</span></th><td>A yellow lamp (Y) lights when only one button is pressed.</td></tr><tr><th><span class="data-badge">iv</span></th><td>A red lamp (R) lights when no button is pressed.</td></tr><tr><th><span class="data-badge">v</span></th><td>The final circuit must be built from 7400 ICs only, using as few ICs as possible.</td></tr></table>
+      <div class="assignment" id="assignment-dc1">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Design Challenge 1 &mdash; Guillotine controller</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) <strong>Analysis.</strong> Complete a truth table with columns for G, Y and R.</div>
+            <table class="tt-answer" style="margin-top:8px;"><tr><th>A</th><th>B</th><th>G</th><th>Y</th><th>R</th></tr><tr><td class="input">0</td><td class="input">0</td><td class="blank" contenteditable="true" data-key="hde-dc1a-00-G"></td><td class="blank" contenteditable="true" data-key="hde-dc1a-00-Y"></td><td class="blank" contenteditable="true" data-key="hde-dc1a-00-R"></td></tr><tr><td class="input">0</td><td class="input">1</td><td class="blank" contenteditable="true" data-key="hde-dc1a-01-G"></td><td class="blank" contenteditable="true" data-key="hde-dc1a-01-Y"></td><td class="blank" contenteditable="true" data-key="hde-dc1a-01-R"></td></tr><tr><td class="input">1</td><td class="input">0</td><td class="blank" contenteditable="true" data-key="hde-dc1a-10-G"></td><td class="blank" contenteditable="true" data-key="hde-dc1a-10-Y"></td><td class="blank" contenteditable="true" data-key="hde-dc1a-10-R"></td></tr><tr><td class="input">1</td><td class="input">1</td><td class="blank" contenteditable="true" data-key="hde-dc1a-11-G"></td><td class="blank" contenteditable="true" data-key="hde-dc1a-11-Y"></td><td class="blank" contenteditable="true" data-key="hde-dc1a-11-R"></td></tr></table>
+            <div data-key="hde-dc1a" style="display:none;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) <strong>Design.</strong> Write a Boolean expression for each output and name the single gate that gives each one.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-dc1b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-dc1b" data-placeholder="Type your answer here..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('hde-dc1b')">Boolean expression builder</button><div class="expr-builder-panel" id="expr-panel-hde-dc1b"><div class="expr-btn-row"><button type="button" class="expr-btn" onclick="exprAppend('hde-dc1b','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc1b','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc1b','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc1b','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc1b','ch','Z')">Z</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc1b','ch','=')">=</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc1b','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc1b','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc1b','ch','⊕')">&oplus;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc1b','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc1b','ch',')')">)</button></div><div class="expr-btn-row"><button type="button" class="expr-btn" onmousedown="event.preventDefault()" onclick="exprOverlineSelection('hde-dc1b')">Bar over selection</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('hde-dc1b')">Backspace</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('hde-dc1b')">Clear all</button></div></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) <strong>Design.</strong> Convert your circuit to NAND gates. How many NAND gates and 7400 ICs are needed?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-dc1c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-dc1c" data-placeholder="Gates and ICs..." style="min-height:90px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) <strong>Build and test.</strong> Simulate your NAND circuit. Record the lamps for all four input combinations and compare with your truth table.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-dc1d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-dc1d" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">e) <strong>Evaluate.</strong> Evaluate your design against the specification, and suggest one safety improvement.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-dc1e"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-dc1e" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc1', 'Design Challenge 1 &mdash; Guillotine controller')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2" id="dc2">Design Challenge 2 &mdash; Museum display alarm, Stirling</h2>
+      <p class="notes-p">A museum wants an alarm for a case of historic artefacts. When the alarm is set, a green lamp shows all is well; if an intruder is detected, the green lamp goes off and a red lamp comes on.</p>
+      <table class="spec-table"><tr><th><span class="data-badge">i</span></th><td>S = 1 when the alarm is switched on.</td></tr><tr><th><span class="data-badge">ii</span></th><td>W = 0 when the case lock is broken (W = 1 when it is secure).</td></tr><tr><th><span class="data-badge">iii</span></th><td>P = 1 when the pressure mat in front of the case detects a person; M = 1 when the motion sensor detects movement.</td></tr><tr><th><span class="data-badge">iv</span></th><td>Red lamp (R): on when the alarm is set and the lock is broken, or the pressure mat or motion sensor is triggered.</td></tr><tr><th><span class="data-badge">v</span></th><td>Green lamp (G): on when the alarm is set and nothing is detected.</td></tr></table>
+      <div class="assignment" id="assignment-dc2">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Design Challenge 2 &mdash; Museum alarm</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) <strong>Analysis.</strong> Write the Boolean expression for the red lamp R.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-dc2a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-dc2a" data-placeholder="Type your answer here..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('hde-dc2a')">Boolean expression builder</button><div class="expr-builder-panel" id="expr-panel-hde-dc2a"><div class="expr-btn-row"><button type="button" class="expr-btn" onclick="exprAppend('hde-dc2a','ch','S')">S</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2a','ov','S')"><span style="text-decoration:overline;">S</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2a','ch','W')">W</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2a','ov','W')"><span style="text-decoration:overline;">W</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2a','ch','P')">P</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2a','ov','P')"><span style="text-decoration:overline;">P</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2a','ch','M')">M</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2a','ov','M')"><span style="text-decoration:overline;">M</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2a','ch','Z')">Z</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2a','ch','=')">=</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2a','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2a','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2a','ch','⊕')">&oplus;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2a','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2a','ch',')')">)</button></div><div class="expr-btn-row"><button type="button" class="expr-btn" onmousedown="event.preventDefault()" onclick="exprOverlineSelection('hde-dc2a')">Bar over selection</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('hde-dc2a')">Backspace</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('hde-dc2a')">Clear all</button></div></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) <strong>Analysis.</strong> Write the Boolean expression for the green lamp G.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-dc2b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-dc2b" data-placeholder="Type your answer here..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('hde-dc2b')">Boolean expression builder</button><div class="expr-builder-panel" id="expr-panel-hde-dc2b"><div class="expr-btn-row"><button type="button" class="expr-btn" onclick="exprAppend('hde-dc2b','ch','S')">S</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2b','ov','S')"><span style="text-decoration:overline;">S</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2b','ch','W')">W</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2b','ov','W')"><span style="text-decoration:overline;">W</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2b','ch','P')">P</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2b','ov','P')"><span style="text-decoration:overline;">P</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2b','ch','M')">M</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2b','ov','M')"><span style="text-decoration:overline;">M</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2b','ch','Z')">Z</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2b','ch','=')">=</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2b','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2b','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2b','ch','⊕')">&oplus;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2b','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc2b','ch',')')">)</button></div><div class="expr-btn-row"><button type="button" class="expr-btn" onmousedown="event.preventDefault()" onclick="exprOverlineSelection('hde-dc2b')">Bar over selection</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('hde-dc2b')">Backspace</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('hde-dc2b')">Clear all</button></div></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) <strong>Design.</strong> Describe a logic diagram for both outputs using AND, OR and NOT gates.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-dc2c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-dc2c" data-placeholder="Describe the gates and connections..." style="min-height:100px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) <strong>Test.</strong> How many rows does the full truth table need? Give one input combination for which R = 1 and one for which G = 1.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-dc2d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-dc2d" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">e) <strong>Evaluate.</strong> Suggest one improvement to make the alarm more useful in a real museum.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-dc2e"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-dc2e" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc2', 'Design Challenge 2 &mdash; Museum alarm')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2" id="dc3">Design Challenge 3 &mdash; Bothy heating, Cairngorms</h2>
+      <p class="notes-p">A mountain bothy has a small heating system to stop pipes freezing and to clear condensation. It controls a heater and a fan, which can also be switched on manually.</p>
+      <table class="spec-table"><tr><th><span class="data-badge">i</span></th><td>A cold sensor gives C = 0 when it is cold; a hot sensor gives T = 1 when it is too warm.</td></tr><tr><th><span class="data-badge">ii</span></th><td>The heater (H) comes on automatically when it is cold, or when the heater override switch is on (A = 1).</td></tr><tr><th><span class="data-badge">iii</span></th><td>The fan (F) comes on automatically when it is too warm, or when the fan override switch is on (B = 1).</td></tr><tr><th><span class="data-badge">iv</span></th><td>Build the logic from 7400 ICs, using as few as possible.</td></tr><tr><th><span class="data-badge">v</span></th><td>Each output must switch a 12 V load through a suitable driver.</td></tr></table>
+      <div class="assignment" id="assignment-dc3">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Design Challenge 3 &mdash; Bothy heating</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) <strong>Analysis.</strong> Write the Boolean expressions for H and F.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-dc3a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-dc3a" data-placeholder="Type your answer here..."></div>
+            <button type="button" class="expr-builder-toggle" onclick="toggleExprBuilder('hde-dc3a')">Boolean expression builder</button><div class="expr-builder-panel" id="expr-panel-hde-dc3a"><div class="expr-btn-row"><button type="button" class="expr-btn" onclick="exprAppend('hde-dc3a','ch','A')">A</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc3a','ov','A')"><span style="text-decoration:overline;">A</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc3a','ch','B')">B</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc3a','ov','B')"><span style="text-decoration:overline;">B</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc3a','ch','C')">C</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc3a','ov','C')"><span style="text-decoration:overline;">C</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc3a','ch','T')">T</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc3a','ov','T')"><span style="text-decoration:overline;">T</span></button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc3a','ch','Z')">Z</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc3a','ch','=')">=</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc3a','ch','.')">&middot;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc3a','ch','+')">+</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc3a','ch','⊕')">&oplus;</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc3a','ch','(')">(</button> <button type="button" class="expr-btn" onclick="exprAppend('hde-dc3a','ch',')')">)</button></div><div class="expr-btn-row"><button type="button" class="expr-btn" onmousedown="event.preventDefault()" onclick="exprOverlineSelection('hde-dc3a')">Bar over selection</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprBackspace('hde-dc3a')">Backspace</button> <button type="button" class="expr-btn expr-btn-warn" onclick="exprClear('hde-dc3a')">Clear all</button></div></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) <strong>Design.</strong> Convert both outputs to NAND gates, simplifying where you can. How many gates and 7400 ICs are needed?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-dc3b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-dc3b" data-placeholder="Gates and ICs..." style="min-height:100px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) <strong>Design.</strong> The logic outputs are 5 V and each load runs from 12 V. Explain how each output should switch its load.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-dc3c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-dc3c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) <strong>Test.</strong> Simulate your circuit and check that the heater and fan respond correctly to every combination of A, C, B and T.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-dc3d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-dc3d" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">e) <strong>Evaluate.</strong> What could go wrong if the heater and fan were both on at once? Suggest a change to the logic.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hde-dc3e"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hde-dc3e" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc3', 'Design Challenge 3 &mdash; Bothy heating')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <!-- Controls -->
+      <div class="controls-bar">
+        <span class="controls-label">Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-download-all" id="downloadAllBtn" onclick="downloadAllAnswersPDF()">Download ALL my answers (PDF)</button>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">Print page</button>
+        <button class="ctrl-btn ctrl-btn-clear" onclick="clearAllAnswers()">Clear all answers</button>
+      </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
+
+      <div class="page-nav" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
+        <button class="ctrl-btn ctrl-btn-print" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});">&#x2B06;&#xFE0F; Back to top</button>
+        <a href="index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">&#x2302; Main menu</a>
+        <a href="../control/index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">Next section &#x2192;</a>
+      </div>
+
+    </div>
     </div>
   </div>
 </div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
-<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script>
+
+<footer class="footer">
+  <span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span>
+  <a href="../../../../teacher/login.html">Teacher area</a>
+</footer>
+
+<script src="../../../../js/site.js"></script>
+<script src="../../../../js/nav.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 <script>document.getElementById("sidebar").innerHTML=buildSidebar("higher","../../../../");</script>
+
+<script>
+const STORAGE_PREFIX='ess_answers_';
+function saveValue(k,v){try{localStorage.setItem(STORAGE_PREFIX+k,v);updateStatusBar();}catch(e){}}
+function loadValue(k){try{return localStorage.getItem(STORAGE_PREFIX+k)||'';}catch(e){return '';}}
+function updateStatusBar(){var el=document.getElementById('storage-status');if(el)el.textContent='Last saved: '+new Date().toLocaleTimeString();}
+function showSaved(key){var ind=document.getElementById('ind-'+key.replace(/^de-/,''));if(!ind)return;ind.classList.add('show');setTimeout(function(){ind.classList.remove('show');},2000);}
+function clearAllAnswers(){if(!confirm('Clear all saved answers on this page? This cannot be undone.'))return;document.querySelectorAll('[data-key]').forEach(function(b){var k=b.dataset.key;if(k){try{localStorage.removeItem(STORAGE_PREFIX+k);}catch(e){}b.innerHTML='';}});var el=document.getElementById('storage-status');if(el)el.textContent='Answers cleared.';}
+function debounce(fn,d){var t;return function(){clearTimeout(t);var a=arguments,c=this;t=setTimeout(function(){fn.apply(c,a);},d);};}
+function placeCaretAtEnd(el){el.focus();if(typeof window.getSelection!=='undefined'&&typeof document.createRange!=='undefined'){var range=document.createRange();range.selectNodeContents(el);range.collapse(false);var sel=window.getSelection();sel.removeAllRanges();sel.addRange(range);}}
+function toggleExprBuilder(key){var panel=document.getElementById('expr-panel-'+key);if(!panel)return;panel.classList.toggle('open');}
+function toggleInfoPanel(id){var panel=document.getElementById('info-panel-'+id);if(!panel)return;panel.classList.toggle('open');}
+function exprCommit(key,box){saveValue(key,box.innerHTML);showSaved(key);}
+function exprAppend(key,kind,value){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;if(kind==='ov'){var span=document.createElement('span');span.style.textDecoration='overline';span.textContent=value;box.appendChild(span);}else{box.appendChild(document.createTextNode(value));}placeCaretAtEnd(box);exprCommit(key,box);}
+function exprBackspace(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var last=box.lastChild;if(!last)return;if(last.nodeType===3){if(last.textContent.length>1){last.textContent=last.textContent.slice(0,-1);}else{box.removeChild(last);}}else{box.removeChild(last);}placeCaretAtEnd(box);exprCommit(key,box);}
+function exprClear(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;box.innerHTML='';exprCommit(key,box);}
+function exprOverlineSelection(key){var box=document.querySelector('[data-key="'+key+'"]');if(!box)return;var sel=window.getSelection();if(!sel||sel.rangeCount===0)return;var range=sel.getRangeAt(0);if(range.collapsed)return;if(!box.contains(range.commonAncestorContainer))return;var frag=range.extractContents();var span=document.createElement('span');span.style.textDecoration='overline';span.appendChild(frag);range.insertNode(span);range.setStartAfter(span);range.collapse(true);sel.removeAllRanges();sel.addRange(range);exprCommit(key,box);}
+document.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('[data-key]').forEach(function(box){
+    var key=box.dataset.key;if(!key)return;
+    var saved=loadValue(key);if(saved)box.innerHTML=saved;
+    var ds=debounce(function(){saveValue(key,box.innerHTML);showSaved(key);},800);
+    box.addEventListener('input',ds);
+    box.addEventListener('blur',function(){saveValue(key,box.innerHTML);showSaved(key);});
+  });
+});
+
+/* -- PDF export -- */
+function pdfSafe(s){
+  if(!s)return '';
+  return String(s)
+    .replace(/[\u2018\u2019\u201B\u2032]/g,"'")
+    .replace(/[\u201C\u201D\u201F\u2033]/g,'"')
+    .replace(/[\u2013\u2014\u2212]/g,'-')
+    .replace(/\u2026/g,'...')
+    .replace(/\u00A0/g,' ')
+    .replace(/\u2713/g,'')
+    .replace(/\u03C3/g,'sigma').replace(/\u03B5/g,'epsilon').replace(/\u0394/g,'delta').replace(/\u03C0/g,'pi')
+    .replace(/[^\x00-\xFF]/g,'');
+}
+
+var PUPIL_NAME_KEY='hdigielec-pupil-name';
+function getPupilName(){try{return localStorage.getItem(PUPIL_NAME_KEY)||'';}catch(e){return '';}}
+
+function pdfNewDoc(){
+  var doc=new window.jspdf.jsPDF({unit:'pt',format:'a4'});
+  var state={margin:48,pageWidth:doc.internal.pageSize.getWidth(),pageHeight:doc.internal.pageSize.getHeight()};
+  state.usableWidth=state.pageWidth-state.margin*2;
+  state.y=state.margin;
+  return {doc:doc,state:state};
+}
+
+function pdfAddHeader(doc,state,taskLabel){
+  doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(15,90,68);
+  doc.text('Engineering Science Scotland - Higher Digital Electronics',state.margin,state.y);state.y+=20;
+  doc.setFontSize(14);doc.setTextColor(30,30,30);
+  var tLines=doc.splitTextToSize(pdfSafe(taskLabel),state.usableWidth);
+  doc.text(tLines,state.margin,state.y);state.y+=tLines.length*16+6;
+  doc.setFont('helvetica','normal');doc.setFontSize(11);doc.setTextColor(90,90,90);
+  var pupilName=getPupilName();
+  var todayStr=new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  var nameLine=pupilName?('Name: '+pdfSafe(pupilName)+'      Date: '+todayStr):('Name: _________________________________      Date: _______________');
+  doc.text(nameLine,state.margin,state.y);state.y+=20;
+  doc.setDrawColor(200,200,200);doc.line(state.margin,state.y,state.pageWidth-state.margin,state.y);state.y+=18;
+}
+
+function pdfEnsureSpace(doc,state,h){if(state.y+h>state.pageHeight-state.margin){doc.addPage();state.y=state.margin;}}
+
+function pdfWriteAnswer(doc,state,el){
+  var img=el.querySelector('img');
+  if(img&&img.src){
+    try{
+      var props=doc.getImageProperties(img.src);
+      var ratio=Math.min(state.usableWidth/props.width,260/props.height,1);
+      var w=props.width*ratio,h=props.height*ratio;
+      pdfEnsureSpace(doc,state,h+14);
+      doc.addImage(img.src,props.fileType||'PNG',state.margin,state.y,w,h);
+      state.y+=h+10;
+    }catch(e){
+      doc.setFont('helvetica','italic');doc.setFontSize(11);doc.setTextColor(160,60,60);
+      pdfEnsureSpace(doc,state,14);doc.text('[Could not embed pasted image]',state.margin,state.y);state.y+=16;
+    }
+  }
+  var text=pdfSafe(el.innerText.trim());
+  if(img&&!text)return;
+  doc.setFontSize(11);
+  if(!text){doc.setFont('helvetica','italic');doc.setTextColor(160,160,160);text='(no answer entered yet)';}
+  else{doc.setFont('helvetica','normal');doc.setTextColor(40,40,40);}
+  var lines=doc.splitTextToSize(text,state.usableWidth);
+  for(var i=0;i<lines.length;i++){pdfEnsureSpace(doc,state,14);doc.text(lines[i],state.margin,state.y);state.y+=14;}
+  state.y+=6;
+}
+
+function pdfRenderPanelItems(doc,state,panel){
+  var items=panel.querySelectorAll('.task-item');
+  for(var i=0;i<items.length;i++){
+    var qEl=items[i].querySelector('.task-q');
+    var qText=qEl?pdfSafe(qEl.innerText.trim()):'';
+    doc.setFont('helvetica','bold');doc.setFontSize(11);doc.setTextColor(15,90,68);
+    var qLines=doc.splitTextToSize(qText,state.usableWidth);
+    pdfEnsureSpace(doc,state,qLines.length*14+6);
+    doc.text(qLines,state.margin,state.y);state.y+=qLines.length*14+6;
+    var fields=items[i].querySelectorAll('[data-key]');
+    for(var f=0;f<fields.length;f++){
+      var lab=fields[f].dataset.label;
+      if(lab){
+        doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(90,90,90);
+        pdfEnsureSpace(doc,state,28);doc.text(pdfSafe(lab)+':',state.margin,state.y);state.y+=13;
+      }
+      pdfWriteAnswer(doc,state,fields[f]);
+    }
+    state.y+=6;
+  }
+}
+
+function pdfAddFooters(doc,state){
+  var n=doc.internal.getNumberOfPages();
+  for(var p=1;p<=n;p++){
+    doc.setPage(p);doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(150,150,150);
+    doc.text('Page '+p+' of '+n+'  -  engineeringsciencescotland.co.uk',state.margin,state.pageHeight-24);
+  }
+}
+
+function downloadTaskPDF(panelId,taskLabel){
+  var panel=document.getElementById(panelId);if(!panel)return;
+  var btn=panel.querySelector('.task-download-btn');var orig=btn?btn.innerHTML:'';
+  if(btn){btn.disabled=true;btn.innerHTML='Building PDF&hellip;';}
+  setTimeout(function(){
+    try{
+      var o=pdfNewDoc();
+      pdfAddHeader(o.doc,o.state,taskLabel);
+      pdfRenderPanelItems(o.doc,o.state,panel);
+      pdfAddFooters(o.doc,o.state);
+      o.doc.save(pdfSafe(taskLabel).replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'-')+'.pdf');
+    }catch(err){console.error(err);alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.');}
+    finally{if(btn){btn.disabled=false;btn.innerHTML=orig;}}
+  },30);
+}
+
+var ALL_TASK_PANELS=[
+  ['assignment-task1','Task 1 \u2014 Analogue and digital'],
+  ['assignment-task2','Task 2 \u2014 Logic gates'],
+  ['assignment-task3','Task 3 \u2014 Writing Boolean expressions'],
+  ['assignment-task4','Task 4 \u2014 Analysing logic circuits'],
+  ['assignment-task5','Task 5 \u2014 Expressions from truth tables'],
+  ['assignment-task6','Task 6 \u2014 Designing from a specification'],
+  ['assignment-task7','Task 7 \u2014 NAND equivalents'],
+  ['assignment-inv1','Investigation 1 \u2014 Proving a NAND equivalent'],
+  ['assignment-task8','Task 8 \u2014 Logic ICs'],
+  ['assignment-dc1','Design Challenge 1 \u2014 Guillotine controller'],
+  ['assignment-dc2','Design Challenge 2 \u2014 Museum alarm'],
+  ['assignment-dc3','Design Challenge 3 \u2014 Bothy heating']
+];
+
+function downloadAllAnswersPDF(){
+  var btn=document.getElementById('downloadAllBtn');var orig=btn?btn.innerHTML:'';
+  if(btn){btn.disabled=true;btn.innerHTML='Building PDF&hellip;';}
+  setTimeout(function(){
+    try{
+      var o=pdfNewDoc(),doc=o.doc,state=o.state;
+      pdfAddHeader(doc,state,'Higher Digital Electronics \u2014 All my answers');
+      for(var i=0;i<ALL_TASK_PANELS.length;i++){
+        var panel=document.getElementById(ALL_TASK_PANELS[i][0]);if(!panel)continue;
+        pdfEnsureSpace(doc,state,40);
+        doc.setFont('helvetica','bold');doc.setFontSize(13);doc.setTextColor(194,65,12);
+        doc.text(pdfSafe(ALL_TASK_PANELS[i][1]),state.margin,state.y);state.y+=8;
+        doc.setDrawColor(230,200,180);doc.line(state.margin,state.y,state.pageWidth-state.margin,state.y);state.y+=16;
+        pdfRenderPanelItems(doc,state,panel);state.y+=10;
+      }
+      pdfAddFooters(doc,state);
+      doc.save('Higher-Digital-Electronics-All-My-Answers.pdf');
+    }catch(err){console.error(err);alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.');}
+    finally{if(btn){btn.disabled=false;btn.innerHTML=orig;}}
+  },30);
+}
+
+/* -- Contents panel -- */
+function openToc(){document.getElementById('tocPanel').classList.add('open');document.getElementById('tocOverlay').classList.add('open');}
+function closeToc(){document.getElementById('tocPanel').classList.remove('open');document.getElementById('tocOverlay').classList.remove('open');}
+
+/* -- My Name -- */
+function updateNameFabLabel(){var l=document.getElementById('nameFabLabel');if(!l)return;var n=getPupilName();l.textContent=n?n:'My Name';}
+function openNamePanel(){
+  var input=document.getElementById('nameInput');if(input)input.value=getPupilName();
+  var msg=document.getElementById('nameSavedMsg');if(msg)msg.classList.remove('show');
+  document.getElementById('nameOverlay').classList.add('open');
+  if(input)setTimeout(function(){input.focus();},50);
+}
+function closeNamePanel(){document.getElementById('nameOverlay').classList.remove('open');}
+function closeNameOverlayClick(e){if(e.target.id==='nameOverlay')closeNamePanel();}
+function saveNameInput(){
+  var input=document.getElementById('nameInput');var name=input?input.value.trim():'';
+  try{localStorage.setItem(PUPIL_NAME_KEY,name);}catch(e){}
+  updateNameFabLabel();
+  var msg=document.getElementById('nameSavedMsg');if(msg)msg.classList.add('show');
+}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closeToc();closeNamePanel();}});
+</script>
+
+<button class="toc-fab" id="tocFab" onclick="openToc()">&#x2630; Contents</button>
+
+<button class="name-fab" id="nameFab" onclick="openNamePanel()"><span class="name-fab-icon">&#x1F464;</span><span id="nameFabLabel">My Name</span></button>
+
+<div class="name-overlay" id="nameOverlay" onclick="closeNameOverlayClick(event)">
+  <div class="name-panel">
+    <button class="name-panel-close" onclick="closeNamePanel()" aria-label="Close">&times;</button>
+    <h3>Your name</h3>
+    <p>Enter your name once and it&rsquo;ll be added to the top of every task&rsquo;s downloaded PDF &mdash; no need to write it in by hand each time.</p>
+    <input type="text" id="nameInput" placeholder="e.g. Jamie Smith" maxlength="60">
+    <button class="name-panel-save" onclick="saveNameInput()">Save name</button>
+    <div class="name-panel-saved-msg" id="nameSavedMsg">&#x2713; Saved &mdash; it&rsquo;ll now appear on your PDFs</div>
+  </div>
+</div>
+
+<div class="toc-overlay" id="tocOverlay" onclick="closeToc()"></div>
+<div class="toc-panel" id="tocPanel">
+  <div class="toc-panel-header">
+    <h3>Contents</h3>
+    <button class="toc-panel-close" onclick="closeToc()" aria-label="Close">&times;</button>
+  </div>
+  <nav class="toc-list" id="tocList">
+    <a href="#section-1" onclick="closeToc()">Section 1: Digital Signals and Logic Levels</a>
+    <a href="#section-2" onclick="closeToc()">Section 2: Logic Gates</a>
+    <a href="#section-3" onclick="closeToc()">Section 3: Boolean Notation</a>
+    <a href="#section-4" onclick="closeToc()">Section 4: Analysing Logic Circuits</a>
+    <a href="#section-5" onclick="closeToc()">Section 5: Boolean Expressions from Truth Tables</a>
+    <a href="#section-6" onclick="closeToc()">Section 6: Designing from a Written Specification</a>
+    <a href="#section-7" onclick="closeToc()">Section 7: NAND Equivalent Circuits</a>
+    <a href="#section-8" onclick="closeToc()">Section 8: Logic ICs and Practical Circuits</a>
+    <a href="#section-9" onclick="closeToc()">Section 9: Design Challenges</a>
+    <a href="#dc1" class="toc-sub" onclick="closeToc()">Challenge 1 &mdash; Guillotine controller</a>
+    <a href="#dc2" class="toc-sub" onclick="closeToc()">Challenge 2 &mdash; Museum alarm</a>
+    <a href="#dc3" class="toc-sub" onclick="closeToc()">Challenge 3 &mdash; Bothy heating</a>
+  </nav>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded',updateNameFabLabel);
+(function(){
+  var nameInputEl=document.getElementById('nameInput');
+  if(nameInputEl)nameInputEl.addEventListener('keydown',function(e){if(e.key==='Enter')saveNameInput();});
+  var links=Array.prototype.slice.call(document.querySelectorAll('.toc-list a'));
+  var targets=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));}).filter(Boolean);
+  if(!targets.length||!('IntersectionObserver' in window))return;
+  var observer=new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      var link=document.querySelector('.toc-list a[href="#'+entry.target.id+'"]');
+      if(link&&entry.isIntersecting){links.forEach(function(a){a.classList.remove('toc-active');});link.classList.add('toc-active');}
+    });
+  },{rootMargin:'-15% 0px -70% 0px',threshold:0});
+  targets.forEach(function(t){observer.observe(t);});
+})();
+</script>
+
 </body>
 </html>
