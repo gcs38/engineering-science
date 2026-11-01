@@ -208,7 +208,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute;top:14px;right:20px;font-size:11px;color:#94a3b8;">Last updated: 1 November 2026, 14:20</div>
+      <div style="position:absolute;top:14px;right:20px;font-size:11px;color:#94a3b8;">Last updated: 1 November 2026, 14:47</div>
       <div class="hero-label">Higher &middot; Electronics and Control &rsaquo; Analogue Electronics</div>
       <h1 class="hero-title">&#x26A1; Analogue Electronics &mdash; Course Notes</h1>
       <p class="hero-sub">Sensor voltage dividers, BJTs, MOSFETs and op-amp configurations</p>
@@ -401,6 +401,38 @@
       <div class="worked-example"><div class="worked-example-title">Worked example 2 &mdash; thermistor divider driving the base</div><div class="step"><div class="step-num">1</div><div class="step-content">In the circuit above, V<sub>S</sub> = 6 V, R<sub>1</sub> is a curve 3 thermistor and R<sub>2</sub> = 1.0 k&Omega;. Calculate the base current at 50 &deg;C.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">From curve 3, R<sub>1</sub> = 4.0 k&Omega; at 50 &deg;C. I<sub>1</sub> = (6 &minus; 0.7) / 4000 = 1.325 mA.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">I<sub>2</sub> = 0.7 / 1000 = 0.70 mA.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">I<sub>B</sub> = I<sub>1</sub> &minus; I<sub>2</sub> = 1.325 &minus; 0.70 = <strong>0.63 mA</strong> (2 s.f.).</div></div><div class="step"><div class="step-num">5</div><div class="step-content">Note: the voltage divider rule would give 6 &times; 1.0 / 5.0 = 1.2 V across R<sub>2</sub> &mdash; impossible, because the base clamps it at 0.7 V.</div></div></div>
       <div class="worked-example"><div class="worked-example-title">Worked example 3 &mdash; minimum gain to saturate</div><div class="step"><div class="step-num">1</div><div class="step-content">A microcontroller pin (5 V) drives a transistor through a 2.2 k&Omega; base resistor. The load is a 24 &Omega; motor on a 12 V supply. Calculate the minimum h<sub>FE</sub> for the transistor to be saturated.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">I<sub>B</sub> = (5 &minus; 0.7) / 2200 = 1.955 mA.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">Largest possible collector current: I<sub>C(max)</sub> = 12 / 24 = 0.50 A.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">h<sub>FE(min)</sub> = 0.50 / 0.001955 = 255.8 = <strong>260</strong> (2 s.f.). Any transistor with a higher gain will also be saturated.</div></div></div>
       <div class="worked-example"><div class="worked-example-title">Worked example 4 &mdash; the switching point</div><div class="step"><div class="step-num">1</div><div class="step-content">A 47 k&Omega; resistor (top) and an ORP12 LDR (bottom, between base and 0 V) control a transistor on a 5 V supply. At what light level does the transistor <em>start</em> to switch on?</div></div><div class="step"><div class="step-num">2</div><div class="step-content">The transistor starts to conduct when the voltage across the LDR reaches 0.7 V. At that exact point the base current is still zero, so here &mdash; and only here &mdash; the voltage divider rule applies.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">0.7 / 4.3 = R<sub>LDR</sub> / 47 000, so R<sub>LDR</sub> = 0.7 &times; 47 000 / 4.3 = 7.65 k&Omega;.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">From the ORP12 graph, 7.65 k&Omega; is about <strong>13 lux</strong>. Below this light level the LDR&rsquo;s resistance rises and the transistor turns on.</div></div></div>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> NoResistance Simulator &mdash; thermistor heater control</div>
+          <a href="../../../../simulators/hae-transistor-heater.html?edit" target="_blank" class="sim-fullscreen-btn">&#x270F;&#xFE0F; Open in editor</a>
+        </div>
+        <div class="sim-instruction">A variable resistor R<sub>V1</sub> (top) and a thermistor TH1 (bottom) drive the base of a transistor directly. The transistor switches a 22 &Omega; heater, and the voltmeter and graph show the base voltage. <strong>Drag the slider beside the thermistor</strong> to change the temperature. Use <strong>Open in editor</strong> to change the circuit.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" style="height:620px;" title="NoResistance Simulator &mdash; thermistor heater control" src="../../../../simulators/hae-transistor-heater.html" loading="lazy"></iframe></div>
+        <div class="sim-credit" style="font-size:11px;color:var(--gray-400);margin-top:6px;">Circuit adapted from an original by Peter Strain, creator of the NoResistance simulator.</div>
+      </div>
+      <div class="assignment" id="assignment-inv3">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 2 &mdash; The base is held at 0.7 V</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) Make the thermistor colder and colder. What is the highest base voltage you can reach? Explain why it stops there.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv3a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv3a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Open the editor and delete the wire to the transistor&rsquo;s base. Make the thermistor cold again. What does the voltmeter read now, and why is it different?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv3b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv3b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) Reconnect the base. Increase the setting of R<sub>V1</sub>. Does the heater now switch on at a higher or lower temperature? Explain.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv3c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv3c" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv3', 'Investigation 2 &mdash; The base is held at 0.7 V')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
       <div class="assignment" id="assignment-tcalc">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Transistor circuit calculations</div></div>
         <div class="assignment-body">
@@ -612,28 +644,34 @@
       </div>
       <div class="sim-embed-section">
         <div class="sim-embed-header">
-          <div class="sim-embed-title"><span>&#x26A1;</span> NoResistance Simulator &mdash; op-amp circuits</div>
-          <a href="../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+          <div class="sim-embed-title"><span>&#x26A1;</span> NoResistance Simulator &mdash; inverting amplifier</div>
+          <a href="../../../../simulators/hae-inverting.html?edit" target="_blank" class="sim-fullscreen-btn">&#x270F;&#xFE0F; Open in editor</a>
         </div>
-        <div class="sim-instruction">Build the inverting amplifier above with R<sub>1</sub> = 10 k&Omega; and R<sub>f</sub> = 100 k&Omega;. Use a variable supply or voltage divider for V<sub>in</sub>, and a voltmeter on the output.</div>
-        <div class="sim-wrap"><iframe class="sim-iframe" title="NoResistance circuit simulator" src="../../../../simulators/electronics.html" loading="lazy"></iframe></div>
+        <div class="sim-instruction">An inverting amplifier with R<sub>1</sub> = 1 k&Omega; and R<sub>f</sub> = 2 k&Omega; on a &plusmn;9 V supply. The input is an AC signal of 3 V peak, and the graph shows the input and output waveforms. The op-amp saturates at 85% of its supply. Use <strong>Open in editor</strong> to change values.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" style="height:620px;" title="NoResistance Simulator &mdash; inverting amplifier" src="../../../../simulators/hae-inverting.html" loading="lazy"></iframe></div>
+        <div class="sim-credit" style="font-size:11px;color:var(--gray-400);margin-top:6px;">Circuit adapted from an original by Peter Strain, creator of the NoResistance simulator.</div>
       </div>
       <div class="assignment" id="assignment-inv2">
-        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 2 &mdash; Gain and saturation</div></div>
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 3 &mdash; Gain and saturation</div></div>
         <div class="assignment-body">
           <div class="task-item">
-            <div class="task-q">a) Increase V<sub>in</sub> in small steps from 0 V. Describe how V<sub>o</sub> changes at first.</div>
+            <div class="task-q">a) Compare the input and output waveforms. Describe two differences and use them to state the gain. Does this match &minus;R<sub>f</sub>/R<sub>1</sub>?</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv2a"></span></div>
             <div class="answer-box" contenteditable="true" data-key="hae-inv2a" data-placeholder="Type your answer here..."></div>
           </div>
           <div class="task-item">
-            <div class="task-q">b) Keep increasing V<sub>in</sub>. At what point does V<sub>o</sub> stop changing, and why?</div>
+            <div class="task-q">b) In the editor, increase the input to 5 V peak. Predict the output, then run it. What do you see, and why?</div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv2b"></span></div>
-            <div class="answer-box" contenteditable="true" data-key="hae-inv2b" data-placeholder="Type your answer here..."></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv2b" data-placeholder="Type your answer here..." data-symbols="1"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) Set the input back to 1 V peak and change R<sub>f</sub> to 4.7 k&Omega;. Predict and then check the output.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv2c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv2c" data-placeholder="Type your answer here..." data-symbols="1"></div>
           </div>
         </div>
         <div class="task-download-row">
-          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv2', 'Investigation 2 &mdash; Gain and saturation')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv2', 'Investigation 3 &mdash; Gain and saturation')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -669,6 +707,33 @@
           <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task8', 'Task 9 &mdash; Non-inverting amplifier')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> NoResistance Simulator &mdash; non-inverting amplifier</div>
+          <a href="../../../../simulators/hae-noninverting.html?edit" target="_blank" class="sim-fullscreen-btn">&#x270F;&#xFE0F; Open in editor</a>
+        </div>
+        <div class="sim-instruction">A non-inverting amplifier with R<sub>1</sub> = 1 k&Omega; and R<sub>f</sub> = 2 k&Omega; on a &plusmn;12 V supply, with a 3 V peak AC input. The op-amp saturates at 85% of its supply.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" style="height:620px;" title="NoResistance Simulator &mdash; non-inverting amplifier" src="../../../../simulators/hae-noninverting.html" loading="lazy"></iframe></div>
+        <div class="sim-credit" style="font-size:11px;color:var(--gray-400);margin-top:6px;">Circuit adapted from an original by Peter Strain, creator of the NoResistance simulator.</div>
+      </div>
+      <div class="assignment" id="assignment-inv4">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 4 &mdash; Non-inverting gain</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) Compare the input and output waveforms. How does the output differ from the inverting amplifier&rsquo;s? Calculate the gain and check it against 1 + R<sub>f</sub>/R<sub>1</sub>.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv4a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv4a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) In the editor, change R<sub>f</sub> to 4.7 k&Omega;. Predict the output peak, then check. Explain what you see.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv4b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv4b" data-placeholder="Type your answer here..." data-symbols="1"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv4', 'Investigation 4 &mdash; Non-inverting gain')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
 
       <hr class="divider">
 
@@ -695,6 +760,38 @@
         </div>
         <div class="task-download-row">
           <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task9', 'Task 10 &mdash; Voltage follower')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> NoResistance Simulator &mdash; voltage follower</div>
+          <a href="../../../../simulators/hae-follower.html?edit" target="_blank" class="sim-fullscreen-btn">&#x270F;&#xFE0F; Open in editor</a>
+        </div>
+        <div class="sim-instruction">A voltage follower on a &plusmn;9 V supply. <strong>Drag the slider on the variable source</strong> to change V<sub>in</sub>; voltmeter V1 shows the input and V2 the output.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" style="height:620px;" title="NoResistance Simulator &mdash; voltage follower" src="../../../../simulators/hae-follower.html" loading="lazy"></iframe></div>
+        <div class="sim-credit" style="font-size:11px;color:var(--gray-400);margin-top:6px;">Circuit adapted from an original by Peter Strain, creator of the NoResistance simulator.</div>
+      </div>
+      <div class="assignment" id="assignment-inv5">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 5 &mdash; Voltage follower</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) Move the input slider to several values. What do you notice about V1 and V2? State the gain.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv5a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv5a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Increase V<sub>in</sub> above 8 V. What happens to the output? Explain.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv5b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv5b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) In the editor, connect a 100 &Omega; resistor from the output to 0 V. Does the output voltage change? What does this show?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv5c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv5c" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv5', 'Investigation 5 &mdash; Voltage follower')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -731,6 +828,33 @@
         </div>
         <div class="task-download-row">
           <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task10', 'Task 11 &mdash; Comparator')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> NoResistance Simulator &mdash; comparator</div>
+          <a href="../../../../simulators/hae-comparator.html?edit" target="_blank" class="sim-fullscreen-btn">&#x270F;&#xFE0F; Open in editor</a>
+        </div>
+        <div class="sim-instruction">A comparator on a &plusmn;9 V supply. Two variable sources set V<sub>1</sub> (on the &minus; input) and V<sub>2</sub> (on the + input). <strong>Drag their sliders</strong> and watch the output voltmeter and the graph. The op-amp saturates at 85% of its supply.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" style="height:620px;" title="NoResistance Simulator &mdash; comparator" src="../../../../simulators/hae-comparator.html" loading="lazy"></iframe></div>
+        <div class="sim-credit" style="font-size:11px;color:var(--gray-400);margin-top:6px;">Circuit adapted from an original by Peter Strain, creator of the NoResistance simulator.</div>
+      </div>
+      <div class="assignment" id="assignment-inv6">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 6 &mdash; Two-state switching</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) Set V<sub>1</sub> to about 4 V. Slowly move V<sub>2</sub> from 0 V up past 4 V. Describe what the output does.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv6a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv6a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Explain how your observations show that a comparator gives two-state control.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv6b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv6b" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv6', 'Investigation 6 &mdash; Two-state switching')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
       <h2 class="notes-h2">Comparators driving transistors</h2>
@@ -835,6 +959,38 @@
       <h2 class="notes-h2">Exam-style difference amplifier calculations</h2>
       <p class="notes-p">In exam questions, one input is usually a <strong>reference voltage</strong> from a voltage divider and the other is a sensor or feedback signal. You may be asked to find a resistor value for a given output, or the input voltage at which the output saturates.</p>
       <div class="worked-example"><div class="worked-example-title">Worked example &mdash; when does the output saturate?</div><div class="step"><div class="step-num">1</div><div class="step-content">A difference amplifier has R<sub>f</sub> = 22 k&Omega; and R<sub>1</sub> = 10 k&Omega;. V<sub>1</sub> = 2.0 V is a reference and V<sub>2</sub> = V<sub>in</sub>. The op-amp is on a 9 V supply and saturates at 80%. It drives a motor. Find the value of V<sub>in</sub> at which the output saturates.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">V<sub>sat</sub> = 9 &times; 0.80 = 7.2 V.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">7.2 = (22/10) &times; (V<sub>in</sub> &minus; 2.0), so V<sub>in</sub> &minus; 2.0 = 3.273 V.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">V<sub>in</sub> = <strong>5.3 V</strong> (2 s.f.).</div></div><div class="step"><div class="step-num">5</div><div class="step-content">So: above 5.3 V the motor runs at full speed; as V<sub>in</sub> falls below 5.3 V the motor slows in proportion; at 2.0 V it stops. This is <strong>proportional control</strong>.</div></div></div>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> NoResistance Simulator &mdash; difference amplifier</div>
+          <a href="../../../../simulators/hae-difference.html?edit" target="_blank" class="sim-fullscreen-btn">&#x270F;&#xFE0F; Open in editor</a>
+        </div>
+        <div class="sim-instruction">The difference amplifier from the worked example above: R<sub>1</sub> = 10 k&Omega;, R<sub>f</sub> = 22 k&Omega;, &plusmn;9 V supply. To match the worked example, this op-amp saturates at <strong>80%</strong> of its supply. <strong>Drag the sliders</strong> to set V<sub>1</sub> and V<sub>2</sub>.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" style="height:620px;" title="NoResistance Simulator &mdash; difference amplifier" src="../../../../simulators/hae-difference.html" loading="lazy"></iframe></div>
+        <div class="sim-credit" style="font-size:11px;color:var(--gray-400);margin-top:6px;">Circuit adapted from an original by Peter Strain, creator of the NoResistance simulator.</div>
+      </div>
+      <div class="assignment" id="assignment-inv7">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 7 &mdash; Proportional output</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) Set V<sub>1</sub> = 2.0 V and V<sub>2</sub> = 3.6 V. Predict the output, then check it in the simulator.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv7a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv7a" data-placeholder="Type your answer here..." data-symbols="1"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) Keep V<sub>1</sub> = 2.0 V and slowly increase V<sub>2</sub>. At what value of V<sub>2</sub> does the output stop rising? Compare with the worked example.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv7b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv7b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) Now make V<sub>2</sub> smaller than V<sub>1</sub>. What happens to the output, and what would this mean for a motor controlled by it?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv7c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv7c" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv7', 'Investigation 7 &mdash; Proportional output')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
       <div class="assignment" id="assignment-task11b">
         <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 15 &mdash; Exam-style difference amplifier</div></div>
         <div class="assignment-body">
@@ -895,6 +1051,33 @@
         </div>
         <div class="task-download-row">
           <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task12', 'Task 16 &mdash; Summing amplifier')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> NoResistance Simulator &mdash; summing amplifier</div>
+          <a href="../../../../simulators/hae-summing.html?edit" target="_blank" class="sim-fullscreen-btn">&#x270F;&#xFE0F; Open in editor</a>
+        </div>
+        <div class="sim-instruction">Four switches each connect 1 V to the &minus; input through a 1 k&Omega; resistor, with R<sub>f</sub> = 1 k&Omega; and a &plusmn;9 V supply. <strong>Click the switches</strong> to turn the inputs on and off.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" style="height:620px;" title="NoResistance Simulator &mdash; summing amplifier" src="../../../../simulators/hae-summing.html" loading="lazy"></iframe></div>
+        <div class="sim-credit" style="font-size:11px;color:var(--gray-400);margin-top:6px;">Circuit adapted from an original by Peter Strain, creator of the NoResistance simulator.</div>
+      </div>
+      <div class="assignment" id="assignment-inv8">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Investigation 8 &mdash; Adding voltages</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) Turn the switches on one at a time. Record the output each time and explain the pattern using the summing amplifier formula.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv8a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv8a" data-placeholder="Type your answer here..." data-symbols="1"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) In the editor, change the four input resistors to 1 k&Omega;, 2 k&Omega;, 4 k&Omega; and 8 k&Omega;. Switch each input on by itself and record the output. What is the output with all four on?</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hae-inv8b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hae-inv8b" data-placeholder="Type your answer here..." data-symbols="1"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv8', 'Investigation 8 &mdash; Adding voltages')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -1224,20 +1407,26 @@ const ALL_TASK_PANELS = [
   ['assignment-task2', 'Task 2 \u2014 Designing sensor voltage dividers'],
   ['assignment-inv1', 'Investigation 1 \u2014 Sensor position'],
   ['assignment-task3', 'Task 3 \u2014 BJT calculations'],
+  ['assignment-inv3', 'Investigation 2 \u2014 The base is held at 0.7 V'],
   ['assignment-tcalc', 'Task 4 \u2014 Transistor circuit calculations'],
   ['assignment-task4', 'Task 5 \u2014 MOSFET circuits'],
   ['assignment-task5', 'Task 6 \u2014 Choosing a transistor'],
   ['assignment-task6', 'Task 7 \u2014 Saturation'],
   ['assignment-task7', 'Task 8 \u2014 Inverting amplifier'],
-  ['assignment-inv2', 'Investigation 2 \u2014 Gain and saturation'],
+  ['assignment-inv2', 'Investigation 3 \u2014 Gain and saturation'],
   ['assignment-task8', 'Task 9 \u2014 Non-inverting amplifier'],
+  ['assignment-inv4', 'Investigation 4 \u2014 Non-inverting gain'],
   ['assignment-task9', 'Task 10 \u2014 Voltage follower'],
+  ['assignment-inv5', 'Investigation 5 \u2014 Voltage follower'],
   ['assignment-task10', 'Task 11 \u2014 Comparator'],
+  ['assignment-inv6', 'Investigation 6 \u2014 Two-state switching'],
   ['assignment-compdrive', 'Task 12 \u2014 Comparators driving transistors'],
   ['assignment-task10b', 'Task 13 \u2014 Balance method and window comparators'],
   ['assignment-task11', 'Task 14 \u2014 Difference amplifier'],
+  ['assignment-inv7', 'Investigation 7 \u2014 Proportional output'],
   ['assignment-task11b', 'Task 15 \u2014 Exam-style difference amplifier'],
   ['assignment-task12', 'Task 16 \u2014 Summing amplifier'],
+  ['assignment-inv8', 'Investigation 8 \u2014 Adding voltages'],
   ['assignment-task13', 'Task 17 \u2014 Choosing a configuration'],
   ['assignment-dc1', 'Design Challenge 1 \u2014 Warehouse temperature alarm'],
   ['assignment-dc2', 'Design Challenge 2 \u2014 Cable strain monitor'],
