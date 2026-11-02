@@ -94,7 +94,7 @@ var RESOURCE_STATUS = {
   'higher-control':            { notes:'soon' },
   'higher-drive-systems':      { notes:'soon' },
   'higher-pneumatics':         { notes:'soon' },
-  'higher-structures-forces':  { notes:'soon' },
+  'higher-structures-forces':  { notes:'available' },
   'higher-materials':          { notes:'soon' }
 };
 
@@ -153,6 +153,10 @@ var TEACHER_DOCS = {
   ],
 
   'higher-digital': [
+    { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
+  ],
+
+  'higher-structures-forces': [
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
   ],
 
