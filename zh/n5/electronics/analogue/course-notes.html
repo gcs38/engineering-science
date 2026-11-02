@@ -1,0 +1,2251 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>模拟电子学 Analogue Electronics &mdash; 课程笔记 &mdash; Engineering Science Scotland</title>
+  <link rel="stylesheet" href="../../../../../css/style.css">
+  <style>
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 16px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:6px; }
+    .back-link:hover { color:var(--teal-800); }
+
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); scroll-margin-top:100px; }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:24px 0 10px; scroll-margin-top:100px; }
+    .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:18px 0 8px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+    .warning { background:#FFF7ED; border-left:4px solid #F97316; border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#9A3412; }
+    .spec-note { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:10px 14px; margin:10px 0; font-size:12px; color:var(--gray-500); }
+    .spec-note strong { color:var(--gray-900); }
+    .extension-note { background:#faf5ff; border-left:4px solid #8b5cf6; border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:13px; color:#5b21b6; }
+
+    /* Component symbol grid */
+    .comp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin:16px auto; justify-items:center; justify-content:center; text-align:center; }
+    .comp-card-sym { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:14px 12px 10px; text-align:center; width:100%; }
+    .comp-card-sym svg { display:block; margin:0 auto 8px; }
+    .comp-card-sym .comp-name { font-size:12px; font-weight:700; color:var(--gray-900); }
+    .comp-card-sym .comp-unit { font-size:11px; color:var(--gray-400); margin-top:2px; }
+
+    /* Formula boxes */
+    .formula-box { background:white; border:2px solid var(--teal-100); border-radius:var(--radius-lg); padding:16px 20px; margin:16px 0; text-align:center; }
+    .formula { font-size:18px; font-weight:600; color:var(--teal-800); font-family:monospace; letter-spacing:.02em; }
+    .formula-sub { font-size:12px; color:var(--gray-400); margin-top:6px; }
+    .triangle-box { display:inline-block; background:var(--teal-50); border:2px solid var(--teal-200); border-radius:var(--radius-md); padding:16px 24px; margin:10px 0; }
+    .triangle-top { font-size:20px; font-weight:900; color:var(--teal-800); font-family:monospace; border-bottom:2px solid var(--teal-400); padding-bottom:8px; margin-bottom:8px; text-align:center; }
+    .triangle-bottom { display:flex; gap:0; }
+    .triangle-cell { flex:1; font-size:20px; font-weight:900; color:var(--teal-800); font-family:monospace; text-align:center; padding:0 8px; }
+    .triangle-cell + .triangle-cell { border-left:2px solid var(--teal-400); }
+
+    /* Inline fraction (for any calculation that divides one value by another —
+       used instead of the ÷ symbol or a forward slash, in both formula boxes
+       and inline within worked-example steps) */
+    .frac { display:inline-flex; flex-direction:column; align-items:center; justify-content:center; vertical-align:middle; margin:0 4px; line-height:1.25; font-weight:inherit; }
+    .frac .frac-n { padding:0 4px 2px; border-bottom:1.5px solid currentColor; }
+    .frac .frac-d { padding:2px 4px 0; }
+
+    /* Worked examples */
+    .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:18px 20px; margin:16px 0; }
+    .worked-example-title { font-size:13px; font-weight:600; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+    .step { display:flex; gap:12px; margin-bottom:10px; }
+    .step-num { width:24px; height:24px; border-radius:50%; background:var(--teal-400); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .step-content { font-size:13px; color:var(--gray-600); line-height:1.6; flex:1; }
+    .step-content strong { color:var(--gray-900); }
+
+    /* Tables */
+    .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .data-table tr:nth-child(even) td { background:var(--gray-50); }
+    .data-table td.answer-cell { background:var(--gray-50); min-width:80px; min-height:32px; }
+
+    /* Assignment boxes */
+    .assignment { background:white; border:2px solid var(--teal-400); border-radius:var(--radius-lg); margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; display:flex; align-items:center; gap:10px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:8px; font-weight:500; }
+    .task-q-sub { font-size:13px; color:var(--gray-700); margin:6px 0 6px 16px; }
+    .task-space { background:var(--gray-50); border:1px dashed var(--gray-300); border-radius:var(--radius-sm); min-height:60px; padding:10px; margin-top:6px; font-size:11px; color:var(--gray-400); }
+    .task-space-sm { background:var(--gray-50); border:1px dashed var(--gray-300); border-radius:var(--radius-sm); min-height:36px; padding:8px; margin-top:4px; font-size:11px; color:var(--gray-400); }
+    .extension-task { border:2px solid #8b5cf6; border-radius:var(--radius-lg); margin:16px 0; overflow:hidden; }
+    .extension-header { background:#8b5cf6; padding:8px 14px; }
+    .extension-header-text { font-size:13px; font-weight:700; color:white; }
+    .extension-body { padding:14px 16px; background:#faf5ff; }
+
+    /* Simulator embed */
+    .sim-embed-section { margin:24px 0; }
+    .sim-embed-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+    .sim-embed-title { font-size:14px; font-weight:500; color:var(--gray-900); display:flex; align-items:center; gap:8px; }
+    .sim-embed-title span { font-size:18px; }
+    .sim-fullscreen-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 14px; background:var(--teal-800); color:white; border-radius:var(--radius-md); font-size:12px; font-weight:500; text-decoration:none; transition:all var(--transition); border:none; cursor:pointer; }
+    .sim-fullscreen-btn:hover { background:var(--teal-600); }
+    .sim-wrap { border-radius:var(--radius-lg); overflow:hidden; border:2px solid #eab30840; }
+    .sim-iframe { width:100%; height:540px; border:none; display:block; }
+    .sim-credit { font-size:11px; color:var(--gray-400); margin-top:5px; text-align:right; }
+    .sim-instruction { background:#fefce8; border:1px solid #fde047; border-radius:var(--radius-md); padding:10px 14px; margin-bottom:10px; font-size:13px; color:#78350f; }
+
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+
+    /* Circuit diagram SVGs inline */
+    .circuit-figure { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:16px; margin:16px 0; text-align:center; }
+    .circuit-figure figcaption { font-size:12px; color:var(--gray-400); margin-top:8px; font-style:italic; }
+  
+    /* localStorage answer boxes */
+    .answer-box { background:var(--blue-50,#f0f9ff); border:1.5px solid #7dd3fc; border-radius:var(--radius-sm); min-height:60px; padding:10px 12px; margin-top:6px; font-size:13px; color:var(--gray-700); line-height:1.6; cursor:text; outline:none; }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-sm { min-height:36px; }
+    .answer-box-xs { min-height:28px; }
+    .answer-label { font-size:11px; font-weight:700; color:#0ea5e9; text-transform:uppercase; letter-spacing:.4px; margin-top:8px; margin-bottom:2px; display:flex; align-items:center; gap:8px; }
+    .saved-indicator { font-size:10px; color:#22c55e; font-weight:600; }
+    .controls-bar { display:flex; align-items:center; gap:12px; padding:12px 16px; background:var(--gray-50); border-top:1px solid var(--gray-100); margin-top:24px; border-radius:0 0 var(--radius-lg) var(--radius-lg); }
+    .controls-label { font-size:12px; color:var(--gray-400); flex:1; }
+    .ctrl-btn { padding:6px 14px; border-radius:var(--radius-md); font-size:12px; font-weight:600; border:none; cursor:pointer; }
+    .ctrl-btn-print { background:var(--teal-800); color:white; }
+    .ctrl-btn-clear { background:white; color:#ef4444; border:1.5px solid #fca5a5; }
+    .answer-cell-editable { background:var(--blue-50,#f0f9ff) !important; cursor:text; outline:none; }
+    .answer-cell-editable:empty:before { content:"Click to enter..."; color:#94a3b8; font-style:italic; pointer-events:none; }
+
+    /* ── Added per site-wide handover (26 Sep 2026) ─────────────────────────── */
+    .answer-box img { max-width:100%; height:auto; }
+    .cell-answer { outline:none; background:#f8faff; min-height:36px; }
+    .cell-answer:focus { box-shadow:inset 0 0 0 2px var(--teal-400); background:white; }
+    .data-table tr:nth-child(even) td.cell-answer { background:#f8faff; }
+    .task-download-row { background:var(--gray-50); border-top:1px solid var(--gray-200); padding:9px 20px; text-align:right; }
+    .task-download-btn { display:inline-flex; align-items:center; gap:6px; background:white; border:1.2px solid var(--teal-400); color:var(--teal-800); font-size:10px; font-weight:700; padding:7px 12px; border-radius:999px; cursor:pointer; transition:background .15s; }
+    .task-download-btn:hover { background:var(--teal-50); }
+    .task-download-btn:disabled { opacity:.6; cursor:wait; }
+    /* Specification tables in the challenges */
+    .spec-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .spec-table th { background:transparent; padding:8px 6px 8px 0; width:32px; vertical-align:top; }
+    .spec-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
+    .data-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:var(--teal-50); color:var(--teal-800); border:1px solid var(--teal-100); font-size:11px; font-weight:700; }
+    .ctrl-btn-download-all { background:#eef2ff; color:#4338ca; }
+    .ctrl-btn-download-all:hover { background:#e0e7ff; }
+
+    /* Table of contents: floating button + slide-out panel */
+    .toc-fab { position:fixed; right:24px; bottom:76px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#c2410c; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+    .toc-fab:hover { background:#9a3412; }
+    .toc-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; }
+    .toc-overlay.open { display:block; }
+    .toc-panel { position:fixed; top:0; right:-340px; width:320px; max-width:85vw; height:100%; background:white; z-index:999998; box-shadow:-8px 0 30px rgba(0,0,0,.2); transition:right .25s ease; display:flex; flex-direction:column; }
+    .toc-panel.open { right:0; }
+    .toc-panel-header { padding:18px 20px 14px; border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; }
+    .toc-panel-header h3 { margin:0; font-size:16px; color:var(--teal-800); }
+    .toc-panel-close { background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .toc-panel-close:hover { color:var(--gray-700); }
+    .toc-list { overflow-y:auto; padding:8px 0 20px; }
+    .toc-list a { display:block; padding:10px 20px; font-size:14px; color:var(--gray-700); text-decoration:none; border-left:3px solid transparent; }
+    .toc-list a:hover { background:var(--teal-50); color:var(--teal-800); }
+    .toc-list a.toc-active { border-left-color:var(--teal-500,var(--teal-600)); background:var(--teal-50); color:var(--teal-800); font-weight:700; }
+    .toc-list a.toc-sub { padding-left:36px; font-size:13px; color:var(--gray-500); }
+
+    /* Pupil name: floating button + small popup */
+    .name-fab { position:fixed; right:24px; bottom:132px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#4f46e5; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); overflow:hidden; }
+    .name-fab-icon { font-size:14px; line-height:1; flex-shrink:0; }
+    #nameFabLabel { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:78px; text-align:left; }
+    .name-fab:hover { background:#3730a3; }
+    .name-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; align-items:center; justify-content:center; padding:20px; }
+    .name-overlay.open { display:flex; }
+    .name-panel { background:white; border-radius:14px; max-width:360px; width:100%; padding:24px 24px 22px; box-shadow:0 20px 60px rgba(0,0,0,.35); position:relative; }
+    .name-panel-close { position:absolute; top:10px; right:12px; background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .name-panel-close:hover { color:var(--gray-700); }
+    .name-panel h3 { margin:0 0 8px; font-size:16px; color:#4338ca; }
+    .name-panel p { margin:0 0 14px; font-size:13px; line-height:1.5; color:var(--gray-600); }
+    .name-panel input { width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid var(--gray-200); border-radius:8px; font-size:14px; margin-bottom:12px; }
+    .name-panel input:focus { outline:none; border-color:#4338ca; }
+    .name-panel-save { width:100%; background:#4338ca; color:white; border:none; border-radius:8px; padding:10px; font-size:14px; font-weight:700; cursor:pointer; }
+    .name-panel-save:hover { background:#3730a3; }
+    .name-panel-saved-msg { font-size:12px; color:#16a34a; margin-top:8px; text-align:center; display:none; }
+    .name-panel-saved-msg.show { display:block; }
+
+    @media print {
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.toc-fab,.toc-panel,.toc-overlay,.name-fab,.name-overlay,.task-download-row,.page-nav,.exemplar-thumb,.exemplar-modal { display:none!important; }
+      .layout { display:block!important; }
+      .main { margin:0!important; padding:0!important; }
+      .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
+      .cell-answer { background:white!important; }
+    }
+  </style>
+<link rel="stylesheet" href="../../../../css/zh.css">
+</head>
+<body>
+<nav class="topbar">
+  <a href="../../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">资源中心</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../../n5/contexts/index.html" class="level-tab active">National 5</a> <a href="../../../../../higher/contexts/index.html" class="level-tab">Higher</a> <a href="../../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      教师专区
+    </a>
+  </div>
+</nav>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar"></nav>
+  <div class="main">
+    <div class="hero" id="top" style="position:relative;">
+      <div style="position:absolute;top:14px;right:20px;font-size:11px;color:#94a3b8;">最后更新：2026年9月26日 19:57（英文原版）</div>
+      <div class="hero-label">National 5 &middot; 电子与控制 &rsaquo; 模拟电子学</div>
+      <h1 class="hero-title">&#x26A1; 模拟电子学 &mdash; 课程笔记</h1>
+      <p class="hero-sub">电流、电压、电阻、欧姆定律、电路类型、元件以及晶体管开关</p>
+      <div class="breadcrumb">
+        <a href="../../../../../index.html">首页</a> &rsaquo; <a href="../index.html">电子与控制</a> &rsaquo; <a href="index.html">模拟电子学</a> &rsaquo; <span>课程笔记</span>
+      </div>
+    </div>
+
+    <div class="content">
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; 返回模拟电子学</a>
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-1">第1节：电流、电压和电阻 <span class="zh-en">Current, Voltage and Resistance</span></h1>
+
+      <h2 class="notes-h2">认识电 <span class="zh-en">Introducing electricity</span></h2>
+      <p class="notes-p">电是日常生活中最重要的能量形式之一。我们身边的各种设备 &mdash; 手机、电脑、供暖系统 &mdash; 都依靠电路才能工作。在本节中，你将学习电路如何工作，以及电路中的几个关键物理量。</p>
+
+      <p class="notes-p">电路（electric circuit）是由电池、灯、开关和导线等元件组成的<strong>闭合回路（closed loop）</strong>。只有当电路完整（闭合）时，电流才能流动。</p>
+
+      <h2 class="notes-h2">三个关键物理量 <span class="zh-en">The three key quantities</span></h2>
+
+      <h3 class="notes-h3">电流 <span class="zh-en">Current</span></h3>
+      <p class="notes-p">电流是带负电的粒子——<strong>电子（electrons）</strong>——的流动。在工程科学中，我们采用一种叫做<strong>常规电流方向（conventional current flow）</strong>的约定。也就是说，我们总是把电流看作从电源的正极（+）流出，经过电路，再流回负极（或 0V/接地端）。</p>
+      <div class="key-point">电流的单位是<strong>安培 Amperes（A）</strong>。<br>毫安（milliamp，mA）是千分之一安培：1 mA = 0.001 A。</div>
+
+      <div class="circuit-figure">
+        <img src="../../../../n5/electronics/analogue/images/conventional-current.gif" alt="动画：常规电流从电池正极流出，绕电路一周，再流回负极。开关断开时没有电流；开关闭合时，蓝色圆点沿电路移动，表示 0.5 A（500 mA）的电流在流动。" style="max-width:100%;width:560px;height:auto;display:block;margin:0 auto;">
+        <figcaption>常规电流方向：从正极（+）流出，绕电路一周，再流回负极（&minus;）/ 0V 端。</figcaption>
+      </div>
+
+      <p class="notes-p">在计算和电路图中，电流的符号是 <strong>I</strong>（大写字母 i）。例如：I = 2 A。</p>
+
+      <h3 class="notes-h3">电压 <span class="zh-en">Voltage</span></h3>
+      <p class="notes-p">电压是推动电流在电路中流动的电的“推力”。它来自电池或电源。电压越大，推动电子的力量就越大。电压有时也被称为电势差（potential difference）或电动势（emf）。</p>
+      <div class="key-point">电压的单位是<strong>伏特 Volts（V）</strong>。<br>毫伏（millivolt，mV）是千分之一伏特：1 mV = 0.001 V。</div>
+
+      <h3 class="notes-h3">电阻 <span class="zh-en">Resistance</span></h3>
+      <p class="notes-p">电路中所有元件都会在一定程度上阻碍电流的流动。<strong>电阻器（resistor）</strong>是专门用来减小电流的元件。在电压一定时，电阻越大，流过的电流就越小。</p>
+      <p class="notes-p">电阻可以用<strong>欧姆表（ohmmeter）</strong>或调到电阻（&Omega;）挡的<strong>万用表（multimeter）</strong>直接测量。</p>
+      <div class="key-point">电阻的单位是<strong>欧姆 Ohms（&Omega;）</strong>。<br>较大的阻值写作 k&Omega;（千欧，&times;1000）或 M&Omega;（兆欧，&times;1&nbsp;000&nbsp;000）。</div>
+
+      <h2 class="notes-h2">测量电路中的电压和电流 <span class="zh-en">Measuring voltage and current</span></h2>
+      <p class="notes-p">电压和电流用不同的仪表测量，连接方式也不同。</p>
+      <p class="notes-p"><strong>电压表（voltmeter）</strong>测量元件<em>两端</em>的电压 &mdash; 元件两侧各接一根表笔 &mdash; 它的电阻非常大，所以几乎不从电路中取用电流。在电路图中，电压表用圆圈内的 <strong>V</strong> 符号表示。</p>
+      <p class="notes-p"><strong>电流表（ammeter）</strong>测量<em>流过</em>元件的电流 &mdash; 必须先断开电路，再把电流表串联接入 &mdash; 它的电阻非常小，所以几乎不影响电路。在电路图中，电流表用圆圈内的 <strong>A</strong> 符号表示。</p>
+
+      <div class="circuit-figure" style="padding:6px;width:468px;max-width:100%;box-sizing:border-box;margin:0 auto;">
+        <svg width="286" height="252" viewBox="0 0 380 340" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="v-glow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#fde68a" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#fde68a" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Top wire, broken either side of the battery -->
+          <line x1="40" y1="40" x2="172" y2="40" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="208" y1="40" x2="340" y2="40" stroke="#6b8cae" stroke-width="2.5"/>
+          <text x="190" y="20" text-anchor="middle" font-size="14" font-weight="700" fill="#1e293b">5 V</text>
+          <line x1="172" y1="30" x2="172" y2="50" stroke="#1e293b" stroke-width="2"/>
+          <line x1="184" y1="26" x2="184" y2="54" stroke="#1e293b" stroke-width="3.5"/>
+          <line x1="196" y1="30" x2="196" y2="50" stroke="#1e293b" stroke-width="2"/>
+          <line x1="208" y1="26" x2="208" y2="54" stroke="#1e293b" stroke-width="3.5"/>
+          <text x="163" y="35" text-anchor="middle" font-size="12" fill="#3b5f8a">&minus;</text>
+          <text x="217" y="35" text-anchor="middle" font-size="12" fill="#3b5f8a">+</text>
+
+          <!-- Left rail down to R rung -->
+          <line x1="40" y1="40" x2="40" y2="190" stroke="#6b8cae" stroke-width="2.5"/>
+
+          <!-- Right rail through ammeter down to R rung, touching the circle edge -->
+          <line x1="340" y1="40" x2="340" y2="97" stroke="#6b8cae" stroke-width="2.5"/>
+          <circle cx="340" cy="120" r="23" fill="white" stroke="#1e293b" stroke-width="2.5"/>
+          <text x="340" y="127" text-anchor="middle" font-size="18" font-weight="700" fill="#dc2626">A</text>
+          <line x1="340" y1="143" x2="340" y2="190" stroke="#6b8cae" stroke-width="2.5"/>
+
+          <!-- R rung -->
+          <line x1="40" y1="190" x2="160" y2="190" stroke="#6b8cae" stroke-width="2.5"/>
+          <text x="190" y="170" text-anchor="middle" font-size="13" font-weight="700" fill="#1e293b">1 k&Omega;</text>
+          <rect x="160" y="180" width="60" height="20" rx="3" fill="white" stroke="#1e293b" stroke-width="2"/>
+          <text x="190" y="195" text-anchor="middle" font-size="12" font-weight="700" fill="#1e293b">R</text>
+          <line x1="220" y1="190" x2="340" y2="190" stroke="#6b8cae" stroke-width="2.5"/>
+
+          <!-- Down to voltmeter, spaced about twice the resistor's length apart -->
+          <line x1="160" y1="190" x2="130" y2="190" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="130" y1="190" x2="130" y2="270" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="220" y1="190" x2="250" y2="190" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="250" y1="190" x2="250" y2="270" stroke="#6b8cae" stroke-width="2.5"/>
+
+          <!-- Voltmeter rung, wires run all the way to the circle edge -->
+          <line x1="130" y1="270" x2="166" y2="270" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="214" y1="270" x2="250" y2="270" stroke="#6b8cae" stroke-width="2.5"/>
+          <circle cx="190" cy="270" r="36" fill="url(#v-glow)"/>
+          <circle cx="190" cy="270" r="24" fill="white" stroke="#1e293b" stroke-width="2.5"/>
+          <text x="190" y="278" text-anchor="middle" font-size="18" font-weight="700" fill="#7c3aed">V</text>
+        </svg>
+        <figcaption style="margin-top:2px;">电流表串联接在电路中（要测电流就必须断开电路接入）。<br>电压表并联接在电阻两端，不需要断开电路。</figcaption>
+      </div>
+
+
+      <!-- Investigate first task (Ash comment 4) -->
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> NoResistance 模拟器</div>
+          <a href="../../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; 全屏</a>
+        </div>
+        <div class="sim-instruction">下面已加载了一个演示电路。点击电路中的开关，让电流流动 &mdash; 你会看到电流表显示出流过的电流值。（模拟器界面为英文。）</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-main" title="NoResistance 电路模拟器" src="../../../../../simulators/ae-basic-circuit.html" loading="lazy"></iframe></div>
+      </div>
+
+      <div class="assignment" id="assignment-inv1">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; 探究1 &mdash; 电压、电阻和电流</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;"><a href="../../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn" style="display:inline-flex;">&#x26A1; 打开 NoResistance 模拟器</a> 复制一份演示电路，然后在 <strong>Properties（属性）</strong>面板中改变电池电压和电阻值，并把电流表的读数记录在下面的表格中。</p>
+
+          <div class="task-item">
+            <div class="task-q">1. 保持电阻为 <strong>2 k&Omega;</strong>。把电池电压依次改为下表中的数值，并记录电流。</div>
+            <table class="data-table">
+              <tr><th>电压（V）</th><th>电阻 <span class="zh-en">Resistance</span></th><th>电流（mA）</th></tr>
+              <tr><td><strong>3</strong></td><td>2 k&Omega;</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-inv1-v2" data-placeholder=""></td></tr>
+              <tr><td><strong>5</strong></td><td>2 k&Omega;</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-inv1-v3" data-placeholder=""></td></tr>
+              <tr><td><strong>9</strong></td><td>2 k&Omega;</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-inv1-v4" data-placeholder=""></td></tr>
+            </table>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">2. 描述电压增大时电流如何变化。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-inv1-qa"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-inv1-qa" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">3. 现在保持电压为 <strong>5 V</strong>。把电阻依次改为下表中的数值，并记录电流。</div>
+            <table class="data-table">
+              <tr><th>电压 <span class="zh-en">Voltage</span></th><th>电阻（&Omega;）</th><th>电流（mA）</th></tr>
+              <tr><td>5 V</td><td><strong>500</strong></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-inv1-r1" data-placeholder=""></td></tr>
+              <tr><td>5 V</td><td><strong>1 000</strong></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-inv1-r2" data-placeholder=""></td></tr>
+              <tr><td>5 V</td><td><strong>2 000</strong></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-inv1-r3" data-placeholder=""></td></tr>
+              <tr><td>5 V</td><td><strong>5 000</strong></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-inv1-r4" data-placeholder=""></td></tr>
+            </table>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">4. 描述电阻增大时电流如何变化。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-inv1-qb"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-inv1-qb" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">5. 根据你的结果，写出一条描述电压、电阻和电流之间关系的规律。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-inv1-qc"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-inv1-qc" data-placeholder="电压增大时……电阻增大时……"></div>
+          </div>
+        </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv1', 'Investigation 1 &mdash; Voltage, resistance and current')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+      </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-2">第2节：元件与电路符号 1 <span class="zh-en">Components and Circuit Symbols 1</span></h1>
+
+      <p class="notes-p">在工程科学中，你需要认识并会画标准电路符号。这些符号是全世界工程师通用的 &mdash; 这一点很重要，因为不同国家的工程师、电工和制造商往往不说同一种语言。标准符号不需要翻译就能表达意思，所以在苏格兰画的电路图，德国、日本或世界任何地方的人都能看懂并正确地搭建出来。</p>
+
+      <p class="notes-p">可以用<strong>系统方法（Systems Approach）</strong>来理解各类元件 &mdash; 这与“系统与控制”单元中使用的是同一个框架：</p>
+
+      <table class="data-table" style="margin-bottom:16px;">
+        <tr><th>类别</th><th>在电路中的作用</th><th>例子</th></tr>
+        <tr><td><strong>输入 Input</strong></td><td>提供电能，或检测某种条件并向电路发送信号</td><td>电池、开关、光传感器、温度传感器</td></tr>
+        <tr><td><strong>处理 Process</strong></td><td>对输入信号作出响应并控制输出</td><td>晶体管、电阻器、二极管</td></tr>
+        <tr><td><strong>输出 Output</strong></td><td>产生有用的效果 &mdash; 发光、发声或运动</td><td>灯、LED（发光二极管）、电动机、蜂鸣器、继电器</td></tr>
+      </table>
+
+      <h2 class="notes-h2">输入元件 &mdash; 电源 <span class="zh-en">Input components &mdash; power supplies</span></h2>
+
+      <div class="comp-grid" style="grid-template-columns:140px 140px 210px;justify-content:start;">
+        <div class="comp-card-sym">
+          <img src="../../../../n5/electronics/analogue/images/symbols/battery.png" alt="电池符号" style="height:58px;margin:0 auto 8px;display:block;">
+          <div class="comp-name">电池 Battery</div>
+          <div class="comp-unit">输入 &mdash; 电源</div>
+        </div>
+        <div class="comp-card-sym">
+          <img src="../../../../n5/electronics/analogue/images/symbols/voltage-rails.png" alt="电压轨符号：5V（上），0V（下）" style="height:60px;margin:0 auto 8px;display:block;">
+          <div class="comp-name">电压轨 Voltage Rails</div>
+          <div class="comp-unit">5V（上），0V（下）</div>
+        </div>
+        <div class="comp-card-sym">
+          <img src="../../../../n5/electronics/analogue/images/symbols/power-supplies.png" alt="电源符号：12V 和 240V" style="height:42px;margin:0 auto 8px;display:block;">
+          <div class="comp-name">电源装置 Power Supply Units</div>
+          <div class="comp-unit">(12 V, 240 V)</div>
+        </div>
+      </div>
+
+      <h2 class="notes-h2">输入元件 &mdash; 开关 <span class="zh-en">Input components &mdash; switches</span></h2>
+      <p class="notes-p">开关控制电流能否在电路中流动。在系统方法中，开关属于<strong>输入装置（input devices）</strong> &mdash; 由人（或机械装置）操作，向电路的其余部分发送信号。</p>
+
+      <div class="comp-grid">
+        <div class="comp-card-sym">
+          <img src="../../../../n5/electronics/analogue/images/symbols/spst-switch.png" alt="SPST 单刀单掷开关符号" style="height:40px;margin:0 auto 8px;display:block;">
+          <div class="comp-name">SPST 开关</div>
+          <div class="comp-unit">单刀单掷 Single Pole Single Throw</div>
+        </div>
+        <div class="comp-card-sym">
+          <img src="../../../../n5/electronics/analogue/images/symbols/spdt-switch.png" alt="SPDT 单刀双掷开关符号" style="height:48px;margin:0 auto 8px;display:block;">
+          <div class="comp-name">SPDT 开关</div>
+          <div class="comp-unit">单刀双掷 Single Pole Double Throw</div>
+        </div>
+        <div class="comp-card-sym">
+          <img src="../../../../n5/electronics/analogue/images/symbols/push-switch.png" alt="按下接通开关符号" style="height:40px;margin:0 auto 8px;display:block;">
+          <div class="comp-name">按钮开关 Push switch</div>
+          <div class="comp-unit">按下接通 Push-to-make</div>
+        </div>
+      </div>
+
+      <h2 class="notes-h2">输出装置 <span class="zh-en">Output devices</span></h2>
+      <p class="notes-p">输出装置把电能转换成有用的东西。它们位于系统的末端，对来自处理环节的信号作出响应。</p>
+
+      <div class="comp-grid">
+        <div class="comp-card-sym">
+          <img src="../../../../n5/electronics/analogue/images/symbols/light-emitting-diode.png" alt="LED 符号" style="height:48px;margin:0 auto 8px;display:block;">
+          <div class="comp-name">LED 发光二极管</div>
+          <div class="comp-unit">输出 &mdash; 光</div>
+        </div>
+        <div class="comp-card-sym">
+          <img src="../../../../n5/electronics/analogue/images/symbols/lamp.png" alt="灯的符号" style="height:48px;margin:0 auto 8px;display:block;">
+          <div class="comp-name">灯 Lamp</div>
+          <div class="comp-unit">输出 &mdash; 光</div>
+        </div>
+        <div class="comp-card-sym">
+          <img src="../../../../n5/electronics/analogue/images/symbols/motor.png" alt="电动机符号" style="height:58px;margin:0 auto 8px;display:block;">
+          <div class="comp-name">电动机 Motor</div>
+          <div class="comp-unit">输出 &mdash; 运动</div>
+        </div>
+        <div class="comp-card-sym">
+          <img src="../../../../n5/electronics/analogue/images/symbols/buzzer.png" alt="蜂鸣器符号" style="height:48px;margin:0 auto 8px;display:block;">
+          <div class="comp-name">蜂鸣器 Buzzer</div>
+          <div class="comp-unit">输出 &mdash; 声音</div>
+        </div>
+      </div>
+
+      <div class="assignment" id="assignment-inv2">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; 探究2 &mdash; 开关电路</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;"><a href="../../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn" style="display:inline-flex;">&#x26A1; 打开 NoResistance 模拟器</a> 使用上面列出的符号，搭建能完成以下任务的电路。每完成一个，把你的电路设计粘贴到下面的答题框中。</p>
+          <div class="task-item">
+            <div class="task-q">1. 当两个开关都闭合时，灯必须亮。这两个开关是串联（series）还是并联（parallel）？</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q015"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q015" data-placeholder="在这里粘贴或描述你的电路设计……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. 当两个开关中<em>任意一个</em>被按下时，蜂鸣器必须响。这两个开关是串联还是并联？</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q016"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q016" data-placeholder="在这里粘贴或描述你的电路设计……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. 开关在一个位置时，灯熄灭、电动机转动；开关在另一个位置时，灯亮、电动机停止。描述你的电路设计。你需要哪种类型的开关？</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q017"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q017" data-placeholder="在这里粘贴或描述你的电路设计……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. 灯一直亮着。按下开关时，蜂鸣器响。请使用按下接通（push-to-make）开关搭建这个电路。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q017b"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q017b" data-placeholder="在这里粘贴或描述你的电路设计……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. 必须能在<em>两个不同的地方</em>开关同一盏灯 &mdash; 例如楼上和楼下。每个开关都必须能独立工作。搭建这个电路。（提示：楼梯灯就是这样工作的。）</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q017c"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q017c" data-placeholder="在这里粘贴或描述你的电路设计……"></div>
+          </div>
+          <div class="extension-task">
+            <div class="extension-header"><div class="extension-header-text">&#x2B50; 拓展任务</div></div>
+            <div class="extension-body">
+              <div class="task-item">
+                <div class="task-q">6. 搭建两个独立的电路，每个电路有四盏灯 &mdash; 一个采用<strong>串联</strong>，一个采用<strong>并联</strong> &mdash; 每个电路由一个开关控制。如果其中一盏灯坏了，哪种连接方式更可靠？解释原因。</div>
+                <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q017d"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q017d" data-placeholder="在这里输入你的答案……"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv2', 'Investigation 2 &mdash; Switch circuits')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+      </div>
+      </div>
+
+      
+
+      <div class="assignment" id="assignment-task1">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; 任务1 &mdash; 元件与符号</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">下面凡是要求你画图或画草图的题目，可以在答题框中用文字清楚描述符号，也可以画在纸上 / 练习本上给老师看。</p>
+          <div class="task-item">
+            <div class="task-q">1. 画出以下元件的电路符号：a) 灯，b) 电动机，c) 蜂鸣器。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q120"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q120" data-placeholder="在这里输入你的答案……" style="min-height:80px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. 一个电路由电池、开关和灯串联组成。描述开关闭合时会发生什么，答案中要用到<strong>输入（input）</strong>、<strong>处理（process）</strong>和<strong>输出（output）</strong>这几个术语。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q121"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q121" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. 为什么我们使用电路符号，而不是元件的图片？想一想来自不同国家的工程师、技术员和制造商合作完成同一个设计的情况。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q020"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q020" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+        </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task1', 'Task 1 &mdash; Components and symbols')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+      </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-3">第3节：欧姆定律 <span class="zh-en">Ohm's Law</span></h1>
+
+      <p class="notes-p">从你的探究中，你会发现<strong>电压加倍，流过电阻器的电流也加倍</strong>。这一关系称为<strong>欧姆定律（Ohm's Law）</strong>：</p>
+
+      <div class="formula-box">
+        <div class="formula">V = I &times; R</div>
+        <div class="formula-sub">电压（V）= 电流（A）&times; 电阻（&Omega;）</div>
+      </div>
+
+      <p class="notes-p">你可以变换这个公式，求出三个量中的任何一个。<strong>VIR 三角形</strong>是一个很有用的记忆方法：</p>
+
+      <div style="text-align:center;margin:16px 0;">
+        <svg width="200" height="150" viewBox="0 0 200 150">
+          <polygon points="100,30 163,120 37,120" fill="var(--teal-50)" stroke="var(--teal-400)" stroke-width="2"/>
+          <line x1="62.2" y1="84" x2="137.8" y2="84" stroke="var(--teal-400)" stroke-width="2"/>
+          <line x1="100" y1="84" x2="100" y2="120" stroke="var(--teal-400)" stroke-width="2"/>
+          <text x="100" y="71" text-anchor="middle" font-size="22" font-weight="900" fill="var(--teal-800)" font-family="monospace">V</text>
+          <text x="75" y="109" text-anchor="middle" font-size="22" font-weight="900" fill="var(--teal-800)" font-family="monospace">I</text>
+          <text x="125" y="109" text-anchor="middle" font-size="22" font-weight="900" fill="var(--teal-800)" font-family="monospace">R</text>
+        </svg>
+        <p style="font-size:12px;color:var(--gray-400);margin-top:8px;">遮住你要求的量 &mdash; 剩下的两个量就告诉你如何计算它。</p>
+      </div>
+
+      <p class="notes-p">So:</p>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;justify-content:center;margin:12px 0 16px;">
+        <div class="formula-box" style="flex:1;min-width:140px;margin:0;">
+          <div class="formula">V = I &times; R</div>
+        </div>
+        <div class="formula-box" style="flex:1;min-width:140px;margin:0;">
+          <div class="formula">I = <span class="frac"><span class="frac-n">V</span><span class="frac-d">R</span></span></div>
+        </div>
+        <div class="formula-box" style="flex:1;min-width:140px;margin:0;">
+          <div class="formula">R = <span class="frac"><span class="frac-n">V</span><span class="frac-d">I</span></span></div>
+        </div>
+      </div>
+
+      <h2 class="notes-h2">运用欧姆定律 &mdash; 例题 <span class="zh-en">Worked examples</span></h2>
+
+      <div class="worked-example">
+        <div class="worked-example-title">例题1 &mdash; 求电流</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">一个 6 V 电池连接到一个 300 &Omega; 的电阻器上。计算电流。</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>写出公式：</strong> I = <span class="frac"><span class="frac-n">V</span><span class="frac-d">R</span></span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>代入数值：</strong> I = <span class="frac"><span class="frac-n">6</span><span class="frac-d">300</span></span></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>计算：</strong> I = 0.02 A = <strong>20 mA</strong></div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">例题2 &mdash; 求电阻</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">一盏灯两端的电压为 9 V，流过的电流为 45 mA。计算它的电阻。</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>把 mA 换算成 A：</strong> 45 mA = 0.045 A</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>写出公式：</strong> R = <span class="frac"><span class="frac-n">V</span><span class="frac-d">I</span></span></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>代入并计算：</strong> R = <span class="frac"><span class="frac-n">9</span><span class="frac-d">0.045</span></span> = <strong>200 &Omega;</strong></div></div>
+      </div>
+
+      <div class="assignment" id="assignment-task2">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; 任务2 &mdash; 欧姆定律计算</div></div>
+        <div class="assignment-body">
+          <div class="circuit-figure" style="max-width:320px;margin:0 auto 16px;">
+            <svg width="235" height="150" viewBox="-15 0 235 150">
+              <line x1="20" y1="20" x2="190" y2="20" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="190" y1="20" x2="190" y2="110" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="190" y1="110" x2="140" y2="110" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="80" y1="110" x2="20" y2="110" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="20" y1="110" x2="20" y2="53" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="20" y1="20" x2="20" y2="47" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="10" y1="47" x2="30" y2="47" stroke="#1e293b" stroke-width="2"/>
+              <line x1="14" y1="53" x2="26" y2="53" stroke="#1e293b" stroke-width="4"/>
+              <text x="-6" y="53" text-anchor="middle" font-size="10" font-weight="700" fill="#1e293b">V</text>
+              <rect x="80" y="100" width="60" height="20" rx="3" fill="white" stroke="#1e293b" stroke-width="2"/>
+              <text x="110" y="140" text-anchor="middle" font-size="11" font-weight="700" fill="#1e293b">R</text>
+            </svg>
+            <figcaption>第1a&ndash;1d题的通用电路：电源电压 V 加在一个电阻 R 两端。</figcaption>
+          </div>
+          <div class="task-item">
+            <div class="task-q">1a) 一个 1 k&Omega; 电阻器两端的电压为 9 V。计算电流（单位：mA）。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q003"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q003" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">1b) 一个元件两端电压为 12 V，流过的电流为 60 mA。求它的电阻。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q004"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q004" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">1c) 一个 470 &Omega; 电阻器中流过 25 mA 的电流。计算它两端的电压。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q005"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q005" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">1d) 一个电路使用 6 V 电池，电流为 30 mA。计算总电阻。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q006"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q006" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <p style="font-size:12px;color:var(--teal-600);margin-top:8px;">&#x26A1; <a href="../../../../../simulators/electronics.html" target="_blank" style="color:inherit;text-decoration:underline;">用 NoResistance 模拟器检查你的答案</a>。</p>
+        </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task2', 'Task 2 &mdash; Ohm's Law calculations')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+      </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-4">第4节：串联电阻 <span class="zh-en">Resistors in Series</span></h1>
+
+      <p class="notes-p">当电阻器一个接一个地连接（串联）时，它们的电阻<strong>相加</strong>：</p>
+
+      <div class="formula-box">
+        <div class="formula">R<sub>total</sub> = R<sub>1</sub> + R<sub>2</sub> + R<sub>3</sub> + &hellip;</div>
+      </div>
+
+      <p class="notes-p">这是因为电流必须流过每一个电阻器，所以每个电阻器都会增加总的阻碍作用。</p>
+
+      <div class="circuit-figure">
+        <svg viewBox="0 0 380 170" width="380" height="170" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">
+          <line x1="30" y1="30" x2="30" y2="58" stroke="#334155" stroke-width="2"/>
+          <line x1="18" y1="58" x2="42" y2="58" stroke="#334155" stroke-width="1.6"/>
+          <line x1="21" y1="65" x2="39" y2="65" stroke="#334155" stroke-width="4"/>
+          <line x1="18" y1="80" x2="42" y2="80" stroke="#334155" stroke-width="1.6"/>
+          <line x1="21" y1="87" x2="39" y2="87" stroke="#334155" stroke-width="4"/>
+          <text x="46" y="61" font-size="9" fill="#334155" font-weight="700">+</text>
+          <text x="46" y="90" font-size="9" fill="#334155" font-weight="700">&minus;</text>
+          <text x="0" y="76" font-size="9" fill="#64748b">9 V</text>
+          <line x1="30" y1="87" x2="30" y2="140" stroke="#334155" stroke-width="2"/>
+          <line x1="30" y1="30" x2="80" y2="30" stroke="#334155" stroke-width="2"/>
+          <rect x="80" y="20" width="42" height="20" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+          <text x="101" y="34" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">R1</text>
+          <text x="101" y="13" text-anchor="middle" font-size="10" fill="#64748b">100 &Omega;</text>
+          <line x1="122" y1="30" x2="168" y2="30" stroke="#334155" stroke-width="2"/>
+          <rect x="168" y="20" width="42" height="20" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+          <text x="189" y="34" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">R2</text>
+          <text x="189" y="13" text-anchor="middle" font-size="10" fill="#64748b">220 &Omega;</text>
+          <line x1="210" y1="30" x2="256" y2="30" stroke="#334155" stroke-width="2"/>
+          <rect x="256" y="20" width="42" height="20" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+          <text x="277" y="34" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">R3</text>
+          <text x="277" y="13" text-anchor="middle" font-size="10" fill="#64748b">330 &Omega;</text>
+          <line x1="298" y1="30" x2="350" y2="30" stroke="#334155" stroke-width="2"/>
+          <line x1="350" y1="30" x2="350" y2="140" stroke="#334155" stroke-width="2"/>
+          <line x1="350" y1="140" x2="30" y2="140" stroke="#334155" stroke-width="2"/>
+        </svg>
+        <figcaption>串联电路：R1、R2 和 R3 一个接一个，由一个 9 V 电源供电。</figcaption>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">例题 &mdash; 串联电阻</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">三个电阻器串联：100 &Omega;、220 &Omega; 和 330 &Omega;。电源电压为 9 V。求总电阻和电路电流。</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>总电阻：</strong> R<sub>T</sub> = 100 + 220 + 330 = <strong>650 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>电路电流：</strong> I = <span class="frac"><span class="frac-n">V</span><span class="frac-d">R</span></span> = <span class="frac"><span class="frac-n">9</span><span class="frac-d">650</span></span> = <strong>13.8 mA</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>100 &Omega; 电阻器两端的电压：</strong> V = I &times; R = 0.0138 &times; 100 = <strong>1.38 V</strong></div></div>
+      </div>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> 动手试试 &mdash; 串联电路</div>
+          <a href="../../../../../simulators/ae-series-circuit.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; 全屏</a>
+        </div>
+        <div class="sim-instruction">下面已加载一个串联电路，包含三个电阻器（100 &Omega;、220 &Omega; 和 330 &Omega; &mdash; 与上面例题的数值相同）、一个电压表和一个电流表。用电压表检查每个电阻器两端的电压，并用电流表确认电路电流与你的计算结果一致。试着把电流表移到不同位置，确认各处的电流都相同。</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" title="串联电路模拟器" src="../../../../../simulators/ae-series-circuit.html" loading="lazy"></iframe></div>
+      </div>
+
+      <div class="assignment" id="assignment-task3">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; 任务3 &mdash; 串联电路</div></div>
+        <div class="assignment-body">
+          <div class="circuit-figure" style="max-width:260px;margin:0 auto 16px;">
+            <svg width="240" height="90" viewBox="0 0 240 90">
+              <line x1="10" y1="20" x2="230" y2="20" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="10" y1="20" x2="10" y2="42" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="10" y1="48" x2="10" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="230" y1="20" x2="230" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="10" y1="70" x2="230" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="1" y1="42" x2="19" y2="42" stroke="#1e293b" stroke-width="2"/>
+              <line x1="4" y1="48" x2="16" y2="48" stroke="#1e293b" stroke-width="4"/>
+              <text x="25" y="48" font-size="9" fill="#64748b">9 V</text>
+              <rect x="55" y="10" width="44" height="20" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+              <text x="77" y="24" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">150 &Omega;</text>
+              <rect x="141" y="10" width="44" height="20" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+              <text x="163" y="24" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">270 &Omega;</text>
+            </svg>
+            <figcaption>第1题：两个电阻器串联接在 9 V 电源上。</figcaption>
+          </div>
+          <div class="task-item">
+            <div class="task-q">1. 两个电阻器（150 &Omega; 和 270 &Omega;）串联接在 9 V 电源上。计算：</div>
+            <div class="task-q-sub">a) 总电阻</div><div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q009"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q009" data-placeholder="在这里输入你的答案……"></div>
+            <div class="task-q-sub">b) 电路电流</div><div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q010"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q010" data-placeholder="在这里输入你的答案……"></div>
+            <div class="task-q-sub">c) 每个电阻器上的电压降</div><div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q011"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q011" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. 三个电阻器（15 &Omega;、24 &Omega; 和 60 &Omega;）串联接在 9 V 电源上。计算：</div>
+            <div class="task-q-sub">a) 总电阻</div><div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q012"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q012" data-placeholder="在这里输入你的答案……"></div>
+            <div class="task-q-sub">b) 电路电流</div><div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q012b"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q012b" data-placeholder="在这里输入你的答案……"></div>
+            <div class="task-q-sub">c) 60 &Omega; 电阻器上的电压降</div><div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q012c"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q012c" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="circuit-figure" style="max-width:260px;margin:0 auto 16px;">
+            <svg width="240" height="115" viewBox="0 -25 240 115">
+              <circle cx="77" cy="-13" r="11" fill="white" stroke="#334155" stroke-width="1.6"/>
+              <text x="77" y="-9" text-anchor="middle" font-size="9" font-weight="700" fill="#334155">4V</text>
+              <line x1="66" y1="-13" x2="44" y2="-13" stroke="#334155" stroke-width="1.4"/>
+              <line x1="44" y1="-13" x2="44" y2="20" stroke="#334155" stroke-width="1.4"/>
+              <line x1="88" y1="-13" x2="110" y2="-13" stroke="#334155" stroke-width="1.4"/>
+              <line x1="110" y1="-13" x2="110" y2="20" stroke="#334155" stroke-width="1.4"/>
+              <line x1="10" y1="20" x2="230" y2="20" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="10" y1="20" x2="10" y2="42" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="10" y1="48" x2="10" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="230" y1="20" x2="230" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="10" y1="70" x2="230" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="1" y1="42" x2="19" y2="42" stroke="#1e293b" stroke-width="2"/>
+              <line x1="4" y1="48" x2="16" y2="48" stroke="#1e293b" stroke-width="4"/>
+              <text x="25" y="48" font-size="9" fill="#64748b">V<tspan font-size="7" dy="2">s</tspan></text>
+              <rect x="55" y="10" width="44" height="20" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+              <text x="77" y="24" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">25 &Omega;</text>
+              <rect x="141" y="10" width="44" height="20" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+              <text x="163" y="24" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">75 &Omega;</text>
+            </svg>
+            <figcaption>第3题：25 &Omega; 电阻器两端的电压为 4 V &mdash; 求电源电压 V<sub>s</sub>。</figcaption>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. 两个电阻器串联：25 &Omega; 和 75 &Omega;。25 &Omega; 电阻器两端的电压为 4 V。求电路电流和电源电压。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q013"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q013" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <p style="font-size:12px;color:var(--teal-600);margin-top:8px;">&#x26A1; 在模拟器中搭建这些电路，检查你的答案。</p>
+        </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task3', 'Task 3 &mdash; Series circuits')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+      </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-5">第5节：电压降与电流节点 <span class="zh-en">Voltage Drops and Current Junctions</span></h1>
+
+      <div class="assignment" id="assignment-inv3">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; 探究3 &mdash; 测量电压和电流</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;"><a href="../../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn" style="display:inline-flex;">&#x26A1; 打开 NoResistance 模拟器</a> 搭建以下电路：一个 9 V 电池、一个 1 k&Omega; 电阻器和一个 470 &Omega; 电阻器串联。在每个元件两端接一个电压表，并串联接入一个电流表。</p>
+          <div class="circuit-figure" style="max-width:300px;margin:0 auto 16px;">
+            <svg width="280" height="155" viewBox="0 -35 280 155">
+              <line x1="20" y1="20" x2="260" y2="20" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="20" y1="20" x2="20" y2="57" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="20" y1="63" x2="20" y2="100" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="260" y1="20" x2="260" y2="100" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="20" y1="100" x2="127" y2="100" stroke="#6b8cae" stroke-width="2.5"/>
+              <line x1="153" y1="100" x2="260" y2="100" stroke="#6b8cae" stroke-width="2.5"/>
+              <circle cx="140" cy="100" r="13" fill="white" stroke="#334155" stroke-width="1.8"/>
+              <text x="140" y="105" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">A</text>
+              <line x1="11" y1="57" x2="29" y2="57" stroke="#1e293b" stroke-width="2"/>
+              <line x1="14" y1="63" x2="26" y2="63" stroke="#1e293b" stroke-width="4"/>
+              <text x="35" y="60" font-size="9" fill="#64748b">9 V</text>
+              <rect x="65" y="10" width="50" height="20" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+              <text x="90" y="24" text-anchor="middle" font-size="9" font-weight="700" fill="#334155">1 k&Omega;</text>
+              <rect x="165" y="10" width="50" height="20" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+              <text x="190" y="24" text-anchor="middle" font-size="9" font-weight="700" fill="#334155">470 &Omega;</text>
+              <line x1="65" y1="20" x2="50" y2="20" stroke="#334155" stroke-width="1.4"/>
+              <line x1="50" y1="20" x2="50" y2="-13" stroke="#334155" stroke-width="1.4"/>
+              <line x1="50" y1="-13" x2="77" y2="-13" stroke="#334155" stroke-width="1.4"/>
+              <line x1="115" y1="20" x2="130" y2="20" stroke="#334155" stroke-width="1.4"/>
+              <line x1="130" y1="20" x2="130" y2="-13" stroke="#334155" stroke-width="1.4"/>
+              <line x1="130" y1="-13" x2="103" y2="-13" stroke="#334155" stroke-width="1.4"/>
+              <circle cx="90" cy="-13" r="13" fill="white" stroke="#334155" stroke-width="1.8"/>
+              <text x="90" y="-8" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">V</text>
+              <line x1="165" y1="20" x2="150" y2="20" stroke="#334155" stroke-width="1.4"/>
+              <line x1="150" y1="20" x2="150" y2="-13" stroke="#334155" stroke-width="1.4"/>
+              <line x1="150" y1="-13" x2="177" y2="-13" stroke="#334155" stroke-width="1.4"/>
+              <line x1="215" y1="20" x2="230" y2="20" stroke="#334155" stroke-width="1.4"/>
+              <line x1="230" y1="20" x2="230" y2="-13" stroke="#334155" stroke-width="1.4"/>
+              <line x1="230" y1="-13" x2="203" y2="-13" stroke="#334155" stroke-width="1.4"/>
+              <circle cx="190" cy="-13" r="13" fill="white" stroke="#334155" stroke-width="1.8"/>
+              <text x="190" y="-8" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">V</text>
+            </svg>
+            <figcaption>每个电压表位于电路上方，两根引线从电阻器两侧向外绕开再接回主电路；电流表串联在底部导线的中间。</figcaption>
+          </div>
+          <div class="task-item">
+            <div class="task-q">1. 记录每个元件两端的电压。</div>
+            <table class="data-table">
+              <tr><th>元件</th><th>电压（V）</th></tr>
+              <tr><td>电池 Battery</td><td class="answer-cell">9 V <span style="color:var(--gray-400);font-style:italic;">（已给出）</span></td></tr>
+              <tr><td>1 k&Omega; 电阻器</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q067" data-placeholder=""></td></tr>
+              <tr><td>470 &Omega; 电阻器</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q068" data-placeholder=""></td></tr>
+              <tr><td>合计（R1 + R2）</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q069" data-placeholder=""></td></tr>
+            </table>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. 两个电阻器两端的总电压与电池电压相比，你发现了什么？</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q007"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q007" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. 把电流表移到串联电路中的不同位置。你发现各处的电流有什么特点？</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q008"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q008" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+        </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv3', 'Investigation 3 &mdash; Measuring voltage and current')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+      </div>
+      </div>
+
+      <h2 class="notes-h2">串联电路中的电压降 <span class="zh-en">Voltage drops in a series circuit</span></h2>
+      <p class="notes-p">串联电路中的电压遵循一条重要规律：</p>
+      <ul class="notes-ul">
+        <li><strong>电压规律（Voltage rule）：</strong>任何闭合回路中各部分电压降之和等于电源电压。</li>
+      </ul>
+      <div class="circuit-figure" style="max-width:300px;margin:0 auto 16px;">
+        <svg width="280" height="125" viewBox="0 -35 280 125">
+          <line x1="20" y1="20" x2="260" y2="20" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="20" y1="20" x2="20" y2="42" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="20" y1="48" x2="20" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="260" y1="20" x2="260" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="20" y1="70" x2="260" y2="70" stroke="#6b8cae" stroke-width="2.5"/>
+          <line x1="11" y1="42" x2="29" y2="42" stroke="#1e293b" stroke-width="2"/>
+          <line x1="14" y1="48" x2="26" y2="48" stroke="#1e293b" stroke-width="4"/>
+          <text x="35" y="48" font-size="9" fill="#64748b">Vs</text>
+          <rect x="70" y="10" width="50" height="20" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+          <text x="95" y="24" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">R1</text>
+          <rect x="160" y="10" width="50" height="20" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+          <text x="185" y="24" text-anchor="middle" font-size="10" font-weight="700" fill="#334155">R2</text>
+          <line x1="70" y1="20" x2="55" y2="20" stroke="#334155" stroke-width="1.4"/>
+          <line x1="55" y1="20" x2="55" y2="-13" stroke="#334155" stroke-width="1.4"/>
+          <line x1="55" y1="-13" x2="82" y2="-13" stroke="#334155" stroke-width="1.4"/>
+          <line x1="120" y1="20" x2="135" y2="20" stroke="#334155" stroke-width="1.4"/>
+          <line x1="135" y1="20" x2="135" y2="-13" stroke="#334155" stroke-width="1.4"/>
+          <line x1="135" y1="-13" x2="108" y2="-13" stroke="#334155" stroke-width="1.4"/>
+          <circle cx="95" cy="-13" r="13" fill="white" stroke="var(--teal-600)" stroke-width="1.6"/>
+          <text x="95" y="-8" text-anchor="middle" font-size="12" font-weight="700" fill="var(--teal-600)">V1</text>
+          <line x1="160" y1="20" x2="145" y2="20" stroke="#334155" stroke-width="1.4"/>
+          <line x1="145" y1="20" x2="145" y2="-13" stroke="#334155" stroke-width="1.4"/>
+          <line x1="145" y1="-13" x2="172" y2="-13" stroke="#334155" stroke-width="1.4"/>
+          <line x1="210" y1="20" x2="225" y2="20" stroke="#334155" stroke-width="1.4"/>
+          <line x1="225" y1="20" x2="225" y2="-13" stroke="#334155" stroke-width="1.4"/>
+          <line x1="225" y1="-13" x2="198" y2="-13" stroke="#334155" stroke-width="1.4"/>
+          <circle cx="185" cy="-13" r="13" fill="white" stroke="var(--teal-600)" stroke-width="1.6"/>
+          <text x="185" y="-8" text-anchor="middle" font-size="12" font-weight="700" fill="var(--teal-600)">V2</text>
+        </svg>
+        <figcaption>V<sub>s</sub> = V1 + V2 &mdash; 回路中各电压降相加总是等于电源电压。</figcaption>
+      </div>
+      <div class="spec-note" style="display:flex;gap:12px;align-items:flex-start;">
+        <span>&#x1F4D6;</span> <span>这条规律是<em>基尔霍夫定律（Kirchhoff's Laws）</em>的一部分（以德国物理学家古斯塔夫·基尔霍夫命名）。<br>考试中你<strong>不</strong>需要记住他的名字 &mdash; 只要记住规律本身。</span>
+      </div>
+
+      <div class="key-point">在<strong>串联电路</strong>中：各处电流相同，各部分电压相加等于电源电压。</div>
+
+      <div class="assignment" id="assignment-quickcheck1">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; 快速检测 &mdash; 电压规律</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">一个串联电路的电源电压为 12 V，电流为 20 mA。其中一个电阻器为 220 &Omega;。运用电压规律，求第二个电阻器的阻值。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q014"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q014" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+        </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-quickcheck1', 'Quick check &mdash; the voltage rule')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+      </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-6">第6节：并联电路 <span class="zh-en">Parallel Circuits</span></h1>
+
+      <h2 class="notes-h2">什么是并联电路？</h2>
+      <p class="notes-p">在并联电路中，电流有不止一条路径可以流动。在下图这样的电路中，每条支路都得到<strong>全部电源电压</strong> &mdash; 更普遍地说，<strong>并联的两个元件两端的电压总是相同的</strong>，即使它们处在一个串并联混合的较大电路中也是如此。常见的例子是教室里的照明 &mdash; 每盏灯都有自己的开关，互不影响地独立工作。</p>
+
+      <div class="circuit-figure">
+        <svg viewBox="0 0 300 210" width="300" height="210" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">
+          <!-- Battery left, conventional two-cell symbol, vertically centred -->
+          <line x1="30" y1="30" x2="30" y2="95" stroke="#334155" stroke-width="2"/>
+          <line x1="18" y1="95" x2="42" y2="95" stroke="#334155" stroke-width="1.6"/>
+          <line x1="21" y1="102" x2="39" y2="102" stroke="#334155" stroke-width="4"/>
+          <line x1="18" y1="109" x2="42" y2="109" stroke="#334155" stroke-width="1.6"/>
+          <line x1="21" y1="116" x2="39" y2="116" stroke="#334155" stroke-width="4"/>
+          <text x="46" y="98" font-size="9" fill="#334155" font-weight="700">+</text>
+          <text x="46" y="119" font-size="9" fill="#334155" font-weight="700">&minus;</text>
+          <text x="2" y="107" font-size="9" fill="#64748b">9 V</text>
+          <line x1="30" y1="116" x2="30" y2="180" stroke="#334155" stroke-width="2"/>
+          <!-- Top and bottom rails, ending where R3 connects -->
+          <line x1="30" y1="30" x2="280" y2="30" stroke="#334155" stroke-width="2"/>
+          <line x1="30" y1="180" x2="280" y2="180" stroke="#334155" stroke-width="2"/>
+          <!-- Branch 1: R1=100Ω, vertically centred -->
+          <line x1="100" y1="30" x2="100" y2="75" stroke="#334155" stroke-width="2"/>
+          <rect x="84" y="75" width="32" height="60" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+          <text x="100" y="110" text-anchor="middle" font-size="10" fill="#334155" font-weight="700">R1</text>
+          <text x="100" y="123" text-anchor="middle" font-size="9" fill="#64748b">100 &Omega;</text>
+          <line x1="100" y1="135" x2="100" y2="180" stroke="#334155" stroke-width="2"/>
+          <!-- Branch 2: R2=150Ω -->
+          <line x1="190" y1="30" x2="190" y2="75" stroke="#334155" stroke-width="2"/>
+          <rect x="174" y="75" width="32" height="60" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+          <text x="190" y="110" text-anchor="middle" font-size="10" fill="#334155" font-weight="700">R2</text>
+          <text x="190" y="123" text-anchor="middle" font-size="9" fill="#64748b">150 &Omega;</text>
+          <line x1="190" y1="135" x2="190" y2="180" stroke="#334155" stroke-width="2"/>
+          <!-- Branch 3: R3=300Ω -->
+          <line x1="280" y1="30" x2="280" y2="75" stroke="#334155" stroke-width="2"/>
+          <rect x="264" y="75" width="32" height="60" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+          <text x="280" y="110" text-anchor="middle" font-size="10" fill="#334155" font-weight="700">R3</text>
+          <text x="280" y="123" text-anchor="middle" font-size="9" fill="#64748b">300 &Omega;</text>
+          <line x1="280" y1="135" x2="280" y2="180" stroke="#334155" stroke-width="2"/>
+        </svg>
+        <figcaption>三个电阻器并联。9 V 电源电压“降落”在每个电阻器两端。</figcaption>
+      </div>
+
+      <div class="key-point">在并联电路中：每条支路都得到全部电源电压，各支路电流相加等于总电流。并联的两个元件两端的电压总是相同的。</div>
+      <div class="spec-note">&#x1F4D6; 这就是<em>基尔霍夫电流规律（Kirchhoff's Current Rule）</em>：流入节点的电流等于流出节点的电流。结合第5节的电压规律，这两条定律适用于你将来分析的每一个电路。</div>
+
+      <h2 class="notes-h2">并联电阻 <span class="zh-en">Resistors in parallel</span></h2>
+      <p class="notes-p">当电阻器并联时，总电阻比其中任何一个电阻器都<strong>小</strong>。这是因为电流有更多的路径可以流动。</p>
+
+      <p class="notes-p"><strong>通用公式</strong>（适用于任意数量的电阻器）：</p>
+      <div class="formula-box">
+        <div class="formula" style="display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;">
+          <span class="frac"><span class="frac-n">1</span><span class="frac-d">R<sub>T</sub></span></span>
+          <span>=</span>
+          <span class="frac"><span class="frac-n">1</span><span class="frac-d">R<sub>1</sub></span></span>
+          <span>+</span>
+          <span class="frac"><span class="frac-n">1</span><span class="frac-d">R<sub>2</sub></span></span>
+          <span>+</span>
+          <span class="frac"><span class="frac-n">1</span><span class="frac-d">R<sub>3</sub></span></span>
+          <span>+ &hellip;</span>
+        </div>
+      </div>
+
+      <p class="notes-p"><strong>特殊情况：两个电阻器并联</strong>（最常见的情况）：</p>
+      <div class="formula-box">
+        <div class="formula" style="display:flex;align-items:center;justify-content:center;gap:6px;">
+          <span>R<sub>T</sub> =</span>
+          <span class="frac"><span class="frac-n">R<sub>1</sub> &times; R<sub>2</sub></span><span class="frac-d">R<sub>1</sub> + R<sub>2</sub></span></span>
+        </div>
+        <div class="formula-sub"><span class="frac" style="font-size:11px;"><span class="frac-n">积</span><span class="frac-d">和</span></span> &mdash; 只适用于<em>两个</em>电阻器</div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">例题1 &mdash; 两个电阻器并联（完整解答）</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">R<sub>1</sub> = 270 &Omega;，R<sub>2</sub> = 100 &Omega;，电源电压 = 9 V。求总电阻、电路电流以及每条支路中的电流。</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>总电阻（积除以和）：</strong> R<sub>T</sub> = <span class="frac"><span class="frac-n">270 &times; 100</span><span class="frac-d">270 + 100</span></span> = <span class="frac"><span class="frac-n">27 000</span><span class="frac-d">370</span></span> = <strong>73 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>电路（总）电流：</strong> I<sub>T</sub> = <span class="frac"><span class="frac-n">V</span><span class="frac-d">R<sub>T</sub></span></span> = <span class="frac"><span class="frac-n">9</span><span class="frac-d">73</span></span> = <strong>123 mA</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>流过 R<sub>1</sub> 的电流：</strong> I<sub>1</sub> = <span class="frac"><span class="frac-n">V</span><span class="frac-d">R<sub>1</sub></span></span> = <span class="frac"><span class="frac-n">9</span><span class="frac-d">270</span></span> = <strong>33 mA</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>流过 R<sub>2</sub> 的电流：</strong> I<sub>2</sub> = <span class="frac"><span class="frac-n">V</span><span class="frac-d">R<sub>2</sub></span></span> = <span class="frac"><span class="frac-n">9</span><span class="frac-d">100</span></span> = <strong>90 mA</strong></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-content"><strong>检验：</strong> I<sub>1</sub> + I<sub>2</sub> = 33 + 90 = 123 mA &mdash; 与 I<sub>T</sub> 相符。&#x2713;</div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">例题2 &mdash; 三个电阻器并联</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">R<sub>1</sub> = 220 &Omega;，R<sub>2</sub> = 100 &Omega;，R<sub>3</sub> = 330 &Omega;，电源 = 9 V。求总电阻。</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>使用通用公式：</strong> <span class="frac"><span class="frac-n">1</span><span class="frac-d">R<sub>T</sub></span></span> = <span class="frac"><span class="frac-n">1</span><span class="frac-d">220</span></span> + <span class="frac"><span class="frac-n">1</span><span class="frac-d">100</span></span> + <span class="frac"><span class="frac-n">1</span><span class="frac-d">330</span></span></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><span class="frac"><span class="frac-n">1</span><span class="frac-d">R<sub>T</sub></span></span> = 0.00455 + 0.01 + 0.00303 = 0.01758</div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content">R<sub>T</sub> = <span class="frac"><span class="frac-n">1</span><span class="frac-d">0.01758</span></span> = <strong>56.9 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>电路电流：</strong> I<sub>T</sub> = <span class="frac"><span class="frac-n">9</span><span class="frac-d">56.9</span></span> = <strong>158 mA</strong></div></div>
+      </div>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> 动手试试 &mdash; 并联电路</div>
+          <a href="../../../../../simulators/ae-parallel-circuit.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; 全屏</a>
+        </div>
+        <div class="sim-instruction">下面已加载一个并联电路，有三盏灯，每盏灯都有自己的开关。点击每个开关，分别打开和关闭各盏灯 &mdash; 注意每盏灯都独立工作，而且每条支路两端都是全部电源电压。</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" title="并联电路模拟器" src="../../../../../simulators/ae-parallel-circuit.html" loading="lazy"></iframe></div>
+      </div>
+
+      <div class="assignment" id="assignment-task4">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; 任务4 &mdash; 并联电路</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. 一个 10 &Omega; 和一个 14 &Omega; 电阻器并联接在 6 V 电源上。计算：</div>
+            <div class="task-q-sub">a) 总电阻</div><div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q021"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q021" data-placeholder="在这里输入你的答案……"></div>
+            <div class="task-q-sub">b) 电路电流</div><div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q022"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q022" data-placeholder="在这里输入你的答案……"></div>
+            <div class="task-q-sub">c) 流过每个电阻器的电流</div><div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q023"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q023" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. 一个 660 &Omega; 和一个 470 &Omega; 电阻器并联，电源电压为 9 V。计算总电阻、电路电流以及每条支路中的电流。验证各支路电流之和等于总电流。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q024"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q024" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. 一个 440 &Omega; 电阻器与一个 330 &Omega; 电阻器并联。流过 440 &Omega; 电阻器的电流为 300 mA。求流过 330 &Omega; 电阻器的电流。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q025"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q025" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. 一个 6 &Omega; 和一个 75 &Omega; 电阻器并联接在 12 V 电源上。计算电路总电流。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q026"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q026" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="extension-task">
+            <div class="extension-header"><div class="extension-header-text">&#x2B50; 拓展任务</div></div>
+            <div class="extension-body">
+              <div class="task-item">
+                <div class="task-q">5. 对于下面的电路，计算 a) 总电阻，b) 电池输出的电流，c) 每条支路中的电流。</div>
+                <div class="task-q" style="font-weight:400;color:var(--gray-600);">R<sub>1</sub> = 100 &Omega;，R<sub>2</sub> = 150 &Omega;，R<sub>3</sub> = 300 &Omega;，全部并联接在 12 V 电源上。</div>
+                <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q027"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q027" data-placeholder="在这里输入你的答案……"></div>
+              </div>
+            </div>
+          </div>
+          <p style="font-size:12px;color:var(--teal-600);margin-top:8px;">&#x26A1; 在模拟器中搭建这些电路，检查你的答案。</p>
+        </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task4', 'Task 4 &mdash; Parallel circuits')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+      </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-7">第7节：串并联混合电路 <span class="zh-en">Combined Series and Parallel Circuits</span></h1>
+
+      <p class="notes-p">实际电路中往往既有串联又有并联。要求解这类电路，必须<strong>一步一步地化简</strong>：</p>
+
+      <div class="circuit-figure">
+        <svg viewBox="0 0 360 216" width="360" height="216" xmlns="http://www.w3.org/2000/svg" style="display:block;margin:0 auto;">
+          <!-- Battery, conventional two-cell symbol -->
+          <line x1="30" y1="42" x2="30" y2="87" stroke="#334155" stroke-width="2"/>
+          <line x1="18" y1="87" x2="42" y2="87" stroke="#334155" stroke-width="1.6"/>
+          <line x1="21" y1="94" x2="39" y2="94" stroke="#334155" stroke-width="4"/>
+          <line x1="18" y1="101" x2="42" y2="101" stroke="#334155" stroke-width="1.6"/>
+          <line x1="21" y1="108" x2="39" y2="108" stroke="#334155" stroke-width="4"/>
+          <text x="46" y="90" font-size="9" fill="#334155" font-weight="700">+</text>
+          <text x="46" y="111" font-size="9" fill="#334155" font-weight="700">&minus;</text>
+          <text x="2" y="99" font-size="9" fill="#64748b">9 V</text>
+          <line x1="30" y1="108" x2="30" y2="202" stroke="#334155" stroke-width="2"/>
+          <!-- Top rail: battery -> R1 (horizontal, in series) -> parallel section -->
+          <line x1="30" y1="42" x2="63" y2="42" stroke="#334155" stroke-width="2"/>
+          <rect x="63" y="26" width="55" height="32" rx="3" fill="white" stroke="#3b82f6" stroke-width="2"/>
+          <text x="90" y="46" text-anchor="middle" font-size="10" fill="#1e40af" font-weight="700">R1</text>
+          <text x="90" y="20" text-anchor="middle" font-size="9" fill="#3b82f6">串联 &mdash; 100 &Omega;</text>
+          <line x1="118" y1="42" x2="290" y2="42" stroke="#334155" stroke-width="2"/>
+          <!-- Bottom rail -->
+          <line x1="30" y1="202" x2="290" y2="202" stroke="#334155" stroke-width="2"/>
+          <!-- Grey dashed box around the parallel section -->
+          <rect x="194" y="30" width="122" height="182" rx="4" fill="none" stroke="#94a3b8" stroke-width="1.3" stroke-dasharray="5,4"/>
+          <text x="255" y="25" text-anchor="middle" font-size="9" fill="#64748b">并联部分</text>
+          <!-- R2 parallel top -->
+          <line x1="220" y1="42" x2="220" y2="77" stroke="#334155" stroke-width="2"/>
+          <rect x="204" y="77" width="32" height="55" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+          <text x="220" y="109" text-anchor="middle" font-size="10" fill="#15803d" font-weight="700">R2</text>
+          <text x="220" y="122" text-anchor="middle" font-size="8" fill="#64748b">300 &Omega;</text>
+          <line x1="220" y1="132" x2="220" y2="202" stroke="#334155" stroke-width="2"/>
+          <circle cx="220" cy="42" r="3" fill="#334155"/><circle cx="220" cy="202" r="3" fill="#334155"/>
+          <!-- R3 parallel -->
+          <line x1="290" y1="42" x2="290" y2="77" stroke="#334155" stroke-width="2"/>
+          <rect x="274" y="77" width="32" height="55" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+          <text x="290" y="109" text-anchor="middle" font-size="10" fill="#15803d" font-weight="700">R3</text>
+          <text x="290" y="122" text-anchor="middle" font-size="8" fill="#64748b">150 &Omega;</text>
+          <line x1="290" y1="132" x2="290" y2="202" stroke="#334155" stroke-width="2"/>
+          <circle cx="290" cy="42" r="3" fill="#334155"/><circle cx="290" cy="202" r="3" fill="#334155"/>
+        </svg>
+        <figcaption>R1（蓝色）与 R2 和 R3（绿色）串联，而 R2 和 R3 彼此并联 &mdash; 数值与下面例题相同。</figcaption>
+      </div>
+      <ol class="notes-ol">
+        <li>先求<strong>并联部分</strong>的总电阻（记作 R<sub>P</sub>）。</li>
+        <li>把 R<sub>P</sub> 与串联的电阻器相加，得到<strong>总电阻</strong> R<sub>T</sub>。</li>
+        <li>用欧姆定律求电路电流。</li>
+        <li>用电压规律和电流规律求各部分的电压和电流。</li>
+      </ol>
+
+      <div class="worked-example">
+        <div class="worked-example-title">例题 &mdash; 串并联电路</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">R<sub>1</sub> = 100 &Omega;，与由 R<sub>2</sub> = 300 &Omega; 和 R<sub>3</sub> = 150 &Omega; 组成的并联部分串联。电源 = 9 V。</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>并联部分：</strong> R<sub>P</sub> = <span class="frac"><span class="frac-n">300 &times; 150</span><span class="frac-d">300 + 150</span></span> = <span class="frac"><span class="frac-n">45 000</span><span class="frac-d">450</span></span> = <strong>100 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>总电阻：</strong> R<sub>T</sub> = R<sub>1</sub> + R<sub>P</sub> = 100 + 100 = <strong>200 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>电路电流：</strong> I<sub>C</sub> = <span class="frac"><span class="frac-n">V</span><span class="frac-d">R<sub>T</sub></span></span> = <span class="frac"><span class="frac-n">9</span><span class="frac-d">200</span></span> = <strong>45 mA</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content"><strong>R<sub>1</sub> 两端的电压：</strong> V<sub>R1</sub> = 0.045 &times; 100 = <strong>4.5 V</strong></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-content"><strong>并联部分两端的电压</strong>（电压规律）：V<sub>P</sub> = 9 &minus; 4.5 = <strong>4.5 V</strong></div></div>
+        <div class="step"><div class="step-num">6</div><div class="step-content"><strong>流过 R<sub>2</sub> 的电流：</strong> I<sub>2</sub> = <span class="frac"><span class="frac-n">4.5</span><span class="frac-d">300</span></span> = <strong>15 mA</strong></div></div>
+        <div class="step"><div class="step-num">7</div><div class="step-content"><strong>流过 R<sub>3</sub> 的电流：</strong> I<sub>3</sub> = <span class="frac"><span class="frac-n">4.5</span><span class="frac-d">150</span></span> = <strong>30 mA</strong></div></div>
+        <div class="step"><div class="step-num">8</div><div class="step-content"><strong>检验：</strong> I<sub>2</sub> + I<sub>3</sub> = 15 + 30 = 45 mA &mdash; 与 I<sub>C</sub> 相符。&#x2713;</div></div>
+      </div>
+
+      <div class="assignment" id="assignment-task5">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; 任务5 &mdash; 混合电路</div></div>
+        <div class="assignment-body">
+          <div class="circuit-figure" style="max-width:280px;margin:0 auto 16px;">
+            <svg width="245" height="120" viewBox="-15 0 225 120">
+              <line x1="20" y1="20" x2="195" y2="20" stroke="#334155" stroke-width="2"/>
+              <line x1="20" y1="20" x2="20" y2="42" stroke="#334155" stroke-width="2"/>
+              <line x1="20" y1="48" x2="20" y2="100" stroke="#334155" stroke-width="2"/>
+              <line x1="20" y1="100" x2="195" y2="100" stroke="#334155" stroke-width="2"/>
+              <line x1="11" y1="42" x2="29" y2="42" stroke="#1e293b" stroke-width="2"/>
+              <line x1="14" y1="48" x2="26" y2="48" stroke="#1e293b" stroke-width="4"/>
+              <text x="-13" y="48" font-size="9" fill="#64748b">9 V</text>
+              <rect x="60" y="10" width="44" height="20" rx="3" fill="white" stroke="#334155" stroke-width="2"/>
+              <text x="82" y="24" text-anchor="middle" font-size="9" font-weight="700" fill="#334155">1 k&Omega;</text>
+              <line x1="155" y1="20" x2="155" y2="40" stroke="#334155" stroke-width="2"/>
+              <rect x="140" y="40" width="30" height="35" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+              <text x="155" y="61" text-anchor="middle" font-size="9" fill="#15803d" font-weight="700">500&#8202;&Omega;</text>
+              <line x1="155" y1="75" x2="155" y2="100" stroke="#334155" stroke-width="2"/>
+              <line x1="195" y1="20" x2="195" y2="40" stroke="#334155" stroke-width="2"/>
+              <rect x="180" y="40" width="30" height="35" rx="3" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+              <text x="195" y="61" text-anchor="middle" font-size="9" fill="#15803d" font-weight="700">500&#8202;&Omega;</text>
+              <line x1="195" y1="75" x2="195" y2="100" stroke="#334155" stroke-width="2"/>
+              <circle cx="155" cy="20" r="3" fill="#334155"/><circle cx="155" cy="100" r="3" fill="#334155"/>
+              <circle cx="195" cy="20" r="3" fill="#334155"/><circle cx="195" cy="100" r="3" fill="#334155"/>
+            </svg>
+            <figcaption>第1题：1 k&Omega; 电阻器与并联的一对电阻器串联 &mdash; 这对并联电阻器两端共用同一个电压，而不是全部的 9 V。</figcaption>
+          </div>
+          <div class="task-item">
+            <div class="task-q">1. 一个 1 k&Omega; 电阻器与两个并联的电阻器（都是 500 &Omega;）串联，接在 9 V 电源上。计算：</div>
+            <div class="task-q-sub">a) 总电阻</div><div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q028"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q028" data-placeholder="在这里输入你的答案……"></div>
+            <div class="task-q-sub">b) 电路电流</div><div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q029"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q029" data-placeholder="在这里输入你的答案……"></div>
+            <div class="task-q-sub">c) 1 k&Omega; 电阻器两端的电压</div><div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q030"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q030" data-placeholder="在这里输入你的答案……"></div>
+            <div class="task-q-sub">d) 流过每个 500 &Omega; 电阻器的电流</div><div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q031"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q031" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. 一个 1 k&Omega; 电阻器与两个并联的电阻器（都是 1 k&Omega;）串联，接在 12 V 电源上。求总电阻、电路电流、串联电阻器两端的电压，以及流过每个并联电阻器的电流。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q032"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q032" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="extension-task">
+            <div class="extension-header"><div class="extension-header-text">&#x2B50; 拓展任务</div></div>
+            <div class="extension-body">
+              <div class="task-item">
+                <div class="task-q">3. 一个 10 k&Omega; 电阻器与由 500 &Omega; 和 1 k&Omega; 组成的并联部分串联，接在 9 V 电源上。求 a) 总电阻，b) 电路电流，c) 10 k&Omega; 电阻器两端的电压，d) 流过 500 &Omega; 电阻器的电流。</div>
+                <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q033"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q033" data-placeholder="在这里输入你的答案……"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task5', 'Task 5 &mdash; Combined circuits')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+      </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-8">第8节：分压器 <span class="zh-en">Voltage Dividers</span></h1>
+
+      <p class="notes-p">分压器（voltage divider）是由两个（或更多）电阻器串联接在电源上，并从它们之间的中点引出输出连接而构成的。在串联电路中，每个电阻器分得电源电压的<strong>一部分</strong> &mdash; 电阻越大，分得的电压就越多。</p>
+
+      <!-- Labelled voltage divider diagram + terminology table -->
+      <div style="display:flex;flex-wrap:wrap;gap:20px;align-items:center;margin:16px 0;">
+        <div class="circuit-figure" style="flex:0 0 auto;min-width:170px;">
+          <img src="../../../../n5/electronics/analogue/images/voltage-divider-generic.png" alt="通用分压器：Vs 加在串联的 R1 和 R2 两端，输出从两者之间引出，底部为 0V" style="height:248px;max-width:100%;display:block;margin:0 auto;">
+        </div>
+
+        <div style="flex:0 1 420px;min-width:340px;max-width:420px;margin-left:12px;">
+          <table class="data-table" style="margin:0;width:100%;">
+            <tr><th>标注</th><th style="white-space:nowrap;">含义</th></tr>
+            <tr><td><strong>Vs</strong></td><td style="white-space:nowrap;">电源电压 &mdash; 等于 V1 + V2</td></tr>
+            <tr><td><strong>R1</strong></td><td style="white-space:nowrap;">上方电阻器（或元件）</td></tr>
+            <tr><td><strong>R2</strong></td><td style="white-space:nowrap;">下方电阻器（或元件）</td></tr>
+            <tr><td><strong>V1</strong></td><td style="white-space:nowrap;">从 Vs 到输出连接点的电压</td></tr>
+            <tr><td><strong>V2 / V<sub>out</sub></strong></td><td style="white-space:nowrap;">从输出点到 0V 的电压 &mdash; 这就是有用的输出</td></tr>
+            <tr><td><strong>RT</strong></td><td style="white-space:nowrap;">总电阻 = R1 + R2</td></tr>
+            <tr><td><strong>0V</strong></td><td style="white-space:nowrap;">电源的接地端 / 负极</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <h2 class="notes-h2">计算 V<sub>out</sub> <span class="zh-en">Calculating V<sub>out</sub></span></h2>
+      <p class="notes-p">求 V<sub>out</sub>（V2）有两种方法，取决于你已经知道什么：</p>
+
+      <div style="display:flex;flex-wrap:wrap;gap:16px;margin:12px 0;">
+        <div class="formula-box" style="flex:1;min-width:200px;">
+          <div class="formula-sub" style="font-weight:700;color:var(--teal-800);margin-bottom:6px;">方法1 &mdash; 已知 V1 时</div>
+          <div style="font-size:14px;color:var(--teal-800);font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;">
+            <span class="frac"><span class="frac-n">V1</span><span class="frac-d">V2</span></span>
+            <span>=</span>
+            <span class="frac"><span class="frac-n">R1</span><span class="frac-d">R2</span></span>
+          </div>
+          <div class="formula-sub">电压之比等于电阻之比</div>
+        </div>
+        <div class="formula-box" style="flex:1;min-width:200px;">
+          <div class="formula-sub" style="font-weight:700;color:var(--teal-800);margin-bottom:6px;">方法2 &mdash; 已知 Vs 时</div>
+          <div class="formula" style="display:flex;align-items:center;justify-content:center;gap:6px;">
+            <span>V<sub>out</sub> =</span> <span class="frac"><span class="frac-n">R<sub>2</sub></span><span class="frac-d">R<sub>1</sub> + R<sub>2</sub></span></span> <span>&times; V<sub>s</sub></span>
+          </div>
+        </div>
+      </div>
+
+      <p class="notes-p">你也可以用<strong>基尔霍夫电压定律（Kirchhoff's Voltage Law）</strong>求 V1：Vs = V1 + V2，所以 V1 = Vs &minus; V2。</p>
+
+      <h2 class="notes-h2">传感元件与换能器 <span class="zh-en">Sensor components and transducers</span></h2>
+      <p class="notes-p">在工程科学中，我们主要使用三种会随环境变化（热、光或位置的变化）而改变电阻的元件，它们非常适合用在分压器传感电路中。</p>
+
+      <div class="comp-grid">
+        <div class="comp-card-sym">
+          <img src="../../../../n5/electronics/analogue/images/symbols/variable-resistor.png" alt="可变电阻器符号" style="height:40px;margin:0 auto 8px;display:block;">
+          <div class="comp-name">可变电阻器 Variable Resistor</div>
+          <div class="comp-unit">位置变化会改变它的电阻</div>
+        </div>
+        <div class="comp-card-sym">
+          <img src="../../../../n5/electronics/analogue/images/symbols/thermistor.png" alt="热敏电阻符号" style="height:48px;margin:0 auto 8px;display:block;">
+          <div class="comp-name">热敏电阻 Thermistor</div>
+          <div class="comp-unit">温度变化会改变它的电阻</div>
+        </div>
+        <div class="comp-card-sym">
+          <img src="../../../../n5/electronics/analogue/images/symbols/ldr.png" alt="LDR 符号" style="height:48px;margin:0 auto 8px;display:block;">
+          <div class="comp-name">LDR 光敏电阻</div>
+          <div class="comp-unit">（Light Dependent Resistor，光敏电阻）光照强度变化会改变它的电阻</div>
+        </div>
+      </div>
+
+      <div class="key-point">&#x1F4A1; <strong>换能器（Transducers）</strong>把能量从一种形式转换成另一种形式。<strong>输入换能器（Input transducers）</strong>（使用 LDR 的光传感器；使用热敏电阻的温度传感器）把物理条件转换成电信号。<strong>输出换能器（Output transducers）</strong>（灯、电动机、蜂鸣器）把电能转换回光、运动或声音。</div>
+
+      <p class="notes-p">通常，把热敏电阻或 LDR 与一个固定电阻器串联，组成分压器。输出取自固定电阻器两端（或传感器两端，取决于你希望条件变化时电压上升还是下降）。</p>
+
+      <h2 class="notes-h2">从图表中读取电阻值 <span class="zh-en">Reading resistance values from graphs</span></h2>
+      <p class="notes-p">电子工程师在设计电路时，需要知道热敏电阻和 LDR 在温度和光照变化时阻值会变化多少。为此，制造商会公布特性曲线图，显示它们的电阻如何随条件变化。这些图的读法与你平常见到的图表略有不同。</p>
+
+      <!-- ── LDR graph ───────────────────────────────────────────────── -->
+      <h3 class="notes-h3">LDR 特性曲线图 &mdash; ORP12</h3>
+      <p class="notes-p">LDR <strong>在黑暗中电阻很大</strong>，<strong>在强光下电阻很小</strong>。下图显示 ORP12 型 LDR 的电阻如何随光照强度变化。两条坐标轴都是对数刻度。</p>
+
+      <div class="circuit-figure">
+        <img src="../../../../n5/electronics/analogue/ldr-graph.png" alt="ORP12 LDR 特性曲线：电阻（kΩ）与光照强度（lux）的关系，双对数刻度" style="max-width:75%;height:auto;display:block;margin:0 auto;">
+        <figcaption>ORP12 LDR：电阻与光照强度的关系（双对数刻度）</figcaption>
+      </div>
+
+      <div class="key-point">LDR：光照增强时电阻<strong>下降</strong>。y 轴单位是 k&Omega; &mdash; 计算前记得换算成 &Omega;。</div>
+
+      <h3 class="notes-h3">如何读 LDR 曲线图</h3>
+      <ol class="notes-ol">
+        <li>在 <strong>x 轴</strong>上找到你的光照强度值（单位：lux 勒克斯）。</li>
+        <li>从该点向上画一条竖线，直到与深色曲线相交。</li>
+        <li>向左画一条水平线到 <strong>y 轴</strong>，读出电阻值（单位：k&Omega;）。</li>
+        <li>如有需要，换算成 &Omega;（乘以 1 000）。</li>
+      </ol>
+
+      <p class="notes-p">在几个典型光照水平下，从 ORP12 曲线图读出的数值：</p>
+      <table class="data-table">
+        <tr><th>光照水平</th><th>照度（lux）</th><th>LDR 电阻（从图中读出）</th></tr>
+        <tr><td>很暗的房间</td><td>10</td><td>~10 k&Omega; (10 000 &Omega;)</td></tr>
+        <tr><td>较暗的房间</td><td>100</td><td>~1.2 k&Omega; (1 200 &Omega;)</td></tr>
+        <tr><td>明亮的房间</td><td>1 000</td><td>~170 &Omega;</td></tr>
+        <tr><td>强烈阳光</td><td>10 000</td><td>~25 &Omega;</td></tr>
+      </table>
+
+      <!-- ── Thermistor graph ────────────────────────────────────────── -->
+      <h3 class="notes-h3">热敏电阻特性曲线图 <span class="zh-en">Thermistor characteristic graph</span></h3>
+      <p class="notes-p">NTC（负温度系数，Negative Temperature Coefficient）热敏电阻<strong>冷时电阻大</strong>，<strong>热时电阻小</strong>。下图显示六种不同型号的热敏电阻（曲线1&ndash;6）。除非另有说明，本节所有题目都<strong>使用曲线3</strong>。</p>
+
+      <div class="circuit-figure">
+        <img src="../../../../n5/electronics/analogue/thermistor-graph.png" alt="热敏电阻特性曲线：电阻（Ω）与温度（°C）的关系，六条曲线编号 1–6" style="max-width:75%;height:auto;display:block;margin:0 auto;">
+        <figcaption>热敏电阻的电阻与温度的关系。所有练习都使用<strong>曲线3</strong>。</figcaption>
+      </div>
+
+      <div class="key-point">NTC 热敏电阻：温度升高时电阻<strong>下降</strong>。热 &rarr; 电阻小。冷 &rarr; 电阻大。</div>
+
+      <h3 class="notes-h3">如何读热敏电阻曲线图</h3>
+      <ol class="notes-ol">
+        <li>在图上找到<strong>曲线3</strong>（编号标在曲线的右端）。</li>
+        <li>在 <strong>x 轴</strong>上找到你的温度值。</li>
+        <li>向上画一条竖线到<strong>曲线3</strong>，再向左画一条水平线到 <strong>y 轴</strong>。</li>
+        <li>读出电阻值。注意 y 轴使用 k 和 M 前缀 &mdash; 要换算成 &Omega;。</li>
+      </ol>
+
+      <p class="notes-p">在几个典型温度下，从曲线3读出的数值：</p>
+      <table class="data-table">
+        <tr><th>温度（&deg;C）</th><th>热敏电阻的电阻（曲线3）</th></tr>
+        <tr><td>0</td><td>~31 k&Omega; (31 000 &Omega;)</td></tr>
+        <tr><td>25</td><td>~10 k&Omega; (10 000 &Omega;)</td></tr>
+        <tr><td>50</td><td>~4 k&Omega; (4 000 &Omega;)</td></tr>
+        <tr><td>75</td><td>~1.7 k&Omega; (1 700 &Omega;)</td></tr>
+        <tr><td>100</td><td>~800 &Omega;</td></tr>
+      </table>
+
+      <!-- ── Worked examples ─────────────────────────────────────────── -->
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> 动手试试 &mdash; LDR 分压器（光传感器）</div>
+          <a href="../../../../../simulators/ae-ldr-divider.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; 全屏</a>
+        </div>
+        <div class="sim-instruction">下面已加载一个 LDR 分压器电路。LDR 处于<strong>下方</strong>位置，电压表测量它两端的 V<sub>out</sub>。点击 LDR，用滑块调节光照强度 &mdash; 观察电压表读数如何变化。</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-ldr" title="LDR 分压器" src="../../../../../simulators/ae-ldr-divider.html" loading="lazy"></iframe></div>
+      </div>
+
+      <h2 class="notes-h2">在分压器计算中使用图表数值 <span class="zh-en">Using a graph value in a voltage divider calculation</span></h2>
+      <p class="notes-p">步骤总是一样的：<strong>先从图中读出电阻值</strong>，然后像对待任何固定电阻器一样，把它代入分压器公式。</p>
+
+      <div class="circuit-figure" style="flex:0 0 auto;min-width:150px;margin:0 auto 12px;">
+        <img src="../../../../n5/electronics/analogue/images/voltage-divider-ldr-example.png" alt="分压器：上方为 R1（10kΩ 固定电阻），下方为 LDR，Vout 从两者之间引出，底部为 0V" style="height:225px;max-width:100%;display:block;margin:0 auto;">
+        <figcaption>R1（固定电阻）在上方，LDR（R2）在下方 &mdash; 测量 LDR 两端的 V<sub>out</sub>。</figcaption>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">例题1 &mdash; LDR 分压器（从图中读数）</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">一个电路使用 9 V 电源，上方为固定电阻器 R<sub>1</sub> = 10 k&Omega;，下方 R<sub>2</sub> 为 ORP12 型 LDR。测量 LDR 两端的 V<sub>out</sub>。求光照强度为 100 lux 时的 V<sub>out</sub>。</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>从图中读数：</strong>在 100 lux 时，ORP12 的电阻 &asymp; <strong>1.2 k&Omega;</strong> = 1 200 &Omega;</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content"><strong>总电阻：</strong> R<sub>T</sub> = 10 000 + 1 200 = <strong>11 200 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>分压器公式：</strong> V<sub>out</sub> = V<sub>s</sub> &times; <span class="frac"><span class="frac-n">R<sub>LDR</sub></span><span class="frac-d">R<sub>T</sub></span></span></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content">V<sub>out</sub> = 9 &times; <span class="frac"><span class="frac-n">1 200</span><span class="frac-d">11 200</span></span> = <strong>0.96 V</strong></div></div>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">例题2 &mdash; 强烈阳光下的 LDR</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">同一个电路。求强烈阳光下（10 000 lux）LDR 两端的 V<sub>out</sub>。</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>从图中读数：</strong>在 10 000 lux 时，电阻 &asymp; <strong>25 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">R<sub>T</sub> = 10 000 + 25 = <strong>10 025 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content">V<sub>out</sub> = 9 &times; <span class="frac"><span class="frac-n">25</span><span class="frac-d">10 025</span></span> = <strong>0.022 V</strong> &mdash; 非常小，因为 LDR 的电阻非常小，只分得极少一部分电压。</div></div>
+      </div>
+
+      <div class="circuit-figure" style="flex:0 0 auto;min-width:150px;margin:0 auto 12px;">
+        <img src="../../../../n5/electronics/analogue/images/voltage-divider-thermistor-example.png" alt="分压器：上方为热敏电阻，下方为固定电阻 R2（10kΩ），Vout 从两者之间引出，底部为 0V" style="height:225px;max-width:100%;display:block;margin:0 auto;">
+        <figcaption>热敏电阻（R1）在上方，固定电阻 R2 在下方 &mdash; 测量 R2 两端的 V<sub>out</sub>。</figcaption>
+      </div>
+
+      <div class="worked-example">
+        <div class="worked-example-title">例题3 &mdash; 热敏电阻分压器（从图中读数）</div>
+        <p style="font-size:13px;color:var(--gray-600);margin-bottom:12px;">一个 9 V 电路中，上方电阻器（R<sub>1</sub>）为热敏电阻（曲线3），下方为固定电阻器 R<sub>2</sub> = 10 k&Omega;。V<sub>out</sub> 取自固定电阻器两端。求 25&deg;C 和 100&deg;C 时的 V<sub>out</sub>。</p>
+        <div class="step"><div class="step-num">1</div><div class="step-content"><strong>在 25&deg;C 时：</strong>读曲线3 &rarr; 电阻 &asymp; <strong>10 k&Omega;</strong> = 10 000 &Omega;</div></div>
+        <div class="step"><div class="step-num">2</div><div class="step-content">R<sub>T</sub> = 10 000 + 10 000 = 20 000 &Omega; &nbsp;&nbsp; V<sub>out</sub> = 9 &times; <span class="frac"><span class="frac-n">10 000</span><span class="frac-d">20 000</span></span> = <strong>4.5 V</strong></div></div>
+        <div class="step"><div class="step-num">3</div><div class="step-content"><strong>在 100&deg;C 时：</strong>读曲线3 &rarr; 电阻 &asymp; <strong>800 &Omega;</strong></div></div>
+        <div class="step"><div class="step-num">4</div><div class="step-content">R<sub>T</sub> = 800 + 10 000 = 10 800 &Omega; &nbsp;&nbsp; V<sub>out</sub> = 9 &times; <span class="frac"><span class="frac-n">10 000</span><span class="frac-d">10 800</span></span> = <strong>8.33 V</strong></div></div>
+        <div class="step"><div class="step-num">5</div><div class="step-content"><strong>结论：</strong>温度升高时，热敏电阻的电阻下降，因此它分得的电压变少 &mdash; 固定电阻器两端的 V<sub>out</sub> <em>上升</em>。</div></div>
+      </div>
+
+      <!-- ── Task 6a ────────────────────────────────────────────────── -->
+      <div class="assignment" id="assignment-task6a">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; 任务6a &mdash; 读传感器曲线图并计算 V<sub>out</sub></div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">使用上面的 ORP12 LDR 曲线图和热敏电阻曲线图（曲线3）回答这些问题。每道计算题都要清楚写出：从图中读出的电阻值、R<sub>T</sub> 和 V<sub>out</sub>。</p>
+
+          <div class="task-item">
+            <div class="task-q">1. 用 LDR 曲线图读出 ORP12 在下列光照强度下的电阻，并记录在表中。</div>
+            <table class="data-table" style="margin-top:10px;">
+              <tr><th>光照强度（lux）</th><th>LDR 电阻（从图中读出）</th></tr>
+              <tr><td>10</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q080" data-placeholder=""></td></tr>
+              <tr><td>100</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q081" data-placeholder=""></td></tr>
+              <tr><td>1 000</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q082" data-placeholder=""></td></tr>
+              <tr><td>10 000</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q083" data-placeholder=""></td></tr>
+            </table>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">2. 在一个分压器中，ORP12 LDR 是<strong>下方</strong>电阻器（R<sub>2</sub>），上方是 10 k&Omega; 固定电阻器（R<sub>1</sub>），电源为 9 V。测量 LDR 两端的 V<sub>out</sub>。用你在第1题中的读数，计算每个光照水平下的 V<sub>out</sub>。</div>
+            <table class="data-table" style="margin-top:10px;">
+              <tr><th>光照强度</th><th>LDR 电阻（从图中读出）</th><th>R<sub>T</sub></th><th>LDR 两端的 V<sub>out</sub></th></tr>
+              <tr><td>10 lux</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q084" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q085" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q086" data-placeholder=""></td></tr>
+              <tr><td>1 000 lux</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q087" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q088" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q089" data-placeholder=""></td></tr>
+            </table>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">3. 描述光线变亮时 LDR 两端的 V<sub>out</sub> 如何变化。结合曲线图和你对分压器的理解解释原因。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q090"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q090" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">4. 用热敏电阻曲线图（曲线3）读出下列各温度下的电阻。</div>
+            <table class="data-table" style="margin-top:10px;">
+              <tr><th>温度（&deg;C）</th><th>热敏电阻的电阻（从曲线3读出）</th></tr>
+              <tr><td>0</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q091" data-placeholder=""></td></tr>
+              <tr><td>25</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q092" data-placeholder=""></td></tr>
+              <tr><td>75</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q093" data-placeholder=""></td></tr>
+              <tr><td>100</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q094" data-placeholder=""></td></tr>
+            </table>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">5. 在一个分压器中，热敏电阻（曲线3）是<strong>上方</strong>电阻器，下方是 10 k&Omega; 固定电阻器，电源为 9 V。测量固定电阻器两端的 V<sub>out</sub>。用你在第4题中的读数，计算 0&deg;C 和 100&deg;C 时的 V<sub>out</sub>。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q095"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q095" data-placeholder="写出两个温度下的计算过程……"></div>
+          </div>
+
+          <div class="extension-task">
+            <div class="extension-header"><div class="extension-header-text">&#x2B50; 拓展任务</div></div>
+            <div class="extension-body">
+              <div class="task-item">
+                <div class="task-q">6. 一位设计师需要在 ORP12 LDR 受到 1 000 lux 光照时，从 9 V 电源得到 V<sub>out</sub> = 6 V。V<sub>out</sub> 取自固定电阻器（下方位置）两端。用曲线图求出 1 000 lux 时 LDR 的电阻，再计算所需固定电阻器的阻值。写出全部计算过程。</div>
+                <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q097"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q097" data-placeholder="在这里输入你的答案……"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task6a', 'Task 6a &mdash; Reading sensor graphs and calculating Vout')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+      </div>
+      </div>
+
+      <h3 class="notes-h3">输出电压告诉我们什么？</h3>
+      <p class="notes-p">在这种接法中，LDR 是<strong>下方</strong>电阻器，测量的是它两端的 V<sub>out</sub>。光照增强时，LDR 的电阻<strong>下降</strong>。由于它在总电阻中所占的比例变小，它分得的电源电压也变少 &mdash; 所以光线变亮时 <strong>V<sub>out</sub> 下降</strong>。</p>
+      <p class="notes-p">反过来，光线变<strong>暗</strong>时，LDR 的电阻上升，分得更多的电压，<strong>V<sub>out</sub> 上升</strong>。因此这个电路在黑暗中产生<em>高</em>输出电压 &mdash; 这就是它常被称为<strong>暗传感器（dark sensor）</strong>的原因。</p>
+
+      <div class="key-point">LDR 在<strong>下方</strong>：<strong>黑暗时 V<sub>out</sub> 高</strong>，明亮时低 &mdash; 暗传感器。<br>LDR 在<strong>上方</strong>：<strong>明亮时 V<sub>out</sub> 高</strong>，黑暗时低 &mdash; 光传感器。</div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:20px;justify-content:center;margin:16px 0;">
+        <div class="circuit-figure" style="flex:0 0 auto;min-width:150px;">
+          <img src="../../../../n5/electronics/analogue/images/voltage-divider-ldr-lower.png" alt="分压器：上方为固定电阻器，下方为 LDR，Vout 从两者之间引出，底部为 0V" style="height:225px;max-width:100%;display:block;margin:0 auto;">
+          <figcaption><strong>LDR 在下方</strong> &mdash; <strong>黑暗</strong>时 V<sub>out</sub> 高（暗传感器）</figcaption>
+        </div>
+        <div class="circuit-figure" style="flex:0 0 auto;min-width:150px;">
+          <img src="../../../../n5/electronics/analogue/images/voltage-divider-ldr-upper.png" alt="分压器：上方为 LDR，下方为固定电阻器，Vout 从两者之间引出，底部为 0V" style="height:225px;max-width:100%;display:block;margin:0 auto;">
+          <figcaption><strong>LDR 在上方</strong> &mdash; <strong>明亮</strong>时 V<sub>out</sub> 高（光传感器）</figcaption>
+        </div>
+      </div>
+
+      <div class="assignment" id="assignment-task6b">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; 任务6b &mdash; 光传感器与暗传感器</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. 用上面的模拟器，记录三种不同光照水平下的 V<sub>out</sub>，并描述变化趋势。</div>
+            <table class="data-table" style="margin-top:8px;">
+              <tr><th>光照水平</th><th>V<sub>out</sub>（V）</th></tr>
+              <tr><td>暗</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q105" data-placeholder=""></td></tr>
+              <tr><td>中等</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q106" data-placeholder=""></td></tr>
+              <tr><td>亮</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q107" data-placeholder=""></td></tr>
+            </table>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. 现在在模拟器中重新搭建电路，把 LDR 和固定电阻器的位置<strong>对调</strong>（LDR 在上，固定电阻器在下，电压表接在固定电阻器两端）。记录相同三种光照水平下的 V<sub>out</sub>。</div>
+            <table class="data-table" style="margin-top:8px;">
+              <tr><th>光照水平</th><th>V<sub>out</sub>（V）&mdash; LDR 在上方</th></tr>
+              <tr><td>暗</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q108" data-placeholder=""></td></tr>
+              <tr><td>中等</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q109" data-placeholder=""></td></tr>
+              <tr><td>亮</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q110" data-placeholder=""></td></tr>
+            </table>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. 在第二个电路（LDR 在上方）中，明亮时 V<sub>out</sub> 高，黑暗时低。这种接法常被称为<strong>光传感器（light sensor）</strong>。解释为什么第一个电路（LDR 在下方）通常被称为<strong>暗传感器（dark sensor）</strong>。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q111"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q111" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. 一位设计师想让路灯在天黑时自动打开。分压器应该采用光传感器接法还是暗传感器接法？解释你的理由。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q112"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q112" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+        </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task6b', 'Task 6b &mdash; Light sensor vs dark sensor')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+      </div>
+      </div>
+
+      <div class="assignment" id="assignment-inv4">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; 探究4 &mdash; 传感器分压器中 V<sub>out</sub> 如何变化？</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">在这个探究中，你将研究传感器分压器的输出电压如何取决于 (a) 传感器的电阻，以及 (b) 元件的摆放顺序。使用上面的模拟器。V<sub>out</sub> 总是测量<strong>分压器中点与 0 V（接地）之间</strong>的电压 &mdash; 即中间连线上的电压。</p>
+
+          <h3 style="font-size:14px;font-weight:600;color:var(--gray-700);margin:14px 0 8px;">A部分 &mdash; 电阻对 V<sub>out</sub> 的影响</h3>
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px;">设置：LDR 在<strong>上方</strong>位置，10 k&Omega; 固定电阻器在<strong>下方</strong>位置。测量固定电阻器（下方元件）两端的 V<sub>out</sub>。</p>
+
+          <div class="task-item">
+            <div class="task-q">1. 把 LDR 的光照从暗调到亮。记录每种条件下的 V<sub>out</sub>。</div>
+            <table class="data-table" style="margin-top:8px;">
+              <tr><th>光照条件</th><th>LDR 电阻（约值）</th><th>V<sub>out</sub>（下方电阻器两端）</th></tr>
+              <tr><td>很暗</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q070" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q071" data-placeholder=""></td></tr>
+              <tr><td>昏暗</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q072" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q073" data-placeholder=""></td></tr>
+              <tr><td>亮</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q074" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q075" data-placeholder=""></td></tr>
+            </table>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">2. 光线变暗时，LDR 的电阻<em>增大</em>。下方（固定）电阻器两端的 V<sub>out</sub> 会怎样变化？用“分压”的概念解释。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q034"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q034" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+
+          <h3 style="font-size:14px;font-weight:600;color:var(--gray-700);margin:14px 0 8px;">B部分 &mdash; 对调元件位置的影响</h3>
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:10px;">现在对调：把<strong>固定电阻器放在上方</strong>，<strong>LDR 放在下方</strong>。现在测量 LDR 两端的 V<sub>out</sub>。</p>
+
+          <div class="task-item">
+            <div class="task-q">3. 在相同的三种光照条件下重复测量。</div>
+            <table class="data-table" style="margin-top:8px;">
+              <tr><th>光照条件</th><th>LDR 电阻（约值）</th><th>V<sub>out</sub>（下方 LDR 两端）</th></tr>
+              <tr><td>很暗</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q098" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q099" data-placeholder=""></td></tr>
+              <tr><td>昏暗</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q100" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q101" data-placeholder=""></td></tr>
+              <tr><td>亮</td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q102" data-placeholder=""></td><td class="answer-cell answer-cell-editable" contenteditable="true" data-key="ae-q103" data-placeholder=""></td></tr>
+            </table>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">4. 比较 A 部分和 B 部分的结果。V<sub>out</sub> 对光照变化的响应有什么关键区别？哪种接法在黑暗中得到<em>更高</em>的 V<sub>out</sub>？</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q035"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q035" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+
+          <div class="task-item">
+            <div class="task-q">5. 一位设计师希望温度<strong>高</strong>时 V<sub>out</sub> 也<strong>高</strong>。热敏电阻应该放在上方还是下方？解释你的理由。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q104"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q104" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+
+          <div class="key-point" style="margin-top:14px;"><strong>关键结论：</strong>传感器分压器产生的电压会随条件<em>变化</em> &mdash; 但单靠一个变化的电压无法开关电动机或灯。我们需要一种元件，能利用传感器电路中的小电压，去控制另一个独立输出电路中大得多的电流。这种元件就是<strong>晶体管（transistor）</strong>。</div>
+        </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv4', 'Investigation 4 &mdash; How does Vout change in a sensor voltage divider?')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+      </div>
+      </div>
+
+      <div class="assignment" id="assignment-task6c">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; 任务6c &mdash; 分压器计算</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. 一个分压器中 R<sub>1</sub> = 200 &Omega;，R<sub>2</sub> = 600 &Omega;，电源为 12 V。计算每个电阻器两端的电压。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q036"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q036" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. 一个分压器中 R<sub>1</sub> = 1.2 k&Omega;，R<sub>2</sub> = 2.4 k&Omega;，电源为 9 V。计算 1.2 k&Omega; 电阻器两端的电压。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q037"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q037" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. 一个分压器接在 12 V 电源上，R<sub>2</sub> 两端得到 4 V。如果 R<sub>2</sub> = 300 &Omega;，计算 R<sub>1</sub>。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q038"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q038" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. 一个热敏电阻与 10 k&Omega; 固定电阻器组成分压器，电源为 9 V。在 80&deg;C 时热敏电阻的电阻为 500 &Omega;；在 20&deg;C 时为 10 k&Omega;。</div>
+            <div class="task-q-sub">a) 计算 80&deg;C 时固定电阻器两端的 V<sub>out</sub>。</div><div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q039"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q039" data-placeholder="在这里输入你的答案……"></div>
+            <div class="task-q-sub">b) 计算 20&deg;C 时固定电阻器两端的 V<sub>out</sub>。</div><div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q040"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q040" data-placeholder="在这里输入你的答案……"></div>
+            <div class="task-q-sub">c) 温度升高时，<em>热敏电阻</em>两端的电压如何变化？解释原因。</div><div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q041"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q041" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="extension-task">
+            <div class="extension-header"><div class="extension-header-text">&#x2B50; 拓展任务</div></div>
+            <div class="extension-body">
+              <div class="task-item">
+                <div class="task-q">5. 要求一个分压器在热敏电阻于 100&deg;C 时电阻为 2 k&Omega; 的情况下，从 9 V 电源得到 V<sub>out</sub> = 4.5 V。计算合适的固定电阻器阻值。说明温度下降时 V<sub>out</sub> 会升高还是降低，并解释你的答案。</div>
+                <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q042"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q042" data-placeholder="在这里输入你的答案……"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task6c', 'Task 6c &mdash; Voltage divider calculations')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+      </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-9">第9节：晶体管 <span class="zh-en">Transistors</span></h1>
+
+      <h2 class="notes-h2">为什么需要晶体管？</h2>
+      <p class="notes-p">你已经看到，传感器分压器产生的电压会随条件变化 &mdash; 在黑暗中升高、在光亮中降低，或随温度升高而升高。但单靠这个变化的电压无法开关电动机、蜂鸣器或灯。这些输出装置所需的<strong>电流大得多</strong>，是微小的传感器电路无法提供的。</p>
+      <p class="notes-p">我们需要一种元件，能利用传感器电路中的<strong>小电压（和极小的电流）</strong>，去控制另一个完全独立的输出电路中<strong>大得多的电流</strong>。这种元件就是<strong>晶体管</strong>。</p>
+
+      <div class="key-point" style="font-size:14px;">&#x1F4A1; <strong>水龙头类比：</strong>想象一个水龙头。把把手轻轻一拧（很小的基极电流），就能让大量的水流过水管（很大的集电极电流）。晶体管的工作原理相同 &mdash; 基极上的一个小信号控制集电极和发射极之间大得多的电流。这里的关键元件是晶体管，而不是继电器 &mdash; 晶体管是一种封装在小小外壳里的固态（没有活动部件）电子开关。</div>
+
+      <h2 class="notes-h2">什么是晶体管？</h2>
+      <p class="notes-p">N5 工程科学中使用的是 <strong>NPN 双极结型晶体管（NPN Bipolar Junction Transistor，BJT）</strong>。它是一种固态半导体器件 &mdash; 没有活动部件，每秒可以开关数百万次。它有三个引脚：</p>
+
+      <div class="comp-grid">
+        <div class="comp-card-sym">
+          <svg width="80" height="80" viewBox="0 0 80 80">
+            <line x1="2" y1="40" x2="20" y2="40" stroke="#334155" stroke-width="2"/>
+            <line x1="20" y1="20" x2="20" y2="60" stroke="#334155" stroke-width="3"/>
+            <line x1="20" y1="28" x2="45" y2="10" stroke="#334155" stroke-width="2"/>
+            <line x1="45" y1="10" x2="45" y2="0" stroke="#334155" stroke-width="2"/>
+            <line x1="20" y1="52" x2="45" y2="70" stroke="#334155" stroke-width="2"/>
+            <line x1="45" y1="70" x2="45" y2="80" stroke="#334155" stroke-width="2"/>
+            <polygon points="38.8,65.5 31.4,53.4 25.0,62.4" fill="#334155"/>
+            <text x="2" y="34" font-size="11" font-weight="700" fill="#dc2626">B</text>
+            <text x="50" y="10" font-size="11" font-weight="700" fill="#dc2626">C</text>
+            <text x="50" y="76" font-size="11" font-weight="700" fill="#dc2626">E</text>
+          </svg>
+          <div class="comp-name">NPN 晶体管</div>
+          <div class="comp-unit">B = 基极（Base），C = 集电极（Collector），E = 发射极（Emitter）</div>
+        </div>
+      </div>
+
+      <ul class="notes-ul">
+        <li><strong>基极 Base（B）</strong> &mdash; 控制输入端。连接到传感器分压器的输出。当 V<sub>B</sub> 升高到约 0.7 V 以上时，晶体管导通（开）。</li>
+        <li><strong>集电极 Collector（C）</strong> &mdash; 通过输出装置（灯、电动机、继电器线圈等）连接到电源正极。</li>
+        <li><strong>发射极 Emitter（E）</strong> &mdash; 连接到 0 V（接地）。电流从这里流出。</li>
+      </ul>
+
+      <h2 class="notes-h2">晶体管如何开关 <span class="zh-en">How the transistor switches</span></h2>
+
+      <table class="data-table">
+        <tr><th>基极电压（V<sub>B</sub>）</th><th>晶体管状态</th><th>集电极&ndash;发射极通路</th><th>输出装置</th></tr>
+        <tr><td>低于约 0.7 V</td><td><strong>关 OFF</strong></td><td>断路 &mdash; 没有电流流过</td><td>关</td></tr>
+        <tr><td>高于约 0.7 V</td><td><strong>ON</strong></td><td>接通 &mdash; 大电流顺畅流过</td><td>On</td></tr>
+      </table>
+
+      <div class="warning">&#x26A0;&#xFE0F; 在 N5 阶段，我们把晶体管当作一个简单的<strong>开/关开关</strong>。实际上，随着基极电压升高，晶体管是逐渐导通的 &mdash; 这种放大特性超出了本课程的范围。</div>
+
+      <h2 class="notes-h2">完整的晶体管开关电路 <span class="zh-en">The complete transistor switching circuit</span></h2>
+      <p class="notes-p">晶体管开关电路有<strong>两个独立的回路</strong>：</p>
+      <ul class="notes-ul">
+        <li><strong>输入（基极）电路：</strong>即传感器分压器。条件变化时，分压器的 V<sub>out</sub> 升高到 0.7 V 以上，使晶体管导通。</li>
+        <li><strong>输出（集电极）电路：</strong>输出装置位于电源正极和集电极之间。晶体管导通时，电流流过该装置。</li>
+      </ul>
+      <p class="notes-p">这两个电路只在<strong>发射极处共用 0 V 连接</strong>。这种分隔意味着输出电路可以在比脆弱的传感器电路大得多的电流下工作 &mdash; 晶体管在两者之间起到桥梁作用。</p>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> 动手试试 &mdash; 晶体管作为开关</div>
+          <a href="../../../../../simulators/electronics.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; 全屏</a>
+        </div>
+        <div class="sim-instruction">下面的模拟器显示一个由 LDR 分压器控制的晶体管开关电路。调节光照强度并观察：(1) 基极电压如何变化，(2) 晶体管恰好在哪一点导通，以及 (3) 输出装置会发生什么。</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-transistor" title="晶体管开关" src="../../../../../simulators/ae-light-sensor.html" loading="lazy"></iframe></div>
+      </div>
+
+      <h2 class="notes-h2">需要保护二极管 <span class="zh-en">The need for a protective diode</span></h2>
+      <p class="notes-p">二极管（diode）只允许电流<strong>单向流动</strong>。它的两个端子是<strong>阳极 anode</strong>（A，+）和<strong>阴极 cathode</strong>（c，&minus;）。只有当阳极电压高于阴极时，电流才会流动。</p>
+
+      <div class="comp-grid">
+        <div class="comp-card-sym">
+          <svg width="80" height="40" viewBox="0 0 80 40">
+            <line x1="2" y1="20" x2="22" y2="20" stroke="#334155" stroke-width="2"/>
+            <polygon points="22,10 22,30 42,20" fill="white" stroke="#334155" stroke-width="2" stroke-linejoin="round"/>
+            <line x1="42" y1="10" x2="42" y2="30" stroke="#334155" stroke-width="2.5"/>
+            <line x1="42" y1="20" x2="78" y2="20" stroke="#334155" stroke-width="2"/>
+            <text x="22" y="8" font-size="9" fill="#334155" font-weight="700">A</text>
+            <text x="42" y="8" font-size="9" fill="#334155" font-weight="700">c</text>
+          </svg>
+          <div class="comp-name">二极管 Diode</div>
+          <div class="comp-unit">单向电流</div>
+        </div>
+      </div>
+
+      <p class="notes-p">如果输出装置是<strong>继电器线圈、电动机、电磁铁（solenoid）或蜂鸣器</strong>，就存在一个隐藏的危险。这些装置内部都有线圈。当晶体管把电流<em>切断</em>时，线圈内部的磁场会迅速消失。这会产生一个方向相反的很大的电压尖峰 &mdash; 有时高达数百伏，只持续不到一毫秒。</p>
+      <p class="notes-p">这称为<strong>反电动势（back e.m.f.，back electromotive force）</strong>。它会沿集电极引脚反向传回，可能<strong>永久损坏晶体管</strong>。</p>
+
+      <div class="key-point">每当晶体管驱动带线圈的装置（继电器、电动机、电磁铁、蜂鸣器）时，必须在该装置两端<strong>反向</strong>并联一个<strong>保护二极管（protective diode）</strong>，用来吸收反电动势尖峰。</div>
+
+      <p class="notes-p">二极管分两个阶段工作：</p>
+      <ul class="notes-ul">
+        <li><strong>晶体管导通（ON）时：</strong>电流正常流过线圈。二极管处于反向偏置 &mdash; 它阻断电流，不起作用。</li>
+        <li><strong>晶体管截止（OFF）时：</strong>反电动势试图推动电流反向流动。此时二极管处于正向偏置，它导通，为线圈提供一条安全的环形通路，把能量以极少量热的形式无害地消耗掉。晶体管根本不会受到尖峰的冲击。</li>
+      </ul>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> 动手试试 &mdash; 反电动势与保护二极管</div>
+          <a href="../../../../../simulators/ae-back-emf.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; 全屏</a>
+        </div>
+        <div class="sim-instruction">两个相同的电路并排显示。左边的电路由晶体管驱动电动机，<strong>没有保护二极管</strong>。右边的电路设置相同，但<strong>电动机两端并联了二极管</strong>。调节每一边的 LDR 来开关晶体管 &mdash; 观察电压表读数，比较晶体管截止时集电极处发生的情况。</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-backemf" title="反电动势与保护二极管" src="../../../../../simulators/ae-back-emf.html" loading="lazy"></iframe></div>
+      </div>
+
+      <div class="assignment" id="assignment-inv5">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; 探究5 &mdash; 晶体管开关</div></div>
+        <div class="assignment-body">
+          <p style="font-size:13px;color:var(--gray-600);margin-bottom:14px;">在模拟器中搭建一个光感晶体管电路。使用 9 V 电源；用 LDR 与 10 k&Omega; 固定电阻器串联作为分压器（基极电路）；用 LED 与 470 &Omega; 电阻器串联作为输出（集电极电路）。</p>
+          <div class="task-item">
+            <div class="task-q">1a. 调节 LDR 的光照强度。描述在明亮和黑暗条件下 LED 会发生什么。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q043"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q043" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">1b. 用电压表测量晶体管基极的电压。晶体管在多大电压时导通？</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q044"></span></div><div class="answer-box answer-box-sm" contenteditable="true" data-key="ae-q044" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. 用热敏电阻替换 LDR。描述改变温度时会发生什么。LED 是在变热时还是变冷时点亮？哪种元件位置（分压器的上方或下方）会产生这种效果？</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q045"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q045" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. 用继电器线圈替换 LED，并在线圈两端加一个保护二极管。用你自己的话解释为什么需要这个二极管，以及没有它时晶体管会怎样。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q046"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q046" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+        </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-inv5', 'Investigation 5 &mdash; Transistor switching')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+      </div>
+      </div>
+
+      <div class="assignment" id="assignment-task8">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; 任务8 &mdash; 晶体管电路设计</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">为下列功能设计晶体管开关电路。画出每个电路的草图，并解释你选择元件的理由。你可以在模拟器中搭建设计并粘贴到答题框中，也可以用文字清楚描述，或者画在纸上给老师看。</div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">1. 天亮时电动机启动。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q047"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q047" data-placeholder="在这里输入你的答案……" style="min-height:100px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. 天冷时电磁铁（solenoid）通电动作。设计中要包含一个保护二极管。清楚标出二极管的位置，并解释为什么需要它。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q048"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q048" data-placeholder="在这里输入你的答案……" style="min-height:100px;"></div>
+          </div>
+        </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task8', 'Task 8 &mdash; Transistor circuit design')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+      </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-10">第10节：继电器 <span class="zh-en">Relays</span></h1>
+
+      <h2 class="notes-h2">为什么使用继电器？</h2>
+      <p class="notes-p">许多输出装置 &mdash; 例如工业机械中的电动机或使用市电的加热器 &mdash; 需要的电压和电流远远超过低功率电子电路能够安全提供的范围。<strong>继电器（relay）</strong>就是两者之间的桥梁：一个小的控制电流使一个由磁力操作的触点动作，从而控制大功率电路。</p>
+
+      <h2 class="notes-h2">继电器如何工作 <span class="zh-en">How the relay works</span></h2>
+      <p class="notes-p">当电流流过继电器的<strong>线圈（coil）</strong>时，线圈变成一个<strong>电磁铁（electromagnet）</strong>。它吸引一块叫做<strong>衔铁（armature）</strong>的可动金属片，衔铁移动并使开关触点闭合（或断开）。电流停止时，弹簧把衔铁拉回原位。</p>
+
+      <div class="key-point">继电器利用线圈中的小电流，去开关另一个完全独立的输出电路中大得多的电流 &mdash; 两个电路之间没有任何电气连接。</div>
+
+      <div class="comp-grid">
+        <div class="comp-card-sym">
+          <svg width="80" height="80" viewBox="0 0 80 80">
+            <rect x="5" y="5" width="70" height="70" fill="none" stroke="#94a3b8" stroke-dasharray="3,3"/>
+            <rect x="12" y="20" width="22" height="40" fill="white" stroke="#334155" stroke-width="1.5"/>
+            <line x1="23" y1="5" x2="23" y2="20" stroke="#334155" stroke-width="1.5"/>
+            <line x1="23" y1="60" x2="23" y2="75" stroke="#334155" stroke-width="1.5"/>
+            <line x1="34" y1="40" x2="42" y2="40" stroke="#94a3b8" stroke-width="1.2" stroke-dasharray="2,2"/>
+            <line x1="55" y1="5" x2="55" y2="18" stroke="#334155" stroke-width="1.5"/>
+            <circle cx="55" cy="18" r="3" fill="white" stroke="#334155" stroke-width="1.4"/>
+            <line x1="55" y1="18" x2="44.8" y2="55.1" stroke="#334155" stroke-width="1.5"/>
+            <circle cx="44" cy="58" r="3" fill="white" stroke="#334155" stroke-width="1.4"/>
+            <line x1="44" y1="61" x2="44" y2="75" stroke="#334155" stroke-width="1.5"/>
+            <circle cx="62" cy="58" r="3" fill="white" stroke="#334155" stroke-width="1.4"/>
+            <line x1="62" y1="61" x2="62" y2="75" stroke="#334155" stroke-width="1.5"/>
+          </svg>
+          <div class="comp-name">继电器 SPDT</div>
+          <div class="comp-unit">线圈 + 开关</div>
+        </div>
+      </div>
+
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x26A1;</span> 动手试试 &mdash; 继电器电路：用低电压控制市电加热器</div>
+          <a href="../../../../../simulators/ae-relay.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; 全屏</a>
+        </div>
+        <div class="sim-instruction">下面的电路是一个<strong>5 V 微控制器式电路</strong>，利用晶体管和继电器来开关一台<strong>230 V 市电加热器</strong>。调节可变电阻器来改变基极电压，观察晶体管如何控制继电器，继电器又如何开关市电加热器 &mdash; 两个电路之间完全电气隔离。</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" id="sim-relay" title="继电器电路" src="../../../../../simulators/ae-relay.html" loading="lazy"></iframe></div>
+      </div>
+
+      <div class="assignment" id="assignment-task9">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; 任务9 &mdash; 继电器</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. 用你自己的话解释，为什么需要用继电器把 5 V 控制电路与 230 V 市电加热器连接起来。为什么晶体管不能直接完成这项工作？</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q049"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q049" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. 观察模拟器中的电路，继电器线圈两端没有接保护二极管。为什么这会使晶体管容易损坏？你会加什么来保护它？</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q050"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q050" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. 在模拟器中调节可变电阻器，使加热器打开。描述你在控制电路和市电电路中观察到的现象。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q051"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q051" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. 给出两个理由，说明为什么把市电加热器直接接到晶体管输出端、而不使用继电器是危险的。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q052"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q052" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="extension-task">
+            <div class="extension-header"><div class="extension-header-text">&#x2B50; 拓展任务</div></div>
+            <div class="extension-body">
+              <div class="task-item">
+                <div class="task-q">5. 这个电路中的继电器是 SPDT 型（单刀双掷）。它有一个常开（NO）触点和一个常闭（NC）触点。描述如何利用 NC 触点设计一个电路，使晶体管<em>导通</em>时加热器<em>关闭</em>。这在什么时候会有用？</div>
+                <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-q053"></span></div><div class="answer-box" contenteditable="true" data-key="ae-q053" data-placeholder="在这里输入你的答案……" style="min-height:100px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      
+      <div class="task-download-row">
+        <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task9', 'Task 9 &mdash; Relays')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+      </div>
+      </div>
+
+      <hr class="divider">
+
+      <!-- ═══════════════════════════════════════════════════════════════════════ -->
+      <h1 class="notes-h1" id="section-11">第11节：设计挑战 <span class="zh-en">Design Challenges</span></h1>
+      <p class="notes-p">下面的挑战与你目前做过的任务不同。每个挑战都给你一个真实的情境和一份简短的书面规格要求（specification）&mdash; 很像真正的工程任务书 &mdash; 而不是只有一个正确答案的单一问题。你需要设计一个满足规格要求的电路，搭建或模拟它，测试它，并评价它的实际表现。</p>
+      <div class="key-point"><strong>如何着手：</strong>开始之前先读完整份规格要求。想清楚课程笔记中哪些部分与之相关（分压器？串联/并联？继电器？），先做计算，再在模拟器中搭建和测试。你的评价应逐条对照规格要求中的编号要点 &mdash; 清楚说明每一条是否满足，以及满足的程度。</div>
+
+      <hr class="divider">
+
+      <h2 class="notes-h2" id="dc1">设计挑战1 &mdash; 爱丁堡跨年夜（Hogmanay）街道照明</h2>
+      <p class="notes-p">一家承包商正在为跨年夜（Hogmanay，苏格兰的新年庆祝活动）在皇家一英里大道（Royal Mile）的一段路上安装临时装饰灯。这套灯饰使用一串小灯（这里用固定电阻器来模拟），由同一个电源供电。</p>
+
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>电源电压：12 V</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>六盏相同的灯，每盏电阻为 60 &Omega;</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>六盏灯全部点亮时，电路总电流不得超过 1.5 A，以免超出延长线的额定值</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>如果任何一盏灯损坏（断路），其余的灯必须保持点亮</td></tr>
+      </table>
+
+      <div class="assignment" id="assignment-dc1">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; 设计挑战1 &mdash; 跨年夜街道照明</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) <strong>设计。</strong>考虑要求 (iv)，决定六盏灯应该串联还是并联，并说明理由。计算你所选接法在六盏灯都在时的总电阻和总电流，并确认它满足要求 (iii)。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-dc1a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc1a" data-placeholder="所选接法、理由和计算过程……" style="min-height:100px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) <strong>搭建/模拟。</strong>在 NoResistance 模拟器中用 12 V 电源和六个 60 &Omega; 电阻器搭建你的电路。粘贴或描述你完成的电路。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-dc1b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc1b" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) <strong>测试。</strong>在模拟器中移除一盏灯，表示它损坏了。记录其余的灯和电路总电流发生了什么变化。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-dc1c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc1c" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) <strong>评价。</strong>一盏灯损坏后，你的设计还满足规格要求吗？提出一个切实可行的改进，使灯饰更安全或更可靠。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-dc1d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc1d" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc1', 'Design Challenge 1 &mdash; Hogmanay street lighting')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h2 class="notes-h2" id="dc2">设计挑战2 &mdash; 法夫（Fife）塑料大棚自动通风扇</h2>
+      <p class="notes-p">一个社区菜园小组想保护他们的农作物不被高温损害，打算安装一台在塑料大棚（polytunnel）过热时自动启动的风扇。</p>
+
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>电源电压：9 V</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>当大棚内温度达到约 30&deg;C 时，风扇（一台电动机）应启动</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>现有一个热敏电阻，在 30&deg;C 时电阻为 4 k&Omega;</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>从 1 k&Omega;、2 k&Omega;、3.3 k&Omega; 或 4.7 k&Omega; 中选择一个固定电阻器。当晶体管基极处的 V<sub>out</sub> 达到至少电源电压的一半（4.5 V）时，视为风扇启动</td></tr>
+      </table>
+
+      <div class="assignment" id="assignment-dc2">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; 设计挑战2 &mdash; 大棚通风扇</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) <strong>设计。</strong>决定热敏电阻应放在分压器的上方还是下方，才能使 V<sub>out</sub> 随温度升高而上升，并解释你的理由。然后计算四个备选固定电阻器各自在 30&deg;C 时的 V<sub>out</sub>，选出最接近恰好在 30&deg;C 目标温度启动风扇的那一个（要求 iv）。写出全部计算过程。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-dc2a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc2a" data-placeholder="位置、每个电阻选项的计算过程以及你的选择……" style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) <strong>搭建/模拟。</strong>用你选的电阻器在模拟器中搭建完整电路 &mdash; 分压器、晶体管和电动机。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-dc2b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc2b" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) <strong>测试。</strong>把模拟器中热敏电阻的数值从低温状态逐渐调到 30&deg;C，记下风扇实际启动时的电阻值。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-dc2c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc2c" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) <strong>评价。</strong>实际启动点与 30&deg;C 有多接近？提出一个切实可行的改进 &mdash; 例如，用可变电阻器代替固定电阻器，是否会使设计更适合实际安装？</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-dc2d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc2d" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc2', 'Design Challenge 2 &mdash; Polytunnel vent fan')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h2 class="notes-h2" id="dc3">设计挑战3 &mdash; 自行车棚安全灯</h2>
+      <p class="notes-p">一所学校想在自行车棚门上方安装一盏 LED 灯，在天色暗到影响安全时自动点亮，不需要任何人去按开关。</p>
+
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>电源电压：6 V</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>现有一个 LDR：白天电阻约为 400 &Omega;，天色暗到影响安全时上升到约 8 k&Omega;</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>输出：一个红色 LED，点亮时电压降为 2 V，电流不得超过 20 mA</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>从 470 &Omega;、1 k&Omega; 或 2.2 k&Omega; 中为光感分压器选择一个固定电阻器。当晶体管基极处的 V<sub>out</sub> 达到至少电源电压的一半（3 V）时，视为灯点亮；白天时它必须保持在这个值以下</td></tr>
+      </table>
+
+      <div class="assignment" id="assignment-dc3">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; 设计挑战3 &mdash; 自行车棚安全灯</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) <strong>设计 &mdash; 传感器分压器。</strong>这里需要一个暗传感器。决定 LDR 在分压器中的位置，然后为三个备选固定电阻器分别计算白天<em>和</em>黑暗时的 V<sub>out</sub>。选出在“明确关”和“明确开”之间留有最可靠余量的电阻器，并说明理由。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-dc3a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc3a" data-placeholder="位置、每个电阻选项的计算过程以及你的选择……" style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) <strong>设计 &mdash; LED 限流电阻。</strong>计算使 LED 电流不超过 20 mA 所需的最小串联电阻，然后选择一个合适的标准阻值。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-dc3b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc3b" data-placeholder="在这里写出你的计算过程……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) <strong>搭建/模拟并测试。</strong>搭建完整电路，把模拟的光照从亮调到暗。记下 LED 实际点亮时的光照水平。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-dc3c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc3c" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) <strong>评价。</strong>开关点与你的设计相符吗？提出一个切实可行的设计改进。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-dc3d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc3d" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc3', 'Design Challenge 3 &mdash; Cycle shed security light')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h2 class="notes-h2" id="dc4">设计挑战4 &mdash; 艾茅斯（Eyemouth）港口结冰警示灯</h2>
+      <p class="notes-p">一个小渔港想在码头上安装一盏警示灯，当甲板冷到有结冰风险时自动点亮，在船员走出去之前提醒他们。</p>
+
+      <table class="spec-table">
+        <tr><th><span class="data-badge">i</span></th><td>控制电路电源：9 V</td></tr>
+        <tr><th><span class="data-badge">ii</span></th><td>输出：一盏 12 V 警示灯，通过继电器开关</td></tr>
+        <tr><th><span class="data-badge">iii</span></th><td>热敏电阻：在 3&deg;C（结冰风险阈值）时电阻 &asymp; 2 k&Omega;，在 15&deg;C（温和的天气）时 &asymp; 500 &Omega;</td></tr>
+        <tr><th><span class="data-badge">iv</span></th><td>从 1 k&Omega;、2 k&Omega; 或 3.3 k&Omega; 中选择一个固定电阻器。警示灯在 3&deg;C 及以下时必须亮（ON），在 15&deg;C 时必须明确关闭（OFF），沿用前面挑战中相同的 4.5 V（电源电压一半）开关约定</td></tr>
+        <tr><th><span class="data-badge">v</span></th><td>要包含一个保护二极管，并能说明它为什么放在那个位置</td></tr>
+      </table>
+
+      <div class="assignment" id="assignment-dc4">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; 设计挑战4 &mdash; 港口结冰警示灯</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">a) <strong>设计 &mdash; 传感器分压器。</strong>决定热敏电阻的位置，使天冷时 V<sub>out</sub> 高。为三个备选固定电阻器分别计算 3&deg;C 和 15&deg;C 时的 V<sub>out</sub>，选出最能满足要求 (iv) 的那一个。写出计算过程，包括不满足规格要求的选项及其原因。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-dc4a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc4a" data-placeholder="位置、每个电阻选项的计算过程以及你的选择……" style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">b) <strong>设计 &mdash; 输出级。</strong>结合要求 (ii)，解释为什么这里需要继电器。然后解释你会把保护二极管放在哪里，以及为什么需要它。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-dc4b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc4b" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">c) <strong>搭建/模拟并测试。</strong>搭建完整电路 &mdash; 热敏电阻分压器、晶体管、继电器、二极管和灯 &mdash; 并把模拟温度在 3&deg;C 和 15&deg;C 之间变化。记录你的观察结果。</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-dc4c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc4c" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">d) <strong>评价。</strong>你的设计满足规格要求的每一部分吗？把这个挑战与设计挑战3比较：为什么那个电路不需要继电器，而这个需要？</div>
+            <div class="answer-label">答案 <span class="saved-indicator" id="ind-ae-dc4d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="ae-dc4d" data-placeholder="在这里输入你的答案……"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc4', 'Design Challenge 4 &mdash; Harbour ice-warning light')">&#x2B07;&#xFE0F; 下载我的答案（PDF）</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; 答案会自动保存在这台设备的浏览器中。</span>
+        <button class="ctrl-btn ctrl-btn-download-all" id="downloadAllBtn" onclick="downloadAllAnswersPDF()">&#x2B07;&#xFE0F; 下载我的全部答案（PDF）</button>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8; 打印</button>
+        <button class="ctrl-btn ctrl-btn-clear" id="btn-clear-all">&#x1F5D1; 清除所有答案</button>
+      </div>
+      <div class="storage-status" id="storage-status">上次保存：从未</div>
+
+      <div class="page-nav" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
+        <button class="ctrl-btn ctrl-btn-print" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});">&#x2B06;&#xFE0F; 返回顶部</button>
+        <a href="index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">&#x2302; 主菜单</a> <a href="../../../../n5/electronics/digital/course-notes.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">下一节（英文）&#x2192;</a>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>Engineering Science Scotland &middot; 与 QS（苏格兰资格认证局）课程规格一致</span> <a href="../../../../../teacher/login.html">教师专区</a>
+</footer>
+
+<script src="../../../../../js/site.js"></script>
+<script src="../../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../../../");</script>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// ── localStorage saving for all answer boxes and cells ─────────────────────
+const STORAGE_PREFIX = 'ess_answers_';
+function saveValue(k, v) { try { localStorage.setItem(STORAGE_PREFIX + k, v); updateStatusBar(); } catch(e) {} }
+function loadValue(k) { try { return localStorage.getItem(STORAGE_PREFIX + k) || ''; } catch(e) { return ''; } }
+function updateStatusBar() { const el = document.getElementById('storage-status'); if (el) el.textContent = '上次保存：' + new Date().toLocaleTimeString(); }
+function showSaved(key) {
+  const ind = document.getElementById('ind-' + key);
+  if (!ind) return;
+  ind.textContent = '\u2713 已保存';
+  setTimeout(() => { ind.textContent = ''; }, 2000);
+}
+function clearAllAnswers() {
+  if (!confirm('清除本页所有已保存的答案吗？此操作无法撤销。')) return;
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const k = el.dataset.key;
+    if (k) { try { localStorage.removeItem(STORAGE_PREFIX + k); } catch(e) {} el.innerHTML = ''; }
+  });
+  const el = document.getElementById('storage-status');
+  if (el) el.textContent = '答案已清除。';
+}
+function debounce(fn, d) { let t; return function() { clearTimeout(t); const a = arguments, c = this; t = setTimeout(() => fn.apply(c, a), d); }; }
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-key]').forEach(box => {
+    const key = box.dataset.key;
+    if (!key) return;
+    const saved = loadValue(key);
+    if (saved) box.innerHTML = saved;
+    const ds = debounce(() => { saveValue(key, box.innerHTML); showSaved(key); }, 800);
+    box.addEventListener('input', ds);
+    box.addEventListener('blur', () => { saveValue(key, box.innerHTML); showSaved(key); });
+  });
+  const clearBtn = document.getElementById('btn-clear-all');
+  if (clearBtn) clearBtn.addEventListener('click', clearAllAnswers);
+});
+
+/* ── PDF export ─────────────────────────────────────────────── */
+function pdfSafe(s) {
+  if (!s) return '';
+  return String(s)
+    .replace(/[\u2018\u2019\u201B\u2032]/g, "'")
+    .replace(/[\u201C\u201D\u201F\u2033]/g, '"')
+    .replace(/[\u2013\u2014\u2212]/g, '-')
+    .replace(/\u2026/g, '...')
+    .replace(/\u00A0/g, ' ')
+    .replace(/\u2713/g, '')
+    .replace(/\u03A9/g, 'ohm').replace(/\u03C3/g, 'sigma').replace(/\u03B5/g, 'epsilon').replace(/\u0394/g, 'delta').replace(/\u03C0/g, 'pi')
+    .replace(/[^\x00-\xFF]/g, '');
+}
+
+const PUPIL_NAME_KEY = 'ae-pupil-name';
+function getPupilName() { try { return localStorage.getItem(PUPIL_NAME_KEY) || ''; } catch(e) { return ''; } }
+
+function pdfNewDoc() {
+  const doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' });
+  const state = { margin: 48, pageWidth: doc.internal.pageSize.getWidth(), pageHeight: doc.internal.pageSize.getHeight() };
+  state.usableWidth = state.pageWidth - state.margin * 2;
+  state.y = state.margin;
+  return { doc, state };
+}
+
+function pdfAddHeader(doc, state, taskLabel) {
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(16); doc.setTextColor(15, 90, 68);
+  doc.text('Engineering Science Scotland', state.margin, state.y); state.y += 20;
+  doc.setFontSize(14); doc.setTextColor(30, 30, 30);
+  const tLines = doc.splitTextToSize(pdfSafe(taskLabel), state.usableWidth);
+  doc.text(tLines, state.margin, state.y); state.y += tLines.length * 16 + 6;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(11); doc.setTextColor(90, 90, 90);
+  const pupilName = getPupilName();
+  const todayStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const nameLine = pupilName ? ('Name: ' + pdfSafe(pupilName) + '      Date: ' + todayStr) : ('Name: _________________________________      Date: _______________');
+  doc.text(nameLine, state.margin, state.y); state.y += 20;
+  doc.setDrawColor(200, 200, 200); doc.line(state.margin, state.y, state.pageWidth - state.margin, state.y); state.y += 18;
+}
+
+function pdfEnsureSpace(doc, state, h) { if (state.y + h > state.pageHeight - state.margin) { doc.addPage(); state.y = state.margin; } }
+
+function pdfWriteAnswer(doc, state, el) {
+  const img = el.querySelector('img');
+  if (img && img.src) {
+    try {
+      const props = doc.getImageProperties(img.src);
+      const ratio = Math.min(state.usableWidth / props.width, 260 / props.height, 1);
+      const w = props.width * ratio, h = props.height * ratio;
+      pdfEnsureSpace(doc, state, h + 14);
+      doc.addImage(img.src, props.fileType || 'PNG', state.margin, state.y, w, h);
+      state.y += h + 10;
+    } catch (e) {
+      doc.setFont('helvetica', 'italic'); doc.setFontSize(11); doc.setTextColor(160, 60, 60);
+      pdfEnsureSpace(doc, state, 14); doc.text('[Could not embed pasted image]', state.margin, state.y); state.y += 16;
+    }
+  }
+  let text = pdfSafe(el.innerText.trim());
+  if (img && !text) return;
+  doc.setFontSize(11);
+  if (!text) { doc.setFont('helvetica', 'italic'); doc.setTextColor(160, 160, 160); text = '(no answer entered yet)'; }
+  else { doc.setFont('helvetica', 'normal'); doc.setTextColor(40, 40, 40); }
+  const lines = doc.splitTextToSize(text, state.usableWidth);
+  for (let i = 0; i < lines.length; i++) { pdfEnsureSpace(doc, state, 14); doc.text(lines[i], state.margin, state.y); state.y += 14; }
+  state.y += 6;
+}
+
+function pdfRenderPanelItems(doc, state, panel) {
+  const items = panel.querySelectorAll('.task-item');
+  for (let i = 0; i < items.length; i++) {
+    const qEl = items[i].querySelector('.task-q');
+    const qText = qEl ? pdfSafe(qEl.innerText.trim()) : '';
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(15, 90, 68);
+    const qLines = doc.splitTextToSize(qText, state.usableWidth);
+    pdfEnsureSpace(doc, state, qLines.length * 14 + 6);
+    doc.text(qLines, state.margin, state.y); state.y += qLines.length * 14 + 6;
+    const fields = items[i].querySelectorAll('[data-key]');
+    for (let f = 0; f < fields.length; f++) {
+      const lab = fields[f].dataset.label;
+      if (lab) {
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(90, 90, 90);
+        pdfEnsureSpace(doc, state, 28); doc.text(pdfSafe(lab) + ':', state.margin, state.y); state.y += 13;
+      }
+      pdfWriteAnswer(doc, state, fields[f]);
+    }
+    state.y += 6;
+  }
+}
+
+function pdfAddFooters(doc, state) {
+  const n = doc.internal.getNumberOfPages();
+  for (let p = 1; p <= n; p++) {
+    doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(150, 150, 150);
+    doc.text('Page ' + p + ' of ' + n + '  -  engineeringsciencescotland.co.uk', state.margin, state.pageHeight - 24);
+  }
+}
+
+function downloadTaskPDF(panelId, taskLabel) {
+  const panel = document.getElementById(panelId); if (!panel) return;
+  const btn = panel.querySelector('.task-download-btn'); const orig = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '正在生成 PDF&hellip;'; }
+  setTimeout(() => {
+    try {
+      const o = pdfNewDoc();
+      pdfAddHeader(o.doc, o.state, taskLabel);
+      pdfRenderPanelItems(o.doc, o.state, panel);
+      pdfAddFooters(o.doc, o.state);
+      o.doc.save(pdfSafe(taskLabel).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '-') + '.pdf');
+    } catch (err) { console.error(err); alert('抱歉，生成 PDF 时出错。请再试一次，或者把你的答案截图。'); }
+    finally { if (btn) { btn.disabled = false; btn.innerHTML = orig; } }
+  }, 30);
+}
+
+/* Keep this list in sync with the task panels on the page, in page order */
+const ALL_TASK_PANELS = [
+  ['assignment-inv1',  'Investigation 1 \u2014 Voltage, resistance and current'],
+  ['assignment-inv2',  'Investigation 2 \u2014 Switch circuits'],
+  ['assignment-task1', 'Task 1 \u2014 Components and symbols'],
+  ['assignment-task2', 'Task 2 \u2014 Ohm\u2019s Law calculations'],
+  ['assignment-task3', 'Task 3 \u2014 Series circuits'],
+  ['assignment-inv3',  'Investigation 3 \u2014 Measuring voltage and current'],
+  ['assignment-quickcheck1', 'Quick check \u2014 the voltage rule'],
+  ['assignment-task4', 'Task 4 \u2014 Parallel circuits'],
+  ['assignment-task5', 'Task 5 \u2014 Combined circuits'],
+  ['assignment-task6a','Task 6a \u2014 Reading sensor graphs and calculating Vout'],
+  ['assignment-task6b','Task 6b \u2014 Light sensor vs dark sensor'],
+  ['assignment-inv4',  'Investigation 4 \u2014 How does Vout change in a sensor voltage divider?'],
+  ['assignment-task6c','Task 6c \u2014 Voltage divider calculations'],
+  ['assignment-inv5',  'Investigation 5 \u2014 Transistor switching'],
+  ['assignment-task8', 'Task 8 \u2014 Transistor circuit design'],
+  ['assignment-task9', 'Task 9 \u2014 Relays'],
+  ['assignment-dc1',   'Design Challenge 1 \u2014 Hogmanay street lighting'],
+  ['assignment-dc2',   'Design Challenge 2 \u2014 Polytunnel vent fan'],
+  ['assignment-dc3',   'Design Challenge 3 \u2014 Cycle shed security light'],
+  ['assignment-dc4',   'Design Challenge 4 \u2014 Harbour ice-warning light']
+];
+
+function downloadAllAnswersPDF() {
+  const btn = document.getElementById('downloadAllBtn'); const orig = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = '正在生成 PDF&hellip;'; }
+  setTimeout(() => {
+    try {
+      const o = pdfNewDoc(), doc = o.doc, state = o.state;
+      pdfAddHeader(doc, state, 'Analogue Electronics \u2014 All my answers');
+      for (let i = 0; i < ALL_TASK_PANELS.length; i++) {
+        const panel = document.getElementById(ALL_TASK_PANELS[i][0]); if (!panel) continue;
+        pdfEnsureSpace(doc, state, 40);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(194, 65, 12);
+        doc.text(pdfSafe(ALL_TASK_PANELS[i][1]), state.margin, state.y); state.y += 8;
+        doc.setDrawColor(230, 200, 180); doc.line(state.margin, state.y, state.pageWidth - state.margin, state.y); state.y += 16;
+        pdfRenderPanelItems(doc, state, panel); state.y += 10;
+      }
+      pdfAddFooters(doc, state);
+      doc.save('Analogue-Electronics-All-My-Answers.pdf');
+    } catch (err) { console.error(err); alert('抱歉，生成 PDF 时出错。请再试一次，或者把你的答案截图。'); }
+    finally { if (btn) { btn.disabled = false; btn.innerHTML = orig; } }
+  }, 30);
+}
+
+/* ── Contents panel ─────────────────────────────────────────── */
+function openToc() { document.getElementById('tocPanel').classList.add('open'); document.getElementById('tocOverlay').classList.add('open'); }
+function closeToc() { document.getElementById('tocPanel').classList.remove('open'); document.getElementById('tocOverlay').classList.remove('open'); }
+
+/* ── My Name ────────────────────────────────────────────────── */
+function updateNameFabLabel() { const l = document.getElementById('nameFabLabel'); if (!l) return; const n = getPupilName(); l.textContent = n ? n : '我的名字'; }
+function openNamePanel() {
+  const input = document.getElementById('nameInput'); if (input) input.value = getPupilName();
+  const msg = document.getElementById('nameSavedMsg'); if (msg) msg.classList.remove('show');
+  document.getElementById('nameOverlay').classList.add('open');
+  if (input) setTimeout(() => input.focus(), 50);
+}
+function closeNamePanel() { document.getElementById('nameOverlay').classList.remove('open'); }
+function closeNameOverlayClick(e) { if (e.target.id === 'nameOverlay') closeNamePanel(); }
+function saveNameInput() {
+  const input = document.getElementById('nameInput'); const name = input ? input.value.trim() : '';
+  try { localStorage.setItem(PUPIL_NAME_KEY, name); } catch(e) {}
+  updateNameFabLabel();
+  const msg = document.getElementById('nameSavedMsg'); if (msg) msg.classList.add('show');
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeToc(); closeNamePanel(); } });
+</script>
+
+<button class="toc-fab" id="tocFab" onclick="openToc()">&#x2630; 目录</button>
+
+<button class="name-fab" id="nameFab" onclick="openNamePanel()"><span class="name-fab-icon">&#x1F464;</span><span id="nameFabLabel">我的名字</span></button>
+
+<div class="name-overlay" id="nameOverlay" onclick="closeNameOverlayClick(event)">
+  <div class="name-panel">
+    <button class="name-panel-close" onclick="closeNamePanel()" aria-label="关闭">&times;</button>
+    <h3>你的名字</h3>
+    <p>输入一次你的名字，它就会出现在每个任务下载的 PDF 顶部 &mdash; 不必每次都手写。<br><strong>注意：</strong>PDF 只能显示英文字母，请用<strong>英文（拼音）</strong>输入名字。答题时如果用中文书写，PDF 中的中文会显示不出来 &mdash; 建议尽量用英文作答，这对考试也有帮助。</p>
+    <input type="text" id="nameInput" placeholder="例如 Jamie Smith" maxlength="60">
+    <button class="name-panel-save" onclick="saveNameInput()">保存名字</button>
+    <div class="name-panel-saved-msg" id="nameSavedMsg">&#x2713; 已保存 &mdash; 它会出现在你的 PDF 上</div>
+  </div>
+</div>
+
+<div class="toc-overlay" id="tocOverlay" onclick="closeToc()"></div>
+<div class="toc-panel" id="tocPanel">
+  <div class="toc-panel-header">
+    <h3>目录</h3>
+    <button class="toc-panel-close" onclick="closeToc()" aria-label="关闭">&times;</button>
+  </div>
+  <nav class="toc-list" id="tocList">
+    <a href="#section-1" onclick="closeToc()">第1节：电流、电压和电阻</a> <a href="#section-2" onclick="closeToc()">第2节：元件与电路符号 1</a> <a href="#section-3" onclick="closeToc()">第3节：欧姆定律</a> <a href="#section-4" onclick="closeToc()">第4节：串联电阻</a> <a href="#section-5" onclick="closeToc()">第5节：电压降与电流节点</a> <a href="#section-6" onclick="closeToc()">第6节：并联电路</a> <a href="#section-7" onclick="closeToc()">第7节：串并联混合电路</a> <a href="#section-8" onclick="closeToc()">第8节：分压器</a> <a href="#section-9" onclick="closeToc()">第9节：晶体管</a> <a href="#section-10" onclick="closeToc()">第10节：继电器</a> <a href="#section-11" onclick="closeToc()">第11节：设计挑战</a> <a href="#dc1" class="toc-sub" onclick="closeToc()">挑战1 &mdash; 跨年夜街道照明</a> <a href="#dc2" class="toc-sub" onclick="closeToc()">挑战2 &mdash; 大棚通风扇</a> <a href="#dc3" class="toc-sub" onclick="closeToc()">挑战3 &mdash; 自行车棚安全灯</a> <a href="#dc4" class="toc-sub" onclick="closeToc()">挑战4 &mdash; 港口结冰警示灯</a>
+  </nav>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', updateNameFabLabel);
+(function() {
+  const nameInputEl = document.getElementById('nameInput');
+  if (nameInputEl) nameInputEl.addEventListener('keydown', function(e) { if (e.key === 'Enter') saveNameInput(); });
+  const links = Array.prototype.slice.call(document.querySelectorAll('.toc-list a'));
+  const targets = links.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+  if (!targets.length || !('IntersectionObserver' in window)) return;
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const link = document.querySelector('.toc-list a[href="#' + entry.target.id + '"]');
+      if (link && entry.isIntersecting) { links.forEach(a => a.classList.remove('toc-active')); link.classList.add('toc-active'); }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  targets.forEach(t => observer.observe(t));
+})();
+</script>
+
+<script>
+// ── Simulator zoom-lock + recentre ─────────────────────────────────────────
+// Trackpads/Magic Mouse send wheel events with ctrlKey=true for a pinch
+// gesture, which browsers treat as a page-zoom request. Blocking that only
+// while the pointer is over an embedded simulator stops the circuit from
+// zooming while the person scrolls the page, without disabling zoom
+// everywhere else. Each simulator also gets a small "Recentre" button that
+// reloads its iframe, which resets any pan/zoom state inside it.
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.sim-wrap').forEach(function(wrap) {
+      wrap.addEventListener('wheel', function(e) {
+        if (e.ctrlKey) e.preventDefault();
+      }, { passive: false });
+    });
+
+    document.querySelectorAll('.sim-embed-header').forEach(function(header) {
+      const iframe = header.closest('.sim-embed-section')?.querySelector('.sim-iframe');
+      if (!iframe) return;
+      const btn = document.createElement('button');
+      btn.className = 'sim-fullscreen-btn';
+      btn.type = 'button';
+      btn.style.background = 'var(--gray-50)';
+      btn.style.color = 'var(--teal-800)';
+      btn.style.border = '1px solid var(--gray-200)';
+      btn.textContent = '⟳ Recentre';
+      btn.addEventListener('click', function() {
+        const src = iframe.getAttribute('src');
+        iframe.setAttribute('src', src);
+      });
+      header.appendChild(btn);
+    });
+  });
+})();
+</script>
+
+
+<script src="../../../../js/zh.js"></script>
+</body>
+</html>
