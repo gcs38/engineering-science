@@ -155,3 +155,79 @@
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watch);
   else watch();
 })();
+
+/* ============================================================
+   AI-TRANSLATION WARNING (Chinese pages only)
+   The first time a visitor opens a Chinese page in a browser
+   session, a bilingual pop-up explains that the translation was
+   made by AI and has not been checked by a qualified teacher.
+   They can continue, or return to the same page in English.
+   Every Chinese page also shows a slim bilingual notice at the top.
+   ============================================================ */
+(function () {
+  var KEY = 'ess-zh-warning-accepted';
+  var css = document.createElement('style');
+  css.textContent =
+    '.esszw-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:2000000;display:flex;align-items:center;justify-content:center;padding:20px;}' +
+    '.esszw-box{background:#fff;border-radius:14px;max-width:520px;width:100%;max-height:92vh;overflow-y:auto;padding:26px 26px 22px;box-shadow:0 20px 60px rgba(0,0,0,.35);font-family:inherit;box-sizing:border-box;}' +
+    '.esszw-box h2{margin:0 0 10px;font-size:18px;color:#9a3412;display:flex;align-items:center;gap:8px;}' +
+    '.esszw-box p{margin:0 0 12px;font-size:14px;line-height:1.65;color:#334155;}' +
+    '.esszw-box hr{border:none;border-top:1px solid #e2e8f0;margin:16px 0;}' +
+    '.esszw-btns{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px;}' +
+    '.esszw-btns button{font-family:inherit;font-size:14px;font-weight:600;padding:10px 16px;border-radius:8px;cursor:pointer;line-height:1.35;}' +
+    '.esszw-back{background:#fff;color:#334155;border:1.5px solid #cbd5e1;}' +
+    '.esszw-go{background:#c2410c;color:#fff;border:1.5px solid #c2410c;}' +
+    '.esszw-go:hover{background:#9a3412;}' +
+    '.esszw-bar{background:#fff7ed;border-bottom:1px solid #fed7aa;color:#9a3412;font-size:12.5px;line-height:1.5;padding:8px 20px;text-align:center;}' +
+    '.esszw-bar a{color:#9a3412;font-weight:600;}' +
+    '@media print{.esszw-bar,.esszw-overlay{display:none!important;}}';
+  document.head.appendChild(css);
+
+  function englishUrl() {
+    return location.href.replace(/\/zh\/(?=n5\/)/, '/');
+  }
+
+  function showWarning() {
+    if (document.getElementById('esszw-overlay')) return;
+    var o = document.createElement('div');
+    o.className = 'esszw-overlay'; o.id = 'esszw-overlay';
+    o.innerHTML = '<div class="esszw-box" role="dialog" aria-modal="true" aria-labelledby="esszw-title">' +
+      '<h2 id="esszw-title">&#x26A0;&#xFE0F; 人工智能翻译 &middot; AI translation</h2>' +
+      '<p lang="zh-CN">本中文版由<strong>人工智能（AI）</strong>从英文翻译而成，<strong>尚未经过合格教师的审核</strong>。译文可能有错误，因此<strong>必须谨慎使用</strong>。</p>' +
+      '<p lang="zh-CN">如有疑问，请以英文版为准，并向老师请教。考试使用英文。</p>' +
+      '<hr>' +
+      '<p lang="en">This Mandarin version has been translated from English by <strong>AI</strong>. It <strong>has not been checked by a qualified teacher</strong>, so it may contain errors and <strong>must be treated with caution</strong>.</p>' +
+      '<p lang="en">If anything is unclear, the English version is the one to rely on &mdash; and check with your teacher. Exams are in English.</p>' +
+      '<div class="esszw-btns">' +
+        '<button type="button" class="esszw-back">返回英文版<br>Return to English</button>' +
+        '<button type="button" class="esszw-go">我明白，继续<br>I understand &mdash; continue</button>' +
+      '</div></div>';
+    o.querySelector('.esszw-back').addEventListener('click', function () {
+      window.location.href = englishUrl();
+    });
+    o.querySelector('.esszw-go').addEventListener('click', function () {
+      try { sessionStorage.setItem(KEY, '1'); } catch (e) {}
+      o.remove();
+    });
+    document.body.appendChild(o);
+    o.querySelector('.esszw-go').focus();
+  }
+
+  function start() {
+    // Slim notice on every Chinese page
+    var main = document.querySelector('.main');
+    if (main && !document.querySelector('.esszw-bar')) {
+      var bar = document.createElement('div');
+      bar.className = 'esszw-bar';
+      bar.innerHTML = '&#x26A0;&#xFE0F; <strong lang="zh-CN">本页由人工智能翻译，未经合格教师审核，请谨慎使用。</strong> ' +
+        'AI translation, not checked by a qualified teacher &mdash; use with caution. ' +
+        '<a href="' + englishUrl() + '">English version</a>';
+      main.insertBefore(bar, main.firstChild);
+    }
+    var accepted = false;
+    try { accepted = sessionStorage.getItem(KEY) === '1'; } catch (e) {}
+    if (!accepted) showWarning();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start);
+  else start();
+})();
