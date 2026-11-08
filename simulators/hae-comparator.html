@@ -957,6 +957,7 @@ const PHYS_MODELS={
     PUSH_BREAK:{stamp:(ctx,c,p)=>ctx.stamp(p[0],p[1],c.state===1?1e-9:1e6),current:(c,vDiff)=>vDiff/(c.state===1?1e9:0.001)},
     SPDT:{stamp:(ctx,c,p)=>{ctx.stamp(p[0],p[1],c.state===0?1e6:1e-9);ctx.stamp(p[0],p[2],c.state===1?1e6:1e-9);},current:(c,vDiff)=>vDiff/0.001},
     BIPOLAR_TRANSISTOR:{stamp:(ctx,c,p,results)=>{if(c.failed){ctx.stamp(p[0],p[2],1e-9);ctx.stamp(p[1],p[2],1e-9);return;}const isNPN=(c.type==='npn'||c.type==='nmos'),b=p[0],col=p[1],e=p[2],Vb=getV(b,results),Vc=getV(col,results),Ve=getV(e,results);let Vbe=isNPN?(Vb-Ve):(Ve-Vb),Vce=isNPN?(Vc-Ve):(Ve-Vc);const hfe=c.value||100,V_on=0.7;let G_be,Ieq_be;if(Vbe<V_on){G_be=1e-6;Ieq_be=0;}else{G_be=10;Ieq_be=-G_be*V_on;}let Ib=G_be*Vbe+Ieq_be;if(Ib<0)Ib=0;let Ic=hfe*Ib,G_ce=1e-6,Ieq_c=Ic;if(Vce<0.2){let sat_G=Ic/0.2;G_ce=Math.max(1e-6,sat_G);Ieq_c=0;}if(!isNPN){Ieq_be=-Ieq_be;Ieq_c=-Ieq_c;}ctx.stamp(b,e,G_be);ctx.stampI(b,e,Ieq_be);ctx.stamp(col,e,G_ce);ctx.stampI(col,e,Ieq_c);c._internalIc=isNPN?Ic:-Ic;},current:(c)=>c._internalIc||0},
+    MOSFET_N:{stamp:(ctx,c,p,results)=>{const g=p[0],d=p[1],s=p[2];const Vgs=getV(g,results)-getV(s,results),Vds=getV(d,results)-getV(s,results);const Vt=(c.vt!==undefined?c.vt:3.0),k=(c.kn!==undefined?c.kn:0.5);let Id=Vgs>Vt?k*(Vgs-Vt)*(Vgs-Vt):0;let G=1e-9,Ieq=Id;if(Id>0&&Vds<0.2){G=Math.max(1e-9,Id/0.2);Ieq=0;}ctx.stamp(g,s,1e-9);ctx.stamp(d,s,G);ctx.stampI(d,s,Ieq);c._internalIc=(Ieq===0)?G*Math.max(Vds,0):Id;},current:(c)=>c._internalIc||0}, /* ESS-PATCH-2026-11 */
     OPAMP:{stamp:(ctx,c,p,results)=>{const inp=p[0],inn=p[1],out=p[2],vsp=p[3],vsn=p[4],A=c.value||1e5,Rout=10,Gout=1/Rout;let gm=A*Gout;const V_vsp=getV(vsp,results),V_vsn=getV(vsn,results);let sat=c.satPct!==undefined?c.satPct/100:0.80;let max_V=(vsp&&vsp!==ctx.groundNode)?V_vsp*sat:15*sat,min_V=(vsn&&vsn!==ctx.groundNode)?V_vsn*sat:-15*sat;if(Math.abs(max_V-min_V)<0.1){max_V=15*sat;min_V=-15*sat;}ctx.stamp(out,ctx.groundNode,Gout);if(ctx.stampVCCS){ctx.stampVCCS(ctx.groundNode,out,inp,inn,gm);}const Vout_prev=getV(out,results);let G_clamp=0,I_clamp_eq=0;const k_clamp=1e10;if(Vout_prev>max_V){G_clamp=2*k_clamp*(Vout_prev-max_V);const I_leaving=k_clamp*Math.pow(Vout_prev-max_V,2);I_clamp_eq=-(I_leaving-G_clamp*Vout_prev);}else if(Vout_prev<min_V){G_clamp=2*k_clamp*(min_V-Vout_prev);const I_leaving=-k_clamp*Math.pow(min_V-Vout_prev,2);I_clamp_eq=-(I_leaving-G_clamp*Vout_prev);}if(G_clamp>0){ctx.stamp(out,ctx.groundNode,G_clamp);ctx.stampI(ctx.groundNode,out,I_clamp_eq);}ctx.stamp(inp,ctx.groundNode,1e-9);ctx.stamp(inn,ctx.groundNode,1e-9);ctx.stamp(vsp,ctx.groundNode,1e-6);ctx.stamp(vsn,ctx.groundNode,1e-6);},current:()=>0},
     TIMER555:{
         stamp:(ctx,c,p,results)=>{
@@ -1359,7 +1360,7 @@ const COMP_PHYSICS={
     diode:PHYS_MODELS.DIODE,led:PHYS_MODELS.DIODE,
     relay_spdt:PHYS_MODELS.RELAY_SPDT,relay_dpdt:PHYS_MODELS.RELAY_DPDT,
     switch:PHYS_MODELS.SWITCH,push_make:PHYS_MODELS.SWITCH,push_break:PHYS_MODELS.PUSH_BREAK,spdt:PHYS_MODELS.SPDT,
-    npn:PHYS_MODELS.BIPOLAR_TRANSISTOR,pnp:PHYS_MODELS.BIPOLAR_TRANSISTOR,nmos:PHYS_MODELS.BIPOLAR_TRANSISTOR,
+    npn:PHYS_MODELS.BIPOLAR_TRANSISTOR,pnp:PHYS_MODELS.BIPOLAR_TRANSISTOR,nmos:PHYS_MODELS.MOSFET_N,
     opamp:PHYS_MODELS.OPAMP,bulb:PHYS_MODELS.BULB,
     opamp:PHYS_MODELS.OPAMP, timer555:PHYS_MODELS.TIMER555, bulb:PHYS_MODELS.BULB,
    junction:PHYS_MODELS.NONE,ground:PHYS_MODELS.NONE,text:PHYS_MODELS.NONE,graph:PHYS_MODELS.NONE,
@@ -1901,6 +1902,32 @@ function getDisplayVal(comp) {
         }
         
         rc.fillStyle='rgba(255,255,255,0.1)'; rc.font='900 16px Roboto'; rc.textAlign='right'; rc.fillText('OSC', w/2 - 6, -h/2 + 18);
+        /* ESS: peak readings for each trace, and a cursor readout when the graph is paused */
+        (function(){
+            const traces = vms.map(t => ({t:t, u:'V'})).concat(ams.map(t => ({t:t, u:'A'})));
+            if (!traces.length) return;
+            const now = Date.now(); comp._pk = comp._pk || {};
+            if (!comp.paused) traces.forEach(o => { const k = (o.t.lbl || o.u) + '|' + o.u; const b = (comp._pk[k] = comp._pk[k] || []); const hv = o.t.history; b.push([now, hv[hv.length - 1]]); while (b.length && now - b[0][0] > 4000) b.shift(); });
+            rc.save(); rc.font = 'bold 10px Roboto'; rc.textAlign = 'left'; rc.textBaseline = 'alphabetic';
+            traces.forEach((o, i) => {
+                const b = comp._pk[(o.t.lbl || o.u) + '|' + o.u] || []; if (!b.length) return;
+                let mx = -Infinity, mn = Infinity; b.forEach(e => { if (e[1] > mx) mx = e[1]; if (e[1] < mn) mn = e[1]; });
+                const s = (o.t.lbl || o.u) + ' peaks: ' + fmtVal(mx, o.u) + ' / ' + fmtVal(mn, o.u);
+                const tw = rc.measureText(s).width; rc.fillStyle = 'rgba(15,23,42,0.85)'; rc.fillRect(-w/2 + 4, -h/2 + 4 + i*14, tw + 6, 13);
+                rc.fillStyle = colors[i % colors.length]; rc.fillText(s, -w/2 + 7, -h/2 + 14 + i*14);
+            });
+            const cur = window._essGraphCursor;
+            if (comp.paused && cur && cur.id === comp.id) {
+                const step = w / 100, lx = Math.max(-w/2, Math.min(w/2, cur.lx));
+                rc.strokeStyle = 'rgba(255,255,255,0.7)'; rc.lineWidth = 1; rc.setLineDash([4, 3]); rc.beginPath(); rc.moveTo(lx, -h/2); rc.lineTo(lx, h/2); rc.stroke(); rc.setLineDash([]);
+                const lines = traces.map((o, i) => { const hv = o.t.history; const idx = Math.max(0, Math.min(hv.length - 1, Math.round((lx + w/2) / step))); return [colors[i % colors.length], (o.t.lbl || o.u) + ': ' + fmtVal(hv[idx], o.u)]; });
+                let bw = 0; lines.forEach(l => { bw = Math.max(bw, rc.measureText(l[1]).width); }); bw += 10;
+                const bx = (lx + 8 + bw > w/2) ? lx - 8 - bw : lx + 8, by = -h/2 + 6 + traces.length * 14;
+                rc.fillStyle = 'rgba(15,23,42,0.9)'; rc.fillRect(bx, by, bw, lines.length * 14 + 6);
+                lines.forEach((l, i) => { rc.fillStyle = l[0]; rc.fillText(l[1], bx + 5, by + 14 + i * 14); });
+            }
+            rc.restore();
+        })();
         if(comp.paused) { rc.fillStyle='#ef4444'; rc.font='bold 10px Roboto'; rc.fillText('PAUSED', w/2 - 6, -h/2 + 34); }
         if(sel){ rc.fillStyle='#ca8a04'; rc.beginPath(); rc.moveTo(w/2-15, h/2); rc.lineTo(w/2, h/2); rc.lineTo(w/2, h/2-15); rc.closePath(); rc.fill(); }
     },
@@ -1963,7 +1990,7 @@ function drawBody(rc,type,comp){
                     if (livePower < 1e-8) livePower = 0; 
                     labelStr += (labelStr ? ' ' : '') + formatCompValue(livePower, 'W');
                 } else {
-                    labelStr += (labelStr ? ' ' : '') + formatCompValue(comp.value, comp.unit);
+                    labelStr += (labelStr ? ' ' : '') + ((isSimulating && (comp.type === 'ldr' || comp.type === 'thermistor')) ? formatCompValue(Math.max(toSI(comp.value, comp.unit) * (1 - (comp.setting !== undefined ? comp.setting : 0.5) * 0.99), 10), 'Ω') : formatCompValue(comp.value, comp.unit)); /* ESS-PATCH-2026-11 */
                 }
             }
         }
@@ -4560,5 +4587,22 @@ window.onload=()=>{
     updatePinLegend();
     requestAnimationFrame(loop);
 };
+</script>
+<script>/* ESS-PATCH-2026-11 */
+(function () {
+  function upd(cx, cy) {
+    try {
+      if (typeof getPos !== 'function' || typeof state === 'undefined') return;
+      var p = getPos({clientX: cx, clientY: cy}), f = null;
+      state.comps.forEach(function (c) {
+        if (c.type === 'graph' && c.paused) { var w = c.w || 240, h = c.h || 160, dx = p.x - c.x, dy = p.y - c.y; if (Math.abs(dx) <= w / 2 && Math.abs(dy) <= h / 2) f = {id: c.id, lx: dx}; }
+      });
+      window._essGraphCursor = f;
+    } catch (e) {}
+  }
+  window.addEventListener('mousemove', function (e) { upd(e.clientX, e.clientY); });
+  window.addEventListener('touchstart', function (e) { if (e.touches[0]) upd(e.touches[0].clientX, e.touches[0].clientY); }, {passive: true});
+  window.addEventListener('touchmove', function (e) { if (e.touches[0]) upd(e.touches[0].clientX, e.touches[0].clientY); }, {passive: true});
+})();
 </script>
 </html>
