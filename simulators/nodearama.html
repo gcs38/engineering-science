@@ -1069,20 +1069,13 @@
                 }
             },
 
-            fitToScreen() {
+            fitToScreen() { /* ESS-PATCH-2026-11: padding in screen pixels, so small frames fill the panel */
                 const s = this.state;
                 if (s.nodes.length === 0) return;
                 let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-                s.nodes.forEach(n => {
-                    minX = Math.min(minX, n.x - 30); maxX = Math.max(maxX, n.x + 30);
-                    minY = Math.min(minY, n.y - 30); maxY = Math.max(maxY, n.y + 30);
-                });
-                s.externalForces.forEach(f => {
-                    const tailX = f.node.x - Math.cos(f.mathAngle) * 60; const tailY = f.node.y + Math.sin(f.mathAngle) * 60;
-                    minX = Math.min(minX, tailX); maxX = Math.max(maxX, tailX); minY = Math.min(minY, tailY); maxY = Math.max(maxY, tailY);
-                });
-                const pad = 120; const w = (maxX - minX) || 1; const h = (maxY - minY) || 1;
-                s.cam.zoom = Math.min((this.canvas.width - pad) / w, (this.canvas.height - pad) / h, 12); 
+                s.nodes.forEach(n => { minX = Math.min(minX, n.x); maxX = Math.max(maxX, n.x); minY = Math.min(minY, n.y); maxY = Math.max(maxY, n.y); });
+                const pad = 110; const w = Math.max(maxX - minX, 1); const h = Math.max(maxY - minY, 1);
+                s.cam.zoom = Math.max(0.05, Math.min((this.canvas.width - 2 * pad) / w, (this.canvas.height - 2 * pad) / h, 12));
                 s.cam.x = (this.canvas.width / 2) - ((minX + maxX) / 2) * s.cam.zoom;
                 s.cam.y = (this.canvas.height / 2) - ((minY + maxY) / 2) * s.cam.zoom;
             },
@@ -1094,7 +1087,7 @@
                 },
                 getLabel(x, y) {
                     const r = 20 / App.state.cam.zoom;
-                    for(let n of App.state.nodes) if(Math.abs(x - (n.x + n.labelOffsetX)) < r && Math.abs(y - (n.y + n.labelOffsetY)) < r) return n; return null;
+                    const zz = App.state.cam.zoom; /* ESS-PATCH-2026-11: label offsets are screen pixels */ for(let n of App.state.nodes) if(Math.abs(x - (n.x + n.labelOffsetX / zz)) < r && Math.abs(y - (n.y + n.labelOffsetY / zz)) < r) return n; return null;
                 },
                 getMember(x, y) {
                     const thresh = 18 / App.state.cam.zoom; 
@@ -1228,7 +1221,7 @@
                         let lbl = this.hits.getLabel(rawWx, rawWy);
                         if (lbl) {
                             s.isDraggingLabel = lbl;
-                            s.labelDragOffset = { x: rawWx - (lbl.x + lbl.labelOffsetX), y: rawWy - (lbl.y + lbl.labelOffsetY) };
+                            s.labelDragOffset = { x: rawWx - (lbl.x + lbl.labelOffsetX / s.cam.zoom), y: rawWy - (lbl.y + lbl.labelOffsetY / s.cam.zoom) }; /* ESS-PATCH-2026-11 */
                             return; 
                         }
                     }
@@ -1408,8 +1401,8 @@
                     if (s.isSelectingBox) { s.selectBoxEnd = {x: rawWx, y: rawWy}; return; }
 
                     if (s.isDraggingLabel && s.mode === 'select') {
-                        s.isDraggingLabel.labelOffsetX = rawWx - s.isDraggingLabel.x - s.labelDragOffset.x;
-                        s.isDraggingLabel.labelOffsetY = rawWy - s.isDraggingLabel.y - s.labelDragOffset.y;
+                        s.isDraggingLabel.labelOffsetX = (rawWx - s.isDraggingLabel.x - s.labelDragOffset.x) * s.cam.zoom; /* ESS-PATCH-2026-11 */
+                        s.isDraggingLabel.labelOffsetY = (rawWy - s.isDraggingLabel.y - s.labelDragOffset.y) * s.cam.zoom;
                         return;
                     }
 
@@ -2742,7 +2735,7 @@
                     const isSel = selectSet.has(n) || (s.dragContext.active && s.dragContext.items.some(i => i.node === n));
                     renderCtx.fillStyle = isSel ? '#0ea5e9' : '#1e3a8a'; renderCtx.fill(); renderCtx.lineWidth = 2 / s.cam.zoom; renderCtx.strokeStyle = '#ffffff'; renderCtx.stroke();
                     renderCtx.fillStyle = s.isDraggingLabel === n || isSel ? '#0ea5e9' : '#1e3a8a'; 
-                    renderCtx.font = `900 ${20/s.cam.zoom}px Roboto`; renderCtx.textAlign = 'left'; renderCtx.fillText(n.label, n.x + n.labelOffsetX, n.y + n.labelOffsetY);
+                    renderCtx.font = `900 ${20/s.cam.zoom}px Roboto`; renderCtx.textAlign = 'left'; renderCtx.fillText(n.label, n.x + n.labelOffsetX / s.cam.zoom, n.y + n.labelOffsetY / s.cam.zoom); /* ESS-PATCH-2026-11 */
                 });
 
                 s.externalForces.forEach(f => {
