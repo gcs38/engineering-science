@@ -160,6 +160,10 @@ var TEACHER_DOCS = {
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
   ],
 
+  'higher-control': [
+    { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
+  ],
+
   // ── Engineering Contexts ──────────────────────────────────
 
   'systems-approach': [

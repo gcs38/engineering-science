@@ -1,45 +1,1505 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Course notes &mdash; Programmable Control &mdash; Engineering Science Scotland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Programmable Control &mdash; Higher Course Notes &mdash; Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .resource-page{max-width:680px;margin:0 auto;padding:32px 32px 64px;}
-    .open-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px 24px;text-align:center;margin-bottom:16px;}
-    .open-card-icon{font-size:36px;margin-bottom:10px;}
-    .open-card-title{font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:-.4px;margin-bottom:6px;}
-    .open-card-sub{font-size:13px;color:var(--gray-600);margin-bottom:20px;line-height:1.5;}
-    .open-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-400);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .open-btn:hover{background:var(--teal-600);}
-    .sim-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-800);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .sim-btn:hover{background:var(--teal-600);}
-    .back-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:20px;}
-    .back-link:hover{color:var(--teal-800);}
-    .info-note{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;margin-top:12px;}
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 16px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:6px; }
+    .back-link:hover { color:var(--teal-800); }
+
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); scroll-margin-top:100px; }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:24px 0 10px; scroll-margin-top:100px; }
+    .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:18px 0 8px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+    .warning { background:#FFF7ED; border-left:4px solid #F97316; border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#9A3412; }
+    .spec-note { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:10px 14px; margin:10px 0; font-size:12px; color:var(--gray-500); }
+    .spec-note strong { color:var(--gray-900); }
+    .extension-note { background:#faf5ff; border-left:4px solid #8b5cf6; border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:13px; color:#5b21b6; }
+
+    /* Component symbol grid */
+    .comp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin:16px auto; justify-items:center; justify-content:center; text-align:center; }
+    .comp-card-sym { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:14px 12px 10px; text-align:center; width:100%; }
+    .comp-card-sym svg { display:block; margin:0 auto 8px; }
+    .comp-card-sym .comp-name { font-size:12px; font-weight:700; color:var(--gray-900); }
+    .comp-card-sym .comp-unit { font-size:11px; color:var(--gray-400); margin-top:2px; }
+
+    /* Formula boxes */
+    .formula-box { background:white; border:2px solid var(--teal-100); border-radius:var(--radius-lg); padding:16px 20px; margin:16px 0; text-align:center; }
+    .formula { font-size:18px; font-weight:600; color:var(--teal-800); font-family:monospace; letter-spacing:.02em; }
+    .formula-sub { font-size:12px; color:var(--gray-400); margin-top:6px; }
+    .triangle-box { display:inline-block; background:var(--teal-50); border:2px solid var(--teal-200); border-radius:var(--radius-md); padding:16px 24px; margin:10px 0; }
+    .triangle-top { font-size:20px; font-weight:900; color:var(--teal-800); font-family:monospace; border-bottom:2px solid var(--teal-400); padding-bottom:8px; margin-bottom:8px; text-align:center; }
+    .triangle-bottom { display:flex; gap:0; }
+    .triangle-cell { flex:1; font-size:20px; font-weight:900; color:var(--teal-800); font-family:monospace; text-align:center; padding:0 8px; }
+    .triangle-cell + .triangle-cell { border-left:2px solid var(--teal-400); }
+
+    /* Inline fraction (for any calculation that divides one value by another —
+       used instead of the ÷ symbol or a forward slash, in both formula boxes
+       and inline within worked-example steps) */
+    .frac { display:inline-flex; flex-direction:column; align-items:center; justify-content:center; vertical-align:middle; margin:0 4px; line-height:1.25; font-weight:inherit; }
+    .frac .frac-n { padding:0 4px 2px; border-bottom:1.5px solid currentColor; }
+    .frac .frac-d { padding:2px 4px 0; }
+
+    /* Worked examples */
+    .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:18px 20px; margin:16px 0; }
+    .worked-example-title { font-size:13px; font-weight:600; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+    .step { display:flex; gap:12px; margin-bottom:10px; }
+    .step-num { width:24px; height:24px; border-radius:50%; background:var(--teal-400); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .step-content { font-size:13px; color:var(--gray-600); line-height:1.6; flex:1; }
+    .step-content strong { color:var(--gray-900); }
+
+    /* Tables */
+    .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .data-table tr:nth-child(even) td { background:var(--gray-50); }
+    .data-table td.answer-cell { background:var(--gray-50); min-width:80px; min-height:32px; }
+
+    /* Assignment boxes */
+    .assignment { background:white; border:2px solid var(--teal-400); border-radius:var(--radius-lg); margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; display:flex; align-items:center; gap:10px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:8px; font-weight:500; }
+    .task-q-sub { font-size:13px; color:var(--gray-700); margin:6px 0 6px 16px; }
+    .task-space { background:var(--gray-50); border:1px dashed var(--gray-300); border-radius:var(--radius-sm); min-height:60px; padding:10px; margin-top:6px; font-size:11px; color:var(--gray-400); }
+    .task-space-sm { background:var(--gray-50); border:1px dashed var(--gray-300); border-radius:var(--radius-sm); min-height:36px; padding:8px; margin-top:4px; font-size:11px; color:var(--gray-400); }
+    .extension-task { border:2px solid #8b5cf6; border-radius:var(--radius-lg); margin:16px 0; overflow:hidden; }
+    .extension-header { background:#8b5cf6; padding:8px 14px; }
+    .extension-header-text { font-size:13px; font-weight:700; color:white; }
+    .extension-body { padding:14px 16px; background:#faf5ff; }
+
+    /* Simulator embed */
+    .sim-embed-section { margin:24px 0; }
+    .sim-embed-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+    .sim-embed-title { font-size:14px; font-weight:500; color:var(--gray-900); display:flex; align-items:center; gap:8px; }
+    .sim-embed-title span { font-size:18px; }
+    .sim-fullscreen-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 14px; background:var(--teal-800); color:white; border-radius:var(--radius-md); font-size:12px; font-weight:500; text-decoration:none; transition:all var(--transition); border:none; cursor:pointer; }
+    .sim-fullscreen-btn:hover { background:var(--teal-600); }
+    .sim-wrap { border-radius:var(--radius-lg); overflow:hidden; border:2px solid #eab30840; }
+    .sim-iframe { width:100%; height:540px; border:none; display:block; }
+    .sim-credit { font-size:11px; color:var(--gray-400); margin-top:5px; text-align:right; }
+    .sim-instruction { background:#fefce8; border:1px solid #fde047; border-radius:var(--radius-md); padding:10px 14px; margin-bottom:10px; font-size:13px; color:#78350f; }
+
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+
+    /* Circuit diagram SVGs inline */
+    .circuit-figure { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:16px; margin:16px 0; text-align:center; }
+    .circuit-figure figcaption { font-size:12px; color:var(--gray-400); margin-top:8px; font-style:italic; }
+  
+    /* localStorage answer boxes */
+    .answer-box { background:var(--blue-50,#f0f9ff); border:1.5px solid #7dd3fc; border-radius:var(--radius-sm); min-height:60px; padding:10px 12px; margin-top:6px; font-size:13px; color:var(--gray-700); line-height:1.6; cursor:text; outline:none; }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-sm { min-height:36px; }
+    .answer-box-xs { min-height:28px; }
+    .answer-label { font-size:11px; font-weight:700; color:#0ea5e9; text-transform:uppercase; letter-spacing:.4px; margin-top:8px; margin-bottom:2px; display:flex; align-items:center; gap:8px; }
+    .saved-indicator { font-size:10px; color:#22c55e; font-weight:600; }
+    .controls-bar { display:flex; align-items:center; gap:12px; padding:12px 16px; background:var(--gray-50); border-top:1px solid var(--gray-100); margin-top:24px; border-radius:0 0 var(--radius-lg) var(--radius-lg); }
+    .controls-label { font-size:12px; color:var(--gray-400); flex:1; }
+    .ctrl-btn { padding:6px 14px; border-radius:var(--radius-md); font-size:12px; font-weight:600; border:none; cursor:pointer; }
+    .ctrl-btn-print { background:var(--teal-800); color:white; }
+    .ctrl-btn-clear { background:white; color:#ef4444; border:1.5px solid #fca5a5; }
+    .answer-cell-editable { background:var(--blue-50,#f0f9ff) !important; cursor:text; outline:none; }
+    .answer-cell-editable:empty:before { content:"Click to enter..."; color:#94a3b8; font-style:italic; pointer-events:none; }
+
+    /* ── Added per site-wide handover (26 Sep 2026) ─────────────────────────── */
+    .answer-box img { max-width:100%; height:auto; }
+    .cell-answer { outline:none; background:#f8faff; min-height:36px; }
+    .cell-answer:focus { box-shadow:inset 0 0 0 2px var(--teal-400); background:white; }
+    .data-table tr:nth-child(even) td.cell-answer { background:#f8faff; }
+    .task-download-row { background:var(--gray-50); border-top:1px solid var(--gray-200); padding:9px 20px; text-align:right; }
+    .task-download-btn { display:inline-flex; align-items:center; gap:6px; background:white; border:1.2px solid var(--teal-400); color:var(--teal-800); font-size:10px; font-weight:700; padding:7px 12px; border-radius:999px; cursor:pointer; transition:background .15s; }
+    .task-download-btn:hover { background:var(--teal-50); }
+    .task-download-btn:disabled { opacity:.6; cursor:wait; }
+    /* Specification tables in the challenges */
+    .spec-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .spec-table th { background:transparent; padding:8px 6px 8px 0; width:32px; vertical-align:top; }
+    .spec-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
+    .data-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:var(--teal-50); color:var(--teal-800); border:1px solid var(--teal-100); font-size:11px; font-weight:700; }
+    .ctrl-btn-download-all { background:#eef2ff; color:#4338ca; }
+    .ctrl-btn-download-all:hover { background:#e0e7ff; }
+
+    /* Table of contents: floating button + slide-out panel */
+    .toc-fab { position:fixed; right:24px; bottom:76px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#c2410c; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+    .toc-fab:hover { background:#9a3412; }
+    .toc-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; }
+    .toc-overlay.open { display:block; }
+    .toc-panel { position:fixed; top:0; right:-340px; width:320px; max-width:85vw; height:100%; background:white; z-index:999998; box-shadow:-8px 0 30px rgba(0,0,0,.2); transition:right .25s ease; display:flex; flex-direction:column; }
+    .toc-panel.open { right:0; }
+    .toc-panel-header { padding:18px 20px 14px; border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; }
+    .toc-panel-header h3 { margin:0; font-size:16px; color:var(--teal-800); }
+    .toc-panel-close { background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .toc-panel-close:hover { color:var(--gray-700); }
+    .toc-list { overflow-y:auto; padding:8px 0 20px; }
+    .toc-list a { display:block; padding:10px 20px; font-size:14px; color:var(--gray-700); text-decoration:none; border-left:3px solid transparent; }
+    .toc-list a:hover { background:var(--teal-50); color:var(--teal-800); }
+    .toc-list a.toc-active { border-left-color:var(--teal-500,var(--teal-600)); background:var(--teal-50); color:var(--teal-800); font-weight:700; }
+    .toc-list a.toc-sub { padding-left:36px; font-size:13px; color:var(--gray-500); }
+
+    /* Pupil name: floating button + small popup */
+    .name-fab { position:fixed; right:24px; bottom:132px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#4f46e5; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); overflow:hidden; }
+    .name-fab-icon { font-size:14px; line-height:1; flex-shrink:0; }
+    #nameFabLabel { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:78px; text-align:left; }
+    .name-fab:hover { background:#3730a3; }
+    .name-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; align-items:center; justify-content:center; padding:20px; }
+    .name-overlay.open { display:flex; }
+    .name-panel { background:white; border-radius:14px; max-width:360px; width:100%; padding:24px 24px 22px; box-shadow:0 20px 60px rgba(0,0,0,.35); position:relative; }
+    .name-panel-close { position:absolute; top:10px; right:12px; background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .name-panel-close:hover { color:var(--gray-700); }
+    .name-panel h3 { margin:0 0 8px; font-size:16px; color:#4338ca; }
+    .name-panel p { margin:0 0 14px; font-size:13px; line-height:1.5; color:var(--gray-600); }
+    .name-panel input { width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid var(--gray-200); border-radius:8px; font-size:14px; margin-bottom:12px; }
+    .name-panel input:focus { outline:none; border-color:#4338ca; }
+    .name-panel-save { width:100%; background:#4338ca; color:white; border:none; border-radius:8px; padding:10px; font-size:14px; font-weight:700; cursor:pointer; }
+    .name-panel-save:hover { background:#3730a3; }
+    .name-panel-saved-msg { font-size:12px; color:#16a34a; margin-top:8px; text-align:center; display:none; }
+    .name-panel-saved-msg.show { display:block; }
+
+    @media print {
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.toc-fab,.toc-panel,.toc-overlay,.name-fab,.name-overlay,.task-download-row,.page-nav,.exemplar-thumb,.exemplar-modal { display:none!important; }
+      .layout { display:block!important; }
+      .main { margin:0!important; padding:0!important; }
+      .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
+      .cell-answer { background:white!important; }
+    }
+    .graph-btn { display:inline-flex; align-items:center; gap:6px; background:#c2410c; color:white; border:none; border-radius:999px; padding:8px 14px; font-size:12.5px; font-weight:700; cursor:pointer; font-family:inherit; }
+    .graph-btn:hover { background:#9a3412; }
+    .sym-wrap { display:flex; gap:8px; align-items:flex-start; }
+    .sym-wrap .answer-box { flex:1; min-width:0; align-self:stretch; }
+    .sym-bar { flex-shrink:0; display:flex; flex-direction:column; gap:4px; align-items:stretch; }
+    .sym-bar.two-col { display:grid; grid-template-columns:1fr 1fr; align-content:start; }
+    .sym-bar.two-col .sym-title { grid-column:1/-1; text-align:center; }
+    .sym-btn sub { font-size:9px; }
+    .sym-title { font-size:9px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.4px; }
+    .sym-btn { font:inherit; font-size:13px; line-height:1; min-width:30px; height:26px; padding:0 5px; white-space:nowrap; border:1px solid var(--gray-200); border-radius:6px; background:white; color:var(--gray-900); cursor:pointer; }
+    .sym-btn:hover { background:var(--teal-50); border-color:var(--teal-400); }
+    @media (max-width:640px) { .sym-wrap { flex-direction:column; align-items:stretch; } .sym-bar, .sym-bar.two-col { display:flex; flex-direction:row; flex-wrap:wrap; justify-content:flex-end; } }
+    @media print { .sym-bar { display:none!important; } }
+    @media print { .graph-btn { display:none!important; } }
+      /* Pin table */
+    .pin-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .pin-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .pin-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .pin-table tr:nth-child(even) td { background:var(--gray-50); }
+    .pin-in { color:#0369a1; font-weight:700; }
+    .pin-out { color:#15803d; font-weight:700; }
+
+    /* Comparison cards */
+    .compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0; }
+    .compare-card { background:white; border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; }
+    .compare-card-header { padding:10px 14px; font-size:13px; font-weight:700; color:white; }
+    .compare-card-body { padding:12px 14px; font-size:13px; color:var(--gray-600); line-height:1.6; }
+    .compare-card-body li { margin-bottom:4px; }
+
+    /* Spec box — for written specifications */
+    .spec-box { background:#f0fdf4; border:2px solid #86efac; border-radius:8px; padding:14px 16px; margin:14px 0; }
+    .spec-box-title { font-size:12px; font-weight:700; color:#15803d; text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
+    .spec-box ol, .spec-box ul { margin:0; padding-left:20px; }
+    .spec-box li { font-size:13px; color:#166534; line-height:1.7; margin-bottom:2px; }
+
+    .code-pair { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0 6px; }
+    .code-col { min-width:0; }
+    .code-head { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+    .code-block { background:#0f172a; color:#e2e8f0; padding:12px 14px; border-radius:8px; font-size:12.5px; line-height:1.55; overflow-x:auto; margin:0; font-family:Consolas,Menlo,'Courier New',monospace; white-space:pre; }
+    .code-block .fault { color:#fca5a5; font-weight:700; text-decoration:underline; }
+    .code-note { font-size:12px; color:var(--gray-500); margin:2px 0 14px; }
+    @media (max-width:700px) { .code-pair { grid-template-columns:1fr; } }
+    .cmd-table td:first-child { font-weight:600; color:var(--gray-900); }
+    .cmd-table code, .notes-p code, .notes-ul code, .task-q code, .key-point code { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:4px; padding:0 4px; font-size:12.5px; }
+    .fig { margin:16px 0 18px; text-align:center; }
+    .fig-cap { font-size:12px; color:var(--gray-500); margin-top:6px; }
+    .fig-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; align-items:end; margin:14px 0; }
+    .beyond { border:2px dashed var(--gray-200); border-radius:12px; padding:14px 18px; margin:22px 0; background:#fcfcfd; }
+    .beyond-title { font-size:12px; font-weight:700; color:#7c3aed; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+    .exam-tip { background:#eef2ff; border-left:4px solid #6366f1; border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#3730a3; }
+    .exam-tip strong { color:#312e81; }
+    .marks { float:right; font-weight:700; color:var(--gray-500); font-size:12px; }
   </style>
+<script>window.ESS_PHOTOS = true;</script>
 </head>
 <body>
-<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../../../n5/index.html" class="level-tab" data-level="n5">National 5</a><a href="../../../../higher/index.html" class="level-tab active" data-level="higher">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab" data-level="ah">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/index.html" class="level-tab" data-level="n5">National 5</a>
+    <a href="../../../../higher/index.html" class="level-tab active" data-level="higher">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
+
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
-    <div class="hero">
-      <div class="hero-label">Higher &middot; Electronics and Control</div>
-      <h1 class="hero-title">Programmable Control</h1>
-      <p class="hero-sub">Course notes</p>
-      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../../../../higher/index.html">Higher</a> &rsaquo; <a href="../index.html">Electronics and Control</a> &rsaquo; <a href="index.html">Programmable Control</a> &rsaquo; <span>Course notes</span></div>
-    </div>
-    <div class="content">
-      <div class="resource-page">
-        <a href="index.html" class="back-link">&larr; Back to Programmable Control</a>
-        <div class="open-card" style="background:var(--gray-50);border:1px dashed var(--gray-200);"><div class="open-card-icon">&#x1F4C2;</div><div class="open-card-title" style="color:var(--gray-600);">Course notes in preparation</div><div class="open-card-sub">The Higher course notes for this topic are being written and will appear here.</div></div>
+    <div class="hero" id="top" style="position:relative;">
+      <div style="position:absolute;top:14px;right:20px;font-size:11px;color:#94a3b8;">Last updated: 9 November 2026, 18:59</div>
+      <div class="hero-label">Higher &middot; Electronics and Control &rsaquo; Programmable Control</div>
+      <h1 class="hero-title">&#x1F916; Programmable Control &mdash; Course Notes</h1>
+      <p class="hero-sub">High-level programs, analogue inputs, arithmetic and logic decisions, and PWM motor control</p>
+      <div class="breadcrumb">
+        <a href="../../../../index.html">Home</a> &rsaquo;
+        <a href="../../index.html">Higher</a> &rsaquo;
+        <a href="../index.html">Electronics and Control</a> &rsaquo;
+        <a href="index.html">Programmable Control</a> &rsaquo;
+        <span>Course notes</span>
       </div>
+    </div>
+
+    <div class="content">
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to Programmable Control</a>
+
+      <div class="key-point"><strong>Before you start.</strong> This topic builds directly on National 5 Control Systems. You should already be able to read and draw flowcharts using the standard symbols, use decision boxes to wait for inputs, and use a counter to make a finite loop. Section 1 is a quick recap &mdash; if any of it feels unfamiliar, go back to the National 5 notes first.</div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-1">Section 1: Programmable Control at Higher</h1>
+      <p class="notes-p">Programmable control systems are everywhere: robots on production lines, washing machines, games controllers, lifts, car engine management and the phone in your pocket. In every case a <strong>microcontroller</strong> takes in information from sensors, processes it according to a program, and sends signals to output devices.</p>
+      <p class="notes-p">At Higher the course specification asks you to develop control routines with <strong>up to four inputs and four outputs</strong>, to <strong>process analogue inputs</strong>, to use <strong>loops, time delays, logic and arithmetic</strong> to make decisions, and to <strong>control the speed of a motor using pulse-width modulation (PWM)</strong>. You will not be asked to write whole programs from memory, but you must be able to draw flowcharts from a specification, and read program code, describe what it does and correct faults in it.</p>
+      <h2 class="notes-h2">Microcontrollers and hard-wired circuits</h2>
+      <p class="notes-p">A <strong>microcontroller</strong> is a programmable integrated circuit &mdash; a processor, memory and input/output pins in one small package. Most control circuits could instead be built from separate components such as resistors, transistors and logic gate chips. A circuit that cannot be programmed is called a <strong>hard-wired circuit</strong>, and for anything complex it becomes very large.</p>
+      <div class="fig-row">
+      <figure class="fig"><img src="images/hard-wired-circuit-board.jpg" alt="A large circuit board crowded with resistors, capacitors and integrated circuits" style="width:100%;max-width:300px;display:block;margin:0 auto;border-radius:8px;"><figcaption class="fig-cap">A hard-wired circuit needs many separate components</figcaption></figure>
+      <figure class="fig"><img src="images/microcontroller-module.jpg" alt="A small microcontroller module with a single main chip" style="width:100%;max-width:260px;display:block;margin:0 auto;border-radius:8px;"><figcaption class="fig-cap">A microcontroller module can do the same job in far less space</figcaption></figure>
+      </div>
+      <p class="notes-p">Because a microcontroller-based circuit needs far fewer components, it typically:</p>
+      <ul class="notes-ul"><li><strong>costs less</strong> to make</li><li>can be <strong>manufactured more quickly</strong>, as fewer connections need to be made</li><li>is <strong>more reliable</strong>, as there are fewer components and connections to fail</li><li><strong>uses less power</strong> and <strong>produces less heat</strong></li><li>is <strong>smaller</strong>, so it fits into smaller products</li><li>can be <strong>reprogrammed</strong> if a fault is found or new features are needed &mdash; a hard-wired circuit would have to be taken apart and rebuilt</li><li>can be reprogrammed so that <strong>the same circuit is used in several different products</strong>.</li></ul>
+      <div class="exam-tip"><strong>Exam tip.</strong> Questions often ask why a microcontroller is preferred to a hard-wired, logic-gate or fully pneumatic system. Give a reason <em>and</em> its consequence, for example &ldquo;far fewer components are needed, so the system is smaller and cheaper to manufacture&rdquo; or &ldquo;the function can be changed by reprogramming rather than rebuilding the circuit&rdquo;.</div>
+      <h2 class="notes-h2">Flowchart symbols</h2>
+      <p class="notes-p">You should already know these symbols from National 5. The <strong>sub-procedure</strong> symbol is new for Higher &mdash; it is covered in Section 2.</p>
+      <div class="fig"><svg viewBox="-10 -3 937 123" xmlns="http://www.w3.org/2000/svg" class="fc-svg" style="width:100%;max-width:760px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;"><title>Flowchart symbols: terminator, process, input/output, decision, sub-procedure</title><defs><marker id="fca1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="15" y="20" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="90" y="45" text-anchor="middle" font-size="14">start</text><rect x="195" y="20" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="270" y="45" text-anchor="middle" font-size="14">wait 2 s</text><polygon points="393,20 525,20 507,60 375,60" fill="#fff" stroke="#000" stroke-width="2"/><text x="450" y="45" text-anchor="middle" font-size="14">pin 7 on</text><polygon points="640,7 725,40 640,73 555,40" fill="#fff" stroke="#000" stroke-width="2"/><text x="640" y="45" text-anchor="middle" font-size="14">is pin 0 on?</text><rect x="755" y="20" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><line x1="765" y1="20" x2="765" y2="60" stroke="#000" stroke-width="2"/><line x1="895" y1="20" x2="895" y2="60" stroke="#000" stroke-width="2"/><text x="830" y="45" text-anchor="middle" font-size="14">pulse</text><text x="90" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#0f766e">Terminator</text><text x="270" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#0f766e">Process</text><text x="450" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#0f766e">Input / output</text><text x="640" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#0f766e">Decision</text><text x="830" y="100" text-anchor="middle" font-size="13" font-weight="700" fill="#0f766e">Sub-procedure</text></svg></div>
+      <ul class="notes-ul"><li>A <strong>process</strong> box is used for time delays (always with units, e.g. <em>wait 2 s</em> or <em>wait 15 ms</em>), for setting or changing variables (<em>X = X + 1</em>) and for storing a reading (<em>store reading in X</em>).</li><li>An <strong>input/output</strong> box is used to switch an output (<em>pin 7 on</em>) and to read an analogue input (<em>read pin 0</em>).</li><li>A <strong>decision</strong> box asks a yes/no question about an input (<em>is pin 0 on?</em>) or a variable (<em>X &gt; 200?</em>). Both exits must be labelled Y and N.</li><li>Exam papers refer to pins by number (<em>pin 7 on</em>, <em>is pin 1 on?</em>). Always use the pin numbers from the table you are given.</li></ul>
+      <div class="key-point">Flow lines going down or to the right do not need arrowheads, but lines going <strong>up or to the left must have them</strong>. Adding arrowheads to every line is always safe, and is what these notes do.</div>
+      <h2 class="notes-h2">Infinite and finite loops</h2>
+      <p class="notes-p">An <strong>infinite (continuous) loop</strong> repeats a section of the flowchart for ever. A <strong>finite loop</strong> repeats a section a set number of times, using a <strong>variable</strong> (here <em>X</em>) to count how many times the loop has run.</p>
+      <div class="fig-row">
+      <div class="fig"><svg viewBox="94 0 246 378" xmlns="http://www.w3.org/2000/svg" class="fc-svg" style="width:100%;max-width:260px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;"><title>Infinite loop: pin 7 flashes on and off for ever</title><defs><marker id="fca2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="125" y="10" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="35" text-anchor="middle" font-size="14">start</text><polygon points="134,84 284,84 266,124 116,124" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="109" text-anchor="middle" font-size="14">pin 7 on</text><rect x="125" y="158" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="183" text-anchor="middle" font-size="14">wait 0.5 s</text><polygon points="134,232 284,232 266,272 116,272" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="257" text-anchor="middle" font-size="14">pin 7 off</text><rect x="125" y="306" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="331" text-anchor="middle" font-size="14">wait 0.5 s</text><path d="M200,50 L200,84" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca2)"/><path d="M200,124 L200,158" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca2)"/><path d="M200,198 L200,232" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca2)"/><path d="M200,272 L200,306" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca2)"/><path d="M200,346 L200,368 L330,368 L330,66 L200,66" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca2)"/></svg><div class="fig-cap">Infinite loop: pin 7 flashes for ever</div></div>
+      <div class="fig"><svg viewBox="60 0 250 678" xmlns="http://www.w3.org/2000/svg" class="fc-svg" style="width:100%;max-width:280px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;"><title>Finite loop: pin 7 flashes five times then the program ends</title><defs><marker id="fca3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="125" y="10" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="35" text-anchor="middle" font-size="14">start</text><rect x="125" y="84" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="109" text-anchor="middle" font-size="14">X = 0</text><polygon points="134,158 284,158 266,198 116,198" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="183" text-anchor="middle" font-size="14">pin 7 on</text><rect x="125" y="232" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="257" text-anchor="middle" font-size="14">wait 1 s</text><polygon points="134,306 284,306 266,346 116,346" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="331" text-anchor="middle" font-size="14">pin 7 off</text><rect x="125" y="380" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="405" text-anchor="middle" font-size="14">wait 1 s</text><rect x="125" y="454" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="479" text-anchor="middle" font-size="14">X = X + 1</text><polygon points="200,525 288,558 200,591 112,558" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="563" text-anchor="middle" font-size="14">X = 5?</text><rect x="125" y="628" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="653" text-anchor="middle" font-size="14">end</text><path d="M200,50 L200,84" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca3)"/><path d="M200,124 L200,158" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca3)"/><path d="M200,198 L200,232" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca3)"/><path d="M200,272 L200,306" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca3)"/><path d="M200,346 L200,380" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca3)"/><path d="M200,420 L200,454" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca3)"/><path d="M200,494 L200,525" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca3)"/><path d="M200,591 L200,628" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca3)"/><path d="M112,558 L70,558 L70,140 L200,140" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca3)"/><text x="212" y="605" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="104" y="550" text-anchor="end" font-size="13" font-weight="700">N</text></svg><div class="fig-cap">Finite loop: pin 7 flashes five times</div></div>
+      </div>
+      <p class="notes-p">In the finite loop, <em>X</em> is set to 0 <strong>before</strong> the loop starts. Every time round, 1 is added to X and the decision checks whether X has reached 5. Only when it has does the program leave the loop.</p>
+      <div class="assignment" id="assignment-task1">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Recap: microcontrollers, symbols and loops</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. A manufacturer is replacing a hard-wired control circuit with a microcontroller-based system. Describe <strong>two</strong> reasons why the microcontroller-based system is preferred.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t1a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t1a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Describe the difference between an infinite loop and a finite loop.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t1b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t1b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. In the finite-loop flowchart above, a pupil moves the box <em>X = 0</em> so that it comes just after <em>pin 7 on</em>, inside the loop. Explain what will happen when the program runs.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t1c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t1c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. State which flowchart symbol should be used for each of these instructions: (a) <em>store reading in X</em> &nbsp;(b) <em>read pin 1</em> &nbsp;(c) <em>X &gt; 100?</em> &nbsp;(d) <em>wait 250 ms</em> &nbsp;(e) <em>pin 6 off</em></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t1d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t1d" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task1', 'Task 1 &mdash; Recap: microcontrollers, symbols and loops')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-2">Section 2: Reading and Correcting Program Code</h1>
+      <p class="notes-p">A flowchart is turned into a program written in a <strong>high-level language</strong>. In Scottish schools the two you are most likely to meet are <strong>PBASIC</strong> (used with PICAXE chips and the Stamp Controller) and <strong>Arduino</strong> (a version of C++). Exam papers now show code in <strong>both</strong> languages side by side, and you can answer in whichever you prefer.</p>
+      <div class="exam-tip"><strong>Exam tip.</strong> Markers accept any appropriate programming language and award marks where the intention of your code is clear, even with minor syntax errors. Concentrate on getting the <em>logic</em> right &mdash; the right pin, the right comparison, the right delay.</div>
+      <h2 class="notes-h2">Commands you need to recognise</h2>
+      <table class="data-table cmd-table"><tr><th>Flowchart box</th><th>PBASIC</th><th>Arduino</th></tr><tr><td><em>pin 7 on</em> / <em>pin 7 off</em></td><td><code>high 7</code> / <code>low 7</code></td><td><code>digitalWrite(7, HIGH);</code> / <code>digitalWrite(7, LOW);</code></td></tr><tr><td><em>wait 500 ms</em></td><td><code>pause 500</code></td><td><code>delay(500);</code></td></tr><tr><td><em>is pin 0 on?</em></td><td><code>if pin0 = 1 then label</code></td><td><code>if (digitalRead(0) == HIGH) { &hellip; }</code></td></tr><tr><td>wait until pin 0 is on</td><td><code>wait0: if pin0 = 0 then wait0</code></td><td><code>while (digitalRead(0) == LOW) { }</code></td></tr><tr><td><em>X = 0</em>, <em>X = X + 1</em></td><td><code>let b0 = 0</code>, <code>let b0 = b0 + 1</code></td><td><code>x = 0;</code>, <code>x = x + 1;</code></td></tr><tr><td>finite loop (5 times)</td><td><code>for b0 = 1 to 5</code> &hellip; <code>next b0</code></td><td><code>for (int x = 1; x &lt;= 5; x++) { &hellip; }</code></td></tr><tr><td>loop back to the start</td><td><code>goto main</code></td><td>the <code>loop()</code> function repeats automatically</td></tr><tr><td>call a sub-procedure</td><td><code>gosub pulse</code> &hellip; <code>return</code></td><td><code>pulse();</code> &hellip; <code>void pulse() { &hellip; }</code></td></tr><tr><td><em>read pin 0</em>, <em>store reading in X</em></td><td><code>readadc 0, b1</code></td><td><code>x = analogRead(A0) / 4;</code></td></tr></table>
+      <p class="notes-p">In PBASIC, a word followed by a colon (such as <code>main:</code>) is a <strong>label</strong> &mdash; a named point in the program that <code>goto</code> or <code>if &hellip; then</code> can jump to. Variables in PBASIC are called <code>b0</code>, <code>b1</code>, <code>b2</code> and so on, or can be given names with <code>symbol</code>. In Arduino, the code in <code>setup()</code> runs once and the code in <code>loop()</code> repeats for ever.</p>
+      <div class="worked-example"><div class="worked-example-title">Worked example &mdash; flowchart to code</div><div class="step"><div class="step-num">1</div><div class="step-content">Specification: when a switch on <strong>pin 0</strong> is pressed, an LED on <strong>pin 7</strong> flashes five times (1 s on, 1 s off). The system then waits for the switch again.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">The flowchart uses a decision box to wait for the switch, then a finite loop counted by X.<svg viewBox="70 0 300 727" xmlns="http://www.w3.org/2000/svg" class="fc-svg" style="width:100%;max-width:300px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;"><title>Worked example: wait for the switch on pin 0, then flash pin 7 five times, then repeat</title><defs><marker id="fca4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="125" y="10" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="35" text-anchor="middle" font-size="14">start</text><polygon points="200,81 288,114 200,147 112,114" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="119" text-anchor="middle" font-size="14">is pin 0 on?</text><rect x="125" y="184" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="209" text-anchor="middle" font-size="14">X = 0</text><polygon points="134,258 284,258 266,298 116,298" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="283" text-anchor="middle" font-size="14">pin 7 on</text><rect x="125" y="332" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="357" text-anchor="middle" font-size="14">wait 1 s</text><polygon points="134,406 284,406 266,446 116,446" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="431" text-anchor="middle" font-size="14">pin 7 off</text><rect x="125" y="480" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="505" text-anchor="middle" font-size="14">wait 1 s</text><rect x="125" y="554" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="579" text-anchor="middle" font-size="14">X = X + 1</text><polygon points="200,625 288,658 200,691 112,658" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="663" text-anchor="middle" font-size="14">X = 5?</text><path d="M200,50 L200,81" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca4)"/><path d="M200,147 L200,184" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca4)"/><path d="M200,224 L200,258" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca4)"/><path d="M200,298 L200,332" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca4)"/><path d="M200,372 L200,406" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca4)"/><path d="M200,446 L200,480" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca4)"/><path d="M200,520 L200,554" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca4)"/><path d="M200,594 L200,625" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca4)"/><path d="M288,114 L318,114 L318,63 L200,63" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca4)"/><text x="212" y="161" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="296" y="106" text-anchor="start" font-size="13" font-weight="700">N</text><path d="M112,658 L80,658 L80,240 L200,240" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca4)"/><text x="212" y="705" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="104" y="650" text-anchor="end" font-size="13" font-weight="700">N</text><path d="M200,691 L200,717 L360,717 L360,51 L200,51" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca4)"/></svg></div></div><div class="step"><div class="step-num">3</div><div class="step-content">The same program in both languages. Compare each line with a box in the flowchart.      <div class="code-pair">
+        <div class="code-col"><div class="code-head">PBASIC</div><pre class="code-block">main:  if pin0 = 0 then main   &#x27; wait
+        for b0 = 1 to 5          &#x27; 5 times
+          high 7
+          pause 1000
+          low 7
+          pause 1000
+        next b0
+        goto main</pre></div>
+        <div class="code-col"><div class="code-head">Arduino</div><pre class="code-block">void setup() {
+  pinMode(0, INPUT);
+  pinMode(7, OUTPUT);
+}
+void loop() {
+  while (digitalRead(0) == LOW) { }  // wait
+  for (int x = 1; x &lt;= 5; x++) {     // 5 times
+    digitalWrite(7, HIGH);
+    delay(1000);
+    digitalWrite(7, LOW);
+    delay(1000);
+  }
+}</pre></div>
+      </div>
+</div></div></div>
+      <p class="notes-p">In PBASIC, anything after an apostrophe <code>'</code> is a comment; in Arduino it is anything after <code>//</code>. Comments are ignored by the microcontroller but help people read the program.</p>
+      <h2 class="notes-h2">Sub-procedures</h2>
+      <p class="notes-p">A <strong>sub-procedure</strong> (also called a subroutine or function) is a named block of instructions that can be used again and again from different parts of a program. The main program <strong>calls</strong> it; when the sub-procedure finishes it <strong>returns</strong> to the point it was called from. This keeps programs shorter and easier to read, and if the sub-procedure needs to change it only has to be changed in one place.</p>
+      <div class="fig"><svg viewBox="90 0 576 430" xmlns="http://www.w3.org/2000/svg" class="fc-svg" style="width:100%;max-width:520px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;"><title>Main program calling a sub-procedure called pulse, and the sub-procedure itself</title><defs><marker id="fca5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="125" y="10" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="35" text-anchor="middle" font-size="14">start</text><polygon points="200,81 288,114 200,147 112,114" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="119" text-anchor="middle" font-size="14">is pin 0 on?</text><rect x="125" y="184" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><line x1="135" y1="184" x2="135" y2="224" stroke="#000" stroke-width="2"/><line x1="265" y1="184" x2="265" y2="224" stroke="#000" stroke-width="2"/><text x="200" y="209" text-anchor="middle" font-size="14">pulse</text><rect x="125" y="258" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="283" text-anchor="middle" font-size="14">wait 2 s</text><rect x="485" y="10" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="560" y="35" text-anchor="middle" font-size="14">pulse</text><polygon points="494,84 644,84 626,124 476,124" fill="#fff" stroke="#000" stroke-width="2"/><text x="560" y="109" text-anchor="middle" font-size="14">pin 7 on</text><rect x="485" y="158" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="560" y="183" text-anchor="middle" font-size="14">wait 15 ms</text><polygon points="494,232 644,232 626,272 476,272" fill="#fff" stroke="#000" stroke-width="2"/><text x="560" y="257" text-anchor="middle" font-size="14">pin 7 off</text><rect x="485" y="306" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="560" y="331" text-anchor="middle" font-size="14">wait 45 ms</text><rect x="485" y="380" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="560" y="405" text-anchor="middle" font-size="14">return</text><path d="M200,50 L200,81" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca5)"/><path d="M200,147 L200,184" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca5)"/><path d="M200,224 L200,258" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca5)"/><path d="M288,114 L318,114 L318,63 L200,63" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca5)"/><text x="212" y="161" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="296" y="106" text-anchor="start" font-size="13" font-weight="700">N</text><path d="M200,298 L200,320 L340,320 L340,63 L200,63" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca5)"/><path d="M560,50 L560,84" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca5)"/><path d="M560,124 L560,158" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca5)"/><path d="M560,198 L560,232" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca5)"/><path d="M560,272 L560,306" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca5)"/><path d="M560,346 L560,380" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca5)"/></svg><div class="fig-cap">Left: the main program calls <em>pulse</em>. Right: the sub-procedure itself, which ends with <em>return</em>.</div></div>
+      <div class="code-pair">
+        <div class="code-col"><div class="code-head">PBASIC</div><pre class="code-block">main:  if pin0 = 0 then main
+        gosub pulse
+        pause 2000
+        goto main
+
+pulse:  high 7
+        pause 15
+        low 7
+        pause 45
+        return</pre></div>
+        <div class="code-col"><div class="code-head">Arduino</div><pre class="code-block">void loop() {
+  while (digitalRead(0) == LOW) { }
+  pulse();
+  delay(2000);
+}
+
+void pulse() {
+  digitalWrite(7, HIGH);
+  delay(15);
+  digitalWrite(7, LOW);
+  delay(45);
+  return;
+}</pre></div>
+      </div>
+      <p class="code-note">A sub-procedure must always end with <code>return</code>, otherwise the program never gets back to the main routine.</p>
+      <div class="beyond"><div class="beyond-title">Beyond the exam &mdash; ports and the data direction register</div>
+      <p class="notes-p">You will not be examined on this, but it explains some lines you will see in PBASIC programs. A microcontroller&rsquo;s pins are grouped into <strong>ports</strong>. The Stamp Controller uses port B, which has eight pins (b.0 to b.7) that can each be set as an input or an output.</p>
+      <p class="notes-p">The <strong>data direction register</strong> (<code>dirsB</code>) sets which pins are outputs (1) and which are inputs (0). The pin states can then all be set at once with <code>pinsB</code>. The <code>%</code> sign means a binary number follows; the first digit is pin 7 and the last is pin 0.</p>
+      <pre class="code-block">let dirsB = %11110000   ' pins 4-7 outputs, pins 0-3 inputs
+let pinsB = %11111111   ' all output pins high
+let pinsB = %00000000   ' all output pins low
+let pinsB = %10010000   ' pins 7 and 4 high, the rest low</pre>
+      <p class="notes-p" style="margin-top:10px;">Every pin is an input when the controller is reset, so a PBASIC program for the Stamp Controller normally begins with a <code>let dirsB =</code> line.</p></div>
+      <div class="assignment" id="assignment-task2">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Reading and correcting code</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. This program was written to flash an LED on pin 7 five times after a switch on pin 0 is pressed, but the LED does not appear to flash. Identify the fault and write the corrected line(s).<div class="code-col" style="margin:8px 0;"><div class="code-head">PBASIC</div><pre class="code-block">main:  if pin0 = 0 then main
+        for b0 = 1 to 5
+          high 7
+          pause 1000
+          low 7
+        next b0
+        goto main</pre></div></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t2a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t2a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Describe what this program does.<div class="code-col" style="margin:8px 0;"><div class="code-head">PBASIC</div><pre class="code-block">main:  if pin1 = 1 then main
+        high 6
+        pause 3000
+        low 6
+        goto main</pre></div></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t2b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t2b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A greenhouse watering system should work as follows: if the start switch (pin 0) is on <strong>and</strong> the soil sensor (pin 1, high when the soil is dry) detects dry soil, the pump (pin 6) switches on for 5 seconds. The sequence repeats. Two faults are shown in bold. Write the corrected code for each fault (you may use either language).      <div class="code-pair">
+        <div class="code-col"><div class="code-head">PBASIC</div><pre class="code-block">main:  if pin0 = 0 then main
+        <b class="fault">if pin1 = 1 then main</b>
+        high 6
+        <b class="fault">pause 500</b>
+        low 6
+        goto main</pre></div>
+        <div class="code-col"><div class="code-head">Arduino</div><pre class="code-block">void loop() {
+  if (digitalRead(0) == LOW) { return; }
+  <b class="fault">if (digitalRead(1) == HIGH) { return; }</b>
+  digitalWrite(6, HIGH);
+  <b class="fault">delay(500);</b>
+  digitalWrite(6, LOW);
+}</pre></div>
+      </div>
+</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t2c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t2c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. Write the Arduino equivalent of each PBASIC line: (a) <code>high 5</code> &nbsp;(b) <code>pause 250</code> &nbsp;(c) <code>gosub alarm</code></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t2d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t2d" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. Explain one advantage of using a sub-procedure in a program.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t2e"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t2e" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task2', 'Task 2 &mdash; Reading and correcting code')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <div class="assignment" id="assignment-ddr">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Optional &mdash; Ports and the data direction register</div></div>
+        <div class="assignment-body">
+          <p class="notes-p" style="margin-bottom:14px;">Only attempt this if you have read the &ldquo;Beyond the exam&rdquo; box above.</p>
+          <div class="task-item">
+            <div class="task-q">1. Write a <code>let pinsB =</code> command to switch on: (a) pins 0 and 1 &nbsp;(b) pins 7, 6, 5 and 4 &nbsp;(c) pins 7, 5, 3 and 1</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-ddr1"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-ddr1" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Write a <code>let dirsB =</code> command to: (a) set pins 7 and 6 as outputs and the others as inputs &nbsp;(b) set pins 6, 5 and 3 as outputs and the others as inputs</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-ddr2"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-ddr2" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-ddr', 'Optional &mdash; Ports and the data direction register')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-3">Section 3: Monitoring Several Inputs</h1>
+      <p class="notes-p">Many systems have to check several inputs before deciding what to do. An automatic door, for example, has to watch for people approaching from inside <em>and</em> outside. At Higher you can be asked to design control routines with up to four inputs and four outputs.</p>
+      <p class="notes-p">The key technique is to <strong>connect decision boxes one after another in a loop</strong>, so that each input is checked in turn, over and over, very quickly. The arrangement of the Y and N exits decides whether the inputs are combined with <strong>OR</strong> or <strong>AND</strong>.</p>
+      <div class="fig"><svg viewBox="90 0 745 336" xmlns="http://www.w3.org/2000/svg" class="fc-svg" style="width:100%;max-width:760px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;"><title>OR monitoring (left) and AND monitoring (right)</title><defs><marker id="fca6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="125" y="10" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="35" text-anchor="middle" font-size="14">start</text><polygon points="200,81 288,114 200,147 112,114" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="119" text-anchor="middle" font-size="14">is pin 0 on?</text><polygon points="400,177 488,210 400,243 312,210" fill="#fff" stroke="#000" stroke-width="2"/><text x="400" y="215" text-anchor="middle" font-size="14">is pin 1 on?</text><polygon points="134,286 284,286 266,326 116,326" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="311" text-anchor="middle" font-size="14">pin 7 on</text><rect x="625" y="10" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="700" y="35" text-anchor="middle" font-size="14">start</text><polygon points="700,81 788,114 700,147 612,114" fill="#fff" stroke="#000" stroke-width="2"/><text x="700" y="119" text-anchor="middle" font-size="14">is pin 0 on?</text><polygon points="700,171 788,204 700,237 612,204" fill="#fff" stroke="#000" stroke-width="2"/><text x="700" y="209" text-anchor="middle" font-size="14">is pin 1 on?</text><polygon points="634,274 784,274 766,314 616,314" fill="#fff" stroke="#000" stroke-width="2"/><text x="700" y="299" text-anchor="middle" font-size="14">pin 7 on</text><path d="M200,50 L200,81" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca6)"/><path d="M288,114 L400,114 L400,177" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca6)"/><text x="212" y="161" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="296" y="106" text-anchor="start" font-size="13" font-weight="700">N</text><path d="M200,147 L200,286" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca6)"/><text x="412" y="257" text-anchor="start" font-size="13" font-weight="700">Y</text><path d="M400,243 L400,267 L200,267" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca6)"/><text x="496" y="202" text-anchor="start" font-size="13" font-weight="700">N</text><path d="M488,210 L518,210 L518,63 L200,63" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca6)"/><path d="M700,50 L700,81" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca6)"/><path d="M700,147 L700,171" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca6)"/><path d="M700,237 L700,274" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca6)"/><text x="712" y="161" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="796" y="106" text-anchor="start" font-size="13" font-weight="700">N</text><text x="712" y="251" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="796" y="196" text-anchor="start" font-size="13" font-weight="700">N</text><path d="M788,114 L825,114 L825,63 L700,63" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca6)"/><path d="M788,204 L825,204 L825,63 L700,63" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca6)"/></svg><div class="fig-cap">Left: OR &mdash; either input switches pin 7 on. Right: AND &mdash; both inputs must be on.</div></div>
+      <ul class="notes-ul"><li><strong>OR:</strong> if the first input is not on, the N exit goes on to check the next input. Every Y exit leads to the output. Only when every input is off does the flow loop back to the start.</li><li><strong>AND:</strong> each Y exit goes on to check the next input. Any N exit loops back. Only if every input is on does the flow reach the output.</li><li>The same pattern extends to three or four inputs, and each input can lead to a <em>different</em> action instead of the same one (see the dragster task below).</li></ul>
+      <h2 class="notes-h2">From a Boolean expression to a flowchart</h2>
+      <p class="notes-p">Exam questions sometimes describe a condition as a Boolean expression, linking this topic to Digital Electronics. For example, a lamp L (pin 7) comes on for 2 seconds when <em>L = A + <span style="text-decoration:overline">B</span></em> &mdash; that is, when A is on <strong>or</strong> B is off.</p>
+      <div class="fig"><svg viewBox="50 0 508 514" xmlns="http://www.w3.org/2000/svg" class="fc-svg" style="width:100%;max-width:470px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;"><title>Flowchart for Z = A + NOT B: pin 7 on for 2 seconds</title><defs><marker id="fca7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="125" y="10" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="35" text-anchor="middle" font-size="14">start</text><polygon points="200,81 288,114 200,147 112,114" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="119" text-anchor="middle" font-size="14">is A on?</text><polygon points="430,181 518,214 430,247 342,214" fill="#fff" stroke="#000" stroke-width="2"/><text x="430" y="219" text-anchor="middle" font-size="14">is B on?</text><polygon points="134,294 284,294 266,334 116,334" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="319" text-anchor="middle" font-size="14">pin 7 on</text><rect x="125" y="368" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="393" text-anchor="middle" font-size="14">wait 2 s</text><polygon points="134,442 284,442 266,482 116,482" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="467" text-anchor="middle" font-size="14">pin 7 off</text><path d="M200,50 L200,81" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca7)"/><path d="M288,114 L430,114 L430,181" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca7)"/><text x="212" y="161" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="296" y="106" text-anchor="start" font-size="13" font-weight="700">N</text><path d="M200,334 L200,368" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca7)"/><path d="M200,408 L200,442" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca7)"/><path d="M200,147 L200,294" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca7)"/><text x="418" y="261" text-anchor="end" font-size="13" font-weight="700">N</text><path d="M430,247 L430,276 L200,276" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca7)"/><text x="526" y="206" text-anchor="start" font-size="13" font-weight="700">Y</text><path d="M518,214 L548,214 L548,63 L200,63" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca7)"/><path d="M200,482 L200,504 L60,504 L60,49 L200,49" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca7)"/></svg><div class="fig-cap">A on &rarr; lamp. A off: check B. B off (NOT B is true) &rarr; lamp. B on &rarr; back to the start.</div></div>
+      <div class="key-point">For a NOT input, the output is reached through the <strong>N</strong> exit of that input&rsquo;s decision box, and the Y exit loops back.</div>
+      <h2 class="notes-h2">Using the simulator</h2>
+      <p class="notes-p">NoSyntaxSim has four inputs (IN_2 to IN_5) and four outputs (OUT_6 to OUT_9). Exam pin tables use pins 0 to 7, so in these notes every pin table has an extra column showing which simulator pin to use. The rule is simple: <strong>add 2 to the exam pin number</strong>. Pin 0 becomes IN_2, and pin 7 becomes OUT_9.</p>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F916;</span> NoSyntaxSim &mdash; Monitoring inputs</div>
+          <a href="../../../../simulators/control.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Use this simulator for the tasks in Sections 3 and 4. Connect switches to the input pins and LEDs or motors to the output pins, build the flowchart, then press Run. Use the speed slider to slow the program down so you can follow it.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" title="NoSyntaxSim flowchart simulator" src="../../../../simulators/control.html" loading="lazy"></iframe></div>
+      </div>
+      <h2 class="notes-h2">Task specifications</h2>
+      <p class="notes-p"><strong>A &mdash; Flashing warning.</strong> An LED must flash 10 times (0.5 s on, 0.5 s off) after a switch is pressed. The system then waits for the switch again.</p>
+      <table class="pin-table"><tr><th>Input</th><th>Pin</th><th>Output</th><th>NoSyntaxSim pin</th></tr><tr><td class="pin-in">switch</td><td><strong>0</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_2</td></tr><tr><td class="pin-in"></td><td><strong>7</strong></td><td class="pin-out">LED</td><td style="color:var(--gray-400);">OUT_9</td></tr></table>
+      <p class="notes-p"><strong>B &mdash; Forward and reverse.</strong> A motor must turn forwards while switch A is pressed and in reverse while switch B is pressed. When neither switch is pressed the motor must stop. The system must continuously repeat.</p>
+      <table class="pin-table"><tr><th>Input</th><th>Pin</th><th>Output</th><th>NoSyntaxSim pin</th></tr><tr><td class="pin-in">switch A</td><td><strong>0</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_2</td></tr><tr><td class="pin-in">switch B</td><td><strong>1</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_3</td></tr><tr><td class="pin-in"></td><td><strong>7</strong></td><td class="pin-out">motor forward</td><td style="color:var(--gray-400);">OUT_9</td></tr><tr><td class="pin-in"></td><td><strong>6</strong></td><td class="pin-out">motor reverse</td><td style="color:var(--gray-400);">OUT_8</td></tr></table>
+      <p class="notes-p"><strong>C &mdash; Pelican crossing.</strong> The traffic lights stay on green until a pedestrian presses the button. The lights then show amber for 3 s, then red for 10 s while pedestrians cross. Amber then flashes 5 times (0.5 s on, 0.5 s off) before the lights return to green.</p>
+      <table class="pin-table"><tr><th>Input</th><th>Pin</th><th>Output</th><th>NoSyntaxSim pin</th></tr><tr><td class="pin-in">push button</td><td><strong>3</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_5</td></tr><tr><td class="pin-in"></td><td><strong>7</strong></td><td class="pin-out">red</td><td style="color:var(--gray-400);">OUT_9</td></tr><tr><td class="pin-in"></td><td><strong>6</strong></td><td class="pin-out">amber</td><td style="color:var(--gray-400);">OUT_8</td></tr><tr><td class="pin-in"></td><td><strong>5</strong></td><td class="pin-out">green</td><td style="color:var(--gray-400);">OUT_7</td></tr></table>
+      <p class="notes-p"><strong>D &mdash; Dragster race.</strong> A race for three model dragsters is started when the starter presses a switch, which switches on a green start light. A sensor at the end of each lane switches on when that lane&rsquo;s dragster crosses it. A lamp must light to show the winning lane. After 10 seconds all lights switch off and the system waits for the next race.</p>
+      <table class="pin-table"><tr><th>Input</th><th>Pin</th><th>Output</th><th>NoSyntaxSim pin</th></tr><tr><td class="pin-in">start switch</td><td><strong>0</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_2</td></tr><tr><td class="pin-in">lane 1 sensor</td><td><strong>1</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_3</td></tr><tr><td class="pin-in">lane 2 sensor</td><td><strong>2</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_4</td></tr><tr><td class="pin-in">lane 3 sensor</td><td><strong>3</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_5</td></tr><tr><td class="pin-in"></td><td><strong>4</strong></td><td class="pin-out">green start light</td><td style="color:var(--gray-400);">OUT_6</td></tr><tr><td class="pin-in"></td><td><strong>5</strong></td><td class="pin-out">lane 1 winner lamp</td><td style="color:var(--gray-400);">OUT_7</td></tr><tr><td class="pin-in"></td><td><strong>6</strong></td><td class="pin-out">lane 2 winner lamp</td><td style="color:var(--gray-400);">OUT_8</td></tr><tr><td class="pin-in"></td><td><strong>7</strong></td><td class="pin-out">lane 3 winner lamp</td><td style="color:var(--gray-400);">OUT_9</td></tr></table>
+      <p class="notes-p"><strong>E &mdash; Office climate control.</strong> A fan must spin when the temperature rises above a set level, and a bank of LEDs must light when it gets dark. The temperature and light sensor circuits each give a digital signal (on = too hot, on = dark). Both must be checked continuously.</p>
+      <table class="pin-table"><tr><th>Input</th><th>Pin</th><th>Output</th><th>NoSyntaxSim pin</th></tr><tr><td class="pin-in">temperature sensor</td><td><strong>0</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_2</td></tr><tr><td class="pin-in">light sensor</td><td><strong>1</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_3</td></tr><tr><td class="pin-in"></td><td><strong>6</strong></td><td class="pin-out">LED bank</td><td style="color:var(--gray-400);">OUT_8</td></tr><tr><td class="pin-in"></td><td><strong>7</strong></td><td class="pin-out">fan motor (12 V)</td><td style="color:var(--gray-400);">OUT_9</td></tr></table>
+      <div class="assignment" id="assignment-task3">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Monitoring several inputs</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Draw a flowchart for specification A, then build and test it in the simulator.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t3a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t3a" data-placeholder="Draw your flowchart on paper and add a photo of it, or paste your exported NoSyntaxSim flowchart here..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Draw a flowchart for specification B. Explain why your flowchart must never switch pins 6 and 7 on at the same time.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t3b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t3b" data-placeholder="Draw your flowchart on paper and add a photo of it, or paste your exported NoSyntaxSim flowchart here..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Draw a flowchart for the pelican crossing (specification C).</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t3c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t3c" data-placeholder="Draw your flowchart on paper and add a photo of it, or paste your exported NoSyntaxSim flowchart here..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. Draw a flowchart for the dragster race (specification D).</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t3d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t3d" data-placeholder="Draw your flowchart on paper and add a photo of it, or paste your exported NoSyntaxSim flowchart here..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. (a) Draw a flowchart for the climate control system (specification E). (b) The fan runs from a 12 V supply. Explain why it cannot be connected directly to the microcontroller pin, and state what must be added.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t3e"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t3e" data-placeholder="Draw your flowchart on paper and add a photo of it, or paste your exported NoSyntaxSim flowchart here..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">6. A warning lamp (pin 7) is switched on for 2 seconds when <em>Z = A.B + C</em>. Inputs A, B and C are on pins 0, 1 and 2. Draw the flowchart.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t3f"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t3f" data-placeholder="Draw your flowchart on paper and add a photo of it, or paste your exported NoSyntaxSim flowchart here..." style="min-height:120px;"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task3', 'Task 3 &mdash; Monitoring several inputs')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-4">Section 4: Variables and Arithmetic</h1>
+      <p class="notes-p">A <strong>variable</strong> is a named store in the microcontroller&rsquo;s memory that holds a number. You have already used one to count round a finite loop. At Higher, variables are also used to <strong>count events</strong>, <strong>store sensor readings</strong> and <strong>hold the mark and space times</strong> for PWM. The program can do <strong>arithmetic</strong> on a variable and make <strong>decisions</strong> by comparing it with a number or with another variable.</p>
+      <table class="data-table cmd-table"><tr><th>Operation</th><th>Flowchart box</th><th>PBASIC</th><th>Arduino</th></tr><tr><td>Set a value</td><td><em>X = 0</em></td><td><code>let b0 = 0</code></td><td><code>x = 0;</code></td></tr><tr><td>Increase by 1</td><td><em>X = X + 1</em></td><td><code>let b0 = b0 + 1</code></td><td><code>x = x + 1;</code></td></tr><tr><td>Decrease by 1</td><td><em>X = X - 1</em></td><td><code>let b0 = b0 - 1</code></td><td><code>x = x - 1;</code></td></tr><tr><td>Multiply by 3</td><td><em>X = X &times; 3</em></td><td><code>let b0 = b0 * 3</code></td><td><code>x = x * 3;</code></td></tr><tr><td>Divide by 3</td><td><em>X = X &divide; 3</em></td><td><code>let b0 = b0 / 3</code></td><td><code>x = x / 3;</code></td></tr><tr><td>Set X to half of Y</td><td><em>X = Y &divide; 2</em></td><td><code>let b0 = b1 / 2</code></td><td><code>x = y / 2;</code></td></tr><tr><td>Is X more than 5?</td><td><em>X &gt; 5?</em></td><td><code>if b0 &gt; 5 then label</code></td><td><code>if (x &gt; 5) { &hellip; }</code></td></tr><tr><td>Are A and B equal?</td><td><em>A = B?</em></td><td><code>if b0 = b1 then label</code></td><td><code>if (a == b) { &hellip; }</code></td></tr></table>
+      <ul class="notes-ul"><li>Microcontroller variables hold <strong>whole numbers</strong>. Division throws away any remainder: 7 &divide; 2 gives 3, not 3.5.</li><li>A PBASIC byte variable (<code>b0</code>, <code>b1</code>&hellip;) can only hold 0 to 255. Adding 1 to 255 gives 0, and taking 1 from 0 gives 255, so check that your counts stay in range.</li><li>The comparisons you can use are <em>=</em>, <em>&gt;</em>, <em>&lt;</em>, <em>&gt;=</em> and <em>&lt;=</em>. Note that Arduino uses <code>==</code> to compare and a single <code>=</code> to set a value.</li></ul>
+      <h2 class="notes-h2">Worked example &mdash; counting stock in a warehouse</h2>
+      <p class="notes-p">A warehouse keeps track of the number of boxes on a shelf. A sensor on <strong>pin 0</strong> switches on when a box is added, and a sensor on <strong>pin 1</strong> switches on when a box is removed. The shelf starts with 20 boxes. When fewer than 5 boxes remain, a warning lamp on <strong>pin 7</strong> must light.</p>
+      <div class="fig"><svg viewBox="40 0 650 626" xmlns="http://www.w3.org/2000/svg" class="fc-svg" style="width:100%;max-width:560px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;"><title>Warehouse stock counter with low-stock warning</title><defs><marker id="fca14" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="125" y="10" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="35" text-anchor="middle" font-size="14">start</text><rect x="125" y="84" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="109" text-anchor="middle" font-size="14">X = 20</text><polygon points="200,155 288,188 200,221 112,188" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="193" text-anchor="middle" font-size="14">is pin 0 on?</text><polygon points="200,245 288,278 200,311 112,278" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="283" text-anchor="middle" font-size="14">is pin 0 on?</text><rect x="125" y="348" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="373" text-anchor="middle" font-size="14">X = X + 1</text><polygon points="520,155 608,188 520,221 432,188" fill="#fff" stroke="#000" stroke-width="2"/><text x="520" y="193" text-anchor="middle" font-size="14">is pin 1 on?</text><polygon points="520,245 608,278 520,311 432,278" fill="#fff" stroke="#000" stroke-width="2"/><text x="520" y="283" text-anchor="middle" font-size="14">is pin 1 on?</text><rect x="445" y="348" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="520" y="373" text-anchor="middle" font-size="14">X = X - 1</text><polygon points="200,445 288,478 200,511 112,478" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="483" text-anchor="middle" font-size="14">X &lt; 5?</text><polygon points="134,550 284,550 266,590 116,590" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="575" text-anchor="middle" font-size="14">pin 7 on</text><polygon points="384,550 534,550 516,590 366,590" fill="#fff" stroke="#000" stroke-width="2"/><text x="450" y="575" text-anchor="middle" font-size="14">pin 7 off</text><path d="M200,50 L200,84" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca14)"/><path d="M200,124 L200,155" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca14)"/><path d="M200,221 L200,245" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca14)"/><path d="M200,311 L200,348" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca14)"/><text x="212" y="235" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="296" y="180" text-anchor="start" font-size="13" font-weight="700">N</text><path d="M288,278 L318,278 L318,227 L200,227" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca14)"/><text x="296" y="270" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="212" y="325" text-anchor="start" font-size="13" font-weight="700">N</text><path d="M288,188 L432,188" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca14)"/><path d="M520,221 L520,245" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca14)"/><path d="M520,311 L520,348" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca14)"/><text x="532" y="235" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="616" y="180" text-anchor="start" font-size="13" font-weight="700">N</text><text x="532" y="325" text-anchor="start" font-size="13" font-weight="700">N</text><path d="M608,278 L634,278 L634,227 L520,227" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca14)"/><text x="616" y="270" text-anchor="start" font-size="13" font-weight="700">Y</text><path d="M200,388 L200,445" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca14)"/><path d="M520,388 L520,418 L200,418" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca14)"/><path d="M200,511 L200,550" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca14)"/><path d="M288,478 L450,478 L450,550" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca14)"/><text x="212" y="525" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="296" y="470" text-anchor="start" font-size="13" font-weight="700">N</text><path d="M450,590 L450,616 L200,616" fill="none" stroke="#000" stroke-width="2"/><path d="M200,590 L200,616 L50,616 L50,137 L200,137" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca14)"/><path d="M608,188 L680,188 L680,137 L200,137" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca14)"/></svg><div class="fig-cap">X holds the number of boxes. Each sensor changes X by one, then X is checked against the low-stock level.</div></div>
+      <div class="key-point">Notice the second &ldquo;<em>is pin 0 on?</em>&rdquo; box straight after the first. It makes the program <strong>wait until the sensor switches off again</strong> before counting. Without it, the program would loop round thousands of times while one box is passing the sensor, and add far more than 1 to X. Any counting system needs this.</div>
+      <div class="code-pair">
+        <div class="code-col"><div class="code-head">PBASIC</div><pre class="code-block">        let b0 = 20             &#x27; 20 boxes to start
+main:   if pin0 = 1 then added
+        if pin1 = 1 then removed
+        goto check
+added:  if pin0 = 1 then added   &#x27; wait for the box to pass
+        let b0 = b0 + 1
+        goto check
+removed: if pin1 = 1 then removed
+        let b0 = b0 - 1
+check:  if b0 &lt; 5 then warn
+        low 7
+        goto main
+warn:   high 7
+        goto main</pre></div>
+        <div class="code-col"><div class="code-head">Arduino</div><pre class="code-block">int x = 20;                        // 20 boxes to start
+void setup() { pinMode(7, OUTPUT); }
+void loop() {
+  if (digitalRead(0) == HIGH) {
+    while (digitalRead(0) == HIGH) { }  // wait for the box to pass
+    x = x + 1;
+  }
+  if (digitalRead(1) == HIGH) {
+    while (digitalRead(1) == HIGH) { }
+    x = x - 1;
+  }
+  if (x &lt; 5) { digitalWrite(7, HIGH); }
+  else       { digitalWrite(7, LOW); }
+}</pre></div>
+      </div>
+      <h2 class="notes-h2">Task specifications</h2>
+      <p class="notes-p"><strong>F &mdash; Car park.</strong> A car park holds 10 cars. A pressure sensor at the entrance switches on as each car enters, and one at the exit switches on as each car leaves. The barrier stays open until there are 10 cars inside, then closes. It opens again when a car leaves.</p>
+      <table class="pin-table"><tr><th>Input</th><th>Pin</th><th>Output</th><th>NoSyntaxSim pin</th></tr><tr><td class="pin-in">entrance sensor</td><td><strong>0</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_2</td></tr><tr><td class="pin-in">exit sensor</td><td><strong>1</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_3</td></tr><tr><td class="pin-in"></td><td><strong>7</strong></td><td class="pin-out">barrier (on = open)</td><td style="color:var(--gray-400);">OUT_9</td></tr></table>
+      <p class="notes-p"><strong>G &mdash; Lift.</strong> A lift must count people coming in and going out. If there are 10 or fewer people inside when the &lsquo;close&rsquo; button is pressed, the door motor runs for 3 seconds to close the door. If there are more than 10, an alarm must sound instead, and must stop as soon as there are 10 people or fewer inside.</p>
+      <table class="pin-table"><tr><th>Input</th><th>Pin</th><th>Output</th><th>NoSyntaxSim pin</th></tr><tr><td class="pin-in">people in sensor</td><td><strong>0</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_2</td></tr><tr><td class="pin-in">people out sensor</td><td><strong>1</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_3</td></tr><tr><td class="pin-in">close button</td><td><strong>2</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_4</td></tr><tr><td class="pin-in"></td><td><strong>6</strong></td><td class="pin-out">alarm</td><td style="color:var(--gray-400);">OUT_8</td></tr><tr><td class="pin-in"></td><td><strong>7</strong></td><td class="pin-out">door motor</td><td style="color:var(--gray-400);">OUT_9</td></tr></table>
+      <p class="notes-p"><strong>H &mdash; Drinks machine.</strong> A drinks machine has a separate slot for 5p, 10p and 20p coins, each with its own sensor. When at least 35p has been put in and the button is pressed, a can is given out (pin 7 on for 1 s). Any change is given out in 5p coins, with a lamp flashing once for each coin.</p>
+      <table class="pin-table"><tr><th>Input</th><th>Pin</th><th>Output</th><th>NoSyntaxSim pin</th></tr><tr><td class="pin-in">5p sensor</td><td><strong>0</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_2</td></tr><tr><td class="pin-in">10p sensor</td><td><strong>1</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_3</td></tr><tr><td class="pin-in">20p sensor</td><td><strong>2</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_4</td></tr><tr><td class="pin-in">button</td><td><strong>3</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_5</td></tr><tr><td class="pin-in"></td><td><strong>6</strong></td><td class="pin-out">change lamp</td><td style="color:var(--gray-400);">OUT_8</td></tr><tr><td class="pin-in"></td><td><strong>7</strong></td><td class="pin-out">can release</td><td style="color:var(--gray-400);">OUT_9</td></tr></table>
+      <div class="assignment" id="assignment-task4">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Variables and arithmetic</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. X starts at 12. State the value of X after each of these instructions is carried out in order: <em>X = X &times; 3</em>, then <em>X = X - 6</em>, then <em>X = X &divide; 4</em>.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t4a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t4a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Explain why a counting system must wait for the sensor to switch off again before it counts the next item.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t4b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t4b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Write a line of code (either language) to (a) set Y to half of X and (b) check whether X is greater than 25.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t4c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t4c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. Draw a flowchart for the car park (specification F), then build and test it in the simulator.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t4d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t4d" data-placeholder="Draw your flowchart on paper and add a photo of it, or paste your exported NoSyntaxSim flowchart here..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. Draw a flowchart for the lift (specification G).</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t4e"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t4e" data-placeholder="Draw your flowchart on paper and add a photo of it, or paste your exported NoSyntaxSim flowchart here..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">6. Draw a flowchart for the drinks machine (specification H).</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t4f"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t4f" data-placeholder="Draw your flowchart on paper and add a photo of it, or paste your exported NoSyntaxSim flowchart here..." style="min-height:120px;"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task4', 'Task 4 &mdash; Variables and arithmetic')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-5">Section 5: Analogue Inputs</h1>
+      <p class="notes-p">So far every input has been <strong>digital</strong> &mdash; on or off, high or low, 1 or 0. Many real sensors are <strong>analogue</strong>: their output can take any value in a range. A thermistor or LDR in a voltage divider, a potentiometer measuring an angle, or a speed sensor all give a voltage that varies smoothly. A games controller needs detailed information about exactly where a joystick is, not just whether it has moved.</p>
+      <p class="notes-p">Most microcontrollers have a built-in <strong>analogue-to-digital converter (ADC)</strong> on some of their input pins. The ADC converts the input voltage (0 V to 5 V) into a whole number from <strong>0 to 255</strong>, which the program can store in a variable and then compare or use in calculations. 0 V gives a reading of 0, and 5 V gives 255.</p>
+      <h2 class="notes-h2">Reading an analogue input in a flowchart</h2>
+      <p class="notes-p">In an exam flowchart, taking an analogue reading is shown as <strong>two separate boxes</strong>: an input/output box to read the pin, then a process box to store the reading in a variable.</p>
+      <div class="fig"><svg viewBox="90 0 486 422" xmlns="http://www.w3.org/2000/svg" class="fc-svg" style="width:100%;max-width:440px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;"><title>Checking whether a reading X is between 50 and 100</title><defs><marker id="fca18" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><polygon points="134,10 284,10 266,50 116,50" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="35" text-anchor="middle" font-size="14">read pin 0</text><rect x="114.6" y="84" width="170.8" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="109" text-anchor="middle" font-size="14">store reading in X</text><polygon points="200,155 288,188 200,221 112,188" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="193" text-anchor="middle" font-size="14">X &lt; 50?</text><polygon points="200,245 288,278 200,311 112,278" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="283" text-anchor="middle" font-size="14">X &gt; 100?</text><polygon points="134,348 284,348 266,388 116,388" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="373" text-anchor="middle" font-size="14">pin 7 on</text><polygon points="404,258 554,258 536,298 386,298" fill="#fff" stroke="#000" stroke-width="2"/><text x="470" y="283" text-anchor="middle" font-size="14">pin 6 on</text><path d="M200,50 L200,84" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca18)"/><path d="M200,124 L200,155" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca18)"/><path d="M200,221 L200,245" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca18)"/><path d="M200,311 L200,348" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca18)"/><path d="M288,188 L470,188 L470,258" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca18)"/><path d="M288,278 L395,278" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca18)"/><text x="296" y="180" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="212" y="235" text-anchor="start" font-size="13" font-weight="700">N</text><text x="296" y="270" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="212" y="325" text-anchor="start" font-size="13" font-weight="700">N</text><text x="200" y="406" font-size="12" fill="#475569" text-anchor="middle">in range (50 to 100)</text><text x="470" y="316" font-size="12" fill="#475569" text-anchor="middle">out of range</text></svg><div class="fig-cap">Read and store, then two decisions to check whether the reading lies between 50 and 100</div></div>
+      <div class="code-pair">
+        <div class="code-col"><div class="code-head">PBASIC</div><pre class="code-block">readadc 0, b1      &#x27; read pin 0 and store in b1</pre></div>
+        <div class="code-col"><div class="code-head">Arduino</div><pre class="code-block">x = analogRead(A0) / 4;   // read A0 and store in x</pre></div>
+      </div>
+      <p class="code-note">An Arduino&rsquo;s ADC gives 0 to 1023, so dividing by 4 gives the 0 to 255 range used in exam questions. NoSyntaxSim&rsquo;s analogue sensor gives 0 to 255 directly.</p>
+      <div class="key-point">To check whether a reading is <strong>within a range</strong> you need <strong>two decisions</strong> &mdash; one for each end of the range. A reading is out of range if it is below the lower limit <em>or</em> above the upper limit.</div>
+      <div class="worked-example"><div class="worked-example-title">Worked example &mdash; projector cooling fan</div><div class="step"><div class="step-num">1</div><div class="step-content">Specification: when the start switch (pin 0) is pressed, the projector lamp (pin 6) comes on. An analogue temperature sensor (pin 1) reads the temperature of the lamp and stores the reading in X. If X is greater than 200, the fan (pin 7) is switched on; otherwise it is switched off. The reading is repeated continuously.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">After the start switch and the lamp, the loop goes back to <em>read pin 1</em> (not to the start), so the lamp stays on while the temperature is checked over and over.<svg viewBox="50 0 496 582" xmlns="http://www.w3.org/2000/svg" class="fc-svg" style="width:100%;max-width:420px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;"><title>Projector: lamp on after start switch; fan controlled by analogue temperature reading</title><defs><marker id="fca19" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="125" y="10" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="35" text-anchor="middle" font-size="14">start</text><polygon points="200,81 288,114 200,147 112,114" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="119" text-anchor="middle" font-size="14">is pin 0 on?</text><polygon points="134,184 284,184 266,224 116,224" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="209" text-anchor="middle" font-size="14">pin 6 on</text><polygon points="134,258 284,258 266,298 116,298" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="283" text-anchor="middle" font-size="14">read pin 1</text><rect x="114.6" y="332" width="170.8" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="357" text-anchor="middle" font-size="14">store reading in X</text><polygon points="200,403 288,436 200,469 112,436" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="441" text-anchor="middle" font-size="14">X &gt; 200?</text><polygon points="134,508 284,508 266,548 116,548" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="533" text-anchor="middle" font-size="14">pin 7 on</text><polygon points="374,508 524,508 506,548 356,548" fill="#fff" stroke="#000" stroke-width="2"/><text x="440" y="533" text-anchor="middle" font-size="14">pin 7 off</text><path d="M200,50 L200,81" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca19)"/><path d="M200,147 L200,184" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca19)"/><path d="M200,224 L200,258" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca19)"/><path d="M200,298 L200,332" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca19)"/><path d="M200,372 L200,403" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca19)"/><path d="M288,114 L322,114 L322,63 L200,63" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca19)"/><text x="212" y="161" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="296" y="106" text-anchor="start" font-size="13" font-weight="700">N</text><path d="M200,469 L200,508" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca19)"/><path d="M288,436 L440,436 L440,508" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca19)"/><text x="212" y="483" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="296" y="428" text-anchor="start" font-size="13" font-weight="700">N</text><path d="M440,548 L440,572 L200,572" fill="none" stroke="#000" stroke-width="2"/><path d="M200,548 L200,572 L60,572 L60,240 L200,240" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca19)"/><text x="440" y="598" font-size="11" text-anchor="middle" fill="#475569">pin 6 = lamp &middot; pin 7 = fan</text></svg></div></div><div class="step"><div class="step-num">3</div><div class="step-content">The same program in code:      <div class="code-pair">
+        <div class="code-col"><div class="code-head">PBASIC</div><pre class="code-block">main:   if pin0 = 0 then main
+        high 6                  &#x27; lamp on
+check:  readadc 1, b0           &#x27; read temperature into b0
+        if b0 &gt; 200 then hot
+        low 7                   &#x27; fan off
+        goto check
+hot:    high 7                  &#x27; fan on
+        goto check</pre></div>
+        <div class="code-col"><div class="code-head">Arduino</div><pre class="code-block">void setup() { pinMode(6, OUTPUT); pinMode(7, OUTPUT); }
+void loop() {
+  while (digitalRead(0) == LOW) { }
+  digitalWrite(6, HIGH);                 // lamp on
+  while (true) {
+    int x = analogRead(A1) / 4;          // temperature reading
+    if (x &gt; 200) { digitalWrite(7, HIGH); }   // fan on
+    else         { digitalWrite(7, LOW); }    // fan off
+  }
+}</pre></div>
+      </div>
+</div></div></div>
+      <h2 class="notes-h2">Comparing two analogue readings</h2>
+      <p class="notes-p">Two readings can be stored in two variables and compared with each other. A wind turbine, for example, can use one potentiometer to sense the wind direction (stored in A) and a second to sense which way the turbine is facing (stored in B). If A and B are different, a motor turns the turbine until they match.</p>
+      <figure class="fig"><img src="images/wind-turbines.jpg" alt="Offshore wind turbines in a row" style="width:100%;max-width:560px;display:block;margin:0 auto;border-radius:8px;"><figcaption class="fig-cap">Turbines must turn to face the wind to generate the most power.</figcaption></figure>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F916;</span> NoSyntaxSim &mdash; Analogue inputs</div>
+          <a href="../../../../simulators/control.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Add an <strong>Analogue Sensor</strong> to an input pin. Its slider gives a reading of 0 to 255. Use a process box to store the reading in a variable, then decision boxes to compare it. Use the variable monitor to watch the value change as you move the slider.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" title="NoSyntaxSim flowchart simulator" src="../../../../simulators/control.html" loading="lazy"></iframe></div>
+      </div>
+      <h2 class="notes-h2">Task specifications</h2>
+      <p class="notes-p"><strong>I &mdash; Projector fan with a dead band.</strong> In the worked example the fan switches on and off rapidly when the reading sits around 200. Change the system so that the fan switches on when X is greater than 200, but only switches off again when X falls below 180. Between 180 and 200 the fan stays as it is.</p>
+      <p class="notes-p"><strong>J &mdash; Room lighting.</strong> As the outside light level falls, a system keeps the light level in a room constant by switching on more LEDs. The light sensor gives a low reading when it is dark.</p>
+      <ul class="notes-ul"><li>reading below 50: all four LEDs on</li><li>reading 50 to 100: three LEDs on</li><li>reading 101 to 150: two LEDs on</li><li>reading 151 to 200: one LED on</li><li>reading above 200: all LEDs off</li></ul>
+      <table class="pin-table"><tr><th>Input</th><th>Pin</th><th>Output</th><th>NoSyntaxSim pin</th></tr><tr><td class="pin-in">light sensor (analogue)</td><td><strong>0</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_2</td></tr><tr><td class="pin-in"></td><td><strong>4</strong></td><td class="pin-out">LED 4</td><td style="color:var(--gray-400);">OUT_6</td></tr><tr><td class="pin-in"></td><td><strong>5</strong></td><td class="pin-out">LED 3</td><td style="color:var(--gray-400);">OUT_7</td></tr><tr><td class="pin-in"></td><td><strong>6</strong></td><td class="pin-out">LED 2</td><td style="color:var(--gray-400);">OUT_8</td></tr><tr><td class="pin-in"></td><td><strong>7</strong></td><td class="pin-out">LED 1</td><td style="color:var(--gray-400);">OUT_9</td></tr></table>
+      <p class="notes-p"><strong>K &mdash; Wind turbine.</strong> The reading from sensor A (wind direction) is stored in A and the reading from sensor B (turbine direction) in B. If A is greater than B the motor turns backwards. If A is smaller than B the motor turns forwards. If they are equal the motor stops. The system repeats continuously.</p>
+      <table class="pin-table"><tr><th>Input</th><th>Pin</th><th>Output</th><th>NoSyntaxSim pin</th></tr><tr><td class="pin-in">sensor A (analogue)</td><td><strong>0</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_2</td></tr><tr><td class="pin-in">sensor B (analogue)</td><td><strong>1</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_3</td></tr><tr><td class="pin-in"></td><td><strong>6</strong></td><td class="pin-out">motor reverse</td><td style="color:var(--gray-400);">OUT_8</td></tr><tr><td class="pin-in"></td><td><strong>7</strong></td><td class="pin-out">motor forward</td><td style="color:var(--gray-400);">OUT_9</td></tr></table>
+      <div class="assignment" id="assignment-task5">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Analogue inputs</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Explain why a microcontroller needs an analogue-to-digital converter to use a signal from a thermistor voltage divider.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t5a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t5a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Explain why two decision boxes are needed to check whether a reading is between 50 and 100.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t5b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t5b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Draw a flowchart for specification I (projector fan with a dead band).</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t5c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t5c" data-placeholder="Draw your flowchart on paper and add a photo of it, or paste your exported NoSyntaxSim flowchart here..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. Draw a flowchart for specification J (room lighting).</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t5d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t5d" data-placeholder="Draw your flowchart on paper and add a photo of it, or paste your exported NoSyntaxSim flowchart here..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. Draw a flowchart for specification K (wind turbine), then build and test it in the simulator using two analogue sensors.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t5e"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t5e" data-placeholder="Draw your flowchart on paper and add a photo of it, or paste your exported NoSyntaxSim flowchart here..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">6. <em>Extension.</em> An ADC converts 0 to 5.0 V into readings of 0 to 255. (a) Calculate the change in voltage represented by one step of the reading. (b) Calculate the reading the ADC gives for an input of 2.0 V. Give your answer to (a) to 2 significant figures.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t5f"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t5f" data-placeholder="Show your working..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task5', 'Task 5 &mdash; Analogue inputs')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-6">Section 6: Motor Speed Control &mdash; Pulse-Width Modulation</h1>
+      <p class="notes-p">Many control systems need to change the speed of a motor. There are two ways to do this:</p>
+      <ol class="notes-ol"><li>change the <strong>size of the voltage</strong> applied to the motor, or</li><li>switch the motor <strong>fully on and fully off very rapidly</strong>.</li></ol>
+      <p class="notes-p">A microcontroller output pin can only be at 0 V or 5 V, so it cannot vary the size of the voltage. Instead it uses the second method, called <strong>pulse-width modulation (PWM)</strong>. If the switching happens many times a second, the motor&rsquo;s inertia smooths out the pulses and it turns at a steady speed.</p>
+      <h2 class="notes-h2">Mark, space and mark to space ratio</h2>
+      <ul class="notes-ul"><li>The time the output is <strong>on</strong> is called the <strong>mark</strong>.</li><li>The time the output is <strong>off</strong> is called the <strong>space</strong>.</li><li>The <strong>mark to space ratio</strong> compares the two. The longer the mark compared with the space, the more energy is delivered to the motor and the <strong>faster</strong> it turns.</li><li>The <strong>duty cycle</strong> is the mark as a percentage of one complete pulse (mark + space).</li></ul>
+      <div class="fig"><svg viewBox="0 -14 540 214" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px;display:block;margin:12px auto;font-family:Arial,Helvetica,sans-serif;"><title>Mark to space ratio 1:1</title><defs><marker id="pa23" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker></defs><line x1="60" y1="44" x2="500" y2="44" stroke="#cbd5e1" stroke-dasharray="4 4"/><line x1="60" y1="150" x2="520" y2="150" stroke="#334155" stroke-width="1.6" marker-end="url(#pa23)"/><line x1="60" y1="150" x2="60" y2="12" stroke="#334155" stroke-width="1.6" marker-end="url(#pa23)"/><text x="54" y="48" font-size="12" text-anchor="end">5 V</text><text x="54" y="154" font-size="12" text-anchor="end">0 V</text><text x="520" y="172" font-size="12" text-anchor="end">time (ms)</text><text x="20" y="6" font-size="12">voltage (V)</text><text x="95" y="39" font-size="11" text-anchor="middle" fill="#0f766e">10</text><text x="165" y="144" font-size="11" text-anchor="middle" fill="#9a3412">10</text><text x="235" y="39" font-size="11" text-anchor="middle" fill="#0f766e">10</text><text x="305" y="144" font-size="11" text-anchor="middle" fill="#9a3412">10</text><text x="375" y="39" font-size="11" text-anchor="middle" fill="#0f766e">10</text><text x="445" y="144" font-size="11" text-anchor="middle" fill="#9a3412">10</text><path d="M60,150 L60,44 L130,44 L130,150 L200,150 L200,44 L270,44 L270,150 L340,150 L340,44 L410,44 L410,150 L480,150" fill="none" stroke="#0f766e" stroke-width="2.6"/><text x="60" y="190" font-size="12" fill="#475569">mark (green) = 10 ms &middot; space (orange) = 10 ms</text></svg><div class="fig-cap"><strong>1:1</strong> &mdash; on for the same time as off (duty cycle 50%): medium speed</div></div>
+      <div class="fig"><svg viewBox="0 -14 540 214" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px;display:block;margin:12px auto;font-family:Arial,Helvetica,sans-serif;"><title>Mark to space ratio 1:3</title><defs><marker id="pa24" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker></defs><line x1="60" y1="44" x2="500" y2="44" stroke="#cbd5e1" stroke-dasharray="4 4"/><line x1="60" y1="150" x2="520" y2="150" stroke="#334155" stroke-width="1.6" marker-end="url(#pa24)"/><line x1="60" y1="150" x2="60" y2="12" stroke="#334155" stroke-width="1.6" marker-end="url(#pa24)"/><text x="54" y="48" font-size="12" text-anchor="end">5 V</text><text x="54" y="154" font-size="12" text-anchor="end">0 V</text><text x="520" y="172" font-size="12" text-anchor="end">time (ms)</text><text x="20" y="6" font-size="12">voltage (V)</text><text x="77.5" y="39" font-size="11" text-anchor="middle" fill="#0f766e">5</text><text x="147.5" y="144" font-size="11" text-anchor="middle" fill="#9a3412">15</text><text x="217.5" y="39" font-size="11" text-anchor="middle" fill="#0f766e">5</text><text x="287.5" y="144" font-size="11" text-anchor="middle" fill="#9a3412">15</text><text x="357.5" y="39" font-size="11" text-anchor="middle" fill="#0f766e">5</text><text x="427.5" y="144" font-size="11" text-anchor="middle" fill="#9a3412">15</text><path d="M60,150 L60,44 L95,44 L95,150 L200,150 L200,44 L235,44 L235,150 L340,150 L340,44 L375,44 L375,150 L480,150" fill="none" stroke="#0f766e" stroke-width="2.6"/><text x="60" y="190" font-size="12" fill="#475569">mark (green) = 5 ms &middot; space (orange) = 15 ms</text></svg><div class="fig-cap"><strong>1:3</strong> &mdash; the space is three times as long as the mark (duty cycle 25%): slower</div></div>
+      <div class="fig"><svg viewBox="0 -14 540 214" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px;display:block;margin:12px auto;font-family:Arial,Helvetica,sans-serif;"><title>Mark to space ratio 3:1</title><defs><marker id="pa25" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker></defs><line x1="60" y1="44" x2="500" y2="44" stroke="#cbd5e1" stroke-dasharray="4 4"/><line x1="60" y1="150" x2="520" y2="150" stroke="#334155" stroke-width="1.6" marker-end="url(#pa25)"/><line x1="60" y1="150" x2="60" y2="12" stroke="#334155" stroke-width="1.6" marker-end="url(#pa25)"/><text x="54" y="48" font-size="12" text-anchor="end">5 V</text><text x="54" y="154" font-size="12" text-anchor="end">0 V</text><text x="520" y="172" font-size="12" text-anchor="end">time (ms)</text><text x="20" y="6" font-size="12">voltage (V)</text><text x="112.5" y="39" font-size="11" text-anchor="middle" fill="#0f766e">15</text><text x="182.5" y="144" font-size="11" text-anchor="middle" fill="#9a3412">5</text><text x="252.5" y="39" font-size="11" text-anchor="middle" fill="#0f766e">15</text><text x="322.5" y="144" font-size="11" text-anchor="middle" fill="#9a3412">5</text><text x="392.5" y="39" font-size="11" text-anchor="middle" fill="#0f766e">15</text><text x="462.5" y="144" font-size="11" text-anchor="middle" fill="#9a3412">5</text><path d="M60,150 L60,44 L165,44 L165,150 L200,150 L200,44 L305,44 L305,150 L340,150 L340,44 L445,44 L445,150 L480,150" fill="none" stroke="#0f766e" stroke-width="2.6"/><text x="60" y="190" font-size="12" fill="#475569">mark (green) = 15 ms &middot; space (orange) = 5 ms</text></svg><div class="fig-cap"><strong>3:1</strong> &mdash; the mark is three times as long as the space (duty cycle 75%): faster</div></div>
+      <div class="exam-tip"><strong>Drawing a PWM graph in the exam.</strong> Every pulse must reach the <strong>same voltage</strong> (it is a digital signal), and you must draw <strong>at least three marks and two spaces</strong> so the ratio can be checked. A single pulse gets no marks. Count squares carefully &mdash; for a ratio of 2:1 the on time is exactly twice the off time.</div>
+      <div class="exam-tip"><strong>Describing a change of speed.</strong> Your answer must mention <strong>both</strong> mark and space. To <em>increase</em> speed: increase the mark while keeping the space the same; or decrease the space while keeping the mark the same; or increase the mark and decrease the space. &ldquo;Increase the mark&rdquo; on its own does not get the mark.</div>
+      <h2 class="notes-h2">Advantages and limitations of PWM</h2>
+      <ul class="notes-ul"><li><strong>Torque is maintained at all speeds.</strong> Each pulse applies the full supply voltage, so the motor still produces its full turning force even at low speed. Reducing the voltage instead also reduces the torque, so a slow motor may stall under load.</li><li>The output driver (a transistor or MOSFET) is either fully on or fully off, so very little energy is wasted as heat in it.</li><li>PWM <strong>cannot be used with a mechanical relay</strong>: the rapid switching would quickly wear out (and spark) the relay contacts. A transistor or MOSFET driver must be used.</li><li>The <strong>frequency</strong> of the pulses must be chosen carefully. If the pulses are too slow, the motor speeds up and slows down with each pulse, runs jerkily and may stall.</li></ul>
+      <h2 class="notes-h2">PWM in a flowchart and in code</h2>
+      <p class="notes-p">In a flowchart, PWM is simply: output on, wait for the mark, output off, wait for the space, repeat. Storing the mark and space in variables makes it easy to change the speed later.</p>
+      <div class="fig-row">
+      <div class="fig"><svg viewBox="94 0 256 526" xmlns="http://www.w3.org/2000/svg" class="fc-svg" style="width:100%;max-width:280px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;"><title>PWM flowchart: motor on pin 7 with mark 10 ms and space 20 ms</title><defs><marker id="fca26" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="125" y="10" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="35" text-anchor="middle" font-size="14">start</text><rect x="125" y="84" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="109" text-anchor="middle" font-size="14">mark = 10</text><rect x="125" y="158" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="183" text-anchor="middle" font-size="14">space = 20</text><polygon points="134,232 284,232 266,272 116,272" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="257" text-anchor="middle" font-size="14">pin 7 on</text><rect x="125" y="306" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="331" text-anchor="middle" font-size="14">wait mark (ms)</text><polygon points="134,380 284,380 266,420 116,420" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="405" text-anchor="middle" font-size="14">pin 7 off</text><rect x="125" y="454" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="479" text-anchor="middle" font-size="14">wait space (ms)</text><path d="M200,50 L200,84" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca26)"/><path d="M200,124 L200,158" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca26)"/><path d="M200,198 L200,232" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca26)"/><path d="M200,272 L200,306" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca26)"/><path d="M200,346 L200,380" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca26)"/><path d="M200,420 L200,454" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca26)"/><path d="M200,494 L200,516 L340,516 L340,214 L200,214" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca26)"/></svg><div class="fig-cap">Mark 10 ms, space 20 ms: ratio 1:2</div></div>
+      </div>
+      <div class="code-pair">
+        <div class="code-col"><div class="code-head">PBASIC</div><pre class="code-block">symbol mark = b1
+symbol space = b2
+symbol motor = 7
+init:  let dirsB = %11110000   &#x27; pins 4-7 outputs
+       let mark = 10            &#x27; mark 10 ms
+       let space = 20           &#x27; space 20 ms
+main:  high motor
+       pause mark
+       low motor
+       pause space
+       goto main</pre></div>
+        <div class="code-col"><div class="code-head">Arduino</div><pre class="code-block">int mark = 10;     // mark 10 ms
+int space = 20;    // space 20 ms
+void setup() { pinMode(7, OUTPUT); }
+void loop() {
+  digitalWrite(7, HIGH);
+  delay(mark);
+  digitalWrite(7, LOW);
+  delay(space);
+}</pre></div>
+      </div>
+      <p class="code-note">Here the space is twice the mark, so the motor runs at about a third of full speed.</p>
+      <p class="notes-p">Arduino boards also have a built-in hardware PWM command, <code>analogWrite(pin, value)</code>, where the value 0 to 255 sets the duty cycle, and NoSyntaxSim&rsquo;s output box has a <em>Set PWM</em> option that does the same. In exam questions, however, PWM is always shown with separate on, wait, off and wait steps, so practise drawing it that way.</p>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x2699;&#xFE0F;</span> NoSyntaxSim &mdash; PWM investigation</div>
+          <a href="../../../../simulators/control.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Connect a motor to OUT_9. Build the PWM flowchart above, using <em>Time Delay</em> boxes set to a variable for the mark and space. Run it, then try the changes in Task 6 and watch the motor speed.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" title="NoSyntaxSim flowchart simulator" src="../../../../simulators/control.html" loading="lazy"></iframe></div>
+      </div>
+      <div class="assignment" id="assignment-task6">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Pulse-width modulation</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Sketch a graph of a PWM signal with a mark to space ratio of 2:1. Show at least three pulses. (Draw on paper and add a photo, or describe the times you would use.)</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t6a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t6a" data-placeholder="Describe your answer here, or draw it on paper and add a photo..." style="min-height:100px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Describe how the speed of a motor controlled by PWM could be <strong>decreased</strong>. Refer to both mark and space.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t6b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t6b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Describe one advantage of using PWM rather than varying the size of the supply voltage to control the speed of a motor.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t6c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t6c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. Explain why a PWM signal should not be used to switch a motor through a relay, and state a suitable output driver.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t6d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t6d" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. A PWM signal has a mark of 15 ms and a space of 45 ms. Calculate (a) the mark to space ratio, (b) the duty cycle and (c) the frequency of the pulses.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t6e"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t6e" data-placeholder="Show your working..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">6. In the simulator, set the mark and space to 500 ms each, then to 100 ms each, then to 10 ms each. Describe what happens to the motor and explain why.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t6f"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t6f" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task6', 'Task 6 &mdash; Pulse-width modulation')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-7">Section 7: Changing Speed Under Program Control</h1>
+      <p class="notes-p">Because the mark and space are stored in variables, the program can change them while it runs. This lets a motor <strong>accelerate</strong> smoothly, respond to <strong>buttons</strong>, or be controlled by a <strong>sensor reading</strong>. These ideas appear in almost every Higher paper.</p>
+      <h2 class="notes-h2">Accelerating a motor (soft start)</h2>
+      <p class="notes-p">A heavy load such as a conveyor or ski tow should not be jerked into motion at full power. Instead, the program starts with a short mark and long space, then lengthens the mark and shortens the space a little on every pulse until the motor reaches full speed. Keeping <em>mark + space</em> constant keeps the frequency constant.</p>
+      <div class="fig-row">
+      <div class="fig"><svg viewBox="50 0 260 826" xmlns="http://www.w3.org/2000/svg" class="fc-svg" style="width:100%;max-width:300px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;"><title>Soft start: the mark increases and the space decreases on every pulse until full speed</title><defs><marker id="fca28" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="125" y="10" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="35" text-anchor="middle" font-size="14">start</text><rect x="125" y="84" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="109" text-anchor="middle" font-size="14">mark = 2</text><rect x="125" y="158" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="183" text-anchor="middle" font-size="14">space = 18</text><polygon points="134,232 284,232 266,272 116,272" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="257" text-anchor="middle" font-size="14">pin 7 on</text><rect x="125" y="306" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="331" text-anchor="middle" font-size="14">wait mark (ms)</text><polygon points="134,380 284,380 266,420 116,420" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="405" text-anchor="middle" font-size="14">pin 7 off</text><rect x="125" y="454" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="479" text-anchor="middle" font-size="14">wait space (ms)</text><rect x="125" y="528" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="553" text-anchor="middle" font-size="14">mark = mark + 1</text><rect x="118.4" y="602" width="163.2" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="627" text-anchor="middle" font-size="14">space = space - 1</text><polygon points="200,673 288,706 200,739 112,706" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="711" text-anchor="middle" font-size="14">mark = 20?</text><polygon points="134,776 284,776 266,816 116,816" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="801" text-anchor="middle" font-size="14">pin 7 on</text><path d="M200,50 L200,84" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca28)"/><path d="M200,124 L200,158" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca28)"/><path d="M200,198 L200,232" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca28)"/><path d="M200,272 L200,306" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca28)"/><path d="M200,346 L200,380" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca28)"/><path d="M200,420 L200,454" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca28)"/><path d="M200,494 L200,528" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca28)"/><path d="M200,568 L200,602" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca28)"/><path d="M200,642 L200,673" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca28)"/><path d="M200,739 L200,776" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca28)"/><path d="M112,706 L60,706 L60,214 L200,214" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca28)"/><text x="212" y="753" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="104" y="698" text-anchor="end" font-size="13" font-weight="700">N</text></svg><div class="fig-cap">Mark rises from 2 ms to 20 ms, one step per pulse</div></div>
+      <div class="fig"><svg viewBox="0 -14 540 214" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px;display:block;margin:12px auto;font-family:Arial,Helvetica,sans-serif;"><title>Accelerating motor: the mark gets longer and the space shorter on every pulse</title><defs><marker id="pa29" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker></defs><line x1="60" y1="44" x2="500" y2="44" stroke="#cbd5e1" stroke-dasharray="4 4"/><line x1="60" y1="150" x2="520" y2="150" stroke="#334155" stroke-width="1.6" marker-end="url(#pa29)"/><line x1="60" y1="150" x2="60" y2="12" stroke="#334155" stroke-width="1.6" marker-end="url(#pa29)"/><text x="54" y="48" font-size="12" text-anchor="end">5 V</text><text x="54" y="154" font-size="12" text-anchor="end">0 V</text><text x="520" y="172" font-size="12" text-anchor="end">time (ms)</text><text x="20" y="6" font-size="12">voltage (V)</text><path d="M60,150 L60,44 L71.6667,44 L71.6667,150 L130,150 L130,44 L153.333,44 L153.333,150 L200,150 L200,44 L235,44 L235,150 L270,150 L270,44 L316.666,44 L316.666,150 L340,150 L340,44 L398.333,44 L398.333,150 L410,150 L410,44 L479.999,44 L479.999,150 L480,150" fill="none" stroke="#0f766e" stroke-width="2.6"/></svg><div class="fig-cap">The pulses get wider while the period stays the same</div></div>
+      </div>
+      <div class="code-pair">
+        <div class="code-col"><div class="code-head">PBASIC</div><pre class="code-block">        let b1 = 2              &#x27; mark
+        let b2 = 18             &#x27; space
+ramp:   high 7
+        pause b1
+        low 7
+        pause b2
+        let b1 = b1 + 1
+        let b2 = b2 - 1
+        if b1 &lt; 20 then ramp
+        high 7                  &#x27; full speed</pre></div>
+        <div class="code-col"><div class="code-head">Arduino</div><pre class="code-block">void setup() {
+  pinMode(7, OUTPUT);
+  int mark = 2, space = 18;
+  while (mark &lt; 20) {
+    digitalWrite(7, HIGH); delay(mark);
+    digitalWrite(7, LOW);  delay(space);
+    mark = mark + 1;
+    space = space - 1;
+  }
+  digitalWrite(7, HIGH);   // full speed
+}
+void loop() { }</pre></div>
+      </div>
+      <h2 class="notes-h2">Closed-loop speed control</h2>
+      <p class="notes-p">If the load on a motor changes &mdash; a lift that fills with people, or a forklift raising a heavy pallet &mdash; its speed will change too. A <strong>speed sensor</strong> can feed the actual speed back to the microcontroller, which compares it with the desired value and adjusts the mark and space to correct any <strong>error</strong>. This is <strong>closed-loop control</strong>, which you met in the Systems Approach.</p>
+      <div class="fig"><svg viewBox="50 0 548 1022" xmlns="http://www.w3.org/2000/svg" class="fc-svg" style="width:100%;max-width:460px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;"><title>Closed-loop speed control: the mark and space are adjusted after every reading</title><defs><marker id="fca30" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="125" y="10" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="35" text-anchor="middle" font-size="14">start</text><rect x="125" y="84" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="109" text-anchor="middle" font-size="14">mark = 60</text><rect x="125" y="158" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="183" text-anchor="middle" font-size="14">space = 60</text><polygon points="134,232 284,232 266,272 116,272" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="257" text-anchor="middle" font-size="14">read pin 0</text><rect x="114.6" y="306" width="170.8" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="331" text-anchor="middle" font-size="14">store reading in S</text><polygon points="200,377 288,410 200,443 112,410" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="415" text-anchor="middle" font-size="14">S &gt; 140?</text><polygon points="470,447 558,480 470,513 382,480" fill="#fff" stroke="#000" stroke-width="2"/><text x="470" y="485" text-anchor="middle" font-size="14">S &lt; 140?</text><rect x="125" y="490" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="515" text-anchor="middle" font-size="14">mark = mark - 1</text><rect x="118.4" y="564" width="163.2" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="589" text-anchor="middle" font-size="14">space = space + 1</text><rect x="395" y="560" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="470" y="585" text-anchor="middle" font-size="14">mark = mark + 1</text><rect x="388.4" y="634" width="163.2" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="470" y="659" text-anchor="middle" font-size="14">space = space - 1</text><polygon points="134,728 284,728 266,768 116,768" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="753" text-anchor="middle" font-size="14">pin 7 on</text><rect x="125" y="802" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="827" text-anchor="middle" font-size="14">wait mark (ms)</text><polygon points="134,876 284,876 266,916 116,916" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="901" text-anchor="middle" font-size="14">pin 7 off</text><rect x="125" y="950" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="975" text-anchor="middle" font-size="14">wait space (ms)</text><path d="M200,50 L200,84" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca30)"/><path d="M200,124 L200,158" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca30)"/><path d="M200,198 L200,232" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca30)"/><path d="M200,272 L200,306" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca30)"/><path d="M200,346 L200,377" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca30)"/><path d="M288,410 L470,410 L470,447" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca30)"/><path d="M200,443 L200,490" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca30)"/><path d="M200,530 L200,564" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca30)"/><path d="M470,513 L470,560" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca30)"/><path d="M470,600 L470,634" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca30)"/><text x="212" y="457" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="296" y="402" text-anchor="start" font-size="13" font-weight="700">N</text><text x="482" y="527" text-anchor="start" font-size="13" font-weight="700">Y</text><text x="566" y="472" text-anchor="start" font-size="13" font-weight="700">N</text><path d="M200,768 L200,802" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca30)"/><path d="M200,842 L200,876" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca30)"/><path d="M200,916 L200,950" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca30)"/><path d="M200,604 L200,728" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca30)"/><path d="M470,674 L470,698 L200,698" fill="none" stroke="#000" stroke-width="2"/><path d="M558,480 L588,480 L588,698 L470,698" fill="none" stroke="#000" stroke-width="2"/><text x="566" y="472" text-anchor="start" font-size="13" font-weight="700">N</text><path d="M200,990 L200,1012 L60,1012 L60,214 L200,214" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca30)"/></svg><div class="fig-cap">Desired speed reading = 140. Too fast: shorten the mark. Too slow: lengthen it. Correct: no change.</div></div>
+      <div class="key-point">Look at how this flowchart is built: <strong>read and store</strong>, then <strong>two decisions</strong> (too high? too low?), each with its own adjustment to mark and space, then all routes join for the <strong>on &ndash; wait mark &ndash; off &ndash; wait space</strong> pulse, then <strong>loop back to read again</strong>. This structure has appeared in several recent exam papers for up to 10 marks.</div>
+      <h2 class="notes-h2">Setting the mark directly from a reading</h2>
+      <p class="notes-p">Another approach uses the reading itself as the mark. If the reading X is 0 to 255 and every pulse is 255 ms long, then <em>mark = X</em> and <em>space = 255 - X</em>. A higher reading gives a longer mark and a faster motor.</p>
+      <div class="fig"><svg viewBox="92.6 0 267.4 674" xmlns="http://www.w3.org/2000/svg" class="fc-svg" style="width:100%;max-width:290px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;"><title>Mark set by the analogue reading X; space = 255 - X</title><defs><marker id="fca31" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="125" y="10" width="150" height="40" rx="20" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="35" text-anchor="middle" font-size="14">start</text><polygon points="134,84 284,84 266,124 116,124" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="109" text-anchor="middle" font-size="14">read pin 1</text><rect x="114.6" y="158" width="170.8" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="183" text-anchor="middle" font-size="14">store reading in X</text><rect x="125" y="232" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="257" text-anchor="middle" font-size="14">mark = X</text><rect x="125" y="306" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="331" text-anchor="middle" font-size="14">space = 255 - X</text><polygon points="134,380 284,380 266,420 116,420" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="405" text-anchor="middle" font-size="14">pin 7 on</text><rect x="125" y="454" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="479" text-anchor="middle" font-size="14">wait mark (ms)</text><polygon points="134,528 284,528 266,568 116,568" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="553" text-anchor="middle" font-size="14">pin 7 off</text><rect x="125" y="602" width="150" height="40" fill="#fff" stroke="#000" stroke-width="2"/><text x="200" y="627" text-anchor="middle" font-size="14">wait space (ms)</text><path d="M200,50 L200,84" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca31)"/><path d="M200,124 L200,158" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca31)"/><path d="M200,198 L200,232" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca31)"/><path d="M200,272 L200,306" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca31)"/><path d="M200,346 L200,380" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca31)"/><path d="M200,420 L200,454" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca31)"/><path d="M200,494 L200,528" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca31)"/><path d="M200,568 L200,602" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca31)"/><path d="M200,642 L200,664 L350,664 L350,66 L200,66" fill="none" stroke="#000" stroke-width="2" marker-end="url(#fca31)"/></svg><div class="fig-cap">Mark from the reading; space makes up the rest of the 255 ms pulse</div></div>
+      <h2 class="notes-h2">Brightness control</h2>
+      <p class="notes-p">PWM works just as well for lamps and LEDs. Switching a bank of LEDs rapidly through a <strong>MOSFET</strong> changes their brightness: a longer mark makes them brighter. The eye cannot see the flicker as long as the pulses are fast enough.</p>
+      <h2 class="notes-h2">Task specifications</h2>
+      <p class="notes-p"><strong>L &mdash; Food mixer.</strong> The user must be able to adjust the speed of a food mixer.</p>
+      <ul class="notes-ul"><li>Mark and space are both initially set to 10 ms.</li><li>When the &lsquo;faster&rsquo; switch is pressed, the mark increases by 1 ms and the space decreases by 1 ms.</li><li>When the &lsquo;slower&rsquo; switch is pressed, the mark decreases by 1 ms and the space increases by 1 ms.</li><li>A PWM signal is sent to the motor using the mark and space.</li><li>The speed adjustment and pulses continue until the stop switch is pressed.</li></ul>
+      <table class="pin-table"><tr><th>Input</th><th>Pin</th><th>Output</th><th>NoSyntaxSim pin</th></tr><tr><td class="pin-in">stop switch</td><td><strong>0</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_2</td></tr><tr><td class="pin-in">faster switch</td><td><strong>1</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_3</td></tr><tr><td class="pin-in">slower switch</td><td><strong>2</strong></td><td class="pin-out"></td><td style="color:var(--gray-400);">IN_4</td></tr><tr><td class="pin-in"></td><td><strong>7</strong></td><td class="pin-out">motor</td><td style="color:var(--gray-400);">OUT_9</td></tr></table>
+      <div class="assignment" id="assignment-task7">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Changing speed under program control</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Draw a flowchart for the food mixer (specification L), then build and test it in the simulator.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t7a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t7a" data-placeholder="Draw your flowchart on paper and add a photo of it, or paste your exported NoSyntaxSim flowchart here..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Sketch a graph showing how a microcontroller could make a motor accelerate. Show at least six pulses.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t7b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t7b" data-placeholder="Describe your answer here, or draw it on paper and add a photo..." style="min-height:100px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Using the closed-loop flowchart above, describe what happens to the mark and space when the speed reading S is 150, and explain why this is an example of closed-loop control.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t7c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t7c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A light sensor on pin 0 gives a <strong>low</strong> reading when it is dark. The program below controls the brightness of a bank of LEDs switched by a MOSFET on pin 7. (a) State the mark to space ratio when the reading is 30, 120 and 220. (b) Describe how the LEDs respond as it gets darker. (c) State the length of one complete pulse.<div class="code-col" style="margin:8px 0;"><div class="code-head">PBASIC</div><pre class="code-block">main:    readadc 0, b0
+         if b0 &lt; 60 then bright
+         if b0 &lt; 160 then medium
+         let b1 = 1               &#x27; mark
+         let b2 = 9               &#x27; space
+         goto pulser
+bright:  let b1 = 9
+         let b2 = 1
+         goto pulser
+medium:  let b1 = 5
+         let b2 = 5
+pulser:  high 7
+         pause b1
+         low 7
+         pause b2
+         goto main</pre></div></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-t7d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-t7d" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task7', 'Task 7 &mdash; Changing speed under program control')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-8">Section 8: Exam-Style Questions</h1>
+      <p class="notes-p">These questions are written in the style of the Higher question paper. Set yourself a time limit of about 1.5 minutes per mark, answer on paper or in the boxes, then check your work against the model answers.</p>
+      <h2 class="notes-h2">Question 1 &mdash; Airport baggage conveyor</h2>
+      <p class="notes-p">A baggage conveyor at an airport uses pulse-width modulation to accelerate smoothly to its working speed. The control sequence has the following steps:</p>
+      <div class="spec-box"><div class="spec-box-title">Specification</div><ul><li>Initially the MARK = 5 ms and the SPACE = 15 ms.</li><li>Each new pulse increases the MARK by 1 ms and decreases the SPACE by 1 ms.</li><li>The acceleration continues until the MARK reaches 20 ms.</li><li>The motor is then switched on continuously.</li><li>The motor stops when the emergency stop is pressed (high) <strong>or</strong> the override switch is released (low).</li><li>A brake is then applied for 3 seconds.</li><li>The sequence repeats.</li></ul></div>
+      <table class="pin-table"><tr><th>Input</th><th>Pin</th><th>Output</th></tr><tr><td class="pin-in">emergency stop (pressed = 1)</td><td><strong>0</strong></td><td class="pin-out"></td></tr><tr><td class="pin-in">override switch (released = 0)</td><td><strong>1</strong></td><td class="pin-out"></td></tr><tr><td class="pin-in"></td><td><strong>6</strong></td><td class="pin-out">brake</td></tr><tr><td class="pin-in"></td><td><strong>7</strong></td><td class="pin-out">motor</td></tr></table>
+      <div class="assignment" id="assignment-exam1">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 1 &mdash; Baggage conveyor</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) Complete a flowchart for the control of the conveyor, with reference to the specification and the input/output table. <span class="marks">12</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-e1a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-e1a" data-placeholder="Draw your flowchart on paper and add a photo of it, or paste your exported NoSyntaxSim flowchart here..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Sketch the PWM signal for the first three pulses of the acceleration. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-e1b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-e1b" data-placeholder="Describe your answer here, or draw it on paper and add a photo..." style="min-height:90px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) Describe one reason why the conveyor is accelerated gradually rather than switched straight on at full power. <span class="marks">1</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-e1c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-e1c" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-exam1', 'Question 1 &mdash; Baggage conveyor')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2">Question 2 &mdash; Loading a ferry car deck</h2>
+      <p class="notes-p">A ferry company uses a microcontroller to control the loading of cars onto its car deck, which has space for 30 cars. Cars with bookings wait behind a barrier; cars on standby wait behind a gate. A single sensor at the top of the ramp counts every car that boards.</p>
+      <div class="spec-box"><div class="spec-box-title">Control sequence</div><ul><li>The operator presses the start switch to begin loading. The count is set to 0 and the barrier opens.</li><li>The sensor gives a high signal each time a car passes, and the count increases by 1.</li><li>If the deck is full (30 cars), the barrier closes.</li><li>If the deck is not full when the operator presses the standby switch, the barrier closes and the gate opens to let standby cars on until the deck is full. The gate then closes.</li><li>When loading is finished, the operator presses the ramp switch, and the ramp motor runs for 20 seconds to raise the ramp.</li><li>The system then returns to the start.</li></ul></div>
+      <table class="pin-table"><tr><th>Input</th><th>Pin</th><th>Output</th></tr><tr><td class="pin-in">sensor</td><td><strong>0</strong></td><td class="pin-out"></td></tr><tr><td class="pin-in">standby switch</td><td><strong>1</strong></td><td class="pin-out"></td></tr><tr><td class="pin-in">start switch</td><td><strong>2</strong></td><td class="pin-out"></td></tr><tr><td class="pin-in">ramp switch</td><td><strong>3</strong></td><td class="pin-out"></td></tr><tr><td class="pin-in"></td><td><strong>5</strong></td><td class="pin-out">ramp motor</td></tr><tr><td class="pin-in"></td><td><strong>6</strong></td><td class="pin-out">gate (open = high)</td></tr><tr><td class="pin-in"></td><td><strong>7</strong></td><td class="pin-out">barrier (open = high)</td></tr></table>
+      <div class="assignment" id="assignment-exam2">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 2 &mdash; Ferry car deck</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) Draw a flowchart to show how the loading is controlled. <span class="marks">10</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-e2a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-e2a" data-placeholder="Draw your flowchart on paper and add a photo of it, or paste your exported NoSyntaxSim flowchart here..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) The engineers considered building the controller from logic gates instead. Describe <strong>two</strong> advantages of using a microcontroller. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-e2b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-e2b" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-exam2', 'Question 2 &mdash; Ferry car deck')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2">Question 3 &mdash; Hydro scheme sluice gate</h2>
+      <p class="notes-p">A small hydro-electric scheme uses a motor to open a sluice gate when the water in the reservoir is high. The code is written to meet the following specification:</p>
+      <div class="spec-box"><div class="spec-box-title">Specification</div><ul><li>If the enable switch is on <strong>and</strong> the level sensor detects high water, the sluice motor runs.</li><li>The motor runs slowly using PWM with a mark to space ratio of 1:4, using a mark of 10 ms.</li><li>The sequence repeats.</li></ul></div>
+      <table class="pin-table"><tr><th>Input</th><th>Pin</th><th>Output</th></tr><tr><td class="pin-in">enable switch</td><td><strong>0</strong></td><td class="pin-out"></td></tr><tr><td class="pin-in">level sensor (high water = 1)</td><td><strong>1</strong></td><td class="pin-out"></td></tr><tr><td class="pin-in"></td><td><strong>7</strong></td><td class="pin-out">sluice motor</td></tr></table>
+      <p class="notes-p">Part of the program is shown below in PBASIC and Arduino. Two faults are shown in bold.</p>
+      <div class="code-pair">
+        <div class="code-col"><div class="code-head">PBASIC</div><pre class="code-block">main:  <b class="fault">if pin0 = 1 then main</b>
+       if pin1 = 0 then main
+       gosub pwm
+       goto main
+
+pwm:   high 7
+       pause 10
+       low 7
+       <b class="fault">pause 20</b>
+       return</pre></div>
+        <div class="code-col"><div class="code-head">Arduino</div><pre class="code-block">void loop() {
+  <b class="fault">if (digitalRead(0) == HIGH) { return; }</b>
+  if (digitalRead(1) == LOW) { return; }
+  pwm();
+}
+
+void pwm() {
+  digitalWrite(7, HIGH);
+  delay(10);
+  digitalWrite(7, LOW);
+  <b class="fault">delay(20);</b>
+  return;
+}</pre></div>
+      </div>
+      <div class="assignment" id="assignment-exam3">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 3 &mdash; Sluice gate</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) Correct the two faults by writing the corrected code. You may use either language. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-e3a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-e3a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Sketch the PWM signal with a mark to space ratio of 1:4. Show at least three pulses. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-e3b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-e3b" data-placeholder="Describe your answer here, or draw it on paper and add a photo..." style="min-height:90px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) Describe, with reference to both mark and space, how the sluice motor could be made to turn faster. <span class="marks">1</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-e3c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-e3c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(d) Explain why the reading from an analogue sensor is shown as two separate boxes in a flowchart. <span class="marks">1</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-e3d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-e3d" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-exam3', 'Question 3 &mdash; Sluice gate')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-9">Section 9: Design Challenges</h1>
+      <p class="notes-p">For each challenge, follow the full engineering process: read the specification carefully, plan a flowchart on paper, then build it in NoSyntaxSim. Test <strong>every</strong> point of the specification, not just the obvious one. Finally, evaluate your system: does it fully meet the specification, and what would you improve?</p>
+      <div class="key-point">These challenges use the simulator&rsquo;s own pin names (IN_2 to IN_5 and OUT_6 to OUT_9). Use an <strong>Analogue Sensor</strong> wherever a reading is needed, and <strong>Time Delay</strong> boxes set to a variable for PWM mark and space times.</div>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F916;</span> NoSyntaxSim &mdash; Design challenge workspace</div>
+          <a href="../../../../simulators/control.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Use this workspace for the challenges below. When your system works, use the camera button to export an image of it and paste it into your answer.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" title="NoSyntaxSim flowchart simulator" src="../../../../simulators/control.html" loading="lazy"></iframe></div>
+      </div>
+      <h2 class="notes-h2" id="dc1">Challenge 1 &mdash; Ski tow at Glenshee</h2>
+      <p class="notes-p">A ski centre in the Cairngorms is upgrading the control system for one of its rope tows. Skiers are pulled up the slope on the rope, so it must never start with a jerk.</p>
+      <table class="pin-table"><tr><th>Input</th><th>NoSyntaxSim pin</th><th>Output</th></tr><tr><td class="pin-in">start button</td><td><strong>IN_2</strong></td><td class="pin-out"></td></tr><tr><td class="pin-in">stop button</td><td><strong>IN_3</strong></td><td class="pin-out"></td></tr><tr><td class="pin-in"></td><td><strong>OUT_8</strong></td><td class="pin-out">warning beacon</td></tr><tr><td class="pin-in"></td><td><strong>OUT_9</strong></td><td class="pin-out">tow motor</td></tr></table>
+      <table class="spec-table"><tr><th><span class="data-badge">i</span></th><td>When the operator presses the start button, the warning beacon flashes 3 times (0.5 s on, 0.5 s off).</td></tr><tr><th><span class="data-badge">ii</span></th><td>The tow motor then starts with a mark of 2 ms and a space of 18 ms.</td></tr><tr><th><span class="data-badge">iii</span></th><td>On every pulse the mark increases by 1 ms and the space decreases by 1 ms, until the mark reaches 18 ms.</td></tr><tr><th><span class="data-badge">iv</span></th><td>The motor then continues to run at that speed.</td></tr><tr><th><span class="data-badge">v</span></th><td>If the stop button is pressed at any time while the motor is running, the motor stops and the system waits for the start button again.</td></tr></table>
+      <div class="assignment" id="assignment-dc1">
+        <div class="assignment-header"><div class="assignment-title">&#x1F3BF; Challenge 1 &mdash; Ski tow</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Design, build and simulate the ski tow controller. Test that the stop button works during the soft start as well as at full speed. Paste your exported flowchart below and evaluate your solution.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-dc1"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-dc1" data-placeholder="Paste your exported flowchart and write your evaluation..." style="min-height:140px;"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc1', 'Challenge 1 &mdash; Ski tow')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2" id="dc2">Challenge 2 &mdash; Polytunnel ventilation on an Orkney croft</h2>
+      <p class="notes-p">A crofter in Orkney grows salad crops in a polytunnel. On sunny days it overheats, so a ventilation fan is to be fitted. To save energy, the fan speed should depend on how hot it is &mdash; and when it rains the fan must stop, as the vents have to close.</p>
+      <table class="pin-table"><tr><th>Input</th><th>NoSyntaxSim pin</th><th>Output</th></tr><tr><td class="pin-in">temperature sensor (analogue)</td><td><strong>IN_2</strong></td><td class="pin-out"></td></tr><tr><td class="pin-in">rain sensor</td><td><strong>IN_3</strong></td><td class="pin-out"></td></tr><tr><td class="pin-in"></td><td><strong>OUT_7</strong></td><td class="pin-out">rain warning lamp</td></tr><tr><td class="pin-in"></td><td><strong>OUT_9</strong></td><td class="pin-out">fan motor</td></tr></table>
+      <table class="spec-table"><tr><th><span class="data-badge">i</span></th><td>The temperature is read and stored in a variable T.</td></tr><tr><th><span class="data-badge">ii</span></th><td>T below 100: fan off.</td></tr><tr><th><span class="data-badge">iii</span></th><td>T from 100 to 159: fan runs with mark 5 ms, space 15 ms.</td></tr><tr><th><span class="data-badge">iv</span></th><td>T from 160 to 209: fan runs with mark 10 ms, space 10 ms.</td></tr><tr><th><span class="data-badge">v</span></th><td>T of 210 or more: fan runs at full speed.</td></tr><tr><th><span class="data-badge">vi</span></th><td>If the rain sensor is on, the fan stops and the rain warning lamp lights. The lamp goes off again when the rain stops.</td></tr><tr><th><span class="data-badge">vii</span></th><td>The system repeats continuously.</td></tr></table>
+      <div class="assignment" id="assignment-dc2">
+        <div class="assignment-header"><div class="assignment-title">&#x1F331; Challenge 2 &mdash; Polytunnel ventilation</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Design, build and simulate the ventilation controller. Test each temperature band, including the values at the edges of each band (99, 100, 159, 160, 209, 210), and test the rain sensor. Paste your exported flowchart below and evaluate your solution.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-dc2"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-dc2" data-placeholder="Paste your exported flowchart and write your evaluation..." style="min-height:140px;"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc2', 'Challenge 2 &mdash; Polytunnel ventilation')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2" id="dc3">Challenge 3 &mdash; Bottling line at a Speyside distillery</h2>
+      <p class="notes-p">A distillery in Speyside is automating the end of its bottling line. Every bottle is checked to make sure it has been filled properly, and good bottles are packed in cases of 12.</p>
+      <table class="pin-table"><tr><th>Input</th><th>NoSyntaxSim pin</th><th>Output</th></tr><tr><td class="pin-in">bottle sensor</td><td><strong>IN_2</strong></td><td class="pin-out"></td></tr><tr><td class="pin-in">fill-level sensor (analogue)</td><td><strong>IN_3</strong></td><td class="pin-out"></td></tr><tr><td class="pin-in">stop switch</td><td><strong>IN_4</strong></td><td class="pin-out"></td></tr><tr><td class="pin-in"></td><td><strong>OUT_8</strong></td><td class="pin-out">reject pusher</td></tr><tr><td class="pin-in"></td><td><strong>OUT_9</strong></td><td class="pin-out">case-sealing motor</td></tr></table>
+      <table class="spec-table"><tr><th><span class="data-badge">i</span></th><td>When the bottle sensor detects a bottle, the fill level is read and stored in L.</td></tr><tr><th><span class="data-badge">ii</span></th><td>If L is less than 180, the bottle is under-filled: the reject pusher operates for 1 second.</td></tr><tr><th><span class="data-badge">iii</span></th><td>Otherwise the bottle is counted as good.</td></tr><tr><th><span class="data-badge">iv</span></th><td>When 12 good bottles have been counted, the case-sealing motor runs for 3 seconds and the count is reset.</td></tr><tr><th><span class="data-badge">v</span></th><td>Each bottle must only be counted once.</td></tr><tr><th><span class="data-badge">vi</span></th><td>The system stops when the stop switch is pressed.</td></tr></table>
+      <div class="assignment" id="assignment-dc3">
+        <div class="assignment-header"><div class="assignment-title">&#x1F37E; Challenge 3 &mdash; Bottling line</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Design, build and simulate the bottling line controller. Test it with a mixture of good and under-filled bottles, and check that the case is only sealed after exactly 12 good bottles. Paste your exported flowchart below and evaluate your solution.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpc-dc3"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpc-dc3" data-placeholder="Paste your exported flowchart and write your evaluation..." style="min-height:140px;"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc3', 'Challenge 3 &mdash; Bottling line')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-download-all" id="downloadAllBtn" onclick="downloadAllAnswersPDF()">&#x2B07;&#xFE0F; Download ALL my answers (PDF)</button>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8; Print</button>
+        <button class="ctrl-btn ctrl-btn-clear" id="btn-clear-all">&#x1F5D1; Clear all answers</button>
+      </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
+
+      <div class="page-nav" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
+        <button class="ctrl-btn ctrl-btn-print" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});">&#x2B06;&#xFE0F; Back to top</button>
+        <a href="index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">&#x2302; Main menu</a>
+        <a href="../../mechanisms/drive-systems/index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">Next section &#x2192;</a>
+      </div>
+    </div>
     </div>
   </div>
 </div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
-<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script>
+
+<footer class="footer">
+  <span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span>
+  <a href="../../../../teacher/login.html">Teacher area</a>
+</footer>
+
+<script src="../../../../js/site.js"></script>
+<script src="../../../../js/nav.js"></script>
 <script>document.getElementById("sidebar").innerHTML=buildSidebar("higher","../../../../");</script>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// ── localStorage saving for all answer boxes and cells ─────────────────────
+const STORAGE_PREFIX = 'ess_answers_';
+function saveValue(k, v) { try { localStorage.setItem(STORAGE_PREFIX + k, v); updateStatusBar(); window._essSaveFail = null; } catch(e) { window._essSaveFail = k; } }
+function loadValue(k) { try { return localStorage.getItem(STORAGE_PREFIX + k) || ''; } catch(e) { return ''; } }
+function updateStatusBar() { const el = document.getElementById('storage-status'); if (el) el.textContent = 'Last saved: ' + new Date().toLocaleTimeString(); }
+function showSaved(key) {
+  const ind = document.getElementById('ind-' + key);
+  if (!ind) return;
+  if (window._essSaveFail === key) { ind.textContent = 'Not saved: browser storage is full. Remove an image, or download your answers as a PDF now.'; ind.style.color = '#b91c1c'; return; }
+  ind.style.color = '';
+  ind.textContent = '\u2713 Saved';
+  setTimeout(() => { ind.textContent = ''; }, 2000);
+}
+function clearAllAnswers() {
+  if (!confirm('Clear all saved answers on this page? This cannot be undone.')) return;
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const k = el.dataset.key;
+    if (k) { try { localStorage.removeItem(STORAGE_PREFIX + k); } catch(e) {} el.innerHTML = ''; }
+  });
+  const el = document.getElementById('storage-status');
+  if (el) el.textContent = 'Answers cleared.';
+}
+function debounce(fn, d) { let t; return function() { clearTimeout(t); const a = arguments, c = this; t = setTimeout(() => fn.apply(c, a), d); }; }
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-key]').forEach(box => {
+    const key = box.dataset.key;
+    if (!key) return;
+    const saved = loadValue(key);
+    if (saved) box.innerHTML = saved;
+    const ds = debounce(() => { saveValue(key, box.innerHTML); showSaved(key); }, 800);
+    box.addEventListener('input', ds);
+    box.addEventListener('blur', () => { saveValue(key, box.innerHTML); showSaved(key); });
+  });
+  const clearBtn = document.getElementById('btn-clear-all');
+  if (clearBtn) clearBtn.addEventListener('click', clearAllAnswers);
+});
+
+/* ── PDF export ─────────────────────────────────────────────── */
+function pdfSafe(s) {
+  if (!s) return '';
+  return String(s)
+    .replace(/[\u2018\u2019\u201B\u2032]/g, "'")
+    .replace(/[\u201C\u201D\u201F\u2033]/g, '"')
+    .replace(/[\u2013\u2014\u2212]/g, '-')
+    .replace(/\u2026/g, '...')
+    .replace(/\u00A0/g, ' ')
+    .replace(/\u2713/g, '')
+    .replace(/\u200B/g, '').replace(/\u221A/g, 'sqrt').replace(/\u2248/g, '~').replace(/\u2192/g, '->').replace(/\u03A9/g, 'ohm').replace(/\u03C3/g, 'sigma').replace(/\u03B5/g, 'epsilon').replace(/\u0394/g, 'delta').replace(/\u03C0/g, 'pi')
+    .replace(/[^\x00-\xFF]/g, '');
+}
+
+const PUPIL_NAME_KEY = 'hpc-pupil-name';
+function getPupilName() { try { return localStorage.getItem(PUPIL_NAME_KEY) || ''; } catch(e) { return ''; } }
+
+function pdfNewDoc() {
+  const doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' });
+  const state = { margin: 48, pageWidth: doc.internal.pageSize.getWidth(), pageHeight: doc.internal.pageSize.getHeight() };
+  state.usableWidth = state.pageWidth - state.margin * 2;
+  state.y = state.margin;
+  return { doc, state };
+}
+
+function pdfAddHeader(doc, state, taskLabel) {
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(16); doc.setTextColor(15, 90, 68);
+  doc.text('Engineering Science Scotland - Higher Programmable Control', state.margin, state.y); state.y += 20;
+  doc.setFontSize(14); doc.setTextColor(30, 30, 30);
+  const tLines = doc.splitTextToSize(pdfSafe(taskLabel), state.usableWidth);
+  doc.text(tLines, state.margin, state.y); state.y += tLines.length * 16 + 6;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(11); doc.setTextColor(90, 90, 90);
+  const pupilName = getPupilName();
+  const todayStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const nameLine = pupilName ? ('Name: ' + pdfSafe(pupilName) + '      Date: ' + todayStr) : ('Name: _________________________________      Date: _______________');
+  doc.text(nameLine, state.margin, state.y); state.y += 20;
+  doc.setDrawColor(200, 200, 200); doc.line(state.margin, state.y, state.pageWidth - state.margin, state.y); state.y += 18;
+}
+
+function pdfEnsureSpace(doc, state, h) { if (state.y + h > state.pageHeight - state.margin) { doc.addPage(); state.y = state.margin; } }
+
+function pdfWriteAnswer(doc, state, el) {
+  const imgs = el.querySelectorAll('img'); const img = imgs.length ? imgs[0] : null;
+  imgs.forEach(function (img) {
+    if (!img.src) return;
+    try {
+      const props = doc.getImageProperties(img.src);
+      const ratio = Math.min(state.usableWidth / props.width, 260 / props.height, 1);
+      const w = props.width * ratio, h = props.height * ratio;
+      pdfEnsureSpace(doc, state, h + 14);
+      doc.addImage(img.src, props.fileType || 'PNG', state.margin, state.y, w, h);
+      state.y += h + 10;
+    } catch (e) {
+      doc.setFont('helvetica', 'italic'); doc.setFontSize(11); doc.setTextColor(160, 60, 60);
+      pdfEnsureSpace(doc, state, 14); doc.text('[Could not embed pasted image - try pasting it again]', state.margin, state.y); state.y += 16;
+    }
+  });
+  let text = pdfSafe(el.innerText.trim());
+  if (img && !text) return;
+  doc.setFontSize(11);
+  if (!text) { doc.setFont('helvetica', 'italic'); doc.setTextColor(160, 160, 160); text = '(no answer entered yet)'; }
+  else { doc.setFont('helvetica', 'normal'); doc.setTextColor(40, 40, 40); }
+  const lines = doc.splitTextToSize(text, state.usableWidth);
+  for (let i = 0; i < lines.length; i++) { pdfEnsureSpace(doc, state, 14); doc.text(lines[i], state.margin, state.y); state.y += 14; }
+  state.y += 6;
+}
+
+function pdfRenderPanelItems(doc, state, panel) {
+  const items = panel.querySelectorAll('.task-item');
+  for (let i = 0; i < items.length; i++) {
+    const qEl = items[i].querySelector('.task-q');
+    const qText = qEl ? pdfSafe(qEl.innerText.trim()) : '';
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(15, 90, 68);
+    const qLines = doc.splitTextToSize(qText, state.usableWidth);
+    pdfEnsureSpace(doc, state, qLines.length * 14 + 6);
+    doc.text(qLines, state.margin, state.y); state.y += qLines.length * 14 + 6;
+    const fields = items[i].querySelectorAll('[data-key]');
+    for (let f = 0; f < fields.length; f++) {
+      const lab = fields[f].dataset.label;
+      if (lab) {
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(90, 90, 90);
+        pdfEnsureSpace(doc, state, 28); doc.text(pdfSafe(lab) + ':', state.margin, state.y); state.y += 13;
+      }
+      pdfWriteAnswer(doc, state, fields[f]);
+    }
+    state.y += 6;
+  }
+}
+
+function pdfAddFooters(doc, state) {
+  const n = doc.internal.getNumberOfPages();
+  for (let p = 1; p <= n; p++) {
+    doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(150, 150, 150);
+    doc.text('Page ' + p + ' of ' + n + '  -  engineeringsciencescotland.co.uk', state.margin, state.pageHeight - 24);
+  }
+}
+
+function downloadTaskPDF(panelId, taskLabel) {
+  const panel = document.getElementById(panelId); if (!panel) return;
+  const btn = panel.querySelector('.task-download-btn'); const orig = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = 'Building PDF&hellip;'; }
+  setTimeout(() => {
+    try {
+      const o = pdfNewDoc();
+      pdfAddHeader(o.doc, o.state, taskLabel);
+      pdfRenderPanelItems(o.doc, o.state, panel);
+      pdfAddFooters(o.doc, o.state);
+      o.doc.save(pdfSafe(taskLabel).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '-') + '.pdf');
+    } catch (err) { console.error(err); alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.'); }
+    finally { if (btn) { btn.disabled = false; btn.innerHTML = orig; } }
+  }, 30);
+}
+
+/* Keep this list in sync with the task panels on the page, in page order */
+const ALL_TASK_PANELS = [
+  ['assignment-task1', 'Task 1 \u2014 Recap: microcontrollers, symbols and loops'],
+  ['assignment-task2', 'Task 2 \u2014 Reading and correcting code'],
+  ['assignment-ddr', 'Optional \u2014 Ports and the data direction register'],
+  ['assignment-task3', 'Task 3 \u2014 Monitoring several inputs'],
+  ['assignment-task4', 'Task 4 \u2014 Variables and arithmetic'],
+  ['assignment-task5', 'Task 5 \u2014 Analogue inputs'],
+  ['assignment-task6', 'Task 6 \u2014 Pulse-width modulation'],
+  ['assignment-task7', 'Task 7 \u2014 Changing speed under program control'],
+  ['assignment-exam1', 'Question 1 \u2014 Baggage conveyor'],
+  ['assignment-exam2', 'Question 2 \u2014 Ferry car deck'],
+  ['assignment-exam3', 'Question 3 \u2014 Sluice gate'],
+  ['assignment-dc1', 'Challenge 1 \u2014 Ski tow'],
+  ['assignment-dc2', 'Challenge 2 \u2014 Polytunnel ventilation'],
+  ['assignment-dc3', 'Challenge 3 \u2014 Bottling line']
+];
+
+function downloadAllAnswersPDF() {
+  const btn = document.getElementById('downloadAllBtn'); const orig = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = 'Building PDF&hellip;'; }
+  setTimeout(() => {
+    try {
+      const o = pdfNewDoc(), doc = o.doc, state = o.state;
+      pdfAddHeader(doc, state, 'Higher Programmable Control \u2014 All my answers');
+      for (let i = 0; i < ALL_TASK_PANELS.length; i++) {
+        const panel = document.getElementById(ALL_TASK_PANELS[i][0]); if (!panel) continue;
+        pdfEnsureSpace(doc, state, 40);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(194, 65, 12);
+        doc.text(pdfSafe(ALL_TASK_PANELS[i][1]), state.margin, state.y); state.y += 8;
+        doc.setDrawColor(230, 200, 180); doc.line(state.margin, state.y, state.pageWidth - state.margin, state.y); state.y += 16;
+        pdfRenderPanelItems(doc, state, panel); state.y += 10;
+      }
+      pdfAddFooters(doc, state);
+      doc.save('Higher-Programmable-Control-All-My-Answers.pdf');
+    } catch (err) { console.error(err); alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.'); }
+    finally { if (btn) { btn.disabled = false; btn.innerHTML = orig; } }
+  }, 30);
+}
+
+/* ── Contents panel ─────────────────────────────────────────── */
+function openToc() { document.getElementById('tocPanel').classList.add('open'); document.getElementById('tocOverlay').classList.add('open'); }
+function closeToc() { document.getElementById('tocPanel').classList.remove('open'); document.getElementById('tocOverlay').classList.remove('open'); }
+
+/* ── My Name ────────────────────────────────────────────────── */
+function updateNameFabLabel() { const l = document.getElementById('nameFabLabel'); if (!l) return; const n = getPupilName(); l.textContent = n ? n : 'My Name'; }
+function openNamePanel() {
+  const input = document.getElementById('nameInput'); if (input) input.value = getPupilName();
+  const msg = document.getElementById('nameSavedMsg'); if (msg) msg.classList.remove('show');
+  document.getElementById('nameOverlay').classList.add('open');
+  if (input) setTimeout(() => input.focus(), 50);
+}
+function closeNamePanel() { document.getElementById('nameOverlay').classList.remove('open'); }
+function closeNameOverlayClick(e) { if (e.target.id === 'nameOverlay') closeNamePanel(); }
+function saveNameInput() {
+  const input = document.getElementById('nameInput'); const name = input ? input.value.trim() : '';
+  try { localStorage.setItem(PUPIL_NAME_KEY, name); } catch(e) {}
+  updateNameFabLabel();
+  const msg = document.getElementById('nameSavedMsg'); if (msg) msg.classList.add('show');
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeToc(); closeNamePanel(); } });
+</script>
+
+<button class="toc-fab" id="tocFab" onclick="openToc()">&#x2630; Contents</button>
+
+<button class="name-fab" id="nameFab" onclick="openNamePanel()"><span class="name-fab-icon">&#x1F464;</span><span id="nameFabLabel">My Name</span></button>
+
+<div class="name-overlay" id="nameOverlay" onclick="closeNameOverlayClick(event)">
+  <div class="name-panel">
+    <button class="name-panel-close" onclick="closeNamePanel()" aria-label="Close">&times;</button>
+    <h3>Your name</h3>
+    <p>Enter your name once and it&rsquo;ll be added to the top of every task&rsquo;s downloaded PDF &mdash; no need to write it in by hand each time.</p>
+    <input type="text" id="nameInput" placeholder="e.g. Jamie Smith" maxlength="60">
+    <button class="name-panel-save" onclick="saveNameInput()">Save name</button>
+    <div class="name-panel-saved-msg" id="nameSavedMsg">&#x2713; Saved &mdash; it&rsquo;ll now appear on your PDFs</div>
+  </div>
+</div>
+
+<div class="toc-overlay" id="tocOverlay" onclick="closeToc()"></div>
+<div class="toc-panel" id="tocPanel">
+  <div class="toc-panel-header">
+    <h3>Contents</h3>
+    <button class="toc-panel-close" onclick="closeToc()" aria-label="Close">&times;</button>
+  </div>
+  <nav class="toc-list" id="tocList">
+    <a href="#section-1" onclick="closeToc()">Section 1: Programmable Control at Higher</a>
+    <a href="#section-2" onclick="closeToc()">Section 2: Reading and Correcting Program Code</a>
+    <a href="#section-3" onclick="closeToc()">Section 3: Monitoring Several Inputs</a>
+    <a href="#section-4" onclick="closeToc()">Section 4: Variables and Arithmetic</a>
+    <a href="#section-5" onclick="closeToc()">Section 5: Analogue Inputs</a>
+    <a href="#section-6" onclick="closeToc()">Section 6: Motor Speed Control &mdash; Pulse-Width Modulation</a>
+    <a href="#section-7" onclick="closeToc()">Section 7: Changing Speed Under Program Control</a>
+    <a href="#section-8" onclick="closeToc()">Section 8: Exam-Style Questions</a>
+    <a href="#section-9" onclick="closeToc()">Section 9: Design Challenges</a>
+    <a href="#dc1" class="toc-sub" onclick="closeToc()">Challenge 1 &mdash; Ski tow at Glenshee</a>
+    <a href="#dc2" class="toc-sub" onclick="closeToc()">Challenge 2 &mdash; Orkney polytunnel</a>
+    <a href="#dc3" class="toc-sub" onclick="closeToc()">Challenge 3 &mdash; Speyside bottling line</a>
+  </nav>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', updateNameFabLabel);
+(function() {
+  const nameInputEl = document.getElementById('nameInput');
+  if (nameInputEl) nameInputEl.addEventListener('keydown', function(e) { if (e.key === 'Enter') saveNameInput(); });
+  const links = Array.prototype.slice.call(document.querySelectorAll('.toc-list a'));
+  const targets = links.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+  if (!targets.length || !('IntersectionObserver' in window)) return;
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const link = document.querySelector('.toc-list a[href="#' + entry.target.id + '"]');
+      if (link && entry.isIntersecting) { links.forEach(a => a.classList.remove('toc-active')); link.classList.add('toc-active'); }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  targets.forEach(t => observer.observe(t));
+})();
+</script>
+
+<script>
+// ── Simulator zoom-lock + recentre ─────────────────────────────────────────
+// Trackpads/Magic Mouse send wheel events with ctrlKey=true for a pinch
+// gesture, which browsers treat as a page-zoom request. Blocking that only
+// while the pointer is over an embedded simulator stops the circuit from
+// zooming while the person scrolls the page, without disabling zoom
+// everywhere else. Each simulator also gets a small "Recentre" button that
+// reloads its iframe, which resets any pan/zoom state inside it.
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.sim-wrap').forEach(function(wrap) {
+      wrap.addEventListener('wheel', function(e) {
+        if (e.ctrlKey) e.preventDefault();
+      }, { passive: false });
+    });
+
+    document.querySelectorAll('.sim-embed-header').forEach(function(header) {
+      const iframe = header.closest('.sim-embed-section')?.querySelector('.sim-iframe');
+      if (!iframe) return;
+      const btn = document.createElement('button');
+      btn.className = 'sim-fullscreen-btn';
+      btn.type = 'button';
+      btn.style.background = 'var(--gray-50)';
+      btn.style.color = 'var(--teal-800)';
+      btn.style.border = '1px solid var(--gray-200)';
+      btn.textContent = '⟳ Recentre';
+      btn.addEventListener('click', function() {
+        const src = iframe.getAttribute('src');
+        iframe.setAttribute('src', src);
+      });
+      header.appendChild(btn);
+    });
+  });
+})();
+</script>
+
+
+<script>
+/* Symbol buttons beside calculation answer boxes: click to insert at the cursor */
+(function () {
+  var TITLES = {'Ω':'ohms','°':'degrees','²':'squared','µ':'micro'};
+  function place(box) {
+    var sel = window.getSelection();
+    if (!sel.rangeCount || !box.contains(sel.anchorNode)) {
+      var r = document.createRange(); r.selectNodeContents(box); r.collapse(false); sel.removeAllRanges(); sel.addRange(r);
+    }
+  }
+  function btn(label, title, fn) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'sym-btn'; b.innerHTML = label; b.title = title; b.setAttribute('aria-label', title);
+    b.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    b.addEventListener('click', fn); return b;
+  }
+  document.querySelectorAll('.answer-box[data-symbols]').forEach(function (box) {
+    var toks = box.getAttribute('data-symbols').split('|');
+    var wrap = document.createElement('div'); wrap.className = 'sym-wrap';
+    box.parentNode.insertBefore(wrap, box); wrap.appendChild(box);
+    var bar = document.createElement('div'); bar.className = 'sym-bar' + (toks.length > 4 ? ' two-col' : '');
+    var t = document.createElement('div'); t.className = 'sym-title'; t.textContent = 'Add'; bar.appendChild(t);
+    toks.forEach(function (tok) {
+      var isHtml = tok.indexOf('<') >= 0;
+      var plain = tok.replace(/<[^>]+>/g, '');
+      bar.appendChild(btn(tok, TITLES[tok] || ('add ' + plain), function () {
+        box.focus(); place(box);
+        if (isHtml) document.execCommand('insertHTML', false, tok + '​');
+        else document.execCommand('insertText', false, tok);
+      }));
+    });
+    wrap.appendChild(bar);
+  });
+})();
+</script>
+<script>
+/* Screenshots pasted or dropped into answer boxes: read the image file itself (Safari otherwise inserts an
+   unreadable webkit-fake-url image), shrink it so it fits in browser storage, and warn if an answer cannot be saved. */
+(function () {
+  function shrink(file, cb) {
+    var r = new FileReader();
+    r.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var s = Math.min(1, 1200 / Math.max(img.width, img.height));
+        var c = document.createElement('canvas'); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+        var x = c.getContext('2d'); x.fillStyle = '#ffffff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(img, 0, 0, c.width, c.height);
+        cb(c.toDataURL('image/jpeg', 0.82));
+      };
+      img.onerror = function () { cb(null); };
+      img.src = r.result;
+    };
+    r.onerror = function () { cb(null); };
+    r.readAsDataURL(file);
+  }
+  function add(box, files) {
+    for (var i = 0; i < files.length; i++) {
+      if (files[i] && files[i].type && files[i].type.indexOf('image/') === 0) {
+        shrink(files[i], function (url) {
+          if (!url) return;
+          box.focus();
+          document.execCommand('insertHTML', false, '<img src="' + url + '" alt="Pasted image"><br>');
+          box.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+        return true;
+      }
+    }
+    return false;
+  }
+  document.addEventListener('paste', function (e) {
+    var box = e.target && e.target.closest ? e.target.closest('.answer-box') : null; if (!box || !e.clipboardData) return;
+    var files = [];
+    if (e.clipboardData.files && e.clipboardData.files.length) files = Array.prototype.slice.call(e.clipboardData.files);
+    else Array.prototype.forEach.call(e.clipboardData.items || [], function (it) { if (it.kind === 'file') files.push(it.getAsFile()); });
+    if (files.length && add(box, files)) e.preventDefault();
+  }, true);
+  document.addEventListener('drop', function (e) {
+    var box = e.target && e.target.closest ? e.target.closest('.answer-box') : null; if (!box || !e.dataTransfer) return;
+    if (e.dataTransfer.files && e.dataTransfer.files.length && add(box, e.dataTransfer.files)) e.preventDefault();
+  }, true);
+})();
+</script>
 </body>
 </html>
