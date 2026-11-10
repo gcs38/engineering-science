@@ -91,7 +91,7 @@ var RESOURCE_STATUS = {
   'higher-analogue':           { notes:'available' },
   'higher-digital':            { notes:'available' },
   'higher-control':            { notes:'available' },
-  'higher-drive-systems':      { notes:'soon' },
+  'higher-drive-systems':      { notes:'available' },
   'higher-pneumatics':         { notes:'soon' },
   'higher-structures-forces':  { notes:'available' },
   'higher-materials':          { notes:'soon' }
@@ -168,6 +168,10 @@ var TEACHER_DOCS = {
   ],
 
   'higher-systems-approach': [
+    { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
+  ],
+
+  'higher-drive-systems': [
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
   ],
 
