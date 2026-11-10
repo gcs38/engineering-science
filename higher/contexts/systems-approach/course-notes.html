@@ -1,45 +1,1129 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Course notes &mdash; The Systems Approach &mdash; Engineering Science Scotland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>The Systems Approach &mdash; Higher Course Notes &mdash; Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .resource-page{max-width:680px;margin:0 auto;padding:32px 32px 64px;}
-    .open-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px 24px;text-align:center;margin-bottom:16px;}
-    .open-card-icon{font-size:36px;margin-bottom:10px;}
-    .open-card-title{font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:-.4px;margin-bottom:6px;}
-    .open-card-sub{font-size:13px;color:var(--gray-600);margin-bottom:20px;line-height:1.5;}
-    .open-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-400);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .open-btn:hover{background:var(--teal-600);}
-    .sim-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-800);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .sim-btn:hover{background:var(--teal-600);}
-    .back-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:20px;}
-    .back-link:hover{color:var(--teal-800);}
-    .info-note{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;margin-top:12px;}
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 16px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:6px; }
+    .back-link:hover { color:var(--teal-800); }
+
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); scroll-margin-top:100px; }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:24px 0 10px; scroll-margin-top:100px; }
+    .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:18px 0 8px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+    .warning { background:#FFF7ED; border-left:4px solid #F97316; border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#9A3412; }
+    .spec-note { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:10px 14px; margin:10px 0; font-size:12px; color:var(--gray-500); }
+    .spec-note strong { color:var(--gray-900); }
+    .extension-note { background:#faf5ff; border-left:4px solid #8b5cf6; border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:13px; color:#5b21b6; }
+
+    /* Component symbol grid */
+    .comp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin:16px auto; justify-items:center; justify-content:center; text-align:center; }
+    .comp-card-sym { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:14px 12px 10px; text-align:center; width:100%; }
+    .comp-card-sym svg { display:block; margin:0 auto 8px; }
+    .comp-card-sym .comp-name { font-size:12px; font-weight:700; color:var(--gray-900); }
+    .comp-card-sym .comp-unit { font-size:11px; color:var(--gray-400); margin-top:2px; }
+
+    /* Formula boxes */
+    .formula-box { background:white; border:2px solid var(--teal-100); border-radius:var(--radius-lg); padding:16px 20px; margin:16px 0; text-align:center; }
+    .formula { font-size:18px; font-weight:600; color:var(--teal-800); font-family:monospace; letter-spacing:.02em; }
+    .formula-sub { font-size:12px; color:var(--gray-400); margin-top:6px; }
+    .triangle-box { display:inline-block; background:var(--teal-50); border:2px solid var(--teal-200); border-radius:var(--radius-md); padding:16px 24px; margin:10px 0; }
+    .triangle-top { font-size:20px; font-weight:900; color:var(--teal-800); font-family:monospace; border-bottom:2px solid var(--teal-400); padding-bottom:8px; margin-bottom:8px; text-align:center; }
+    .triangle-bottom { display:flex; gap:0; }
+    .triangle-cell { flex:1; font-size:20px; font-weight:900; color:var(--teal-800); font-family:monospace; text-align:center; padding:0 8px; }
+    .triangle-cell + .triangle-cell { border-left:2px solid var(--teal-400); }
+
+    /* Inline fraction (for any calculation that divides one value by another —
+       used instead of the ÷ symbol or a forward slash, in both formula boxes
+       and inline within worked-example steps) */
+    .frac { display:inline-flex; flex-direction:column; align-items:center; justify-content:center; vertical-align:middle; margin:0 4px; line-height:1.25; font-weight:inherit; }
+    .frac .frac-n { padding:0 4px 2px; border-bottom:1.5px solid currentColor; }
+    .frac .frac-d { padding:2px 4px 0; }
+
+    /* Worked examples */
+    .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:18px 20px; margin:16px 0; }
+    .worked-example-title { font-size:13px; font-weight:600; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+    .step { display:flex; gap:12px; margin-bottom:10px; }
+    .step-num { width:24px; height:24px; border-radius:50%; background:var(--teal-400); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .step-content { font-size:13px; color:var(--gray-600); line-height:1.6; flex:1; }
+    .step-content strong { color:var(--gray-900); }
+
+    /* Tables */
+    .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .data-table tr:nth-child(even) td { background:var(--gray-50); }
+    .data-table td.answer-cell { background:var(--gray-50); min-width:80px; min-height:32px; }
+
+    /* Assignment boxes */
+    .assignment { background:white; border:2px solid var(--teal-400); border-radius:var(--radius-lg); margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; display:flex; align-items:center; gap:10px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:8px; font-weight:500; }
+    .task-q-sub { font-size:13px; color:var(--gray-700); margin:6px 0 6px 16px; }
+    .task-space { background:var(--gray-50); border:1px dashed var(--gray-300); border-radius:var(--radius-sm); min-height:60px; padding:10px; margin-top:6px; font-size:11px; color:var(--gray-400); }
+    .task-space-sm { background:var(--gray-50); border:1px dashed var(--gray-300); border-radius:var(--radius-sm); min-height:36px; padding:8px; margin-top:4px; font-size:11px; color:var(--gray-400); }
+    .extension-task { border:2px solid #8b5cf6; border-radius:var(--radius-lg); margin:16px 0; overflow:hidden; }
+    .extension-header { background:#8b5cf6; padding:8px 14px; }
+    .extension-header-text { font-size:13px; font-weight:700; color:white; }
+    .extension-body { padding:14px 16px; background:#faf5ff; }
+
+    /* Simulator embed */
+    .sim-embed-section { margin:24px 0; }
+    .sim-embed-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+    .sim-embed-title { font-size:14px; font-weight:500; color:var(--gray-900); display:flex; align-items:center; gap:8px; }
+    .sim-embed-title span { font-size:18px; }
+    .sim-fullscreen-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 14px; background:var(--teal-800); color:white; border-radius:var(--radius-md); font-size:12px; font-weight:500; text-decoration:none; transition:all var(--transition); border:none; cursor:pointer; }
+    .sim-fullscreen-btn:hover { background:var(--teal-600); }
+    .sim-wrap { border-radius:var(--radius-lg); overflow:hidden; border:2px solid #eab30840; }
+    .sim-iframe { width:100%; height:540px; border:none; display:block; }
+    .sim-credit { font-size:11px; color:var(--gray-400); margin-top:5px; text-align:right; }
+    .sim-instruction { background:#fefce8; border:1px solid #fde047; border-radius:var(--radius-md); padding:10px 14px; margin-bottom:10px; font-size:13px; color:#78350f; }
+
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+
+    /* Circuit diagram SVGs inline */
+    .circuit-figure { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:16px; margin:16px 0; text-align:center; }
+    .circuit-figure figcaption { font-size:12px; color:var(--gray-400); margin-top:8px; font-style:italic; }
+  
+    /* localStorage answer boxes */
+    .answer-box { background:var(--blue-50,#f0f9ff); border:1.5px solid #7dd3fc; border-radius:var(--radius-sm); min-height:60px; padding:10px 12px; margin-top:6px; font-size:13px; color:var(--gray-700); line-height:1.6; cursor:text; outline:none; }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-sm { min-height:36px; }
+    .answer-box-xs { min-height:28px; }
+    .answer-label { font-size:11px; font-weight:700; color:#0ea5e9; text-transform:uppercase; letter-spacing:.4px; margin-top:8px; margin-bottom:2px; display:flex; align-items:center; gap:8px; }
+    .saved-indicator { font-size:10px; color:#22c55e; font-weight:600; }
+    .controls-bar { display:flex; align-items:center; gap:12px; padding:12px 16px; background:var(--gray-50); border-top:1px solid var(--gray-100); margin-top:24px; border-radius:0 0 var(--radius-lg) var(--radius-lg); }
+    .controls-label { font-size:12px; color:var(--gray-400); flex:1; }
+    .ctrl-btn { padding:6px 14px; border-radius:var(--radius-md); font-size:12px; font-weight:600; border:none; cursor:pointer; }
+    .ctrl-btn-print { background:var(--teal-800); color:white; }
+    .ctrl-btn-clear { background:white; color:#ef4444; border:1.5px solid #fca5a5; }
+    .answer-cell-editable { background:var(--blue-50,#f0f9ff) !important; cursor:text; outline:none; }
+    .answer-cell-editable:empty:before { content:"Click to enter..."; color:#94a3b8; font-style:italic; pointer-events:none; }
+
+    /* ── Added per site-wide handover (26 Sep 2026) ─────────────────────────── */
+    .answer-box img { max-width:100%; height:auto; }
+    .cell-answer { outline:none; background:#f8faff; min-height:36px; }
+    .cell-answer:focus { box-shadow:inset 0 0 0 2px var(--teal-400); background:white; }
+    .data-table tr:nth-child(even) td.cell-answer { background:#f8faff; }
+    .task-download-row { background:var(--gray-50); border-top:1px solid var(--gray-200); padding:9px 20px; text-align:right; }
+    .task-download-btn { display:inline-flex; align-items:center; gap:6px; background:white; border:1.2px solid var(--teal-400); color:var(--teal-800); font-size:10px; font-weight:700; padding:7px 12px; border-radius:999px; cursor:pointer; transition:background .15s; }
+    .task-download-btn:hover { background:var(--teal-50); }
+    .task-download-btn:disabled { opacity:.6; cursor:wait; }
+    /* Specification tables in the challenges */
+    .spec-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .spec-table th { background:transparent; padding:8px 6px 8px 0; width:32px; vertical-align:top; }
+    .spec-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
+    .data-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:var(--teal-50); color:var(--teal-800); border:1px solid var(--teal-100); font-size:11px; font-weight:700; }
+    .ctrl-btn-download-all { background:#eef2ff; color:#4338ca; }
+    .ctrl-btn-download-all:hover { background:#e0e7ff; }
+
+    /* Table of contents: floating button + slide-out panel */
+    .toc-fab { position:fixed; right:24px; bottom:76px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#c2410c; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+    .toc-fab:hover { background:#9a3412; }
+    .toc-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; }
+    .toc-overlay.open { display:block; }
+    .toc-panel { position:fixed; top:0; right:-340px; width:320px; max-width:85vw; height:100%; background:white; z-index:999998; box-shadow:-8px 0 30px rgba(0,0,0,.2); transition:right .25s ease; display:flex; flex-direction:column; }
+    .toc-panel.open { right:0; }
+    .toc-panel-header { padding:18px 20px 14px; border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; }
+    .toc-panel-header h3 { margin:0; font-size:16px; color:var(--teal-800); }
+    .toc-panel-close { background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .toc-panel-close:hover { color:var(--gray-700); }
+    .toc-list { overflow-y:auto; padding:8px 0 20px; }
+    .toc-list a { display:block; padding:10px 20px; font-size:14px; color:var(--gray-700); text-decoration:none; border-left:3px solid transparent; }
+    .toc-list a:hover { background:var(--teal-50); color:var(--teal-800); }
+    .toc-list a.toc-active { border-left-color:var(--teal-500,var(--teal-600)); background:var(--teal-50); color:var(--teal-800); font-weight:700; }
+    .toc-list a.toc-sub { padding-left:36px; font-size:13px; color:var(--gray-500); }
+
+    /* Pupil name: floating button + small popup */
+    .name-fab { position:fixed; right:24px; bottom:132px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#4f46e5; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); overflow:hidden; }
+    .name-fab-icon { font-size:14px; line-height:1; flex-shrink:0; }
+    #nameFabLabel { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:78px; text-align:left; }
+    .name-fab:hover { background:#3730a3; }
+    .name-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; align-items:center; justify-content:center; padding:20px; }
+    .name-overlay.open { display:flex; }
+    .name-panel { background:white; border-radius:14px; max-width:360px; width:100%; padding:24px 24px 22px; box-shadow:0 20px 60px rgba(0,0,0,.35); position:relative; }
+    .name-panel-close { position:absolute; top:10px; right:12px; background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .name-panel-close:hover { color:var(--gray-700); }
+    .name-panel h3 { margin:0 0 8px; font-size:16px; color:#4338ca; }
+    .name-panel p { margin:0 0 14px; font-size:13px; line-height:1.5; color:var(--gray-600); }
+    .name-panel input { width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid var(--gray-200); border-radius:8px; font-size:14px; margin-bottom:12px; }
+    .name-panel input:focus { outline:none; border-color:#4338ca; }
+    .name-panel-save { width:100%; background:#4338ca; color:white; border:none; border-radius:8px; padding:10px; font-size:14px; font-weight:700; cursor:pointer; }
+    .name-panel-save:hover { background:#3730a3; }
+    .name-panel-saved-msg { font-size:12px; color:#16a34a; margin-top:8px; text-align:center; display:none; }
+    .name-panel-saved-msg.show { display:block; }
+
+    @media print {
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.toc-fab,.toc-panel,.toc-overlay,.name-fab,.name-overlay,.task-download-row,.page-nav,.exemplar-thumb,.exemplar-modal { display:none!important; }
+      .layout { display:block!important; }
+      .main { margin:0!important; padding:0!important; }
+      .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
+      .cell-answer { background:white!important; }
+    }
+    .graph-btn { display:inline-flex; align-items:center; gap:6px; background:#c2410c; color:white; border:none; border-radius:999px; padding:8px 14px; font-size:12.5px; font-weight:700; cursor:pointer; font-family:inherit; }
+    .graph-btn:hover { background:#9a3412; }
+    .sym-wrap { display:flex; gap:8px; align-items:flex-start; }
+    .sym-wrap .answer-box { flex:1; min-width:0; align-self:stretch; }
+    .sym-bar { flex-shrink:0; display:flex; flex-direction:column; gap:4px; align-items:stretch; }
+    .sym-bar.two-col { display:grid; grid-template-columns:1fr 1fr; align-content:start; }
+    .sym-bar.two-col .sym-title { grid-column:1/-1; text-align:center; }
+    .sym-btn sub { font-size:9px; }
+    .sym-title { font-size:9px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.4px; }
+    .sym-btn { font:inherit; font-size:13px; line-height:1; min-width:30px; height:26px; padding:0 5px; white-space:nowrap; border:1px solid var(--gray-200); border-radius:6px; background:white; color:var(--gray-900); cursor:pointer; }
+    .sym-btn:hover { background:var(--teal-50); border-color:var(--teal-400); }
+    @media (max-width:640px) { .sym-wrap { flex-direction:column; align-items:stretch; } .sym-bar, .sym-bar.two-col { display:flex; flex-direction:row; flex-wrap:wrap; justify-content:flex-end; } }
+    @media print { .sym-bar { display:none!important; } }
+    @media print { .graph-btn { display:none!important; } }
+      /* Pin table */
+    .pin-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .pin-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .pin-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .pin-table tr:nth-child(even) td { background:var(--gray-50); }
+    .pin-in { color:#0369a1; font-weight:700; }
+    .pin-out { color:#15803d; font-weight:700; }
+
+    /* Comparison cards */
+    .compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0; }
+    .compare-card { background:white; border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; }
+    .compare-card-header { padding:10px 14px; font-size:13px; font-weight:700; color:white; }
+    .compare-card-body { padding:12px 14px; font-size:13px; color:var(--gray-600); line-height:1.6; }
+    .compare-card-body li { margin-bottom:4px; }
+
+    /* Spec box — for written specifications */
+    .spec-box { background:#f0fdf4; border:2px solid #86efac; border-radius:8px; padding:14px 16px; margin:14px 0; }
+    .spec-box-title { font-size:12px; font-weight:700; color:#15803d; text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
+    .spec-box ol, .spec-box ul { margin:0; padding-left:20px; }
+    .spec-box li { font-size:13px; color:#166534; line-height:1.7; margin-bottom:2px; }
+
+    .code-pair { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0 6px; }
+    .code-col { min-width:0; }
+    .code-head { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+    .code-block { background:#0f172a; color:#e2e8f0; padding:12px 14px; border-radius:8px; font-size:12.5px; line-height:1.55; overflow-x:auto; margin:0; font-family:Consolas,Menlo,'Courier New',monospace; white-space:pre; }
+    .code-block .fault { color:#fca5a5; font-weight:700; text-decoration:underline; }
+    .code-note { font-size:12px; color:var(--gray-500); margin:2px 0 14px; }
+    @media (max-width:700px) { .code-pair { grid-template-columns:1fr; } }
+    .cmd-table td:first-child { font-weight:600; color:var(--gray-900); }
+    .cmd-table code, .notes-p code, .notes-ul code, .task-q code, .key-point code { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:4px; padding:0 4px; font-size:12.5px; }
+    .fig { margin:16px 0 18px; text-align:center; }
+    .fig-cap { font-size:12px; color:var(--gray-500); margin-top:6px; }
+    .fig-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; align-items:end; margin:14px 0; }
+    .beyond { border:2px dashed var(--gray-200); border-radius:12px; padding:14px 18px; margin:22px 0; background:#fcfcfd; }
+    .beyond-title { font-size:12px; font-weight:700; color:#7c3aed; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+    .exam-tip { background:#eef2ff; border-left:4px solid #6366f1; border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#3730a3; }
+    .exam-tip strong { color:#312e81; }
+    .marks { float:right; font-weight:700; color:var(--gray-500); font-size:12px; }
+    .ctl-lab { background:white; border:2px solid var(--teal-100); border-radius:12px; padding:14px 16px; margin:18px 0; }
+    .ctl-lab-head { font-weight:700; color:var(--teal-800); margin-bottom:10px; }
+    .ctl-lab-controls { display:flex; flex-wrap:wrap; gap:10px 22px; align-items:center; margin-bottom:10px; font-size:13px; color:var(--gray-700); }
+    .ctl-modes { display:flex; gap:6px; }
+    .ctl-mode { font:inherit; font-size:13px; font-weight:600; padding:6px 14px; border-radius:999px; border:2px solid var(--gray-200); background:white; color:var(--gray-600); cursor:pointer; }
+    .ctl-mode.on { background:var(--teal-400); border-color:var(--teal-400); color:white; }
+    .ctl-slider input { vertical-align:middle; width:140px; }
+    .ctl-check input { vertical-align:middle; }
+    #ctlCanvas { width:100%; height:auto; display:block; background:#fcfcfd; border-radius:8px; }
+    .ctl-readout { font-size:13px; color:var(--teal-800); margin-top:8px; min-height:18px; }
+    @media print { .ctl-lab { display:none!important; } }
+    .fig-row .fig{margin:6px 0;}
   </style>
+<script>window.ESS_PHOTOS = true;</script>
 </head>
 <body>
-<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../../../n5/index.html" class="level-tab" data-level="n5">National 5</a><a href="../../../../higher/index.html" class="level-tab active" data-level="higher">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab" data-level="ah">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/index.html" class="level-tab" data-level="n5">National 5</a>
+    <a href="../../../../higher/index.html" class="level-tab active" data-level="higher">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
+
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
-    <div class="hero">
-      <div class="hero-label">Higher &middot; Engineering Contexts</div>
-      <h1 class="hero-title">The Systems Approach</h1>
-      <p class="hero-sub">Course notes</p>
-      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../../../../higher/index.html">Higher</a> &rsaquo; <a href="../index.html">Engineering Contexts</a> &rsaquo; <a href="index.html">The Systems Approach</a> &rsaquo; <span>Course notes</span></div>
-    </div>
-    <div class="content">
-      <div class="resource-page">
-        <a href="index.html" class="back-link">&larr; Back to The Systems Approach</a>
-        <div class="open-card" style="background:var(--gray-50);border:1px dashed var(--gray-200);"><div class="open-card-icon">&#x1F4C2;</div><div class="open-card-title" style="color:var(--gray-600);">Course notes in preparation</div><div class="open-card-sub">The Higher course notes for this topic are being written and will appear here.</div></div>
+    <div class="hero" id="top" style="position:relative;">
+      <div style="position:absolute;top:14px;right:20px;font-size:11px;color:#94a3b8;">Last updated: 10 November 2026, 07:48</div>
+      <div class="hero-label">Higher &middot; Engineering Contexts &rsaquo; The Systems Approach</div>
+      <h1 class="hero-title">&#x1F504; The Systems Approach &mdash; Course Notes</h1>
+      <p class="hero-sub">Complex system and control diagrams, negative feedback, two-state and proportional control</p>
+      <div class="breadcrumb">
+        <a href="../../../../index.html">Home</a> &rsaquo;
+        <a href="../../index.html">Higher</a> &rsaquo;
+        <a href="../index.html">Engineering Contexts</a> &rsaquo;
+        <a href="index.html">The Systems Approach</a> &rsaquo;
+        <span>Course notes</span>
       </div>
+    </div>
+
+    <div class="content">
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to The Systems Approach</a>
+
+      <div class="key-point"><strong>These notes build on National 5.</strong> At Higher you are expected to already know everything in the <a href="../../../n5/contexts/systems-approach/course-notes.html">National 5 Systems Approach notes</a>: system and sub-systems diagrams, the system boundary, input and output devices, output drivers, and the difference between open-loop and closed-loop control. Sections 1 to 3 below recap those ideas quickly and take them further. If any of it feels unfamiliar, work through the National 5 notes first.</div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-1">Section 1: Systems and Sub-Systems Diagrams</h1>
+      <p class="notes-p">Most industrial products are designed using the <strong>systems approach</strong>. The engineer starts with the function the product must perform, then breaks that function down into a series of <strong>sub-systems</strong>, each of which can be designed, built and tested separately.</p>
+      <p class="notes-p">A <strong>systems diagram</strong> shows the whole system as a single block inside a dashed line called the <strong>system boundary</strong>. The real-world inputs and outputs are shown as arrows entering and leaving the boundary. A <strong>sub-systems diagram</strong> opens up that block to show the individual sub-systems and how they interact. The arrows show the flow of <strong>information, energy or materials</strong> between them.</p>
+      <h2 class="notes-h2">Complex systems</h2>
+      <p class="notes-p">At National 5 most systems had a simple chain of sub-systems: input, control, driver, output. At Higher you will meet <strong>complex systems</strong>, where several sub-systems interact, some sub-systems feed into more than one other, materials as well as signals flow through the system, and there may be <strong>more than one feedback path</strong>.</p>
+      <p class="notes-p">An automatic washing machine is a good example. Its function is to process dirty clothes into clean clothes. The control unit runs the selected wash cycle, but it also relies on sensors in the drum to tell it when the water is hot enough and when the drum is full.</p>
+      <div class="fig"><svg viewBox="0 0 900 430" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:820px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;" role="img" aria-label="Sub-systems diagram of an automatic washing machine, including two feedback paths from the drum to the control unit"><title>Sub-systems diagram of an automatic washing machine, including two feedback paths from the drum to the control unit</title><defs><marker id="bd1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="200" y="20" width="480" height="390" fill="none" stroke="#000" stroke-width="1.6" stroke-dasharray="8 6"/><rect x="365" y="45" width="150" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="440" y="74.9" font-size="14" text-anchor="middle" font-weight="400" fill="#000">control unit</text><rect x="240" y="165" width="120" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="300" y="194.9" font-size="14" text-anchor="middle" font-weight="400" fill="#000">heater</text><rect x="380" y="165" width="120" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="440" y="194.9" font-size="14" text-anchor="middle" font-weight="400" fill="#000">motor</text><rect x="520" y="165" width="120" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="580" y="194.9" font-size="14" text-anchor="middle" font-weight="400" fill="#000">pump</text><rect x="365" y="305" width="150" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="440" y="334.9" font-size="14" text-anchor="middle" font-weight="400" fill="#000">drum</text><rect x="220" y="302" width="100" height="56" fill="#fff" stroke="#000" stroke-width="2"/><text x="270" y="327.3" font-size="12" text-anchor="middle" font-weight="400" fill="#000">temperature</text><text x="270" y="341.1" font-size="12" text-anchor="middle" font-weight="400" fill="#000">sensor</text><rect x="560" y="302" width="100" height="56" fill="#fff" stroke="#000" stroke-width="2"/><text x="610" y="327.3" font-size="12" text-anchor="middle" font-weight="400" fill="#000">water level</text><text x="610" y="341.1" font-size="12" text-anchor="middle" font-weight="400" fill="#000">sensor</text><text x="110" y="67.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">set washing</text><text x="110" y="82.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">cycle</text><path d="M165,70 L365,70" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><text x="110" y="187.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">clean cold</text><text x="110" y="202.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">water</text><path d="M165,190 L240,190" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><text x="110" y="404.55" font-size="13" text-anchor="middle" font-weight="400" fill="#000">dirty clothes</text><path d="M165,390 L440,390 L440,355" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><path d="M400,95 L400,130 L300,130 L300,165" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><path d="M440,95 L440,165" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><path d="M480,95 L480,130 L580,130 L580,165" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><path d="M300,215 L300,260 L400,260 L400,305" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><path d="M440,215 L440,305" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><path d="M515,330 L548,330 L548,260 L580,260 L580,215" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><path d="M640,190 L790,190" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><text x="800" y="187.075" font-size="13" text-anchor="start" font-weight="400" fill="#000">hot dirty</text><text x="800" y="202.025" font-size="13" text-anchor="start" font-weight="400" fill="#000">water</text><path d="M480,355 L480,390 L790,390" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><text x="800" y="394.55" font-size="13" text-anchor="start" font-weight="400" fill="#000">clean clothes</text><path d="M270,302 L270,290 L225,290 L225,60 L365,60" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><path d="M660,330 L660,60 L515,60" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><path d="M365,330 L320,330" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><path d="M515,345 L560,345" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/></svg><div class="fig-cap">Sub-systems diagram of an automatic washing machine. Solid arrows show signals, water and clothes moving between sub-systems.</div></div>
+      <ul class="notes-ul"><li>Three different kinds of input enter the boundary: an <strong>instruction</strong> (the wash cycle), a <strong>material</strong> (cold water) and the <strong>thing being processed</strong> (dirty clothes).</li><li>The control unit sends signals to three output sub-systems: the heater, the motor and the pump.</li><li>Two <strong>feedback sensors</strong> measure conditions in the drum and send that information back to the control unit, so the machine is a closed-loop system.</li><li>There are two outputs: the clean clothes and the waste water.</li></ul>
+      <div class="key-point">When you draw a sub-systems diagram, label every box with what it <em>is</em> (a component or sub-system) and every arrow entering or leaving the boundary with what it <em>carries</em> (water, light, speed, temperature&hellip;). Keep the boundary dashed and keep real-world inputs and outputs outside it.</div>
+      <div class="assignment" id="assignment-task1">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Sub-systems diagrams</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Draw a sub-systems diagram for a mobile phone. Show at least three inputs and three outputs.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t1a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t1a" data-placeholder="Draw your diagram on paper and add a photo of it, or describe it block by block..." style="min-height:100px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Draw a sub-systems diagram for a desktop computer.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t1b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t1b" data-placeholder="Draw your diagram on paper and add a photo of it, or describe it block by block..." style="min-height:100px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Draw a sub-systems diagram showing how the electrical output of a hydro-electric power station is controlled to match demand.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t1c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t1c" data-placeholder="Draw your diagram on paper and add a photo of it, or describe it block by block..." style="min-height:100px;"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task1', 'Task 1 &mdash; Sub-systems diagrams')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-2">Section 2: Open-Loop Control</h1>
+      <p class="notes-p">At its simplest, a control system processes an input condition to produce a specified output, with no check on whether the output is actually what is wanted. This is <strong>open-loop control</strong>.</p>
+      <div class="fig"><svg viewBox="0 0 746 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:746px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;" role="img" aria-label="Open-loop control: the output is not measured"><title>Open-loop control: the output is not measured</title><defs><marker id="bd3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="152" y="30" width="446" height="80" fill="none" stroke="#000" stroke-width="1.6" stroke-dasharray="8 6"/><text x="118" y="74.55" font-size="13" text-anchor="end" font-weight="400" fill="#000">input</text><path d="M126,70 L162,70" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd3)"/><rect x="164" y="45" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="223" y="74.55" font-size="13" text-anchor="middle" font-weight="400" fill="#000">control</text><path d="M282,70 L316,70" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd3)"/><rect x="316" y="45" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="375" y="67.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">output</text><text x="375" y="82.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">driver</text><path d="M434,70 L468,70" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd3)"/><rect x="468" y="45" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="527" y="67.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">output</text><text x="527" y="82.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">device</text><path d="M586,70 L626,70" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd3)"/><text x="632" y="74.55" font-size="13" text-anchor="start" font-weight="400" fill="#000">output</text></svg></div>
+      <p class="notes-p">A hand-held hairdryer is a good example. The heater and fan motor stay on for as long as the switches are held down. The temperature of the air is not measured or adjusted &mdash; the air is simply blown out at whatever temperature the heater produces.</p>
+      <div class="fig"><svg viewBox="0 0 594 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:594px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;" role="img" aria-label="Hairdryer: open-loop control"><title>Hairdryer: open-loop control</title><defs><marker id="bd4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="152" y="30" width="294" height="80" fill="none" stroke="#000" stroke-width="1.6" stroke-dasharray="8 6"/><text x="118" y="67.075" font-size="13" text-anchor="end" font-weight="400" fill="#000">switches</text><text x="118" y="82.025" font-size="13" text-anchor="end" font-weight="400" fill="#000">pressed</text><path d="M126,70 L162,70" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd4)"/><rect x="164" y="45" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="223" y="74.55" font-size="13" text-anchor="middle" font-weight="400" fill="#000">control</text><path d="M282,70 L316,70" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd4)"/><rect x="316" y="45" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="375" y="67.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">heater and</text><text x="375" y="82.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">fan motor</text><path d="M434,70 L474,70" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd4)"/><text x="480" y="74.55" font-size="13" text-anchor="start" font-weight="400" fill="#000">warm air</text></svg></div>
+      <p class="notes-p">An automatic street lamp is another. A light sensor switches the lamp on when it gets dark, but nothing measures the light the lamp itself produces.</p>
+      <figure class="fig"><img src="images/street-lamps.jpg" alt="A road at night lit by a row of street lamps" style="width:100%;max-width:480px;display:block;margin:0 auto;border-radius:8px;"></figure>
+      <div class="fig"><svg viewBox="0 0 826 140" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:826px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;" role="img" aria-label="Street lamp: open-loop control"><title>Street lamp: open-loop control</title><defs><marker id="bd5" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="152" y="30" width="526" height="80" fill="none" stroke="#000" stroke-width="1.6" stroke-dasharray="8 6"/><text x="118" y="74.55" font-size="13" text-anchor="end" font-weight="400" fill="#000">light level</text><path d="M126,70 L162,70" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd5)"/><rect x="164" y="45" width="100" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="214" y="67.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">light</text><text x="214" y="82.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">sensor</text><path d="M264,70 L298,70" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd5)"/><rect x="298" y="45" width="100" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="348" y="74.55" font-size="13" text-anchor="middle" font-weight="400" fill="#000">control</text><path d="M398,70 L432,70" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd5)"/><rect x="432" y="45" width="100" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="482" y="67.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">output</text><text x="482" y="82.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">driver</text><path d="M532,70 L566,70" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd5)"/><rect x="566" y="45" width="100" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="616" y="74.55" font-size="13" text-anchor="middle" font-weight="400" fill="#000">lamp</text><path d="M666,70 L706,70" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd5)"/><text x="712" y="74.55" font-size="13" text-anchor="start" font-weight="400" fill="#000">light</text></svg></div>
+      <p class="notes-p">A model of the street lamp is shown below. The LDR and variable resistor form a <strong>voltage divider</strong>, which converts the light level into a voltage (the control sub-system). The transistor is the <strong>output driver</strong>: when it gets dark, the LDR&rsquo;s resistance rises, the voltage at the base rises and the transistor switches on the lamp.</p>
+      <div class="fig"><svg viewBox="0 0 420 330" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;" role="img" aria-label="Street lamp model: an LDR voltage divider drives a transistor that switches a lamp"><title>Street lamp model: an LDR voltage divider drives a transistor that switches a lamp</title><defs><marker id="cA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><path d="M40,40 L380,40" stroke="#000" stroke-width="2" fill="none"/><path d="M40,300 L380,300" stroke="#000" stroke-width="2" fill="none"/><text x="30" y="45" font-size="13" text-anchor="end">+V<tspan font-size="10" dy="3">S</tspan></text><text x="30" y="305" font-size="13" text-anchor="end">0 V</text><path d="M120,40 L120,83" stroke="#000" stroke-width="2" fill="none"/><path d="M120,127 L120,170" stroke="#000" stroke-width="2" fill="none"/><rect x="112" y="83" width="16" height="44" fill="#fff" stroke="#000" stroke-width="2"/><path d="M102,123 L138,87" stroke="#000" stroke-width="2" marker-end="url(#cA)"/><text x="136" y="110" font-size="13" text-anchor="start">R<tspan font-size="10" dy="3">V</tspan></text><path d="M120,170 L120,213" stroke="#000" stroke-width="2" fill="none"/><path d="M120,257 L120,300" stroke="#000" stroke-width="2" fill="none"/><rect x="112" y="213" width="16" height="44" fill="#fff" stroke="#000" stroke-width="2"/><path d="M80,207 L106,221" stroke="#000" stroke-width="1.6" marker-end="url(#cA)"/><path d="M80,223 L106,237" stroke="#000" stroke-width="1.6" marker-end="url(#cA)"/><text x="136" y="240" font-size="13" text-anchor="start">LDR</text><circle cx="120" cy="40" r="3.5" fill="#000"/><circle cx="120" cy="300" r="3.5" fill="#000"/><circle cx="120" cy="170" r="3.5" fill="#000"/><path d="M120,170 L163,170" stroke="#000" stroke-width="2" fill="none"/><path d="M207,170 L250,170" stroke="#000" stroke-width="2" fill="none"/><rect x="163" y="162" width="44" height="16" fill="#fff" stroke="#000" stroke-width="2"/><text x="185" y="156" font-size="13" text-anchor="middle">R<tspan font-size="10" dy="3">B</tspan></text><circle cx="282" cy="170" r="22" fill="#fff" stroke="#000" stroke-width="2"/><path d="M250,170 L272,170" stroke="#000" stroke-width="2" fill="none"/><path d="M272,157 L272,183" stroke="#000" stroke-width="2" fill="none"/><path d="M272,164 L292,150 L292,136" stroke="#000" stroke-width="2" fill="none"/><path d="M272,176 L290,189" stroke="#000" stroke-width="2" marker-end="url(#cA)"/><path d="M292,190 L292,204" stroke="#000" stroke-width="2" fill="none"/><path d="M292,40 L292,74" stroke="#000" stroke-width="2" fill="none"/><path d="M292,102 L292,136" stroke="#000" stroke-width="2" fill="none"/><circle cx="292" cy="88" r="14" fill="#fff" stroke="#000" stroke-width="2"/><path d="M282,78 L302,98" stroke="#000" stroke-width="2" fill="none"/><path d="M282,98 L302,78" stroke="#000" stroke-width="2" fill="none"/><text x="312" y="93" font-size="13" text-anchor="start">lamp</text><path d="M292,204 L292,300" stroke="#000" stroke-width="2" fill="none"/><circle cx="292" cy="40" r="3.5" fill="#000"/><circle cx="292" cy="300" r="3.5" fill="#000"/></svg><div class="fig-cap">Open-loop model: LDR voltage divider, transistor driver and lamp</div></div>
+      <div class="key-point">Open-loop control is the <strong>simplest and cheapest</strong> form of control. Its weakness is that it <strong>cannot adjust to changing conditions</strong>: if something disturbs the output, the system has no way of knowing.</div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-3">Section 3: Closed-Loop Control</h1>
+      <p class="notes-p"><strong>Closed-loop control</strong> systems measure their own output and adjust their performance to keep it at the desired level. Every closed-loop system includes a <strong>feedback sensor</strong>. The control sub-system processes the feedback signal and makes a &lsquo;decision&rsquo; on whether the output should change.</p>
+      <div class="fig"><svg viewBox="0 0 746 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:746px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;" role="img" aria-label="Closed-loop control: a feedback sensor measures the output and sends it back to the control unit"><title>Closed-loop control: a feedback sensor measures the output and sends it back to the control unit</title><defs><marker id="bd6" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="152" y="110" width="446" height="80" fill="none" stroke="#000" stroke-width="1.6" stroke-dasharray="8 6"/><text x="118" y="154.55" font-size="13" text-anchor="end" font-weight="400" fill="#000">input</text><path d="M126,150 L162,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd6)"/><rect x="164" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="223" y="154.55" font-size="13" text-anchor="middle" font-weight="400" fill="#000">control</text><path d="M282,150 L316,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd6)"/><rect x="316" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="375" y="147.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">output</text><text x="375" y="162.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">driver</text><path d="M434,150 L468,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd6)"/><rect x="468" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="527" y="147.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">output</text><text x="527" y="162.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">device</text><path d="M586,150 L626,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd6)"/><text x="632" y="154.55" font-size="13" text-anchor="start" font-weight="400" fill="#000">output</text><circle cx="605" cy="150" r="4" fill="#000"/><rect x="310" y="25" width="130" height="46" fill="#fff" stroke="#000" stroke-width="2"/><text x="375" y="45.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">feedback</text><text x="375" y="60.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">sensor</text><path d="M605,150 L605,48 L441,48" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd6)"/><path d="M310,48 L223,48 L223,124" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd6)"/></svg></div>
+      <p class="notes-p">The central heating in most homes is controlled by a <strong>thermostat</strong>. It senses the room temperature and switches the boiler off when the set temperature is reached, then on again when the room cools below it.</p>
+      <div class="fig"><svg viewBox="0 0 746 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:746px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;" role="img" aria-label="Central heating: closed-loop control"><title>Central heating: closed-loop control</title><defs><marker id="bd7" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="152" y="110" width="446" height="80" fill="none" stroke="#000" stroke-width="1.6" stroke-dasharray="8 6"/><text x="118" y="147.075" font-size="13" text-anchor="end" font-weight="400" fill="#000">set</text><text x="118" y="162.025" font-size="13" text-anchor="end" font-weight="400" fill="#000">temperature</text><path d="M126,150 L162,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd7)"/><rect x="164" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="223" y="154.55" font-size="13" text-anchor="middle" font-weight="400" fill="#000">control</text><path d="M282,150 L316,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd7)"/><rect x="316" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="375" y="147.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">output</text><text x="375" y="162.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">driver</text><path d="M434,150 L468,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd7)"/><rect x="468" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="527" y="147.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">boiler and</text><text x="527" y="162.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">radiators</text><path d="M586,150 L626,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd7)"/><text x="632" y="147.075" font-size="13" text-anchor="start" font-weight="400" fill="#000">room</text><text x="632" y="162.025" font-size="13" text-anchor="start" font-weight="400" fill="#000">temperature</text><circle cx="605" cy="150" r="4" fill="#000"/><rect x="310" y="25" width="130" height="46" fill="#fff" stroke="#000" stroke-width="2"/><text x="375" y="45.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">temperature</text><text x="375" y="60.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">sensor</text><path d="M605,150 L605,48 L441,48" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd7)"/><path d="M310,48 L223,48 L223,124" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd7)"/></svg></div>
+      <p class="notes-p">Cruise control on a car keeps the car at a constant speed, even on hills. The feedback sensor is a speed sensor (such as a <strong>tacho-generator</strong>, which gives a higher voltage the faster it turns) connected to a wheel. When the car starts to climb a hill it slows down; the speed sensor feeds this back to the control unit, which increases the engine power to bring the speed back up to the desired value.</p>
+      <div class="fig-row">
+      <figure class="fig"><img src="images/cruise-control.jpg" alt="Car dashboard with cruise control switches on the steering wheel" style="width:100%;max-width:360px;display:block;margin:0 auto;border-radius:8px;"></figure>
+      </div>
+      <div class="fig"><svg viewBox="0 0 746 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:746px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;" role="img" aria-label="Cruise control: closed-loop control of speed"><title>Cruise control: closed-loop control of speed</title><defs><marker id="bd8" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="152" y="110" width="446" height="80" fill="none" stroke="#000" stroke-width="1.6" stroke-dasharray="8 6"/><text x="118" y="147.075" font-size="13" text-anchor="end" font-weight="400" fill="#000">desired</text><text x="118" y="162.025" font-size="13" text-anchor="end" font-weight="400" fill="#000">speed</text><path d="M126,150 L162,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd8)"/><rect x="164" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="223" y="154.55" font-size="13" text-anchor="middle" font-weight="400" fill="#000">control</text><path d="M282,150 L316,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd8)"/><rect x="316" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="375" y="154.55" font-size="13" text-anchor="middle" font-weight="400" fill="#000">engine</text><path d="M434,150 L468,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd8)"/><rect x="468" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="527" y="154.55" font-size="13" text-anchor="middle" font-weight="400" fill="#000">wheels</text><path d="M586,150 L626,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd8)"/><text x="632" y="154.55" font-size="13" text-anchor="start" font-weight="400" fill="#000">speed</text><circle cx="605" cy="150" r="4" fill="#000"/><rect x="310" y="25" width="130" height="46" fill="#fff" stroke="#000" stroke-width="2"/><text x="375" y="45.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">speed sensor</text><text x="375" y="60.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">(tacho-generator)</text><path d="M605,150 L605,48 L441,48" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd8)"/><path d="M310,48 L223,48 L223,124" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd8)"/></svg></div>
+      <div class="assignment" id="assignment-task2">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Open-loop and closed-loop control</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Explain what is meant by the term &lsquo;systems diagram&rsquo;.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t2a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t2a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Describe the differences between an open-loop and a closed-loop control system.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t2b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t2b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Describe the purpose of the feedback sensor in a closed-loop control system.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t2c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t2c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q"><div class="fig-row">      <figure class="fig"><img src="images/electric-fire-open-loop.jpg" alt="A simple radiant electric fire" style="width:100%;max-width:220px;display:block;margin:0 auto;border-radius:8px;"><figcaption class="fig-cap">Fire A</figcaption></figure>
+      <figure class="fig"><img src="images/electric-fire-thermostat.jpg" alt="A fan heater with a thermostat dial" style="width:100%;max-width:220px;display:block;margin:0 auto;border-radius:8px;"><figcaption class="fig-cap">Fire B (with thermostat)</figcaption></figure>
+</div>4. (a) Name the type of control used in each electric fire. (b) Draw a systems diagram for each.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t2d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t2d" data-placeholder="Draw your diagram on paper and add a photo of it, or describe it block by block..." style="min-height:100px;"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task2', 'Task 2 &mdash; Open-loop and closed-loop control')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-4">Section 4: Two-State Control with a Comparator</h1>
+      <p class="notes-p">Many control systems process <strong>analogue</strong> signals such as temperature, light level, speed or position. Analogue closed-loop control needs an analogue processing device &mdash; the <strong>operational amplifier (op-amp)</strong>. You have met the op-amp configurations in <a href="../../electronics/analogue/course-notes.html">Higher Analogue Electronics</a>; here the focus is on how they are used <em>in a control system</em>.</p>
+      <p class="notes-p">The simplest arrangement uses the op-amp as a <strong>comparator</strong>. It compares two voltages: a <strong>reference</strong> (the desired value) and a <strong>feedback</strong> signal from a sensor (the actual value). Because it has no feedback resistor, its gain is huge and its output is always saturated &mdash; either fully positive or fully negative. This gives <strong>two-state control</strong>: the output device is either fully on or fully off.</p>
+      <div class="worked-example"><div class="worked-example-title">Worked example &mdash; two-state temperature control</div><div class="step"><div class="step-num">1</div><div class="step-content">The circuit below controls the temperature of a small heater bulb. A bead thermistor R<sub>T</sub> is placed next to the bulb so that it senses the bulb&rsquo;s temperature.<svg viewBox="0 0 600 390" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:560px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;" role="img" aria-label="Two-state temperature control: a thermistor divider and a reference divider feed a comparator, which switches a heater bulb through a transistor"><title>Two-state temperature control: a thermistor divider and a reference divider feed a comparator, which switches a heater bulb through a transistor</title><defs><marker id="cA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><path d="M40,30 L520,30" stroke="#000" stroke-width="2" fill="none"/><path d="M40,330 L520,330" stroke="#000" stroke-width="2" fill="none"/><path d="M40,370 L420,370" stroke="#000" stroke-width="2" fill="none"/><text x="530" y="35" font-size="13" text-anchor="start">+V<tspan font-size="10" dy="3">CC</tspan></text><text x="530" y="335" font-size="13" text-anchor="start">0 V</text><text x="430" y="375" font-size="13" text-anchor="start">&#8722;V<tspan font-size="10" dy="3">CC</tspan></text><path d="M80,30 L80,58" stroke="#000" stroke-width="2" fill="none"/><path d="M80,102 L80,130" stroke="#000" stroke-width="2" fill="none"/><rect x="72" y="58" width="16" height="44" fill="#fff" stroke="#000" stroke-width="2"/><text x="96" y="85" font-size="13" text-anchor="start">R</text><path d="M80,130 L80,158" stroke="#000" stroke-width="2" fill="none"/><path d="M80,202 L80,230" stroke="#000" stroke-width="2" fill="none"/><rect x="72" y="158" width="16" height="44" fill="#fff" stroke="#000" stroke-width="2"/><path d="M80,230 L80,258" stroke="#000" stroke-width="2" fill="none"/><path d="M80,302 L80,330" stroke="#000" stroke-width="2" fill="none"/><rect x="72" y="258" width="16" height="44" fill="#fff" stroke="#000" stroke-width="2"/><text x="96" y="285" font-size="13" text-anchor="start">R</text><circle cx="80" cy="30" r="3.5" fill="#000"/><circle cx="80" cy="330" r="3.5" fill="#000"/><path d="M112,180 L90,180" stroke="#000" stroke-width="2" marker-end="url(#cA)"/><text x="100" y="166" font-size="13" text-anchor="start">R<tspan font-size="10" dy="3">V1</tspan></text><path d="M112,180 L160,180 L160,216 L250,216" stroke="#000" stroke-width="2" fill="none"/><text x="136" y="232" font-size="11" text-anchor="middle" font-style="italic">reference</text><path d="M200,30 L200,68" stroke="#000" stroke-width="2" fill="none"/><path d="M200,112 L200,150" stroke="#000" stroke-width="2" fill="none"/><rect x="192" y="68" width="16" height="44" fill="#fff" stroke="#000" stroke-width="2"/><path d="M180,112 L188,112 L216,70" stroke="#000" stroke-width="2" fill="none"/><text x="216" y="95" font-size="13" text-anchor="start">R<tspan font-size="10" dy="3">T</tspan></text><path d="M200,150 L200,240" stroke="#000" stroke-width="2" fill="none"/><path d="M200,240 L200,263" stroke="#000" stroke-width="2" fill="none"/><path d="M200,307 L200,330" stroke="#000" stroke-width="2" fill="none"/><rect x="192" y="263" width="16" height="44" fill="#fff" stroke="#000" stroke-width="2"/><path d="M182,303 L218,267" stroke="#000" stroke-width="2" marker-end="url(#cA)"/><text x="216" y="290" font-size="13" text-anchor="start">R<tspan font-size="10" dy="3">V2</tspan></text><circle cx="200" cy="30" r="3.5" fill="#000"/><circle cx="200" cy="330" r="3.5" fill="#000"/><circle cx="200" cy="150" r="3.5" fill="#000"/><path d="M200,150 L230,150 L230,184 L250,184" stroke="#000" stroke-width="2" fill="none"/><polygon points="250,160 250,240 330,200" fill="#fff" stroke="#000" stroke-width="2"/><text x="260" y="189" font-size="16" text-anchor="middle">&#8722;</text><text x="260" y="222" font-size="16" text-anchor="middle">+</text><path d="M290,180 L290,30" stroke="#000" stroke-width="2" fill="none"/><path d="M290,220 L290,370" stroke="#000" stroke-width="2" fill="none"/><circle cx="290" cy="30" r="3.5" fill="#000"/><circle cx="290" cy="370" r="3.5" fill="#000"/><path d="M330,200 L348,200" stroke="#000" stroke-width="2" fill="none"/><path d="M392,200 L410,200" stroke="#000" stroke-width="2" fill="none"/><rect x="348" y="192" width="44" height="16" fill="#fff" stroke="#000" stroke-width="2"/><text x="370" y="186" font-size="13" text-anchor="middle">R<tspan font-size="10" dy="3">B</tspan></text><circle cx="442" cy="200" r="22" fill="#fff" stroke="#000" stroke-width="2"/><path d="M410,200 L432,200" stroke="#000" stroke-width="2" fill="none"/><path d="M432,187 L432,213" stroke="#000" stroke-width="2" fill="none"/><path d="M432,194 L452,180 L452,166" stroke="#000" stroke-width="2" fill="none"/><path d="M432,206 L450,219" stroke="#000" stroke-width="2" marker-end="url(#cA)"/><path d="M452,220 L452,234" stroke="#000" stroke-width="2" fill="none"/><path d="M452,30 L452,84" stroke="#000" stroke-width="2" fill="none"/><path d="M452,112 L452,166" stroke="#000" stroke-width="2" fill="none"/><circle cx="452" cy="98" r="14" fill="#fff" stroke="#000" stroke-width="2"/><path d="M442,88 L462,108" stroke="#000" stroke-width="2" fill="none"/><path d="M442,108 L462,88" stroke="#000" stroke-width="2" fill="none"/><text x="472" y="103" font-size="13" text-anchor="start">heater bulb</text><path d="M452,234 L452,330" stroke="#000" stroke-width="2" fill="none"/><circle cx="452" cy="30" r="3.5" fill="#000"/><circle cx="452" cy="330" r="3.5" fill="#000"/><path d="M430,98 C360,60 270,70 214,90" stroke="#9a3412" stroke-width="1.6" stroke-dasharray="5 4" fill="none" marker-end="url(#cA)"/><text x="330" y="62" font-size="11" text-anchor="middle" font-style="italic">heat from bulb (feedback)</text></svg></div></div><div class="step"><div class="step-num">2</div><div class="step-content">The variable resistor R<sub>V1</sub> sets the <strong>reference voltage</strong> on the non-inverting (+) input. This sets the desired temperature.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">When the bulb is <strong>cold</strong>, the thermistor&rsquo;s resistance is high, so the voltage at the inverting (&minus;) input is low &mdash; lower than the reference. The op-amp output saturates <strong>positive</strong>, the transistor switches on and the bulb heats up.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">As the bulb warms, the thermistor&rsquo;s resistance falls and the voltage at the inverting input rises. When it rises above the reference, the output saturates <strong>negative</strong>, the transistor switches off and the bulb cools.</div></div><div class="step"><div class="step-num">5</div><div class="step-content">As the bulb cools the voltage falls below the reference again and the bulb switches back on. The cycle repeats, keeping the temperature close to the set value. The heat from the bulb reaching the thermistor is the <strong>feedback</strong> that closes the loop.</div></div></div>
+      <div class="key-point">Remember the comparator rule from Analogue Electronics: if V<sub>+</sub> &gt; V<sub>&minus;</sub> the output saturates positive; if V<sub>+</sub> &lt; V<sub>&minus;</sub> it saturates negative. Whichever input the sensor is connected to decides whether the output device comes on when the measured value is too low or too high.</div>
+      <div class="assignment" id="assignment-task3">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 3 &mdash; Two-state control</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. In the worked example, explain the purpose of R<sub>V1</sub> and R<sub>V2</sub>.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t3a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t3a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. The thermistor and R<sub>V2</sub> are swapped over. Describe what the circuit would now do.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t3b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t3b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Explain why this is called <em>two-state</em> control.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t3c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t3c" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task3', 'Task 3 &mdash; Two-state control')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-5">Section 5: Control Diagrams and Error Detection</h1>
+      <p class="notes-p">A systems diagram shows a general &lsquo;control&rsquo; block. When an op-amp or microcontroller is used in a closed-loop system, engineers usually draw a <strong>control diagram</strong> instead. It breaks the control block into more specific parts and shows exactly where the desired value and the feedback signal are compared.</p>
+      <div class="fig"><svg viewBox="0 0 806 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:806px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;" role="img" aria-label="Control diagram for the two-state heating circuit"><title>Control diagram for the two-state heating circuit</title><defs><marker id="bd11" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="126" y="110" width="370" height="80" fill="none" stroke="#000" stroke-width="1.6" stroke-dasharray="8 6"/><text x="118" y="147.075" font-size="13" text-anchor="end" font-weight="400" fill="#000">desired</text><text x="118" y="162.025" font-size="13" text-anchor="end" font-weight="400" fill="#000">temperature</text><path d="M126,150 L138,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd11)"/><circle cx="160" cy="150" r="20" fill="#fff" stroke="#000" stroke-width="2"/><path d="M145.86,135.86 L174.14,164.14 M145.86,164.14 L174.14,135.86" stroke="#000" stroke-width="2"/><text x="147.6" y="155" font-size="15" font-weight="700" text-anchor="middle">+</text><text x="160" y="141" font-size="17" font-weight="700" text-anchor="middle">&#8722;</text><path d="M180,150 L214,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd11)"/><rect x="214" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="273" y="154.55" font-size="13" text-anchor="middle" font-weight="400" fill="#000">comparator</text><path d="M332,150 L366,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd11)"/><rect x="366" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="425" y="147.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">output</text><text x="425" y="162.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">driver</text><path d="M484,150 L518,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd11)"/><rect x="518" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="577" y="147.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">heater</text><text x="577" y="162.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">bulb</text><path d="M636,150 L676,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd11)"/><text x="682" y="147.075" font-size="13" text-anchor="start" font-weight="400" fill="#000">actual</text><text x="682" y="162.025" font-size="13" text-anchor="start" font-weight="400" fill="#000">temperature</text><circle cx="655" cy="150" r="4" fill="#000"/><rect x="303.5" y="25" width="130" height="46" fill="#fff" stroke="#000" stroke-width="2"/><text x="368.5" y="45.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">temperature</text><text x="368.5" y="60.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">sensor</text><path d="M655,150 L655,48 L434.5,48" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd11)"/><path d="M303.5,48 L160,48 L160,129" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd11)"/></svg><div class="fig-cap">Control diagram for the two-state heating circuit in Section 4</div></div>
+      <h2 class="notes-h2">The error detector</h2>
+      <div class="fig"><svg viewBox="0 0 300 150" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;" role="img" aria-label="Error detector symbol: the desired value enters at the plus input and the feedback signal at the minus input"><title>Error detector symbol: the desired value enters at the plus input and the feedback signal at the minus input</title><defs><marker id="bd12" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><text x="48" y="87.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">desired</text><text x="48" y="102.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">value</text><path d="M92,90 L128,90" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd12)"/><circle cx="150" cy="90" r="20" fill="#fff" stroke="#000" stroke-width="2"/><path d="M135.86,75.86 L164.14,104.14 M135.86,104.14 L164.14,75.86" stroke="#000" stroke-width="2"/><text x="137.6" y="95" font-size="15" font-weight="700" text-anchor="middle">+</text><text x="150" y="81" font-size="17" font-weight="700" text-anchor="middle">&#8722;</text><path d="M150,22 L150,68" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd12)"/><text x="150" y="18.55" font-size="13" text-anchor="middle" font-weight="400" fill="#000">feedback signal</text><path d="M172,90 L214,90" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd12)"/><text x="256" y="87.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">error</text><text x="256" y="102.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">signal</text></svg></div>
+      <p class="notes-p">The circle with a cross is the <strong>error detector</strong> (also called a summing point or comparison point). It shows that the control involves two signals: the <strong>desired value</strong> enters at the <strong>+</strong> input and the <strong>feedback signal</strong> at the <strong>&minus;</strong> input. The difference between them is the <strong>error</strong>:</p>
+      <div class="formula-box"><div class="formula" style="font-size:18px;font-weight:700;color:var(--teal-800);">error = desired value &minus; actual value</div></div>
+      <p class="notes-p">The feedback is connected to the <strong>negative</strong> input because the system acts to <em>reduce</em> the error. This is called <strong>negative feedback</strong>.</p>
+      <div class="exam-tip"><strong>Drawing a control diagram in the exam.</strong> Marks are given for: the error detector with the desired value on <strong>+</strong> and the feedback on <strong>&minus;</strong>; a correctly named control block (<em>comparator</em>, <em>difference amplifier</em>, <em>op-amp</em>, <em>microcontroller</em> or <em>control unit</em> &mdash; not just &ldquo;control&rdquo;); the correct output device; a suitable sensor in the feedback path (e.g. thermistor or temperature sensor, not &ldquo;thermometer&rdquo;); and the input and output labelled as quantities such as <em>desired temperature</em> and <em>actual temperature</em> &mdash; not &ldquo;user input&rdquo; or &ldquo;heat&rdquo;.</div>
+      <p class="notes-p">The feedback line is taken from the <strong>output</strong> (after the output device) and returns to the error detector. In the mirror system below, a potentiometer turned by the mirror measures its actual position, and the comparator drives the motor until the mirror matches the position set on the dial.</p>
+      <figure class="fig"><img src="images/wing-mirror.jpg" alt="Electrically adjustable car wing mirror" style="width:100%;max-width:340px;display:block;margin:0 auto;border-radius:8px;"></figure>
+      <div class="fig"><svg viewBox="0 0 826 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:826px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;" role="img" aria-label="Control diagram for a two-state wing mirror positioning system"><title>Control diagram for a two-state wing mirror positioning system</title><defs><marker id="bd13" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="146" y="110" width="370" height="80" fill="none" stroke="#000" stroke-width="1.6" stroke-dasharray="8 6"/><text x="138" y="147.075" font-size="13" text-anchor="end" font-weight="400" fill="#000">remote dial</text><text x="138" y="162.025" font-size="13" text-anchor="end" font-weight="400" fill="#000">(desired position)</text><path d="M146,150 L158,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd13)"/><circle cx="180" cy="150" r="20" fill="#fff" stroke="#000" stroke-width="2"/><path d="M165.86,135.86 L194.14,164.14 M165.86,164.14 L194.14,135.86" stroke="#000" stroke-width="2"/><text x="167.6" y="155" font-size="15" font-weight="700" text-anchor="middle">+</text><text x="180" y="141" font-size="17" font-weight="700" text-anchor="middle">&#8722;</text><path d="M200,150 L234,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd13)"/><rect x="234" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="293" y="154.55" font-size="13" text-anchor="middle" font-weight="400" fill="#000">comparator</text><path d="M352,150 L386,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd13)"/><rect x="386" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="445" y="147.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">output</text><text x="445" y="162.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">driver</text><path d="M504,150 L538,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd13)"/><rect x="538" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="597" y="154.55" font-size="13" text-anchor="middle" font-weight="400" fill="#000">motor</text><path d="M656,150 L696,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd13)"/><text x="702" y="147.075" font-size="13" text-anchor="start" font-weight="400" fill="#000">wing mirror</text><text x="702" y="162.025" font-size="13" text-anchor="start" font-weight="400" fill="#000">position</text><circle cx="675" cy="150" r="4" fill="#000"/><rect x="323.5" y="25" width="130" height="46" fill="#fff" stroke="#000" stroke-width="2"/><text x="388.5" y="45.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">position sensor</text><text x="388.5" y="60.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">(potentiometer)</text><path d="M675,150 L675,48 L454.5,48" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd13)"/><path d="M323.5,48 L180,48 L180,129" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd13)"/></svg><div class="fig-cap">Control diagram for a two-state wing mirror system (one axis)</div></div>
+      <div class="assignment" id="assignment-task4">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Control diagrams</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. With reference to the wing mirror control diagram, explain clearly how the system operates.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t4a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t4a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Explain the term <em>error detector</em> and why the feedback signal enters at the negative input.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t4b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t4b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A water tank is kept at a constant level. A level sensor measures the water level, and a control unit switches a pump through an output driver. Draw the control diagram.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t4c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t4c" data-placeholder="Draw your diagram on paper and add a photo of it, or describe it block by block..." style="min-height:100px;"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task4', 'Task 4 &mdash; Control diagrams')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-6">Section 6: Negative Feedback and Lag</h1>
+      <p class="notes-p">The purpose of closed-loop control is to keep the output as close as possible to the desired level. With <strong>negative feedback</strong>, the control system is always trying to pull the output back towards the desired value by reducing the error.</p>
+      <p class="notes-p">A graph of temperature against time for a two-state heating system looks like this:</p>
+      <div class="fig"><svg viewBox="0 0 540 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:520px;display:block;margin:12px auto;font-family:Arial,Helvetica,sans-serif;"><title>Two-state control: overshoot and undershoot caused by lag</title><defs><marker id="rg15" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker></defs><line x1="70" y1="230" x2="515" y2="230" stroke="#334155" stroke-width="1.6" marker-end="url(#rg15)"/><line x1="70" y1="230" x2="70" y2="20" stroke="#334155" stroke-width="1.6" marker-end="url(#rg15)"/><text x="515" y="250" font-size="12" text-anchor="end">time</text><text x="54" y="130" font-size="12" text-anchor="middle" transform="rotate(-90 54 130)">temperature</text><line x1="70" y1="100" x2="500" y2="100" stroke="#64748b" stroke-dasharray="6 5"/><text x="500" y="94" font-size="12" text-anchor="end" fill="#475569">desired temperature</text><path d="M70.0,210.0 L71.0,209.1 L72.0,208.2 L72.9,207.3 L73.9,206.3 L74.9,205.4 L75.9,204.5 L76.8,203.6 L77.8,202.7 L78.8,201.8 L79.8,200.9 L80.7,200.0 L81.7,199.0 L82.7,198.1 L83.7,197.2 L84.7,196.3 L85.6,195.4 L86.6,194.5 L87.6,193.6 L88.6,192.6 L89.5,191.7 L90.5,190.8 L91.5,189.9 L92.5,189.0 L93.4,188.1 L94.4,187.2 L95.4,186.2 L96.4,185.3 L97.3,184.4 L98.3,183.5 L99.3,182.6 L100.3,181.7 L101.3,180.8 L102.2,179.9 L103.2,178.9 L104.2,178.0 L105.2,177.1 L106.1,176.2 L107.1,175.3 L108.1,174.4 L109.1,173.5 L110.0,172.5 L111.0,171.6 L112.0,170.7 L113.0,169.8 L114.0,168.9 L114.9,168.0 L115.9,167.1 L116.9,166.1 L117.9,165.2 L118.8,164.3 L119.8,163.4 L120.8,162.5 L121.8,161.6 L122.7,160.7 L123.7,159.8 L124.7,158.8 L125.7,157.9 L126.7,157.0 L127.6,156.1 L128.6,155.2 L129.6,154.3 L130.6,153.4 L131.5,152.4 L132.5,151.5 L133.5,150.6 L134.5,149.7 L135.4,148.8 L136.4,147.9 L137.4,147.0 L138.4,146.0 L139.3,145.1 L140.3,144.2 L141.3,143.3 L142.3,142.4 L143.3,141.5 L144.2,140.6 L145.2,139.7 L146.2,138.7 L147.2,137.8 L148.1,136.9 L149.1,136.0 L150.1,135.1 L151.1,134.2 L152.0,133.3 L153.0,132.3 L154.0,131.4 L155.0,130.5 L156.0,129.6 L156.9,128.7 L157.9,127.8 L158.9,126.9 L159.9,125.9 L160.8,125.0 L161.8,124.1 L162.8,123.2 L163.8,122.3 L164.7,121.4 L165.7,120.5 L166.7,119.6 L167.7,118.6 L168.7,117.7 L169.6,116.8 L170.6,115.9 L171.6,115.0 L172.6,114.1 L173.5,113.2 L174.5,112.2 L175.5,111.3 L176.5,110.4 L177.4,109.5 L178.4,108.6 L179.4,107.7 L180.4,106.8 L181.3,105.8 L182.3,104.9 L183.3,104.0 L184.3,103.1 L185.3,102.2 L186.2,101.3 L187.2,100.4 L188.2,99.5 L189.2,98.7 L190.1,97.9 L191.1,97.1 L192.1,96.3 L193.1,95.6 L194.0,94.8 L195.0,94.0 L196.0,93.2 L197.0,92.5 L198.0,91.7 L198.9,90.9 L199.9,90.2 L200.9,89.5 L201.9,88.7 L202.8,88.0 L203.8,87.3 L204.8,86.6 L205.8,86.0 L206.7,85.3 L207.7,84.6 L208.7,84.0 L209.7,83.4 L210.7,82.8 L211.6,82.2 L212.6,81.6 L213.6,81.1 L214.6,80.5 L215.5,80.0 L216.5,79.5 L217.5,79.0 L218.5,78.6 L219.4,78.1 L220.4,77.7 L221.4,77.3 L222.4,76.9 L223.3,76.6 L224.3,76.2 L225.3,75.9 L226.3,75.6 L227.3,75.4 L228.2,75.1 L229.2,74.9 L230.2,74.7 L231.2,74.5 L232.1,74.4 L233.1,74.3 L234.1,74.2 L235.1,74.1 L236.0,74.0 L237.0,74.0 L238.0,74.0 L239.0,74.0 L240.0,74.1 L240.9,74.1 L241.9,74.2 L242.9,74.4 L243.9,74.5 L244.8,74.7 L245.8,74.9 L246.8,75.1 L247.8,75.3 L248.7,75.6 L249.7,75.9 L250.7,76.2 L251.7,76.5 L252.7,76.9 L253.6,77.2 L254.6,77.6 L255.6,78.0 L256.6,78.5 L257.5,78.9 L258.5,79.4 L259.5,79.9 L260.5,80.4 L261.4,81.0 L262.4,81.5 L263.4,82.1 L264.4,82.7 L265.3,83.3 L266.3,83.9 L267.3,84.5 L268.3,85.2 L269.3,85.8 L270.2,86.5 L271.2,87.2 L272.2,87.9 L273.2,88.6 L274.1,89.3 L275.1,90.1 L276.1,90.8 L277.1,91.6 L278.0,92.3 L279.0,93.1 L280.0,93.9 L281.0,94.6 L282.0,95.4 L282.9,96.2 L283.9,97.0 L284.9,97.8 L285.9,98.6 L286.8,99.4 L287.8,100.2 L288.8,101.0 L289.8,101.8 L290.7,102.6 L291.7,103.4 L292.7,104.1 L293.7,104.9 L294.7,105.7 L295.6,106.5 L296.6,107.3 L297.6,108.0 L298.6,108.8 L299.5,109.5 L300.5,110.3 L301.5,111.0 L302.5,111.7 L303.4,112.4 L304.4,113.1 L305.4,113.8 L306.4,114.5 L307.3,115.1 L308.3,115.8 L309.3,116.4 L310.3,117.0 L311.3,117.6 L312.2,118.2 L313.2,118.7 L314.2,119.3 L315.2,119.8 L316.1,120.3 L317.1,120.8 L318.1,121.3 L319.1,121.7 L320.0,122.1 L321.0,122.6 L322.0,122.9 L323.0,123.3 L324.0,123.6 L324.9,124.0 L325.9,124.3 L326.9,124.5 L327.9,124.8 L328.8,125.0 L329.8,125.2 L330.8,125.4 L331.8,125.6 L332.7,125.7 L333.7,125.8 L334.7,125.9 L335.7,126.0 L336.7,126.0 L337.6,126.0 L338.6,126.0 L339.6,125.9 L340.6,125.9 L341.5,125.8 L342.5,125.7 L343.5,125.6 L344.5,125.4 L345.4,125.2 L346.4,125.0 L347.4,124.8 L348.4,124.5 L349.3,124.2 L350.3,123.9 L351.3,123.6 L352.3,123.3 L353.3,122.9 L354.2,122.5 L355.2,122.1 L356.2,121.7 L357.2,121.2 L358.1,120.8 L359.1,120.3 L360.1,119.8 L361.1,119.2 L362.0,118.7 L363.0,118.1 L364.0,117.6 L365.0,117.0 L366.0,116.3 L366.9,115.7 L367.9,115.1 L368.9,114.4 L369.9,113.8 L370.8,113.1 L371.8,112.4 L372.8,111.7 L373.8,110.9 L374.7,110.2 L375.7,109.5 L376.7,108.7 L377.7,108.0 L378.7,107.2 L379.6,106.4 L380.6,105.7 L381.6,104.9 L382.6,104.1 L383.5,103.3 L384.5,102.5 L385.5,101.7 L386.5,100.9 L387.4,100.1 L388.4,99.3 L389.4,98.5 L390.4,97.7 L391.3,96.9 L392.3,96.2 L393.3,95.4 L394.3,94.6 L395.3,93.8 L396.2,93.0 L397.2,92.3 L398.2,91.5 L399.2,90.8 L400.1,90.0 L401.1,89.3 L402.1,88.6 L403.1,87.9 L404.0,87.2 L405.0,86.5 L406.0,85.8 L407.0,85.1 L408.0,84.5 L408.9,83.9 L409.9,83.2 L410.9,82.6 L411.9,82.0 L412.8,81.5 L413.8,80.9 L414.8,80.4 L415.8,79.9 L416.7,79.4 L417.7,78.9 L418.7,78.5 L419.7,78.0 L420.7,77.6 L421.6,77.2 L422.6,76.8 L423.6,76.5 L424.6,76.2 L425.5,75.8 L426.5,75.6 L427.5,75.3 L428.5,75.1 L429.4,74.8 L430.4,74.7 L431.4,74.5 L432.4,74.3 L433.3,74.2 L434.3,74.1 L435.3,74.1 L436.3,74.0 L437.3,74.0 L438.2,74.0 L439.2,74.0 L440.2,74.1 L441.2,74.2 L442.1,74.3 L443.1,74.4 L444.1,74.5 L445.1,74.7 L446.0,74.9 L447.0,75.1 L448.0,75.4 L449.0,75.6 L450.0,75.9 L450.9,76.2 L451.9,76.6 L452.9,76.9 L453.9,77.3 L454.8,77.7 L455.8,78.1 L456.8,78.6 L457.8,79.0 L458.7,79.5 L459.7,80.0 L460.7,80.5 L461.7,81.1 L462.7,81.6 L463.6,82.2 L464.6,82.8 L465.6,83.4 L466.6,84.0 L467.5,84.7 L468.5,85.3 L469.5,86.0 L470.5,86.7 L471.4,87.4 L472.4,88.1 L473.4,88.8 L474.4,89.5 L475.3,90.2 L476.3,91.0 L477.3,91.7 L478.3,92.5 L479.3,93.3 L480.2,94.0 L481.2,94.8 L482.2,95.6 L483.2,96.4 L484.1,97.2 L485.1,98.0 L486.1,98.8 L487.1,99.6 L488.0,100.4 L489.0,101.2 L490.0,102.0" fill="none" stroke="#0f766e" stroke-width="2.6"/><text x="200" y="66" font-size="12" fill="#9a3412">overshoot (lag)</text><text x="300" y="146" font-size="12" fill="#9a3412">undershoot (lag)</text><text x="80" y="22" font-size="13" font-weight="700" fill="#0f766e">two-state control</text></svg></div>
+      <p class="notes-p">The temperature never settles exactly at the desired value. This is because of <strong>lag</strong> &mdash; a delay in the system:</p>
+      <ul class="notes-ul"><li>When the desired temperature is reached the heater switches off, but the element is still hot, so it keeps heating the room for a while. The temperature <strong>overshoots</strong>.</li><li>When the room cools to the desired temperature the heater switches on, but the element takes time to warm up, so the room keeps cooling. The temperature <strong>undershoots</strong>.</li><li>The temperature therefore <strong>hunts</strong> continually above and below the desired value.</li></ul>
+      <p class="notes-p">In a heating system this is acceptable &mdash; it even has an advantage, as the boiler is not switched on and off every few seconds. In many other applications the inaccuracy is not acceptable. A motor under two-state control would constantly be starting, stopping or reversing: this uses more power, increases wear on the moving parts, and gives jerky rather than smooth motion.</p>
+      <div class="key-point"><strong>Positive feedback</strong> is where a system acts to <em>increase</em> the error. It is used in very few control systems and is not part of the Higher course.</div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-7">Section 7: Proportional Control</h1>
+      <p class="notes-p"><strong>Proportional closed-loop control</strong> gives a more accurate response. It uses an op-amp configured as a <strong>difference amplifier</strong>, which amplifies the difference between the reference (desired value) and the feedback signal. Its output is <strong>proportional to the error</strong>: a large error gives a large output, a small error a small output, and no error gives no output.</p>
+      <div class="fig"><svg viewBox="0 0 806 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:806px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;" role="img" aria-label="Control diagram for proportional control using a difference amplifier"><title>Control diagram for proportional control using a difference amplifier</title><defs><marker id="bd16" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="126" y="110" width="370" height="80" fill="none" stroke="#000" stroke-width="1.6" stroke-dasharray="8 6"/><text x="118" y="147.075" font-size="13" text-anchor="end" font-weight="400" fill="#000">desired</text><text x="118" y="162.025" font-size="13" text-anchor="end" font-weight="400" fill="#000">temperature</text><path d="M126,150 L138,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd16)"/><circle cx="160" cy="150" r="20" fill="#fff" stroke="#000" stroke-width="2"/><path d="M145.86,135.86 L174.14,164.14 M145.86,164.14 L174.14,135.86" stroke="#000" stroke-width="2"/><text x="147.6" y="155" font-size="15" font-weight="700" text-anchor="middle">+</text><text x="160" y="141" font-size="17" font-weight="700" text-anchor="middle">&#8722;</text><path d="M180,150 L214,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd16)"/><rect x="214" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="273" y="147.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">difference</text><text x="273" y="162.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">amplifier</text><path d="M332,150 L366,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd16)"/><rect x="366" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="425" y="147.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">output</text><text x="425" y="162.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">driver</text><path d="M484,150 L518,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd16)"/><rect x="518" y="125" width="118" height="50" fill="#fff" stroke="#000" stroke-width="2"/><text x="577" y="154.55" font-size="13" text-anchor="middle" font-weight="400" fill="#000">heater</text><path d="M636,150 L676,150" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd16)"/><text x="682" y="147.075" font-size="13" text-anchor="start" font-weight="400" fill="#000">actual</text><text x="682" y="162.025" font-size="13" text-anchor="start" font-weight="400" fill="#000">temperature</text><circle cx="655" cy="150" r="4" fill="#000"/><rect x="303.5" y="25" width="130" height="46" fill="#fff" stroke="#000" stroke-width="2"/><text x="368.5" y="45.075" font-size="13" text-anchor="middle" font-weight="400" fill="#000">temperature</text><text x="368.5" y="60.025" font-size="13" text-anchor="middle" font-weight="400" fill="#000">sensor</text><path d="M655,150 L655,48 L434.5,48" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd16)"/><path d="M303.5,48 L160,48 L160,129" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd16)"/></svg><div class="fig-cap">Control diagram for proportional temperature control</div></div>
+      <p class="notes-p">So a heater under proportional control works hard when the room is cold, then gradually reduces its power as the room approaches the desired temperature, instead of switching fully on and fully off.</p>
+      <div class="formula-box"><div class="formula" style="font-size:18px;font-weight:700;color:var(--teal-800);">V<sub>o</sub> = <span class="frac"><span class="frac-n">R<sub>f</sub></span><span class="frac-d">R<sub>i</sub></span></span> (V<sub>2</sub> &minus; V<sub>1</sub>)</div></div>
+      <p class="notes-p">This is the difference amplifier formula from the data booklet (see <a href="../../electronics/analogue/course-notes.html#section-12">Higher Analogue Electronics, Section 12</a>). The reference goes to one input and the feedback to the other, and the output is the amplified error.</p>
+      <div class="worked-example"><div class="worked-example-title">Worked example &mdash; output voltage in a proportional speed control</div><div class="step"><div class="step-num">1</div><div class="step-content">A difference amplifier controls the speed of a motor. R<sub>i</sub> = 12 k&Omega; and R<sub>f</sub> = 36 k&Omega;. The reference voltage V<sub>ref</sub> = 4.0 V is on the non-inverting side and the feedback voltage from a tacho-generator is on the inverting side. Calculate the output voltage when V<sub>feedback</sub> = 3.2 V.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">V<sub>o</sub> = (R<sub>f</sub>/R<sub>i</sub>)(V<sub>ref</sub> &minus; V<sub>feedback</sub>) = (36/12) &times; (4.0 &minus; 3.2)</div></div><div class="step"><div class="step-num">3</div><div class="step-content">V<sub>o</sub> = 3 &times; 0.8 = <strong>2.4 V</strong>. The motor is running slightly below the desired speed, so a small positive output drives it a little harder.</div></div></div>
+      <h2 class="notes-h2">The effect of gain</h2>
+      <div class="fig-row">
+      <div class="fig"><svg viewBox="0 0 540 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px;display:block;margin:12px auto;font-family:Arial,Helvetica,sans-serif;"><title>Proportional control with low gain</title><defs><marker id="rg17" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker></defs><line x1="70" y1="230" x2="515" y2="230" stroke="#334155" stroke-width="1.6" marker-end="url(#rg17)"/><line x1="70" y1="230" x2="70" y2="20" stroke="#334155" stroke-width="1.6" marker-end="url(#rg17)"/><text x="515" y="250" font-size="12" text-anchor="end">time</text><text x="54" y="130" font-size="12" text-anchor="middle" transform="rotate(-90 54 130)">temperature</text><line x1="70" y1="100" x2="500" y2="100" stroke="#64748b" stroke-dasharray="6 5"/><text x="500" y="94" font-size="12" text-anchor="end" fill="#475569">desired temperature</text><path d="M70.0,210.0 L71.0,208.6 L72.0,207.2 L72.9,205.8 L73.9,204.5 L74.9,203.1 L75.9,201.8 L76.8,200.5 L77.8,199.2 L78.8,198.0 L79.8,196.7 L80.7,195.5 L81.7,194.3 L82.7,193.1 L83.7,191.9 L84.7,190.7 L85.6,189.6 L86.6,188.5 L87.6,187.3 L88.6,186.2 L89.5,185.2 L90.5,184.1 L91.5,183.0 L92.5,182.0 L93.4,181.0 L94.4,180.0 L95.4,179.0 L96.4,178.0 L97.3,177.0 L98.3,176.1 L99.3,175.1 L100.3,174.2 L101.3,173.3 L102.2,172.4 L103.2,171.5 L104.2,170.6 L105.2,169.7 L106.1,168.9 L107.1,168.0 L108.1,167.2 L109.1,166.4 L110.0,165.6 L111.0,164.8 L112.0,164.0 L113.0,163.2 L114.0,162.4 L114.9,161.7 L115.9,160.9 L116.9,160.2 L117.9,159.5 L118.8,158.8 L119.8,158.1 L120.8,157.4 L121.8,156.7 L122.7,156.0 L123.7,155.3 L124.7,154.7 L125.7,154.0 L126.7,153.4 L127.6,152.8 L128.6,152.2 L129.6,151.5 L130.6,150.9 L131.5,150.3 L132.5,149.8 L133.5,149.2 L134.5,148.6 L135.4,148.0 L136.4,147.5 L137.4,146.9 L138.4,146.4 L139.3,145.9 L140.3,145.3 L141.3,144.8 L142.3,144.3 L143.3,143.8 L144.2,143.3 L145.2,142.8 L146.2,142.3 L147.2,141.9 L148.1,141.4 L149.1,140.9 L150.1,140.5 L151.1,140.0 L152.0,139.6 L153.0,139.2 L154.0,138.7 L155.0,138.3 L156.0,137.9 L156.9,137.5 L157.9,137.1 L158.9,136.7 L159.9,136.3 L160.8,135.9 L161.8,135.5 L162.8,135.1 L163.8,134.7 L164.7,134.4 L165.7,134.0 L166.7,133.6 L167.7,133.3 L168.7,132.9 L169.6,132.6 L170.6,132.2 L171.6,131.9 L172.6,131.6 L173.5,131.2 L174.5,130.9 L175.5,130.6 L176.5,130.3 L177.4,130.0 L178.4,129.7 L179.4,129.4 L180.4,129.1 L181.3,128.8 L182.3,128.5 L183.3,128.2 L184.3,127.9 L185.3,127.7 L186.2,127.4 L187.2,127.1 L188.2,126.9 L189.2,126.6 L190.1,126.3 L191.1,126.1 L192.1,125.8 L193.1,125.6 L194.0,125.3 L195.0,125.1 L196.0,124.9 L197.0,124.6 L198.0,124.4 L198.9,124.2 L199.9,123.9 L200.9,123.7 L201.9,123.5 L202.8,123.3 L203.8,123.1 L204.8,122.9 L205.8,122.7 L206.7,122.5 L207.7,122.3 L208.7,122.1 L209.7,121.9 L210.7,121.7 L211.6,121.5 L212.6,121.3 L213.6,121.1 L214.6,120.9 L215.5,120.8 L216.5,120.6 L217.5,120.4 L218.5,120.2 L219.4,120.1 L220.4,119.9 L221.4,119.7 L222.4,119.6 L223.3,119.4 L224.3,119.2 L225.3,119.1 L226.3,118.9 L227.3,118.8 L228.2,118.6 L229.2,118.5 L230.2,118.3 L231.2,118.2 L232.1,118.1 L233.1,117.9 L234.1,117.8 L235.1,117.6 L236.0,117.5 L237.0,117.4 L238.0,117.3 L239.0,117.1 L240.0,117.0 L240.9,116.9 L241.9,116.8 L242.9,116.6 L243.9,116.5 L244.8,116.4 L245.8,116.3 L246.8,116.2 L247.8,116.0 L248.7,115.9 L249.7,115.8 L250.7,115.7 L251.7,115.6 L252.7,115.5 L253.6,115.4 L254.6,115.3 L255.6,115.2 L256.6,115.1 L257.5,115.0 L258.5,114.9 L259.5,114.8 L260.5,114.7 L261.4,114.6 L262.4,114.5 L263.4,114.4 L264.4,114.3 L265.3,114.3 L266.3,114.2 L267.3,114.1 L268.3,114.0 L269.3,113.9 L270.2,113.8 L271.2,113.8 L272.2,113.7 L273.2,113.6 L274.1,113.5 L275.1,113.4 L276.1,113.4 L277.1,113.3 L278.0,113.2 L279.0,113.1 L280.0,113.1 L281.0,113.0 L282.0,112.9 L282.9,112.9 L283.9,112.8 L284.9,112.7 L285.9,112.7 L286.8,112.6 L287.8,112.5 L288.8,112.5 L289.8,112.4 L290.7,112.4 L291.7,112.3 L292.7,112.2 L293.7,112.2 L294.7,112.1 L295.6,112.1 L296.6,112.0 L297.6,112.0 L298.6,111.9 L299.5,111.8 L300.5,111.8 L301.5,111.7 L302.5,111.7 L303.4,111.6 L304.4,111.6 L305.4,111.5 L306.4,111.5 L307.3,111.4 L308.3,111.4 L309.3,111.3 L310.3,111.3 L311.3,111.2 L312.2,111.2 L313.2,111.2 L314.2,111.1 L315.2,111.1 L316.1,111.0 L317.1,111.0 L318.1,110.9 L319.1,110.9 L320.0,110.9 L321.0,110.8 L322.0,110.8 L323.0,110.7 L324.0,110.7 L324.9,110.7 L325.9,110.6 L326.9,110.6 L327.9,110.6 L328.8,110.5 L329.8,110.5 L330.8,110.5 L331.8,110.4 L332.7,110.4 L333.7,110.4 L334.7,110.3 L335.7,110.3 L336.7,110.3 L337.6,110.2 L338.6,110.2 L339.6,110.2 L340.6,110.1 L341.5,110.1 L342.5,110.1 L343.5,110.1 L344.5,110.0 L345.4,110.0 L346.4,110.0 L347.4,109.9 L348.4,109.9 L349.3,109.9 L350.3,109.9 L351.3,109.8 L352.3,109.8 L353.3,109.8 L354.2,109.8 L355.2,109.7 L356.2,109.7 L357.2,109.7 L358.1,109.7 L359.1,109.6 L360.1,109.6 L361.1,109.6 L362.0,109.6 L363.0,109.6 L364.0,109.5 L365.0,109.5 L366.0,109.5 L366.9,109.5 L367.9,109.4 L368.9,109.4 L369.9,109.4 L370.8,109.4 L371.8,109.4 L372.8,109.3 L373.8,109.3 L374.7,109.3 L375.7,109.3 L376.7,109.3 L377.7,109.3 L378.7,109.2 L379.6,109.2 L380.6,109.2 L381.6,109.2 L382.6,109.2 L383.5,109.2 L384.5,109.1 L385.5,109.1 L386.5,109.1 L387.4,109.1 L388.4,109.1 L389.4,109.1 L390.4,109.0 L391.3,109.0 L392.3,109.0 L393.3,109.0 L394.3,109.0 L395.3,109.0 L396.2,109.0 L397.2,109.0 L398.2,108.9 L399.2,108.9 L400.1,108.9 L401.1,108.9 L402.1,108.9 L403.1,108.9 L404.0,108.9 L405.0,108.9 L406.0,108.8 L407.0,108.8 L408.0,108.8 L408.9,108.8 L409.9,108.8 L410.9,108.8 L411.9,108.8 L412.8,108.8 L413.8,108.8 L414.8,108.7 L415.8,108.7 L416.7,108.7 L417.7,108.7 L418.7,108.7 L419.7,108.7 L420.7,108.7 L421.6,108.7 L422.6,108.7 L423.6,108.7 L424.6,108.6 L425.5,108.6 L426.5,108.6 L427.5,108.6 L428.5,108.6 L429.4,108.6 L430.4,108.6 L431.4,108.6 L432.4,108.6 L433.3,108.6 L434.3,108.6 L435.3,108.6 L436.3,108.5 L437.3,108.5 L438.2,108.5 L439.2,108.5 L440.2,108.5 L441.2,108.5 L442.1,108.5 L443.1,108.5 L444.1,108.5 L445.1,108.5 L446.0,108.5 L447.0,108.5 L448.0,108.5 L449.0,108.5 L450.0,108.4 L450.9,108.4 L451.9,108.4 L452.9,108.4 L453.9,108.4 L454.8,108.4 L455.8,108.4 L456.8,108.4 L457.8,108.4 L458.7,108.4 L459.7,108.4 L460.7,108.4 L461.7,108.4 L462.7,108.4 L463.6,108.4 L464.6,108.4 L465.6,108.4 L466.6,108.4 L467.5,108.3 L468.5,108.3 L469.5,108.3 L470.5,108.3 L471.4,108.3 L472.4,108.3 L473.4,108.3 L474.4,108.3 L475.3,108.3 L476.3,108.3 L477.3,108.3 L478.3,108.3 L479.3,108.3 L480.2,108.3 L481.2,108.3 L482.2,108.3 L483.2,108.3 L484.1,108.3 L485.1,108.3 L486.1,108.3 L487.1,108.3 L488.0,108.3 L489.0,108.3 L490.0,108.3" fill="none" stroke="#0f766e" stroke-width="2.6"/><text x="80" y="22" font-size="13" font-weight="700" fill="#0f766e">low gain</text></svg><div class="fig-cap">Low gain: slow, steady rise; no overshoot</div></div>
+      <div class="fig"><svg viewBox="0 0 540 270" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:380px;display:block;margin:12px auto;font-family:Arial,Helvetica,sans-serif;"><title>Proportional control with high gain</title><defs><marker id="rg18" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#334155"/></marker></defs><line x1="70" y1="230" x2="515" y2="230" stroke="#334155" stroke-width="1.6" marker-end="url(#rg18)"/><line x1="70" y1="230" x2="70" y2="20" stroke="#334155" stroke-width="1.6" marker-end="url(#rg18)"/><text x="515" y="250" font-size="12" text-anchor="end">time</text><text x="54" y="130" font-size="12" text-anchor="middle" transform="rotate(-90 54 130)">temperature</text><line x1="70" y1="100" x2="500" y2="100" stroke="#64748b" stroke-dasharray="6 5"/><text x="500" y="94" font-size="12" text-anchor="end" fill="#475569">desired temperature</text><path d="M70.0,210.0 L71.0,208.7 L72.0,207.3 L72.9,205.7 L73.9,204.1 L74.9,202.3 L75.9,200.4 L76.8,198.4 L77.8,196.3 L78.8,194.2 L79.8,191.9 L80.7,189.6 L81.7,187.2 L82.7,184.7 L83.7,182.1 L84.7,179.5 L85.6,176.9 L86.6,174.2 L87.6,171.4 L88.6,168.6 L89.5,165.8 L90.5,162.9 L91.5,160.1 L92.5,157.2 L93.4,154.3 L94.4,151.4 L95.4,148.5 L96.4,145.5 L97.3,142.6 L98.3,139.7 L99.3,136.8 L100.3,134.0 L101.3,131.1 L102.2,128.3 L103.2,125.5 L104.2,122.7 L105.2,120.0 L106.1,117.3 L107.1,114.6 L108.1,112.0 L109.1,109.5 L110.0,107.0 L111.0,104.5 L112.0,102.1 L113.0,99.8 L114.0,97.5 L114.9,95.3 L115.9,93.1 L116.9,91.0 L117.9,89.0 L118.8,87.1 L119.8,85.2 L120.8,83.4 L121.8,81.6 L122.7,80.0 L123.7,78.4 L124.7,76.9 L125.7,75.4 L126.7,74.1 L127.6,72.8 L128.6,71.6 L129.6,70.4 L130.6,69.4 L131.5,68.4 L132.5,67.5 L133.5,66.7 L134.5,65.9 L135.4,65.2 L136.4,64.6 L137.4,64.1 L138.4,63.6 L139.3,63.3 L140.3,62.9 L141.3,62.7 L142.3,62.5 L143.3,62.4 L144.2,62.3 L145.2,62.3 L146.2,62.4 L147.2,62.6 L148.1,62.8 L149.1,63.0 L150.1,63.3 L151.1,63.7 L152.0,64.1 L153.0,64.6 L154.0,65.1 L155.0,65.6 L156.0,66.2 L156.9,66.9 L157.9,67.6 L158.9,68.3 L159.9,69.1 L160.8,69.9 L161.8,70.7 L162.8,71.6 L163.8,72.5 L164.7,73.4 L165.7,74.3 L166.7,75.3 L167.7,76.3 L168.7,77.3 L169.6,78.3 L170.6,79.3 L171.6,80.4 L172.6,81.5 L173.5,82.5 L174.5,83.6 L175.5,84.7 L176.5,85.8 L177.4,86.9 L178.4,88.0 L179.4,89.1 L180.4,90.1 L181.3,91.2 L182.3,92.3 L183.3,93.4 L184.3,94.4 L185.3,95.5 L186.2,96.5 L187.2,97.6 L188.2,98.6 L189.2,99.6 L190.1,100.6 L191.1,101.5 L192.1,102.5 L193.1,103.4 L194.0,104.3 L195.0,105.2 L196.0,106.1 L197.0,106.9 L198.0,107.7 L198.9,108.5 L199.9,109.3 L200.9,110.0 L201.9,110.7 L202.8,111.4 L203.8,112.1 L204.8,112.7 L205.8,113.3 L206.7,113.9 L207.7,114.5 L208.7,115.0 L209.7,115.5 L210.7,116.0 L211.6,116.4 L212.6,116.8 L213.6,117.2 L214.6,117.5 L215.5,117.9 L216.5,118.1 L217.5,118.4 L218.5,118.7 L219.4,118.9 L220.4,119.0 L221.4,119.2 L222.4,119.3 L223.3,119.4 L224.3,119.5 L225.3,119.6 L226.3,119.6 L227.3,119.6 L228.2,119.6 L229.2,119.6 L230.2,119.5 L231.2,119.4 L232.1,119.3 L233.1,119.2 L234.1,119.0 L235.1,118.9 L236.0,118.7 L237.0,118.5 L238.0,118.2 L239.0,118.0 L240.0,117.8 L240.9,117.5 L241.9,117.2 L242.9,116.9 L243.9,116.6 L244.8,116.3 L245.8,116.0 L246.8,115.6 L247.8,115.3 L248.7,114.9 L249.7,114.5 L250.7,114.2 L251.7,113.8 L252.7,113.4 L253.6,113.0 L254.6,112.6 L255.6,112.2 L256.6,111.8 L257.5,111.4 L258.5,111.0 L259.5,110.6 L260.5,110.2 L261.4,109.8 L262.4,109.4 L263.4,109.0 L264.4,108.6 L265.3,108.1 L266.3,107.7 L267.3,107.4 L268.3,107.0 L269.3,106.6 L270.2,106.2 L271.2,105.8 L272.2,105.4 L273.2,105.1 L274.1,104.7 L275.1,104.4 L276.1,104.0 L277.1,103.7 L278.0,103.4 L279.0,103.0 L280.0,102.7 L281.0,102.4 L282.0,102.1 L282.9,101.9 L283.9,101.6 L284.9,101.3 L285.9,101.1 L286.8,100.8 L287.8,100.6 L288.8,100.4 L289.8,100.2 L290.7,100.0 L291.7,99.8 L292.7,99.6 L293.7,99.4 L294.7,99.3 L295.6,99.1 L296.6,99.0 L297.6,98.9 L298.6,98.7 L299.5,98.6 L300.5,98.5 L301.5,98.5 L302.5,98.4 L303.4,98.3 L304.4,98.3 L305.4,98.2 L306.4,98.2 L307.3,98.2 L308.3,98.2 L309.3,98.2 L310.3,98.2 L311.3,98.2 L312.2,98.2 L313.2,98.2 L314.2,98.3 L315.2,98.3 L316.1,98.3 L317.1,98.4 L318.1,98.5 L319.1,98.5 L320.0,98.6 L321.0,98.7 L322.0,98.8 L323.0,98.9 L324.0,99.0 L324.9,99.1 L325.9,99.2 L326.9,99.3 L327.9,99.5 L328.8,99.6 L329.8,99.7 L330.8,99.9 L331.8,100.0 L332.7,100.1 L333.7,100.3 L334.7,100.4 L335.7,100.6 L336.7,100.7 L337.6,100.9 L338.6,101.0 L339.6,101.2 L340.6,101.3 L341.5,101.5 L342.5,101.6 L343.5,101.8 L344.5,101.9 L345.4,102.1 L346.4,102.2 L347.4,102.4 L348.4,102.5 L349.3,102.7 L350.3,102.8 L351.3,103.0 L352.3,103.1 L353.3,103.3 L354.2,103.4 L355.2,103.5 L356.2,103.7 L357.2,103.8 L358.1,103.9 L359.1,104.1 L360.1,104.2 L361.1,104.3 L362.0,104.4 L363.0,104.5 L364.0,104.6 L365.0,104.8 L366.0,104.9 L366.9,105.0 L367.9,105.1 L368.9,105.1 L369.9,105.2 L370.8,105.3 L371.8,105.4 L372.8,105.5 L373.8,105.6 L374.7,105.6 L375.7,105.7 L376.7,105.7 L377.7,105.8 L378.7,105.9 L379.6,105.9 L380.6,106.0 L381.6,106.0 L382.6,106.0 L383.5,106.1 L384.5,106.1 L385.5,106.1 L386.5,106.1 L387.4,106.2 L388.4,106.2 L389.4,106.2 L390.4,106.2 L391.3,106.2 L392.3,106.2 L393.3,106.2 L394.3,106.2 L395.3,106.2 L396.2,106.2 L397.2,106.1 L398.2,106.1 L399.2,106.1 L400.1,106.1 L401.1,106.1 L402.1,106.0 L403.1,106.0 L404.0,106.0 L405.0,105.9 L406.0,105.9 L407.0,105.8 L408.0,105.8 L408.9,105.8 L409.9,105.7 L410.9,105.7 L411.9,105.6 L412.8,105.6 L413.8,105.5 L414.8,105.5 L415.8,105.4 L416.7,105.4 L417.7,105.3 L418.7,105.3 L419.7,105.2 L420.7,105.1 L421.6,105.1 L422.6,105.0 L423.6,105.0 L424.6,104.9 L425.5,104.9 L426.5,104.8 L427.5,104.7 L428.5,104.7 L429.4,104.6 L430.4,104.6 L431.4,104.5 L432.4,104.5 L433.3,104.4 L434.3,104.4 L435.3,104.3 L436.3,104.2 L437.3,104.2 L438.2,104.1 L439.2,104.1 L440.2,104.0 L441.2,104.0 L442.1,104.0 L443.1,103.9 L444.1,103.9 L445.1,103.8 L446.0,103.8 L447.0,103.7 L448.0,103.7 L449.0,103.7 L450.0,103.6 L450.9,103.6 L451.9,103.6 L452.9,103.5 L453.9,103.5 L454.8,103.5 L455.8,103.4 L456.8,103.4 L457.8,103.4 L458.7,103.4 L459.7,103.3 L460.7,103.3 L461.7,103.3 L462.7,103.3 L463.6,103.3 L464.6,103.2 L465.6,103.2 L466.6,103.2 L467.5,103.2 L468.5,103.2 L469.5,103.2 L470.5,103.2 L471.4,103.2 L472.4,103.2 L473.4,103.2 L474.4,103.2 L475.3,103.2 L476.3,103.2 L477.3,103.2 L478.3,103.2 L479.3,103.2 L480.2,103.2 L481.2,103.2 L482.2,103.2 L483.2,103.2 L484.1,103.2 L485.1,103.2 L486.1,103.3 L487.1,103.3 L488.0,103.3 L489.0,103.3 L490.0,103.3" fill="none" stroke="#0f766e" stroke-width="2.6"/><text x="80" y="22" font-size="13" font-weight="700" fill="#0f766e">high gain</text></svg><div class="fig-cap">High gain: fast rise, overshoot, then settles</div></div>
+      </div>
+      <ul class="notes-ul"><li>With <strong>low gain</strong>, the output is not very powerful, so the temperature rises slowly. As the error gets smaller the output reduces, and the rate of rise slows further. There is no overshoot.</li><li>With <strong>high gain</strong>, the system responds quickly and the temperature initially <strong>overshoots</strong> the desired value. Lag causes some oscillation, but it gradually dies away until the temperature settles.</li><li>In both cases the temperature settles <strong>fractionally below</strong> the desired value. Some error is needed to produce any output at all, so a small steady error always remains.</li></ul>
+      <div class="key-point">The engineer adjusts the gain to get a <strong>quick response</strong> while keeping the <strong>overshoot</strong> and the <strong>time taken to settle</strong> as small as possible.</div>
+      <h2 class="notes-h2">Investigate: two-state and proportional control</h2>
+      <p class="notes-p">The explorer below models a room heated by a heater with a little lag. Try two-state control first, then proportional control with different gains. Tick <em>keep previous trace</em> to compare two settings.</p>
+
+      <div class="ctl-lab" id="ctlLab">
+        <div class="ctl-lab-head">&#x1F321;&#xFE0F; Control response explorer</div>
+        <div class="ctl-lab-controls">
+          <div class="ctl-modes"><button type="button" class="ctl-mode on" data-mode="2">Two-state</button><button type="button" class="ctl-mode" data-mode="p">Proportional</button></div>
+          <label class="ctl-slider" id="ctlGainWrap">Gain <input type="range" id="ctlGain" min="1" max="40" step="1" value="5"> <span id="ctlGainV">5</span></label>
+          <label class="ctl-slider">Desired temperature <input type="range" id="ctlSet" min="16" max="26" step="1" value="21"> <span id="ctlSetV">21</span> &deg;C</label>
+          <label class="ctl-check"><input type="checkbox" id="ctlKeep"> keep previous trace</label>
+        </div>
+        <canvas id="ctlCanvas" width="760" height="320" aria-label="Graph of room temperature against time for the chosen control system"></canvas>
+        <div class="ctl-readout" id="ctlReadout"></div>
+      </div>
+<script>
+(function () {
+  var cv = document.getElementById('ctlCanvas'); if (!cv) return;
+  var ctx = cv.getContext('2d'), mode = '2', prev = null;
+  function sim(m, G, Ts) {
+    var dt = 0.5, N = 1800, T = 10, H = 0, buf = [], out = [], d = 10;
+    for (var i = 0; i < d; i++) buf.push(10);
+    for (var k = 0; k < N; k++) {
+      var Tm = buf.shift(); buf.push(T);
+      var u = (m === '2') ? (Tm < Ts ? 1 : 0) : Math.max(0, Math.min(1, G * (Ts - Tm) / 40));
+      H += (u - H) / 10 * dt; T += (40 * H - (T - 10)) / 60 * dt; out.push(T);
+    }
+    return out;
+  }
+  function draw() {
+    var G = +document.getElementById('ctlGain').value, Ts = +document.getElementById('ctlSet').value;
+    document.getElementById('ctlGainV').textContent = G; document.getElementById('ctlSetV').textContent = Ts;
+    document.getElementById('ctlGainWrap').style.opacity = mode === 'p' ? 1 : 0.35;
+    document.getElementById('ctlGain').disabled = mode !== 'p';
+    var d = sim(mode, G, Ts), W = cv.width, Hh = cv.height, L = 56, R = W - 16, Tp = 16, B = Hh - 36;
+    var y = function (v) { return B - (v - 8) / (32 - 8) * (B - Tp); }, x = function (i) { return L + i / (d.length - 1) * (R - L); };
+    ctx.clearRect(0, 0, W, Hh); ctx.font = '12px Arial'; ctx.fillStyle = '#475569'; ctx.strokeStyle = '#334155'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(L, Tp); ctx.lineTo(L, B); ctx.lineTo(R, B); ctx.stroke();
+    ctx.textAlign = 'right';
+    for (var v = 10; v <= 30; v += 5) { ctx.fillText(v + ' \u00B0C', L - 6, y(v) + 4); ctx.strokeStyle = '#e2e8f0'; ctx.beginPath(); ctx.moveTo(L + 1, y(v)); ctx.lineTo(R, y(v)); ctx.stroke(); }
+    ctx.textAlign = 'center';
+    for (var t = 0; t <= 15; t += 5) ctx.fillText(t + ' min', x(t / 15 * (d.length - 1)), B + 16);
+    ctx.fillText('time', (L + R) / 2, B + 31);
+    ctx.setLineDash([6, 5]); ctx.strokeStyle = '#64748b'; ctx.beginPath(); ctx.moveTo(L, y(Ts)); ctx.lineTo(R, y(Ts)); ctx.stroke(); ctx.setLineDash([]);
+    ctx.textAlign = 'left'; ctx.fillText('desired temperature', L + 6, y(Ts) - 6);
+    function line(arr, col, w) { ctx.strokeStyle = col; ctx.lineWidth = w; ctx.beginPath(); for (var i = 0; i < arr.length; i++) { i ? ctx.lineTo(x(i), y(arr[i])) : ctx.moveTo(x(i), y(arr[i])); } ctx.stroke(); }
+    if (prev && document.getElementById('ctlKeep').checked) line(prev, '#cbd5e1', 2);
+    line(d, '#0f766e', 2.6); prev = d;
+    var late = d.slice(Math.floor(d.length * 0.75)), mn = Math.min.apply(null, late), mx = Math.max.apply(null, late), pk = Math.max.apply(null, d);
+    var txt = 'Highest temperature reached: ' + pk.toFixed(1) + ' \u00B0C. ';
+    txt += (mx - mn > 0.3) ? 'After 11 minutes it is still swinging between ' + mn.toFixed(1) + ' and ' + mx.toFixed(1) + ' \u00B0C.' : 'It settles at ' + d[d.length - 1].toFixed(1) + ' \u00B0C, an error of ' + (Ts - d[d.length - 1]).toFixed(1) + ' \u00B0C.';
+    document.getElementById('ctlReadout').textContent = txt;
+  }
+  document.querySelectorAll('#ctlLab .ctl-mode').forEach(function (b) { b.addEventListener('click', function () { mode = b.dataset.mode; document.querySelectorAll('#ctlLab .ctl-mode').forEach(function (c) { c.classList.toggle('on', c === b); }); draw(); }); });
+  ['ctlGain', 'ctlSet'].forEach(function (id) { document.getElementById(id).addEventListener('input', draw); });
+  draw();
+})();
+</script>
+      <table class="data-table"><tr><th></th><th>Two-state control</th><th>Proportional control</th></tr><tr><td>Op-amp configuration</td><td>comparator</td><td>difference amplifier</td></tr><tr><td>Output</td><td>fully on or fully off</td><td>varies in proportion to the error</td></tr><tr><td>Response</td><td>hunts above and below the desired value</td><td>settles close to (just below) the desired value</td></tr><tr><td>Typical uses</td><td>heating, where small swings do not matter</td><td>motor speed and position, where smooth, accurate control is needed</td></tr><tr><td>Cost and complexity</td><td>simpler and cheaper</td><td>more complex; gain must be set carefully</td></tr></table>
+      <div class="assignment" id="assignment-task5">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Negative feedback and proportional control</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Explain each of these terms when applied to control systems: (a) negative feedback (b) error detector (c) two-state control (d) proportional control (e) lag.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t5a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t5a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Using the explorer, describe what happens to the temperature as the gain is increased from 2 to 40. Include the initial response and what happens over time.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t5b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t5b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A difference amplifier has R<sub>i</sub> = 10 k&Omega; and R<sub>f</sub> = 50 k&Omega;. The reference is 3.0 V on the non-inverting side. Calculate the feedback voltage on the inverting side when the output is 5.0 V.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t5c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t5c" data-placeholder="Show your working..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A golf trolley must keep moving at a constant speed set by the player, even on slopes. Its speed is measured by a tacho-generator on one wheel. (a) Draw a control diagram for a proportional control system. (b) Name the op-amp configuration used.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t5d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t5d" data-placeholder="Draw your diagram on paper and add a photo of it, or describe it block by block..." style="min-height:100px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. Explain how using proportional control instead of two-state control would change the way the wing mirror (Section 5) moves.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-t5e"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-t5e" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task5', 'Task 5 &mdash; Negative feedback and proportional control')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-8">Section 8: Exam-Style Questions</h1>
+      <p class="notes-p">These questions are in the style of the Higher question paper. Draw diagrams and graphs on paper, then check them against the model answers.</p>
+      <h2 class="notes-h2">Question 1 &mdash; Art gallery lighting</h2>
+      <p class="notes-p">An electronic system controls a spotlight in an art gallery. As the natural light level changes, the spotlight brightens or dims as required to keep the overall light level on the paintings constant. The light level can be adjusted.</p>
+      <div class="assignment" id="assignment-exam1">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 1 &mdash; Gallery spotlight</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) Draw a control diagram for the system. <span class="marks">3</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-e1a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-e1a" data-placeholder="Draw your diagram on paper and add a photo of it, or describe it block by block..." style="min-height:100px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) State the type of control used, and justify your answer. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-e1b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-e1b" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-exam1', 'Question 1 &mdash; Gallery spotlight')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2">Question 2 &mdash; Wind turbine head</h2>
+      <p class="notes-p">An electronic control system keeps a wind turbine facing into the wind. The wind direction is sensed by a wind vane connected to a potentiometer. This signal is compared with a second potentiometer that senses the position of the turbine head, and the head is rotated by a motor until it faces the wind. As the head moves close to the wind direction, the motor slows and then comes to rest.</p>
+      <div class="assignment" id="assignment-exam2">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 2 &mdash; Wind turbine head</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) State the full name of the type of control used. <span class="marks">1</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-e2a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-e2a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Draw a control diagram for the direction control system. <span class="marks">3</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-e2b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-e2b" data-placeholder="Draw your diagram on paper and add a photo of it, or describe it block by block..." style="min-height:100px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) State which configuration of op-amp would be used. <span class="marks">1</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-e2c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-e2c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(d) Describe how the system controls the movement of the turbine head when the wind direction changes. <span class="marks">3</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-e2d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-e2d" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-exam2', 'Question 2 &mdash; Wind turbine head')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2">Question 3 &mdash; Hot tub</h2>
+      <figure class="fig"><img src="images/hot-tub.jpg" alt="An outdoor hot tub" style="width:100%;max-width:360px;display:block;margin:0 auto;border-radius:8px;"></figure>
+      <p class="notes-p">A hot tub uses a two-state closed-loop control system to heat the water to a desired temperature.</p>
+      <div class="assignment" id="assignment-exam3">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 3 &mdash; Hot tub</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) (i) Draw a control diagram for the temperature control system. (ii) State the op-amp configuration used. <span class="marks">4</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-e3a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-e3a" data-placeholder="Draw your diagram on paper and add a photo of it, or describe it block by block..." style="min-height:100px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Sketch a graph of water temperature against time as the water is heated from cold. Show the desired temperature. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-e3b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-e3b" data-placeholder="Draw your diagram on paper and add a photo of it, or describe it block by block..." style="min-height:100px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) The control is replaced by a proportional system. (i) State the op-amp configuration. (ii) Sketch the ideal response on your graph. <span class="marks">3</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-e3c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-e3c" data-placeholder="Draw your diagram on paper and add a photo of it, or describe it block by block..." style="min-height:100px;"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-exam3', 'Question 3 &mdash; Hot tub')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2">Question 4 &mdash; Bottling-plant conveyor</h2>
+      <p class="notes-p">A conveyor in a bottling plant must move at a steady speed so that bottles are filled accurately. The engineers are choosing between two-state and proportional control for the conveyor motor.</p>
+      <div class="assignment" id="assignment-exam4">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 4 &mdash; Conveyor</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) Explain why a two-state control system may not be suitable. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-e4a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-e4a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Describe one effect two-state control would have on the mechanical parts of the system. <span class="marks">1</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-e4b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-e4b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) In the proportional system, R<sub>f</sub> = 48 k&Omega;, R<sub>i</sub> = 12 k&Omega; and V<sub>ref</sub> = 3.5 V on the non-inverting side. Calculate the feedback voltage when V<sub>o</sub> = 6.0 V. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-e4c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-e4c" data-placeholder="Show your working..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(d) Describe how the speed of the conveyor would change if the gain of the op-amp was increased. Include the initial response and the speed over time. <span class="marks">3</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-e4d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-e4d" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-exam4', 'Question 4 &mdash; Conveyor')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-9">Section 9: Systems Analysis Project</h1>
+      <p class="notes-p">The course specification asks you to research a <strong>complex engineering system</strong> and describe it using the systems approach. Choose one of the Scottish systems below (or one agreed with your teacher), research it, and complete the tasks. This is excellent preparation for the extended questions in the exam, which often describe an unfamiliar system and ask you to analyse it.</p>
+      <table class="data-table"><tr><th>System</th><th>Starting points for your research</th></tr><tr><td><strong>Cruachan Power Station</strong>, Argyll</td><td>A pumped-storage hydro scheme inside a mountain. How does it switch between generating and pumping? How is its output matched to demand?</td></tr><tr><td><strong>The Falkirk Wheel</strong></td><td>A rotating boat lift linking two canals. How is the rotation controlled and kept balanced? What safety systems are needed?</td></tr><tr><td><strong>Edinburgh Trams</strong></td><td>How are tram speed, braking and doors controlled? How do the trams interact with traffic signals?</td></tr></table>
+      <div class="assignment" id="assignment-project">
+        <div class="assignment-header"><div class="assignment-title">&#x1F3D7;&#xFE0F; Systems analysis project</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Describe the need the system meets.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-p1"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-p1" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Draw a sub-systems diagram of the whole system. Identify at least four sub-systems and describe the function of each and how they interact.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-p2"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-p2" data-placeholder="Draw your diagram on paper and add a photo of it, or describe it block by block..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Identify one closed-loop control sub-system. Draw its control diagram and explain the role of feedback in it.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-p3"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-p3" data-placeholder="Draw your diagram on paper and add a photo of it, or describe it block by block..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. State whether that sub-system would use two-state or proportional control, and justify your choice.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-p4"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-p4" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. Identify the main energy input and the useful and wasted energy outputs of the whole system. (You will carry out a full energy audit in the Energy and Efficiency notes.)</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hsa-p5"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hsa-p5" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-project', 'Systems analysis project')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-download-all" id="downloadAllBtn" onclick="downloadAllAnswersPDF()">&#x2B07;&#xFE0F; Download ALL my answers (PDF)</button>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8; Print</button>
+        <button class="ctrl-btn ctrl-btn-clear" id="btn-clear-all">&#x1F5D1; Clear all answers</button>
+      </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
+
+      <div class="page-nav" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
+        <button class="ctrl-btn ctrl-btn-print" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});">&#x2B06;&#xFE0F; Back to top</button>
+        <a href="index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">&#x2302; Main menu</a>
+        <a href="../energy-efficiency/index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">Next section &#x2192;</a>
+      </div>
+    </div>
     </div>
   </div>
 </div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
-<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script>
+
+<footer class="footer">
+  <span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span>
+  <a href="../../../../teacher/login.html">Teacher area</a>
+</footer>
+
+<script src="../../../../js/site.js"></script>
+<script src="../../../../js/nav.js"></script>
 <script>document.getElementById("sidebar").innerHTML=buildSidebar("higher","../../../../");</script>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// ── localStorage saving for all answer boxes and cells ─────────────────────
+const STORAGE_PREFIX = 'ess_answers_';
+function saveValue(k, v) { try { localStorage.setItem(STORAGE_PREFIX + k, v); updateStatusBar(); window._essSaveFail = null; } catch(e) { window._essSaveFail = k; } }
+function loadValue(k) { try { return localStorage.getItem(STORAGE_PREFIX + k) || ''; } catch(e) { return ''; } }
+function updateStatusBar() { const el = document.getElementById('storage-status'); if (el) el.textContent = 'Last saved: ' + new Date().toLocaleTimeString(); }
+function showSaved(key) {
+  const ind = document.getElementById('ind-' + key);
+  if (!ind) return;
+  if (window._essSaveFail === key) { ind.textContent = 'Not saved: browser storage is full. Remove an image, or download your answers as a PDF now.'; ind.style.color = '#b91c1c'; return; }
+  ind.style.color = '';
+  ind.textContent = '\u2713 Saved';
+  setTimeout(() => { ind.textContent = ''; }, 2000);
+}
+function clearAllAnswers() {
+  if (!confirm('Clear all saved answers on this page? This cannot be undone.')) return;
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const k = el.dataset.key;
+    if (k) { try { localStorage.removeItem(STORAGE_PREFIX + k); } catch(e) {} el.innerHTML = ''; }
+  });
+  const el = document.getElementById('storage-status');
+  if (el) el.textContent = 'Answers cleared.';
+}
+function debounce(fn, d) { let t; return function() { clearTimeout(t); const a = arguments, c = this; t = setTimeout(() => fn.apply(c, a), d); }; }
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-key]').forEach(box => {
+    const key = box.dataset.key;
+    if (!key) return;
+    const saved = loadValue(key);
+    if (saved) box.innerHTML = saved;
+    const ds = debounce(() => { saveValue(key, box.innerHTML); showSaved(key); }, 800);
+    box.addEventListener('input', ds);
+    box.addEventListener('blur', () => { saveValue(key, box.innerHTML); showSaved(key); });
+  });
+  const clearBtn = document.getElementById('btn-clear-all');
+  if (clearBtn) clearBtn.addEventListener('click', clearAllAnswers);
+});
+
+/* ── PDF export ─────────────────────────────────────────────── */
+function pdfSafe(s) {
+  if (!s) return '';
+  return String(s)
+    .replace(/[\u2018\u2019\u201B\u2032]/g, "'")
+    .replace(/[\u201C\u201D\u201F\u2033]/g, '"')
+    .replace(/[\u2013\u2014\u2212]/g, '-')
+    .replace(/\u2026/g, '...')
+    .replace(/\u00A0/g, ' ')
+    .replace(/\u2713/g, '')
+    .replace(/\u200B/g, '').replace(/\u221A/g, 'sqrt').replace(/\u2248/g, '~').replace(/\u2192/g, '->').replace(/\u03A9/g, 'ohm').replace(/\u03C3/g, 'sigma').replace(/\u03B5/g, 'epsilon').replace(/\u0394/g, 'delta').replace(/\u03C0/g, 'pi')
+    .replace(/[^\x00-\xFF]/g, '');
+}
+
+const PUPIL_NAME_KEY = 'hsa-pupil-name';
+function getPupilName() { try { return localStorage.getItem(PUPIL_NAME_KEY) || ''; } catch(e) { return ''; } }
+
+function pdfNewDoc() {
+  const doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' });
+  const state = { margin: 48, pageWidth: doc.internal.pageSize.getWidth(), pageHeight: doc.internal.pageSize.getHeight() };
+  state.usableWidth = state.pageWidth - state.margin * 2;
+  state.y = state.margin;
+  return { doc, state };
+}
+
+function pdfAddHeader(doc, state, taskLabel) {
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(16); doc.setTextColor(15, 90, 68);
+  doc.text('Engineering Science Scotland - Higher Systems Approach', state.margin, state.y); state.y += 20;
+  doc.setFontSize(14); doc.setTextColor(30, 30, 30);
+  const tLines = doc.splitTextToSize(pdfSafe(taskLabel), state.usableWidth);
+  doc.text(tLines, state.margin, state.y); state.y += tLines.length * 16 + 6;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(11); doc.setTextColor(90, 90, 90);
+  const pupilName = getPupilName();
+  const todayStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const nameLine = pupilName ? ('Name: ' + pdfSafe(pupilName) + '      Date: ' + todayStr) : ('Name: _________________________________      Date: _______________');
+  doc.text(nameLine, state.margin, state.y); state.y += 20;
+  doc.setDrawColor(200, 200, 200); doc.line(state.margin, state.y, state.pageWidth - state.margin, state.y); state.y += 18;
+}
+
+function pdfEnsureSpace(doc, state, h) { if (state.y + h > state.pageHeight - state.margin) { doc.addPage(); state.y = state.margin; } }
+
+function pdfWriteAnswer(doc, state, el) {
+  const imgs = el.querySelectorAll('img'); const img = imgs.length ? imgs[0] : null;
+  imgs.forEach(function (img) {
+    if (!img.src) return;
+    try {
+      const props = doc.getImageProperties(img.src);
+      const ratio = Math.min(state.usableWidth / props.width, 260 / props.height, 1);
+      const w = props.width * ratio, h = props.height * ratio;
+      pdfEnsureSpace(doc, state, h + 14);
+      doc.addImage(img.src, props.fileType || 'PNG', state.margin, state.y, w, h);
+      state.y += h + 10;
+    } catch (e) {
+      doc.setFont('helvetica', 'italic'); doc.setFontSize(11); doc.setTextColor(160, 60, 60);
+      pdfEnsureSpace(doc, state, 14); doc.text('[Could not embed pasted image - try pasting it again]', state.margin, state.y); state.y += 16;
+    }
+  });
+  let text = pdfSafe(el.innerText.trim());
+  if (img && !text) return;
+  doc.setFontSize(11);
+  if (!text) { doc.setFont('helvetica', 'italic'); doc.setTextColor(160, 160, 160); text = '(no answer entered yet)'; }
+  else { doc.setFont('helvetica', 'normal'); doc.setTextColor(40, 40, 40); }
+  const lines = doc.splitTextToSize(text, state.usableWidth);
+  for (let i = 0; i < lines.length; i++) { pdfEnsureSpace(doc, state, 14); doc.text(lines[i], state.margin, state.y); state.y += 14; }
+  state.y += 6;
+}
+
+function pdfRenderPanelItems(doc, state, panel) {
+  const items = panel.querySelectorAll('.task-item');
+  for (let i = 0; i < items.length; i++) {
+    const qEl = items[i].querySelector('.task-q');
+    const qText = qEl ? pdfSafe(qEl.innerText.trim()) : '';
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(15, 90, 68);
+    const qLines = doc.splitTextToSize(qText, state.usableWidth);
+    pdfEnsureSpace(doc, state, qLines.length * 14 + 6);
+    doc.text(qLines, state.margin, state.y); state.y += qLines.length * 14 + 6;
+    const fields = items[i].querySelectorAll('[data-key]');
+    for (let f = 0; f < fields.length; f++) {
+      const lab = fields[f].dataset.label;
+      if (lab) {
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(90, 90, 90);
+        pdfEnsureSpace(doc, state, 28); doc.text(pdfSafe(lab) + ':', state.margin, state.y); state.y += 13;
+      }
+      pdfWriteAnswer(doc, state, fields[f]);
+    }
+    state.y += 6;
+  }
+}
+
+function pdfAddFooters(doc, state) {
+  const n = doc.internal.getNumberOfPages();
+  for (let p = 1; p <= n; p++) {
+    doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(150, 150, 150);
+    doc.text('Page ' + p + ' of ' + n + '  -  engineeringsciencescotland.co.uk', state.margin, state.pageHeight - 24);
+  }
+}
+
+function downloadTaskPDF(panelId, taskLabel) {
+  const panel = document.getElementById(panelId); if (!panel) return;
+  const btn = panel.querySelector('.task-download-btn'); const orig = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = 'Building PDF&hellip;'; }
+  setTimeout(() => {
+    try {
+      const o = pdfNewDoc();
+      pdfAddHeader(o.doc, o.state, taskLabel);
+      pdfRenderPanelItems(o.doc, o.state, panel);
+      pdfAddFooters(o.doc, o.state);
+      o.doc.save(pdfSafe(taskLabel).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '-') + '.pdf');
+    } catch (err) { console.error(err); alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.'); }
+    finally { if (btn) { btn.disabled = false; btn.innerHTML = orig; } }
+  }, 30);
+}
+
+/* Keep this list in sync with the task panels on the page, in page order */
+const ALL_TASK_PANELS = [
+  ['assignment-task1', 'Task 1 \u2014 Sub-systems diagrams'],
+  ['assignment-task2', 'Task 2 \u2014 Open-loop and closed-loop control'],
+  ['assignment-task3', 'Task 3 \u2014 Two-state control'],
+  ['assignment-task4', 'Task 4 \u2014 Control diagrams'],
+  ['assignment-task5', 'Task 5 \u2014 Negative feedback and proportional control'],
+  ['assignment-exam1', 'Question 1 \u2014 Gallery spotlight'],
+  ['assignment-exam2', 'Question 2 \u2014 Wind turbine head'],
+  ['assignment-exam3', 'Question 3 \u2014 Hot tub'],
+  ['assignment-exam4', 'Question 4 \u2014 Conveyor'],
+  ['assignment-project', 'Systems analysis project']
+];
+
+function downloadAllAnswersPDF() {
+  const btn = document.getElementById('downloadAllBtn'); const orig = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = 'Building PDF&hellip;'; }
+  setTimeout(() => {
+    try {
+      const o = pdfNewDoc(), doc = o.doc, state = o.state;
+      pdfAddHeader(doc, state, 'Higher Systems Approach \u2014 All my answers');
+      for (let i = 0; i < ALL_TASK_PANELS.length; i++) {
+        const panel = document.getElementById(ALL_TASK_PANELS[i][0]); if (!panel) continue;
+        pdfEnsureSpace(doc, state, 40);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(194, 65, 12);
+        doc.text(pdfSafe(ALL_TASK_PANELS[i][1]), state.margin, state.y); state.y += 8;
+        doc.setDrawColor(230, 200, 180); doc.line(state.margin, state.y, state.pageWidth - state.margin, state.y); state.y += 16;
+        pdfRenderPanelItems(doc, state, panel); state.y += 10;
+      }
+      pdfAddFooters(doc, state);
+      doc.save('Higher-Systems-Approach-All-My-Answers.pdf');
+    } catch (err) { console.error(err); alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.'); }
+    finally { if (btn) { btn.disabled = false; btn.innerHTML = orig; } }
+  }, 30);
+}
+
+/* ── Contents panel ─────────────────────────────────────────── */
+function openToc() { document.getElementById('tocPanel').classList.add('open'); document.getElementById('tocOverlay').classList.add('open'); }
+function closeToc() { document.getElementById('tocPanel').classList.remove('open'); document.getElementById('tocOverlay').classList.remove('open'); }
+
+/* ── My Name ────────────────────────────────────────────────── */
+function updateNameFabLabel() { const l = document.getElementById('nameFabLabel'); if (!l) return; const n = getPupilName(); l.textContent = n ? n : 'My Name'; }
+function openNamePanel() {
+  const input = document.getElementById('nameInput'); if (input) input.value = getPupilName();
+  const msg = document.getElementById('nameSavedMsg'); if (msg) msg.classList.remove('show');
+  document.getElementById('nameOverlay').classList.add('open');
+  if (input) setTimeout(() => input.focus(), 50);
+}
+function closeNamePanel() { document.getElementById('nameOverlay').classList.remove('open'); }
+function closeNameOverlayClick(e) { if (e.target.id === 'nameOverlay') closeNamePanel(); }
+function saveNameInput() {
+  const input = document.getElementById('nameInput'); const name = input ? input.value.trim() : '';
+  try { localStorage.setItem(PUPIL_NAME_KEY, name); } catch(e) {}
+  updateNameFabLabel();
+  const msg = document.getElementById('nameSavedMsg'); if (msg) msg.classList.add('show');
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeToc(); closeNamePanel(); } });
+</script>
+
+<button class="toc-fab" id="tocFab" onclick="openToc()">&#x2630; Contents</button>
+
+<button class="name-fab" id="nameFab" onclick="openNamePanel()"><span class="name-fab-icon">&#x1F464;</span><span id="nameFabLabel">My Name</span></button>
+
+<div class="name-overlay" id="nameOverlay" onclick="closeNameOverlayClick(event)">
+  <div class="name-panel">
+    <button class="name-panel-close" onclick="closeNamePanel()" aria-label="Close">&times;</button>
+    <h3>Your name</h3>
+    <p>Enter your name once and it&rsquo;ll be added to the top of every task&rsquo;s downloaded PDF &mdash; no need to write it in by hand each time.</p>
+    <input type="text" id="nameInput" placeholder="e.g. Jamie Smith" maxlength="60">
+    <button class="name-panel-save" onclick="saveNameInput()">Save name</button>
+    <div class="name-panel-saved-msg" id="nameSavedMsg">&#x2713; Saved &mdash; it&rsquo;ll now appear on your PDFs</div>
+  </div>
+</div>
+
+<div class="toc-overlay" id="tocOverlay" onclick="closeToc()"></div>
+<div class="toc-panel" id="tocPanel">
+  <div class="toc-panel-header">
+    <h3>Contents</h3>
+    <button class="toc-panel-close" onclick="closeToc()" aria-label="Close">&times;</button>
+  </div>
+  <nav class="toc-list" id="tocList">
+    <a href="#section-1" onclick="closeToc()">Section 1: Systems and Sub-Systems Diagrams</a>
+    <a href="#section-2" onclick="closeToc()">Section 2: Open-Loop Control</a>
+    <a href="#section-3" onclick="closeToc()">Section 3: Closed-Loop Control</a>
+    <a href="#section-4" onclick="closeToc()">Section 4: Two-State Control with a Comparator</a>
+    <a href="#section-5" onclick="closeToc()">Section 5: Control Diagrams and Error Detection</a>
+    <a href="#section-6" onclick="closeToc()">Section 6: Negative Feedback and Lag</a>
+    <a href="#section-7" onclick="closeToc()">Section 7: Proportional Control</a>
+    <a href="#section-8" onclick="closeToc()">Section 8: Exam-Style Questions</a>
+    <a href="#section-9" onclick="closeToc()">Section 9: Systems Analysis Project</a>
+  </nav>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', updateNameFabLabel);
+(function() {
+  const nameInputEl = document.getElementById('nameInput');
+  if (nameInputEl) nameInputEl.addEventListener('keydown', function(e) { if (e.key === 'Enter') saveNameInput(); });
+  const links = Array.prototype.slice.call(document.querySelectorAll('.toc-list a'));
+  const targets = links.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+  if (!targets.length || !('IntersectionObserver' in window)) return;
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const link = document.querySelector('.toc-list a[href="#' + entry.target.id + '"]');
+      if (link && entry.isIntersecting) { links.forEach(a => a.classList.remove('toc-active')); link.classList.add('toc-active'); }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  targets.forEach(t => observer.observe(t));
+})();
+</script>
+
+<script>
+// ── Simulator zoom-lock + recentre ─────────────────────────────────────────
+// Trackpads/Magic Mouse send wheel events with ctrlKey=true for a pinch
+// gesture, which browsers treat as a page-zoom request. Blocking that only
+// while the pointer is over an embedded simulator stops the circuit from
+// zooming while the person scrolls the page, without disabling zoom
+// everywhere else. Each simulator also gets a small "Recentre" button that
+// reloads its iframe, which resets any pan/zoom state inside it.
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.sim-wrap').forEach(function(wrap) {
+      wrap.addEventListener('wheel', function(e) {
+        if (e.ctrlKey) e.preventDefault();
+      }, { passive: false });
+    });
+
+    document.querySelectorAll('.sim-embed-header').forEach(function(header) {
+      const iframe = header.closest('.sim-embed-section')?.querySelector('.sim-iframe');
+      if (!iframe) return;
+      const btn = document.createElement('button');
+      btn.className = 'sim-fullscreen-btn';
+      btn.type = 'button';
+      btn.style.background = 'var(--gray-50)';
+      btn.style.color = 'var(--teal-800)';
+      btn.style.border = '1px solid var(--gray-200)';
+      btn.textContent = '⟳ Recentre';
+      btn.addEventListener('click', function() {
+        const src = iframe.getAttribute('src');
+        iframe.setAttribute('src', src);
+      });
+      header.appendChild(btn);
+    });
+  });
+})();
+</script>
+
+
+<script>
+/* Symbol buttons beside calculation answer boxes: click to insert at the cursor */
+(function () {
+  var TITLES = {'Ω':'ohms','°':'degrees','²':'squared','µ':'micro'};
+  function place(box) {
+    var sel = window.getSelection();
+    if (!sel.rangeCount || !box.contains(sel.anchorNode)) {
+      var r = document.createRange(); r.selectNodeContents(box); r.collapse(false); sel.removeAllRanges(); sel.addRange(r);
+    }
+  }
+  function btn(label, title, fn) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'sym-btn'; b.innerHTML = label; b.title = title; b.setAttribute('aria-label', title);
+    b.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    b.addEventListener('click', fn); return b;
+  }
+  document.querySelectorAll('.answer-box[data-symbols]').forEach(function (box) {
+    var toks = box.getAttribute('data-symbols').split('|');
+    var wrap = document.createElement('div'); wrap.className = 'sym-wrap';
+    box.parentNode.insertBefore(wrap, box); wrap.appendChild(box);
+    var bar = document.createElement('div'); bar.className = 'sym-bar' + (toks.length > 4 ? ' two-col' : '');
+    var t = document.createElement('div'); t.className = 'sym-title'; t.textContent = 'Add'; bar.appendChild(t);
+    toks.forEach(function (tok) {
+      var isHtml = tok.indexOf('<') >= 0;
+      var plain = tok.replace(/<[^>]+>/g, '');
+      bar.appendChild(btn(tok, TITLES[tok] || ('add ' + plain), function () {
+        box.focus(); place(box);
+        if (isHtml) document.execCommand('insertHTML', false, tok + '​');
+        else document.execCommand('insertText', false, tok);
+      }));
+    });
+    wrap.appendChild(bar);
+  });
+})();
+</script>
+<script>
+/* Screenshots pasted or dropped into answer boxes: read the image file itself (Safari otherwise inserts an
+   unreadable webkit-fake-url image), shrink it so it fits in browser storage, and warn if an answer cannot be saved. */
+(function () {
+  function shrink(file, cb) {
+    var r = new FileReader();
+    r.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var s = Math.min(1, 1200 / Math.max(img.width, img.height));
+        var c = document.createElement('canvas'); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+        var x = c.getContext('2d'); x.fillStyle = '#ffffff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(img, 0, 0, c.width, c.height);
+        cb(c.toDataURL('image/jpeg', 0.82));
+      };
+      img.onerror = function () { cb(null); };
+      img.src = r.result;
+    };
+    r.onerror = function () { cb(null); };
+    r.readAsDataURL(file);
+  }
+  function add(box, files) {
+    for (var i = 0; i < files.length; i++) {
+      if (files[i] && files[i].type && files[i].type.indexOf('image/') === 0) {
+        shrink(files[i], function (url) {
+          if (!url) return;
+          box.focus();
+          document.execCommand('insertHTML', false, '<img src="' + url + '" alt="Pasted image"><br>');
+          box.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+        return true;
+      }
+    }
+    return false;
+  }
+  document.addEventListener('paste', function (e) {
+    var box = e.target && e.target.closest ? e.target.closest('.answer-box') : null; if (!box || !e.clipboardData) return;
+    var files = [];
+    if (e.clipboardData.files && e.clipboardData.files.length) files = Array.prototype.slice.call(e.clipboardData.files);
+    else Array.prototype.forEach.call(e.clipboardData.items || [], function (it) { if (it.kind === 'file') files.push(it.getAsFile()); });
+    if (files.length && add(box, files)) e.preventDefault();
+  }, true);
+  document.addEventListener('drop', function (e) {
+    var box = e.target && e.target.closest ? e.target.closest('.answer-box') : null; if (!box || !e.dataTransfer) return;
+    if (e.dataTransfer.files && e.dataTransfer.files.length && add(box, e.dataTransfer.files)) e.preventDefault();
+  }, true);
+})();
+</script>
 </body>
 </html>
