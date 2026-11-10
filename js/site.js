@@ -87,8 +87,7 @@ var RESOURCE_STATUS = {
   // ── Higher (topic names start with 'higher-' so they never mix with National 5) ──
   'higher-systems-approach':   { notes:'available' },
   'higher-energy-efficiency':  { notes:'available' },
-  'higher-roles-disciplines':  { notes:'soon' },
-  'higher-impacts':            { notes:'soon' },
+  'higher-roles-impacts':      { notes:'available' },
   'higher-analogue':           { notes:'available' },
   'higher-digital':            { notes:'available' },
   'higher-control':            { notes:'available' },
@@ -157,6 +156,10 @@ var TEACHER_DOCS = {
   ],
 
   'higher-structures-forces': [
+    { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
+  ],
+
+  'higher-roles-impacts': [
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
   ],
 

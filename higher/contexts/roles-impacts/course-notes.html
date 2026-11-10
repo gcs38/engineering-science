@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Engineering Roles and Impacts &mdash; Higher Course Notes &mdash; Engineering Science Scotland</title>
+  <link rel="stylesheet" href="../../../../css/style.css">
+  <style>
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 16px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:6px; }
+    .back-link:hover { color:var(--teal-800); }
+
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); scroll-margin-top:100px; }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:24px 0 10px; scroll-margin-top:100px; }
+    .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:18px 0 8px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+    .warning { background:#FFF7ED; border-left:4px solid #F97316; border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#9A3412; }
+    .spec-note { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:10px 14px; margin:10px 0; font-size:12px; color:var(--gray-500); }
+    .spec-note strong { color:var(--gray-900); }
+    .extension-note { background:#faf5ff; border-left:4px solid #8b5cf6; border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:13px; color:#5b21b6; }
+
+    /* Component symbol grid */
+    .comp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin:16px auto; justify-items:center; justify-content:center; text-align:center; }
+    .comp-card-sym { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:14px 12px 10px; text-align:center; width:100%; }
+    .comp-card-sym svg { display:block; margin:0 auto 8px; }
+    .comp-card-sym .comp-name { font-size:12px; font-weight:700; color:var(--gray-900); }
+    .comp-card-sym .comp-unit { font-size:11px; color:var(--gray-400); margin-top:2px; }
+
+    /* Formula boxes */
+    .formula-box { background:white; border:2px solid var(--teal-100); border-radius:var(--radius-lg); padding:16px 20px; margin:16px 0; text-align:center; }
+    .formula { font-size:18px; font-weight:600; color:var(--teal-800); font-family:monospace; letter-spacing:.02em; }
+    .formula-sub { font-size:12px; color:var(--gray-400); margin-top:6px; }
+    .triangle-box { display:inline-block; background:var(--teal-50); border:2px solid var(--teal-200); border-radius:var(--radius-md); padding:16px 24px; margin:10px 0; }
+    .triangle-top { font-size:20px; font-weight:900; color:var(--teal-800); font-family:monospace; border-bottom:2px solid var(--teal-400); padding-bottom:8px; margin-bottom:8px; text-align:center; }
+    .triangle-bottom { display:flex; gap:0; }
+    .triangle-cell { flex:1; font-size:20px; font-weight:900; color:var(--teal-800); font-family:monospace; text-align:center; padding:0 8px; }
+    .triangle-cell + .triangle-cell { border-left:2px solid var(--teal-400); }
+
+    /* Inline fraction (for any calculation that divides one value by another —
+       used instead of the ÷ symbol or a forward slash, in both formula boxes
+       and inline within worked-example steps) */
+    .frac { display:inline-flex; flex-direction:column; align-items:center; justify-content:center; vertical-align:middle; margin:0 4px; line-height:1.25; font-weight:inherit; }
+    .frac .frac-n { padding:0 4px 2px; border-bottom:1.5px solid currentColor; }
+    .frac .frac-d { padding:2px 4px 0; }
+
+    /* Worked examples */
+    .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:18px 20px; margin:16px 0; }
+    .worked-example-title { font-size:13px; font-weight:600; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+    .step { display:flex; gap:12px; margin-bottom:10px; }
+    .step-num { width:24px; height:24px; border-radius:50%; background:var(--teal-400); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .step-content { font-size:13px; color:var(--gray-600); line-height:1.6; flex:1; }
+    .step-content strong { color:var(--gray-900); }
+
+    /* Tables */
+    .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .data-table tr:nth-child(even) td { background:var(--gray-50); }
+    .data-table td.answer-cell { background:var(--gray-50); min-width:80px; min-height:32px; }
+
+    /* Assignment boxes */
+    .assignment { background:white; border:2px solid var(--teal-400); border-radius:var(--radius-lg); margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; display:flex; align-items:center; gap:10px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:8px; font-weight:500; }
+    .task-q-sub { font-size:13px; color:var(--gray-700); margin:6px 0 6px 16px; }
+    .task-space { background:var(--gray-50); border:1px dashed var(--gray-300); border-radius:var(--radius-sm); min-height:60px; padding:10px; margin-top:6px; font-size:11px; color:var(--gray-400); }
+    .task-space-sm { background:var(--gray-50); border:1px dashed var(--gray-300); border-radius:var(--radius-sm); min-height:36px; padding:8px; margin-top:4px; font-size:11px; color:var(--gray-400); }
+    .extension-task { border:2px solid #8b5cf6; border-radius:var(--radius-lg); margin:16px 0; overflow:hidden; }
+    .extension-header { background:#8b5cf6; padding:8px 14px; }
+    .extension-header-text { font-size:13px; font-weight:700; color:white; }
+    .extension-body { padding:14px 16px; background:#faf5ff; }
+
+    /* Simulator embed */
+    .sim-embed-section { margin:24px 0; }
+    .sim-embed-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+    .sim-embed-title { font-size:14px; font-weight:500; color:var(--gray-900); display:flex; align-items:center; gap:8px; }
+    .sim-embed-title span { font-size:18px; }
+    .sim-fullscreen-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 14px; background:var(--teal-800); color:white; border-radius:var(--radius-md); font-size:12px; font-weight:500; text-decoration:none; transition:all var(--transition); border:none; cursor:pointer; }
+    .sim-fullscreen-btn:hover { background:var(--teal-600); }
+    .sim-wrap { border-radius:var(--radius-lg); overflow:hidden; border:2px solid #eab30840; }
+    .sim-iframe { width:100%; height:540px; border:none; display:block; }
+    .sim-credit { font-size:11px; color:var(--gray-400); margin-top:5px; text-align:right; }
+    .sim-instruction { background:#fefce8; border:1px solid #fde047; border-radius:var(--radius-md); padding:10px 14px; margin-bottom:10px; font-size:13px; color:#78350f; }
+
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+
+    /* Circuit diagram SVGs inline */
+    .circuit-figure { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:16px; margin:16px 0; text-align:center; }
+    .circuit-figure figcaption { font-size:12px; color:var(--gray-400); margin-top:8px; font-style:italic; }
+  
+    /* localStorage answer boxes */
+    .answer-box { background:var(--blue-50,#f0f9ff); border:1.5px solid #7dd3fc; border-radius:var(--radius-sm); min-height:60px; padding:10px 12px; margin-top:6px; font-size:13px; color:var(--gray-700); line-height:1.6; cursor:text; outline:none; }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-sm { min-height:36px; }
+    .answer-box-xs { min-height:28px; }
+    .answer-label { font-size:11px; font-weight:700; color:#0ea5e9; text-transform:uppercase; letter-spacing:.4px; margin-top:8px; margin-bottom:2px; display:flex; align-items:center; gap:8px; }
+    .saved-indicator { font-size:10px; color:#22c55e; font-weight:600; }
+    .controls-bar { display:flex; align-items:center; gap:12px; padding:12px 16px; background:var(--gray-50); border-top:1px solid var(--gray-100); margin-top:24px; border-radius:0 0 var(--radius-lg) var(--radius-lg); }
+    .controls-label { font-size:12px; color:var(--gray-400); flex:1; }
+    .ctrl-btn { padding:6px 14px; border-radius:var(--radius-md); font-size:12px; font-weight:600; border:none; cursor:pointer; }
+    .ctrl-btn-print { background:var(--teal-800); color:white; }
+    .ctrl-btn-clear { background:white; color:#ef4444; border:1.5px solid #fca5a5; }
+    .answer-cell-editable { background:var(--blue-50,#f0f9ff) !important; cursor:text; outline:none; }
+    .answer-cell-editable:empty:before { content:"Click to enter..."; color:#94a3b8; font-style:italic; pointer-events:none; }
+
+    /* ── Added per site-wide handover (26 Sep 2026) ─────────────────────────── */
+    .answer-box img { max-width:100%; height:auto; }
+    .cell-answer { outline:none; background:#f8faff; min-height:36px; }
+    .cell-answer:focus { box-shadow:inset 0 0 0 2px var(--teal-400); background:white; }
+    .data-table tr:nth-child(even) td.cell-answer { background:#f8faff; }
+    .task-download-row { background:var(--gray-50); border-top:1px solid var(--gray-200); padding:9px 20px; text-align:right; }
+    .task-download-btn { display:inline-flex; align-items:center; gap:6px; background:white; border:1.2px solid var(--teal-400); color:var(--teal-800); font-size:10px; font-weight:700; padding:7px 12px; border-radius:999px; cursor:pointer; transition:background .15s; }
+    .task-download-btn:hover { background:var(--teal-50); }
+    .task-download-btn:disabled { opacity:.6; cursor:wait; }
+    /* Specification tables in the challenges */
+    .spec-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .spec-table th { background:transparent; padding:8px 6px 8px 0; width:32px; vertical-align:top; }
+    .spec-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
+    .data-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:var(--teal-50); color:var(--teal-800); border:1px solid var(--teal-100); font-size:11px; font-weight:700; }
+    .ctrl-btn-download-all { background:#eef2ff; color:#4338ca; }
+    .ctrl-btn-download-all:hover { background:#e0e7ff; }
+
+    /* Table of contents: floating button + slide-out panel */
+    .toc-fab { position:fixed; right:24px; bottom:76px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#c2410c; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+    .toc-fab:hover { background:#9a3412; }
+    .toc-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; }
+    .toc-overlay.open { display:block; }
+    .toc-panel { position:fixed; top:0; right:-340px; width:320px; max-width:85vw; height:100%; background:white; z-index:999998; box-shadow:-8px 0 30px rgba(0,0,0,.2); transition:right .25s ease; display:flex; flex-direction:column; }
+    .toc-panel.open { right:0; }
+    .toc-panel-header { padding:18px 20px 14px; border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; }
+    .toc-panel-header h3 { margin:0; font-size:16px; color:var(--teal-800); }
+    .toc-panel-close { background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .toc-panel-close:hover { color:var(--gray-700); }
+    .toc-list { overflow-y:auto; padding:8px 0 20px; }
+    .toc-list a { display:block; padding:10px 20px; font-size:14px; color:var(--gray-700); text-decoration:none; border-left:3px solid transparent; }
+    .toc-list a:hover { background:var(--teal-50); color:var(--teal-800); }
+    .toc-list a.toc-active { border-left-color:var(--teal-500,var(--teal-600)); background:var(--teal-50); color:var(--teal-800); font-weight:700; }
+    .toc-list a.toc-sub { padding-left:36px; font-size:13px; color:var(--gray-500); }
+
+    /* Pupil name: floating button + small popup */
+    .name-fab { position:fixed; right:24px; bottom:132px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#4f46e5; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); overflow:hidden; }
+    .name-fab-icon { font-size:14px; line-height:1; flex-shrink:0; }
+    #nameFabLabel { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:78px; text-align:left; }
+    .name-fab:hover { background:#3730a3; }
+    .name-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; align-items:center; justify-content:center; padding:20px; }
+    .name-overlay.open { display:flex; }
+    .name-panel { background:white; border-radius:14px; max-width:360px; width:100%; padding:24px 24px 22px; box-shadow:0 20px 60px rgba(0,0,0,.35); position:relative; }
+    .name-panel-close { position:absolute; top:10px; right:12px; background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .name-panel-close:hover { color:var(--gray-700); }
+    .name-panel h3 { margin:0 0 8px; font-size:16px; color:#4338ca; }
+    .name-panel p { margin:0 0 14px; font-size:13px; line-height:1.5; color:var(--gray-600); }
+    .name-panel input { width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid var(--gray-200); border-radius:8px; font-size:14px; margin-bottom:12px; }
+    .name-panel input:focus { outline:none; border-color:#4338ca; }
+    .name-panel-save { width:100%; background:#4338ca; color:white; border:none; border-radius:8px; padding:10px; font-size:14px; font-weight:700; cursor:pointer; }
+    .name-panel-save:hover { background:#3730a3; }
+    .name-panel-saved-msg { font-size:12px; color:#16a34a; margin-top:8px; text-align:center; display:none; }
+    .name-panel-saved-msg.show { display:block; }
+
+    @media print {
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.toc-fab,.toc-panel,.toc-overlay,.name-fab,.name-overlay,.task-download-row,.page-nav,.exemplar-thumb,.exemplar-modal { display:none!important; }
+      .layout { display:block!important; }
+      .main { margin:0!important; padding:0!important; }
+      .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
+      .cell-answer { background:white!important; }
+    }
+    .graph-btn { display:inline-flex; align-items:center; gap:6px; background:#c2410c; color:white; border:none; border-radius:999px; padding:8px 14px; font-size:12.5px; font-weight:700; cursor:pointer; font-family:inherit; }
+    .graph-btn:hover { background:#9a3412; }
+    .sym-wrap { display:flex; gap:8px; align-items:flex-start; }
+    .sym-wrap .answer-box { flex:1; min-width:0; align-self:stretch; }
+    .sym-bar { flex-shrink:0; display:flex; flex-direction:column; gap:4px; align-items:stretch; }
+    .sym-bar.two-col { display:grid; grid-template-columns:1fr 1fr; align-content:start; }
+    .sym-bar.two-col .sym-title { grid-column:1/-1; text-align:center; }
+    .sym-btn sub { font-size:9px; }
+    .sym-title { font-size:9px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.4px; }
+    .sym-btn { font:inherit; font-size:13px; line-height:1; min-width:30px; height:26px; padding:0 5px; white-space:nowrap; border:1px solid var(--gray-200); border-radius:6px; background:white; color:var(--gray-900); cursor:pointer; }
+    .sym-btn:hover { background:var(--teal-50); border-color:var(--teal-400); }
+    @media (max-width:640px) { .sym-wrap { flex-direction:column; align-items:stretch; } .sym-bar, .sym-bar.two-col { display:flex; flex-direction:row; flex-wrap:wrap; justify-content:flex-end; } }
+    @media print { .sym-bar { display:none!important; } }
+    @media print { .graph-btn { display:none!important; } }
+      /* Pin table */
+    .pin-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .pin-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .pin-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .pin-table tr:nth-child(even) td { background:var(--gray-50); }
+    .pin-in { color:#0369a1; font-weight:700; }
+    .pin-out { color:#15803d; font-weight:700; }
+
+    /* Comparison cards */
+    .compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0; }
+    .compare-card { background:white; border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; }
+    .compare-card-header { padding:10px 14px; font-size:13px; font-weight:700; color:white; }
+    .compare-card-body { padding:12px 14px; font-size:13px; color:var(--gray-600); line-height:1.6; }
+    .compare-card-body li { margin-bottom:4px; }
+
+    /* Spec box — for written specifications */
+    .spec-box { background:#f0fdf4; border:2px solid #86efac; border-radius:8px; padding:14px 16px; margin:14px 0; }
+    .spec-box-title { font-size:12px; font-weight:700; color:#15803d; text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
+    .spec-box ol, .spec-box ul { margin:0; padding-left:20px; }
+    .spec-box li { font-size:13px; color:#166534; line-height:1.7; margin-bottom:2px; }
+
+    .code-pair { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0 6px; }
+    .code-col { min-width:0; }
+    .code-head { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+    .code-block { background:#0f172a; color:#e2e8f0; padding:12px 14px; border-radius:8px; font-size:12.5px; line-height:1.55; overflow-x:auto; margin:0; font-family:Consolas,Menlo,'Courier New',monospace; white-space:pre; }
+    .code-block .fault { color:#fca5a5; font-weight:700; text-decoration:underline; }
+    .code-note { font-size:12px; color:var(--gray-500); margin:2px 0 14px; }
+    @media (max-width:700px) { .code-pair { grid-template-columns:1fr; } }
+    .cmd-table td:first-child { font-weight:600; color:var(--gray-900); }
+    .cmd-table code, .notes-p code, .notes-ul code, .task-q code, .key-point code { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:4px; padding:0 4px; font-size:12.5px; }
+    .fig { margin:16px 0 18px; text-align:center; }
+    .fig-cap { font-size:12px; color:var(--gray-500); margin-top:6px; }
+    .fig-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; align-items:end; margin:14px 0; }
+    .beyond { border:2px dashed var(--gray-200); border-radius:12px; padding:14px 18px; margin:22px 0; background:#fcfcfd; }
+    .beyond-title { font-size:12px; font-weight:700; color:#7c3aed; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+    .exam-tip { background:#eef2ff; border-left:4px solid #6366f1; border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#3730a3; }
+    .exam-tip strong { color:#312e81; }
+    .marks { float:right; font-weight:700; color:var(--gray-500); font-size:12px; }
+    .mk-lab { background:white; border:2px solid var(--teal-100); border-radius:12px; padding:14px 16px; margin:18px 0; }
+    .mk-head { font-weight:700; color:var(--teal-800); margin-bottom:8px; }
+    .mk-q { font-size:14px; color:var(--gray-700); margin-bottom:8px; }
+    .mk-a { font-size:15px; background:var(--teal-50); border-radius:8px; padding:10px 12px; margin-bottom:10px; font-style:italic; }
+    .mk-btns { display:flex; gap:8px; flex-wrap:wrap; }
+    .mk-btns button, #mkNext { font:inherit; font-size:13px; font-weight:600; padding:7px 14px; border-radius:999px; border:2px solid var(--gray-200); background:white; cursor:pointer; }
+    .mk-btns button:hover, #mkNext:hover { border-color:var(--teal-400); }
+    .mk-fb { font-size:13.5px; margin-top:10px; min-height:20px; }
+    .mk-fb.ok { color:#166534; } .mk-fb.no { color:#9a3412; }
+    .mk-foot { display:flex; justify-content:space-between; align-items:center; margin-top:10px; font-size:12px; color:var(--gray-500); }
+    @media print { .mk-lab { display:none!important; } }
+    .fig-row .fig{margin:6px 0;}
+  </style>
+<script>window.ESS_PHOTOS = true;</script>
+</head>
+<body>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/index.html" class="level-tab" data-level="n5">National 5</a>
+    <a href="../../../../higher/index.html" class="level-tab active" data-level="higher">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
+
+<div class="layout">
+  <nav class="sidebar" id="sidebar"></nav>
+  <div class="main">
+    <div class="hero" id="top" style="position:relative;">
+      <div style="position:absolute;top:14px;right:20px;font-size:11px;color:#94a3b8;">Last updated: 10 November 2026, 10:33</div>
+      <div class="hero-label">Higher &middot; Engineering Contexts &rsaquo; Engineering Roles and Impacts</div>
+      <h1 class="hero-title">&#x1F477; Engineering Roles and Impacts &mdash; Course Notes</h1>
+      <p class="hero-sub">The professional engineer within a project; social, economic and environmental impacts; sustainability and emerging technologies</p>
+      <div class="breadcrumb">
+        <a href="../../../../index.html">Home</a> &rsaquo;
+        <a href="../../index.html">Higher</a> &rsaquo;
+        <a href="../index.html">Engineering Contexts</a> &rsaquo;
+        <a href="index.html">Engineering Roles and Impacts</a> &rsaquo;
+        <span>Course notes</span>
+      </div>
+    </div>
+
+    <div class="content">
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to Engineering Roles and Impacts</a>
+
+      <div class="key-point"><strong>These notes build on National 5.</strong> At Higher you are expected to already know the main branches of engineering, what engineers do, and the difference between social, economic and environmental impacts. If you need to revise, use the National 5 <a href="../../../n5/contexts/roles-disciplines/course-notes.html">Engineering Roles and Disciplines</a> and <a href="../../../n5/contexts/impacts/course-notes.html">Impacts of Engineering</a> notes. At Higher, these two areas are combined here because exam questions on them are short (1&ndash;2 marks each) and are marked in exactly the same way: you must <strong>describe</strong>, and you must relate your answer to the <strong>context</strong> in the question.</div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-1">Section 1: Engineering Disciplines at Higher</h1>
+      <p class="notes-p">Higher questions usually name a particular kind of engineer and ask what they would <em>do</em>, what <em>skills</em> they would use, or what <em>knowledge</em> they would need, in the context of the project described. The disciplines that appear most often in recent papers are civil, structural, mechanical, electronic and environmental engineering.</p>
+      <table class="data-table"><tr><th>Discipline</th><th>What they are responsible for</th><th>Typical specialist knowledge</th></tr><tr><td><strong>Civil</strong></td><td>roads, railways, bridges, dams, tunnels, water supply, site layout and foundations</td><td>ground conditions and surveying; concrete and steel; drainage; traffic management</td></tr><tr><td><strong>Structural</strong></td><td>making sure structures can safely carry their loads</td><td>forces in frames (nodal analysis), moments and reactions, stress, strain, Young&rsquo;s modulus, factor of safety</td></tr><tr><td><strong>Mechanical</strong></td><td>machines and moving parts: drive systems, engines, pneumatics, heating and cooling</td><td>gears, torque and power; friction, bearings and lubrication; pneumatic circuits; materials</td></tr><tr><td><strong>Electrical</strong></td><td>generating, distributing and using electrical power</td><td>motors and generators, transformers, cables, power, safety and protection</td></tr><tr><td><strong>Electronic</strong></td><td>sensing and control systems, circuits and programmed devices</td><td>sensors and voltage dividers, transistors, op-amps, logic, microcontrollers and programming</td></tr><tr><td><strong>Environmental</strong></td><td>reducing the environmental impact of a project and protecting the natural environment</td><td>sustainable materials, energy efficiency, waste management, pollution, ecology and regulations</td></tr><tr><td><strong>Chemical</strong></td><td>processes that change materials: fuels, plastics, food, medicines, batteries</td><td>chemical reactions, process control, materials, safety</td></tr><tr><td><strong>Software</strong></td><td>programs and data systems, including control software</td><td>programming, algorithms, data, cyber-security, testing</td></tr></table>
+      <p class="notes-p">Large projects need engineers from many disciplines. A tidal energy scheme, for example, needs civil engineers for the seabed foundations, structural engineers for the turbine supports, mechanical engineers for the turbine and gearbox, electrical engineers for the generator and grid connection, electronic and software engineers for the control and monitoring systems, and environmental engineers to assess the effect on marine life.</p>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-2">Section 2: The Professional Engineer Within a Project</h1>
+      <p class="notes-p">Every engineering project passes through a series of phases. Exam questions often name the phase (&ldquo;during the <em>design phase</em>&hellip;&rdquo;, &ldquo;during the <em>development phase</em>&hellip;&rdquo;), and your answer must fit that phase.</p>
+      <div class="fig"><svg viewBox="0 0 980 250" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:900px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;" role="img" aria-label="The phases of an engineering project, from identifying the need to decommissioning"><title>The phases of an engineering project, from identifying the need to decommissioning</title><defs><marker id="bd1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="11" y="69" width="118" height="62" fill="#fff" stroke="#000" stroke-width="2"/><text x="70" y="97.3" font-size="12" text-anchor="middle" font-weight="400" fill="#000">need and</text><text x="70" y="111.1" font-size="12" text-anchor="middle" font-weight="400" fill="#000">brief</text><text x="70" y="37.525" font-size="11" text-anchor="middle" font-weight="400" fill="#475569">client, project</text><text x="70" y="50.175" font-size="11" text-anchor="middle" font-weight="400" fill="#475569">manager</text><path d="M129,100 L150,100" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><rect x="150" y="69" width="118" height="62" fill="#fff" stroke="#000" stroke-width="2"/><text x="209" y="97.3" font-size="12" text-anchor="middle" font-weight="400" fill="#000">feasibility</text><text x="209" y="111.1" font-size="12" text-anchor="middle" font-weight="400" fill="#000">and concept</text><text x="209" y="37.525" font-size="11" text-anchor="middle" font-weight="400" fill="#475569">all disciplines</text><text x="209" y="50.175" font-size="11" text-anchor="middle" font-weight="400" fill="#475569">advise</text><path d="M268,100 L289,100" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><rect x="289" y="69" width="118" height="62" fill="#fff" stroke="#000" stroke-width="2"/><text x="348" y="104.2" font-size="12" text-anchor="middle" font-weight="400" fill="#000">design</text><text x="348" y="37.525" font-size="11" text-anchor="middle" font-weight="400" fill="#475569">specialist</text><text x="348" y="50.175" font-size="11" text-anchor="middle" font-weight="400" fill="#475569">engineers</text><path d="M407,100 L428,100" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><rect x="428" y="69" width="118" height="62" fill="#fff" stroke="#000" stroke-width="2"/><text x="487" y="97.3" font-size="12" text-anchor="middle" font-weight="400" fill="#000">development</text><text x="487" y="111.1" font-size="12" text-anchor="middle" font-weight="400" fill="#000">and testing</text><text x="487" y="37.525" font-size="11" text-anchor="middle" font-weight="400" fill="#475569">modelling,</text><text x="487" y="50.175" font-size="11" text-anchor="middle" font-weight="400" fill="#475569">prototypes</text><path d="M546,100 L567,100" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><rect x="567" y="69" width="118" height="62" fill="#fff" stroke="#000" stroke-width="2"/><text x="626" y="97.3" font-size="12" text-anchor="middle" font-weight="400" fill="#000">construction</text><text x="626" y="111.1" font-size="12" text-anchor="middle" font-weight="400" fill="#000">or manufacture</text><text x="626" y="37.525" font-size="11" text-anchor="middle" font-weight="400" fill="#475569">site and</text><text x="626" y="50.175" font-size="11" text-anchor="middle" font-weight="400" fill="#475569">production</text><path d="M685,100 L706,100" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><rect x="706" y="69" width="118" height="62" fill="#fff" stroke="#000" stroke-width="2"/><text x="765" y="97.3" font-size="12" text-anchor="middle" font-weight="400" fill="#000">commissioning</text><text x="765" y="111.1" font-size="12" text-anchor="middle" font-weight="400" fill="#000">and use</text><text x="765" y="37.525" font-size="11" text-anchor="middle" font-weight="400" fill="#475569">testing,</text><text x="765" y="50.175" font-size="11" text-anchor="middle" font-weight="400" fill="#475569">handover</text><path d="M824,100 L845,100" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><rect x="845" y="69" width="118" height="62" fill="#fff" stroke="#000" stroke-width="2"/><text x="904" y="97.3" font-size="12" text-anchor="middle" font-weight="400" fill="#000">maintenance and</text><text x="904" y="111.1" font-size="12" text-anchor="middle" font-weight="400" fill="#000">decommissioning</text><text x="904" y="37.525" font-size="11" text-anchor="middle" font-weight="400" fill="#475569">inspection,</text><text x="904" y="50.175" font-size="11" text-anchor="middle" font-weight="400" fill="#475569">recycling</text><path d="M904,131 L904,195 L70,195 L70,132" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd1)"/><text x="490" y="222.2" font-size="12" text-anchor="middle" font-weight="400" fill="#0f766e">lessons learned feed back into the next project</text></svg><div class="fig-cap">The phases of an engineering project. Different engineers lead at different stages, but most are involved throughout.</div></div>
+      <h2 class="notes-h2">Communication</h2>
+      <p class="notes-p">A professional engineer spends much of their time communicating, because no engineer can complete a project alone. They must communicate with:</p>
+      <ul class="notes-ul"><li><strong>the client</strong> &mdash; to agree the brief and specification, and report progress and costs;</li><li><strong>other engineers</strong> &mdash; so that sub-systems designed by different disciplines fit and work together (for example, the electronic engineer must know the motor the mechanical engineer has chosen);</li><li><strong>contractors and technicians</strong> &mdash; through drawings, specifications and instructions, so the design is built correctly;</li><li><strong>the public and regulators</strong> &mdash; through consultations, planning applications and safety reports.</li></ul>
+      <p class="notes-p">Engineers communicate using CAD drawings and 3D models, technical reports, specifications, calculations, presentations, meetings, and shared digital models that every discipline can update.</p>
+      <h2 class="notes-h2">Team working</h2>
+      <p class="notes-p">Projects are carried out by <strong>multi-disciplinary teams</strong>, usually led by a project manager. Good team working means each engineer understands their own responsibilities and how their work affects others. Regular design reviews catch problems early, when they are cheap to fix. Team working also means sharing risk: decisions about safety are checked by more than one person.</p>
+      <div class="key-point">A description of communication or team working must say <strong>who</strong> is communicating, <strong>how</strong>, and <strong>why</strong>. &ldquo;Engineers talk to each other&rdquo; is a statement. &ldquo;The structural engineer shares load calculations with the civil engineer so that the foundations are designed for the forces from the frame&rdquo; is a description.</div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-3">Section 3: Roles, Skills and Specialist Knowledge</h1>
+      <p class="notes-p">Exam questions ask separately for <strong>roles</strong>, <strong>skills</strong> and <strong>knowledge</strong>, so you need to know the difference.</p>
+      <div class="fig"><svg viewBox="0 0 760 220" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:700px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;" role="img" aria-label="Role, skill and knowledge: what an engineer does, the ability they use, and what they need to know"><title>Role, skill and knowledge: what an engineer does, the ability they use, and what they need to know</title><defs><marker id="bd2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="25" y="30" width="210" height="150" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="2"/><text x="130" y="65.6" font-size="16" text-anchor="middle" font-weight="700" fill="#0f766e">ROLE</text><text x="130" y="115.4" font-size="12" text-anchor="middle" font-weight="400" fill="#000">a task or responsibility</text><text x="130" y="129.2" font-size="12" text-anchor="middle" font-weight="400" fill="#000">in the project</text><text x="130" y="143" font-size="12" text-anchor="middle" font-weight="400" fill="#000">e.g. design the foundations</text><rect x="275" y="30" width="210" height="150" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="2"/><text x="380" y="65.6" font-size="16" text-anchor="middle" font-weight="700" fill="#0f766e">SKILL</text><text x="380" y="115.4" font-size="12" text-anchor="middle" font-weight="400" fill="#000">an ability they apply</text><text x="380" y="129.2" font-size="12" text-anchor="middle" font-weight="400" fill="#000">to do it</text><text x="380" y="143" font-size="12" text-anchor="middle" font-weight="400" fill="#000">e.g. calculate reaction forces</text><rect x="525" y="30" width="210" height="150" rx="12" fill="#f0fdfa" stroke="#0f766e" stroke-width="2"/><text x="630" y="65.6" font-size="16" text-anchor="middle" font-weight="700" fill="#0f766e">KNOWLEDGE</text><text x="630" y="115.4" font-size="12" text-anchor="middle" font-weight="400" fill="#000">specialist understanding</text><text x="630" y="129.2" font-size="12" text-anchor="middle" font-weight="400" fill="#000">they draw on</text><text x="630" y="143" font-size="12" text-anchor="middle" font-weight="400" fill="#000">e.g. properties of concrete</text></svg></div>
+      <table class="data-table"><tr><th>Engineer and context</th><th>A role</th><th>A skill</th><th>A piece of knowledge</th></tr><tr><td>Civil engineer &mdash; launch site</td><td>designing the foundations so the launch pad is strong and stable</td><td>analysing survey data to choose a suitable location</td><td>knowledge of ground conditions to choose the foundation type</td></tr><tr><td>Structural engineer &mdash; viewing platform</td><td>checking the structure can carry visitors and wind loads safely</td><td>calculating forces in members using nodal analysis</td><td>knowledge of material properties to select a suitable section</td></tr><tr><td>Mechanical engineer &mdash; vehicle lift</td><td>designing the drive system to raise vehicles at a safe speed</td><td>calculating gear ratios to achieve the required output speed</td><td>knowledge of bearings to reduce friction in the drive</td></tr><tr><td>Electronic engineer &mdash; robot cleaner</td><td>designing the control system that detects obstacles</td><td>planning the program logic for how the robot responds to its inputs</td><td>knowledge of sensors to choose a suitable obstacle detector</td></tr><tr><td>Environmental engineer &mdash; new school</td><td>selecting sustainable materials to reduce environmental impact</td><td>carrying out an energy audit to reduce running energy</td><td>knowledge of waste management to plan recycling during construction</td></tr></table>
+      <h2 class="notes-h2">How engineers apply mathematics</h2>
+      <p class="notes-p">A favourite exam question is &ldquo;Describe how a mechanical (or structural) engineer applies mathematics&hellip;&rdquo;. The marking instructions want a <strong>specific mathematical process</strong> linked to a <strong>specific purpose</strong> in the context. Each example must be different. The calculations you do in this course are the best source of answers:</p>
+      <table class="data-table"><tr><th>Engineer</th><th>Mathematical process and purpose</th></tr><tr><td>Mechanical</td><td>calculating the gear ratio to give the required output speed; calculating torque and power to choose a suitable motor; calculating efficiency to reduce energy losses; calculating the force from a pneumatic cylinder (P = F/A) to choose the cylinder size</td></tr><tr><td>Structural</td><td>using nodal analysis to find the magnitude and nature of forces in members; taking moments to calculate reaction forces at supports; using factor of safety and stress to calculate the cross-sectional area needed; calculating Young&rsquo;s modulus to compare materials</td></tr><tr><td>Electronic</td><td>using the voltage divider rule to choose a resistor for a sensing circuit; calculating op-amp gain to scale a sensor signal; calculating transistor gain or base current</td></tr><tr><td>Environmental</td><td>carrying out energy audits to reduce energy use; calculating efficiency; estimating carbon emissions to compare design options</td></tr></table>
+      <div class="exam-tip"><strong>Exam tip.</strong> &ldquo;They would use maths to do calculations&rdquo; gets no marks. &ldquo;Calculating the gear ratio so that the conveyor belt runs at the required speed&rdquo; gets the mark: it names the process <em>and</em> what it is for, in the context of the question. Using simulation software to model a system is also accepted as applying mathematics.</div>
+      <div class="assignment" id="assignment-task1">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Roles, skills and knowledge</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. A new flood defence scheme is being built to protect a Scottish town. Describe two roles a civil engineer would have in the development phase.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-t1a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-t1a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Describe two examples of how a structural engineer applies mathematics when designing a footbridge.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-t1b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-t1b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. An electronic engineer is designing the control system for an automatic greenhouse. Describe one skill and one piece of knowledge they would use.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-t1c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-t1c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. Explain why good communication between the mechanical engineer and the electronic engineer is essential when designing a robotic arm.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-t1d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-t1d" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task1', 'Task 1 &mdash; Roles, skills and knowledge')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-4">Section 4: Social and Economic Impacts</h1>
+      <p class="notes-p">Every engineered solution affects people and money &mdash; some effects are positive, some negative. At Higher you must be able to describe both.</p>
+      <table class="data-table"><tr><th></th><th>Positive examples</th><th>Negative examples</th></tr><tr><td><strong>Social</strong> (effects on people and communities)</td><td>improved health and safety; easier travel and access to services; new skilled jobs; better quality of life; reduced stress or frustration</td><td>job losses through automation; noise and disruption during construction; loss of amenity or views; people left behind by new technology</td></tr><tr><td><strong>Economic</strong> (effects on money, costs and the economy)</td><td>lower running or energy costs; increased sales or productivity; reduced wages or compensation costs; new industries and jobs; government grants</td><td>high initial cost of equipment or installation; training costs; maintenance costs; lost income during changeover</td></tr></table>
+      <div class="exam-tip"><strong>Exam tip.</strong> An economic impact <strong>must have a money aspect</strong>. A social impact must be about <strong>people</strong>. Simply writing &ldquo;expensive&rdquo; or &ldquo;initial cost&rdquo; is not enough &mdash; say what the money is spent on (for example &ldquo;the cost of installing insulation and a water recycling system&rdquo;). Always link the impact to the system in the question.</div>
+      <h2 class="notes-h2">Practise the technique</h2>
+      <p class="notes-p">Decide whether each answer below would get the mark, then read the feedback.</p>
+
+      <div class="mk-lab" id="mkLab">
+        <div class="mk-head">&#x1F3AF; Would it get the mark?</div>
+        <div class="mk-q" id="mkQ"></div>
+        <div class="mk-a" id="mkA"></div>
+        <div class="mk-btns"><button type="button" data-v="1">&#x2714; Gets the mark</button><button type="button" data-v="0">&#x2718; No mark</button></div>
+        <div class="mk-fb" id="mkFb"></div>
+        <div class="mk-foot"><span id="mkN"></span><button type="button" id="mkNext">Next answer &rarr;</button></div>
+      </div>
+<script>
+(function () {
+  var D = [["Describe one economic impact of an automated warehouse.", "It is expensive.", 0, "A statement with no description and no reason. Expensive to do what? The marking instructions say simply writing &lsquo;cost&rsquo; is not enough &mdash; say what the money is spent on."], ["Describe one economic impact of an automated warehouse.", "Fewer staff are needed to move stock, so the company&rsquo;s wage costs are reduced.", 1, "Describes the impact and links it to money, in the context of the warehouse."], ["Describe how a mechanical engineer applies mathematics when designing a conveyor drive.", "They use maths to do calculations.", 0, "Too vague: it must relate a mathematical process to a specific purpose in the context."], ["Describe how a mechanical engineer applies mathematics when designing a conveyor drive.", "Calculating the gear ratio needed so the belt runs at the required speed.", 1, "A specific mathematical process (gear ratio) linked to a purpose (belt speed) in the drive system."], ["Describe one role of an environmental engineer in the design phase of a new school.", "Selecting sustainable materials with low embodied energy to reduce the building&rsquo;s environmental impact.", 1, "A task the engineer carries out, with its purpose, related to the project."], ["Describe one role of an environmental engineer in the design phase of a new school.", "Environmental engineers care about the environment.", 0, "Not a role (a task or responsibility) and not related to the design phase."], ["Describe one social impact of new cycle lanes in a city.", "More people can cycle to work safely, improving their physical health.", 1, "Describes an effect on people and explains why it matters."], ["Describe one positive and one negative social impact of the system (2 marks).", "Positive: it is good. Negative: it is bad.", 0, "Neither is a description. Each mark needs a specific impact on people, with a reason."]], i = 0, score = 0, done = false;
+  var q = document.getElementById('mkQ'); if (!q) return;
+  function show() { var it = D[i]; q.innerHTML = '<strong>Question:</strong> ' + it[0]; document.getElementById('mkA').innerHTML = '&ldquo;' + it[1] + '&rdquo;';
+    document.getElementById('mkFb').innerHTML = ''; document.getElementById('mkFb').className = 'mk-fb'; done = false;
+    document.getElementById('mkN').textContent = 'Answer ' + (i + 1) + ' of ' + D.length + ' \u00b7 score ' + score; }
+  document.querySelectorAll('#mkLab .mk-btns button').forEach(function (b) { b.addEventListener('click', function () {
+    if (done) return; done = true; var ok = (+b.dataset.v === D[i][2]); if (ok) score++;
+    var fb = document.getElementById('mkFb'); fb.className = 'mk-fb ' + (ok ? 'ok' : 'no');
+    fb.innerHTML = (ok ? '<strong>Correct.</strong> ' : '<strong>Not quite.</strong> ') + (D[i][2] ? 'This gets the mark. ' : 'This does not get the mark. ') + D[i][3];
+    document.getElementById('mkN').textContent = 'Answer ' + (i + 1) + ' of ' + D.length + ' \u00b7 score ' + score; }); });
+  document.getElementById('mkNext').addEventListener('click', function () { i = (i + 1) % D.length; if (i === 0) score = 0; show(); });
+  show();
+})();
+</script>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-5">Section 5: Environmental Impacts and Sustainability</h1>
+      <p class="notes-p">Environmental impacts can be positive (reducing emissions, saving resources, protecting habitats) or negative (pollution, habitat loss, use of finite resources, waste). Engineers consider these across the whole <strong>life cycle</strong> of a product or structure, not just while it is in use.</p>
+      <div class="fig"><svg viewBox="0 0 760 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:640px;display:block;margin:14px auto;font-family:Arial,Helvetica,sans-serif;" role="img" aria-label="Product life cycle: environmental impacts can arise at every stage"><title>Product life cycle: environmental impacts can arise at every stage</title><defs><marker id="bd3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#000"/></marker></defs><rect x="295" y="19" width="170" height="62" fill="#fff" stroke="#000" stroke-width="2"/><text x="380" y="47.3" font-size="12" text-anchor="middle" font-weight="400" fill="#000">extracting raw</text><text x="380" y="61.1" font-size="12" text-anchor="middle" font-weight="400" fill="#000">materials</text><rect x="555" y="119" width="170" height="62" fill="#fff" stroke="#000" stroke-width="2"/><text x="640" y="147.3" font-size="12" text-anchor="middle" font-weight="400" fill="#000">manufacture</text><text x="640" y="161.1" font-size="12" text-anchor="middle" font-weight="400" fill="#000">and transport</text><rect x="295" y="219" width="170" height="62" fill="#fff" stroke="#000" stroke-width="2"/><text x="380" y="247.3" font-size="12" text-anchor="middle" font-weight="400" fill="#000">use and</text><text x="380" y="261.1" font-size="12" text-anchor="middle" font-weight="400" fill="#000">maintenance</text><rect x="35" y="119" width="170" height="62" fill="#fff" stroke="#000" stroke-width="2"/><text x="120" y="140.4" font-size="12" text-anchor="middle" font-weight="400" fill="#000">end of life:</text><text x="120" y="154.2" font-size="12" text-anchor="middle" font-weight="400" fill="#000">reuse, recycle</text><text x="120" y="168" font-size="12" text-anchor="middle" font-weight="400" fill="#000">or dispose</text><path d="M465,60 L640,60 L640,118" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd3)"/><path d="M640,182 L640,250 L466,250" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd3)"/><path d="M294,250 L120,250 L120,182" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd3)"/><path d="M120,118 L120,50 L294,50" fill="none" stroke="#000" stroke-width="2" marker-end="url(#bd3)"/><text x="380" y="147.3" font-size="12" text-anchor="middle" font-weight="400" fill="#0f766e">reuse and recycling</text><text x="380" y="161.1" font-size="12" text-anchor="middle" font-weight="400" fill="#0f766e">close the loop</text></svg></div>
+      <ul class="notes-ul"><li><strong>Extracting raw materials:</strong> mining and quarrying use energy and can damage landscapes; using recycled or renewable materials reduces this.</li><li><strong>Manufacture and transport:</strong> energy is used and emissions produced; sourcing materials locally reduces transport.</li><li><strong>Use:</strong> often the largest impact for products that use energy &mdash; improving efficiency reduces it.</li><li><strong>End of life:</strong> designing for disassembly lets parts be reused or recycled instead of going to landfill.</li></ul>
+      <h2 class="notes-h2">Sustainability</h2>
+      <p class="notes-p">A <strong>sustainable</strong> engineering solution meets today&rsquo;s needs without stopping future generations from meeting theirs. It balances all three kinds of impact: it must be <strong>environmentally</strong> responsible, <strong>socially</strong> acceptable and <strong>economically</strong> viable. A solution that is environmentally excellent but far too expensive to build, or cheap but harmful to the community, is not sustainable.</p>
+      <p class="notes-p">Ways engineers make solutions more sustainable include using renewable energy, improving efficiency, choosing recyclable and low-carbon materials, designing products to last and to be repaired, and reducing waste during construction.</p>
+      <div class="key-point">Exam questions sometimes ask for environmental <em>reasons</em> for a design choice. For example, a pneumatic system might be chosen because compressed air is non-toxic and can be released into the atmosphere without pollution, and there is no risk of oil leaks as there would be with hydraulics. Each reason must be a description related to the system.</div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-6">Section 6: Emerging Technologies</h1>
+      <p class="notes-p">An <strong>emerging technology</strong> is one that is new or developing rapidly and is likely to change how things are done. Engineers need to keep up with them, and exam questions may describe one you have never met and ask about its impacts. Apply the same social, economic and environmental thinking.</p>
+      <table class="data-table"><tr><th>Technology</th><th>Possible impacts</th></tr><tr><td><strong>Artificial intelligence and machine vision</strong></td><td>faster, more accurate inspection and diagnosis; fewer routine jobs; questions of privacy and bias</td></tr><tr><td><strong>Autonomous vehicles and drones</strong></td><td>safer inspection of wind turbines, bridges and power lines without working at height; possible job losses for drivers; new safety regulations needed</td></tr><tr><td><strong>Additive manufacturing (3D printing)</strong></td><td>complex, lightweight parts with less material waste; spare parts made on demand; high cost per part for large volumes</td></tr><tr><td><strong>Green hydrogen and battery storage</strong></td><td>storing surplus renewable electricity; cleaner transport; high cost and new safety risks</td></tr><tr><td><strong>Virtual and augmented reality</strong></td><td>training and design reviews without building prototypes; lower costs for film and games companies; risk of over-reliance on screens</td></tr><tr><td><strong>Tidal and floating offshore wind</strong></td><td>renewable electricity from Scotland&rsquo;s seas; new jobs in coastal communities; possible effects on marine life and fishing</td></tr></table>
+      <div class="assignment" id="assignment-task2">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Impacts</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. A company replaces manual loading of luggage at an airport with an automated system that handles bags with care. Describe one economic and one social impact.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-t2a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-t2a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A Scottish city builds new segregated cycle lanes. Describe two positive social impacts.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-t2b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-t2b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Describe two environmental impacts (one positive, one negative) of building an onshore wind farm.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-t2c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-t2c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. Drones are increasingly used to inspect offshore wind turbines. Describe two impacts of this emerging technology.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-t2d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-t2d" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. Explain what is meant by a <em>sustainable</em> engineering solution.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-t2e"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-t2e" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task2', 'Task 2 &mdash; Impacts')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-7">Section 7: Exam-Style Questions</h1>
+      <p class="notes-p">In the exam these questions are usually 1 or 2 marks each and are found inside longer questions about a particular system. Answer in full sentences, and make each point different.</p>
+      <h2 class="notes-h2">Question 1 &mdash; Whisky warehouse automation</h2>
+      <p class="notes-p">A distillery is building a new automated warehouse in which robots move casks of maturing whisky. The company also wants the warehouse to be as environmentally friendly as possible.</p>
+      <div class="assignment" id="assignment-exam1">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 1 &mdash; Warehouse</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) Describe two roles an environmental engineer would undertake in the design phase of the warehouse. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-e1a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-e1a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Describe a positive and a negative economic impact for the company of the warehouse being environmentally friendly. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-e1b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-e1b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) Describe one social impact of using robots to move the casks. <span class="marks">1</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-e1c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-e1c" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-exam1', 'Question 1 &mdash; Warehouse')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2">Question 2 &mdash; Mountain ski tow</h2>
+      <p class="notes-p">A ski centre is replacing an old ski tow with a new one. A mechanical engineer is responsible for the drive system and an electronic engineer for the control system.</p>
+      <div class="assignment" id="assignment-exam2">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 2 &mdash; Ski tow</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) Describe two examples of how the mechanical engineer would apply mathematics in the design of the drive system. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-e2a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-e2a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Describe one skill and one piece of knowledge the electronic engineer would use when developing the control system. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-e2b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-e2b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) Describe how the two engineers would need to communicate during the project. <span class="marks">1</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-e2c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-e2c" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-exam2', 'Question 2 &mdash; Ski tow')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2">Question 3 &mdash; Augmented reality in engineering training</h2>
+      <p class="notes-p">An engineering firm is introducing augmented reality headsets that overlay instructions and 3D models onto real equipment during maintenance training.</p>
+      <div class="assignment" id="assignment-exam3">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 3 &mdash; Augmented reality</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Describe two impacts this technology would have on the firm. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-e3"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-e3" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-exam3', 'Question 3 &mdash; Augmented reality')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-8">Section 8: Critical Analysis Project</h1>
+      <p class="notes-p">The course specification asks you to present a <strong>critical analysis of an engineered solution to a contemporary problem</strong>. Choose one of the topics below, or another agreed with your teacher, research it, and present your findings as a short report or presentation.</p>
+      <table class="data-table"><tr><th>Contemporary problem</th><th>An engineered solution to analyse</th></tr><tr><td>Reducing carbon emissions from electricity</td><td>floating offshore wind turbines in deep Scottish waters</td></tr><tr><td>Poor air quality in city centres</td><td>low emission zones and electric buses in Scottish cities</td></tr><tr><td>Heating homes without gas</td><td>heat pumps and district heating schemes, including heat from flooded mine workings</td></tr><tr><td>Connecting island communities</td><td>battery-electric or hybrid ferries</td></tr></table>
+      <div class="assignment" id="assignment-project">
+        <div class="assignment-header"><div class="assignment-title">&#x1F4CB; Critical analysis project</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Describe clearly the nature of the problem.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-p1"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-p1" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Describe the engineered solution and the engineering disciplines involved, giving at least one role for each.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-p2"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-p2" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Describe the social and economic impacts of the solution, both positive and negative.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-p3"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-p3" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. Describe the environmental impacts of the solution across its life cycle, and evaluate how sustainable it is.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-p4"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-p4" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. Identify and describe an emerging technology that may affect future developments of this solution.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hri-p5"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hri-p5" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-project', 'Critical analysis project')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-download-all" id="downloadAllBtn" onclick="downloadAllAnswersPDF()">&#x2B07;&#xFE0F; Download ALL my answers (PDF)</button>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8; Print</button>
+        <button class="ctrl-btn ctrl-btn-clear" id="btn-clear-all">&#x1F5D1; Clear all answers</button>
+      </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
+
+      <div class="page-nav" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
+        <button class="ctrl-btn ctrl-btn-print" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});">&#x2B06;&#xFE0F; Back to top</button>
+        <a href="index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">&#x2302; Main menu</a>
+        <a href="../../electronics/analogue/index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">Next section &#x2192;</a>
+      </div>
+    </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  <span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span>
+  <a href="../../../../teacher/login.html">Teacher area</a>
+</footer>
+
+<script src="../../../../js/site.js"></script>
+<script src="../../../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("higher","../../../../");</script>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// ── localStorage saving for all answer boxes and cells ─────────────────────
+const STORAGE_PREFIX = 'ess_answers_';
+function saveValue(k, v) { try { localStorage.setItem(STORAGE_PREFIX + k, v); updateStatusBar(); window._essSaveFail = null; } catch(e) { window._essSaveFail = k; } }
+function loadValue(k) { try { return localStorage.getItem(STORAGE_PREFIX + k) || ''; } catch(e) { return ''; } }
+function updateStatusBar() { const el = document.getElementById('storage-status'); if (el) el.textContent = 'Last saved: ' + new Date().toLocaleTimeString(); }
+function showSaved(key) {
+  const ind = document.getElementById('ind-' + key);
+  if (!ind) return;
+  if (window._essSaveFail === key) { ind.textContent = 'Not saved: browser storage is full. Remove an image, or download your answers as a PDF now.'; ind.style.color = '#b91c1c'; return; }
+  ind.style.color = '';
+  ind.textContent = '\u2713 Saved';
+  setTimeout(() => { ind.textContent = ''; }, 2000);
+}
+function clearAllAnswers() {
+  if (!confirm('Clear all saved answers on this page? This cannot be undone.')) return;
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const k = el.dataset.key;
+    if (k) { try { localStorage.removeItem(STORAGE_PREFIX + k); } catch(e) {} el.innerHTML = ''; }
+  });
+  const el = document.getElementById('storage-status');
+  if (el) el.textContent = 'Answers cleared.';
+}
+function debounce(fn, d) { let t; return function() { clearTimeout(t); const a = arguments, c = this; t = setTimeout(() => fn.apply(c, a), d); }; }
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-key]').forEach(box => {
+    const key = box.dataset.key;
+    if (!key) return;
+    const saved = loadValue(key);
+    if (saved) box.innerHTML = saved;
+    const ds = debounce(() => { saveValue(key, box.innerHTML); showSaved(key); }, 800);
+    box.addEventListener('input', ds);
+    box.addEventListener('blur', () => { saveValue(key, box.innerHTML); showSaved(key); });
+  });
+  const clearBtn = document.getElementById('btn-clear-all');
+  if (clearBtn) clearBtn.addEventListener('click', clearAllAnswers);
+});
+
+/* ── PDF export ─────────────────────────────────────────────── */
+function pdfSafe(s) {
+  if (!s) return '';
+  return String(s)
+    .replace(/[\u2018\u2019\u201B\u2032]/g, "'")
+    .replace(/[\u201C\u201D\u201F\u2033]/g, '"')
+    .replace(/[\u2013\u2014\u2212]/g, '-')
+    .replace(/\u2026/g, '...')
+    .replace(/\u00A0/g, ' ')
+    .replace(/\u2713/g, '')
+    .replace(/\u200B/g, '').replace(/\u221A/g, 'sqrt').replace(/\u2248/g, '~').replace(/\u2192/g, '->').replace(/\u03A9/g, 'ohm').replace(/\u03C3/g, 'sigma').replace(/\u03B5/g, 'epsilon').replace(/\u0394/g, 'delta').replace(/\u03C0/g, 'pi')
+    .replace(/[^\x00-\xFF]/g, '');
+}
+
+const PUPIL_NAME_KEY = 'hri-pupil-name';
+function getPupilName() { try { return localStorage.getItem(PUPIL_NAME_KEY) || ''; } catch(e) { return ''; } }
+
+function pdfNewDoc() {
+  const doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' });
+  const state = { margin: 48, pageWidth: doc.internal.pageSize.getWidth(), pageHeight: doc.internal.pageSize.getHeight() };
+  state.usableWidth = state.pageWidth - state.margin * 2;
+  state.y = state.margin;
+  return { doc, state };
+}
+
+function pdfAddHeader(doc, state, taskLabel) {
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(16); doc.setTextColor(15, 90, 68);
+  doc.text('Engineering Science Scotland - Higher Engineering Roles and Impacts', state.margin, state.y); state.y += 20;
+  doc.setFontSize(14); doc.setTextColor(30, 30, 30);
+  const tLines = doc.splitTextToSize(pdfSafe(taskLabel), state.usableWidth);
+  doc.text(tLines, state.margin, state.y); state.y += tLines.length * 16 + 6;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(11); doc.setTextColor(90, 90, 90);
+  const pupilName = getPupilName();
+  const todayStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const nameLine = pupilName ? ('Name: ' + pdfSafe(pupilName) + '      Date: ' + todayStr) : ('Name: _________________________________      Date: _______________');
+  doc.text(nameLine, state.margin, state.y); state.y += 20;
+  doc.setDrawColor(200, 200, 200); doc.line(state.margin, state.y, state.pageWidth - state.margin, state.y); state.y += 18;
+}
+
+function pdfEnsureSpace(doc, state, h) { if (state.y + h > state.pageHeight - state.margin) { doc.addPage(); state.y = state.margin; } }
+
+function pdfWriteAnswer(doc, state, el) {
+  const imgs = el.querySelectorAll('img'); const img = imgs.length ? imgs[0] : null;
+  imgs.forEach(function (img) {
+    if (!img.src) return;
+    try {
+      const props = doc.getImageProperties(img.src);
+      const ratio = Math.min(state.usableWidth / props.width, 260 / props.height, 1);
+      const w = props.width * ratio, h = props.height * ratio;
+      pdfEnsureSpace(doc, state, h + 14);
+      doc.addImage(img.src, props.fileType || 'PNG', state.margin, state.y, w, h);
+      state.y += h + 10;
+    } catch (e) {
+      doc.setFont('helvetica', 'italic'); doc.setFontSize(11); doc.setTextColor(160, 60, 60);
+      pdfEnsureSpace(doc, state, 14); doc.text('[Could not embed pasted image - try pasting it again]', state.margin, state.y); state.y += 16;
+    }
+  });
+  let text = pdfSafe(el.innerText.trim());
+  if (img && !text) return;
+  doc.setFontSize(11);
+  if (!text) { doc.setFont('helvetica', 'italic'); doc.setTextColor(160, 160, 160); text = '(no answer entered yet)'; }
+  else { doc.setFont('helvetica', 'normal'); doc.setTextColor(40, 40, 40); }
+  const lines = doc.splitTextToSize(text, state.usableWidth);
+  for (let i = 0; i < lines.length; i++) { pdfEnsureSpace(doc, state, 14); doc.text(lines[i], state.margin, state.y); state.y += 14; }
+  state.y += 6;
+}
+
+function pdfRenderPanelItems(doc, state, panel) {
+  const items = panel.querySelectorAll('.task-item');
+  for (let i = 0; i < items.length; i++) {
+    const qEl = items[i].querySelector('.task-q');
+    const qText = qEl ? pdfSafe(qEl.innerText.trim()) : '';
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(15, 90, 68);
+    const qLines = doc.splitTextToSize(qText, state.usableWidth);
+    pdfEnsureSpace(doc, state, qLines.length * 14 + 6);
+    doc.text(qLines, state.margin, state.y); state.y += qLines.length * 14 + 6;
+    const fields = items[i].querySelectorAll('[data-key]');
+    for (let f = 0; f < fields.length; f++) {
+      const lab = fields[f].dataset.label;
+      if (lab) {
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(90, 90, 90);
+        pdfEnsureSpace(doc, state, 28); doc.text(pdfSafe(lab) + ':', state.margin, state.y); state.y += 13;
+      }
+      pdfWriteAnswer(doc, state, fields[f]);
+    }
+    state.y += 6;
+  }
+}
+
+function pdfAddFooters(doc, state) {
+  const n = doc.internal.getNumberOfPages();
+  for (let p = 1; p <= n; p++) {
+    doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(150, 150, 150);
+    doc.text('Page ' + p + ' of ' + n + '  -  engineeringsciencescotland.co.uk', state.margin, state.pageHeight - 24);
+  }
+}
+
+function downloadTaskPDF(panelId, taskLabel) {
+  const panel = document.getElementById(panelId); if (!panel) return;
+  const btn = panel.querySelector('.task-download-btn'); const orig = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = 'Building PDF&hellip;'; }
+  setTimeout(() => {
+    try {
+      const o = pdfNewDoc();
+      pdfAddHeader(o.doc, o.state, taskLabel);
+      pdfRenderPanelItems(o.doc, o.state, panel);
+      pdfAddFooters(o.doc, o.state);
+      o.doc.save(pdfSafe(taskLabel).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '-') + '.pdf');
+    } catch (err) { console.error(err); alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.'); }
+    finally { if (btn) { btn.disabled = false; btn.innerHTML = orig; } }
+  }, 30);
+}
+
+/* Keep this list in sync with the task panels on the page, in page order */
+const ALL_TASK_PANELS = [
+  ['assignment-task1', 'Task 1 \u2014 Roles, skills and knowledge'],
+  ['assignment-task2', 'Task 2 \u2014 Impacts'],
+  ['assignment-exam1', 'Question 1 \u2014 Warehouse'],
+  ['assignment-exam2', 'Question 2 \u2014 Ski tow'],
+  ['assignment-exam3', 'Question 3 \u2014 Augmented reality'],
+  ['assignment-project', 'Critical analysis project']
+];
+
+function downloadAllAnswersPDF() {
+  const btn = document.getElementById('downloadAllBtn'); const orig = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = 'Building PDF&hellip;'; }
+  setTimeout(() => {
+    try {
+      const o = pdfNewDoc(), doc = o.doc, state = o.state;
+      pdfAddHeader(doc, state, 'Higher Engineering Roles and Impacts \u2014 All my answers');
+      for (let i = 0; i < ALL_TASK_PANELS.length; i++) {
+        const panel = document.getElementById(ALL_TASK_PANELS[i][0]); if (!panel) continue;
+        pdfEnsureSpace(doc, state, 40);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(194, 65, 12);
+        doc.text(pdfSafe(ALL_TASK_PANELS[i][1]), state.margin, state.y); state.y += 8;
+        doc.setDrawColor(230, 200, 180); doc.line(state.margin, state.y, state.pageWidth - state.margin, state.y); state.y += 16;
+        pdfRenderPanelItems(doc, state, panel); state.y += 10;
+      }
+      pdfAddFooters(doc, state);
+      doc.save('Higher-Engineering-Roles-and-Impacts-All-My-Answers.pdf');
+    } catch (err) { console.error(err); alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.'); }
+    finally { if (btn) { btn.disabled = false; btn.innerHTML = orig; } }
+  }, 30);
+}
+
+/* ── Contents panel ─────────────────────────────────────────── */
+function openToc() { document.getElementById('tocPanel').classList.add('open'); document.getElementById('tocOverlay').classList.add('open'); }
+function closeToc() { document.getElementById('tocPanel').classList.remove('open'); document.getElementById('tocOverlay').classList.remove('open'); }
+
+/* ── My Name ────────────────────────────────────────────────── */
+function updateNameFabLabel() { const l = document.getElementById('nameFabLabel'); if (!l) return; const n = getPupilName(); l.textContent = n ? n : 'My Name'; }
+function openNamePanel() {
+  const input = document.getElementById('nameInput'); if (input) input.value = getPupilName();
+  const msg = document.getElementById('nameSavedMsg'); if (msg) msg.classList.remove('show');
+  document.getElementById('nameOverlay').classList.add('open');
+  if (input) setTimeout(() => input.focus(), 50);
+}
+function closeNamePanel() { document.getElementById('nameOverlay').classList.remove('open'); }
+function closeNameOverlayClick(e) { if (e.target.id === 'nameOverlay') closeNamePanel(); }
+function saveNameInput() {
+  const input = document.getElementById('nameInput'); const name = input ? input.value.trim() : '';
+  try { localStorage.setItem(PUPIL_NAME_KEY, name); } catch(e) {}
+  updateNameFabLabel();
+  const msg = document.getElementById('nameSavedMsg'); if (msg) msg.classList.add('show');
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeToc(); closeNamePanel(); } });
+</script>
+
+<button class="toc-fab" id="tocFab" onclick="openToc()">&#x2630; Contents</button>
+
+<button class="name-fab" id="nameFab" onclick="openNamePanel()"><span class="name-fab-icon">&#x1F464;</span><span id="nameFabLabel">My Name</span></button>
+
+<div class="name-overlay" id="nameOverlay" onclick="closeNameOverlayClick(event)">
+  <div class="name-panel">
+    <button class="name-panel-close" onclick="closeNamePanel()" aria-label="Close">&times;</button>
+    <h3>Your name</h3>
+    <p>Enter your name once and it&rsquo;ll be added to the top of every task&rsquo;s downloaded PDF &mdash; no need to write it in by hand each time.</p>
+    <input type="text" id="nameInput" placeholder="e.g. Jamie Smith" maxlength="60">
+    <button class="name-panel-save" onclick="saveNameInput()">Save name</button>
+    <div class="name-panel-saved-msg" id="nameSavedMsg">&#x2713; Saved &mdash; it&rsquo;ll now appear on your PDFs</div>
+  </div>
+</div>
+
+<div class="toc-overlay" id="tocOverlay" onclick="closeToc()"></div>
+<div class="toc-panel" id="tocPanel">
+  <div class="toc-panel-header">
+    <h3>Contents</h3>
+    <button class="toc-panel-close" onclick="closeToc()" aria-label="Close">&times;</button>
+  </div>
+  <nav class="toc-list" id="tocList">
+    <a href="#section-1" onclick="closeToc()">Section 1: Engineering Disciplines at Higher</a>
+    <a href="#section-2" onclick="closeToc()">Section 2: The Professional Engineer Within a Project</a>
+    <a href="#section-3" onclick="closeToc()">Section 3: Roles, Skills and Specialist Knowledge</a>
+    <a href="#section-4" onclick="closeToc()">Section 4: Social and Economic Impacts</a>
+    <a href="#section-5" onclick="closeToc()">Section 5: Environmental Impacts and Sustainability</a>
+    <a href="#section-6" onclick="closeToc()">Section 6: Emerging Technologies</a>
+    <a href="#section-7" onclick="closeToc()">Section 7: Exam-Style Questions</a>
+    <a href="#section-8" onclick="closeToc()">Section 8: Critical Analysis Project</a>
+  </nav>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', updateNameFabLabel);
+(function() {
+  const nameInputEl = document.getElementById('nameInput');
+  if (nameInputEl) nameInputEl.addEventListener('keydown', function(e) { if (e.key === 'Enter') saveNameInput(); });
+  const links = Array.prototype.slice.call(document.querySelectorAll('.toc-list a'));
+  const targets = links.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+  if (!targets.length || !('IntersectionObserver' in window)) return;
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const link = document.querySelector('.toc-list a[href="#' + entry.target.id + '"]');
+      if (link && entry.isIntersecting) { links.forEach(a => a.classList.remove('toc-active')); link.classList.add('toc-active'); }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  targets.forEach(t => observer.observe(t));
+})();
+</script>
+
+<script>
+// ── Simulator zoom-lock + recentre ─────────────────────────────────────────
+// Trackpads/Magic Mouse send wheel events with ctrlKey=true for a pinch
+// gesture, which browsers treat as a page-zoom request. Blocking that only
+// while the pointer is over an embedded simulator stops the circuit from
+// zooming while the person scrolls the page, without disabling zoom
+// everywhere else. Each simulator also gets a small "Recentre" button that
+// reloads its iframe, which resets any pan/zoom state inside it.
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.sim-wrap').forEach(function(wrap) {
+      wrap.addEventListener('wheel', function(e) {
+        if (e.ctrlKey) e.preventDefault();
+      }, { passive: false });
+    });
+
+    document.querySelectorAll('.sim-embed-header').forEach(function(header) {
+      const iframe = header.closest('.sim-embed-section')?.querySelector('.sim-iframe');
+      if (!iframe) return;
+      const btn = document.createElement('button');
+      btn.className = 'sim-fullscreen-btn';
+      btn.type = 'button';
+      btn.style.background = 'var(--gray-50)';
+      btn.style.color = 'var(--teal-800)';
+      btn.style.border = '1px solid var(--gray-200)';
+      btn.textContent = '⟳ Recentre';
+      btn.addEventListener('click', function() {
+        const src = iframe.getAttribute('src');
+        iframe.setAttribute('src', src);
+      });
+      header.appendChild(btn);
+    });
+  });
+})();
+</script>
+
+
+<script>
+/* Symbol buttons beside calculation answer boxes: click to insert at the cursor */
+(function () {
+  var TITLES = {'Ω':'ohms','°':'degrees','²':'squared','µ':'micro'};
+  function place(box) {
+    var sel = window.getSelection();
+    if (!sel.rangeCount || !box.contains(sel.anchorNode)) {
+      var r = document.createRange(); r.selectNodeContents(box); r.collapse(false); sel.removeAllRanges(); sel.addRange(r);
+    }
+  }
+  function btn(label, title, fn) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'sym-btn'; b.innerHTML = label; b.title = title; b.setAttribute('aria-label', title);
+    b.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    b.addEventListener('click', fn); return b;
+  }
+  document.querySelectorAll('.answer-box[data-symbols]').forEach(function (box) {
+    var toks = box.getAttribute('data-symbols').split('|');
+    var wrap = document.createElement('div'); wrap.className = 'sym-wrap';
+    box.parentNode.insertBefore(wrap, box); wrap.appendChild(box);
+    var bar = document.createElement('div'); bar.className = 'sym-bar' + (toks.length > 4 ? ' two-col' : '');
+    var t = document.createElement('div'); t.className = 'sym-title'; t.textContent = 'Add'; bar.appendChild(t);
+    toks.forEach(function (tok) {
+      var isHtml = tok.indexOf('<') >= 0;
+      var plain = tok.replace(/<[^>]+>/g, '');
+      bar.appendChild(btn(tok, TITLES[tok] || ('add ' + plain), function () {
+        box.focus(); place(box);
+        if (isHtml) document.execCommand('insertHTML', false, tok + '​');
+        else document.execCommand('insertText', false, tok);
+      }));
+    });
+    wrap.appendChild(bar);
+  });
+})();
+</script>
+<script>
+/* Screenshots pasted or dropped into answer boxes: read the image file itself (Safari otherwise inserts an
+   unreadable webkit-fake-url image), shrink it so it fits in browser storage, and warn if an answer cannot be saved. */
+(function () {
+  function shrink(file, cb) {
+    var r = new FileReader();
+    r.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var s = Math.min(1, 1200 / Math.max(img.width, img.height));
+        var c = document.createElement('canvas'); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+        var x = c.getContext('2d'); x.fillStyle = '#ffffff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(img, 0, 0, c.width, c.height);
+        cb(c.toDataURL('image/jpeg', 0.82));
+      };
+      img.onerror = function () { cb(null); };
+      img.src = r.result;
+    };
+    r.onerror = function () { cb(null); };
+    r.readAsDataURL(file);
+  }
+  function add(box, files) {
+    for (var i = 0; i < files.length; i++) {
+      if (files[i] && files[i].type && files[i].type.indexOf('image/') === 0) {
+        shrink(files[i], function (url) {
+          if (!url) return;
+          box.focus();
+          document.execCommand('insertHTML', false, '<img src="' + url + '" alt="Pasted image"><br>');
+          box.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+        return true;
+      }
+    }
+    return false;
+  }
+  document.addEventListener('paste', function (e) {
+    var box = e.target && e.target.closest ? e.target.closest('.answer-box') : null; if (!box || !e.clipboardData) return;
+    var files = [];
+    if (e.clipboardData.files && e.clipboardData.files.length) files = Array.prototype.slice.call(e.clipboardData.files);
+    else Array.prototype.forEach.call(e.clipboardData.items || [], function (it) { if (it.kind === 'file') files.push(it.getAsFile()); });
+    if (files.length && add(box, files)) e.preventDefault();
+  }, true);
+  document.addEventListener('drop', function (e) {
+    var box = e.target && e.target.closest ? e.target.closest('.answer-box') : null; if (!box || !e.dataTransfer) return;
+    if (e.dataTransfer.files && e.dataTransfer.files.length && add(box, e.dataTransfer.files)) e.preventDefault();
+  }, true);
+})();
+</script>
+</body>
+</html>

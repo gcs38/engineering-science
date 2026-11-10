@@ -124,8 +124,7 @@ function buildSidebar(level, depth) {
         <a class="sb-topic" href="${d}higher/contexts/index.html">Overview</a>
         <a class="sb-subtopic" href="${d}higher/contexts/systems-approach/index.html">The systems approach</a>
         <a class="sb-subtopic" href="${d}higher/contexts/energy-efficiency/index.html">Energy and efficiency</a>
-        <a class="sb-subtopic" href="${d}higher/contexts/roles-disciplines/index.html">Engineering roles and disciplines</a>
-        <a class="sb-subtopic" href="${d}higher/contexts/impacts/index.html">Impacts of engineering</a>
+        <a class="sb-subtopic" href="${d}higher/contexts/roles-impacts/index.html">Engineering roles and impacts</a>
       </div>
     </div>
     <div class="sb-section">
