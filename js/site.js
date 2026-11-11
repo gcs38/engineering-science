@@ -668,6 +668,13 @@ var HIGHER_IN_DEVELOPMENT = true;
       }
     }
 
+    // Higher topic pages: explain when the printable notes will appear
+    if (/\/higher\/[a-z-]+\/[a-z-]+\/index\.html$|\/higher\/[a-z-]+\/[a-z-]+\/$/.test(location.pathname)) {
+      var pc = document.querySelector('.resource-type-card[data-doc="notes_pdf"]');
+      var ps = pc && pc.querySelector('.rtc-sub');
+      if (ps && pc.querySelector('.rtc-badge-unavailable')) ps.textContent = 'Printable notes will be made available when all of the sections are complete and checked.';
+    }
+
     var key = keyFromPath(location.pathname);
     if (!key || !(key in NOTES_CHECKED) || !notesAvailable(key)) return;
     var ok = NOTES_CHECKED[key];
@@ -688,8 +695,8 @@ var HIGHER_IN_DEVELOPMENT = true;
         var ban = document.createElement('div');
         ban.className = 'esschk-banner ' + (ok ? 'yes' : 'no');
         ban.innerHTML = ok
-          ? '&#x2705; <strong>Checked.</strong> These notes have been checked by Engineering Science teachers. If you still spot a mistake, please tell us using the Feedback button.'
-          : '&#x1F4DD; <strong>Draft &mdash; not yet checked.</strong> These notes are complete and ready to use, but they have not yet been checked by a second Engineering Science teacher, so they may contain errors. Please use the Feedback button to tell us about anything that needs fixing.';
+          ? '&#x2705; <strong>Checked.</strong> These notes have been checked by Engineering Science teachers. They have not yet been verified by Qualifications Scotland. If you spot anything that needs to be fixed or could be improved, please tell us using the Feedback button.'
+          : '&#x1F4DD; <strong>Draft &mdash; not yet checked.</strong> These notes are complete and ready to use, but they have not yet been checked by a second Engineering Science teacher or verified by Qualifications Scotland. Please use the Feedback button to tell us about anything that needs to be fixed or could be improved.';
         var after = host.querySelector('.back-link');
         if (after && after.nextSibling) host.insertBefore(ban, after.nextSibling); else host.insertBefore(ban, host.firstChild);
       }
@@ -723,9 +730,10 @@ var HIGHER_IN_DEVELOPMENT = true;
     o.innerHTML = '<div class="esshw-box" role="dialog" aria-modal="true" aria-labelledby="esshw-title">' +
       '<h2 id="esshw-title">&#x26A0;&#xFE0F; Higher: notes are still being checked</h2>' +
       '<p>The Higher section of Engineering Science Scotland is new. Every Higher topic&rsquo;s course notes are labelled to show where they are in our checking process:</p>' +
-      '<ul><li><strong style="color:#166534;">&#x2713; Checked</strong> &mdash; the notes have been checked by Engineering Science teachers.</li>' +
-      '<li><strong style="color:#9a3412;">Draft (not yet checked)</strong> &mdash; the notes are complete and ready to use, but have not yet been checked by a second teacher and may contain errors.</li></ul>' +
-      '<p>You&rsquo;ll see the label beside each topic in the menu, on each topic&rsquo;s Course notes card and at the top of the notes. Some topics are still being written. ESS is written by teachers and is not endorsed by Qualifications Scotland, so please use your professional judgement and the Feedback button to tell us about anything that needs fixing.</p>' +
+      '<ul><li><strong style="color:#9a3412;">Draft (not yet checked)</strong> &mdash; the notes are complete and ready to use, but have not yet been checked by a second teacher.</li>' +
+      '<li><strong style="color:#166534;">&#x2713; Checked</strong> &mdash; the notes have been checked by Engineering Science teachers.</li></ul>' +
+      '<p>None of the Higher notes have yet been verified by Qualifications Scotland. Printable notes will be made available when all of the sections are complete and checked.</p>' +
+      '<p>You&rsquo;ll see the label beside each topic in the menu, on each topic&rsquo;s Course notes card and at the top of the notes. ESS is written by teachers and is not yet endorsed by Qualifications Scotland. Please use the Feedback button to tell us about anything that needs to be fixed or could be improved.</p>' +
       '<p class="esshw-small">All ESS materials are free for educational use, but must not be used in a profit-making situation without written permission.</p>' +
       '<div class="esshw-btns"><button type="button" class="esshw-back">Go back</button><button type="button" class="esshw-go">I understand &mdash; continue to Higher</button></div></div>';
     function close() { o.remove(); document.removeEventListener('keydown', onKey); }
@@ -751,7 +759,7 @@ var HIGHER_IN_DEVELOPMENT = true;
       if (!main || document.querySelector('.esshw-bar')) return;
       var bar = document.createElement('div');
       bar.className = 'esshw-bar';
-      bar.innerHTML = '&#x26A0;&#xFE0F; <strong>Higher notes are still being checked.</strong> Topics marked <strong>&#x2713; Checked</strong> have been checked by Engineering Science teachers; topics marked <strong>Draft</strong> are ready to use but may contain errors.';
+      bar.innerHTML = '&#x26A0;&#xFE0F; <strong>Higher notes are still being checked.</strong> Topics marked <strong>&#x2713; Checked</strong> have been checked by Engineering Science teachers; topics marked <strong>Draft</strong> are ready to use but have not yet been checked. No Higher notes have yet been verified by Qualifications Scotland.';
       main.insertBefore(bar, main.firstChild);
     });
   }
