@@ -442,6 +442,8 @@ function renderTeacherDocs(topicKey, containerId) {
           '<p>It brings together course notes, simulators, printable resources and answers, with the aim of making Engineering Science easier to teach, easier to learn, and open to more pupils in more schools.</p>' +
           '<p>The site has been developed thanks to the generous funders of the Edinburgh Computing &amp; Engineering Science in Schools (ECSES) project, which exists to broaden access to digital and engineering futures.</p>' +
           '<p>All materials are written to follow the Qualifications Scotland course specification for National 5 Engineering Science.</p>' +
+          '<h4 style="margin:16px 0 6px;font-size:14px;">Terms of use</h4>' +
+          '<p><strong>Free for educational use.</strong> Everything on Engineering Science Scotland is free for schools, colleges, teachers, pupils and parents to use for education. It must not be used in any profit-making situation (for example selling it, including it in paid-for courses, tutoring or products, or putting it behind a paywall) without written permission from Engineering Science Scotland.</p>' +
           '<h4 style="margin:16px 0 6px;font-size:14px;">Get in touch</h4>' +
           '<p style="margin-bottom:6px;">We&rsquo;d love to hear from you, especially if:</p>' +
           '<ul style="margin:0 0 10px 18px;padding:0;font-size:13px;line-height:1.6;color:inherit;">' +
@@ -475,7 +477,7 @@ function renderTeacherDocs(topicKey, containerId) {
       overlay.innerHTML =
         '<div class="essfb-panel essug-panel" style="max-height:90vh;overflow-y:auto;font-size:13.5px;width:min(760px,94vw);max-width:none;box-sizing:border-box;">' +
           '<button class="essfb-close" onclick="window.ESSGuide.close()" aria-label="Close">&times;</button>' +
-          '<h3>User guide</h3><p>Engineering Science Scotland (ESS) is a free resource for National 5 Engineering Science. It covers all 11 topics, with everything a class needs to work through the course, and a password-protected area for teachers.</p><h4>The course notes: the heart of the site</h4><p>The online course notes are the main part of ESS. Each topic&rsquo;s notes take pupils through the content step by step, with explanations, diagrams, worked examples, built-in simulators, tasks and design challenges.</p><p><strong>They&rsquo;re designed to be taught from</strong> &mdash; shown on a projector or smartboard so you can talk the class through explanations, go over worked examples and demonstrate the simulators live, then set the tasks that follow. <strong>They also work for independent study:</strong> each topic is self-contained, so pupils can work through the notes on their own for catch-up, homework, working at their own pace or revision.</p><h4>Finding your way around</h4><p>Click <strong>National 5</strong> at the top of any page to see all 11 topics. Each topic page has up to four cards:</p><ul><li><strong>Course notes</strong> &mdash; the main online notes.</li><li><strong>Printable course notes</strong> &mdash; a PDF version for pupils without a device or who prefer paper.</li><li><strong>Simulator</strong> &mdash; for topics that have one (electronics, pneumatics, drive systems and structures).</li><li><strong>Answers to course notes</strong> &mdash; all the answers for the topic on one page, locked with a password.</li></ul><h4>Learning outcomes</h4><p>Each topic&rsquo;s course notes open with a <strong>Learning outcomes</strong> box: a list of &ldquo;I can&hellip;&rdquo; statements for the topic. Pupils tick each one when they feel confident, and the box shows how many they&rsquo;ve ticked. Each outcome has a <strong>Go to section</strong> link to the matching part of the notes. Outcomes that are not examined are shown in grey.</p><h4>How pupils complete the tasks</h4><ul><li><strong>Answers save automatically</strong> in the browser on that device, so pupils can close the page and carry on later on the same device.</li><li><strong>Handing in work:</strong> <strong>Download my answers (PDF)</strong> creates a PDF of the pupil&rsquo;s name and answers to submit through Teams, Google Classroom or email.</li><li><strong>Moving between devices:</strong> answers aren&rsquo;t stored online, but every downloaded answers PDF carries a hidden copy of all the pupil&rsquo;s answers and learning outcome ticks. On another device, pupils click <strong>Load my answers</strong> (in the &ldquo;Your answers to tasks&rdquo; box before the first task) and choose that PDF to carry on where they left off. Pupils should keep the original downloaded file &mdash; a PDF edited and re-saved in another app may lose its hidden answers.</li><li><strong>Shared devices:</strong> other pupils using the same browser profile could see saved answers, so ask pupils to download their answers at the end of each lesson.</li><li><strong>Simulators</strong> are built into many tasks; use the full-screen button for more space.</li></ul><h4>Checking answers</h4><p>Each topic has its own <strong>answers password</strong>, so teachers decide when pupils can check their work. Once a pupil enters it, they can:</p><ul><li>use the <strong>Show answer</strong> button that appears under each task in the course notes, to check their work as they go (pupils are asked to try a task before revealing its answer), or <strong>Show all</strong> answers at once &mdash; useful on the smartboard; or</li><li>open the <strong>Answers to course notes</strong> page for the whole topic.</li></ul><p>Teachers can find each topic&rsquo;s answers password at the top of the teacher copy of its answers in the Teacher area. Once a pupil knows a password it may spread around the class, so release it only when you&rsquo;re happy for everyone to see the answers.</p><h4>Printable notes</h4><p>Each topic&rsquo;s printable notes start with a <strong>cover sheet</strong>: space for the pupil&rsquo;s name and class, and the learning outcomes with tick boxes for pupils to track their progress. The cover also has a QR code to the online notes. Pupils without a device write their answers in their jotters; QR codes throughout the notes open each simulator on a phone or tablet.</p><h4>The Teacher area</h4><p>Click <strong>Teacher area</strong> (top right), then <strong>Open teacher resources</strong>, and enter the <strong>teacher password</strong> we send to verified teachers. For each topic you&rsquo;ll find the teacher copy of the answers (with the topic&rsquo;s answers password), a 25-mark unit test and its marking instructions, plus a summary of all the learning outcomes for course planning. <strong>Please never share the teacher password, or any of these files, with pupils.</strong></p><h4>Suggested ways to use ESS</h4><ul><li><strong>Teaching from the front</strong> with the course notes on the projector or smartboard.</li><li><strong>Classwork:</strong> pupils work through the tasks on their own devices, checking answers when you release the password.</li><li><strong>Independent study</strong> for catch-up, homework or working at their own pace.</li><li><strong>Self-assessment</strong> with the learning outcome ticks.</li><li><strong>End of topic:</strong> the unit test and marking instructions from the Teacher area.</li><li><strong>Revision</strong> with the printable notes.</li></ul><h4>Feedback and help</h4><p>If you spot a mistake, a broken link or anything confusing, or have an idea for something new, please use the <strong>Feedback</strong> button or email us. We&rsquo;d also love to hear from anyone who could help develop materials for <strong>Higher and Advanced Higher</strong>.</p>' +
+          '<h3>User guide</h3><p>Engineering Science Scotland (ESS) is a free resource for National 5 Engineering Science. It covers all 11 topics, with everything a class needs to work through the course, and a password-protected area for teachers.</p><h4>The course notes: the heart of the site</h4><p>The online course notes are the main part of ESS. Each topic&rsquo;s notes take pupils through the content step by step, with explanations, diagrams, worked examples, built-in simulators, tasks and design challenges.</p><p><strong>They&rsquo;re designed to be taught from</strong> &mdash; shown on a projector or smartboard so you can talk the class through explanations, go over worked examples and demonstrate the simulators live, then set the tasks that follow. <strong>They also work for independent study:</strong> each topic is self-contained, so pupils can work through the notes on their own for catch-up, homework, working at their own pace or revision.</p><h4>Finding your way around</h4><p>Click <strong>National 5</strong> at the top of any page to see all 11 topics. Each topic page has up to four cards:</p><ul><li><strong>Course notes</strong> &mdash; the main online notes.</li><li><strong>Printable course notes</strong> &mdash; a PDF version for pupils without a device or who prefer paper.</li><li><strong>Simulator</strong> &mdash; for topics that have one (electronics, pneumatics, drive systems and structures).</li><li><strong>Answers to course notes</strong> &mdash; all the answers for the topic on one page, locked with a password.</li></ul><h4>Learning outcomes</h4><p>Each topic&rsquo;s course notes open with a <strong>Learning outcomes</strong> box: a list of &ldquo;I can&hellip;&rdquo; statements for the topic. Pupils tick each one when they feel confident, and the box shows how many they&rsquo;ve ticked. Each outcome has a <strong>Go to section</strong> link to the matching part of the notes. Outcomes that are not examined are shown in grey.</p><h4>How pupils complete the tasks</h4><ul><li><strong>Answers save automatically</strong> in the browser on that device, so pupils can close the page and carry on later on the same device.</li><li><strong>Handing in work:</strong> <strong>Download my answers (PDF)</strong> creates a PDF of the pupil&rsquo;s name and answers to submit through Teams, Google Classroom or email.</li><li><strong>Moving between devices:</strong> answers aren&rsquo;t stored online, but every downloaded answers PDF carries a hidden copy of all the pupil&rsquo;s answers and learning outcome ticks. On another device, pupils click <strong>Load my answers</strong> (in the &ldquo;Your answers to tasks&rdquo; box before the first task) and choose that PDF to carry on where they left off. Pupils should keep the original downloaded file &mdash; a PDF edited and re-saved in another app may lose its hidden answers.</li><li><strong>Shared devices:</strong> other pupils using the same browser profile could see saved answers, so ask pupils to download their answers at the end of each lesson.</li><li><strong>Simulators</strong> are built into many tasks; use the full-screen button for more space.</li></ul><h4>Checking answers</h4><p>Each topic has its own <strong>answers password</strong>, so teachers decide when pupils can check their work. Once a pupil enters it, they can:</p><ul><li>use the <strong>Show answer</strong> button that appears under each task in the course notes, to check their work as they go (pupils are asked to try a task before revealing its answer), or <strong>Show all</strong> answers at once &mdash; useful on the smartboard; or</li><li>open the <strong>Answers to course notes</strong> page for the whole topic.</li></ul><p>Teachers can find each topic&rsquo;s answers password at the top of the teacher copy of its answers in the Teacher area. Once a pupil knows a password it may spread around the class, so release it only when you&rsquo;re happy for everyone to see the answers.</p><h4>Printable notes</h4><p>Each topic&rsquo;s printable notes start with a <strong>cover sheet</strong>: space for the pupil&rsquo;s name and class, and the learning outcomes with tick boxes for pupils to track their progress. The cover also has a QR code to the online notes. Pupils without a device write their answers in their jotters; QR codes throughout the notes open each simulator on a phone or tablet.</p><h4>The Teacher area</h4><p>Click <strong>Teacher area</strong> (top right), then <strong>Open teacher resources</strong>, and enter the <strong>teacher password</strong> we send to verified teachers. For each topic you&rsquo;ll find the teacher copy of the answers (with the topic&rsquo;s answers password), a 25-mark unit test and its marking instructions, plus a summary of all the learning outcomes for course planning. <strong>Please never share the teacher password, or any of these files, with pupils.</strong></p><h4>Suggested ways to use ESS</h4><ul><li><strong>Teaching from the front</strong> with the course notes on the projector or smartboard.</li><li><strong>Classwork:</strong> pupils work through the tasks on their own devices, checking answers when you release the password.</li><li><strong>Independent study</strong> for catch-up, homework or working at their own pace.</li><li><strong>Self-assessment</strong> with the learning outcome ticks.</li><li><strong>End of topic:</strong> the unit test and marking instructions from the Teacher area.</li><li><strong>Revision</strong> with the printable notes.</li></ul><h4>Terms of use</h4><p><strong>Free for educational use.</strong> Everything on Engineering Science Scotland is free for schools, colleges, teachers, pupils and parents to use for education. It must not be used in any profit-making situation (for example selling it, including it in paid-for courses, tutoring or products, or putting it behind a paywall) without written permission from Engineering Science Scotland.</p><h4>Feedback and help</h4><p>If you spot a mistake, a broken link or anything confusing, or have an idea for something new, please use the <strong>Feedback</strong> button or email us. We&rsquo;d also love to hear from anyone who could help develop materials for <strong>Higher and Advanced Higher</strong>.</p>' +
           '<a class="essfb-email" href="mailto:' + FEEDBACK_EMAIL + '?subject=ESS%20user%20guide">&#x2709;&#xFE0F; ' + FEEDBACK_EMAIL + '</a>' +
         '</div>';
       var st = document.createElement('style');
@@ -592,22 +594,119 @@ function renderTeacherDocs(topicKey, containerId) {
 
 
 /* ============================================================
-   HIGHER: UNDER-DEVELOPMENT WARNING
-   Any link marked data-ess-higher-warning (the Higher card on the
-   home page and the Higher tab outside the Higher section) shows a
-   pop-up before going to Higher. Every Higher page also shows a
-   slim notice at the top. Remove both when Higher is finished:
-   set HIGHER_IN_DEVELOPMENT = false.
+   HIGHER: CHECKED / NOT YET CHECKED NOTES
+   Each Higher topic's course notes are either 'checked' (reviewed
+   by a second ESS teacher) or not yet checked.
+
+   HOW TO MARK A TOPIC AS CHECKED:
+   1. Open js/site.js in Notepad
+   2. Find the topic in NOTES_CHECKED below (e.g. 'higher-digital')
+   3. Change false to true
+   4. Save and push via GitHub Desktop
+   This one change updates, for that topic:
+   - the tick beside it in the left-hand menu
+   - the badge on its Course notes card
+   - the banner at the top of its course notes and answers pages
+   The pop-up and the slim notice on Higher pages explain what the
+   labels mean. When every topic is checked, set
+   HIGHER_IN_DEVELOPMENT = false to remove the pop-up and notice.
    ============================================================ */
+var NOTES_CHECKED = {
+  'higher-systems-approach':  false,
+  'higher-energy-efficiency': false,
+  'higher-roles-impacts':     false,
+  'higher-analogue':          true,
+  'higher-digital':           false,
+  'higher-control':           false,
+  'higher-drive-systems':     false,
+  'higher-pneumatics':        false,
+  'higher-structures-forces': true,
+  'higher-materials':         false
+};
 var HIGHER_IN_DEVELOPMENT = true;
+
+(function () {
+  var css = document.createElement('style');
+  css.textContent =
+    '.esschk{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;margin:6px 0 0 4px;vertical-align:middle;}' +
+    '.esschk-yes{background:#dcfce7;color:#166534;}' +
+    '.esschk-no{background:#fff7ed;color:#9a3412;border:1px solid #fed7aa;}' +
+    '.esschk-tick{color:#16a34a;font-weight:700;margin-left:6px;font-size:12px;}' +
+    '.esschk-draft{color:#c2410c;font-size:9.5px;font-weight:600;margin-left:6px;text-transform:uppercase;letter-spacing:.04em;opacity:.85;}' +
+    '.esschk-key{font-size:11px;line-height:1.5;color:#64748b;padding:8px 16px 14px;border-top:1px solid #e2e8f0;margin-top:8px;}' +
+    '.esschk-key b{color:#16a34a;} .esschk-key i{color:#c2410c;font-style:normal;font-weight:600;}' +
+    '.esschk-banner{border-radius:10px;padding:10px 14px;margin:0 0 18px;font-size:13px;line-height:1.55;}' +
+    '.esschk-banner.yes{background:#f0fdf4;border:1px solid #bbf7d0;color:#166534;}' +
+    '.esschk-banner.no{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;}' +
+    '@media print{.esschk-banner.yes{display:none!important;}}';
+  document.head.appendChild(css);
+
+  function keyFromPath(path) {
+    var m = path.match(/higher\/[a-z-]+\/([a-z-]+)\/(index|course-notes|answers)\.html/);
+    return m ? 'higher-' + m[1] : null;
+  }
+  function notesAvailable(key) {
+    return typeof RESOURCE_STATUS !== 'undefined' && RESOURCE_STATUS[key] && RESOURCE_STATUS[key].notes === 'available';
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    // 1. Left-hand menu: tick or "draft" beside each Higher topic, plus a key
+    var sb = document.getElementById('sidebar'), marked = 0;
+    if (sb) {
+      sb.querySelectorAll('a.sb-subtopic').forEach(function (a) {
+        var key = keyFromPath(a.getAttribute('href') || '');
+        if (!key || !(key in NOTES_CHECKED) || !notesAvailable(key) || a.querySelector('.esschk-tick,.esschk-draft')) return;
+        var span = document.createElement('span');
+        if (NOTES_CHECKED[key]) { span.className = 'esschk-tick'; span.textContent = '\u2713'; span.title = 'Course notes checked'; }
+        else { span.className = 'esschk-draft'; span.textContent = 'draft'; span.title = 'Course notes not yet checked'; }
+        a.appendChild(span); marked++;
+      });
+      if (marked && !sb.querySelector('.esschk-key')) {
+        var k = document.createElement('div'); k.className = 'esschk-key';
+        k.innerHTML = '<b>\u2713</b> notes checked<br><i>DRAFT</i> notes not yet checked';
+        sb.appendChild(k);
+      }
+    }
+
+    var key = keyFromPath(location.pathname);
+    if (!key || !(key in NOTES_CHECKED) || !notesAvailable(key)) return;
+    var ok = NOTES_CHECKED[key];
+
+    // 2. Topic page: second badge on the Course notes card
+    var card = document.querySelector('.resource-type-card[data-resource="notes"]');
+    if (card && !card.querySelector('.esschk')) {
+      var b = document.createElement('span');
+      b.className = 'esschk ' + (ok ? 'esschk-yes' : 'esschk-no');
+      b.textContent = ok ? '\u2713 Checked' : 'Not yet checked';
+      card.appendChild(b);
+    }
+
+    // 3. Course notes and answers pages: banner under the title
+    if (/(course-notes|answers)\.html$/.test(location.pathname) && !document.querySelector('.esschk-banner')) {
+      var host = document.querySelector('.notes-wrap') || document.querySelector('.content');
+      if (host) {
+        var ban = document.createElement('div');
+        ban.className = 'esschk-banner ' + (ok ? 'yes' : 'no');
+        ban.innerHTML = ok
+          ? '&#x2705; <strong>Checked.</strong> These notes have been checked by Engineering Science teachers. If you still spot a mistake, please tell us using the Feedback button.'
+          : '&#x1F4DD; <strong>Draft &mdash; not yet checked.</strong> These notes are complete and ready to use, but they have not yet been checked by a second Engineering Science teacher, so they may contain errors. Please use the Feedback button to tell us about anything that needs fixing.';
+        var after = host.querySelector('.back-link');
+        if (after && after.nextSibling) host.insertBefore(ban, after.nextSibling); else host.insertBefore(ban, host.firstChild);
+      }
+    }
+  });
+})();
+
 (function () {
   if (!HIGHER_IN_DEVELOPMENT) return;
   var css = document.createElement('style');
   css.textContent =
     '.esshw-overlay{position:fixed;inset:0;background:rgba(15,23,42,.55);z-index:2000000;display:flex;align-items:center;justify-content:center;padding:20px;}' +
-    '.esshw-box{background:#fff;border-radius:14px;max-width:460px;width:100%;padding:26px 26px 22px;box-shadow:0 20px 60px rgba(0,0,0,.35);font-family:inherit;}' +
+    '.esshw-box{background:#fff;border-radius:14px;max-width:480px;width:100%;padding:26px 26px 22px;box-shadow:0 20px 60px rgba(0,0,0,.35);font-family:inherit;max-height:90vh;overflow:auto;}' +
     '.esshw-box h2{margin:0 0 10px;font-size:18px;color:#9a3412;display:flex;align-items:center;gap:8px;}' +
     '.esshw-box p{margin:0 0 12px;font-size:14px;line-height:1.6;color:#334155;}' +
+    '.esshw-box ul{margin:0 0 12px 18px;padding:0;font-size:14px;line-height:1.6;color:#334155;}' +
+    '.esshw-box .esshw-small{font-size:12.5px;color:#64748b;}' +
     '.esshw-btns{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px;}' +
     '.esshw-btns button{font-family:inherit;font-size:14px;font-weight:600;padding:10px 16px;border-radius:8px;cursor:pointer;}' +
     '.esshw-back{background:#fff;color:#334155;border:1.5px solid #cbd5e1;}' +
@@ -622,9 +721,12 @@ var HIGHER_IN_DEVELOPMENT = true;
     var o = document.createElement('div');
     o.className = 'esshw-overlay'; o.id = 'esshw-overlay';
     o.innerHTML = '<div class="esshw-box" role="dialog" aria-modal="true" aria-labelledby="esshw-title">' +
-      '<h2 id="esshw-title">&#x26A0;&#xFE0F; Higher is under development</h2>' +
-      '<p>The Higher section of Engineering Science Scotland is still being written. Some topics are incomplete, and the content has <strong>not yet been checked</strong>.</p>' +
-      '<p>It <strong>cannot be relied upon</strong> to meet Qualifications Scotland standards. Please treat it as an early preview, and use the Feedback button to tell us about anything that needs fixing.</p>' +
+      '<h2 id="esshw-title">&#x26A0;&#xFE0F; Higher: notes are still being checked</h2>' +
+      '<p>The Higher section of Engineering Science Scotland is new. Every Higher topic&rsquo;s course notes are labelled to show where they are in our checking process:</p>' +
+      '<ul><li><strong style="color:#166534;">&#x2713; Checked</strong> &mdash; the notes have been checked by Engineering Science teachers.</li>' +
+      '<li><strong style="color:#9a3412;">Draft (not yet checked)</strong> &mdash; the notes are complete and ready to use, but have not yet been checked by a second teacher and may contain errors.</li></ul>' +
+      '<p>You&rsquo;ll see the label beside each topic in the menu, on each topic&rsquo;s Course notes card and at the top of the notes. Some topics are still being written. ESS is written by teachers and is not endorsed by Qualifications Scotland, so please use your professional judgement and the Feedback button to tell us about anything that needs fixing.</p>' +
+      '<p class="esshw-small">All ESS materials are free for educational use, but must not be used in a profit-making situation without written permission.</p>' +
       '<div class="esshw-btns"><button type="button" class="esshw-back">Go back</button><button type="button" class="esshw-go">I understand &mdash; continue to Higher</button></div></div>';
     function close() { o.remove(); document.removeEventListener('keydown', onKey); }
     function onKey(e) { if (e.key === 'Escape') close(); }
@@ -649,8 +751,30 @@ var HIGHER_IN_DEVELOPMENT = true;
       if (!main || document.querySelector('.esshw-bar')) return;
       var bar = document.createElement('div');
       bar.className = 'esshw-bar';
-      bar.innerHTML = '&#x26A0;&#xFE0F; <strong>Higher is under development.</strong> Content may be incomplete, has not yet been checked and cannot be relied upon to meet Qualifications Scotland standards.';
+      bar.innerHTML = '&#x26A0;&#xFE0F; <strong>Higher notes are still being checked.</strong> Topics marked <strong>&#x2713; Checked</strong> have been checked by Engineering Science teachers; topics marked <strong>Draft</strong> are ready to use but may contain errors.';
       main.insertBefore(bar, main.firstChild);
     });
   }
 })();
+
+/* ============================================================
+   TERMS OF USE
+   A one-line notice added to the footer of every page (or to the
+   bottom of pages without a footer). Change the wording here.
+   ============================================================ */
+var ESS_TERMS = 'All content on Engineering Science Scotland is free for educational use. It must not be used in any profit-making situation without written permission.';
+document.addEventListener('DOMContentLoaded', function () {
+  if (document.querySelector('.ess-terms')) return;
+  var st = document.createElement('style');
+  st.textContent = '.ess-terms{font-size:11.5px;line-height:1.5;color:#94a3b8;}' +
+    '.footer .ess-terms{flex-basis:100%;order:3;margin-top:6px;}' +
+    '.footer{flex-wrap:wrap;}' +
+    'div.ess-terms-solo{text-align:center;padding:14px 20px 18px;border-top:1px solid #e2e8f0;background:#fff;}';
+  document.head.appendChild(st);
+  var t = document.createElement('div');
+  t.className = 'ess-terms';
+  t.innerHTML = '&#x1F4D8; ' + ESS_TERMS;
+  var f = document.querySelector('footer.footer, .footer');
+  if (f) f.appendChild(t);
+  else { t.className += ' ess-terms-solo'; document.body.appendChild(t); }
+});
