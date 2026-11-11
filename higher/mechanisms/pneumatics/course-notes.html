@@ -1,45 +1,1327 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Course notes &mdash; Pneumatics &mdash; Engineering Science Scotland</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Pneumatics &mdash; Higher Course Notes &mdash; Engineering Science Scotland</title>
   <link rel="stylesheet" href="../../../../css/style.css">
   <style>
-    .resource-page{max-width:680px;margin:0 auto;padding:32px 32px 64px;}
-    .open-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:28px 24px;text-align:center;margin-bottom:16px;}
-    .open-card-icon{font-size:36px;margin-bottom:10px;}
-    .open-card-title{font-family:"DM Serif Display",serif;font-size:20px;letter-spacing:-.4px;margin-bottom:6px;}
-    .open-card-sub{font-size:13px;color:var(--gray-600);margin-bottom:20px;line-height:1.5;}
-    .open-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-400);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .open-btn:hover{background:var(--teal-600);}
-    .sim-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;background:var(--teal-800);color:var(--white);border-radius:var(--radius-md);font-size:14px;font-weight:500;text-decoration:none;transition:all var(--transition);}
-    .sim-btn:hover{background:var(--teal-600);}
-    .back-link{display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:20px;}
-    .back-link:hover{color:var(--teal-800);}
-    .info-note{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:var(--radius-md);padding:12px 16px;font-size:12px;color:var(--gray-600);line-height:1.6;margin-top:12px;}
+    .notes-wrap { max-width: 860px; margin: 0 auto; padding: 16px 32px 80px; }
+    .back-link { display:inline-flex;align-items:center;gap:5px;font-size:13px;color:var(--teal-600);text-decoration:none;margin-bottom:6px; }
+    .back-link:hover { color:var(--teal-800); }
+
+    .notes-h1 { font-family:"DM Serif Display",serif; font-size:26px; letter-spacing:-.5px; color:var(--teal-800); margin:32px 0 12px; padding-bottom:8px; border-bottom:2px solid var(--teal-100); scroll-margin-top:100px; }
+    .notes-h2 { font-family:"DM Serif Display",serif; font-size:20px; color:var(--teal-600); margin:24px 0 10px; scroll-margin-top:100px; }
+    .notes-h3 { font-size:15px; font-weight:600; color:var(--gray-900); margin:18px 0 8px; }
+    .notes-p { font-size:14px; color:var(--gray-600); line-height:1.8; margin-bottom:12px; }
+    .notes-p strong { color:var(--gray-900); }
+    .notes-ul, .notes-ol { padding-left:22px; margin-bottom:14px; }
+    .notes-ul li, .notes-ol li { font-size:14px; color:var(--gray-600); line-height:1.7; margin-bottom:5px; }
+
+    .key-point { background:var(--teal-50); border-left:4px solid var(--teal-400); border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:14px; color:var(--teal-800); font-weight:500; }
+    .warning { background:#FFF7ED; border-left:4px solid #F97316; border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#9A3412; }
+    .spec-note { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:10px 14px; margin:10px 0; font-size:12px; color:var(--gray-500); }
+    .spec-note strong { color:var(--gray-900); }
+    .extension-note { background:#faf5ff; border-left:4px solid #8b5cf6; border-radius:0 var(--radius-md) var(--radius-md) 0; padding:12px 16px; margin:14px 0; font-size:13px; color:#5b21b6; }
+
+    /* Component symbol grid */
+    .comp-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(140px,1fr)); gap:12px; margin:16px auto; justify-items:center; justify-content:center; text-align:center; }
+    .comp-card-sym { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-md); padding:14px 12px 10px; text-align:center; width:100%; }
+    .comp-card-sym svg { display:block; margin:0 auto 8px; }
+    .comp-card-sym .comp-name { font-size:12px; font-weight:700; color:var(--gray-900); }
+    .comp-card-sym .comp-unit { font-size:11px; color:var(--gray-400); margin-top:2px; }
+
+    /* Formula boxes */
+    .formula-box { background:white; border:2px solid var(--teal-100); border-radius:var(--radius-lg); padding:16px 20px; margin:16px 0; text-align:center; }
+    .formula { font-size:18px; font-weight:600; color:var(--teal-800); font-family:monospace; letter-spacing:.02em; }
+    .formula-sub { font-size:12px; color:var(--gray-400); margin-top:6px; }
+    .triangle-box { display:inline-block; background:var(--teal-50); border:2px solid var(--teal-200); border-radius:var(--radius-md); padding:16px 24px; margin:10px 0; }
+    .triangle-top { font-size:20px; font-weight:900; color:var(--teal-800); font-family:monospace; border-bottom:2px solid var(--teal-400); padding-bottom:8px; margin-bottom:8px; text-align:center; }
+    .triangle-bottom { display:flex; gap:0; }
+    .triangle-cell { flex:1; font-size:20px; font-weight:900; color:var(--teal-800); font-family:monospace; text-align:center; padding:0 8px; }
+    .triangle-cell + .triangle-cell { border-left:2px solid var(--teal-400); }
+
+    /* Inline fraction (for any calculation that divides one value by another —
+       used instead of the ÷ symbol or a forward slash, in both formula boxes
+       and inline within worked-example steps) */
+    .frac { display:inline-flex; flex-direction:column; align-items:center; justify-content:center; vertical-align:middle; margin:0 4px; line-height:1.25; font-weight:inherit; }
+    .frac .frac-n { padding:0 4px 2px; border-bottom:1.5px solid currentColor; }
+    .frac .frac-d { padding:2px 4px 0; }
+
+    /* Worked examples */
+    .worked-example { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:18px 20px; margin:16px 0; }
+    .worked-example-title { font-size:13px; font-weight:600; color:var(--teal-600); margin-bottom:10px; text-transform:uppercase; letter-spacing:.5px; }
+    .step { display:flex; gap:12px; margin-bottom:10px; }
+    .step-num { width:24px; height:24px; border-radius:50%; background:var(--teal-400); color:white; font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+    .step-content { font-size:13px; color:var(--gray-600); line-height:1.6; flex:1; }
+    .step-content strong { color:var(--gray-900); }
+
+    /* Tables */
+    .data-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .data-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .data-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .data-table tr:nth-child(even) td { background:var(--gray-50); }
+    .data-table td.answer-cell { background:var(--gray-50); min-width:80px; min-height:32px; }
+
+    /* Assignment boxes */
+    .assignment { background:white; border:2px solid var(--teal-400); border-radius:var(--radius-lg); margin:24px 0; overflow:hidden; }
+    .assignment-header { background:var(--teal-400); padding:12px 18px; display:flex; align-items:center; gap:10px; }
+    .assignment-title { font-size:14px; font-weight:700; color:white; }
+    .assignment-body { padding:18px 20px; }
+    .task-item { margin-bottom:16px; padding-bottom:16px; border-bottom:1px solid var(--gray-100); }
+    .task-item:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+    .task-q { font-size:13px; color:var(--gray-900); margin-bottom:8px; font-weight:500; }
+    .task-q-sub { font-size:13px; color:var(--gray-700); margin:6px 0 6px 16px; }
+    .task-space { background:var(--gray-50); border:1px dashed var(--gray-300); border-radius:var(--radius-sm); min-height:60px; padding:10px; margin-top:6px; font-size:11px; color:var(--gray-400); }
+    .task-space-sm { background:var(--gray-50); border:1px dashed var(--gray-300); border-radius:var(--radius-sm); min-height:36px; padding:8px; margin-top:4px; font-size:11px; color:var(--gray-400); }
+    .extension-task { border:2px solid #8b5cf6; border-radius:var(--radius-lg); margin:16px 0; overflow:hidden; }
+    .extension-header { background:#8b5cf6; padding:8px 14px; }
+    .extension-header-text { font-size:13px; font-weight:700; color:white; }
+    .extension-body { padding:14px 16px; background:#faf5ff; }
+
+    /* Simulator embed */
+    .sim-embed-section { margin:24px 0; }
+    .sim-embed-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; flex-wrap:wrap; gap:8px; }
+    .sim-embed-title { font-size:14px; font-weight:500; color:var(--gray-900); display:flex; align-items:center; gap:8px; }
+    .sim-embed-title span { font-size:18px; }
+    .sim-fullscreen-btn { display:inline-flex; align-items:center; gap:5px; padding:6px 14px; background:var(--teal-800); color:white; border-radius:var(--radius-md); font-size:12px; font-weight:500; text-decoration:none; transition:all var(--transition); border:none; cursor:pointer; }
+    .sim-fullscreen-btn:hover { background:var(--teal-600); }
+    .sim-wrap { border-radius:var(--radius-lg); overflow:hidden; border:2px solid #eab30840; }
+    .sim-iframe { width:100%; height:540px; border:none; display:block; }
+    .sim-credit { font-size:11px; color:var(--gray-400); margin-top:5px; text-align:right; }
+    .sim-instruction { background:#fefce8; border:1px solid #fde047; border-radius:var(--radius-md); padding:10px 14px; margin-bottom:10px; font-size:13px; color:#78350f; }
+
+    .divider { height:2px; background:linear-gradient(to right, var(--teal-100), transparent); margin:32px 0; border:none; }
+
+    /* Circuit diagram SVGs inline */
+    .circuit-figure { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:16px; margin:16px 0; text-align:center; }
+    .circuit-figure figcaption { font-size:12px; color:var(--gray-400); margin-top:8px; font-style:italic; }
+  
+    /* localStorage answer boxes */
+    .answer-box { background:var(--blue-50,#f0f9ff); border:1.5px solid #7dd3fc; border-radius:var(--radius-sm); min-height:60px; padding:10px 12px; margin-top:6px; font-size:13px; color:var(--gray-700); line-height:1.6; cursor:text; outline:none; }
+    .answer-box:empty:before { content:attr(data-placeholder); color:#94a3b8; font-style:italic; pointer-events:none; }
+    .answer-box-sm { min-height:36px; }
+    .answer-box-xs { min-height:28px; }
+    .answer-label { font-size:11px; font-weight:700; color:#0ea5e9; text-transform:uppercase; letter-spacing:.4px; margin-top:8px; margin-bottom:2px; display:flex; align-items:center; gap:8px; }
+    .saved-indicator { font-size:10px; color:#22c55e; font-weight:600; }
+    .controls-bar { display:flex; align-items:center; gap:12px; padding:12px 16px; background:var(--gray-50); border-top:1px solid var(--gray-100); margin-top:24px; border-radius:0 0 var(--radius-lg) var(--radius-lg); }
+    .controls-label { font-size:12px; color:var(--gray-400); flex:1; }
+    .ctrl-btn { padding:6px 14px; border-radius:var(--radius-md); font-size:12px; font-weight:600; border:none; cursor:pointer; }
+    .ctrl-btn-print { background:var(--teal-800); color:white; }
+    .ctrl-btn-clear { background:white; color:#ef4444; border:1.5px solid #fca5a5; }
+    .answer-cell-editable { background:var(--blue-50,#f0f9ff) !important; cursor:text; outline:none; }
+    .answer-cell-editable:empty:before { content:"Click to enter..."; color:#94a3b8; font-style:italic; pointer-events:none; }
+
+    /* ── Added per site-wide handover (26 Sep 2026) ─────────────────────────── */
+    .answer-box img { max-width:100%; height:auto; }
+    .cell-answer { outline:none; background:#f8faff; min-height:36px; }
+    .cell-answer:focus { box-shadow:inset 0 0 0 2px var(--teal-400); background:white; }
+    .data-table tr:nth-child(even) td.cell-answer { background:#f8faff; }
+    .task-download-row { background:var(--gray-50); border-top:1px solid var(--gray-200); padding:9px 20px; text-align:right; }
+    .task-download-btn { display:inline-flex; align-items:center; gap:6px; background:white; border:1.2px solid var(--teal-400); color:var(--teal-800); font-size:10px; font-weight:700; padding:7px 12px; border-radius:999px; cursor:pointer; transition:background .15s; }
+    .task-download-btn:hover { background:var(--teal-50); }
+    .task-download-btn:disabled { opacity:.6; cursor:wait; }
+    /* Specification tables in the challenges */
+    .spec-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .spec-table th { background:transparent; padding:8px 6px 8px 0; width:32px; vertical-align:top; }
+    .spec-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); vertical-align:top; }
+    .data-badge { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; border-radius:50%; background:var(--teal-50); color:var(--teal-800); border:1px solid var(--teal-100); font-size:11px; font-weight:700; }
+    .ctrl-btn-download-all { background:#eef2ff; color:#4338ca; }
+    .ctrl-btn-download-all:hover { background:#e0e7ff; }
+
+    /* Table of contents: floating button + slide-out panel */
+    .toc-fab { position:fixed; right:24px; bottom:76px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#c2410c; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); }
+    .toc-fab:hover { background:#9a3412; }
+    .toc-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; }
+    .toc-overlay.open { display:block; }
+    .toc-panel { position:fixed; top:0; right:-340px; width:320px; max-width:85vw; height:100%; background:white; z-index:999998; box-shadow:-8px 0 30px rgba(0,0,0,.2); transition:right .25s ease; display:flex; flex-direction:column; }
+    .toc-panel.open { right:0; }
+    .toc-panel-header { padding:18px 20px 14px; border-bottom:1px solid var(--gray-200); display:flex; align-items:center; justify-content:space-between; }
+    .toc-panel-header h3 { margin:0; font-size:16px; color:var(--teal-800); }
+    .toc-panel-close { background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .toc-panel-close:hover { color:var(--gray-700); }
+    .toc-list { overflow-y:auto; padding:8px 0 20px; }
+    .toc-list a { display:block; padding:10px 20px; font-size:14px; color:var(--gray-700); text-decoration:none; border-left:3px solid transparent; }
+    .toc-list a:hover { background:var(--teal-50); color:var(--teal-800); }
+    .toc-list a.toc-active { border-left-color:var(--teal-500,var(--teal-600)); background:var(--teal-50); color:var(--teal-800); font-weight:700; }
+    .toc-list a.toc-sub { padding-left:36px; font-size:13px; color:var(--gray-500); }
+
+    /* Pupil name: floating button + small popup */
+    .name-fab { position:fixed; right:24px; bottom:132px; z-index:999999; display:flex; align-items:center; justify-content:center; gap:8px; width:120px; box-sizing:border-box; background:#4f46e5; color:white; border:none; border-radius:999px; padding:12px 14px; font-size:13px; font-weight:700; cursor:pointer; box-shadow:0 6px 18px rgba(0,0,0,.25); overflow:hidden; }
+    .name-fab-icon { font-size:14px; line-height:1; flex-shrink:0; }
+    #nameFabLabel { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:78px; text-align:left; }
+    .name-fab:hover { background:#3730a3; }
+    .name-overlay { display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:999997; align-items:center; justify-content:center; padding:20px; }
+    .name-overlay.open { display:flex; }
+    .name-panel { background:white; border-radius:14px; max-width:360px; width:100%; padding:24px 24px 22px; box-shadow:0 20px 60px rgba(0,0,0,.35); position:relative; }
+    .name-panel-close { position:absolute; top:10px; right:12px; background:none; border:none; font-size:22px; line-height:1; color:var(--gray-400); cursor:pointer; padding:4px 6px; }
+    .name-panel-close:hover { color:var(--gray-700); }
+    .name-panel h3 { margin:0 0 8px; font-size:16px; color:#4338ca; }
+    .name-panel p { margin:0 0 14px; font-size:13px; line-height:1.5; color:var(--gray-600); }
+    .name-panel input { width:100%; box-sizing:border-box; padding:10px 12px; border:1.5px solid var(--gray-200); border-radius:8px; font-size:14px; margin-bottom:12px; }
+    .name-panel input:focus { outline:none; border-color:#4338ca; }
+    .name-panel-save { width:100%; background:#4338ca; color:white; border:none; border-radius:8px; padding:10px; font-size:14px; font-weight:700; cursor:pointer; }
+    .name-panel-save:hover { background:#3730a3; }
+    .name-panel-saved-msg { font-size:12px; color:#16a34a; margin-top:8px; text-align:center; display:none; }
+    .name-panel-saved-msg.show { display:block; }
+
+    @media print {
+      .topbar,.sidebar,.footer,.controls-bar,.storage-status,.saved-indicator,.toc-fab,.toc-panel,.toc-overlay,.name-fab,.name-overlay,.task-download-row,.page-nav,.exemplar-thumb,.exemplar-modal { display:none!important; }
+      .layout { display:block!important; }
+      .main { margin:0!important; padding:0!important; }
+      .answer-box { border:1.5px solid #94a3b8!important; background:white!important; }
+      .cell-answer { background:white!important; }
+    }
+    .graph-btn { display:inline-flex; align-items:center; gap:6px; background:#c2410c; color:white; border:none; border-radius:999px; padding:8px 14px; font-size:12.5px; font-weight:700; cursor:pointer; font-family:inherit; }
+    .graph-btn:hover { background:#9a3412; }
+    .sym-wrap { display:flex; gap:8px; align-items:flex-start; }
+    .sym-wrap .answer-box { flex:1; min-width:0; align-self:stretch; }
+    .sym-bar { flex-shrink:0; display:flex; flex-direction:column; gap:4px; align-items:stretch; }
+    .sym-bar.two-col { display:grid; grid-template-columns:1fr 1fr; align-content:start; }
+    .sym-bar.two-col .sym-title { grid-column:1/-1; text-align:center; }
+    .sym-btn sub { font-size:9px; }
+    .sym-title { font-size:9px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.4px; }
+    .sym-btn { font:inherit; font-size:13px; line-height:1; min-width:30px; height:26px; padding:0 5px; white-space:nowrap; border:1px solid var(--gray-200); border-radius:6px; background:white; color:var(--gray-900); cursor:pointer; }
+    .sym-btn:hover { background:var(--teal-50); border-color:var(--teal-400); }
+    @media (max-width:640px) { .sym-wrap { flex-direction:column; align-items:stretch; } .sym-bar, .sym-bar.two-col { display:flex; flex-direction:row; flex-wrap:wrap; justify-content:flex-end; } }
+    @media print { .sym-bar { display:none!important; } }
+    @media print { .graph-btn { display:none!important; } }
+      /* Pin table */
+    .pin-table { width:100%; border-collapse:collapse; margin:14px 0 20px; font-size:13px; }
+    .pin-table th { background:var(--teal-800); color:white; padding:8px 12px; text-align:left; }
+    .pin-table td { padding:8px 12px; border-bottom:1px solid var(--gray-200); color:var(--gray-600); }
+    .pin-table tr:nth-child(even) td { background:var(--gray-50); }
+    .pin-in { color:#0369a1; font-weight:700; }
+    .pin-out { color:#15803d; font-weight:700; }
+
+    /* Comparison cards */
+    .compare-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:16px 0; }
+    .compare-card { background:white; border:1px solid var(--gray-200); border-radius:10px; overflow:hidden; }
+    .compare-card-header { padding:10px 14px; font-size:13px; font-weight:700; color:white; }
+    .compare-card-body { padding:12px 14px; font-size:13px; color:var(--gray-600); line-height:1.6; }
+    .compare-card-body li { margin-bottom:4px; }
+
+    /* Spec box — for written specifications */
+    .spec-box { background:#f0fdf4; border:2px solid #86efac; border-radius:8px; padding:14px 16px; margin:14px 0; }
+    .spec-box-title { font-size:12px; font-weight:700; color:#15803d; text-transform:uppercase; letter-spacing:.5px; margin-bottom:8px; }
+    .spec-box ol, .spec-box ul { margin:0; padding-left:20px; }
+    .spec-box li { font-size:13px; color:#166534; line-height:1.7; margin-bottom:2px; }
+
+    .code-pair { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:14px 0 6px; }
+    .code-col { min-width:0; }
+    .code-head { font-size:11px; font-weight:700; color:var(--teal-600); text-transform:uppercase; letter-spacing:.5px; margin-bottom:4px; }
+    .code-block { background:#0f172a; color:#e2e8f0; padding:12px 14px; border-radius:8px; font-size:12.5px; line-height:1.55; overflow-x:auto; margin:0; font-family:Consolas,Menlo,'Courier New',monospace; white-space:pre; }
+    .code-block .fault { color:#fca5a5; font-weight:700; text-decoration:underline; }
+    .code-note { font-size:12px; color:var(--gray-500); margin:2px 0 14px; }
+    @media (max-width:700px) { .code-pair { grid-template-columns:1fr; } }
+    .cmd-table td:first-child { font-weight:600; color:var(--gray-900); }
+    .cmd-table code, .notes-p code, .notes-ul code, .task-q code, .key-point code { background:var(--gray-50); border:1px solid var(--gray-200); border-radius:4px; padding:0 4px; font-size:12.5px; }
+    .fig { margin:16px 0 18px; text-align:center; }
+    .fig-cap { font-size:12px; color:var(--gray-500); margin-top:6px; }
+    .fig-row { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:14px; align-items:end; margin:14px 0; }
+    .beyond { border:2px dashed var(--gray-200); border-radius:12px; padding:14px 18px; margin:22px 0; background:#fcfcfd; }
+    .beyond-title { font-size:12px; font-weight:700; color:#7c3aed; text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; }
+    .exam-tip { background:#eef2ff; border-left:4px solid #6366f1; border-radius:0 8px 8px 0; padding:12px 16px; margin:14px 0; font-size:14px; color:#3730a3; }
+    .exam-tip strong { color:#312e81; }
+    .marks { float:right; font-weight:700; color:var(--gray-500); font-size:12px; }
+    .fig img{border:1px solid var(--gray-200);}
+    .fig-row .fig{margin:6px 0;}
   </style>
+<script>window.ESS_PHOTOS = true;</script>
 </head>
 <body>
-<nav class="topbar"><a href="../../../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../../../n5/index.html" class="level-tab" data-level="n5">National 5</a><a href="../../../../higher/index.html" class="level-tab active" data-level="higher">Higher</a><a href="../../../../ah/mechanisms/index.html" class="level-tab" data-level="ah">Advanced Higher</a></div><div class="topbar-right"><a href="../../../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+<nav class="topbar">
+  <a href="../../../../index.html" class="logo">
+    <div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div>
+  </a>
+  <div class="level-tabs">
+    <a href="../../../../n5/index.html" class="level-tab" data-level="n5">National 5</a>
+    <a href="../../../../higher/index.html" class="level-tab active" data-level="higher">Higher</a>
+    <a href="../../../../ah/mechanisms/index.html" class="level-tab">Advanced Higher</a>
+  </div>
+  <div class="topbar-right">
+    <a href="../../../../teacher/login.html" class="teacher-btn">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      Teacher area
+    </a>
+  </div>
+</nav>
+
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
-    <div class="hero">
-      <div class="hero-label">Higher &middot; Mechanisms and Structures</div>
-      <h1 class="hero-title">Pneumatics</h1>
-      <p class="hero-sub">Course notes</p>
-      <div class="breadcrumb"><a href="../../../../index.html">Home</a> &rsaquo; <a href="../../../../higher/index.html">Higher</a> &rsaquo; <a href="../index.html">Mechanisms and Structures</a> &rsaquo; <a href="index.html">Pneumatics</a> &rsaquo; <span>Course notes</span></div>
-    </div>
-    <div class="content">
-      <div class="resource-page">
-        <a href="index.html" class="back-link">&larr; Back to Pneumatics</a>
-        <div class="open-card" style="background:var(--gray-50);border:1px dashed var(--gray-200);"><div class="open-card-icon">&#x1F4C2;</div><div class="open-card-title" style="color:var(--gray-600);">Course notes in preparation</div><div class="open-card-sub">The Higher course notes for this topic are being written and will appear here.</div></div>
+    <div class="hero" id="top" style="position:relative;">
+      <div style="position:absolute;top:14px;right:20px;font-size:11px;color:#94a3b8;">Last updated: 11 November 2026, 10:41</div>
+      <div class="hero-label">Higher &middot; Mechanisms and Structures &rsaquo; Pneumatics</div>
+      <h1 class="hero-title">&#x1F4A8; Pneumatics &mdash; Course Notes</h1>
+      <p class="hero-sub">Sequential control with up to three cylinders, signal conflict and cascades, electro-pneumatics, calculations and fault finding</p>
+      <div class="breadcrumb">
+        <a href="../../../../index.html">Home</a> &rsaquo;
+        <a href="../../index.html">Higher</a> &rsaquo;
+        <a href="../index.html">Mechanisms and Structures</a> &rsaquo;
+        <a href="index.html">Pneumatics</a> &rsaquo;
+        <span>Course notes</span>
       </div>
+    </div>
+
+    <div class="content">
+    <div class="notes-wrap">
+      <a href="index.html" class="back-link">&larr; Back to Pneumatics</a>
+
+      <div class="key-point"><strong>These notes build on National 5.</strong> At Higher you are expected to be confident with everything in the <a href="../../../n5/mechanisms/pneumatics/course-notes.html">National 5 Pneumatics notes</a>: the 3/2 valve and its ports, single- and double-acting cylinders, T-pieces, AND and OR control, restrictors, air bleeds, the 5/2 valve, semi- and fully automatic circuits, time delays, solenoid valves and cylinder force calculations. Section 1 is a quick recap with Higher-style questions. If any of it feels unfamiliar, go back to the National 5 notes first.</div>
+      <p class="notes-p">At National 5 most circuits control one cylinder, or two cylinders that move one after the other. At Higher you will analyse and describe circuits with <strong>up to three cylinders</strong> working in a <strong>sequence</strong>, find out why some sequences jam, and use <strong>cut-off valves</strong> and <strong>cascade circuits</strong> to fix them. You will also control pneumatic systems from a <strong>microcontroller</strong>, carry out calculations that combine pneumatics with energy, power and stress, and find faults in circuit diagrams. In the question paper, pneumatics is often worth 8 or more marks in a single question, and most of those marks come from describing a circuit clearly with the correct terms.</p>
+      <p class="notes-p">Every circuit in these notes can be run in the simulator. The valve labels (V1, V2, VA&hellip;) in each simulator match the circuit diagrams, so you can use the simulator to check your descriptions. You can also build your own circuits in the <a href="../../../../simulators/pneumatics.html" target="_blank">full No Pressure simulator</a>.</p>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-1">Section 1: What You Should Already Know</h1>
+      <p class="notes-p">Pneumatic systems use <strong>compressed air</strong> to move <strong>cylinders</strong>. A compressor fills a receiver, and the air is distributed by a manifold. <strong>Main air</strong> drives the cylinders; lower-pressure <strong>pilot air</strong> carries signals between valves and is drawn as a dashed line. Pressure is given in N&#8203;mm<sup>&minus;2</sup> (a typical school supply is about 0.2&ndash;0.6 Nmm<sup>&minus;2</sup>).</p>
+      <table class="data-table cmd-table"><tr><th>Component</th><th>What you need to remember</th><th>N5 notes</th></tr><tr><td>3/2 valve</td><td>3 ports, 2 states. Port 1 = main air in, port 2 = output, port 3 = exhaust. Named by ports/states, then actuator, then return: e.g. &ldquo;3/2 push-button actuated, spring-return valve&rdquo;.</td><td><a href="../../../n5/mechanisms/pneumatics/course-notes.html#section-2">Section 2</a></td></tr><tr><td>Single-acting cylinder (SAC)</td><td>Air outstrokes it; an internal spring instrokes it. Controlled by a 3/2 valve.</td><td><a href="../../../n5/mechanisms/pneumatics/course-notes.html#section-2">Section 2</a></td></tr><tr><td>T-piece / shuttle valve</td><td>A T-piece splits one supply. A shuttle valve gives OR control and stops air escaping through the other input.</td><td><a href="../../../n5/mechanisms/pneumatics/course-notes.html#section-4">Section 4</a></td></tr><tr><td>AND control</td><td>Two 3/2 valves in series: air passes only when both are actuated.</td><td><a href="../../../n5/mechanisms/pneumatics/course-notes.html#section-5">Section 5</a></td></tr><tr><td>Uni-directional restrictor (UDR)</td><td>Restricts flow in one direction only. Conventionally fitted to restrict the <em>exhaust</em> air leaving a cylinder.</td><td><a href="../../../n5/mechanisms/pneumatics/course-notes.html#section-6">Section 6</a></td></tr><tr><td>Air bleed</td><td>A sensor: blocking the bleed builds pressure that operates a diaphragm-actuated valve.</td><td><a href="../../../n5/mechanisms/pneumatics/course-notes.html#section-7">Section 7</a></td></tr><tr><td>5/2 valve</td><td>5 ports, 2 states. Port 1 main air; ports 4 and 2 to the two sides of a DAC; ports 5 and 3 exhaust. Usually pilot-operated on both sides (14 and 12) and stays in its last state.</td><td><a href="../../../n5/mechanisms/pneumatics/course-notes.html#section-8">Section 8</a></td></tr><tr><td>Double-acting cylinder (DAC)</td><td>Main air drives both the outstroke and the instroke; controlled by a 5/2 valve.</td><td><a href="../../../n5/mechanisms/pneumatics/course-notes.html#section-8">Section 8</a></td></tr><tr><td>Semi- / fully automatic circuits</td><td>Roller (limit) valves at the ends of the stroke switch the 5/2 valve automatically.</td><td><a href="../../../n5/mechanisms/pneumatics/course-notes.html#section-9">Sections 9&ndash;10</a></td></tr><tr><td>Time delay</td><td>A UDR slowly fills a reservoir; the valve switches only when the reservoir pressure is high enough.</td><td><a href="../../../n5/mechanisms/pneumatics/course-notes.html#section-11">Section 11</a></td></tr><tr><td>Solenoid valve</td><td>An electrical signal moves the valve, so a microcontroller can control the circuit.</td><td><a href="../../../n5/mechanisms/pneumatics/course-notes.html#section-12">Section 12</a></td></tr><tr><td>Cylinder force</td><td>F = PA. On the instroke of a DAC the rod reduces the effective area.</td><td><a href="../../../n5/mechanisms/pneumatics/course-notes.html#section-13">Section 13</a></td></tr></table>
+      <div class="key-point">Always say <strong>actuate</strong>, not &ldquo;activate&rdquo;. A valve is <strong>actuated</strong>; a 5/2 valve <strong>changes state</strong>; a cylinder <strong>outstrokes</strong> (+) or <strong>instrokes</strong> (&minus;); a valve sends a <strong>pilot signal</strong>. These are the words the marking instructions look for.</div>
+      <p class="notes-p">Remember why a double-acting cylinder needs a 5/2 valve: the 5/2 valve always connects main air to <em>one</em> side of the piston and exhausts the <em>other</em>, and because a pilot-pilot 5/2 valve stays in its last state, a short pilot signal is enough to make the cylinder complete its stroke and hold it there.</p>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Semi-automatic circuit (recap)</div>
+          <a href="../../../../simulators/pneu-semi-auto.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">This is the National 5 semi-automatic circuit. Press the push-button valve and watch the cylinder outstroke, operate the roller valve and instroke automatically. Every Higher circuit in these notes is built from this idea.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/pneu-semi-auto.html" title="No Pressure Sim &mdash; Semi-automatic circuit (recap)" loading="lazy"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V3.2.1 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+      <div class="assignment" id="assignment-task1">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 1 &mdash; Recap</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Give the full name of a 3/2 valve that is operated by a roller and returned by a spring, and state the function of each of its three ports.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t1a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t1a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Explain the difference between main air and pilot air, and how each is shown on a circuit diagram.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t1b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t1b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A double-acting cylinder is controlled by a pilot-pilot 5/2 valve. Explain why the cylinder stays outstroked after the pilot signal on port 14 is removed.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t1c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t1c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. Explain why the uni-directional restrictor in a speed control circuit is normally placed to restrict the exhaust air rather than the supply air.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t1d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t1d" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. A time delay circuit uses a UDR and a reservoir. State two ways of making the delay longer.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t1e"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t1e" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task1', 'Task 1 &mdash; Recap')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-2">Section 2: Describing Pneumatic Circuits</h1>
+      <p class="notes-p">The most common pneumatics question at Higher gives you a circuit diagram and asks you to <strong>describe its operation</strong>. It is usually worth 5 to 8 marks, with one mark for each correct step in the sequence. Marks are only given for statements that use the correct terminology and refer to the components by name or number.</p>
+      <h2 class="notes-h2">Sequence notation</h2>
+      <p class="notes-p">Engineers write a sequence of cylinder movements in a short form. Each cylinder is given a letter; <strong>+</strong> means it outstrokes and <strong>&minus;</strong> means it instrokes. So <strong>A+ B+ A&minus; B&minus;</strong> means: A outstrokes, then B outstrokes, then A instrokes, then B instrokes. Movements that happen together can be bracketed: A+ B+ (A&minus; B&minus;). A time delay is often shown as a <em>t</em> between moves.</p>
+      <p class="notes-p">Roller valves are named by the cylinder position that actuates them. The roller valve labelled <strong>A+</strong> (sometimes written a<sub>1</sub>) is actuated when cylinder A is fully outstroked; the valve labelled <strong>A&minus;</strong> (a<sub>0</sub>) is actuated when A is fully instroked. At the start of a cycle all the cylinders are instroked, so all the &ldquo;&minus;&rdquo; rollers are already actuated &mdash; this matters in Section 3.</p>
+      <p class="notes-p">A <strong>displacement-step diagram</strong> shows the same sequence as a graph. Each cylinder has its own row; the line rises when it outstrokes and falls when it instrokes.</p>
+      <div class="fig"><svg viewBox="0 0 640 238" width="100%" style="max-width:640px" role="img" aria-label="Displacement-step diagram for A+ B+ A- B-" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI,Arial,sans-serif"><line x1="70.0" y1="28" x2="70.0" y2="224" stroke="#e2e8f0"/><text x="70.0" y="22" font-size="12" text-anchor="middle" fill="#94a3b8">1</text><line x1="205.0" y1="28" x2="205.0" y2="224" stroke="#e2e8f0"/><text x="205.0" y="22" font-size="12" text-anchor="middle" fill="#94a3b8">2</text><line x1="340.0" y1="28" x2="340.0" y2="224" stroke="#e2e8f0"/><text x="340.0" y="22" font-size="12" text-anchor="middle" fill="#94a3b8">3</text><line x1="475.0" y1="28" x2="475.0" y2="224" stroke="#e2e8f0"/><text x="475.0" y="22" font-size="12" text-anchor="middle" fill="#94a3b8">4</text><line x1="610.0" y1="28" x2="610.0" y2="224" stroke="#e2e8f0"/><text x="610.0" y="22" font-size="12" text-anchor="middle" fill="#94a3b8">5</text><text x="137.5" y="236" font-size="12" font-weight="700" text-anchor="middle" fill="#0f766e">A+</text><text x="272.5" y="236" font-size="12" font-weight="700" text-anchor="middle" fill="#0f766e">B+</text><text x="407.5" y="236" font-size="12" font-weight="700" text-anchor="middle" fill="#0f766e">A-</text><text x="542.5" y="236" font-size="12" font-weight="700" text-anchor="middle" fill="#0f766e">B-</text><text x="10" y="74" font-size="14" font-weight="700" fill="#1e293b">A</text><text x="64" y="38" font-size="10" text-anchor="end" fill="#94a3b8">1</text><text x="64" y="108" font-size="10" text-anchor="end" fill="#94a3b8">0</text><line x1="70" y1="34" x2="610" y2="34" stroke="#cbd5e1" stroke-dasharray="3 3"/><line x1="70" y1="104" x2="610" y2="104" stroke="#cbd5e1" stroke-dasharray="3 3"/><polyline points="70.0,104.0 205.0,34.0 340.0,34.0 475.0,104.0 610.0,104.0" fill="none" stroke="#0f766e" stroke-width="3" stroke-linejoin="round"/><text x="10" y="166" font-size="14" font-weight="700" fill="#1e293b">B</text><text x="64" y="130" font-size="10" text-anchor="end" fill="#94a3b8">1</text><text x="64" y="200" font-size="10" text-anchor="end" fill="#94a3b8">0</text><line x1="70" y1="126" x2="610" y2="126" stroke="#cbd5e1" stroke-dasharray="3 3"/><line x1="70" y1="196" x2="610" y2="196" stroke="#cbd5e1" stroke-dasharray="3 3"/><polyline points="70.0,196.0 205.0,196.0 340.0,126.0 475.0,126.0 610.0,196.0" fill="none" stroke="#0f766e" stroke-width="3" stroke-linejoin="round"/></svg><div class="fig-cap">Displacement-step diagram for A+ B+ A&minus; B&minus;. Step 5 is the same as step 1: the cycle is complete.</div></div>
+      <h2 class="notes-h2">How to describe a circuit</h2>
+      <ul class="notes-ul"><li><strong>Find the start.</strong> Look for the valve a person operates (push button, lever or foot pedal). The circuit begins there, even if it is not labelled V1.</li><li><strong>Follow the air, one step at a time.</strong> Put your finger on the diagram. For each step say which valve is actuated, where its pilot signal goes, which 5/2 valve changes state and which way the cylinder moves.</li><li><strong>Name every component at least once.</strong> Use the label on the diagram and give the full name the first time, e.g. &ldquo;the 3/2 roller valve V3&rdquo;.</li><li><strong>Use bullet points.</strong> One step per bullet makes it easy to check that you have not missed a stage.</li><li><strong>Finish the cycle.</strong> Say what happens at the end: does it stop and wait for the start button, or repeat?</li><li><strong>Explain any special component.</strong> Most questions reserve a mark for the <em>function</em> of one particular valve (a cut-off valve, a group valve, a reset valve or a time delay). Say what it does <em>and</em> why it is needed.</li></ul>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Two cylinders A+ B+ A&minus; B&minus;</div>
+          <a href="../../../../simulators/hpn-two-cylinder.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Click V1 to start the sequence (click it again to release it). Watch which roller valve each cylinder operates. Compare what you see with the worked example below.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/hpn-two-cylinder.html" title="No Pressure Sim &mdash; Two cylinders A+ B+ A&minus; B&minus;" loading="lazy"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V3.2.1 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+      <figure class="fig"><img src="images/hpn-two-cylinder.png" alt="Two-cylinder sequential circuit A+ B+ A- B- with 5/2 valves VA and VB, push-button V1 and roller valves V2, V3 and V4" style="width:100%;max-width:760px;display:block;margin:0 auto;border-radius:8px;"><figcaption class="fig-cap">Two-cylinder sequential circuit, A+ B+ A&minus; B&minus;. Dark blue lines are pressurised; light blue lines are exhausted.</figcaption></figure>
+      <div class="worked-example"><div class="worked-example-title">Worked example &mdash; describing the A+ B+ A&minus; B&minus; circuit</div><div class="step"><div class="step-num">1</div><div class="step-content">When the 3/2 push-button valve V1 is actuated, it sends a pilot signal to port 14 of the 5/2 valve VA. VA changes state and main air flows to the outstroke side of cylinder A, so <strong>A outstrokes</strong>.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">When A is fully outstroked it actuates the 3/2 roller valve V3 (A+). V3 sends a pilot signal to port 14 of 5/2 valve VB, which changes state, so <strong>B outstrokes</strong>.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">When B is fully outstroked it actuates the roller valve V2 (B+), which sends a pilot signal to port 12 of VA. VA changes back, so <strong>A instrokes</strong>.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">When A is fully instroked it actuates the roller valve V4 (A&minus;), which sends a pilot signal to port 12 of VB. VB changes back, so <strong>B instrokes</strong>.</div></div><div class="step"><div class="step-num">5</div><div class="step-content">The circuit stops with both cylinders instroked and waits for V1 to be actuated again.</div></div></div>
+      <div class="exam-tip"><strong>Exam tip:</strong> &ldquo;A goes out and hits a valve which makes B go out&rdquo; will not get the mark. &ldquo;Cylinder A outstrokes and actuates roller valve V3, which sends a pilot signal to 5/2 valve VB, changing its state so that cylinder B outstrokes&rdquo; will.</div>
+      <div class="assignment" id="assignment-task2">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 2 &mdash; Sequences and descriptions</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Write the sequence notation for this process: a clamp (A) holds a plank, a drill feed (B) moves forward and back, then the clamp releases.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t2a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t2a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Sketch (or describe) the displacement-step diagram for A+ B+ B&minus; A&minus;.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t2b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t2b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. In the two-cylinder simulator, hold V1 actuated (click it and do not click it again) for the whole cycle. Describe what happens and explain why.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t2c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t2c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. The two-cylinder circuit is to be used to bend sheet metal. Cylinder B must outstroke slowly. State where a uni-directional restrictor should be fitted and which way round.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t2d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t2d" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task2', 'Task 2 &mdash; Sequences and descriptions')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-3">Section 3: Signal Conflict</h1>
+      <p class="notes-p">Change the order of the last two moves and something surprising happens. The sequence <strong>A+ B+ B&minus; A&minus;</strong> is very common (clamp, work, unwork, unclamp), but if you build it with simple roller valves it does not work at all.</p>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; A+ B+ B&minus; A&minus; with simple rollers</div>
+          <a href="../../../../simulators/hpn-signal-conflict.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Click V1 to try to start the sequence. Nothing happens! Look at the pilot lines on both sides of VA before you read on.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/hpn-signal-conflict.html" title="No Pressure Sim &mdash; A+ B+ B&minus; A&minus; with simple rollers" loading="lazy"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V3.2.1 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+      <figure class="fig"><img src="images/hpn-signal-conflict.png" alt="A+ B+ B- A- circuit built with simple roller valves, showing pilot signals on both sides of VA" style="width:100%;max-width:760px;display:block;margin:0 auto;border-radius:8px;"><figcaption class="fig-cap">A+ B+ B&minus; A&minus; built with simple roller valves. With both cylinders instroked, V2 (B&minus;) is already actuated.</figcaption></figure>
+      <p class="notes-p">At the start, cylinder B is instroked, so the roller valve V2 (B&minus;) is actuated and sends a <strong>continuous</strong> pilot signal to port 12 of VA. When V1 is pressed, VA receives a pilot signal on port 14 as well. A pilot-pilot 5/2 valve with a signal on <strong>both</strong> sides cannot change state &mdash; it stays (or &ldquo;locks&rdquo;) in the state it is already in &mdash; so cylinder A never moves. This is called <strong>signal conflict</strong> (or opposing signals).</p>
+      <p class="notes-p">There is a second conflict later in the cycle. When B outstrokes it actuates V4 (B+), which signals port 12 of VB to instroke B. But A is still outstroked, so V3 (A+) is still sending a signal to port 14 of VB. VB has signals on both sides and B stays outstroked.</p>
+      <h2 class="notes-h2">Checking a sequence for conflict</h2>
+      <p class="notes-p">Signal conflict happens whenever a limit valve that signals one side of a 5/2 valve is <strong>still actuated</strong> when the signal for the other side arrives. You can check any sequence by listing, for each step, which signal is needed and whether the opposite signal is still present.</p>
+      <table class="data-table cmd-table"><tr><th>Step</th><th>Signal needed</th><th>Opposite signal still present?</th><th>Result</th></tr><tr><td>A+</td><td>V1 &rarr; VA port 14</td><td>V2 (B&minus;) is actuated because B is instroked &rarr; VA port 12</td><td><strong style="color:#b91c1c">Conflict</strong></td></tr><tr><td>B+</td><td>V3 (A+) &rarr; VB port 14</td><td>V4 (B+) is not actuated</td><td>OK</td></tr><tr><td>B&minus;</td><td>V4 (B+) &rarr; VB port 12</td><td>V3 (A+) is still actuated because A is still out &rarr; VB port 14</td><td><strong style="color:#b91c1c">Conflict</strong></td></tr><tr><td>A&minus;</td><td>V2 (B&minus;) &rarr; VA port 12</td><td>V1 released</td><td>OK</td></tr></table>
+      <div class="key-point">A quick check: <strong>signal conflict happens when a cylinder&rsquo;s two movements are separated by the movement of another cylinder that has not yet returned</strong>. In A+ B+ A&minus; B&minus; the moves alternate (each cylinder&rsquo;s limit valve has been released by the time it matters), so there is no conflict. In A+ B+ B&minus; A&minus;, B moves out and straight back in while A is held out, so A+ is still signalling.</div>
+      <p class="notes-p">There are three ways to remove signal conflict, covered in the next two sections: make the conflicting signal a short <strong>pulse</strong> (an idle-return roller trip), <strong>cut off</strong> the air supply to the conflicting valve at the right moment, or split the circuit into <strong>groups</strong> with a cascade.</p>
+      <div class="assignment" id="assignment-task3">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Task 3 &mdash; Signal conflict</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Explain, using the term &ldquo;signal conflict&rdquo;, why pressing V1 in the A+ B+ B&minus; A&minus; circuit has no effect.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t3a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t3a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Use a signal table to decide whether the sequence A+ B+ C+ A&minus; B&minus; C&minus; (A+ signals B, B+ signals C, C+ signals A&minus;, A&minus; signals B&minus;, B&minus; signals C&minus;) has any signal conflicts.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t3b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t3b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Decide whether the sequence A+ A&minus; B+ B&minus; would have a signal conflict if built with simple roller valves. Explain your answer.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t3c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t3c" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task3', 'Task 3 &mdash; Signal conflict')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-4">Section 4: Cut-off Valves and Roller Trips</h1>
+      <h2 class="notes-h2">Idle-return roller trips</h2>
+      <p class="notes-p">A <strong>roller-trip</strong> (idle-return roller) valve has a hinged roller. It is actuated only when the cylinder rod passes it in <strong>one</strong> direction; in the other direction the roller folds out of the way. It is mounted just before the end of the stroke, so the cylinder passes over it and stops beyond it. The result is a short <strong>pulse</strong> of pilot air instead of a continuous signal, so it can never be &ldquo;left on&rdquo; to oppose a later signal.</p>
+      <div class="fig-row">
+      <figure class="fig"><img src="../../../n5/mechanisms/pneumatics/images/actuator-roller.png" alt="Roller actuator symbol" style="width:100%;max-width:140px;display:block;margin:0 auto;border-radius:8px;"><figcaption class="fig-cap">Roller: actuated in both directions, held on at the end of the stroke</figcaption></figure>
+      <figure class="fig"><img src="../../../n5/mechanisms/pneumatics/images/actuator-roller-trip.png" alt="Roller-trip actuator symbol" style="width:100%;max-width:140px;display:block;margin:0 auto;border-radius:8px;"><figcaption class="fig-cap">Roller trip: one direction only, gives a pulse</figcaption></figure>
+      </div>
+      <p class="notes-p">Roller trips are simple, but the pulse is short and depends on the speed of the cylinder, so a fast cylinder may not give the 5/2 valve enough air to switch. Exam questions therefore more often use a <strong>cut-off valve</strong>. (In the No Pressure simulator the roller-trip valve behaves like an ordinary roller, so the simulator circuits use cut-off valves and cascades.)</p>
+      <h2 class="notes-h2">Cut-off valves</h2>
+      <p class="notes-p">A <strong>cut-off valve</strong> is a 3/2 valve placed in the <em>supply</em> to a limit valve (or in its pilot line) so that the limit valve&rsquo;s signal is removed at the moment it would cause a conflict. It is effectively AND control: the signal exists only while <em>both</em> valves are actuated. Many past papers describe its function as &ldquo;cutting off the pilot signal&rdquo; or &ldquo;ensuring the 5/2 valve does not receive conflicting signals&rdquo;.</p>
+      <p class="notes-p">In the circuit below, cylinder A clamps a workpiece, B outstrokes to stamp it, and then both instroke together: A+ B+ (A&minus; B&minus;). Without V2, roller V3 (A+) would still be signalling port 14 of VB when V4 (B+) tries to instroke B, and VB would lock.</p>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Cut-off valve</div>
+          <a href="../../../../simulators/hpn-cut-off.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Click V1 once to start, then click it again to release it. Watch the main air line from V2 to V3: as soon as cylinder B moves off V2 (B&minus;), V3 loses its air supply, so the pilot signal to VB port 14 is cut off and V4 can instroke both cylinders.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/hpn-cut-off.html" title="No Pressure Sim &mdash; Cut-off valve" loading="lazy"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V3.2.1 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+      <figure class="fig"><img src="images/hpn-cut-off.png" alt="Two-cylinder circuit A+ B+ then A- B- together with cut-off valve V2 supplying roller valve V3" style="width:100%;max-width:760px;display:block;margin:0 auto;border-radius:8px;"><figcaption class="fig-cap">A+ B+ (A&minus; B&minus;) with a cut-off valve. V2 (B&minus;) supplies main air to V3 (A+).</figcaption></figure>
+      <div class="worked-example"><div class="worked-example-title">Worked example &mdash; describing the cut-off circuit</div><div class="step"><div class="step-num">1</div><div class="step-content">When the push-button valve V1 is actuated, it sends a pilot signal to port 14 of VA, which changes state, and <strong>cylinder A outstrokes</strong>.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">Cylinder B is instroked, so roller valve V2 (B&minus;) is actuated and supplies main air to roller valve V3. When A is fully outstroked it actuates V3, which sends a pilot signal to port 14 of VB. VB changes state and <strong>cylinder B outstrokes</strong>.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">As soon as B starts to outstroke, V2 is no longer actuated, so the air supply to V3 is <strong>cut off</strong> and the pilot signal to port 14 of VB is removed (even though V3 is still actuated).</div></div><div class="step"><div class="step-num">4</div><div class="step-content">When B is fully outstroked it actuates roller valve V4 (B+), which sends a pilot signal through the T-piece to port 12 of both VA and VB. Both valves change state and <strong>cylinders A and B instroke</strong> together.</div></div><div class="step"><div class="step-num">5</div><div class="step-content">The function of V2 is to make sure VB does not receive conflicting pilot signals on ports 14 and 12 at the same time, which would stop cylinder B instroking.</div></div></div>
+      <div class="assignment" id="assignment-task4">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 4 &mdash; Cut-off valves</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Explain the difference between a roller valve and a roller-trip valve, and why a roller trip can prevent signal conflict.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t4a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t4a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. In the cut-off circuit, V2 is removed and V3 is connected directly to main air. Describe and explain what happens when V1 is pressed.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t4b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t4b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Using the simulator (full screen), modify the two-cylinder circuit from Section 2 so that the sequence is A+ B+ B&minus; A&minus;, using one cut-off valve and one roller trip shown on your diagram. Describe where each is placed.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t4c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t4c" data-placeholder="Type your answer here..." style="min-height:120px;"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task4', 'Task 4 &mdash; Cut-off valves')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-5">Section 5: Cascade Circuits</h1>
+      <p class="notes-p">A <strong>cascade</strong> circuit removes signal conflict completely by splitting the sequence into <strong>groups</strong>. The limit valves for each group are supplied with air from a separate <strong>group line</strong>, and an extra 5/2 valve &mdash; the <strong>group valve</strong> (or cascade valve) &mdash; makes sure only one group line has air at a time. A limit valve in a group that is switched off has no air supply, so it cannot send an opposing signal, no matter whether it is actuated.</p>
+      <h2 class="notes-h2">Designing a cascade</h2>
+      <ul class="notes-ul"><li>Write the sequence and split it into groups so that <strong>no letter appears twice in the same group</strong>. A+ B+ B&minus; A&minus; becomes <strong>group I: A+ B+</strong> | <strong>group II: B&minus; A&minus;</strong>.</li><li>Two groups need one group valve. Port 4 supplies group line I and port 2 supplies group line II. At rest the circuit is in the last group, so group II has air.</li><li>The <strong>first</strong> movement of each group is signalled directly by its group line (group I &rarr; VA port 14 for A+; group II &rarr; VB port 12 for B&minus;).</li><li>The other movements are signalled by limit valves supplied from that group&rsquo;s line (A+ roller, supplied from group I, signals B+; B&minus; roller, supplied from group II, signals A&minus;).</li><li>The <strong>last</strong> limit valve of each group switches the group valve to the next group (B+ switches to group II). The start valve is placed in series with the last limit valve of the final group (A&minus;) so the cycle can only start when everything is home.</li></ul>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Cascade A+ B+ B&minus; A&minus;</div>
+          <a href="../../../../simulators/hpn-cascade.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Click V1 to start, then click it again to release it. Watch the two group lines: group I has air while A+ and B+ happen, then V5 (B+) switches the group valve G and group II has air while B&minus; and A&minus; happen.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/hpn-cascade.html" title="No Pressure Sim &mdash; Cascade A+ B+ B&minus; A&minus;" loading="lazy"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V3.2.1 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+      <figure class="fig"><img src="images/hpn-cascade.png" alt="Cascade circuit for A+ B+ B- A- with group valve G, group lines I and II, start valve V1 and roller valves V2 to V5" style="width:100%;max-width:760px;display:block;margin:0 auto;border-radius:8px;"><figcaption class="fig-cap">Cascade circuit for A+ B+ B&minus; A&minus;. At rest, group valve G supplies group II.</figcaption></figure>
+      <div class="worked-example"><div class="worked-example-title">Worked example &mdash; describing the cascade</div><div class="step"><div class="step-num">1</div><div class="step-content">At rest both cylinders are instroked and the group valve G supplies air to group line II. When the push-button valve V1 is actuated, air passes through roller valve V2 (A&minus;, actuated because A is instroked) to port 14 of G. <strong>G changes state</strong>, so group line I has air and group line II is exhausted.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">Group line I sends a pilot signal to port 14 of VA, which changes state, so <strong>cylinder A outstrokes</strong>. (V3 (B&minus;) is still actuated but has no air because group II is exhausted, so there is no conflict.)</div></div><div class="step"><div class="step-num">3</div><div class="step-content">Cylinder A actuates roller valve V4 (A+), which is supplied by group I, and sends a pilot signal to port 14 of VB. VB changes state and <strong>cylinder B outstrokes</strong>.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">Cylinder B actuates roller valve V5 (B+), which sends a pilot signal to port 12 of G. <strong>G changes state</strong>: group I is exhausted (removing the signals from VA port 14 and from V4) and group II has air.</div></div><div class="step"><div class="step-num">5</div><div class="step-content">Group II sends a pilot signal to port 12 of VB, which changes state, so <strong>cylinder B instrokes</strong>. B actuates roller valve V3 (B&minus;), supplied by group II, which sends a pilot signal to port 12 of VA, so <strong>cylinder A instrokes</strong>.</div></div><div class="step"><div class="step-num">6</div><div class="step-content">The circuit stops in group II and waits for V1. The function of G is to supply air to only one group of valves at a time, so neither VA nor VB can ever receive pilot signals on both sides at once.</div></div></div>
+      <div class="exam-tip"><strong>Exam tip:</strong> when asked for the function of a group valve, give the <strong>cause</strong> (it controls which group of valves receives air) <strong>and the effect</strong> (so the 5/2 valves never receive conflicting signals and the cylinders cannot lock). If the question says &ldquo;describe a group air circuit&rdquo;, always refer to the changing of the groups.</div>
+      <p class="notes-p">Longer sequences may need three groups (and two group valves), but the rules are the same: one group line per group, and each group&rsquo;s last limit valve switches to the next group.</p>
+      <div class="assignment" id="assignment-task5">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 5 &mdash; Cascades</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Split each sequence into the fewest groups possible: (a) A+ B+ B&minus; A&minus; (b) A+ B+ A&minus; C+ B&minus; C&minus; (c) A+ A&minus; B+ B&minus;.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t5a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t5a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. In the cascade simulator, explain why roller valve V3 (B&minus;) does not stop cylinder A outstroking, even though it is actuated when V1 is pressed.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t5b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t5b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Explain why the start valve V1 is connected in series with roller valve V2 (A&minus;).</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t5c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t5c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. State one advantage and one disadvantage of a cascade circuit compared with using roller-trip valves.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t5d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t5d" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task5', 'Task 5 &mdash; Cascades')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-6">Section 6: Three-Cylinder Sequences and Time Delays</h1>
+      <p class="notes-p">At Higher you may be asked to describe circuits with up to <strong>three</strong> cylinders. The method is exactly the same: find the start, then follow the pilot signals one step at a time. Time delays are often included between steps, for example to let glue set or a part settle before the next operation.</p>
+      <div class="fig"><svg viewBox="0 0 640 330" width="100%" style="max-width:640px" role="img" aria-label="Displacement-step diagram for A+ B+ delay C+ A- B- C-" xmlns="http://www.w3.org/2000/svg" font-family="Segoe UI,Arial,sans-serif"><line x1="70.0" y1="28" x2="70.0" y2="316" stroke="#e2e8f0"/><text x="70.0" y="22" font-size="12" text-anchor="middle" fill="#94a3b8">1</text><line x1="147.1" y1="28" x2="147.1" y2="316" stroke="#e2e8f0"/><text x="147.1" y="22" font-size="12" text-anchor="middle" fill="#94a3b8">2</text><line x1="224.3" y1="28" x2="224.3" y2="316" stroke="#e2e8f0"/><text x="224.3" y="22" font-size="12" text-anchor="middle" fill="#94a3b8">3</text><line x1="301.4" y1="28" x2="301.4" y2="316" stroke="#e2e8f0"/><text x="301.4" y="22" font-size="12" text-anchor="middle" fill="#94a3b8">4</text><line x1="378.6" y1="28" x2="378.6" y2="316" stroke="#e2e8f0"/><text x="378.6" y="22" font-size="12" text-anchor="middle" fill="#94a3b8">5</text><line x1="455.7" y1="28" x2="455.7" y2="316" stroke="#e2e8f0"/><text x="455.7" y="22" font-size="12" text-anchor="middle" fill="#94a3b8">6</text><line x1="532.9" y1="28" x2="532.9" y2="316" stroke="#e2e8f0"/><text x="532.9" y="22" font-size="12" text-anchor="middle" fill="#94a3b8">7</text><line x1="610.0" y1="28" x2="610.0" y2="316" stroke="#e2e8f0"/><text x="610.0" y="22" font-size="12" text-anchor="middle" fill="#94a3b8">8</text><text x="108.6" y="328" font-size="12" font-weight="700" text-anchor="middle" fill="#0f766e">A+</text><text x="185.7" y="328" font-size="12" font-weight="700" text-anchor="middle" fill="#0f766e">B+</text><text x="262.9" y="328" font-size="12" font-weight="700" text-anchor="middle" fill="#dc2626">delay</text><text x="340.0" y="328" font-size="12" font-weight="700" text-anchor="middle" fill="#0f766e">C+</text><text x="417.1" y="328" font-size="12" font-weight="700" text-anchor="middle" fill="#0f766e">A-</text><text x="494.3" y="328" font-size="12" font-weight="700" text-anchor="middle" fill="#0f766e">B-</text><text x="571.4" y="328" font-size="12" font-weight="700" text-anchor="middle" fill="#0f766e">C-</text><text x="10" y="74" font-size="14" font-weight="700" fill="#1e293b">A</text><text x="64" y="38" font-size="10" text-anchor="end" fill="#94a3b8">1</text><text x="64" y="108" font-size="10" text-anchor="end" fill="#94a3b8">0</text><line x1="70" y1="34" x2="610" y2="34" stroke="#cbd5e1" stroke-dasharray="3 3"/><line x1="70" y1="104" x2="610" y2="104" stroke="#cbd5e1" stroke-dasharray="3 3"/><polyline points="70.0,104.0 147.1,34.0 224.3,34.0 301.4,34.0 378.6,34.0 455.7,104.0 532.9,104.0 610.0,104.0" fill="none" stroke="#0f766e" stroke-width="3" stroke-linejoin="round"/><text x="10" y="166" font-size="14" font-weight="700" fill="#1e293b">B</text><text x="64" y="130" font-size="10" text-anchor="end" fill="#94a3b8">1</text><text x="64" y="200" font-size="10" text-anchor="end" fill="#94a3b8">0</text><line x1="70" y1="126" x2="610" y2="126" stroke="#cbd5e1" stroke-dasharray="3 3"/><line x1="70" y1="196" x2="610" y2="196" stroke="#cbd5e1" stroke-dasharray="3 3"/><polyline points="70.0,196.0 147.1,196.0 224.3,126.0 301.4,126.0 378.6,126.0 455.7,126.0 532.9,196.0 610.0,196.0" fill="none" stroke="#0f766e" stroke-width="3" stroke-linejoin="round"/><text x="10" y="258" font-size="14" font-weight="700" fill="#1e293b">C</text><text x="64" y="222" font-size="10" text-anchor="end" fill="#94a3b8">1</text><text x="64" y="292" font-size="10" text-anchor="end" fill="#94a3b8">0</text><line x1="70" y1="218" x2="610" y2="218" stroke="#cbd5e1" stroke-dasharray="3 3"/><line x1="70" y1="288" x2="610" y2="288" stroke="#cbd5e1" stroke-dasharray="3 3"/><polyline points="70.0,288.0 147.1,288.0 224.3,288.0 301.4,288.0 378.6,218.0 455.7,218.0 532.9,218.0 610.0,288.0" fill="none" stroke="#0f766e" stroke-width="3" stroke-linejoin="round"/></svg><div class="fig-cap">Displacement-step diagram for A+ B+ (delay) C+ A&minus; B&minus; C&minus;</div></div>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Three cylinders with a time delay</div>
+          <a href="../../../../simulators/hpn-three-cylinder.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Click V1 once to start and again to release it. After B outstrokes there is a pause while the reservoir fills through the UDR, then C outstrokes. Try changing the restrictor setting (click the UDR) to change the delay.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/hpn-three-cylinder.html" title="No Pressure Sim &mdash; Three cylinders with a time delay" loading="lazy"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V3.2.1 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+      <figure class="fig"><img src="images/hpn-three-cylinder.png" alt="Three-cylinder sequential circuit with a time delay made from a uni-directional restrictor and reservoir between V5 and VC" style="width:100%;max-width:900px;display:block;margin:0 auto;border-radius:8px;"><figcaption class="fig-cap">Three cylinders: A+ B+ (delay) C+ A&minus; B&minus; C&minus;</figcaption></figure>
+      <div class="worked-example"><div class="worked-example-title">Worked example &mdash; describing the three-cylinder circuit</div><div class="step"><div class="step-num">1</div><div class="step-content">When the push-button valve V1 is actuated, it sends a pilot signal to port 14 of VA, which changes state, and <strong>cylinder A outstrokes</strong>.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">A actuates roller valve V3 (A+), which sends a pilot signal to port 14 of VB. VB changes state and <strong>cylinder B outstrokes</strong>.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">B actuates roller valve V5 (B+). Its pilot air flows through the uni-directional restrictor, which reduces the flow rate, and slowly fills the reservoir. Only when the reservoir pressure is high enough does port 14 of VC receive enough pressure to change state, so <strong>after a delay, cylinder C outstrokes</strong>.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">C actuates roller valve V2 (C+), which sends a pilot signal to port 12 of VA, so <strong>A instrokes</strong>. A actuates V4 (A&minus;), which signals port 12 of VB, so <strong>B instrokes</strong>. B actuates V6 (B&minus;), which signals port 12 of VC, so <strong>C instrokes</strong>.</div></div><div class="step"><div class="step-num">5</div><div class="step-content">When B instrokes, V5 is released and the reservoir exhausts quickly back through the free direction of the UDR, ready for the next cycle. The circuit waits for V1.</div></div></div>
+      <div class="warning"><strong>Don&rsquo;t forget:</strong> the air must flow through the <strong>restrictor before the reservoir</strong>. The reservoir then fills slowly and the 5/2 valve switches after a delay. If they are the other way round, the reservoir fills at full speed and the delay is lost (or the output is merely slowed). The UDR must also be the right way round, so the reservoir can empty quickly through its free direction at the end of the cycle.</div>
+      <div class="assignment" id="assignment-task6">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 6 &mdash; Three cylinders and delays</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Using the simulator, find a restrictor setting that gives a delay of about 5 seconds. State two other ways the delay could be increased without changing the restrictor.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t6a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t6a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. The circuit is changed so that the sequence is A+ B+ C+ (A&minus; B&minus; C&minus;), with all three cylinders instroking together. Describe the changes to the pipework.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t6b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t6b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. Draw a displacement-step diagram for the sequence A+ B+ C+ C&minus; B&minus; A&minus;, and state how many groups a cascade for it would need.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t6c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t6c" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task6', 'Task 6 &mdash; Three cylinders and delays')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-7">Section 7: Automatic Cycles and Safety</h1>
+      <p class="notes-p">A <strong>semi-automatic</strong> circuit completes one cycle each time the operator starts it. A <strong>fully automatic</strong> circuit repeats the cycle continuously. In industry an automatic machine must also have a safe way to stop: at the end of a cycle for normal stopping, and immediately in an emergency.</p>
+      <h2 class="notes-h2">Stopping at the end of a cycle</h2>
+      <p class="notes-p">In the circuit below the start push button has been replaced by a <strong>3/2 lever-actuated valve</strong> (V1) in series with the roller valve V2 (B&minus;). While the lever is on, every time B returns home V2 starts the next cycle. When the lever is switched off, the current cycle finishes and the machine stops with both cylinders instroked &mdash; it never stops half way through.</p>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Fully automatic A+ B+ A&minus; B&minus; with on/off lever</div>
+          <a href="../../../../simulators/hpn-auto-cycle.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Click V1 to switch the lever on and watch the cycle repeat. Click it again part way through a cycle: the machine finishes the cycle before it stops.</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/hpn-auto-cycle.html" title="No Pressure Sim &mdash; Fully automatic A+ B+ A&minus; B&minus; with on/off lever" loading="lazy"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V3.2.1 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+      <figure class="fig"><img src="images/hpn-auto-cycle.png" alt="Fully automatic two-cylinder circuit with lever valve V1 in series with roller valve V2" style="width:100%;max-width:760px;display:block;margin:0 auto;border-radius:8px;"><figcaption class="fig-cap">Fully automatic A+ B+ A&minus; B&minus;. V1 (lever) and V2 (B&minus;) are in series (AND control).</figcaption></figure>
+      <h2 class="notes-h2">Safety features</h2>
+      <table class="data-table cmd-table"><tr><th>Feature</th><th>How it works</th><th>Why it is used</th></tr><tr><td>Two-handed start</td><td>Two push-button valves in series (AND control), placed far apart.</td><td>Both of the operator&rsquo;s hands must be on the buttons, away from the moving parts.</td></tr><tr><td>Emergency stop / reset</td><td>A lever or mushroom-head valve that cuts off the main air (often with a 3/2 valve that exhausts the system), or sends a pilot signal through shuttle valves to the instroke (12) side of every 5/2 valve.</td><td>Stops all motion or returns every cylinder to a safe position immediately.</td></tr><tr><td>Guard interlock</td><td>A plunger valve actuated by the closed guard, in series with the start signal.</td><td>The machine cannot start with the guard open.</td></tr><tr><td>Slow movement</td><td>Uni-directional restrictors on the exhaust air.</td><td>Reduces impact forces and the risk of trapping fingers.</td></tr><tr><td>Watchdog time delay</td><td>A time delay started by the outstroke, combined with the normal limit signal through a shuttle valve (OR).</td><td>If the cylinder jams and never reaches its limit valve, the delay returns it automatically.</td></tr></table>
+      <p class="notes-p">The last idea appears in exam questions about machines that may hit an obstruction. The return signal is the <strong>OR</strong> of the roller at the end of the stroke and a delayed signal taken from the outstroke line. Normally the roller signal arrives first; if the cylinder is blocked, the time delay ends instead and the cylinder instrokes.</p>
+      <div class="assignment" id="assignment-task7">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 7 &mdash; Automatic cycles and safety</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. Explain why the lever valve V1 in the fully automatic circuit is connected in series with V2 (B&minus;) rather than directly to port 14 of VA.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t7a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t7a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A press uses a single push button to start a cylinder. Describe a modification that would stop the operator&rsquo;s hands being trapped, and explain how it works.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t7b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t7b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A cylinder in a recycling plant pushes cans into a crusher. If a can jams, the cylinder cannot reach its A+ roller valve. Describe, with reference to components, how the circuit could be modified so that the cylinder instrokes automatically after a few seconds.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t7c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t7c" data-placeholder="Type your answer here..." style="min-height:110px;"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task7', 'Task 7 &mdash; Automatic cycles and safety')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-8">Section 8: Electro-Pneumatics</h1>
+      <p class="notes-p">Most modern machines combine the two technologies: a <strong>microcontroller</strong> (or PLC) makes the decisions, and <strong>solenoid valves</strong> turn its electrical outputs into air movements. This is called <strong>electro-pneumatics</strong>. At National 5 you met a solenoid-actuated 3/2 valve (<a href="../../../n5/mechanisms/pneumatics/course-notes.html#section-12">Section 12</a>). At Higher you need to use solenoid valves with double-acting cylinders, drive them from a microcontroller, and compare electro-pneumatic and fully pneumatic control.</p>
+      <table class="data-table cmd-table"><tr><th>Valve</th><th>Behaviour</th><th>Programming</th></tr><tr><td>5/2 solenoid-actuated, spring-return</td><td>Outstrokes while the solenoid is energised; the spring instrokes the cylinder when the signal is removed.</td><td>One output pin. Keep the pin high to hold the cylinder out. If the power fails, the cylinder returns (fail-safe).</td></tr><tr><td>5/2 double-solenoid</td><td>A short pulse on one solenoid changes state; the valve stays there (it &ldquo;remembers&rdquo;) until the other solenoid is pulsed.</td><td>Two output pins. Switch one pin high briefly (e.g. 0.5 s) then low. Never set both high.</td></tr></table>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Double-solenoid 5/2 valve</div>
+          <a href="../../../../simulators/hpn-electro.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">The two SIGNAL boxes stand in for two microcontroller output pins. Click &ldquo;pin 6&rdquo; on and off: the cylinder outstrokes and stays out. Then pulse &ldquo;pin 7&rdquo;. What happens if both are on?</div>
+        <div class="sim-wrap"><iframe class="sim-iframe" src="../../../../simulators/hpn-electro.html" title="No Pressure Sim &mdash; Double-solenoid 5/2 valve" loading="lazy"></iframe></div>
+        <div class="sim-credit">No Pressure Sim V3.2.1 &mdash; Peter Strain, Bearsden Academy</div>
+      </div>
+      <h2 class="notes-h2">Interfacing</h2>
+      <p class="notes-p">A microcontroller output pin can only supply a few milliamps, but a valve solenoid typically needs 100&ndash;500 mA at 12 V or 24 V. The pin therefore drives a <strong>MOSFET</strong> (or a transistor) which switches the solenoid, with a <strong>diode</strong> across the coil to protect the MOSFET from the back emf when the coil is switched off. This is the MOSFET switching circuit from the <a href="../../electronics/analogue/course-notes.html#section-5">Higher Analogue Electronics notes</a>; the program is written in the same way as in the <a href="../../electronics/control/course-notes.html">Higher Programmable Control notes</a>.</p>
+      <div class="worked-example"><div class="worked-example-title">Worked example &mdash; solenoid current</div><div class="step"><div class="step-num">1</div><div class="step-content">A 24 V solenoid valve coil has a resistance of 96 &Omega;. It is switched by a MOSFET with an on-resistance of 0.50 &Omega;. Calculate the current in the coil and the power dissipated in the coil.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">I = V &divide; R<sub>total</sub> = 24 &divide; (96 + 0.50) = 0.249 A = <strong>0.25 A</strong></div></div><div class="step"><div class="step-num">3</div><div class="step-content">P = I<sup>2</sup>R = 0.249<sup>2</sup> &times; 96 = 5.95 W = <strong>6.0 W</strong></div></div></div>
+      <h2 class="notes-h2">Pneumatic or microcontroller control?</h2>
+      <table class="data-table"><tr><th>Fully pneumatic control</th><th>Electro-pneumatic (microcontroller) control</th></tr><tr><td>No electricity, so no sparks: safe in explosive, dusty or wet environments (mines, paint shops, food washdown areas).</td><td>Far fewer valves and pipes, so smaller, cheaper and quicker to build.</td></tr><tr><td>Robust and reliable; components are hard-wearing and last a long time.</td><td>The sequence, timings and logic can be changed by reprogramming rather than rebuilding the circuit.</td></tr><tr><td>Overload-safe: a blocked cylinder simply stalls.</td><td>Can use a wide range of sensors (analogue, light, temperature) and count, compare and store values.</td></tr><tr><td>Easy to understand and fault-find by following the air.</td><td>Long or precise time delays are easy to set and repeat.</td></tr></table>
+      <p class="notes-p">Pneumatic systems are also often chosen for <strong>environmental</strong> reasons: the exhaust is just air, so there is no pollution from leaks; components are hard-wearing, so fewer replacements are manufactured and less waste is produced; and less oil is used than in a hydraulic system.</p>
+      <div class="assignment" id="assignment-task8">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 8 &mdash; Electro-pneumatics</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. A double-acting cylinder is controlled by a 5/2 solenoid-actuated, spring-return valve on pin 6. Write the steps of a flowchart that outstrokes the cylinder for 2 seconds each time a switch on pin 0 is pressed.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t8a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t8a" data-placeholder="Type your answer here..." style="min-height:110px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. Explain why a diode is connected across the solenoid coil in the interface circuit.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t8b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t8b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A 12 V solenoid draws 0.30 A. Calculate its resistance and its power.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t8c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t8c" data-placeholder="Show your working..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. A paint-spraying booth uses cylinders to move car panels. Explain why a fully pneumatic control system might be chosen instead of a microcontroller.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t8d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t8d" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. Describe two reasons why a manufacturer might replace a large pneumatic sequential circuit with a microcontroller-based system.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t8e"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t8e" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task8', 'Task 8 &mdash; Electro-pneumatics')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-9">Section 9: Pneumatic Calculations</h1>
+      <p class="notes-p">You already know F = PA from <a href="../../../n5/mechanisms/pneumatics/course-notes.html#section-13">National 5</a>. At Higher, pneumatic calculations are combined with other formulae from the data booklet: work done and power (from Energy and Efficiency), and stress and factor of safety (from Materials). Work in mm and Nmm<sup>&minus;2</sup> and the force comes out in newtons.</p>
+      <div class="formula-box"><div class="formula" style="font-size:18px;font-weight:700;color:var(--teal-800);">P = F &divide; A &nbsp;&nbsp;&nbsp; A = &pi;d<sup>2</sup> &divide; 4</div></div>
+      <div class="formula-box"><div class="formula" style="font-size:18px;font-weight:700;color:var(--teal-800);">E<sub>w</sub> = Fd &nbsp;&nbsp;&nbsp; P = E &divide; t &nbsp;&nbsp;&nbsp; &sigma; = F &divide; A &nbsp;&nbsp;&nbsp; FoS = ultimate stress &divide; working stress</div></div>
+      <figure class="fig"><img src="../../../n5/mechanisms/pneumatics/images/diagram-dac-piston-areas.png" alt="Piston and rod areas of a double-acting cylinder" style="width:100%;max-width:640px;display:block;margin:0 auto;border-radius:8px;"><figcaption class="fig-cap">On the instroke, the effective area is the piston area minus the rod area</figcaption></figure>
+      <div class="worked-example"><div class="worked-example-title">Worked example 1 &mdash; outstroke and instroke force</div><div class="step"><div class="step-num">1</div><div class="step-content">A double-acting cylinder has a 50 mm bore and a 20 mm rod. The supply pressure is 0.60 Nmm<sup>&minus;2</sup>. Calculate the outstroke and instroke forces.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">A<sub>piston</sub> = &pi; &times; 50<sup>2</sup> &divide; 4 = 1963 mm<sup>2</sup>; F<sub>out</sub> = 0.60 &times; 1963 = 1178 N = <strong>1200 N</strong></div></div><div class="step"><div class="step-num">3</div><div class="step-content">A<sub>rod</sub> = &pi; &times; 20<sup>2</sup> &divide; 4 = 314 mm<sup>2</sup>; A<sub>effective</sub> = 1963 &minus; 314 = 1649 mm<sup>2</sup></div></div><div class="step"><div class="step-num">4</div><div class="step-content">F<sub>in</sub> = 0.60 &times; 1649 = 990 N = <strong>990 N</strong></div></div></div>
+      <div class="worked-example"><div class="worked-example-title">Worked example 2 &mdash; work done and power</div><div class="step"><div class="step-num">1</div><div class="step-content">The cylinder in example 1 outstrokes 150 mm against its full outstroke force in 0.40 s. Calculate the work done and the power.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">E<sub>w</sub> = Fd = 1178 &times; 0.150 = 177 J = <strong>180 J</strong> (distance in metres for joules)</div></div><div class="step"><div class="step-num">3</div><div class="step-content">P = E &divide; t = 177 &divide; 0.40 = 442 W = <strong>440 W</strong></div></div></div>
+      <div class="worked-example"><div class="worked-example-title">Worked example 3 &mdash; finding the bore for an instroke force</div><div class="step"><div class="step-num">1</div><div class="step-content">A cylinder with a 16 mm rod must pull with a force of 800 N on the instroke at 0.50 Nmm<sup>&minus;2</sup>. Calculate the minimum bore.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">A<sub>effective</sub> = F &divide; P = 800 &divide; 0.50 = 1600 mm<sup>2</sup></div></div><div class="step"><div class="step-num">3</div><div class="step-content">A<sub>rod</sub> = &pi; &times; 16<sup>2</sup> &divide; 4 = 201 mm<sup>2</sup>, so A<sub>piston</sub> = 1600 + 201 = 1801 mm<sup>2</sup></div></div><div class="step"><div class="step-num">4</div><div class="step-content">d = &radic;(4A &divide; &pi;) = &radic;(4 &times; 1801 &divide; &pi;) = 47.9 mm = <strong>48 mm</strong> (choose the next standard size up, 50 mm)</div></div></div>
+      <div class="worked-example"><div class="worked-example-title">Worked example 4 &mdash; stress in a piston rod</div><div class="step"><div class="step-num">1</div><div class="step-content">An aluminium alloy piston rod of diameter 20 mm carries a compressive load of 4.5 kN. Using the data booklet, calculate the factor of safety.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">A = &pi; &times; 20<sup>2</sup> &divide; 4 = 314 mm<sup>2</sup>; &sigma; = F &divide; A = 4500 &divide; 314 = 14.3 Nmm<sup>&minus;2</sup></div></div><div class="step"><div class="step-num">3</div><div class="step-content">Ultimate compressive stress of aluminium alloy = 300 Nmm<sup>&minus;2</sup> (data booklet)</div></div><div class="step"><div class="step-num">4</div><div class="step-content">FoS = 300 &divide; 14.3 = 21 &mdash; very high, because a long slender rod must also resist buckling and wear, not just crushing.</div></div></div>
+      <div class="assignment" id="assignment-task9">
+        <div class="assignment-header"><div class="assignment-title">&#x270F;&#xFE0F; Task 9 &mdash; Calculations</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">1. A single-acting cylinder has a 32 mm bore and is supplied at 0.40 Nmm<sup>&minus;2</sup>. At full stroke the return spring exerts 45 N. Calculate the useful force at full stroke.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t9a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t9a" data-placeholder="Show your working..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">2. A double-acting cylinder has a 63 mm bore and a 20 mm rod, at 0.60 Nmm<sup>&minus;2</sup>. Calculate the outstroke and instroke forces.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t9b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t9b" data-placeholder="Show your working..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">3. A clamp must exert 2.5 kN at 0.60 Nmm<sup>&minus;2</sup>. Calculate the minimum bore and choose a standard size from 50, 63, 80 and 100 mm.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t9c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t9c" data-placeholder="Show your working..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">4. The cylinder in question 2 outstrokes 200 mm in 0.80 s against its full outstroke force. Calculate the work done and the power.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t9d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t9d" data-placeholder="Show your working..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">5. The mild steel piston rod in question 2 is in tension during the instroke. Calculate the stress in the rod and its factor of safety (ultimate tensile stress of mild steel 430 Nmm<sup>&minus;2</sup>).</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t9e"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t9e" data-placeholder="Show your working..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">6. A gauge shows the supply pressure as 450 kPa. Convert this to Nmm<sup>&minus;2</sup>.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t9f"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t9f" data-placeholder="Show your working..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task9', 'Task 9 &mdash; Calculations')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-10">Section 10: Fault Finding</h1>
+      <p class="notes-p">Some questions give you a circuit that does not meet its specification and ask you to <strong>identify the faults</strong> and <strong>describe a correction</strong> for each. Usually there is one mark for each fault and one for each correction. Check every component against this list.</p>
+      <table class="data-table cmd-table"><tr><th>Check</th><th>Typical fault</th><th>Correction</th></tr><tr><td>Actuators</td><td>The wrong actuator, e.g. a pilot actuator on a valve operated by an air bleed, or a push button where a roller is needed.</td><td>Replace with the correct actuator (diaphragm for an air bleed; roller for a limit valve).</td></tr><tr><td>Pilot ports</td><td>A signal connected to port 12 instead of 14, so the cylinder moves the wrong way.</td><td>Connect the signal to the correct pilot port.</td></tr><tr><td>Ports 1, 2, 3</td><td>Main air connected to the output port, or no exhaust, so a SAC cannot instroke.</td><td>Main air to port 1, output from port 2, port 3 to exhaust.</td></tr><tr><td>Time delays</td><td>Reservoir before the restrictor; UDR the wrong way round; no time delay where the specification needs one.</td><td>Restrictor first, then reservoir, with the UDR restricting flow into the reservoir.</td></tr><tr><td>Speed control</td><td>No UDR where slow movement is needed, or the UDR restricting supply air.</td><td>Fit a UDR to restrict the exhaust air from the correct side of the cylinder.</td></tr><tr><td>Logic</td><td>A T-piece where OR control is needed (air escapes through the other valve&rsquo;s exhaust); valves in parallel where AND is needed.</td><td>Use a shuttle valve for OR; valves in series for AND.</td></tr><tr><td>Signal conflict</td><td>A limit valve still actuated when the opposite signal arrives.</td><td>Add a cut-off valve, a roller trip or a cascade.</td></tr></table>
+      <p class="notes-p">The specification for the circuit below is: <em>when V1 is pressed, cylinder A outstrokes; when it is fully outstroked it waits about 3 seconds and then instrokes automatically.</em></p>
+      <figure class="fig"><img src="images/fig-faulty.png" alt="Faulty single-cylinder circuit with push button V1, 5/2 valve V2, roller valve V3, uni-directional restrictor V4, T-piece and reservoir" style="width:100%;max-width:700px;display:block;margin:0 auto;border-radius:8px;"><figcaption class="fig-cap">A faulty time-delay circuit</figcaption></figure>
+      <div class="assignment" id="assignment-task10">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Task 10 &mdash; Fault finding</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Identify three faults in the circuit above and describe how each should be corrected. <span class="marks">6</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t10a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-t10a" data-placeholder="Describe the operation, step by step..." style="min-height:120px;"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-task10', 'Task 10 &mdash; Fault finding')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-11">Section 11: Exam-Style Questions</h1>
+      <p class="notes-p">These questions are written in the style of the Higher question paper, with original contexts. Try each one under timed conditions (about 1.5 minutes per mark), then check against the model answers. Give final answers to 2 significant figures with a unit.</p>
+      <h2 class="notes-h2">Question 1 &mdash; Distillery cask stamping</h2>
+      <p class="notes-p">At a Speyside distillery, each cask is clamped by cylinder A, its lid is stamped by cylinder B, and then both cylinders return together. The circuit is shown below.</p>
+      <figure class="fig"><img src="images/hpn-cut-off.png" alt="Cask stamping circuit with valves V1 to V4, VA and VB" style="width:100%;max-width:700px;display:block;margin:0 auto;border-radius:8px;"></figure>
+      <div class="assignment" id="assignment-exam1">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 1 &mdash; Cask stamping</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) Describe the operation of the circuit, starting when V1 is actuated. <span class="marks">5</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e1a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e1a" data-placeholder="Describe the operation, step by step..." style="min-height:120px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Explain the function of V2. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e1b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e1b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) The casks must be held for 2 seconds before they are stamped. Describe a modification to the circuit. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e1c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e1c" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-exam1', 'Question 1 &mdash; Cask stamping')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2">Question 2 &mdash; Fish-box lid press</h2>
+      <p class="notes-p">A fish processor in Peterhead uses a pneumatic press to fit lids. Cylinder A clamps the box, cylinder B presses the lid on and returns, then A releases the box. The cascade circuit is shown.</p>
+      <figure class="fig"><img src="images/hpn-cascade.png" alt="Fish-box press cascade circuit with group valve G and valves V1 to V5" style="width:100%;max-width:700px;display:block;margin:0 auto;border-radius:8px;"></figure>
+      <div class="assignment" id="assignment-exam2">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 2 &mdash; Lid press</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) Write the sequence of cylinder movements using sequence notation. <span class="marks">1</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e2a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e2a" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Describe the operation of the circuit, starting when V1 is actuated. <span class="marks">6</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e2b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e2b" data-placeholder="Describe the operation, step by step..." style="min-height:140px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) Explain the function of the group valve G. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e2c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e2c" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(d) The press is to be controlled by a microcontroller instead. Describe two advantages of this. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e2d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e2d" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-exam2', 'Question 2 &mdash; Lid press')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2">Question 3 &mdash; Bottling line</h2>
+      <p class="notes-p">A Glasgow soft drinks factory uses three cylinders on a bottling line: A pushes a crate into position, B lowers the capping head, and after a delay to let the caps seat, C tightens them. The circuit is shown in Section 6.</p>
+      <figure class="fig"><img src="images/hpn-three-cylinder.png" alt="Bottling line three-cylinder circuit" style="width:100%;max-width:820px;display:block;margin:0 auto;border-radius:8px;"></figure>
+      <div class="assignment" id="assignment-exam3">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 3 &mdash; Bottling line</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) Describe the operation of the circuit, with reference to all of the components. <span class="marks">7</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e3a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e3a" data-placeholder="Describe the operation, step by step..." style="min-height:150px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Explain why the restrictor is placed before the reservoir. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e3b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e3b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) Describe one environmental reason for using a pneumatic system on the bottling line. <span class="marks">1</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e3c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e3c" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-exam3', 'Question 3 &mdash; Bottling line')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2">Question 4 &mdash; Bridge maintenance clamp</h2>
+      <p class="notes-p">A maintenance gantry under a Forth bridge is held to a steel beam by a double-acting cylinder with an 80 mm bore and a 25 mm mild steel piston rod, supplied at 0.63 Nmm<sup>&minus;2</sup>.</p>
+      <div class="assignment" id="assignment-exam4">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 4 &mdash; Gantry clamp</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) Calculate the clamping (outstroke) force. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e4a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e4a" data-placeholder="Show your working..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Calculate the instroke force. <span class="marks">3</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e4b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e4b" data-placeholder="Show your working..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) Calculate the factor of safety of the piston rod when clamping (ultimate compressive stress of mild steel 430 Nmm<sup>&minus;2</sup>). <span class="marks">3</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e4c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e4c" data-placeholder="Show your working..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(d) The cylinder outstrokes 250 mm in 1.5 s against its full force. Calculate the power. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e4d"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e4d" data-placeholder="Show your working..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-exam4', 'Question 4 &mdash; Gantry clamp')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <h1 class="notes-h1" id="section-12">Section 12: Design Challenges</h1>
+      <p class="notes-p">Each challenge is an open-ended engineering problem like those in the Higher assignment. There is no single right answer: analyse the problem, design a circuit, check it for signal conflict, simulate it in the <a href="../../../../simulators/pneumatics.html" target="_blank">full No Pressure simulator</a> (use <strong>Save</strong> to keep your circuit file), and evaluate it against the specification. State every assumption you make.</p>
+      <h2 class="notes-h2" id="dc1">Challenge 1 &mdash; Harris Tweed label press</h2>
+      <p class="notes-p">A small mill on Harris presses a woven label onto each length of tweed using a heated platen.</p>
+      <table class="spec-table"><tr><th><span class="data-badge">i</span></th><td>The press must only operate when the operator uses both hands.</td></tr><tr><th><span class="data-badge">ii</span></th><td>The platen (cylinder A) must come down slowly and smoothly.</td></tr><tr><th><span class="data-badge">iii</span></th><td>It must stay down for about 4 seconds, then rise automatically.</td></tr><tr><th><span class="data-badge">iv</span></th><td>Releasing either button during the cycle must not make the press rise early or stop it half-way.</td></tr></table>
+      <div class="assignment" id="assignment-dc1">
+        <div class="assignment-header"><div class="assignment-title">&#x1F9F5; Challenge 1 &mdash; Label press</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Design, simulate and evaluate a pneumatic circuit to meet the specification. Describe how it works and justify each feature.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-dc1"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-dc1" data-placeholder="Type your answer here..." style="min-height:140px;"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc1', 'Challenge 1 &mdash; Label press')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2" id="dc2">Challenge 2 &mdash; Livingston parcel sorter</h2>
+      <p class="notes-p">A distribution centre in Livingston needs a station that lifts a parcel (A), pushes it onto a side conveyor (B), and lowers the lift.</p>
+      <table class="spec-table"><tr><th><span class="data-badge">i</span></th><td>Sequence: A+ B+ B&minus; A&minus;.</td></tr><tr><th><span class="data-badge">ii</span></th><td>The cycle must repeat automatically while a lever is on, and finish the current cycle when it is switched off.</td></tr><tr><th><span class="data-badge">iii</span></th><td>The pusher must move slowly in both directions.</td></tr></table>
+      <div class="assignment" id="assignment-dc2">
+        <div class="assignment-header"><div class="assignment-title">&#x1F4E6; Challenge 2 &mdash; Parcel sorter</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Analyse the sequence for signal conflict, then design, simulate and evaluate a circuit that meets the specification.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-dc2"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-dc2" data-placeholder="Type your answer here..." style="min-height:140px;"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc2', 'Challenge 2 &mdash; Parcel sorter')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2" id="dc3">Challenge 3 &mdash; Dundee games-controller test rig</h2>
+      <p class="notes-p">A Dundee games company tests controller buttons by pressing them thousands of times with a small cylinder. The current fully pneumatic rig is to be replaced with an electro-pneumatic one.</p>
+      <table class="spec-table"><tr><th><span class="data-badge">i</span></th><td>A double-acting cylinder presses the button 0.5 s on, 0.5 s off.</td></tr><tr><th><span class="data-badge">ii</span></th><td>The rig must stop after 5000 presses, or immediately when a stop switch is pressed.</td></tr><tr><th><span class="data-badge">iii</span></th><td>The microcontroller output pin supplies 5 V; the 24 V solenoid draws 0.25 A.</td></tr></table>
+      <div class="assignment" id="assignment-dc3">
+        <div class="assignment-header"><div class="assignment-title">&#x1F3AE; Challenge 3 &mdash; Test rig</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">Choose a suitable valve, design the interface circuit and the flowchart, and evaluate your design against the fully pneumatic rig.</div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-dc3"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-dc3" data-placeholder="Type your answer here..." style="min-height:140px;"></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-dc3', 'Challenge 3 &mdash; Test rig')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+
+      <hr class="divider">
+
+      <div class="controls-bar">
+        <span class="controls-label">&#x1F4BE; Answers saved automatically in this browser on this device.</span>
+        <button class="ctrl-btn ctrl-btn-download-all" id="downloadAllBtn" onclick="downloadAllAnswersPDF()">&#x2B07;&#xFE0F; Download ALL my answers (PDF)</button>
+        <button class="ctrl-btn ctrl-btn-print" onclick="window.print()">&#x1F5A8; Print</button>
+        <button class="ctrl-btn ctrl-btn-clear" id="btn-clear-all">&#x1F5D1; Clear all answers</button>
+      </div>
+      <div class="storage-status" id="storage-status">Last saved: never</div>
+
+      <div class="page-nav" style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; margin:36px 0 8px;">
+        <button class="ctrl-btn ctrl-btn-print" onclick="document.getElementById('top').scrollIntoView({behavior:'smooth'});">&#x2B06;&#xFE0F; Back to top</button>
+        <a href="index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">&#x2302; Main menu</a>
+        <a href="../structures-forces/index.html" class="ctrl-btn ctrl-btn-print" style="text-decoration:none; display:inline-flex;">Next section &#x2192;</a>
+      </div>
+    </div>
     </div>
   </div>
 </div>
-<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span><a href="../../../../teacher/login.html">Teacher area</a></footer>
-<script src="../../../../js/site.js"></script><script src="../../../../js/nav.js"></script>
+
+<footer class="footer">
+  <span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span>
+  <a href="../../../../teacher/login.html">Teacher area</a>
+</footer>
+
+<script src="../../../../js/site.js"></script>
+<script src="../../../../js/nav.js"></script>
 <script>document.getElementById("sidebar").innerHTML=buildSidebar("higher","../../../../");</script>
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+// ── localStorage saving for all answer boxes and cells ─────────────────────
+const STORAGE_PREFIX = 'ess_answers_';
+function saveValue(k, v) { try { localStorage.setItem(STORAGE_PREFIX + k, v); updateStatusBar(); window._essSaveFail = null; } catch(e) { window._essSaveFail = k; } }
+function loadValue(k) { try { return localStorage.getItem(STORAGE_PREFIX + k) || ''; } catch(e) { return ''; } }
+function updateStatusBar() { const el = document.getElementById('storage-status'); if (el) el.textContent = 'Last saved: ' + new Date().toLocaleTimeString(); }
+function showSaved(key) {
+  const ind = document.getElementById('ind-' + key);
+  if (!ind) return;
+  if (window._essSaveFail === key) { ind.textContent = 'Not saved: browser storage is full. Remove an image, or download your answers as a PDF now.'; ind.style.color = '#b91c1c'; return; }
+  ind.style.color = '';
+  ind.textContent = '\u2713 Saved';
+  setTimeout(() => { ind.textContent = ''; }, 2000);
+}
+function clearAllAnswers() {
+  if (!confirm('Clear all saved answers on this page? This cannot be undone.')) return;
+  document.querySelectorAll('[data-key]').forEach(el => {
+    const k = el.dataset.key;
+    if (k) { try { localStorage.removeItem(STORAGE_PREFIX + k); } catch(e) {} el.innerHTML = ''; }
+  });
+  const el = document.getElementById('storage-status');
+  if (el) el.textContent = 'Answers cleared.';
+}
+function debounce(fn, d) { let t; return function() { clearTimeout(t); const a = arguments, c = this; t = setTimeout(() => fn.apply(c, a), d); }; }
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-key]').forEach(box => {
+    const key = box.dataset.key;
+    if (!key) return;
+    const saved = loadValue(key);
+    if (saved) box.innerHTML = saved;
+    const ds = debounce(() => { saveValue(key, box.innerHTML); showSaved(key); }, 800);
+    box.addEventListener('input', ds);
+    box.addEventListener('blur', () => { saveValue(key, box.innerHTML); showSaved(key); });
+  });
+  const clearBtn = document.getElementById('btn-clear-all');
+  if (clearBtn) clearBtn.addEventListener('click', clearAllAnswers);
+});
+
+/* ── PDF export ─────────────────────────────────────────────── */
+function pdfSafe(s) {
+  if (!s) return '';
+  return String(s)
+    .replace(/[\u2018\u2019\u201B\u2032]/g, "'")
+    .replace(/[\u201C\u201D\u201F\u2033]/g, '"')
+    .replace(/[\u2013\u2014\u2212]/g, '-')
+    .replace(/\u2026/g, '...')
+    .replace(/\u00A0/g, ' ')
+    .replace(/\u2713/g, '')
+    .replace(/\u200B/g, '').replace(/\u221A/g, 'sqrt').replace(/\u2248/g, '~').replace(/\u2192/g, '->').replace(/\u03A9/g, 'ohm').replace(/\u03C3/g, 'sigma').replace(/\u03B5/g, 'epsilon').replace(/\u0394/g, 'delta').replace(/\u03C0/g, 'pi')
+    .replace(/[^\x00-\xFF]/g, '');
+}
+
+const PUPIL_NAME_KEY = 'hpn-pupil-name';
+function getPupilName() { try { return localStorage.getItem(PUPIL_NAME_KEY) || ''; } catch(e) { return ''; } }
+
+function pdfNewDoc() {
+  const doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' });
+  const state = { margin: 48, pageWidth: doc.internal.pageSize.getWidth(), pageHeight: doc.internal.pageSize.getHeight() };
+  state.usableWidth = state.pageWidth - state.margin * 2;
+  state.y = state.margin;
+  return { doc, state };
+}
+
+function pdfAddHeader(doc, state, taskLabel) {
+  doc.setFont('helvetica', 'bold'); doc.setFontSize(16); doc.setTextColor(15, 90, 68);
+  doc.text('Engineering Science Scotland - Higher Pneumatics', state.margin, state.y); state.y += 20;
+  doc.setFontSize(14); doc.setTextColor(30, 30, 30);
+  const tLines = doc.splitTextToSize(pdfSafe(taskLabel), state.usableWidth);
+  doc.text(tLines, state.margin, state.y); state.y += tLines.length * 16 + 6;
+  doc.setFont('helvetica', 'normal'); doc.setFontSize(11); doc.setTextColor(90, 90, 90);
+  const pupilName = getPupilName();
+  const todayStr = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+  const nameLine = pupilName ? ('Name: ' + pdfSafe(pupilName) + '      Date: ' + todayStr) : ('Name: _________________________________      Date: _______________');
+  doc.text(nameLine, state.margin, state.y); state.y += 20;
+  doc.setDrawColor(200, 200, 200); doc.line(state.margin, state.y, state.pageWidth - state.margin, state.y); state.y += 18;
+}
+
+function pdfEnsureSpace(doc, state, h) { if (state.y + h > state.pageHeight - state.margin) { doc.addPage(); state.y = state.margin; } }
+
+function pdfWriteAnswer(doc, state, el) {
+  const imgs = el.querySelectorAll('img'); const img = imgs.length ? imgs[0] : null;
+  imgs.forEach(function (img) {
+    if (!img.src) return;
+    try {
+      const props = doc.getImageProperties(img.src);
+      const ratio = Math.min(state.usableWidth / props.width, 260 / props.height, 1);
+      const w = props.width * ratio, h = props.height * ratio;
+      pdfEnsureSpace(doc, state, h + 14);
+      doc.addImage(img.src, props.fileType || 'PNG', state.margin, state.y, w, h);
+      state.y += h + 10;
+    } catch (e) {
+      doc.setFont('helvetica', 'italic'); doc.setFontSize(11); doc.setTextColor(160, 60, 60);
+      pdfEnsureSpace(doc, state, 14); doc.text('[Could not embed pasted image - try pasting it again]', state.margin, state.y); state.y += 16;
+    }
+  });
+  let text = pdfSafe(el.innerText.trim());
+  if (img && !text) return;
+  doc.setFontSize(11);
+  if (!text) { doc.setFont('helvetica', 'italic'); doc.setTextColor(160, 160, 160); text = '(no answer entered yet)'; }
+  else { doc.setFont('helvetica', 'normal'); doc.setTextColor(40, 40, 40); }
+  const lines = doc.splitTextToSize(text, state.usableWidth);
+  for (let i = 0; i < lines.length; i++) { pdfEnsureSpace(doc, state, 14); doc.text(lines[i], state.margin, state.y); state.y += 14; }
+  state.y += 6;
+}
+
+function pdfRenderPanelItems(doc, state, panel) {
+  const items = panel.querySelectorAll('.task-item');
+  for (let i = 0; i < items.length; i++) {
+    const qEl = items[i].querySelector('.task-q');
+    const qText = qEl ? pdfSafe(qEl.innerText.trim()) : '';
+    doc.setFont('helvetica', 'bold'); doc.setFontSize(11); doc.setTextColor(15, 90, 68);
+    const qLines = doc.splitTextToSize(qText, state.usableWidth);
+    pdfEnsureSpace(doc, state, qLines.length * 14 + 6);
+    doc.text(qLines, state.margin, state.y); state.y += qLines.length * 14 + 6;
+    const fields = items[i].querySelectorAll('[data-key]');
+    for (let f = 0; f < fields.length; f++) {
+      const lab = fields[f].dataset.label;
+      if (lab) {
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(10); doc.setTextColor(90, 90, 90);
+        pdfEnsureSpace(doc, state, 28); doc.text(pdfSafe(lab) + ':', state.margin, state.y); state.y += 13;
+      }
+      pdfWriteAnswer(doc, state, fields[f]);
+    }
+    state.y += 6;
+  }
+}
+
+function pdfAddFooters(doc, state) {
+  const n = doc.internal.getNumberOfPages();
+  for (let p = 1; p <= n; p++) {
+    doc.setPage(p); doc.setFont('helvetica', 'normal'); doc.setFontSize(9); doc.setTextColor(150, 150, 150);
+    doc.text('Page ' + p + ' of ' + n + '  -  engineeringsciencescotland.co.uk', state.margin, state.pageHeight - 24);
+  }
+}
+
+function downloadTaskPDF(panelId, taskLabel) {
+  const panel = document.getElementById(panelId); if (!panel) return;
+  const btn = panel.querySelector('.task-download-btn'); const orig = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = 'Building PDF&hellip;'; }
+  setTimeout(() => {
+    try {
+      const o = pdfNewDoc();
+      pdfAddHeader(o.doc, o.state, taskLabel);
+      pdfRenderPanelItems(o.doc, o.state, panel);
+      pdfAddFooters(o.doc, o.state);
+      o.doc.save(pdfSafe(taskLabel).replace(/[^\w\- ]+/g, '').trim().replace(/\s+/g, '-') + '.pdf');
+    } catch (err) { console.error(err); alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.'); }
+    finally { if (btn) { btn.disabled = false; btn.innerHTML = orig; } }
+  }, 30);
+}
+
+/* Keep this list in sync with the task panels on the page, in page order */
+const ALL_TASK_PANELS = [
+  ['assignment-task1', 'Task 1 \u2014 Recap'],
+  ['assignment-task2', 'Task 2 \u2014 Sequences and descriptions'],
+  ['assignment-task3', 'Task 3 \u2014 Signal conflict'],
+  ['assignment-task4', 'Task 4 \u2014 Cut-off valves'],
+  ['assignment-task5', 'Task 5 \u2014 Cascades'],
+  ['assignment-task6', 'Task 6 \u2014 Three cylinders and delays'],
+  ['assignment-task7', 'Task 7 \u2014 Automatic cycles and safety'],
+  ['assignment-task8', 'Task 8 \u2014 Electro-pneumatics'],
+  ['assignment-task9', 'Task 9 \u2014 Calculations'],
+  ['assignment-task10', 'Task 10 \u2014 Fault finding'],
+  ['assignment-exam1', 'Question 1 \u2014 Cask stamping'],
+  ['assignment-exam2', 'Question 2 \u2014 Lid press'],
+  ['assignment-exam3', 'Question 3 \u2014 Bottling line'],
+  ['assignment-exam4', 'Question 4 \u2014 Gantry clamp'],
+  ['assignment-dc1', 'Challenge 1 \u2014 Label press'],
+  ['assignment-dc2', 'Challenge 2 \u2014 Parcel sorter'],
+  ['assignment-dc3', 'Challenge 3 \u2014 Test rig']
+];
+
+function downloadAllAnswersPDF() {
+  const btn = document.getElementById('downloadAllBtn'); const orig = btn ? btn.innerHTML : '';
+  if (btn) { btn.disabled = true; btn.innerHTML = 'Building PDF&hellip;'; }
+  setTimeout(() => {
+    try {
+      const o = pdfNewDoc(), doc = o.doc, state = o.state;
+      pdfAddHeader(doc, state, 'Higher Pneumatics \u2014 All my answers');
+      for (let i = 0; i < ALL_TASK_PANELS.length; i++) {
+        const panel = document.getElementById(ALL_TASK_PANELS[i][0]); if (!panel) continue;
+        pdfEnsureSpace(doc, state, 40);
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(13); doc.setTextColor(194, 65, 12);
+        doc.text(pdfSafe(ALL_TASK_PANELS[i][1]), state.margin, state.y); state.y += 8;
+        doc.setDrawColor(230, 200, 180); doc.line(state.margin, state.y, state.pageWidth - state.margin, state.y); state.y += 16;
+        pdfRenderPanelItems(doc, state, panel); state.y += 10;
+      }
+      pdfAddFooters(doc, state);
+      doc.save('Higher-Pneumatics-All-My-Answers.pdf');
+    } catch (err) { console.error(err); alert('Sorry, something went wrong building the PDF. Please try again, or take a screenshot of your answers instead.'); }
+    finally { if (btn) { btn.disabled = false; btn.innerHTML = orig; } }
+  }, 30);
+}
+
+/* ── Contents panel ─────────────────────────────────────────── */
+function openToc() { document.getElementById('tocPanel').classList.add('open'); document.getElementById('tocOverlay').classList.add('open'); }
+function closeToc() { document.getElementById('tocPanel').classList.remove('open'); document.getElementById('tocOverlay').classList.remove('open'); }
+
+/* ── My Name ────────────────────────────────────────────────── */
+function updateNameFabLabel() { const l = document.getElementById('nameFabLabel'); if (!l) return; const n = getPupilName(); l.textContent = n ? n : 'My Name'; }
+function openNamePanel() {
+  const input = document.getElementById('nameInput'); if (input) input.value = getPupilName();
+  const msg = document.getElementById('nameSavedMsg'); if (msg) msg.classList.remove('show');
+  document.getElementById('nameOverlay').classList.add('open');
+  if (input) setTimeout(() => input.focus(), 50);
+}
+function closeNamePanel() { document.getElementById('nameOverlay').classList.remove('open'); }
+function closeNameOverlayClick(e) { if (e.target.id === 'nameOverlay') closeNamePanel(); }
+function saveNameInput() {
+  const input = document.getElementById('nameInput'); const name = input ? input.value.trim() : '';
+  try { localStorage.setItem(PUPIL_NAME_KEY, name); } catch(e) {}
+  updateNameFabLabel();
+  const msg = document.getElementById('nameSavedMsg'); if (msg) msg.classList.add('show');
+}
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') { closeToc(); closeNamePanel(); } });
+</script>
+
+<button class="toc-fab" id="tocFab" onclick="openToc()">&#x2630; Contents</button>
+
+<button class="name-fab" id="nameFab" onclick="openNamePanel()"><span class="name-fab-icon">&#x1F464;</span><span id="nameFabLabel">My Name</span></button>
+
+<div class="name-overlay" id="nameOverlay" onclick="closeNameOverlayClick(event)">
+  <div class="name-panel">
+    <button class="name-panel-close" onclick="closeNamePanel()" aria-label="Close">&times;</button>
+    <h3>Your name</h3>
+    <p>Enter your name once and it&rsquo;ll be added to the top of every task&rsquo;s downloaded PDF &mdash; no need to write it in by hand each time.</p>
+    <input type="text" id="nameInput" placeholder="e.g. Jamie Smith" maxlength="60">
+    <button class="name-panel-save" onclick="saveNameInput()">Save name</button>
+    <div class="name-panel-saved-msg" id="nameSavedMsg">&#x2713; Saved &mdash; it&rsquo;ll now appear on your PDFs</div>
+  </div>
+</div>
+
+<div class="toc-overlay" id="tocOverlay" onclick="closeToc()"></div>
+<div class="toc-panel" id="tocPanel">
+  <div class="toc-panel-header">
+    <h3>Contents</h3>
+    <button class="toc-panel-close" onclick="closeToc()" aria-label="Close">&times;</button>
+  </div>
+  <nav class="toc-list" id="tocList">
+    <a href="#section-1" onclick="closeToc()">Section 1: What You Should Already Know</a>
+    <a href="#section-2" onclick="closeToc()">Section 2: Describing Pneumatic Circuits</a>
+    <a href="#section-3" onclick="closeToc()">Section 3: Signal Conflict</a>
+    <a href="#section-4" onclick="closeToc()">Section 4: Cut-off Valves and Roller Trips</a>
+    <a href="#section-5" onclick="closeToc()">Section 5: Cascade Circuits</a>
+    <a href="#section-6" onclick="closeToc()">Section 6: Three-Cylinder Sequences and Time Delays</a>
+    <a href="#section-7" onclick="closeToc()">Section 7: Automatic Cycles and Safety</a>
+    <a href="#section-8" onclick="closeToc()">Section 8: Electro-Pneumatics</a>
+    <a href="#section-9" onclick="closeToc()">Section 9: Pneumatic Calculations</a>
+    <a href="#section-10" onclick="closeToc()">Section 10: Fault Finding</a>
+    <a href="#section-11" onclick="closeToc()">Section 11: Exam-Style Questions</a>
+    <a href="#section-12" onclick="closeToc()">Section 12: Design Challenges</a>
+    <a href="#dc1" class="toc-sub" onclick="closeToc()">Challenge 1 &mdash; Label press</a>
+    <a href="#dc2" class="toc-sub" onclick="closeToc()">Challenge 2 &mdash; Parcel sorter</a>
+    <a href="#dc3" class="toc-sub" onclick="closeToc()">Challenge 3 &mdash; Test rig</a>
+  </nav>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', updateNameFabLabel);
+(function() {
+  const nameInputEl = document.getElementById('nameInput');
+  if (nameInputEl) nameInputEl.addEventListener('keydown', function(e) { if (e.key === 'Enter') saveNameInput(); });
+  const links = Array.prototype.slice.call(document.querySelectorAll('.toc-list a'));
+  const targets = links.map(a => document.getElementById(a.getAttribute('href').slice(1))).filter(Boolean);
+  if (!targets.length || !('IntersectionObserver' in window)) return;
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const link = document.querySelector('.toc-list a[href="#' + entry.target.id + '"]');
+      if (link && entry.isIntersecting) { links.forEach(a => a.classList.remove('toc-active')); link.classList.add('toc-active'); }
+    });
+  }, { rootMargin: '-15% 0px -70% 0px', threshold: 0 });
+  targets.forEach(t => observer.observe(t));
+})();
+</script>
+
+<script>
+// ── Simulator zoom-lock + recentre ─────────────────────────────────────────
+// Trackpads/Magic Mouse send wheel events with ctrlKey=true for a pinch
+// gesture, which browsers treat as a page-zoom request. Blocking that only
+// while the pointer is over an embedded simulator stops the circuit from
+// zooming while the person scrolls the page, without disabling zoom
+// everywhere else. Each simulator also gets a small "Recentre" button that
+// reloads its iframe, which resets any pan/zoom state inside it.
+(function() {
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.sim-wrap').forEach(function(wrap) {
+      wrap.addEventListener('wheel', function(e) {
+        if (e.ctrlKey) e.preventDefault();
+      }, { passive: false });
+    });
+
+    document.querySelectorAll('.sim-embed-header').forEach(function(header) {
+      const iframe = header.closest('.sim-embed-section')?.querySelector('.sim-iframe');
+      if (!iframe) return;
+      const btn = document.createElement('button');
+      btn.className = 'sim-fullscreen-btn';
+      btn.type = 'button';
+      btn.style.background = 'var(--gray-50)';
+      btn.style.color = 'var(--teal-800)';
+      btn.style.border = '1px solid var(--gray-200)';
+      btn.textContent = '⟳ Recentre';
+      btn.addEventListener('click', function() {
+        const src = iframe.getAttribute('src');
+        iframe.setAttribute('src', src);
+      });
+      header.appendChild(btn);
+    });
+  });
+})();
+</script>
+
+
+<script>
+/* Symbol buttons beside calculation answer boxes: click to insert at the cursor */
+(function () {
+  var TITLES = {'Ω':'ohms','°':'degrees','²':'squared','µ':'micro'};
+  function place(box) {
+    var sel = window.getSelection();
+    if (!sel.rangeCount || !box.contains(sel.anchorNode)) {
+      var r = document.createRange(); r.selectNodeContents(box); r.collapse(false); sel.removeAllRanges(); sel.addRange(r);
+    }
+  }
+  function btn(label, title, fn) {
+    var b = document.createElement('button'); b.type = 'button'; b.className = 'sym-btn'; b.innerHTML = label; b.title = title; b.setAttribute('aria-label', title);
+    b.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    b.addEventListener('click', fn); return b;
+  }
+  document.querySelectorAll('.answer-box[data-symbols]').forEach(function (box) {
+    var toks = box.getAttribute('data-symbols').split('|');
+    var wrap = document.createElement('div'); wrap.className = 'sym-wrap';
+    box.parentNode.insertBefore(wrap, box); wrap.appendChild(box);
+    var bar = document.createElement('div'); bar.className = 'sym-bar' + (toks.length > 4 ? ' two-col' : '');
+    var t = document.createElement('div'); t.className = 'sym-title'; t.textContent = 'Add'; bar.appendChild(t);
+    toks.forEach(function (tok) {
+      var isHtml = tok.indexOf('<') >= 0;
+      var plain = tok.replace(/<[^>]+>/g, '');
+      bar.appendChild(btn(tok, TITLES[tok] || ('add ' + plain), function () {
+        box.focus(); place(box);
+        if (isHtml) document.execCommand('insertHTML', false, tok + '​');
+        else document.execCommand('insertText', false, tok);
+      }));
+    });
+    wrap.appendChild(bar);
+  });
+})();
+</script>
+<script>
+/* Screenshots pasted or dropped into answer boxes: read the image file itself (Safari otherwise inserts an
+   unreadable webkit-fake-url image), shrink it so it fits in browser storage, and warn if an answer cannot be saved. */
+(function () {
+  function shrink(file, cb) {
+    var r = new FileReader();
+    r.onload = function () {
+      var img = new Image();
+      img.onload = function () {
+        var s = Math.min(1, 1200 / Math.max(img.width, img.height));
+        var c = document.createElement('canvas'); c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+        var x = c.getContext('2d'); x.fillStyle = '#ffffff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(img, 0, 0, c.width, c.height);
+        cb(c.toDataURL('image/jpeg', 0.82));
+      };
+      img.onerror = function () { cb(null); };
+      img.src = r.result;
+    };
+    r.onerror = function () { cb(null); };
+    r.readAsDataURL(file);
+  }
+  function add(box, files) {
+    for (var i = 0; i < files.length; i++) {
+      if (files[i] && files[i].type && files[i].type.indexOf('image/') === 0) {
+        shrink(files[i], function (url) {
+          if (!url) return;
+          box.focus();
+          document.execCommand('insertHTML', false, '<img src="' + url + '" alt="Pasted image"><br>');
+          box.dispatchEvent(new Event('input', { bubbles: true }));
+        });
+        return true;
+      }
+    }
+    return false;
+  }
+  document.addEventListener('paste', function (e) {
+    var box = e.target && e.target.closest ? e.target.closest('.answer-box') : null; if (!box || !e.clipboardData) return;
+    var files = [];
+    if (e.clipboardData.files && e.clipboardData.files.length) files = Array.prototype.slice.call(e.clipboardData.files);
+    else Array.prototype.forEach.call(e.clipboardData.items || [], function (it) { if (it.kind === 'file') files.push(it.getAsFile()); });
+    if (files.length && add(box, files)) e.preventDefault();
+  }, true);
+  document.addEventListener('drop', function (e) {
+    var box = e.target && e.target.closest ? e.target.closest('.answer-box') : null; if (!box || !e.dataTransfer) return;
+    if (e.dataTransfer.files && e.dataTransfer.files.length && add(box, e.dataTransfer.files)) e.preventDefault();
+  }, true);
+})();
+</script>
 </body>
 </html>
