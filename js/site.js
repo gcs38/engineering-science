@@ -94,7 +94,7 @@ var RESOURCE_STATUS = {
   'higher-drive-systems':      { notes:'available' },
   'higher-pneumatics':         { notes:'available' },
   'higher-structures-forces':  { notes:'available' },
-  'higher-materials':          { notes:'soon' }
+  'higher-materials':          { notes:'available' }
 };
 
 // Reads the TOPIC variable declared on each index page and sets badges accordingly
@@ -180,6 +180,10 @@ var TEACHER_DOCS = {
   ],
 
   'higher-control': [
+    { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
+  ],
+
+  'higher-materials': [
     { key: 'notes_answers',     status: 'available', id: '', page: 'answers.html',     label: 'Answers to course notes',                   icon: '\u2705' },
   ],
 
