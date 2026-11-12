@@ -624,7 +624,7 @@ var NOTES_CHECKED = {
   'higher-control':           false,
   'higher-drive-systems':     false,
   'higher-pneumatics':        false,
-  'higher-structures-forces': true,
+  'higher-structures-forces': false,
   'higher-materials':         false
 };
 var HIGHER_IN_DEVELOPMENT = true;
