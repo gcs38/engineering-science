@@ -1,0 +1,2434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tensile test simulator</title>
+    <style>
+/*! tailwindcss v4.3.3 | MIT License | https://tailwindcss.com */
+@layer properties;
+@layer theme, base, components, utilities;
+@layer theme {
+  :root, :host {
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
+      "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+      "Segoe UI Symbol", "Noto Color Emoji";
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+      "Courier New", monospace;
+    --color-emerald-50: oklch(97.9% 0.021 166.113);
+    --color-emerald-100: oklch(95% 0.052 163.051);
+    --color-emerald-200: oklch(90.5% 0.093 164.15);
+    --color-emerald-400: oklch(76.5% 0.177 163.223);
+    --color-emerald-500: oklch(69.6% 0.17 162.48);
+    --color-emerald-600: oklch(59.6% 0.145 163.225);
+    --color-emerald-700: oklch(50.8% 0.118 165.612);
+    --color-emerald-800: oklch(43.2% 0.095 166.913);
+    --color-emerald-900: oklch(37.8% 0.077 168.94);
+    --color-teal-200: oklch(91% 0.096 180.426);
+    --color-teal-500: oklch(70.4% 0.14 182.503);
+    --color-teal-600: oklch(60% 0.118 184.704);
+    --color-teal-700: oklch(51.1% 0.096 186.391);
+    --color-indigo-600: oklch(51.1% 0.262 276.966);
+    --color-rose-50: oklch(96.9% 0.015 12.422);
+    --color-rose-500: oklch(64.5% 0.246 16.439);
+    --color-rose-600: oklch(58.6% 0.253 17.585);
+    --color-rose-700: oklch(51.4% 0.222 16.935);
+    --color-slate-50: oklch(98.4% 0.003 247.858);
+    --color-slate-100: oklch(96.8% 0.007 247.896);
+    --color-slate-200: oklch(92.9% 0.013 255.508);
+    --color-slate-300: oklch(86.9% 0.022 252.894);
+    --color-slate-400: oklch(70.4% 0.04 256.788);
+    --color-slate-500: oklch(55.4% 0.046 257.417);
+    --color-slate-600: oklch(44.6% 0.043 257.281);
+    --color-slate-700: oklch(37.2% 0.044 257.287);
+    --color-slate-800: oklch(27.9% 0.041 260.031);
+    --color-slate-900: oklch(20.8% 0.042 265.755);
+    --color-white: #fff;
+    --spacing: 0.25rem;
+    --text-xs: 0.75rem;
+    --text-xs--line-height: calc(1 / 0.75);
+    --text-sm: 0.875rem;
+    --text-sm--line-height: calc(1.25 / 0.875);
+    --text-xl: 1.25rem;
+    --text-xl--line-height: calc(1.75 / 1.25);
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+    --font-weight-black: 900;
+    --tracking-tight: -0.025em;
+    --tracking-wide: 0.025em;
+    --tracking-wider: 0.05em;
+    --tracking-widest: 0.1em;
+    --leading-relaxed: 1.625;
+    --radius-sm: 0.25rem;
+    --radius-xl: 0.75rem;
+    --radius-2xl: 1rem;
+    --radius-3xl: 1.5rem;
+    --drop-shadow-sm: 0 1px 2px rgb(0 0 0 / 0.15);
+    --blur-xl: 24px;
+    --default-transition-duration: 150ms;
+    --default-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    --default-font-family: var(--font-sans);
+    --default-mono-font-family: var(--font-mono);
+  }
+}
+@layer base {
+  *, ::after, ::before, ::backdrop, ::file-selector-button {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0 solid;
+  }
+  html, :host {
+    line-height: 1.5;
+    -webkit-text-size-adjust: 100%;
+    tab-size: 4;
+    font-family: var(--default-font-family, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji");
+    font-feature-settings: var(--default-font-feature-settings, normal);
+    font-variation-settings: var(--default-font-variation-settings, normal);
+    -webkit-tap-highlight-color: transparent;
+  }
+  hr {
+    height: 0;
+    color: inherit;
+    border-top-width: 1px;
+  }
+  abbr:where([title]) {
+    -webkit-text-decoration: underline dotted;
+    text-decoration: underline dotted;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-size: inherit;
+    font-weight: inherit;
+  }
+  a {
+    color: inherit;
+    -webkit-text-decoration: inherit;
+    text-decoration: inherit;
+  }
+  b, strong {
+    font-weight: bolder;
+  }
+  code, kbd, samp, pre {
+    font-family: var(--default-mono-font-family, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace);
+    font-feature-settings: var(--default-mono-font-feature-settings, normal);
+    font-variation-settings: var(--default-mono-font-variation-settings, normal);
+    font-size: 1em;
+  }
+  small {
+    font-size: 80%;
+  }
+  sub, sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+  }
+  sub {
+    bottom: -0.25em;
+  }
+  sup {
+    top: -0.5em;
+  }
+  table {
+    text-indent: 0;
+    border-color: inherit;
+    border-collapse: collapse;
+  }
+  :-moz-focusring:where(:not(iframe)) {
+    outline: auto;
+  }
+  progress {
+    vertical-align: baseline;
+  }
+  summary {
+    display: list-item;
+  }
+  ol, ul, menu {
+    list-style: none;
+  }
+  img, svg, video, canvas, audio, iframe, embed, object {
+    display: block;
+    vertical-align: middle;
+  }
+  img, video {
+    max-width: 100%;
+    height: auto;
+  }
+  button, input, select, optgroup, textarea, ::file-selector-button {
+    font: inherit;
+    font-feature-settings: inherit;
+    font-variation-settings: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    border-radius: 0;
+    background-color: transparent;
+    opacity: 1;
+  }
+  :where(select:is([multiple], [size])) optgroup {
+    font-weight: bolder;
+  }
+  :where(select:is([multiple], [size])) optgroup option {
+    padding-inline-start: 20px;
+  }
+  ::file-selector-button {
+    margin-inline-end: 4px;
+  }
+  ::placeholder {
+    opacity: 1;
+  }
+  @supports (not (-webkit-appearance: -apple-pay-button))  or (contain-intrinsic-size: 1px) {
+    ::placeholder {
+      color: currentcolor;
+      @supports (color: color-mix(in lab, red, red)) {
+        color: color-mix(in oklab, currentcolor 50%, transparent);
+      }
+    }
+  }
+  textarea {
+    resize: vertical;
+  }
+  ::-webkit-search-decoration {
+    -webkit-appearance: none;
+  }
+  ::-webkit-date-and-time-value {
+    min-height: 1lh;
+    text-align: inherit;
+  }
+  ::-webkit-datetime-edit {
+    display: inline-flex;
+  }
+  ::-webkit-datetime-edit-fields-wrapper {
+    padding: 0;
+  }
+  ::-webkit-datetime-edit, ::-webkit-datetime-edit-year-field, ::-webkit-datetime-edit-month-field, ::-webkit-datetime-edit-day-field, ::-webkit-datetime-edit-hour-field, ::-webkit-datetime-edit-minute-field, ::-webkit-datetime-edit-second-field, ::-webkit-datetime-edit-millisecond-field, ::-webkit-datetime-edit-meridiem-field {
+    padding-block: 0;
+  }
+  ::-webkit-calendar-picker-indicator {
+    line-height: 1;
+  }
+  :-moz-ui-invalid {
+    box-shadow: none;
+  }
+  button, input:where([type="button"], [type="reset"], [type="submit"]), ::file-selector-button {
+    appearance: button;
+  }
+  ::-webkit-inner-spin-button, ::-webkit-outer-spin-button {
+    height: auto;
+  }
+  [hidden]:where(:not([hidden="until-found"])) {
+    display: none !important;
+  }
+}
+@layer utilities {
+  .absolute {
+    position: absolute;
+  }
+  .relative {
+    position: relative;
+  }
+  .inset-y-0 {
+    inset-block: 0px;
+  }
+  .inset-y-12 {
+    inset-block: calc(var(--spacing) * 12);
+  }
+  .top-0 {
+    top: 0px;
+  }
+  .top-1\/2 {
+    top: calc(1 / 2 * 100%);
+  }
+  .top-3 {
+    top: calc(var(--spacing) * 3);
+  }
+  .top-4 {
+    top: calc(var(--spacing) * 4);
+  }
+  .top-\[56px\] {
+    top: 56px;
+  }
+  .-right-6 {
+    right: calc(var(--spacing) * -6);
+  }
+  .right-6 {
+    right: calc(var(--spacing) * 6);
+  }
+  .left-0 {
+    left: 0px;
+  }
+  .left-1\/2 {
+    left: calc(1 / 2 * 100%);
+  }
+  .left-5 {
+    left: calc(var(--spacing) * 5);
+  }
+  .left-6 {
+    left: calc(var(--spacing) * 6);
+  }
+  .z-10 {
+    z-index: 10;
+  }
+  .z-20 {
+    z-index: 20;
+  }
+  .z-40 {
+    z-index: 40;
+  }
+  .mx-1 {
+    margin-inline: var(--spacing);
+  }
+  .mx-2 {
+    margin-inline: calc(var(--spacing) * 2);
+  }
+  .mt-1 {
+    margin-top: var(--spacing);
+  }
+  .mt-2 {
+    margin-top: calc(var(--spacing) * 2);
+  }
+  .mt-3 {
+    margin-top: calc(var(--spacing) * 3);
+  }
+  .mb-1 {
+    margin-bottom: var(--spacing);
+  }
+  .mb-2 {
+    margin-bottom: calc(var(--spacing) * 2);
+  }
+  .mb-3 {
+    margin-bottom: calc(var(--spacing) * 3);
+  }
+  .block {
+    display: block;
+  }
+  .flex {
+    display: flex;
+  }
+  .grid {
+    display: grid;
+  }
+  .hidden {
+    display: none;
+  }
+  .h-2 {
+    height: calc(var(--spacing) * 2);
+  }
+  .h-3 {
+    height: calc(var(--spacing) * 3);
+  }
+  .h-4 {
+    height: calc(var(--spacing) * 4);
+  }
+  .h-5 {
+    height: calc(var(--spacing) * 5);
+  }
+  .h-6 {
+    height: calc(var(--spacing) * 6);
+  }
+  .h-8 {
+    height: calc(var(--spacing) * 8);
+  }
+  .h-12 {
+    height: calc(var(--spacing) * 12);
+  }
+  .h-16 {
+    height: calc(var(--spacing) * 16);
+  }
+  .h-full {
+    height: 100%;
+  }
+  .h-screen {
+    height: 100vh;
+  }
+  .w-0\.5 {
+    width: calc(var(--spacing) * 0.5);
+  }
+  .w-2 {
+    width: calc(var(--spacing) * 2);
+  }
+  .w-3 {
+    width: calc(var(--spacing) * 3);
+  }
+  .w-4 {
+    width: calc(var(--spacing) * 4);
+  }
+  .w-5 {
+    width: calc(var(--spacing) * 5);
+  }
+  .w-6 {
+    width: calc(var(--spacing) * 6);
+  }
+  .w-12 {
+    width: calc(var(--spacing) * 12);
+  }
+  .w-16 {
+    width: calc(var(--spacing) * 16);
+  }
+  .w-20 {
+    width: calc(var(--spacing) * 20);
+  }
+  .w-28 {
+    width: calc(var(--spacing) * 28);
+  }
+  .w-36 {
+    width: calc(var(--spacing) * 36);
+  }
+  .w-full {
+    width: 100%;
+  }
+  .w-px {
+    width: 1px;
+  }
+  .flex-1 {
+    flex: 1;
+  }
+  .shrink-0 {
+    flex-shrink: 0;
+  }
+  .flex-grow {
+    flex-grow: 1;
+  }
+  .-translate-x-1\/2 {
+    --tw-translate-x: calc(calc(1 / 2 * 100%) * -1);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .-translate-y-1\/2 {
+    --tw-translate-y: calc(calc(1 / 2 * 100%) * -1);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .transform {
+    transform: var(--tw-rotate-x,) var(--tw-rotate-y,) var(--tw-rotate-z,) var(--tw-skew-x,) var(--tw-skew-y,);
+  }
+  .cursor-pointer {
+    cursor: pointer;
+  }
+  .resize {
+    resize: both;
+  }
+  .grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .flex-col {
+    flex-direction: column;
+  }
+  .flex-wrap {
+    flex-wrap: wrap;
+  }
+  .items-center {
+    align-items: center;
+  }
+  .items-end {
+    align-items: flex-end;
+  }
+  .items-start {
+    align-items: flex-start;
+  }
+  .justify-around {
+    justify-content: space-around;
+  }
+  .justify-between {
+    justify-content: space-between;
+  }
+  .justify-center {
+    justify-content: center;
+  }
+  .justify-end {
+    justify-content: flex-end;
+  }
+  .gap-1 {
+    gap: var(--spacing);
+  }
+  .gap-1\.5 {
+    gap: calc(var(--spacing) * 1.5);
+  }
+  .gap-2 {
+    gap: calc(var(--spacing) * 2);
+  }
+  .gap-3 {
+    gap: calc(var(--spacing) * 3);
+  }
+  .gap-4 {
+    gap: calc(var(--spacing) * 4);
+  }
+  .gap-6 {
+    gap: calc(var(--spacing) * 6);
+  }
+  :where(.space-y-2 > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block-start: calc(calc(var(--spacing) * 2) * var(--tw-space-y-reverse));
+    margin-block-end: calc(calc(var(--spacing) * 2) * calc(1 - var(--tw-space-y-reverse)));
+  }
+  :where(.space-y-3 > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block-start: calc(calc(var(--spacing) * 3) * var(--tw-space-y-reverse));
+    margin-block-end: calc(calc(var(--spacing) * 3) * calc(1 - var(--tw-space-y-reverse)));
+  }
+  :where(.space-y-4 > :not(:last-child)) {
+    --tw-space-y-reverse: 0;
+    margin-block-start: calc(calc(var(--spacing) * 4) * var(--tw-space-y-reverse));
+    margin-block-end: calc(calc(var(--spacing) * 4) * calc(1 - var(--tw-space-y-reverse)));
+  }
+  .\!overflow-visible {
+    overflow: visible !important;
+  }
+  .overflow-hidden {
+    overflow: hidden;
+  }
+  .overflow-visible {
+    overflow: visible;
+  }
+  .overflow-y-auto {
+    overflow-y: auto;
+  }
+  .rounded {
+    border-radius: 0.25rem;
+  }
+  .rounded-2xl {
+    border-radius: var(--radius-2xl);
+  }
+  .rounded-3xl {
+    border-radius: var(--radius-3xl);
+  }
+  .rounded-full {
+    border-radius: calc(infinity * 1px);
+  }
+  .rounded-sm {
+    border-radius: var(--radius-sm);
+  }
+  .rounded-xl {
+    border-radius: var(--radius-xl);
+  }
+  .rounded-t-xl {
+    border-top-left-radius: var(--radius-xl);
+    border-top-right-radius: var(--radius-xl);
+  }
+  .rounded-b-xl {
+    border-bottom-right-radius: var(--radius-xl);
+    border-bottom-left-radius: var(--radius-xl);
+  }
+  .border {
+    border-style: var(--tw-border-style);
+    border-width: 1px;
+  }
+  .border-r {
+    border-right-style: var(--tw-border-style);
+    border-right-width: 1px;
+  }
+  .border-b {
+    border-bottom-style: var(--tw-border-style);
+    border-bottom-width: 1px;
+  }
+  .border-emerald-100 {
+    border-color: var(--color-emerald-100);
+  }
+  .border-emerald-200 {
+    border-color: var(--color-emerald-200);
+  }
+  .border-slate-100 {
+    border-color: var(--color-slate-100);
+  }
+  .border-slate-200 {
+    border-color: var(--color-slate-200);
+  }
+  .border-slate-300 {
+    border-color: var(--color-slate-300);
+  }
+  .border-slate-400 {
+    border-color: var(--color-slate-400);
+  }
+  .border-slate-700 {
+    border-color: var(--color-slate-700);
+  }
+  .border-white {
+    border-color: var(--color-white);
+  }
+  .bg-\[\#f8fafc\] {
+    background-color: #f8fafc;
+  }
+  .bg-emerald-50\/60 {
+    background-color: color-mix(in srgb, oklch(97.9% 0.021 166.113) 60%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-emerald-50) 60%, transparent);
+    }
+  }
+  .bg-emerald-50\/80 {
+    background-color: color-mix(in srgb, oklch(97.9% 0.021 166.113) 80%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-emerald-50) 80%, transparent);
+    }
+  }
+  .bg-emerald-200 {
+    background-color: var(--color-emerald-200);
+  }
+  .bg-emerald-500 {
+    background-color: var(--color-emerald-500);
+  }
+  .bg-emerald-600 {
+    background-color: var(--color-emerald-600);
+  }
+  .bg-slate-50 {
+    background-color: var(--color-slate-50);
+  }
+  .bg-slate-100 {
+    background-color: var(--color-slate-100);
+  }
+  .bg-slate-200 {
+    background-color: var(--color-slate-200);
+  }
+  .bg-slate-300 {
+    background-color: var(--color-slate-300);
+  }
+  .bg-slate-400 {
+    background-color: var(--color-slate-400);
+  }
+  .bg-slate-700 {
+    background-color: var(--color-slate-700);
+  }
+  .bg-slate-900 {
+    background-color: var(--color-slate-900);
+  }
+  .bg-slate-900\/5 {
+    background-color: color-mix(in srgb, oklch(20.8% 0.042 265.755) 5%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-slate-900) 5%, transparent);
+    }
+  }
+  .bg-teal-600 {
+    background-color: var(--color-teal-600);
+  }
+  .bg-white {
+    background-color: var(--color-white);
+  }
+  .bg-white\/50 {
+    background-color: color-mix(in srgb, #fff 50%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-white) 50%, transparent);
+    }
+  }
+  .bg-white\/60 {
+    background-color: color-mix(in srgb, #fff 60%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-white) 60%, transparent);
+    }
+  }
+  .bg-white\/95 {
+    background-color: color-mix(in srgb, #fff 95%, transparent);
+    @supports (color: color-mix(in lab, red, red)) {
+      background-color: color-mix(in oklab, var(--color-white) 95%, transparent);
+    }
+  }
+  .bg-gradient-to-br {
+    --tw-gradient-position: to bottom right in oklab;
+    background-image: linear-gradient(var(--tw-gradient-stops));
+  }
+  .bg-gradient-to-r {
+    --tw-gradient-position: to right in oklab;
+    background-image: linear-gradient(var(--tw-gradient-stops));
+  }
+  .from-emerald-600 {
+    --tw-gradient-from: var(--color-emerald-600);
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+  .from-slate-300 {
+    --tw-gradient-from: var(--color-slate-300);
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+  .via-slate-100 {
+    --tw-gradient-via: var(--color-slate-100);
+    --tw-gradient-via-stops: var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-via) var(--tw-gradient-via-position), var(--tw-gradient-to) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-via-stops);
+  }
+  .to-slate-400 {
+    --tw-gradient-to: var(--color-slate-400);
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+  .to-teal-500 {
+    --tw-gradient-to: var(--color-teal-500);
+    --tw-gradient-stops: var(--tw-gradient-via-stops, var(--tw-gradient-position), var(--tw-gradient-from) var(--tw-gradient-from-position), var(--tw-gradient-to) var(--tw-gradient-to-position));
+  }
+  .stroke-\[3px\] {
+    stroke-width: 3px;
+  }
+  .object-contain {
+    object-fit: contain;
+  }
+  .p-1\.5 {
+    padding: calc(var(--spacing) * 1.5);
+  }
+  .p-2\.5 {
+    padding: calc(var(--spacing) * 2.5);
+  }
+  .p-3 {
+    padding: calc(var(--spacing) * 3);
+  }
+  .p-3\.5 {
+    padding: calc(var(--spacing) * 3.5);
+  }
+  .p-4 {
+    padding: calc(var(--spacing) * 4);
+  }
+  .p-5 {
+    padding: calc(var(--spacing) * 5);
+  }
+  .p-6 {
+    padding: calc(var(--spacing) * 6);
+  }
+  .px-1\.5 {
+    padding-inline: calc(var(--spacing) * 1.5);
+  }
+  .px-3 {
+    padding-inline: calc(var(--spacing) * 3);
+  }
+  .px-6 {
+    padding-inline: calc(var(--spacing) * 6);
+  }
+  .py-1 {
+    padding-block: var(--spacing);
+  }
+  .py-1\.5 {
+    padding-block: calc(var(--spacing) * 1.5);
+  }
+  .py-2 {
+    padding-block: calc(var(--spacing) * 2);
+  }
+  .py-2\.5 {
+    padding-block: calc(var(--spacing) * 2.5);
+  }
+  .py-6 {
+    padding-block: calc(var(--spacing) * 6);
+  }
+  .pt-1 {
+    padding-top: var(--spacing);
+  }
+  .pt-2 {
+    padding-top: calc(var(--spacing) * 2);
+  }
+  .pb-1 {
+    padding-bottom: var(--spacing);
+  }
+  .pb-1\.5 {
+    padding-bottom: calc(var(--spacing) * 1.5);
+  }
+  .pb-2 {
+    padding-bottom: calc(var(--spacing) * 2);
+  }
+  .text-center {
+    text-align: center;
+  }
+  .text-right {
+    text-align: right;
+  }
+  .font-mono {
+    font-family: var(--font-mono);
+  }
+  .text-sm {
+    font-size: var(--text-sm);
+    line-height: var(--tw-leading, var(--text-sm--line-height));
+  }
+  .text-xl {
+    font-size: var(--text-xl);
+    line-height: var(--tw-leading, var(--text-xl--line-height));
+  }
+  .text-xs {
+    font-size: var(--text-xs);
+    line-height: var(--tw-leading, var(--text-xs--line-height));
+  }
+  .text-\[9px\] {
+    font-size: 9px;
+  }
+  .text-\[10px\] {
+    font-size: 10px;
+  }
+  .text-\[11px\] {
+    font-size: 11px;
+  }
+  .leading-none {
+    --tw-leading: 1;
+    line-height: 1;
+  }
+  .leading-relaxed {
+    --tw-leading: var(--leading-relaxed);
+    line-height: var(--leading-relaxed);
+  }
+  .font-black {
+    --tw-font-weight: var(--font-weight-black);
+    font-weight: var(--font-weight-black);
+  }
+  .font-bold {
+    --tw-font-weight: var(--font-weight-bold);
+    font-weight: var(--font-weight-bold);
+  }
+  .font-medium {
+    --tw-font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-medium);
+  }
+  .tracking-tight {
+    --tw-tracking: var(--tracking-tight);
+    letter-spacing: var(--tracking-tight);
+  }
+  .tracking-wide {
+    --tw-tracking: var(--tracking-wide);
+    letter-spacing: var(--tracking-wide);
+  }
+  .tracking-wider {
+    --tw-tracking: var(--tracking-wider);
+    letter-spacing: var(--tracking-wider);
+  }
+  .tracking-widest {
+    --tw-tracking: var(--tracking-widest);
+    letter-spacing: var(--tracking-widest);
+  }
+  .whitespace-nowrap {
+    white-space: nowrap;
+  }
+  .text-emerald-400 {
+    color: var(--color-emerald-400);
+  }
+  .text-emerald-600 {
+    color: var(--color-emerald-600);
+  }
+  .text-emerald-800 {
+    color: var(--color-emerald-800);
+  }
+  .text-emerald-900 {
+    color: var(--color-emerald-900);
+  }
+  .text-indigo-600 {
+    color: var(--color-indigo-600);
+  }
+  .text-rose-500 {
+    color: var(--color-rose-500);
+  }
+  .text-rose-600 {
+    color: var(--color-rose-600);
+  }
+  .text-slate-400 {
+    color: var(--color-slate-400);
+  }
+  .text-slate-500 {
+    color: var(--color-slate-500);
+  }
+  .text-slate-600 {
+    color: var(--color-slate-600);
+  }
+  .text-slate-700 {
+    color: var(--color-slate-700);
+  }
+  .text-slate-800 {
+    color: var(--color-slate-800);
+  }
+  .text-white {
+    color: var(--color-white);
+  }
+  .uppercase {
+    text-transform: uppercase;
+  }
+  .opacity-50 {
+    opacity: 50%;
+  }
+  .opacity-60 {
+    opacity: 60%;
+  }
+  .shadow-inner {
+    --tw-shadow: inset 0 2px 4px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.05));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-lg {
+    --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-md {
+    --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-sm {
+    --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .shadow-emerald-200 {
+    --tw-shadow-color: oklch(90.5% 0.093 164.15);
+    @supports (color: color-mix(in lab, red, red)) {
+      --tw-shadow-color: color-mix(in oklab, var(--color-emerald-200) var(--tw-shadow-alpha), transparent);
+    }
+  }
+  .shadow-teal-200 {
+    --tw-shadow-color: oklch(91% 0.096 180.426);
+    @supports (color: color-mix(in lab, red, red)) {
+      --tw-shadow-color: color-mix(in oklab, var(--color-teal-200) var(--tw-shadow-alpha), transparent);
+    }
+  }
+  .drop-shadow-sm {
+    --tw-drop-shadow-size: drop-shadow(0 1px 2px var(--tw-drop-shadow-color, rgb(0 0 0 / 0.15)));
+    --tw-drop-shadow: drop-shadow(var(--drop-shadow-sm));
+    filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+  }
+  .backdrop-blur {
+    --tw-backdrop-blur: blur(8px);
+    -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+    backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+  }
+  .backdrop-blur-xl {
+    --tw-backdrop-blur: blur(var(--blur-xl));
+    -webkit-backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+    backdrop-filter: var(--tw-backdrop-blur,) var(--tw-backdrop-brightness,) var(--tw-backdrop-contrast,) var(--tw-backdrop-grayscale,) var(--tw-backdrop-hue-rotate,) var(--tw-backdrop-invert,) var(--tw-backdrop-opacity,) var(--tw-backdrop-saturate,) var(--tw-backdrop-sepia,);
+  }
+  .transition-all {
+    transition-property: all;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .transition-colors {
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, --tw-gradient-from, --tw-gradient-via, --tw-gradient-to;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .transition-transform {
+    transition-property: transform, translate, scale, rotate;
+    transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
+    transition-duration: var(--tw-duration, var(--default-transition-duration));
+  }
+  .duration-300 {
+    --tw-duration: 300ms;
+    transition-duration: 300ms;
+  }
+  .outline-none {
+    --tw-outline-style: none;
+    outline-style: none;
+  }
+  .select-none {
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  @media (hover: hover) {
+    .hover\:scale-105:hover {
+      --tw-scale-x: 105%;
+      --tw-scale-y: 105%;
+      --tw-scale-z: 105%;
+      scale: var(--tw-scale-x) var(--tw-scale-y);
+    }
+    .hover\:scale-110:hover {
+      --tw-scale-x: 110%;
+      --tw-scale-y: 110%;
+      --tw-scale-z: 110%;
+      scale: var(--tw-scale-x) var(--tw-scale-y);
+    }
+    .hover\:bg-emerald-600:hover {
+      background-color: var(--color-emerald-600);
+    }
+    .hover\:bg-emerald-700:hover {
+      background-color: var(--color-emerald-700);
+    }
+    .hover\:bg-rose-50:hover {
+      background-color: var(--color-rose-50);
+    }
+    .hover\:bg-slate-200:hover {
+      background-color: var(--color-slate-200);
+    }
+    .hover\:bg-slate-300:hover {
+      background-color: var(--color-slate-300);
+    }
+    .hover\:bg-teal-700:hover {
+      background-color: var(--color-teal-700);
+    }
+    .hover\:text-rose-700:hover {
+      color: var(--color-rose-700);
+    }
+    .hover\:text-white:hover {
+      color: var(--color-white);
+    }
+  }
+  .focus\:ring-2:focus {
+    --tw-ring-shadow: var(--tw-ring-inset,) 0 0 0 calc(2px + var(--tw-ring-offset-width)) var(--tw-ring-color, currentcolor);
+    box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+  }
+  .focus\:ring-emerald-500:focus {
+    --tw-ring-color: var(--color-emerald-500);
+  }
+  .focus\:outline-none:focus {
+    --tw-outline-style: none;
+    outline-style: none;
+  }
+  .active\:scale-95:active {
+    --tw-scale-x: 95%;
+    --tw-scale-y: 95%;
+    --tw-scale-z: 95%;
+    scale: var(--tw-scale-x) var(--tw-scale-y);
+  }
+  @media (width >= 64rem) {
+    .lg\:w-72 {
+      width: calc(var(--spacing) * 72);
+    }
+    .lg\:flex-row {
+      flex-direction: row;
+    }
+  }
+}
+@property --tw-translate-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-translate-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-translate-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-rotate-x {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-rotate-y {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-rotate-z {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-skew-x {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-skew-y {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-space-y-reverse {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0;
+}
+@property --tw-border-style {
+  syntax: "*";
+  inherits: false;
+  initial-value: solid;
+}
+@property --tw-gradient-position {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-gradient-from {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0000;
+}
+@property --tw-gradient-via {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0000;
+}
+@property --tw-gradient-to {
+  syntax: "<color>";
+  inherits: false;
+  initial-value: #0000;
+}
+@property --tw-gradient-stops {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-gradient-via-stops {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-gradient-from-position {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 0%;
+}
+@property --tw-gradient-via-position {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 50%;
+}
+@property --tw-gradient-to-position {
+  syntax: "<length-percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-leading {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-font-weight {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-tracking {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-inset-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-inset-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-inset-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-ring-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-ring-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-inset-ring-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-inset-ring-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-ring-inset {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-ring-offset-width {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+@property --tw-ring-offset-color {
+  syntax: "*";
+  inherits: false;
+  initial-value: #fff;
+}
+@property --tw-ring-offset-shadow {
+  syntax: "*";
+  inherits: false;
+  initial-value: 0 0 #0000;
+}
+@property --tw-blur {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-brightness {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-contrast {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-grayscale {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-hue-rotate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-invert {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-opacity {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-saturate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-sepia {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow-color {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-drop-shadow-alpha {
+  syntax: "<percentage>";
+  inherits: false;
+  initial-value: 100%;
+}
+@property --tw-drop-shadow-size {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-blur {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-brightness {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-contrast {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-grayscale {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-hue-rotate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-invert {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-opacity {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-saturate {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-backdrop-sepia {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-duration {
+  syntax: "*";
+  inherits: false;
+}
+@property --tw-scale-x {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
+}
+@property --tw-scale-y {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
+}
+@property --tw-scale-z {
+  syntax: "*";
+  inherits: false;
+  initial-value: 1;
+}
+@layer properties {
+  @supports ((-webkit-hyphens: none) and (not (margin-trim: inline))) or ((-moz-orient: inline) and (not (color:rgb(from red r g b)))) {
+    *, ::before, ::after, ::backdrop {
+      --tw-translate-x: 0;
+      --tw-translate-y: 0;
+      --tw-translate-z: 0;
+      --tw-rotate-x: initial;
+      --tw-rotate-y: initial;
+      --tw-rotate-z: initial;
+      --tw-skew-x: initial;
+      --tw-skew-y: initial;
+      --tw-space-y-reverse: 0;
+      --tw-border-style: solid;
+      --tw-gradient-position: initial;
+      --tw-gradient-from: #0000;
+      --tw-gradient-via: #0000;
+      --tw-gradient-to: #0000;
+      --tw-gradient-stops: initial;
+      --tw-gradient-via-stops: initial;
+      --tw-gradient-from-position: 0%;
+      --tw-gradient-via-position: 50%;
+      --tw-gradient-to-position: 100%;
+      --tw-leading: initial;
+      --tw-font-weight: initial;
+      --tw-tracking: initial;
+      --tw-shadow: 0 0 #0000;
+      --tw-shadow-color: initial;
+      --tw-shadow-alpha: 100%;
+      --tw-inset-shadow: 0 0 #0000;
+      --tw-inset-shadow-color: initial;
+      --tw-inset-shadow-alpha: 100%;
+      --tw-ring-color: initial;
+      --tw-ring-shadow: 0 0 #0000;
+      --tw-inset-ring-color: initial;
+      --tw-inset-ring-shadow: 0 0 #0000;
+      --tw-ring-inset: initial;
+      --tw-ring-offset-width: 0px;
+      --tw-ring-offset-color: #fff;
+      --tw-ring-offset-shadow: 0 0 #0000;
+      --tw-blur: initial;
+      --tw-brightness: initial;
+      --tw-contrast: initial;
+      --tw-grayscale: initial;
+      --tw-hue-rotate: initial;
+      --tw-invert: initial;
+      --tw-opacity: initial;
+      --tw-saturate: initial;
+      --tw-sepia: initial;
+      --tw-drop-shadow: initial;
+      --tw-drop-shadow-color: initial;
+      --tw-drop-shadow-alpha: 100%;
+      --tw-drop-shadow-size: initial;
+      --tw-backdrop-blur: initial;
+      --tw-backdrop-brightness: initial;
+      --tw-backdrop-contrast: initial;
+      --tw-backdrop-grayscale: initial;
+      --tw-backdrop-hue-rotate: initial;
+      --tw-backdrop-invert: initial;
+      --tw-backdrop-opacity: initial;
+      --tw-backdrop-saturate: initial;
+      --tw-backdrop-sepia: initial;
+      --tw-duration: initial;
+      --tw-scale-x: 1;
+      --tw-scale-y: 1;
+      --tw-scale-z: 1;
+    }
+  }
+}
+
+</style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body { margin: 0; overflow: hidden; background-color: #f8fafc; font-family: 'Roboto', sans-serif; user-select: none; }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* Animations & Menus */
+        .submenu { max-height: 0; overflow: hidden; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; transform: translateY(-10px); }
+        .submenu.open { max-height: 1000px; opacity: 1; transform: translateY(0); margin-top: 0.5rem; margin-bottom: 0.5rem; } 
+        .rotate-icon { transition: transform 0.3s ease; }
+        .rotate-icon.open { transform: rotate(180deg); }
+
+        /* Card Styling */
+        .comp-card { @apply flex flex-col items-center justify-between p-2 bg-white rounded-2xl border border-emerald-100 shadow-sm cursor-pointer hover:border-emerald-400 hover:shadow-md hover:bg-emerald-50/50 transition-all active:scale-95 h-20 select-none relative overflow-hidden; }
+        .comp-card:active { @apply ring-2 ring-emerald-200 border-emerald-500; }
+        .card-icon { @apply w-full flex-1 flex items-center justify-center text-emerald-700; }
+        .card-label { @apply text-[10px] font-bold text-slate-500 tracking-tight text-center leading-none mt-1; }
+        
+        /* Buttons */
+        .tool-btn { @apply p-2.5 rounded-full text-slate-500 hover:bg-emerald-100 hover:text-emerald-800 transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-200; }
+        .tool-btn:disabled { @apply opacity-50 cursor-not-allowed hover:bg-transparent text-slate-300; }
+
+        .acc-btn { @apply w-full px-6 py-4 flex justify-between items-center text-base font-extrabold text-slate-800 bg-white rounded-full hover:bg-emerald-50 hover:text-emerald-700 transition-all shadow-sm border border-transparent hover:border-emerald-100 tracking-wide; }
+        .acc-btn[aria-expanded="true"] { @apply bg-emerald-100 text-emerald-900 shadow-none; }
+
+        /* Modal */
+        .modal-overlay { background-color: rgba(15, 23, 42, 0.4); backdrop-filter: blur(4px); }
+        .modal-content { animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes modalPop { from { opacity: 0; transform: scale(0.95) translateY(10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+
+        /* Layout Transitions */
+        #sidebarList { transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); width: 22rem; z-index: 50; }
+        #canvasWrapper { position: absolute; top: 0; bottom: 0; right: 0; transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        
+        .drawer-open #sidebarList { transform: translateX(0); }
+        .drawer-closed #sidebarList { transform: translateX(-100%); }
+        .drawer-open #canvasWrapper { left: 22rem; } 
+        .drawer-closed #canvasWrapper { left: 0; } 
+        .menu-shadow { box-shadow: 10px 0 25px -5px rgba(0, 0, 0, 0.1); }
+
+        @keyframes break-shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px) rotate(-0.5deg); }
+            75% { transform: translateX(4px) rotate(0.5deg); }
+        }
+        .breaking { animation: break-shake 0.2s ease-in-out; }
+
+        /* ESS: compact layout when embedded in the course notes (?view=1). The set-up panel closes when a test starts. */
+        body.ess-view > div:first-child { display:none; }
+        body.ess-view #sidebarList { width:14rem; padding:12px; }
+        body.ess-view #sidebarList > * + * { margin-top:10px; }
+        body.ess-view .drawer-open #canvasWrapper { left:14rem; }
+        body.ess-view #canvasWrapper { padding:10px; gap:10px; flex-direction:row; }
+        body.ess-view #canvasWrapper > div:first-child { width:9.5rem; min-height:0 !important; padding:10px; }
+        body.ess-view #canvasWrapper > div:first-child > div:first-child { display:none; }
+        body.ess-view #canvasWrapper > div:last-child { padding:10px 10px 10px 26px; }
+        body.ess-view #canvasWrapper > div:last-child > div:first-child { flex-wrap:wrap; gap:6px; }
+        body.ess-view #canvasWrapper > div:last-child > div:last-child { min-height:0 !important; }
+        body.ess-view .machine-track { width:7rem; }
+        body.ess-view #legend-container { display:none; }
+        body.ess-view .drawer-open #canvasWrapper > div:first-child { display:none; }
+        body.ess-view .drawer-closed #btnMenuToggle { right:-3.4rem; width:2.6rem; height:2.6rem; }
+        body.ess-view .drawer-closed #iconMenuChevron { transform:rotate(180deg); }
+        body.ess-view .drawer-closed #canvasWrapper { padding-left:3.4rem; }
+        @media (max-width:560px) { body.ess-view #canvasWrapper > div:first-child { display:none !important; } }
+    </style>
+</head>
+<body class="flex h-screen flex-col text-slate-800 bg-[#f8fafc]">
+
+    <!-- Header -->
+    <div class="h-16 bg-[#f8fafc] z-40 flex items-center justify-between px-6 border-b border-white relative shadow-sm">
+        <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 hover:scale-105 transition-transform flex items-center justify-center select-none">
+                    <img src="https://drive.google.com/thumbnail?id=1M18N499C8EoWSPgCBUAxPtGp2dCRvk0H" alt="NoTensionSim Logo" class="w-full h-full drop-shadow-sm rounded-xl object-contain">
+                </div>
+                <h1 class="text-xl font-black text-slate-700 tracking-tight whitespace-nowrap">NoTension<span class="text-emerald-600">Sim V1</span></h1>
+            </div>
+            
+            <div class="h-8 w-px bg-slate-300 mx-2 rounded-full"></div>
+
+            <div class="flex items-center gap-2 bg-white/60 p-1.5 rounded-full shadow-sm border border-white">
+                <button id="btnSave" class="tool-btn" title="Save JSON"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 3H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V7l-4-4zm-5 16v-4a2 2 0 012-2h0a2 2 0 012 2v4M9 3v4a2 2 0 002 2h4a2 2 0 002-2V3"/></svg></button>
+                <label class="tool-btn cursor-pointer" title="Load JSON">
+                    <input type="file" id="fileLoad" accept=".json" class="hidden">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"/></svg>
+                </label>
+                <button id="btnExport" class="tool-btn" title="Export Snapshot"><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg></button>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-3">
+            <button id="btnUndo" class="tool-btn" title="Undo" disabled><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg></button>
+            <button id="btnRedo" class="tool-btn" title="Redo" disabled><svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10h-10a8 8 0 00-8 8v2M21 10l-6 6m6-6l-6-6"/></svg></button>
+            <div class="h-5 w-px bg-slate-300 mx-1"></div>
+            <button id="btnClear" type="button" class="text-xs text-rose-500 hover:text-rose-700 font-bold px-3 py-1.5 rounded-full hover:bg-rose-50 transition-colors">Clear History</button>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div id="appContainer" class="flex flex-1 overflow-hidden relative drawer-open">
+        
+        <!-- Sidebar Controls -->
+        <div id="sidebarList" class="absolute inset-y-0 left-0 bg-white/95 backdrop-blur-xl border-r border-slate-200 flex flex-col menu-shadow !overflow-visible z-40 p-5 space-y-4">
+            <button id="btnMenuToggle" class="absolute top-1/2 -right-6 -translate-y-1/2 w-12 h-12 flex items-center justify-center rounded-full bg-gradient-to-br from-emerald-600 to-teal-500 text-white shadow-lg hover:scale-110 active:scale-95 transition-all duration-300 focus:outline-none group">
+                <svg id="iconMenuChevron" class="w-6 h-6 stroke-[3px]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" /></svg>
+            </button>
+
+            <div class="bg-white/50 backdrop-blur z-20 pb-2 border-b border-slate-100">
+                <h2 class="text-sm font-black text-slate-400 uppercase tracking-widest">Tensometer Lab Setup</h2>
+            </div>
+
+            <!-- Material Selection Card -->
+            <div class="bg-slate-50 p-4 rounded-2xl border border-slate-200 space-y-3 shadow-sm">
+                <label class="block text-xs font-bold text-slate-600 uppercase tracking-wider">Select Test Specimen</label>
+                <select id="material-select" class="w-full p-2.5 border border-slate-300 rounded-xl bg-white text-slate-800 font-medium text-sm focus:ring-2 focus:ring-emerald-500 outline-none shadow-sm">
+                    <option value="mild_steel">Mild Steel</option>
+                    <option value="stainless_steel">Stainless Steels</option>
+                    <option value="low_alloy_steel">Low-alloy Steels</option>
+                    <option value="cast_iron">Cast Iron</option>
+                    <option value="aluminium_alloy">Aluminium Alloy</option>
+                    <option value="titanium_alloy">Titanium Alloy</option>
+                    <option value="nickel_alloys">Nickel Alloys</option>
+                    <option value="concrete">Concrete</option>
+                    <option value="concrete_reinf">Concrete (Steel Reinforced)</option>
+                    <option value="concrete_post">Concrete (Post Stressed)</option>
+                    <option value="plastic_abs">Plastic, ABS Polycarbonate</option>
+                    <option value="plastic_pp">Plastic, Polypropylene</option>
+                    <option value="wood_para">Wood (Parallel to Grain)</option>
+                    <option value="wood_perp">Wood (Perpendicular to Grain)</option>
+                    <option value="mystery">??? Mystery Material ???</option>
+                </select>
+
+                <div class="flex gap-2 pt-1">
+                    <button id="start-btn" onclick="startTest(false)" class="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-2.5 px-3 rounded-xl transition-all shadow-md shadow-emerald-200 text-xs tracking-wider flex items-center justify-center gap-1.5 active:scale-95">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        NEW TEST
+                    </button>
+                    <button id="compare-btn" onclick="startTest(true)" class="bg-teal-600 hover:bg-teal-700 text-white font-bold py-2.5 px-3 rounded-xl transition-all shadow-md shadow-teal-200 text-xs tracking-wider flex items-center justify-center gap-1.5 active:scale-95" title="Overlay on existing graph">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4v16m8-8H4"/></svg>
+                        + COMPARE
+                    </button>
+                </div>
+                <button id="reset-btn" onclick="resetMachine()" class="w-full bg-slate-200 hover:bg-slate-300 text-slate-700 font-bold py-2 px-3 rounded-xl transition-colors text-xs tracking-wider">
+                    RESET MACHINE
+                </button>
+                
+                <div class="mt-2 bg-emerald-50/80 p-2.5 rounded-xl border border-emerald-100 flex justify-between items-center text-[10px] font-mono text-emerald-800 shadow-inner">
+                    <div class="flex flex-col gap-1">
+                        <span class="opacity-60 text-[9px] block leading-none">GAUGE LENGTH (mm)</span> 
+                        <input type="number" id="input-gauge" value="50.0" class="w-20 bg-white border border-emerald-200 rounded px-1.5 py-1 text-xs font-bold text-emerald-900 outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm transition-all" step="1" min="1">
+                    </div>
+                    <div class="h-8 w-px bg-emerald-200 mx-2"></div>
+                    <div class="flex flex-col gap-1 text-right items-end">
+                        <span class="opacity-60 text-[9px] block leading-none">C.S. AREA (mm²)</span> 
+                        <input type="number" id="input-area" value="100.0" class="w-20 bg-white border border-emerald-200 rounded px-1.5 py-1 text-xs font-bold text-emerald-900 outline-none focus:ring-2 focus:ring-emerald-500 shadow-sm text-right transition-all" step="1" min="1">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Live Telemetry Readout -->
+            <div class="grid grid-cols-2 gap-3">
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700 shadow-inner relative overflow-hidden">
+                    <span class="text-[9px] text-slate-400 uppercase tracking-widest block mb-1">Load (Force)</span>
+                    <div id="force-display" class="font-mono text-emerald-400 text-xl font-bold tracking-tight">0.00 kN</div>
+                </div>
+                <div class="bg-slate-900 p-3.5 rounded-2xl border border-slate-700 shadow-inner relative overflow-hidden">
+                    <span class="text-[9px] text-slate-400 uppercase tracking-widest block mb-1">Extension</span>
+                    <div id="extension-display" class="font-mono text-emerald-400 text-xl font-bold tracking-tight">0.00 mm</div>
+                </div>
+            </div>
+
+            <div class="bg-emerald-50/60 p-3.5 rounded-2xl border border-emerald-100 text-center">
+                <div id="status-message" class="text-xs font-mono tracking-wider font-bold text-emerald-900">SYS.READY :: SELECT SPECIMEN</div>
+            </div>
+
+            <!-- Material Analysis Box -->
+            <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex-1 flex flex-col justify-between overflow-y-auto">
+                <div>
+                    <h3 class="font-bold text-slate-700 mb-2 uppercase text-xs tracking-wider border-b pb-1.5">Material Analysis</h3>
+                    <div id="results-placeholder" class="text-center text-slate-400 py-6 font-mono text-xs">
+                        Awaiting test completion...
+                    </div>
+                    <div id="results-content" class="hidden space-y-2 text-xs">
+                        <div class="flex justify-between items-center"><span class="text-slate-500 font-mono">Young's Modulus:</span> <span id="res-emod" class="font-mono font-bold text-emerald-600">-</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-500 font-mono">Yield Strength:</span> <span id="res-yield" class="font-mono font-bold text-emerald-600">-</span></div>
+                        <div class="flex justify-between items-center"><span class="text-slate-500 font-mono">Ult. Tensile Stress:</span> <span id="res-uts" class="font-mono font-bold text-emerald-600">-</span></div>
+                        
+                        <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 text-center mt-3">
+                            <div id="res-class" class="text-sm font-black text-emerald-900 tracking-wide uppercase">UNKNOWN</div>
+                            <p id="res-desc" class="text-[11px] text-slate-600 mt-1 font-mono leading-relaxed">Select property or classify material.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Guessing Game Panel -->
+                <div id="guess-panel" class="hidden grid grid-cols-3 gap-1.5 pt-2">
+                    <button onclick="guessProperty('Brittle')" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 text-[11px] font-bold py-2 rounded-xl shadow-sm transition-colors">BRITTLE</button>
+                    <button onclick="guessProperty('Ductile')" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 text-[11px] font-bold py-2 rounded-xl shadow-sm transition-colors">DUCTILE</button>
+                    <button onclick="guessProperty('Elastic')" class="bg-slate-100 hover:bg-slate-200 border border-slate-300 text-slate-700 text-[11px] font-bold py-2 rounded-xl shadow-sm transition-colors">ELASTIC</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Canvas & Machine Workspace -->
+        <div id="canvasWrapper" class="absolute p-6 flex flex-col lg:flex-row gap-6">
+            
+            <!-- Left Machine Visualizer -->
+            <div class="w-full lg:w-72 bg-white rounded-3xl p-5 border border-slate-200 shadow-sm flex flex-col items-center relative overflow-hidden shrink-0" style="min-height: 520px;">
+                <div class="absolute top-3 left-5 text-indigo-600 text-[10px] font-mono font-bold tracking-widest uppercase">RAM: 300kN MAX CAPACITY</div>
+                
+                <!-- Machine Frame Guides -->
+                <div class="absolute inset-y-12 left-6 w-2 bg-slate-100 rounded-full border border-slate-200"></div>
+                <div class="absolute inset-y-12 right-6 w-2 bg-slate-100 rounded-full border border-slate-200"></div>
+
+                <!-- Central Track & Grips -->
+                <div class="machine-track absolute inset-y-12 w-36 left-1/2 transform -translate-x-1/2 bg-slate-900/5 rounded-2xl border border-slate-200 overflow-hidden flex flex-col items-center">
+                    
+                    <!-- Top Grip (Fixed) -->
+                    <div class="w-28 h-12 bg-gradient-to-r from-slate-300 via-slate-100 to-slate-400 rounded-b-xl shadow-md z-20 absolute top-4 left-1/2 transform -translate-x-1/2 flex justify-center items-end pb-1 border border-slate-400">
+                        <div class="w-16 h-2 bg-slate-700 rounded-sm flex justify-around"><div class="w-0.5 h-full bg-slate-400"></div><div class="w-0.5 h-full bg-slate-400"></div></div>
+                    </div>
+
+                    <!-- SVG Dogbone Specimen -->
+                    <svg id="specimen-svg" width="60" height="200" class="absolute top-[56px] left-1/2 transform -translate-x-1/2 z-10 overflow-visible drop-shadow-sm">
+                        <path id="specimen-path-top" fill="#94a3b8" stroke="#334155" stroke-width="1" />
+                        <path id="specimen-path-bot" fill="#94a3b8" stroke="#334155" stroke-width="1" />
+                    </svg>
+
+                    <!-- Bottom Grip (Moving Crosshead) -->
+                    <div id="bottom-grip" class="w-28 h-12 bg-gradient-to-r from-slate-300 via-slate-100 to-slate-400 rounded-t-xl shadow-md z-20 absolute left-1/2 transform -translate-x-1/2 flex justify-center items-start pt-1 border border-slate-400" style="top: 206px;">
+                        <div class="w-16 h-2 bg-slate-700 rounded-sm flex justify-around"><div class="w-0.5 h-full bg-slate-400"></div><div class="w-0.5 h-full bg-slate-400"></div></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Graph Workspace -->
+            <div class="flex-1 bg-white p-5 rounded-3xl shadow-sm border border-slate-200 flex flex-col relative overflow-hidden">
+                <div class="flex justify-between items-center mb-3">
+                    <h2 id="graph-title" class="font-bold text-slate-800 tracking-wide uppercase text-sm">STRESS / STRAIN ENGINEERING CURVE</h2>
+                    <div class="flex items-center gap-4">
+                        <button id="btnToggleMode" class="text-[10px] font-bold px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 hover:bg-emerald-600 hover:text-white transition-colors shadow-sm focus:outline-none border border-slate-300 w-36">MODE: STRESS/STRAIN</button>
+                        <button id="btnToggleLabels" class="text-[10px] font-bold px-3 py-1.5 rounded-full bg-slate-200 text-slate-700 hover:bg-emerald-600 hover:text-white transition-colors shadow-sm focus:outline-none border border-slate-300 w-28">SHOW LABELS</button>
+                        <div id="legend-container" class="flex gap-3 text-xs font-mono text-slate-600 flex-wrap justify-end">
+                            <div class="flex items-center gap-1.5"><div class="w-3 h-3 bg-emerald-500 rounded-sm"></div> Awaiting Input</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="relative w-full flex-grow bg-slate-50 border border-slate-200 rounded-2xl overflow-hidden shadow-inner" style="min-height: 400px;">
+                    <canvas id="graphCanvas" class="absolute top-0 left-0 w-full h-full"></canvas>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // --- Game Config & State ---
+        const canvas = document.getElementById('graphCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let width, height;
+        let animationId = null;
+        let testState = 'idle'; // idle, running, broken
+        let currentTime = 0;
+        let currentMaterial = null;
+        let previousTests = []; 
+        let dataPoints = [];
+        let showLabels = false;
+        let graphMode = 'stress_strain'; // 'stress_strain' or 'force_extension'
+        let gMaxStrain = 0.005;
+        let gMaxStress = 200;
+        let hoveredPoint = null;
+        const VIS_SCALE = 15; // Visually stretches elastic region 15x for teaching purposes
+
+        // Updated Material Database corresponding to user's table
+        // Note: Young's Modulus E is converted from kN/mm^2 to MPa (N/mm^2) by multiplying by 1000
+        const materials = {
+            mild_steel: {
+                name: "Mild Steel", color: "#6366f1", type: "Ductile", 
+                E: 196000, yieldStrength: 220, UTS: 430, fractureStrain: 0.25, behavior: "ductile",
+                description: "Typical ductile behavior with upper/lower yield points."
+            },
+            stainless_steel: {
+                name: "Stainless Steels", color: "#94a3b8", type: "Ductile",
+                E: 195000, yieldStrength: 393, UTS: 1020, fractureStrain: 0.40, behavior: "ductile_smooth",
+                description: "High strength, highly ductile, smooth yielding without distinct yield point."
+            },
+            low_alloy_steel: {
+                name: "Low-alloy Steels", color: "#334155", type: "Ductile",
+                E: 203500, yieldStrength: 1240, UTS: 1540, fractureStrain: 0.15, behavior: "ductile_smooth",
+                description: "Very high strength steel with moderate ductility."
+            },
+            cast_iron: {
+                name: "Cast Iron", color: "#0f172a", type: "Brittle",
+                E: 120000, yieldStrength: null, UTS: 140, fractureStrain: 0.00117, behavior: "brittle_linear",
+                description: "Fails suddenly with minimal plastic deformation in tension."
+            },
+            aluminium_alloy: {
+                name: "Aluminium Alloy", color: "#38bdf8", type: "Ductile",
+                E: 70000, yieldStrength: 250, UTS: 300, fractureStrain: 0.10, behavior: "ductile_smooth",
+                description: "Lower modulus, moderate strength, smooth curve."
+            },
+            titanium_alloy: {
+                name: "Titanium Alloy", color: "#818cf8", type: "Ductile",
+                E: 110000, yieldStrength: 950, UTS: 1000, fractureStrain: 0.15, behavior: "ductile_smooth",
+                description: "High strength-to-weight ratio, extremely strong."
+            },
+            nickel_alloys: {
+                name: "Nickel Alloys", color: "#a855f7", type: "Ductile",
+                E: 182000, yieldStrength: 900, UTS: 1200, fractureStrain: 0.30, behavior: "ductile_smooth",
+                description: "Excellent high-temperature strength and significant ductility."
+            },
+            concrete: {
+                name: "Concrete", color: "#d6d3d1", type: "Very Brittle",
+                E: 30000, yieldStrength: null, UTS: 5, fractureStrain: 0.000167, behavior: "brittle_linear",
+                description: "Extremely weak in tension, fails almost instantly with zero yielding."
+            },
+            concrete_reinf: {
+                name: "Concrete (Steel Reinforced)", color: "#78716c", type: "Brittle",
+                E: 47500, yieldStrength: null, UTS: 15, fractureStrain: 0.002, behavior: "brittle",
+                description: "Reinforcing gives slight tensile capacity before bulk failure."
+            },
+            concrete_post: {
+                name: "Concrete (Post Stressed)", color: "#57534e", type: "Brittle",
+                E: 47500, yieldStrength: null, UTS: 25, fractureStrain: 0.003, behavior: "brittle",
+                description: "Pre-compression allows it to handle more tensile load before structural failure."
+            },
+            plastic_abs: {
+                name: "Plastic, ABS Polycarbonate", color: "#f59e0b", type: "Ductile",
+                E: 2600, yieldStrength: 55, UTS: 60, fractureStrain: 0.40, behavior: "ductile_smooth",
+                description: "Low modulus, yields and draws significantly before failure."
+            },
+            plastic_pp: {
+                name: "Plastic, Polypropylene", color: "#fbbf24", type: "Very Ductile",
+                E: 900, yieldStrength: 27, UTS: 34.5, fractureStrain: 1.20, behavior: "ductile_smooth",
+                description: "Very low modulus, extremely high ductility (stretches far)."
+            },
+            wood_para: {
+                name: "Wood (Parallel to Grain)", color: "#b45309", type: "Brittle",
+                E: 12500, yieldStrength: null, UTS: 77, fractureStrain: 0.0062, behavior: "brittle",
+                description: "Stronger in tension along the grain, fails via sudden splintering."
+            },
+            wood_perp: {
+                name: "Wood (Perpendicular to Grain)", color: "#d97706", type: "Very Brittle",
+                E: 800, yieldStrength: null, UTS: 3.5, fractureStrain: 0.0044, behavior: "brittle_linear",
+                description: "Very weak pulling apart across the grain due to structural limits."
+            }
+        };
+
+        function resizeCanvas() {
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            width = canvas.width;
+            height = canvas.height;
+            if(testState === 'broken' && currentMaterial) drawStaticGraph();
+            if(testState === 'idle') drawGraph();
+        }
+
+        function getVisStrain(trueStrain, mat) {
+            if (!mat) return trueStrain;
+            const elasticLimit = mat.yieldStrength ? (mat.yieldStrength / mat.E) : (mat.UTS / mat.E);
+            if (trueStrain <= elasticLimit) {
+                return trueStrain * VIS_SCALE;
+            } else {
+                return (elasticLimit * VIS_SCALE) + (trueStrain - elasticLimit);
+            }
+        }
+
+        function getStress(strain, mat) {
+            if (!mat.yieldStrength) {
+                const maxElasticStrain = (mat.UTS / mat.E);
+                if (strain <= maxElasticStrain) {
+                    return strain * mat.E; 
+                } else {
+                    if (mat.behavior === 'brittle_linear') return mat.UTS;
+                    const overStrain = strain - maxElasticStrain;
+                    return Math.max(0, mat.UTS - overStrain * mat.E * 0.15);
+                }
+            } else {
+                const elasticStrain = (mat.yieldStrength / mat.E);
+                
+                if (strain <= elasticStrain) {
+                    return strain * mat.E; 
+                }
+
+                const plasticStrain = strain - elasticStrain;
+                const totalPlasticRange = mat.fractureStrain - elasticStrain;
+                const progress = Math.min(1, Math.max(0, plasticStrain / totalPlasticRange));
+
+                let currentYield = mat.yieldStrength;
+                
+                if (mat.behavior === 'ductile' && progress < 0.05) {
+                    currentYield = mat.yieldStrength * (1 + 0.03 * Math.cos(progress * Math.PI / 0.05));
+                }
+
+                if (progress <= 0.6) {
+                    const localP = progress / 0.6;
+                    return currentYield + (mat.UTS - currentYield) * Math.sin(localP * Math.PI / 2);
+                } else {
+                    const localP = (progress - 0.6) / 0.4;
+                    const breakStress = mat.UTS * 0.70; 
+                    const drop = (mat.UTS - breakStress) * (1 - Math.cos(localP * Math.PI / 2));
+                    return mat.UTS - drop;
+                }
+            }
+        }
+
+        function startTest(isCompare = false) {
+            if (testState === 'running') return;
+            
+            if (!isCompare) {
+                previousTests = [];
+            }
+            
+            const select = document.getElementById('material-select');
+            let matKey = select.value;
+            
+            if (matKey === 'mystery') {
+                const keys = Object.keys(materials);
+                matKey = keys[Math.floor(Math.random() * keys.length)];
+                currentMaterial = { ...materials[matKey], name: "Mystery Material" };
+                document.getElementById('guess-panel').classList.remove('hidden');
+                document.getElementById('res-class').textContent = "???";
+                document.getElementById('res-class').className = "text-sm font-black text-slate-700 tracking-wide uppercase";
+            } else {
+                currentMaterial = materials[matKey];
+                document.getElementById('guess-panel').classList.add('hidden');
+            }
+
+            document.getElementById('status-message').textContent = "APPLYING TENSILE LOAD...";
+            document.getElementById('specimen-path-top').setAttribute('fill', currentMaterial.color);
+            document.getElementById('specimen-path-bot').setAttribute('fill', currentMaterial.color);
+            
+            // Lock inputs during test
+            document.getElementById('input-gauge').disabled = true;
+            document.getElementById('input-area').disabled = true;
+
+            testState = 'running';
+            currentTime = 0;
+            dataPoints = [];
+
+            animate();
+        }
+
+        function drawDogboneSpecimen(strain, neckingProgress, fractured) {
+            const W = 60; 
+            const gW_initial = 20; 
+            const S = 30; 
+            const F = 15; 
+            const L0 = 70; 
+            
+            let L = L0 * (1 + strain);
+            let neckOffset = 0;
+            
+            if (neckingProgress > 0) {
+                neckOffset = (gW_initial * 0.7) * neckingProgress / 2;
+            }
+
+            const midY = S + F + L/2; 
+            const botY = S + F + L;   
+            const totalH = botY + F + S;
+
+            const x_R_S = W; 
+            const x_L_S = 0; 
+            const x_R_G = W/2 + gW_initial/2; 
+            const x_L_G = W/2 - gW_initial/2; 
+            
+            if (!fractured) {
+                const path = `
+                    M ${x_L_S} 0 L ${x_R_S} 0 L ${x_R_S} ${S}
+                    C ${x_R_S} ${S+F*0.6}, ${x_R_G} ${S+F*0.4}, ${x_R_G} ${S+F}
+                    Q ${x_R_G - neckOffset} ${midY}, ${x_R_G} ${botY}
+                    C ${x_R_G} ${botY+F*0.6}, ${x_R_S} ${botY+F*0.4}, ${x_R_S} ${botY+F}
+                    L ${x_R_S} ${totalH} L ${x_L_S} ${totalH} L ${x_L_S} ${botY+F}
+                    C ${x_L_S} ${botY+F*0.6}, ${x_L_G} ${botY+F*0.4}, ${x_L_G} ${botY}
+                    Q ${x_L_G + neckOffset} ${midY}, ${x_L_G} ${S+F}
+                    C ${x_L_G} ${S+F*0.6}, ${x_L_S} ${S+F*0.4}, ${x_L_S} ${S} Z
+                `;
+                document.getElementById('specimen-path-top').setAttribute('d', path);
+                document.getElementById('specimen-path-bot').setAttribute('d', "");
+            } else {
+                const gap = 12;
+                const topPath = `
+                    M ${x_L_S} 0 L ${x_R_S} 0 L ${x_R_S} ${S}
+                    C ${x_R_S} ${S+F*0.6}, ${x_R_G} ${S+F*0.4}, ${x_R_G} ${S+F}
+                    Q ${x_R_G - neckOffset} ${midY - L/5}, ${x_R_G - neckOffset} ${midY - gap/2}
+                    L ${W/2} ${midY - gap/2 - 4} L ${x_L_G + neckOffset} ${midY - gap/2}
+                    Q ${x_L_G + neckOffset} ${midY - L/5}, ${x_L_G} ${S+F}
+                    C ${x_L_G} ${S+F*0.6}, ${x_L_S} ${S+F*0.4}, ${x_L_S} ${S} Z
+                `;
+                const botPath = `
+                    M ${x_L_G + neckOffset} ${midY + gap/2} L ${W/2} ${midY + gap/2 + 4}
+                    L ${x_R_G - neckOffset} ${midY + gap/2}
+                    Q ${x_R_G - neckOffset} ${midY + L/5}, ${x_R_G} ${botY}
+                    C ${x_R_G} ${botY+F*0.6}, ${x_R_S} ${botY+F*0.4}, ${x_R_S} ${botY+F}
+                    L ${x_R_S} ${totalH} L ${x_L_S} ${totalH} L ${x_L_S} ${botY+F}
+                    C ${x_L_S} ${botY+F*0.6}, ${x_L_G} ${botY+F*0.4}, ${x_L_G} ${botY}
+                    Q ${x_L_G + neckOffset} ${midY + L/5}, ${x_L_G + neckOffset} ${midY + gap/2} Z
+                `;
+                document.getElementById('specimen-path-top').setAttribute('d', topPath);
+                document.getElementById('specimen-path-bot').setAttribute('d', botPath);
+            }
+            
+            document.getElementById('bottom-grip').style.top = `${48 + totalH}px`;
+            document.getElementById('specimen-svg').setAttribute('height', Math.max(200, totalH + 10));
+        }
+
+        function resetMachine() {
+            if (animationId) cancelAnimationFrame(animationId);
+            testState = 'idle';
+            currentTime = 0;
+            dataPoints = [];
+            
+            document.getElementById('input-gauge').disabled = false;
+            document.getElementById('input-area').disabled = false;
+            
+            drawDogboneSpecimen(0, 0, false);
+            
+            document.getElementById('force-display').textContent = "0.00 kN";
+            document.getElementById('extension-display').textContent = "0.00 mm";
+            document.getElementById('status-message').textContent = "SYS.READY :: SELECT SPECIMEN";
+            document.getElementById('results-content').classList.add('hidden');
+            document.getElementById('results-placeholder').classList.remove('hidden');
+            
+            drawGraph(); 
+        }
+        
+        function clearHistory() {
+            previousTests = [];
+            if(testState === 'idle') drawGraph();
+        }
+
+        function animate() {
+            if (testState !== 'running') return;
+
+            let speed;
+            const elasticLimit = currentMaterial.yieldStrength ? (currentMaterial.yieldStrength / currentMaterial.E) : (currentMaterial.UTS / currentMaterial.E);
+            
+            if (currentMaterial.type.includes('Brittle')) {
+                speed = elasticLimit / 120;
+            } else if (currentTime < elasticLimit * 1.05) {
+                speed = elasticLimit / 90; 
+            } else {
+                speed = (currentMaterial.fractureStrain - elasticLimit) / 300; 
+            }
+
+            if (currentMaterial.name.includes('Polypropylene')) speed = 0.015;
+
+            const MICRO_STEPS = 10;
+            const microSpeed = speed / MICRO_STEPS;
+            
+            let finalStress, finalStrain;
+
+            try {
+                for (let i = 0; i < MICRO_STEPS; i++) {
+                    currentTime += microSpeed;
+                    finalStrain = currentTime; 
+                    finalStress = getStress(finalStrain, currentMaterial);
+                    let visStrain = getVisStrain(finalStrain, currentMaterial);
+
+                    if (finalStrain >= currentMaterial.fractureStrain) {
+                        dataPoints.push({ x: getVisStrain(currentMaterial.fractureStrain, currentMaterial), y: getStress(currentMaterial.fractureStrain, currentMaterial), trueStrain: currentMaterial.fractureStrain });
+                        breakSpecimen(currentMaterial.fractureStrain);
+                        return;
+                    }
+
+                    dataPoints.push({ x: visStrain, y: finalStress, trueStrain: finalStrain });
+                }
+            } catch (err) {
+                console.error("Simulation engine failed to calculate stress/strain", err);
+                breakSpecimen(currentTime);
+                return;
+            }
+
+            updateVisuals(finalStress, finalStrain);
+            drawGraph();
+            animationId = requestAnimationFrame(animate);
+        }
+
+        function updateVisuals(stress, strain) {
+            let neckingProgress = 0;
+            if (currentMaterial.type.includes('Ductile')) {
+                const elasticStrain = currentMaterial.yieldStrength ? (currentMaterial.yieldStrength / currentMaterial.E) : 0.01;
+                const totalPlastic = currentMaterial.fractureStrain - elasticStrain;
+                if (totalPlastic > 0) {
+                    const progress = (strain - elasticStrain) / totalPlastic;
+                    if (progress > 0.6) {
+                        neckingProgress = (progress - 0.6) / 0.4; 
+                    }
+                }
+            }
+
+            drawDogboneSpecimen(strain, neckingProgress, false);
+
+            const area = parseFloat(document.getElementById('input-area').value) || 100.0;
+            const length = parseFloat(document.getElementById('input-gauge').value) || 50.0;
+            
+            const forceKN = (stress * area) / 1000;
+            const extensionMM = strain * length;
+
+            document.getElementById('force-display').textContent = forceKN.toFixed(2) + " kN";
+            document.getElementById('extension-display').textContent = extensionMM.toFixed(2) + " mm";
+            
+            const elasticStrain = currentMaterial.yieldStrength ? (currentMaterial.yieldStrength / currentMaterial.E) : (currentMaterial.UTS / currentMaterial.E);
+            if (strain < elasticStrain) {
+                document.getElementById('status-message').textContent = "ELASTIC REGION (YOUNG'S MODULUS)";
+            } else {
+                document.getElementById('status-message').textContent = "PLASTIC REGION (YIELDING & STRAIN)";
+            }
+        }
+
+        function drawGraph() {
+            ctx.clearRect(0, 0, width, height);
+            
+            const A0 = parseFloat(document.getElementById('input-area').value) || 100.0;
+            const L0 = parseFloat(document.getElementById('input-gauge').value) || 50.0;
+            
+            const pLeft = document.body.classList.contains('ess-view') ? 92 : 110; 
+            const pBottom = 45;
+            const pRight = 100; 
+            const pTop = 45; 
+            const gw = width - pLeft - pRight;
+            const gh = height - pBottom - pTop;
+            
+            let maxStrain = 0;
+            let maxStress = 0;
+
+            const allTests = [...previousTests];
+            if (dataPoints.length > 0) allTests.push({ data: dataPoints });
+
+            if (allTests.length === 0) {
+                maxStrain = 0.005; 
+                maxStress = 200;
+            } else {
+                allTests.forEach(test => {
+                    test.data.forEach(pt => {
+                        if (pt.x > maxStrain) maxStrain = pt.x;
+                        if (pt.y > maxStress) maxStress = pt.y;
+                    });
+                });
+                
+                maxStrain *= 1.1; 
+                maxStress *= 1.1;
+                
+                if (maxStrain < 0.002) maxStrain = 0.002;
+                if (maxStress < 100) maxStress = 100;
+            }
+
+            gMaxStrain = maxStrain;
+            gMaxStress = maxStress;
+
+            const mapX = (val) => pLeft + (val / maxStrain) * gw;
+            const mapY = (val) => (height - pBottom) - (val / maxStress) * gh;
+
+            ctx.strokeStyle = '#e2e8f0'; 
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            
+            ctx.textAlign = "center";
+            ctx.fillStyle = "#64748b";
+            ctx.font = "11px Roboto";
+            for (let i = 0; i <= 5; i++) {
+                const val = (maxStrain / 5) * i;
+                const displayVal = graphMode === 'force_extension' ? (val * L0) : val;
+                const x = pLeft + (gw / 5) * i;
+                ctx.moveTo(x, pTop);
+                ctx.lineTo(x, height - pBottom);
+                ctx.fillText(displayVal.toFixed(graphMode === 'force_extension' ? 2 : 3), x, height - pBottom + 18);
+            }
+
+            ctx.textAlign = "right";
+            for (let i = 0; i <= 5; i++) {
+                const val = (maxStress / 5) * i;
+                const displayVal = graphMode === 'force_extension' ? (val * A0 / 1000) : val;
+                const y = (height - pBottom) - (gh / 5) * i;
+                ctx.moveTo(pLeft, y);
+                ctx.lineTo(width - pRight, y);
+                ctx.fillText(displayVal.toFixed(0), pLeft - 10, y + 4);
+            }
+            ctx.stroke();
+
+            ctx.save();
+            ctx.translate(24, height/2); 
+            ctx.rotate(-Math.PI/2);
+            ctx.textAlign = "center";
+            ctx.fillStyle = "#334155";
+            ctx.font = "bold 12px Roboto";
+            ctx.fillText(graphMode === 'stress_strain' ? "Stress (Nmm⁻²)" : "Force (kN)", 0, 0);
+            ctx.restore();
+
+            ctx.textAlign = "center";
+            ctx.fillText(graphMode === 'stress_strain' ? "Strain (ε) - Elastic Region Visually Expanded" : "Extension (mm) - Elastic Region Visually Expanded", width/2 + pLeft/2, height - 6);
+
+            if (showLabels && currentMaterial && dataPoints.length > 0) {
+                const yieldStrain = currentMaterial.yieldStrength ? (currentMaterial.yieldStrength / currentMaterial.E) : (currentMaterial.UTS / currentMaterial.E);
+                
+                const xOrg = mapX(0);
+                const yOrg = mapY(0);
+                const xYield = mapX(getVisStrain(yieldStrain, currentMaterial));
+                const yYield = mapY(currentMaterial.yieldStrength || currentMaterial.UTS);
+                const xEnd = mapX(getVisStrain(currentMaterial.fractureStrain, currentMaterial));
+                
+                let utsPoint = dataPoints[0];
+                dataPoints.forEach(pt => { if(pt.y > utsPoint.y) utsPoint = pt; });
+                const xUTS = mapX(utsPoint.x);
+                const yUTS = mapY(utsPoint.y);
+                const xFrac = mapX(getVisStrain(dataPoints[dataPoints.length-1].trueStrain, currentMaterial));
+                const yFrac = mapY(dataPoints[dataPoints.length-1].y);
+
+                ctx.save();
+                ctx.strokeStyle = '#ef4444'; 
+                ctx.fillStyle = '#ef4444';
+                ctx.lineWidth = 1.2;
+                
+                const drawArrowHead = (x, y, angle) => {
+                    ctx.save();
+                    ctx.translate(x, y);
+                    ctx.rotate(angle);
+                    ctx.beginPath();
+                    ctx.moveTo(0, 0);
+                    ctx.lineTo(-10, 3);
+                    ctx.lineTo(-10, -3);
+                    ctx.fill();
+                    ctx.restore();
+                };
+
+                ctx.font = '11px Roboto';
+
+                const dx = xYield - xOrg;
+                const dy = yYield - yOrg;
+                const len = Math.sqrt(dx*dx + dy*dy);
+                
+                if (len > 0) {
+                    const nx = -dy / len; 
+                    const ny = dx / len; 
+                    const off = 35; 
+                    
+                    const ex1 = xOrg + nx * off;
+                    const ey1 = yOrg + ny * off;
+                    const ex2 = xYield + nx * off;
+                    const ey2 = yYield + ny * off;
+
+                    ctx.beginPath();
+                    ctx.moveTo(xOrg, yOrg); ctx.lineTo(ex1 + nx*5, ey1 + ny*5);
+                    ctx.moveTo(xYield, yYield); ctx.lineTo(ex2 + nx*5, ey2 + ny*5);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(ex1, ey1); ctx.lineTo(ex2, ey2);
+                    ctx.stroke();
+                    
+                    const angle = Math.atan2(ey2 - ey1, ex2 - ex1);
+                    drawArrowHead(ex1, ey1, angle + Math.PI);
+                    drawArrowHead(ex2, ey2, angle);
+
+                    ctx.save();
+                    ctx.translate((ex1+ex2)/2, (ey1+ey2)/2);
+                    ctx.rotate(angle);
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    ctx.fillText("Elastic region", 0, -4);
+                    ctx.restore();
+                }
+
+                if (currentMaterial.yieldStrength && xYield < xFrac) {
+                    const topY = pTop - 20; 
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(xYield, yYield - 15); ctx.lineTo(xYield, topY - 10);
+                    ctx.moveTo(xFrac, yFrac - 15); ctx.lineTo(xFrac, topY - 10);
+                    ctx.stroke();
+
+                    ctx.beginPath();
+                    ctx.moveTo(xYield, topY); ctx.lineTo(xFrac, topY);
+                    ctx.stroke();
+
+                    drawArrowHead(xYield, topY, Math.PI);
+                    drawArrowHead(xFrac, topY, 0);
+
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    ctx.fillText("Plastic region", (xYield + xFrac)/2, topY - 4);
+                }
+
+                const drawLeader = (x, y, text, dir = 'left', yOffset = -25) => {
+                    const xSign = dir === 'left' ? -1 : 1;
+                    const xOffset = 30 * xSign; 
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(x, y);
+                    ctx.lineTo(x + (xOffset*0.6), y + yOffset);
+                    ctx.lineTo(x + xOffset, y + yOffset);
+                    ctx.stroke();
+                    
+                    const angle = Math.atan2(-yOffset, -xOffset*0.6); 
+                    drawArrowHead(x, y, angle);
+                    
+                    ctx.textAlign = dir === 'left' ? 'right' : 'left';
+                    ctx.textBaseline = 'middle';
+                    ctx.fillText(text, x + xOffset + (xSign * 4), y + yOffset);
+                };
+
+                if (currentMaterial.yieldStrength) {
+                    drawLeader(xYield, yYield, "Yield point", 'left', -35); 
+                    if (utsPoint.y > currentMaterial.yieldStrength * 1.02) {
+                        drawLeader(xUTS, yUTS, graphMode === 'stress_strain' ? "Ultimate Tensile Stress" : "Maximum Force", 'right', -20);
+                    }
+                }
+                
+                if (testState === 'broken') {
+                    drawLeader(xFrac, yFrac, "Fracture point", 'right', 25);
+                }
+
+                ctx.restore();
+            }
+
+            previousTests.forEach(test => {
+                ctx.beginPath();
+                ctx.strokeStyle = test.color;
+                ctx.lineWidth = 2.5;
+                ctx.globalAlpha = 0.4;
+                
+                test.data.forEach((pt, index) => {
+                    if (index === 0) ctx.moveTo(mapX(pt.x), mapY(pt.y));
+                    else ctx.lineTo(mapX(pt.x), mapY(pt.y));
+                });
+                ctx.stroke();
+            });
+            
+            ctx.globalAlpha = 1.0;
+            if (dataPoints.length > 0) {
+                ctx.beginPath();
+                ctx.strokeStyle = currentMaterial ? currentMaterial.color : '#6366f1';
+                ctx.lineWidth = 3.5;
+                
+                dataPoints.forEach((pt, index) => {
+                    const x = mapX(pt.x);
+                    const y = mapY(pt.y);
+                    if (index === 0) ctx.moveTo(x, y);
+                    else ctx.lineTo(x, y);
+                });
+                ctx.stroke();
+            }
+
+            const legendContainer = document.getElementById('legend-container');
+            if (previousTests.length > 0 || currentMaterial) {
+                let legendHTML = '';
+                previousTests.forEach(t => {
+                    legendHTML += `<div class="flex items-center gap-1"><div class="w-3 h-3 rounded-sm opacity-50" style="background-color: ${t.color}"></div> ${t.name}</div>`;
+                });
+                if (currentMaterial && testState === 'running') {
+                    legendHTML += `<div class="flex items-center gap-1 font-bold"><div class="w-3 h-3 rounded-sm" style="background-color: ${currentMaterial.color}"></div> ${currentMaterial.name} (Live)</div>`;
+                }
+                legendContainer.innerHTML = legendHTML;
+            }
+
+            if (hoveredPoint) {
+                const hx = mapX(hoveredPoint.x);
+                const hy = mapY(hoveredPoint.y);
+
+                ctx.beginPath();
+                ctx.arc(hx, hy, 5, 0, Math.PI * 2);
+                ctx.fillStyle = hoveredPoint.color;
+                ctx.fill();
+                ctx.lineWidth = 2;
+                ctx.strokeStyle = '#fff';
+                ctx.stroke();
+
+                const forceCalc = (hoveredPoint.y * A0 / 1000).toFixed(2);
+                const extCalc = (hoveredPoint.trueStrain * L0).toFixed(2);
+
+                const txtStress = graphMode === 'stress_strain' ? `Stress: ${hoveredPoint.y.toFixed(1)} Nmm⁻²` : `Force: ${forceCalc} kN`;
+                const txtStrain = graphMode === 'stress_strain' ? `True Strain (ε): ${hoveredPoint.trueStrain.toFixed(5)}` : `Extension: ${extCalc} mm`;
+                
+                let txtE = "";
+                let elasticLimit = currentMaterial.yieldStrength ? (currentMaterial.yieldStrength / currentMaterial.E) : (currentMaterial.UTS / currentMaterial.E);
+                if (hoveredPoint.trueStrain <= elasticLimit * 1.01 && hoveredPoint.trueStrain > 0.00001) {
+                    const calculatedE = (hoveredPoint.y / hoveredPoint.trueStrain / 1000).toFixed(1);
+                    txtE = `Modulus (E): ${calculatedE} kNmm⁻²`;
+                }
+                
+                ctx.font = 'bold 11px Roboto';
+                let textWidth = Math.max(ctx.measureText(txtStrain).width, ctx.measureText(txtStress).width);
+                if (txtE) textWidth = Math.max(textWidth, ctx.measureText(txtE).width);
+                
+                const boxW = textWidth + 16;
+                const boxH = txtE ? 54 : 38;
+                let boxX = hx + 10;
+                let boxY = hy - 20;
+                
+                if (boxX + boxW > width) boxX = hx - boxW - 15;
+                if (boxY < 0) boxY = hy + 15;
+
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+                ctx.strokeStyle = '#cbd5e1';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                if (ctx.roundRect) {
+                    ctx.roundRect(boxX, boxY, boxW, boxH, 6);
+                } else {
+                    ctx.rect(boxX, boxY, boxW, boxH);
+                }
+                ctx.fill();
+                ctx.stroke();
+
+                ctx.fillStyle = '#334155';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'top';
+                ctx.fillText(txtStress, boxX + 8, boxY + 6);
+                ctx.fillText(txtStrain, boxX + 8, boxY + 22);
+                if (txtE) {
+                    ctx.fillStyle = '#059669'; 
+                    ctx.fillText(txtE, boxX + 8, boxY + 38);
+                }
+            }
+
+            return { maxStrain, maxStress, mapX, mapY }; 
+        }
+        
+        function drawStaticGraph() {
+            drawGraph();
+        }
+
+        function breakSpecimen(finalStrain) {
+            testState = 'broken';
+            cancelAnimationFrame(animationId);
+            
+            document.getElementById('input-gauge').disabled = false;
+            document.getElementById('input-area').disabled = false;
+
+            if (currentMaterial) {
+                previousTests.push({
+                    data: [...dataPoints],
+                    color: currentMaterial.color,
+                    name: currentMaterial.name
+                });
+            }
+            
+            drawDogboneSpecimen(finalStrain, 1, true);
+
+            const track = document.querySelector('.machine-track');
+            track.classList.add('breaking');
+            setTimeout(() => track.classList.remove('breaking'), 200);
+
+            document.getElementById('status-message').textContent = "SPECIMEN FRACTURED";
+            showResults();
+            drawStaticGraph();
+        }
+
+        function showResults() {
+            const container = document.getElementById('results-content');
+            const placeholder = document.getElementById('results-placeholder');
+            
+            placeholder.classList.add('hidden');
+            container.classList.remove('hidden');
+            
+            const emod = (currentMaterial.E / 1000).toFixed(1);
+            document.getElementById('res-emod').textContent = `${emod} kNmm⁻²`;
+            document.getElementById('res-yield').textContent = currentMaterial.yieldStrength ? currentMaterial.yieldStrength + " Nmm⁻²" : "N/A (No Yield Phase)";
+            document.getElementById('res-uts').textContent = currentMaterial.UTS + " Nmm⁻²";
+            
+            if (document.getElementById('material-select').value !== 'mystery') {
+                document.getElementById('res-class').textContent = currentMaterial.type.toUpperCase();
+                document.getElementById('res-desc').textContent = currentMaterial.description;
+            }
+        }
+
+        function guessProperty(guess) {
+            const actual = currentMaterial.type;
+            const feedback = document.getElementById('res-desc');
+            const title = document.getElementById('res-class');
+            
+            let correct = false;
+            if (guess === 'Brittle' && (actual.includes('Brittle'))) correct = true;
+            if (guess === 'Ductile' && (actual.includes('Ductile'))) correct = true;
+            if (guess === 'Elastic' && (actual.includes('Elastomer'))) correct = true;
+
+            if (correct) {
+                title.className = "text-sm font-black text-emerald-600 tracking-wide uppercase";
+                title.textContent = "CORRECT: " + currentMaterial.name;
+                feedback.textContent = `Well done! ${currentMaterial.description}`;
+            } else {
+                title.className = "text-sm font-black text-rose-600 tracking-wide uppercase";
+                title.textContent = "INCORRECT!";
+                feedback.textContent = `It was actually ${currentMaterial.name} (${currentMaterial.type}).`;
+            }
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        
+        // Listeners for inputs so graph axes update when dimensions change
+        document.getElementById('input-gauge').addEventListener('input', () => { if(testState !== 'running') drawGraph(); });
+        document.getElementById('input-area').addEventListener('input', () => { if(testState !== 'running') drawGraph(); });
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            const pLeft = document.body.classList.contains('ess-view') ? 92 : 110;
+            const pBottom = 45;
+            const pRight = 100;
+            const pTop = 45;
+            const gw = width - pLeft - pRight;
+            const gh = height - pBottom - pTop;
+            
+            const mx = (val) => pLeft + (val / gMaxStrain) * gw;
+            const my = (val) => (height - pBottom) - (val / gMaxStress) * gh;
+
+            let closestDist = Infinity;
+            let closestPt = null;
+            let closestColor = '#000';
+
+            const checkPoints = (pts, color) => {
+                pts.forEach(pt => {
+                    const px = mx(pt.x);
+                    const py = my(pt.y);
+                    const dist = Math.hypot(px - mouseX, py - mouseY);
+                    if (dist < 20 && dist < closestDist) { 
+                        closestDist = dist;
+                        closestPt = pt;
+                        closestColor = color;
+                    }
+                });
+            };
+
+            previousTests.forEach(t => checkPoints(t.data, t.color));
+            if (currentMaterial && dataPoints.length > 0) {
+                checkPoints(dataPoints, currentMaterial.color);
+            }
+
+            const wasHovered = hoveredPoint !== null;
+            hoveredPoint = closestPt ? { ...closestPt, color: closestColor } : null;
+            
+            if (hoveredPoint || wasHovered) {
+                if(testState !== 'running') drawGraph();
+            }
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            if (hoveredPoint) {
+                hoveredPoint = null;
+                if(testState !== 'running') drawGraph();
+            }
+        });
+        
+        document.getElementById('btnClear').onclick = clearHistory;
+        
+        // Mode Toggle Button
+        document.getElementById('btnToggleMode').onclick = (e) => {
+            graphMode = graphMode === 'stress_strain' ? 'force_extension' : 'stress_strain';
+            e.target.textContent = graphMode === 'stress_strain' ? "MODE: STRESS/STRAIN" : "MODE: FORCE/EXT";
+            if (graphMode === 'force_extension') {
+                e.target.classList.remove('bg-slate-200', 'text-slate-700');
+                e.target.classList.add('bg-emerald-600', 'text-white');
+            } else {
+                e.target.classList.add('bg-slate-200', 'text-slate-700');
+                e.target.classList.remove('bg-emerald-600', 'text-white');
+            }
+            document.getElementById('graph-title').textContent = graphMode === 'stress_strain' ? "STRESS / STRAIN ENGINEERING CURVE" : "FORCE / EXTENSION CURVE";
+            drawGraph();
+        };
+
+        // Labels Toggle Button
+        document.getElementById('btnToggleLabels').onclick = (e) => {
+            showLabels = !showLabels;
+            e.target.textContent = showLabels ? "HIDE LABELS" : "SHOW LABELS";
+            if (showLabels) {
+                e.target.classList.remove('bg-slate-200', 'text-slate-700');
+                e.target.classList.add('bg-emerald-600', 'text-white');
+            } else {
+                e.target.classList.add('bg-slate-200', 'text-slate-700');
+                e.target.classList.remove('bg-emerald-600', 'text-white');
+            }
+            drawGraph();
+        };
+        
+        document.getElementById('btnMenuToggle').onclick = () => {
+            const app = document.getElementById('appContainer');
+            if (app.classList.contains('drawer-open')) {
+                app.classList.remove('drawer-open'); app.classList.add('drawer-closed');
+            } else {
+                app.classList.remove('drawer-closed'); app.classList.add('drawer-open');
+            }
+            setTimeout(resizeCanvas, 450);
+        };
+
+
+        // ESS: options from the web address, so the course notes can open a demonstration ready to run
+        (function () {
+            var q = new URLSearchParams(location.search);
+            if (q.has('view')) document.body.classList.add('ess-view');
+            var sel = document.getElementById('material-select');
+            var only = (q.get('only') || '').split(',').filter(function (k) { return materials[k]; });
+            if (only.length) Array.prototype.slice.call(sel.options).forEach(function (o) { if (only.indexOf(o.value) < 0) o.remove(); });
+            var m = q.get('material'); if (m && (materials[m] || m === 'mystery')) sel.value = m;
+            if (q.get('gauge')) document.getElementById('input-gauge').value = q.get('gauge');
+            if (q.get('area')) document.getElementById('input-area').value = q.get('area');
+            if (q.get('mode') === 'fe') document.getElementById('btnToggleMode').click();
+            if (q.get('labels') === '1') document.getElementById('btnToggleLabels').click();
+            if (q.has('view')) {
+                // close the set-up panel when a test starts, so the machine and graph have the full width
+                var start = window.startTest;
+                window.startTest = function (isCompare) {
+                    start(isCompare);
+                    var app = document.getElementById('appContainer');
+                    if (app.classList.contains('drawer-open')) document.getElementById('btnMenuToggle').click();
+                };
+                document.getElementById('start-btn').onclick = function () { window.startTest(false); };
+                document.getElementById('compare-btn').onclick = function () { window.startTest(true); };
+            }
+        })();
+        resizeCanvas();
+        resetMachine();
+    </script>
+</body>
+</html>
