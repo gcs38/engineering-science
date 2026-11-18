@@ -616,16 +616,16 @@ function renderTeacherDocs(topicKey, containerId) {
    HIGHER_IN_DEVELOPMENT = false to remove the pop-up and notice.
    ============================================================ */
 var NOTES_CHECKED = {
-  'higher-systems-approach':  false,
+  'higher-systems-approach':  true,
   'higher-energy-efficiency': false,
   'higher-roles-impacts':     false,
   'higher-analogue':          true,
-  'higher-digital':           false,
+  'higher-digital':           true,
   'higher-control':           false,
   'higher-drive-systems':     false,
   'higher-pneumatics':        false,
   'higher-structures-forces': false,
-  'higher-materials':         false
+  'higher-materials':         true
 };
 var HIGHER_IN_DEVELOPMENT = true;
 
