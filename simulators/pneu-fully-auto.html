@@ -660,7 +660,7 @@
  }
 
  const cvs=document.getElementById('simCanvas'); const ctx=cvs.getContext('2d');
- function resize() { cvs.width = cvs.parentElement.clientWidth; cvs.height = cvs.parentElement.clientHeight; if (typeof draw === 'function') draw(); }
+ function resize() { cvs.width = cvs.parentElement.clientWidth; cvs.height = cvs.parentElement.clientHeight; if (isLessonActive() && typeof fitToScreen === 'function' && state.comps && state.comps.length) fitToScreen(); else if (typeof draw === 'function') draw(); }
  window.onresize=resize; setTimeout(resize,50);
 
  function snap(v) { return Math.round(v/CFG.grid)*CFG.grid; }
