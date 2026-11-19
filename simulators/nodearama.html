@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <!-- 
-    NoDarama V1 - Parametric Edition
+    NoDarama V1.1 - Parametric Edition
     Parametric Nodal Analysis & Truss Simulation
 -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NODEarama V1 | Engineering Science Scotland</title>
+    <title>NODEarama V1.1 | Engineering Science Scotland</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <style>
@@ -64,8 +64,6 @@
 </head>
 <body class="flex h-screen flex-col">
 
-    <input type="file" id="fileLoad" accept=".json" class="hidden">
-
     <header id="topToolbar" class="h-16 bg-[#f8fafc] z-40 flex items-center justify-between px-6 border-b border-white relative shadow-sm">
         <div class="flex items-center gap-4">
             <div class="flex items-center gap-3">
@@ -90,7 +88,7 @@
                     </svg>
                 </div>
                 <div>
-                    <h1 class="text-xl font-bold text-slate-700 tracking-tight whitespace-nowrap">NODEarama <span class="text-teal-500">V1</span></h1>
+                    <h1 class="text-xl font-bold text-slate-700 tracking-tight whitespace-nowrap">NODEarama <span class="text-teal-500">V1.1</span></h1>
                 </div>
             </div>
             
@@ -314,6 +312,16 @@
                     <button onclick="App.ui.applyMemberAlign('vertical')" id="btnAlignV" class="flex flex-col items-center justify-center p-2 rounded-xl border-2 border-slate-200 hover:border-blue-500 hover:bg-blue-50 transition-colors text-slate-600 hover:text-blue-700 font-bold text-xs bg-white">Vertical</button>
                 </div>
             </div>
+
+            <div class="mb-4 pt-5 border-t border-slate-100">
+                <label class="block text-sm font-bold text-slate-700 mb-2">Absolute Angle to Horizontal (°)</label>
+                <p class="text-xs text-slate-500 mb-3">Locks this member to an imaginary global axis.</p>
+                <div class="flex gap-2">
+                    <input type="number" id="memAbsAngle" step="0.1" class="flex-1 border-2 border-slate-100 p-2 rounded-xl focus:border-blue-500 focus:ring-0 outline-none transition-colors text-sm">
+                    <button onclick="App.ui.applyAbsoluteAngle()" class="px-4 py-2 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors text-sm">Lock</button>
+                    <button onclick="App.ui.unlockAbsoluteAngle()" id="btnAbsUnlock" class="px-4 py-2 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition-colors text-sm" style="display: none;">Unlock</button>
+                </div>
+            </div>
             
             <div class="flex justify-end mt-4 border-t border-slate-100 pt-4 gap-3">
                 <button onclick="App.ui.deleteMember()" class="px-5 py-2.5 text-rose-600 font-bold hover:bg-rose-50 rounded-xl transition-colors border border-rose-100 w-1/3">Delete</button>
@@ -441,6 +449,9 @@
                 </button>
             </div>
             <div id="calcContent" class="text-slate-700 space-y-4"></div>
+            <div class="mt-8 pt-4 border-t border-slate-100 flex justify-end">
+                <button onclick="App.ui.closeModal('calcModal')" class="px-6 py-2.5 bg-slate-100 text-slate-700 font-bold rounded-xl hover:bg-slate-200 transition-colors shadow-sm">Hide Working</button>
+            </div>
         </div>
     </div>
 
@@ -504,7 +515,7 @@
                             <circle cx="80" cy="65" r="3" fill="#ffffff" />
                         </svg>
                     </div>
-                    <h1 class="text-2xl font-black text-slate-800 tracking-tight">NODEarama <span class="text-teal-500">V1</span></h1>
+                    <h1 class="text-2xl font-black text-slate-800 tracking-tight">NODEarama <span class="text-teal-500">V1.1</span></h1>
                 </div>
                 <h2 class="text-lg font-bold text-slate-600 uppercase tracking-widest" id="printTitleText">Calculation Report</h2>
             </div>
@@ -538,7 +549,7 @@
 
     <script>
         // ==========================================
-        // NoDarama V1 - Solid Architectural Engine
+        // NoDarama V1.1 - Solid Architectural Engine
         // Parametric Constrained Behaviour 
         // ==========================================
 
@@ -559,17 +570,20 @@
         class Member {
             constructor(n1, n2) {
                 this.n1 = n1; this.n2 = n2;
-                this.force = 0; this.nature = 'Zero'; 
+                this.force = 0; this.nature = 'Redundant'; 
                 this.isLengthLocked = false;
                 this.lockedLength = 0;
                 this.isAligned = null; // 'horizontal' | 'vertical' | null
+                this.isAbsoluteAngleLocked = false;
+                this.lockedAbsoluteAngle = 0;
             }
             get label() { return [this.n1.label, this.n2.label].sort().join(''); }
         }
 
         class ExternalForce {
-            constructor(node, mag, angle, actionDirection = 'towards', reference = 'horiz') { 
+            constructor(node, mag, angle, actionDirection = 'towards', reference = 'horiz', unit = 'N') { 
                 this.node = node; this.mag = mag; this.angle = angle; this.actionDirection = actionDirection; this.reference = reference; 
+                this.unit = unit;
                 this.angleLabelOffset = { x: 0, y: 0 };
             }
             get mathAngle() { return this.angle * Math.PI / 180; }
@@ -577,7 +591,7 @@
             get yComp() { return this.mag * Math.sin(this.mathAngle); }
         }
         
-        class UDL { constructor(member, mag) { this.member = member; this.mag = mag; } }
+        class UDL { constructor(member, mag, unit = 'N') { this.member = member; this.mag = mag; this.unit = unit; } }
         class AngleConstraint { constructor(sharedNode, m1, m2, targetAngleDeg, sign) { this.sharedNode = sharedNode; this.m1 = m1; this.m2 = m2; this.angleDeg = targetAngleDeg; this.sign = sign; } }
 
         const App = {
@@ -595,6 +609,7 @@
                 dragContext: { active: false, startMouse: {x: 0, y: 0}, items: [] },
                 isDraggingLabel: null, labelDragOffset: { x: 0, y: 0 },
                 relAngleMem1: null, relAngleMem2: null,
+                absAngleMem: null, absAngleNode: null, absAngleRef: null,
                 editingForce: null, forceTargetNode: null, editingUDL: null, udlTargetMember: null, editingMember: null, relSharedNode: null,
                 editingNode: null,
                 previewX: null, previewY: null,
@@ -623,7 +638,14 @@
                     this.state.globalUnit = e.target.value; this.ui.updateUnitLabels(); this.physics.clearResults(); this.recordState();
                 });
 
-                document.getElementById('btnSolve').addEventListener('click', () => { this.physics.solve(); });
+                document.getElementById('btnSolve').addEventListener('click', (e) => { 
+                    if (e.target.innerText.trim() === 'SOLVE') {
+                        this.physics.solve(); 
+                    } else {
+                        this.physics.clearResults();
+                        this.draw();
+                    }
+                });
                 document.getElementById('btnShowCalc').addEventListener('click', () => { document.getElementById('calcModal').style.display = 'flex'; });
                 
                 document.getElementById('btnUndo').addEventListener('click', () => this.undo());
@@ -682,7 +704,8 @@
                         card.classList.add('active'); this.state.mode = card.dataset.mode;
                         this.state.selectedElements = []; 
                         this.state.relAngleMem1 = null; this.state.relAngleMem2 = null;
-                        this.state.drawContext.activeNode = null; // Clear continuous draw on tool switch
+                        this.state.absAngleMem = null; this.state.absAngleNode = null;
+                        this.state.drawContext.activeNode = null; 
                     });
                 });
             },
@@ -730,9 +753,9 @@
                 return JSON.stringify({
                     nextNodeIdx: s.nextNodeIdx, globalUnit: s.globalUnit, cam: s.cam,
                     nodes: s.nodes.map(n => ({ id: n.id, x: n.x, y: n.y, label: n.label, support: n.support, supportRot: n.supportRot, lx: n.labelOffsetX, ly: n.labelOffsetY })),
-                    members: s.members.map(m => ({ n1: m.n1.id, n2: m.n2.id, isLenLocked: m.isLengthLocked, lockedLen: m.lockedLength, isAligned: m.isAligned })),
-                    forces: s.externalForces.map(f => ({ node: f.node.id, mag: f.mag, angle: f.angle, actionDirection: f.actionDirection, reference: f.reference })),
-                    udls: s.udls.map(u => ({ m_n1: u.member.n1.id, m_n2: u.member.n2.id, mag: u.mag })),
+                    members: s.members.map(m => ({ n1: m.n1.id, n2: m.n2.id, isLenLocked: m.isLengthLocked, lockedLen: m.lockedLength, isAligned: m.isAligned, isAbsoluteAngleLocked: m.isAbsoluteAngleLocked, lockedAbsoluteAngle: m.lockedAbsoluteAngle })),
+                    forces: s.externalForces.map(f => ({ node: f.node.id, mag: f.mag, angle: f.angle, actionDirection: f.actionDirection, reference: f.reference, unit: f.unit })),
+                    udls: s.udls.map(u => ({ m_n1: u.member.n1.id, m_n2: u.member.n2.id, mag: u.mag, unit: u.unit })),
                     angleConstraints: s.angleConstraints.map(ac => ({ sharedNode: ac.sharedNode.id, m1_n1: ac.m1.n1.id, m1_n2: ac.m1.n2.id, m2_n1: ac.m2.n1.id, m2_n2: ac.m2.n2.id, angleDeg: ac.angleDeg, sign: ac.sign }))
                 });
             },
@@ -756,14 +779,35 @@
                             m.isLengthLocked = md.isLenLocked || false;
                             m.lockedLength = md.lockedLen || 0;
                             m.isAligned = md.isAligned || null;
+                            m.isAbsoluteAngleLocked = md.isAbsoluteAngleLocked || false;
+                            m.lockedAbsoluteAngle = md.lockedAbsoluteAngle || 0;
                             s.members.push(m); 
                         }
                     });
-                    data.forces.forEach(fd => { let n = nodeMap.get(fd.node); if(n) s.externalForces.push(new ExternalForce(n, fd.mag, fd.angle, fd.actionDirection || 'towards', fd.reference || 'horiz')); });
+                    data.forces.forEach(fd => { 
+                        let n = nodeMap.get(fd.node); 
+                        if(n) {
+                            let u = fd.unit;
+                            if (!u) {
+                                if (fd.mag >= 1000000 && fd.mag % 1000000 === 0) u = 'MN';
+                                else if (fd.mag >= 1000 && fd.mag % 1000 === 0) u = 'kN';
+                                else u = 'N';
+                            }
+                            s.externalForces.push(new ExternalForce(n, fd.mag, fd.angle, fd.actionDirection || 'towards', fd.reference || 'horiz', u)); 
+                        }
+                    });
                     if (data.udls) {
                         data.udls.forEach(ud => {
                             const m = s.members.find(m => (m.n1.id === ud.m_n1 && m.n2.id === ud.m_n2) || (m.n1.id === ud.m_n2 && m.n2.id === ud.m_n1));
-                            if(m) s.udls.push(new UDL(m, ud.mag));
+                            if(m) {
+                                let u = ud.unit;
+                                if (!u) {
+                                    if (ud.mag >= 1000000 && ud.mag % 1000000 === 0) u = 'MN';
+                                    else if (ud.mag >= 1000 && ud.mag % 1000 === 0) u = 'kN';
+                                    else u = 'N';
+                                }
+                                s.udls.push(new UDL(m, ud.mag, u));
+                            }
                         });
                     }
                     if (data.angleConstraints) {
@@ -774,7 +818,11 @@
                             if (shared && m1 && m2) s.angleConstraints.push(new AngleConstraint(shared, m1, m2, acd.angleDeg, acd.sign));
                         });
                     }
-                } catch(e) {}
+                    this.ui.syncMajorityUnit();
+                } catch(e) {
+                    console.error("Error loading JSON:", e);
+                    this.ui.showAlert("Failed to load file. It may be corrupted or from an incompatible older version.");
+                }
             },
 
             math: {
@@ -785,6 +833,10 @@
                     if (App.state.globalUnit === 'kN') return val / 1000;
                     if (App.state.globalUnit === 'MN') return val / 1000000;
                     return val;
+                },
+                format2SF: (val) => {
+                    if (val === 0) return "0";
+                    return Number(val.toPrecision(2)).toString();
                 }
             },
 
@@ -901,16 +953,16 @@
                     for (let iter = 0; iter < ITERATIONS; iter++) {
                         s.nodes.forEach(n => { n.dx = 0; n.dy = 0; n.wSum = 0; });
 
+                        // Soft anchor to original position to prevent drifting
                         s.nodes.forEach(n => {
                             if (n.invMass > 0 && n.baselineX !== undefined) {
-                                // Vastly reduced baseline spring to stop it fighting exact angle constraints
-                                // The frame is merely 'anchored' from completely floating off into space
-                                n.dx += (n.baselineX - n.x) * 0.0001;
-                                n.dy += (n.baselineY - n.y) * 0.0001;
-                                n.wSum += 0.0001;
+                                n.dx += (n.baselineX - n.x) * 1e-6;
+                                n.dy += (n.baselineY - n.y) * 1e-6;
+                                n.wSum += 1e-6;
                             }
                         });
 
+                        // Length Constraints
                         s.members.forEach(m => {
                             let dx = m.n2.x - m.n1.x;
                             let dy = m.n2.y - m.n1.y;
@@ -918,10 +970,13 @@
                             if (curLen < 1e-5) return;
                             
                             let targetLen = m.isLengthLocked ? m.lockedLength : (m.baselineLength || curLen);
-                            let stiffness = m.isLengthLocked ? 1.0 : 0.0001; 
+                            
+                            // ZERO RESISTANCE if not locked! This allows members to freely slide and stretch 
+                            // to meet angle constraints without fighting them and breaking 90 degree corners.
+                            let stiffness = m.isLengthLocked ? 1.0 : 1e-5; 
                             
                             let err = curLen - targetLen;
-                            if (Math.abs(err) > 1e-4) {
+                            if (Math.abs(err) > 1e-6) {
                                 let w1 = m.n1.invMass;
                                 let w2 = m.n2.invMass;
                                 let wt = w1 + w2;
@@ -936,6 +991,7 @@
                             }
                         });
 
+                        // Angle Constraints
                         s.angleConstraints.forEach(ac => {
                             const shared = ac.sharedNode;
                             const ns1 = (ac.m1.n1 === shared) ? ac.m1.n2 : ac.m1.n1;
@@ -956,14 +1012,21 @@
                             if (Math.abs(err) > 1e-6) {
                                 let w1 = ns1.invMass;
                                 let w2 = ns2.invMass;
-                                let stiffness = 1.2; 
+                                let stiffness = 1.0; 
 
                                 let rot1 = 0, rot2 = 0;
-                                if (w1 > 0 && w2 > 0) { rot1 = -err * 0.5; rot2 = err * 0.5; }
+                                let m1Aligned = ac.m1.isAligned || ac.m1.isAbsoluteAngleLocked;
+                                let m2Aligned = ac.m2.isAligned || ac.m2.isAbsoluteAngleLocked;
+                                
+                                if (w1 > 0 && w2 > 0) {
+                                    if (m1Aligned && !m2Aligned) { rot2 = err; }
+                                    else if (!m1Aligned && m2Aligned) { rot1 = -err; }
+                                    else { rot1 = -err * 0.5; rot2 = err * 0.5; }
+                                }
                                 else if (w1 > 0) { rot1 = -err; }
                                 else if (w2 > 0) { rot2 = err; }
 
-                                if (w1 > 0) {
+                                if (w1 > 0 && rot1 !== 0) {
                                     let r1 = Math.hypot(ns1.x - shared.x, ns1.y - shared.y);
                                     let tx = shared.x + r1 * Math.cos(a1 + rot1);
                                     let ty = shared.y + r1 * Math.sin(a1 + rot1);
@@ -971,7 +1034,7 @@
                                     ns1.dy += (ty - ns1.y) * stiffness;
                                     ns1.wSum += stiffness;
                                 }
-                                if (w2 > 0) {
+                                if (w2 > 0 && rot2 !== 0) {
                                     let r2 = Math.hypot(ns2.x - shared.x, ns2.y - shared.y);
                                     let tx = shared.x + r2 * Math.cos(a2 + rot2);
                                     let ty = shared.y + r2 * Math.sin(a2 + rot2);
@@ -982,7 +1045,35 @@
                             }
                         });
 
+                        // Alignment & Absolute Angle Constraints
                         s.members.forEach(m => {
+                            if (m.isAbsoluteAngleLocked) {
+                                let dx = m.n2.x - m.n1.x;
+                                let dy = m.n2.y - m.n1.y;
+                                let curLen = Math.hypot(dx, dy);
+                                if(curLen < 1e-5) return;
+                                
+                                // Math.atan2(-(n2.y - n1.y), n2.x - n1.x) 
+                                // so target dy in canvas space = -sin(targetAng)
+                                let targetAng = m.lockedAbsoluteAngle * Math.PI / 180;
+                                let targetDx = curLen * Math.cos(targetAng);
+                                let targetDy = -curLen * Math.sin(targetAng);
+
+                                let w1 = m.n1.invMass;
+                                let w2 = m.n2.invMass;
+                                let wt = w1 + w2;
+                                let stiffness = 2.0;
+
+                                if (wt > 0) {
+                                    let corrX = (targetDx - dx) / wt;
+                                    let corrY = (targetDy - dy) / wt;
+                                    
+                                    if (w1 > 0) { m.n1.dx -= corrX * w1 * stiffness; m.n1.dy -= corrY * w1 * stiffness; m.n1.wSum += stiffness; }
+                                    if (w2 > 0) { m.n2.dx += corrX * w2 * stiffness; m.n2.dy += corrY * w2 * stiffness; m.n2.wSum += stiffness; }
+                                }
+                                return;
+                            }
+
                             if (!m.isAligned) return;
                             let w1 = m.n1.invMass;
                             let w2 = m.n2.invMass;
@@ -991,21 +1082,18 @@
                             let stiffness = 2.0; 
 
                             if (m.isAligned === 'horizontal') {
-                                let targetY = (m.n1.y * (w1 === 0 ? 1 : 0) + m.n2.y * (w2 === 0 ? 1 : 0));
-                                if (w1 > 0 && w2 > 0) targetY = (m.n1.y + m.n2.y) / 2;
-                                
+                                let targetY = (w1 === 0) ? m.n1.y : ((w2 === 0) ? m.n2.y : (m.n1.y + m.n2.y) / 2);
                                 if (w1 > 0) { m.n1.dy += (targetY - m.n1.y) * stiffness; m.n1.wSum += stiffness; }
                                 if (w2 > 0) { m.n2.dy += (targetY - m.n2.y) * stiffness; m.n2.wSum += stiffness; }
                             }
                             if (m.isAligned === 'vertical') {
-                                let targetX = (m.n1.x * (w1 === 0 ? 1 : 0) + m.n2.x * (w2 === 0 ? 1 : 0));
-                                if (w1 > 0 && w2 > 0) targetX = (m.n1.x + m.n2.x) / 2;
-                                
+                                let targetX = (w1 === 0) ? m.n1.x : ((w2 === 0) ? m.n2.x : (m.n1.x + m.n2.x) / 2);
                                 if (w1 > 0) { m.n1.dx += (targetX - m.n1.x) * stiffness; m.n1.wSum += stiffness; }
                                 if (w2 > 0) { m.n2.dx += (targetX - m.n2.x) * stiffness; m.n2.wSum += stiffness; }
                             }
                         });
 
+                        // Apply
                         s.nodes.forEach(n => {
                             if (n.invMass > 0 && n.wSum > 0) {
                                 n.x += (n.dx / n.wSum) * RELAXATION;
@@ -1027,20 +1115,26 @@
                     }
 
                     // POST-PROCESS STRICT ORTHOGONAL ALIGNMENT
-                    for (let p = 0; p < 3; p++) {
+                    for (let p = 0; p < 5; p++) {
                         s.members.forEach(m => {
                             if (m.isAligned === 'horizontal') {
-                                let y = (m.n1.y + m.n2.y) / 2;
-                                m.n1.y = y; m.n2.y = y;
+                                let target = m.n1.y;
+                                if (m.n1.invMass === 0 && m.n2.invMass > 0) target = m.n1.y;
+                                else if (m.n2.invMass === 0 && m.n1.invMass > 0) target = m.n2.y;
+                                else target = (m.n1.y + m.n2.y) / 2;
+                                m.n1.y = target; m.n2.y = target;
                             }
                             if (m.isAligned === 'vertical') {
-                                let x = (m.n1.x + m.n2.x) / 2;
-                                m.n1.x = x; m.n2.x = x;
+                                let target = m.n1.x;
+                                if (m.n1.invMass === 0 && m.n2.invMass > 0) target = m.n1.x;
+                                else if (m.n2.invMass === 0 && m.n1.invMass > 0) target = m.n2.x;
+                                else target = (m.n1.x + m.n2.x) / 2;
+                                m.n1.x = target; m.n2.x = target;
                             }
                         });
                     }
                     
-                    // Update baselines so structure settles completely into the new shape
+                    // Update baselines
                     s.members.forEach(m => {
                         m.baselineLength = Math.hypot(m.n2.x - m.n1.x, m.n2.y - m.n1.y);
                     });
@@ -1101,7 +1195,7 @@
                 getForce(x, y) {
                      for(let f of App.state.externalForces) {
                         const aRad = f.mathAngle; 
-                        const len = 80 / App.state.cam.zoom;
+                        const len = 120 / App.state.cam.zoom; // Scaled up hit box
                         let headX, headY, tailX, tailY;
                         
                         if (f.actionDirection === 'away') {
@@ -1125,7 +1219,35 @@
                     } return null;
                 },
                 getAngleConstraint(x, y) {
+                    // Check for active temporary absolute angle placement
+                    const s_st = App.state;
+                    if (s_st.mode === 'rel_angle' && s_st.absAngleMem && s_st.absAngleNode && s_st.absAngleRef && !s_st.relAngleMem2) {
+                        const m = s_st.absAngleMem;
+                        const node = s_st.absAngleNode;
+                        const l1 = App.math.dist(m.n1.x, m.n1.y, m.n2.x, m.n2.y) * s_st.cam.zoom;
+                        const arcRadius = Math.max(25, Math.min(55, l1 * 0.4)) / s_st.cam.zoom;
+                        const fontSize = Math.max(12, Math.min(18, arcRadius * s_st.cam.zoom * 0.45)) / s_st.cam.zoom;
+                        const textR = arcRadius + (fontSize * 1.25);
+                        
+                        const a1 = Math.atan2(node === m.n1 ? m.n2.y - node.y : m.n1.y - node.y, 
+                                              node === m.n1 ? m.n2.x - node.x : m.n1.x - node.x);
+                        
+                        const mouseAngle = Math.atan2(s_st.previewY - node.y, s_st.previewX - node.x);
+                        const aRef = s_st.absAngleRef === 'horiz' ? ((Math.abs(mouseAngle) < Math.PI/2) ? 0 : Math.PI) : ((mouseAngle > 0) ? Math.PI/2 : -Math.PI/2);
+                        
+                        let diff = aRef - a1;
+                        while(diff <= -Math.PI) diff += 2*Math.PI; while(diff > Math.PI) diff -= 2*Math.PI;
+                        const midAng = a1 + diff/2;
+                        
+                        const textX = node.x + Math.cos(midAng) * textR; 
+                        const textY = node.y + Math.sin(midAng) * textR; 
+                        if (App.math.dist(x, y, textX, textY) <= 25/s_st.cam.zoom) {
+                            return { type: 'temp_abs_angle', m: m, n: node, ref: s_st.absAngleRef };
+                        }
+                    }
+
                     for (let ac of App.state.angleConstraints) {
+                        if (!ac.sharedNode) continue; // Safety skip for malformed references
                         const s = ac.sharedNode; const ns1 = (ac.m1.n1 === s) ? ac.m1.n2 : ac.m1.n1; const ns2 = (ac.m2.n1 === s) ? ac.m2.n2 : ac.m2.n1;
                         const a1 = Math.atan2(ns1.y - s.y, ns1.x - s.x); 
                         const a2 = Math.atan2(ns2.y - s.y, ns2.x - s.x); 
@@ -1143,6 +1265,26 @@
                         const textY = s.y + Math.sin(midAng) * textR; 
                         if (App.math.dist(x, y, textX, textY) <= 25/App.state.cam.zoom) return { type: 'angle', ac: ac };
                     } 
+
+                    for (let m of App.state.members) {
+                        if (m.isAbsoluteAngleLocked) {
+                            const l1 = App.math.dist(m.n1.x, m.n1.y, m.n2.x, m.n2.y) * App.state.cam.zoom;
+                            const arcRadius = Math.max(25, Math.min(55, l1 * 0.4)) / App.state.cam.zoom;
+                            const fontSize = Math.max(12, Math.min(18, arcRadius * App.state.cam.zoom * 0.45)) / App.state.cam.zoom;
+                            const textR = arcRadius + (fontSize * 1.25);
+                            
+                            const a1 = Math.atan2(m.n2.y - m.n1.y, m.n2.x - m.n1.x);
+                            const aHoriz = (Math.abs(a1) < Math.PI/2) ? 0 : Math.PI;
+                            
+                            let diff = aHoriz - a1;
+                            while(diff <= -Math.PI) diff += 2*Math.PI; while(diff > Math.PI) diff -= 2*Math.PI;
+                            const midAng = a1 + diff/2;
+                            
+                            const textX = m.n1.x + Math.cos(midAng) * textR; 
+                            const textY = m.n1.y + Math.sin(midAng) * textR; 
+                            if (App.math.dist(x, y, textX, textY) <= 25/App.state.cam.zoom) return { type: 'abs_angle', m: m, n: m.n1, ref: 'horiz' };
+                        }
+                    }
                     
                     const internalAngles = App.engine.getInternalAngles();
                     for (let ang of internalAngles) {
@@ -1243,6 +1385,9 @@
                             } else if (cAng.type === 'auto_angle') {
                                 s.relAngleMem1 = cAng.m1; s.relAngleMem2 = cAng.m2; 
                                 this.ui.openRelAngleModal(cAng.node, cAng.m1, cAng.m2); 
+                            } else if (cAng.type === 'abs_angle' || cAng.type === 'temp_abs_angle') {
+                                s.absAngleMem = cAng.m; s.absAngleNode = cAng.n; s.absAngleRef = cAng.ref;
+                                this.ui.openAbsAngleModal(cAng.n, cAng.m, cAng.ref);
                             }
                             return; 
                         }
@@ -1293,13 +1438,22 @@
                     }
                     else if (s.mode === 'rel_angle') {
                         if (cMem) {
-                            if (!s.relAngleMem1) s.relAngleMem1 = cMem;
+                            if (!s.relAngleMem1) {
+                                s.relAngleMem1 = cMem;
+                                s.absAngleMem = cMem;
+                                s.absAngleNode = Math.hypot(wx - cMem.n1.x, wy - cMem.n1.y) < Math.hypot(wx - cMem.n2.x, wy - cMem.n2.y) ? cMem.n1 : cMem.n2;
+                            }
                             else if (s.relAngleMem1 !== cMem) {
                                 let sn = null;
                                 if (cMem.n1 === s.relAngleMem1.n1 || cMem.n1 === s.relAngleMem1.n2) sn = cMem.n1;
                                 if (cMem.n2 === s.relAngleMem1.n1 || cMem.n2 === s.relAngleMem1.n2) sn = cMem.n2;
-                                if (sn) { s.relAngleMem2 = cMem; this.ui.openRelAngleModal(sn, s.relAngleMem1, s.relAngleMem2); } 
-                                else { App.ui.showAlert("Members must share a connecting node!"); s.relAngleMem1 = null; }
+                                if (sn) { 
+                                    s.relAngleMem2 = cMem; 
+                                    s.absAngleMem = null;
+                                    s.absAngleNode = null;
+                                    this.ui.openRelAngleModal(sn, s.relAngleMem1, s.relAngleMem2); 
+                                } 
+                                else { App.ui.showAlert("Members must share a connecting node!"); s.relAngleMem1 = null; s.absAngleMem = null; s.absAngleNode = null; }
                             }
                         }
                     }
@@ -1422,6 +1576,36 @@
                         this.physics.clearResults(); return;
                     }
                     
+                    if (s.mode === 'rel_angle' && s.absAngleMem && s.absAngleNode) {
+                        const mAngle = Math.atan2(s.absAngleNode === s.absAngleMem.n1 ? s.absAngleMem.n2.y - s.absAngleNode.y : s.absAngleMem.n1.y - s.absAngleNode.y, 
+                                                  s.absAngleNode === s.absAngleMem.n1 ? s.absAngleMem.n2.x - s.absAngleNode.x : s.absAngleMem.n1.x - s.absAngleNode.x);
+                        const mouseAngle = Math.atan2(rawWy - s.absAngleNode.y, rawWx - s.absAngleNode.x);
+                        
+                        let ref = 'horiz';
+                        const diffH = Math.min(Math.abs(mouseAngle), Math.abs(mouseAngle - Math.PI), Math.abs(mouseAngle + Math.PI));
+                        const diffV = Math.min(Math.abs(mouseAngle - Math.PI/2), Math.abs(mouseAngle + Math.PI/2));
+                        if (diffV < diffH) ref = 'vert';
+                        s.absAngleRef = ref;
+                        
+                        const aRef = ref === 'horiz' ? ((Math.abs(mouseAngle) < Math.PI/2) ? 0 : Math.PI) : ((mouseAngle > 0) ? Math.PI/2 : -Math.PI/2);
+                        let diff = aRef - mAngle;
+                        while(diff <= -Math.PI) diff += 2*Math.PI; while(diff > Math.PI) diff -= 2*Math.PI;
+                        const midAng = mAngle + diff/2;
+                        
+                        const l1 = App.math.dist(s.absAngleMem.n1.x, s.absAngleMem.n1.y, s.absAngleMem.n2.x, s.absAngleMem.n2.y) * App.state.cam.zoom;
+                        const arcRadius = Math.max(25, Math.min(55, l1 * 0.4)) / App.state.cam.zoom;
+                        const fontSize = Math.max(12, Math.min(18, arcRadius * App.state.cam.zoom * 0.45)) / App.state.cam.zoom;
+                        const textR = arcRadius + (fontSize * 1.25);
+                        const textX = s.absAngleNode.x + Math.cos(midAng) * textR;
+                        const textY = s.absAngleNode.y + Math.sin(midAng) * textR;
+                        
+                        if (App.math.dist(rawWx, rawWy, textX, textY) <= 25/App.state.cam.zoom) {
+                            cvs.style.cursor = 'pointer';
+                        } else {
+                            cvs.style.cursor = 'default';
+                        }
+                    }
+
                     s.previewX = wx; s.previewY = wy;
                 });
 
@@ -1504,7 +1688,7 @@
                                     s.angleConstraints = s.angleConstraints.filter(ac => ac !== el.ac); 
                                 }
                             });
-                            s.selectedElements = []; this.physics.clearResults(); this.recordState();
+                            s.selectedElements = []; this.ui.syncMajorityUnit(); this.physics.clearResults(); this.recordState();
                         }
                     } else if (e.key === 'r' || e.key === 'R') {
                         const sNode = s.selectedElements.find(el => el.label !== undefined && el.support !== 'none');
@@ -1519,6 +1703,13 @@
                     App.state.nodes.forEach(n => { n.rx = 0; n.ry = 0; });
                     document.getElementById('resultsPanel').classList.add('hidden');
                     document.getElementById('btnShowCalc').classList.add('hidden');
+                    
+                    const btnSolve = document.getElementById('btnSolve');
+                    if (btnSolve && btnSolve.innerText.trim() !== 'SOLVE') {
+                        btnSolve.innerText = 'SOLVE';
+                        btnSolve.classList.replace('bg-slate-500', 'bg-sky-500');
+                        btnSolve.classList.replace('hover:bg-slate-600', 'hover:bg-sky-600');
+                    }
                 },
                 gaussianElimination(A, b) {
                     const n = b.length; let M = []; for (let i = 0; i < n; i++) M.push([...A[i], b[i]]);
@@ -1534,8 +1725,9 @@
                 },
                 solveMatrix(A, B) {
                     const rows = A.length; const cols = A[0].length;
+                    let x = null;
                     if (cols === rows) {
-                        return this.gaussianElimination(A, B);
+                        x = this.gaussianElimination(A, B);
                     } else if (cols > rows) {
                         let AAT = Array(rows).fill(0).map(() => Array(rows).fill(0));
                         for (let i = 0; i < rows; i++) {
@@ -1543,12 +1735,13 @@
                                 let sum = 0; for (let k = 0; k < cols; k++) sum += A[i][k] * A[j][k]; AAT[i][j] = sum;
                             }
                         }
-                        let y = this.gaussianElimination(AAT, B); if (!y) return null;
-                        let x = Array(cols).fill(0);
-                        for (let i = 0; i < cols; i++) {
-                            let sum = 0; for (let j = 0; j < rows; j++) sum += A[j][i] * y[j]; x[i] = sum;
+                        let y = this.gaussianElimination(AAT, B);
+                        if (y) {
+                            x = Array(cols).fill(0);
+                            for (let i = 0; i < cols; i++) {
+                                let sum = 0; for (let j = 0; j < rows; j++) sum += A[j][i] * y[j]; x[i] = sum;
+                            }
                         }
-                        return x;
                     } else {
                         let ATA = Array(cols).fill(0).map(() => Array(cols).fill(0));
                         for (let i = 0; i < cols; i++) {
@@ -1560,11 +1753,14 @@
                         for (let i = 0; i < cols; i++) {
                             let sum = 0; for (let k = 0; k < rows; k++) sum += A[k][i] * B[k]; ATB[i] = sum;
                         }
-                        return this.gaussianElimination(ATA, ATB);
+                        x = this.gaussianElimination(ATA, ATB);
                     }
+
+                    return x;
                 },
                 solve() {
                     this.clearResults();
+                    App.ui.syncMajorityUnit();
                     const s = App.state;
                     
                     s.nodes = s.nodes.filter(n => s.members.some(m => m.n1 === n || m.n2 === n) || n.support !== 'none');
@@ -1632,10 +1828,10 @@
                     });
 
                     let numReactions = 0; let rxCols = [];
-                    let pin = null; let roller = null;
+                    let pins = []; let rollers = [];
                     s.nodes.forEach(n => {
-                        if (n.support === 'pin') { pin = n; rxCols.push({node: n, type: 'x', label: `${n.label}x`}); rxCols.push({node: n, type: 'y', label: `${n.label}y`}); numReactions += 2; } 
-                        else if (n.support === 'roller') { roller = n; if (n.supportRot === 0 || n.supportRot === 180) { rxCols.push({node: n, type: 'y', label: `${n.label}y`}); } else { rxCols.push({node: n, type: 'x', label: `${n.label}x`}); } numReactions += 1; }
+                        if (n.support === 'pin') { pins.push(n); rxCols.push({node: n, type: 'x', label: `${n.label}x`}); rxCols.push({node: n, type: 'y', label: `${n.label}y`}); numReactions += 2; } 
+                        else if (n.support === 'roller') { rollers.push(n); if (n.supportRot === 0 || n.supportRot === 180) { rxCols.push({node: n, type: 'y', label: `${n.label}y`}); } else { rxCols.push({node: n, type: 'x', label: `${n.label}x`}); } numReactions += 1; }
                     });
 
                     const n_count = s.nodes.length; const m = s.members.length; const r = numReactions;
@@ -1647,7 +1843,8 @@
 
                     let momentsData = { success: false, log: [] };
                     
-                    if (pin && roller) {
+                    if (pins.length === 1 && rollers.length === 1) {
+                        const pin = pins[0]; const roller = rollers[0];
                         const GRID = App.GRID_SIZE;
                         const P = { x: pin.x / GRID, y: -pin.y / GRID }; 
                         const R = { x: roller.x / GRID, y: -roller.y / GRID };
@@ -1659,7 +1856,7 @@
                             const loc = { x: f.node.x / GRID, y: -f.node.y / GRID };
                             const M = (loc.x - P.x) * fy - (loc.y - P.y) * fx;
                             sumM_P += M; sumFx += fx; sumFy += fy;
-                            if(Math.abs(M) > 0.01) momentsData.log.push({ M: M, desc: `Point load ${f.mag}${s.globalUnit} at ${f.node.label}` });
+                            if(Math.abs(M) > 0.01) momentsData.log.push({ M: M, desc: `Point load ${App.math.toDisp(f.mag)}${s.globalUnit} at ${f.node.label}` });
                         });
 
                         s.udls.forEach(u => {
@@ -1667,7 +1864,7 @@
                             const cx = (u.member.n1.x + u.member.n2.x) / (2 * GRID); const cy = -(u.member.n1.y + u.member.n2.y) / (2 * GRID);
                             const M = (cx - P.x) * force;
                             sumM_P += M; sumFy += force;
-                            if(Math.abs(M) > 0.01) momentsData.log.push({ M: M, desc: `UDL (${u.mag}${s.globalUnit}m⁻¹) on ${u.member.label}` });
+                            if(Math.abs(M) > 0.01) momentsData.log.push({ M: M, desc: `UDL (${App.math.toDisp(u.mag)}${s.globalUnit}m⁻¹) on ${u.member.label}` });
                         });
 
                         const dx_R = R.x - P.x; const dy_R = R.y - P.y;
@@ -1699,7 +1896,8 @@
                         }
                     }
 
-                    if (m > 0 && r > 0) {
+                    // A 2D truss requires at least 3 support reaction components (e.g. Pin + Roller, or 2 Pins) to prevent rigid-body rotation/translation
+                    if (m > 0 && r >= 3) {
                         const totalVars = m + r;
                         let A = Array(2 * n_count).fill(0).map(() => Array(totalVars).fill(0)); let B = Array(2 * n_count).fill(0);
 
@@ -1730,7 +1928,7 @@
                                 member.force = Math.abs(val);
                                 if (val > 0) member.nature = 'Tie'; else if (val < 0) member.nature = 'Strut'; else member.nature = 'Redundant';
                                 let nc = member.nature === 'Tie' ? 'text-blue-600' : (member.nature === 'Strut' ? 'text-red-600' : 'text-slate-400');
-                                htmlOut += `<tr class="border-b border-slate-200"><td class="px-5 py-2 font-bold text-slate-700">${member.label}</td><td class="px-5 py-2 text-slate-800">${App.math.toDisp(member.force).toFixed(2)}</td><td class="px-5 py-2 font-bold ${nc}">${member.nature}</td></tr>`;
+                                htmlOut += `<tr class="border-b border-slate-200"><td class="px-5 py-2 font-bold text-slate-700">${member.label}</td><td class="px-5 py-2 text-slate-800">${App.math.format2SF(App.math.toDisp(member.force))}</td><td class="px-5 py-2 font-bold ${nc}">${member.nature}</td></tr>`;
                             });
                             rb.innerHTML = htmlOut;
                             
@@ -1745,41 +1943,50 @@
                     }
 
                     if (!isTrussSolvable) {
-                        badge.innerText = 'Unstable Mechanism'; badge.className = 'px-2 py-1 rounded text-xs font-bold bg-red-100 text-red-700';
-                        rp.classList.remove('hidden'); rb.innerHTML = `<tr><td colspan="3" class="px-5 py-4 text-center font-medium text-red-600">Structure is mathematically unstable (Mechanism). Cannot resolve internal forces. Check supports and member triangulation.</td></tr>`;
+                        s.nodes.forEach(n => { n.rx = 0; n.ry = 0; });
+                        badge.innerText = 'Unstable Structure'; badge.className = 'px-2 py-1 rounded text-xs font-bold bg-red-100 text-red-700';
+                        rp.classList.remove('hidden'); rb.innerHTML = `<tr><td colspan="3" class="px-5 py-4 text-center font-medium text-red-600">Structure is unstable and would rotate or collapse! Please ensure you have enough supports (e.g. a Pin and a Roller) and that your frame is built from triangles.</td></tr>`;
+                        
+                        const btnSolve = document.getElementById('btnSolve');
+                        if (btnSolve) {
+                            btnSolve.innerText = 'HIDE ANSWERS';
+                            btnSolve.classList.replace('bg-sky-500', 'bg-slate-500');
+                            btnSolve.classList.replace('hover:bg-sky-600', 'hover:bg-slate-600');
+                        }
                         return;
                     }
 
-                    if (!isDeterminate) {
-                        badge.innerText = 'Solved (Indeterminate)'; badge.className = 'px-2 py-1 rounded text-xs font-bold bg-amber-100 text-amber-700';
-                    } else {
-                        badge.innerText = 'Solved Stable'; badge.className = 'px-2 py-1 rounded text-xs font-bold bg-green-100 text-green-700';
+                    badge.innerText = 'Solved'; badge.className = 'px-2 py-1 rounded text-xs font-bold bg-green-100 text-green-700';
+
+                    const btnSolve = document.getElementById('btnSolve');
+                    if (btnSolve) {
+                        btnSolve.innerText = 'HIDE ANSWERS';
+                        btnSolve.classList.replace('bg-sky-500', 'bg-slate-500');
+                        btnSolve.classList.replace('hover:bg-sky-600', 'hover:bg-slate-600');
                     }
 
                     rp.classList.remove('hidden'); document.getElementById('btnShowCalc').classList.remove('hidden');
-                    this.generateReport(reactionsData, momentsData, isTrussSolvable, isDeterminate);
+                    this.generateReport(reactionsData, momentsData, isTrussSolvable);
                 },
-                generateReport(reactionsData, momentsData, isTrussSolvable, isDeterminate) {
+                generateReport(reactionsData, momentsData, isTrussSolvable) {
                     const s = App.state; let html = "";
                     if (s.nodes.length === 0) return;
 
                     html += `<div class="border-b-2 border-slate-200 pb-2 mb-4"><h3 class="text-xl font-bold text-[#1e3a8a]">Structure Analysis Overview</h3></div>`;
                     let numReactions = 0; s.nodes.forEach(n => { if(n.support === 'pin') numReactions += 2; if(n.support === 'roller') numReactions += 1; });
-                    html += `<div class="grid grid-cols-3 gap-4 mb-4 text-sm font-medium"><div>Nodes (<i>n</i>): ${s.nodes.length}</div><div>Members (<i>m</i>): ${s.members.length}</div><div>Unknowns (<i>r</i>): ${numReactions}</div></div>`;
+                    html += `<div class="grid grid-cols-3 gap-4 mb-4 text-sm font-medium"><div>Nodes: ${s.nodes.length}</div><div>Members: ${s.members.length}</div><div>Support Reactions: ${numReactions}</div></div>`;
 
                     if (!isTrussSolvable) {
-                        html += `<div class="math-block bg-red-50 border-red-200 text-red-800">Truss Check: <strong>2<i>n</i> > <i>m</i> + <i>r</i> &rarr; (${2*s.nodes.length} > ${s.members.length + numReactions})</strong><br>Structure is a mechanism / unstable. Cannot accurately resolve internal forces.</div>`;
-                    } else if (!isDeterminate) {
-                        html += `<div class="math-block bg-amber-50 border-amber-200 text-amber-800">Truss Check: <strong>2<i>n</i> < <i>m</i> + <i>r</i> &rarr; (${2*s.nodes.length} < ${s.members.length + numReactions})</strong><br>Structure is Statically Indeterminate. Internal forces successfully resolved using Minimum Strain Energy (Pseudo-Inverse) approximation.</div>`;
+                        html += `<div class="math-block bg-red-50 border-red-200 text-red-800">This structure is unstable and cannot be solved. Please check your supports and member connections.</div>`;
                     } else {
-                        html += `<div class="math-block bg-emerald-50 border-emerald-200 text-emerald-800">Determinate Truss Check: <strong>2<i>n</i> = <i>m</i> + <i>r</i> &rarr; (${2*s.nodes.length} = ${s.members.length + numReactions}) &rarr; OK</strong></div>`;
+                        html += `<div class="math-block bg-blue-50 border-blue-200 text-blue-800 text-sm">Note: Final answers are rounded to 2 significant figures (no intermediate rounding).</div>`;
                     }
 
                     if (momentsData.success) {
                         html += `<div class="border-b-2 border-slate-200 pb-2 mt-6 mb-4"><h3 class="text-xl font-bold text-[#1e3a8a]">1. External Support Reactions</h3></div>`;
                         html += `<p class="mb-2"><strong>Principle of Moments:</strong> Take moments about Node ${momentsData.pin.label} to find R<sub>${momentsData.roller.label}</sub>.</p>`;
                         html += `<div class="math-block">`;
-                        html += `&Sigma; M<sub>${momentsData.pin.label}} = 0<br>`;
+                        html += `&Sigma; M<sub>${momentsData.pin.label}</sub> = 0<br>`;
                         let mStr = momentsData.log.map(m => `${m.M > 0 ? '+' : ''}${App.math.toDisp(m.M).toFixed(1)}`).join(' ');
                         if (mStr.startsWith('+')) mStr = mStr.substring(1);
                         if (mStr === "") mStr = "0";
@@ -1788,10 +1995,10 @@
                         html += `${mStr} + ${rTerm} = 0<br>`;
                         
                         html += `<br><strong>Resolve Vertically &amp; Horizontally:</strong><br>`;
-                        html += `&Sigma; F<sub>y</sub> = 0 &rarr; R<sub>${momentsData.pin.label}y</sub> = ${App.math.toDisp(Math.abs(momentsData.pin.ry)).toFixed(2)} ${s.globalUnit} ${momentsData.pin.ry>0?'(Up)':'(Down)'}<br>`;
-                        html += `&Sigma; F<sub>x</sub> = 0 &rarr; R<sub>${momentsData.pin.label}x</sub> = ${App.math.toDisp(Math.abs(momentsData.pin.rx)).toFixed(2)} ${s.globalUnit} ${momentsData.pin.rx>0?'(Right)':'(Left)'}`;
-                        if (momentsData.isRollerVertical) html += `<br>R<sub>${momentsData.roller.label}y</sub> = ${App.math.toDisp(Math.abs(momentsData.roller.ry)).toFixed(2)} ${s.globalUnit} ${momentsData.roller.ry>0?'(Up)':'(Down)'}`;
-                        else html += `<br>R<sub>${momentsData.roller.label}x</sub> = ${App.math.toDisp(Math.abs(momentsData.roller.rx)).toFixed(2)} ${s.globalUnit} ${momentsData.roller.rx>0?'(Right)':'(Left)'}`;
+                        html += `&Sigma; F<sub>y</sub> = 0 &rarr; R<sub>${momentsData.pin.label}y</sub> = ${App.math.format2SF(App.math.toDisp(Math.abs(momentsData.pin.ry)))} ${s.globalUnit} ${momentsData.pin.ry>0?'(Up)':'(Down)'}<br>`;
+                        html += `&Sigma; F<sub>x</sub> = 0 &rarr; R<sub>${momentsData.pin.label}x</sub> = ${App.math.format2SF(App.math.toDisp(Math.abs(momentsData.pin.rx)))} ${s.globalUnit} ${momentsData.pin.rx>0?'(Right)':'(Left)'}`;
+                        if (momentsData.isRollerVertical) html += `<br>R<sub>${momentsData.roller.label}y</sub> = ${App.math.format2SF(App.math.toDisp(Math.abs(momentsData.roller.ry)))} ${s.globalUnit} ${momentsData.roller.ry>0?'(Up)':'(Down)'}`;
+                        else html += `<br>R<sub>${momentsData.roller.label}x</sub> = ${App.math.format2SF(App.math.toDisp(Math.abs(momentsData.roller.rx)))} ${s.globalUnit} ${momentsData.roller.rx>0?'(Right)':'(Left)'}`;
                         html += `</div>`;
                     }
 
@@ -1827,7 +2034,7 @@
 
                         html += `<div class="border-b-2 border-slate-200 pb-2 mt-6 mb-4"><h3 class="text-xl font-bold text-[#1e3a8a]">3. Solved Member Summary</h3></div>`;
                         html += `<div class="math-block">`;
-                        s.members.forEach(m => { html += `F<sub>${m.label}</sub> = ${App.math.toDisp(m.force).toFixed(2)} ${s.globalUnit} &rarr; <strong>${m.nature}</strong><br>`; });
+                        s.members.forEach(m => { html += `F<sub>${m.label}</sub> = ${App.math.format2SF(App.math.toDisp(m.force))} ${s.globalUnit} &rarr; <strong>${m.nature}</strong><br>`; });
                         html += `</div>`;
                     }
                     document.getElementById('calcContent').innerHTML = html;
@@ -1858,6 +2065,37 @@
                     document.querySelectorAll('.unitLbl').forEach(el => el.innerText = App.state.globalUnit);
                     document.getElementById('thMag').innerText = `Magnitude (${App.state.globalUnit})`;
                 },
+                syncMajorityUnit() {
+                    const s = App.state;
+                    const counts = { N: 0, kN: 0, MN: 0 };
+                    let total = 0;
+
+                    s.externalForces.forEach(f => {
+                        let u = f.unit || 'N';
+                        if (counts[u] !== undefined) { counts[u]++; total++; }
+                    });
+                    s.udls.forEach(u => {
+                        let unit = u.unit || 'N';
+                        if (counts[unit] !== undefined) { counts[unit]++; total++; }
+                    });
+
+                    if (total === 0) return;
+
+                    let maxCount = Math.max(counts.N, counts.kN, counts.MN);
+                    let candidates = ['N', 'kN', 'MN'].filter(u => counts[u] === maxCount);
+
+                    let chosen = s.globalUnit;
+                    if (!candidates.includes(chosen)) {
+                        chosen = candidates[candidates.length - 1];
+                    }
+
+                    if (chosen !== s.globalUnit) {
+                        s.globalUnit = chosen;
+                        const sel = document.getElementById('unitSelect');
+                        if (sel) sel.value = chosen;
+                        this.updateUnitLabels();
+                    }
+                },
                 closeModal(id) { document.getElementById(id).style.display = 'none'; App.state.editingForce = null; App.state.forceTargetNode = null; App.state.editingMember = null; App.state.editingUDL = null; App.state.udlTargetMember = null; App.state.editingNode = null; App.state.relAngleMem1 = null; App.state.relAngleMem2 = null; },
                 
                 togglePointLoadInputs() {
@@ -1871,6 +2109,28 @@
                     
                     relToWrapper.style.opacity = isOrthogonal ? 0.3 : 1;
                     angWrapper.style.opacity = isOrthogonal ? 0.3 : 1;
+                },
+
+                openAbsAngleModal(node, mem, ref) {
+                    App.state.relSharedNode = node; 
+                    App.state.absAngleMem = mem;
+                    App.state.absAngleRef = ref;
+                    
+                    const ns2 = (mem.n1 === node) ? mem.n2 : mem.n1; 
+                    let a1 = Math.atan2(ns2.y - node.y, ns2.x - node.x); 
+                    
+                    let aRef = ref === 'horiz' ? ((Math.abs(a1) < Math.PI/2) ? 0 : Math.PI) : ((a1 > 0) ? Math.PI/2 : -Math.PI/2);
+                    
+                    let diff = (aRef - a1) * 180 / Math.PI; if (diff <= -180) diff += 360; if (diff > 180) diff -= 360;
+                    
+                    let isLocked = mem.isAbsoluteAngleLocked;
+
+                    document.getElementById('relAngleInput').value = Math.abs(diff).toFixed(1); 
+                    
+                    let btnUnlock = document.getElementById('btnAngUnlock');
+                    if(btnUnlock) btnUnlock.style.display = isLocked ? 'block' : 'none';
+                    
+                    document.getElementById('relAngleModal').style.display = 'flex';
                 },
 
                 openNodeModal(n) {
@@ -1912,7 +2172,7 @@
                         s.nodes = s.nodes.filter(n => n !== el);
                         if (s.drawContext.activeNode === el) s.drawContext.activeNode = null;
                         s.selectedElements = s.selectedElements.filter(sel => sel !== el);
-                        App.physics.clearResults(); App.recordState();
+                        App.ui.syncMajorityUnit(); App.physics.clearResults(); App.recordState();
                     }
                     App.ui.closeModal('nodeModal');
                 },
@@ -1922,9 +2182,9 @@
                     if (target.mag !== undefined) { 
                         s.editingForce = target; s.forceTargetNode = target.node; 
                         
-                        let m = target.mag; let u = 'N';
-                        if (m >= 1000000 && m % 1000000 === 0) { m /= 1000000; u = 'MN'; } 
-                        else if (m >= 1000 && m % 1000 === 0) { m /= 1000; u = 'kN'; }
+                        let m = target.mag; let u = target.unit || 'N';
+                        if (u === 'MN') m /= 1000000;
+                        else if (u === 'kN') m /= 1000;
                         
                         let internalAngle = target.angle % 360;
                         if (internalAngle < 0) internalAngle += 360;
@@ -1953,7 +2213,7 @@
                             else if (dir === 'dr') dispAng = internalAngle - 270;
                         }
 
-                        document.getElementById('plMag').value = m; 
+                        document.getElementById('plMag').value = parseFloat(m.toFixed(4)); 
                         document.getElementById('plUnit').value = u;
                         document.getElementById('plRelTo').value = rel;
                         document.getElementById('plAngle').value = parseFloat(dispAng.toFixed(2));
@@ -1963,7 +2223,8 @@
                         document.getElementById('plDeleteBtn').classList.remove('hidden');
                     } else { 
                         s.editingForce = null; s.forceTargetNode = target; 
-                        document.getElementById('plMag').value = 1000; document.getElementById('plUnit').value = 'N'; 
+                        document.getElementById('plMag').value = s.globalUnit === 'N' ? 1000 : 10; 
+                        document.getElementById('plUnit').value = s.globalUnit; 
                         document.getElementById('plRelTo').value = 'horiz';
                         document.getElementById('plAngle').value = 90;
                         document.getElementById('plQuad').value = 'down';
@@ -2000,10 +2261,12 @@
                             App.state.editingForce.angle = finalAngle; 
                             App.state.editingForce.actionDirection = actionDir; 
                             App.state.editingForce.reference = rel; 
+                            App.state.editingForce.unit = unit;
                         } 
                         else { 
-                            App.state.externalForces.push(new ExternalForce(App.state.forceTargetNode, mag, finalAngle, actionDir, rel)); 
+                            App.state.externalForces.push(new ExternalForce(App.state.forceTargetNode, mag, finalAngle, actionDir, rel, unit)); 
                         }
+                        App.ui.syncMajorityUnit();
                         App.physics.clearResults(); App.recordState();
                     } 
                     App.ui.closeModal('pointLoadModal');
@@ -2013,7 +2276,7 @@
                     if (el) {
                         App.state.externalForces = App.state.externalForces.filter(f => f !== el);
                         App.state.selectedElements = App.state.selectedElements.filter(sel => sel !== el);
-                        App.physics.clearResults(); App.recordState();
+                        App.ui.syncMajorityUnit(); App.physics.clearResults(); App.recordState();
                     }
                     App.ui.closeModal('pointLoadModal');
                 },
@@ -2022,15 +2285,19 @@
                     if (target.mag !== undefined) { 
                         App.state.editingUDL = target; App.state.udlTargetMember = target.member; 
                         
-                        let m = target.mag; let u = 'N';
-                        if (m >= 1000000 && m % 1000000 === 0) { m /= 1000000; u = 'MN'; } 
-                        else if (m >= 1000 && m % 1000 === 0) { m /= 1000; u = 'kN'; }
+                        let m = target.mag; let u = target.unit || 'N';
+                        if (u === 'MN') m /= 1000000;
+                        else if (u === 'kN') m /= 1000;
                         
-                        document.getElementById('udlMag').value = m; document.getElementById('udlUnit').value = u; document.getElementById('modalTitleUDL').innerText = "Edit Distributed Load"; 
+                        document.getElementById('udlMag').value = parseFloat(m.toFixed(4)); 
+                        document.getElementById('udlUnit').value = u; 
+                        document.getElementById('modalTitleUDL').innerText = "Edit Distributed Load"; 
                         document.getElementById('udlDeleteBtn').classList.remove('hidden');
                     } else { 
                         App.state.editingUDL = null; App.state.udlTargetMember = target; 
-                        document.getElementById('udlMag').value = 100; document.getElementById('udlUnit').value = 'N'; document.getElementById('modalTitleUDL').innerText = "Add Distributed Load"; 
+                        document.getElementById('udlMag').value = App.state.globalUnit === 'N' ? 100 : 5; 
+                        document.getElementById('udlUnit').value = App.state.globalUnit; 
+                        document.getElementById('modalTitleUDL').innerText = "Add Distributed Load"; 
                         document.getElementById('udlDeleteBtn').classList.add('hidden');
                     }
                     document.getElementById('udlModal').style.display = 'flex';
@@ -2040,7 +2307,13 @@
                     let unit = document.getElementById('udlUnit').value;
                     if (unit === 'kN') mag *= 1000; if (unit === 'MN') mag *= 1000000;
                     if(!isNaN(mag) && App.state.udlTargetMember) {
-                        if (App.state.editingUDL) { App.state.editingUDL.mag = mag; } else { App.state.udls.push(new UDL(App.state.udlTargetMember, mag)); }
+                        if (App.state.editingUDL) { 
+                            App.state.editingUDL.mag = mag; 
+                            App.state.editingUDL.unit = unit;
+                        } else { 
+                            App.state.udls.push(new UDL(App.state.udlTargetMember, mag, unit)); 
+                        }
+                        App.ui.syncMajorityUnit();
                         App.physics.clearResults(); App.recordState();
                     } App.ui.closeModal('udlModal');
                 },
@@ -2049,7 +2322,7 @@
                     if (el) {
                         App.state.udls = App.state.udls.filter(u => u !== el);
                         App.state.selectedElements = App.state.selectedElements.filter(sel => sel !== el);
-                        App.physics.clearResults(); App.recordState();
+                        App.ui.syncMajorityUnit(); App.physics.clearResults(); App.recordState();
                     }
                     App.ui.closeModal('udlModal');
                 },
@@ -2074,6 +2347,9 @@
                     else if (m.isAligned === 'vertical') document.getElementById('btnAlignV').classList.replace('bg-white', 'bg-blue-50');
                     else document.getElementById('btnAlignNone').classList.replace('bg-white', 'bg-blue-50');
 
+                    document.getElementById('memAbsAngle').value = m.isAbsoluteAngleLocked ? m.lockedAbsoluteAngle : '';
+                    document.getElementById('btnAbsUnlock').style.display = m.isAbsoluteAngleLocked ? 'block' : 'none';
+
                     document.getElementById('memberModal').style.display = 'flex'; 
                 },
 
@@ -2083,6 +2359,31 @@
                         m.isLengthLocked = false;
                         App.physics.clearResults();
                         App.recordState();
+                    }
+                    App.ui.closeModal('memberModal');
+                },
+
+                applyAbsoluteAngle() {
+                    const newAng = parseFloat(document.getElementById('memAbsAngle').value);
+                    const m = App.state.editingMember;
+                    if (!isNaN(newAng) && m) {
+                        m.isAbsoluteAngleLocked = true;
+                        m.lockedAbsoluteAngle = newAng;
+                        m.isAligned = null;
+                        
+                        App.engine.prepareResolve();
+                        App.engine.resolve([m.n1]); 
+                        
+                        App.physics.clearResults(); App.recordState();
+                    }
+                    App.ui.closeModal('memberModal');
+                },
+
+                unlockAbsoluteAngle() {
+                    const m = App.state.editingMember;
+                    if (m) {
+                        m.isAbsoluteAngleLocked = false;
+                        App.physics.clearResults(); App.recordState();
                     }
                     App.ui.closeModal('memberModal');
                 },
@@ -2149,6 +2450,7 @@
                     }
 
                     m.isAligned = alignType;
+                    m.isAbsoluteAngleLocked = false; 
                     App.engine.prepareResolve();
                     App.engine.resolve([m.n1]);
                     
@@ -2163,7 +2465,7 @@
                         s.udls = s.udls.filter(u => u.member !== el);
                         s.angleConstraints = s.angleConstraints.filter(ac => ac.m1 !== el && ac.m2 !== el);
                         s.selectedElements = s.selectedElements.filter(sel => sel !== el);
-                        App.physics.clearResults(); App.recordState();
+                        App.ui.syncMajorityUnit(); App.physics.clearResults(); App.recordState();
                     }
                     App.ui.closeModal('memberModal');
                 },
@@ -2199,25 +2501,57 @@
                             ((ac.m1.id === s.relAngleMem1.id && ac.m2.id === s.relAngleMem2.id) || (ac.m1.id === s.relAngleMem2.id && ac.m2.id === s.relAngleMem1.id)))
                         );
                         App.physics.clearResults(); App.recordState();
+                    } else if (s.absAngleMem) {
+                        s.absAngleMem.isAbsoluteAngleLocked = false;
+                        App.physics.clearResults(); App.recordState();
                     }
                     App.ui.closeModal('relAngleModal');
                 },
                 applyRelAngle() {
                     const newDiffDeg = parseFloat(document.getElementById('relAngleInput').value);
                     const s = App.state;
-                    if (!isNaN(newDiffDeg) && s.relSharedNode && s.relAngleMem1 && s.relAngleMem2) {
+                    if (isNaN(newDiffDeg)) return;
+
+                    if (s.absAngleMem && s.relSharedNode) {
+                        const m = s.absAngleMem;
+                        m.isAbsoluteAngleLocked = true;
+                        m.isAligned = null;
                         
-                        // 1. HARD-LOCK VISUALLY ORTHOGONAL LINES FIRST
+                        const ns2 = (m.n1 === s.relSharedNode) ? m.n2 : m.n1; 
+                        let a1 = Math.atan2(ns2.y - s.relSharedNode.y, ns2.x - s.relSharedNode.x); 
+                        let aRef = s.absAngleRef === 'horiz' ? ((Math.abs(a1) < Math.PI/2) ? 0 : Math.PI) : ((a1 > 0) ? Math.PI/2 : -Math.PI/2);
+                        
+                        let sign = (aRef - a1) >= 0 ? 1 : -1;
+                        if (newDiffDeg === 180 || newDiffDeg === 0) sign = (aRef - a1) >= 0 ? 1 : -1; 
+                        
+                        let targetAng = aRef - (newDiffDeg * Math.PI / 180 * sign);
+                        
+                        if (m.n1 === s.relSharedNode) {
+                            m.lockedAbsoluteAngle = targetAng * -180 / Math.PI; 
+                        } else {
+                            m.lockedAbsoluteAngle = (targetAng + Math.PI) * -180 / Math.PI;
+                        }
+                        
+                        App.engine.prepareResolve();
+                        App.engine.resolve([s.relSharedNode]);
+                        App.physics.clearResults(); App.recordState();
+                        App.ui.closeModal('relAngleModal');
+                        return;
+                    }
+
+                    if (s.relSharedNode && s.relAngleMem1 && s.relAngleMem2) {
+                        
+                        // 1. Automatically flag visually horizontal/vertical members globally
                         s.members.forEach(m => {
                             if (!m.isAligned) {
                                 const dx = Math.abs(m.n1.x - m.n2.x);
                                 const dy = Math.abs(m.n1.y - m.n2.y);
-                                if (dy < 2.5) { m.isAligned = 'horizontal'; m.n1.y = m.n2.y = (m.n1.y + m.n2.y)/2; }
-                                else if (dx < 2.5) { m.isAligned = 'vertical'; m.n1.x = m.n2.x = (m.n1.x + m.n2.x)/2; }
+                                if (dy < 1.5) { m.isAligned = 'horizontal'; m.n1.y = m.n2.y = (m.n1.y + m.n2.y)/2; }
+                                else if (dx < 1.5) { m.isAligned = 'vertical'; m.n1.x = m.n2.x = (m.n1.x + m.n2.x)/2; }
                             }
                         });
 
-                        // Auto-lock existing ~90 degree angles
+                        // 2. Automatically lock visually ~90 deg angles globally
                         s.nodes.forEach(node => {
                             const connectedMems = s.members.filter(m => m.n1 === node || m.n2 === node);
                             for(let i=0; i<connectedMems.length; i++) {
@@ -2239,7 +2573,7 @@
                                         let cdiff = (ca2 - ca1) * 180 / Math.PI;
                                         while(cdiff <= -180) cdiff += 360; while(cdiff > 180) cdiff -= 360;
                                         
-                                        if(Math.abs(Math.abs(cdiff) - 90) < 2.5) {
+                                        if(Math.abs(Math.abs(cdiff) - 90) < 1.5) {
                                             s.angleConstraints.push(new AngleConstraint(node, cm1, cm2, 90, cdiff > 0 ? 1 : -1));
                                         }
                                     }
@@ -2250,9 +2584,9 @@
                         // INTELLIGENT ANCHOR PRIORITY
                         const scoreMember = (m) => {
                             let score = 0;
-                            if (m.isAligned === 'horizontal' || m.isAligned === 'vertical') score += 1000;
-                            if (Math.abs(m.n1.y - m.n2.y) < 1.5) score += 500; // Practically horizontal
-                            if (Math.abs(m.n1.x - m.n2.x) < 1.5) score += 500; // Practically vertical
+                            if (m.isAligned === 'horizontal' || m.isAligned === 'vertical' || m.isAbsoluteAngleLocked) score += 1000;
+                            if (Math.abs(m.n1.y - m.n2.y) < 1.5) score += 500; 
+                            if (Math.abs(m.n1.x - m.n2.x) < 1.5) score += 500; 
                             if (m.n1.support !== 'none' || m.n2.support !== 'none') score += 250;
                             return score;
                         };
@@ -2264,8 +2598,9 @@
                         let movingMem = (score1 >= score2) ? s.relAngleMem2 : s.relAngleMem1;
                         
                         // Break orthogonal alignment if editing a 90-degree corner to bend it
-                        if (newDiffDeg !== 90 && fixedMem.isAligned && movingMem.isAligned) {
+                        if (newDiffDeg !== 90 && (fixedMem.isAligned || fixedMem.isAbsoluteAngleLocked) && (movingMem.isAligned || movingMem.isAbsoluteAngleLocked)) {
                             movingMem.isAligned = null;
+                            movingMem.isAbsoluteAngleLocked = false;
                         }
 
                         const nsFixed = (fixedMem.n1 === s.relSharedNode) ? fixedMem.n2 : fixedMem.n1; 
@@ -2542,12 +2877,35 @@
                         renderCtx.font = `bold ${fontSize/s.cam.zoom}px Roboto`; 
                         renderCtx.textAlign = 'center'; 
                         renderCtx.textBaseline = 'middle'; 
-                        let txt = m.isLengthLocked ? this.math.memLength(m).toFixed(2) + 'm' : '(' + this.math.memLength(m).toFixed(2) + 'm)';
+                        let txt = m.isLengthLocked ? App.math.memLength(m).toFixed(2) + 'm' : '(' + App.math.memLength(m).toFixed(2) + 'm)';
                         renderCtx.fillText(txt, mx, my);
                     }
-                });
 
-                if (s.mode === 'draw' && s.drawContext.activeNode && s.previewX !== null) {
+                if (m.isAbsoluteAngleLocked) {
+                    const l1 = App.math.dist(m.n1.x, m.n1.y, m.n2.x, m.n2.y) * s.cam.zoom;
+                    const arcRadius = Math.max(25, Math.min(55, l1 * 0.4)) / s.cam.zoom;
+                    const fontSize = Math.max(12, Math.min(18, arcRadius * s.cam.zoom * 0.45));
+                    
+                    const a1 = Math.atan2(m.n2.y - m.n1.y, m.n2.x - m.n1.x);
+                    const aHoriz = (Math.abs(a1) < Math.PI/2) ? 0 : Math.PI;
+                    
+                    let diff = aHoriz - a1;
+                    while(diff <= -Math.PI) diff += 2*Math.PI; while(diff > Math.PI) diff -= 2*Math.PI;
+                    
+                    this.drawArcWithArrows(renderCtx, m.n1.x, m.n1.y, a1, diff, arcRadius, '#0ea5e9', s.cam.zoom, m.lockedAbsoluteAngle.toFixed(1) + '°', true, fontSize);
+
+                    renderCtx.beginPath();
+                    renderCtx.moveTo(m.n1.x, m.n1.y);
+                    renderCtx.lineTo(m.n1.x + Math.cos(aHoriz) * (arcRadius + 15 / s.cam.zoom), m.n1.y + Math.sin(aHoriz) * (arcRadius + 15 / s.cam.zoom));
+                    renderCtx.strokeStyle = 'rgba(15, 23, 42, 0.3)';
+                    renderCtx.setLineDash([4/s.cam.zoom, 4/s.cam.zoom]);
+                    renderCtx.lineWidth = 1.5 / s.cam.zoom;
+                    renderCtx.stroke();
+                    renderCtx.setLineDash([]);
+                }
+            });
+
+            if (s.mode === 'draw' && s.drawContext.activeNode && s.previewX !== null) {
                     const startX = s.drawContext.activeNode.x;
                     const startY = s.drawContext.activeNode.y;
                     const pX = s.previewX;
@@ -2698,6 +3056,7 @@
 
                 // Explicit Locked Angles
                 s.angleConstraints.forEach(ac => {
+                    if (!ac.sharedNode) return;
                     const sh = ac.sharedNode; const ns1 = (ac.m1.n1 === sh) ? ac.m1.n2 : ac.m1.n1; const ns2 = (ac.m2.n1 === sh) ? ac.m2.n2 : ac.m2.n1;
                     const a1 = Math.atan2(ns1.y - sh.y, ns1.x - sh.x); 
                     const a2 = Math.atan2(ns2.y - sh.y, ns2.x - sh.x); 
@@ -2712,6 +3071,39 @@
                     let diff = a2 - a1; while(diff <= -Math.PI) diff += 2*Math.PI; while(diff > Math.PI) diff -= 2*Math.PI;
                     this.drawArcWithArrows(renderCtx, sh.x, sh.y, a1, diff, arcRadius, isSel ? '#0ea5e9' : '#f59e0b', s.cam.zoom, ac.angleDeg.toFixed(1) + '°', true, fontSize);
                 });
+
+                if (s.mode === 'rel_angle' && s.absAngleMem && s.absAngleNode && s.absAngleRef && !s.relAngleMem2) {
+                    const m = s.absAngleMem;
+                    const node = s.absAngleNode;
+                    const ref = s.absAngleRef;
+                    
+                    const l1 = App.math.dist(m.n1.x, m.n1.y, m.n2.x, m.n2.y) * s.cam.zoom;
+                    const arcRadius = Math.max(25, Math.min(55, l1 * 0.4)) / s.cam.zoom;
+                    const fontSize = Math.max(12, Math.min(18, arcRadius * s.cam.zoom * 0.45));
+                    
+                    const a1 = Math.atan2(node === m.n1 ? m.n2.y - node.y : m.n1.y - node.y, 
+                                          node === m.n1 ? m.n2.x - node.x : m.n1.x - node.x);
+                    
+                    const mouseAngle = Math.atan2(s.previewY - node.y, s.previewX - node.x);
+                    const aRef = ref === 'horiz' ? ((Math.abs(mouseAngle) < Math.PI/2) ? 0 : Math.PI) : ((mouseAngle > 0) ? Math.PI/2 : -Math.PI/2);
+                    
+                    let diff = aRef - a1;
+                    while(diff <= -Math.PI) diff += 2*Math.PI; while(diff > Math.PI) diff -= 2*Math.PI;
+                    
+                    let deg = diff * 180 / Math.PI;
+                    let txt = '(' + Math.abs(deg).toFixed(1) + '°)';
+
+                    this.drawArcWithArrows(renderCtx, node.x, node.y, a1, diff, arcRadius, '#94a3b8', s.cam.zoom, txt, false, fontSize);
+
+                    renderCtx.beginPath();
+                    renderCtx.moveTo(node.x, node.y);
+                    renderCtx.lineTo(node.x + Math.cos(aRef) * (arcRadius + 15 / s.cam.zoom), node.y + Math.sin(aRef) * (arcRadius + 15 / s.cam.zoom));
+                    renderCtx.strokeStyle = 'rgba(15, 23, 42, 0.3)';
+                    renderCtx.setLineDash([4/s.cam.zoom, 4/s.cam.zoom]);
+                    renderCtx.lineWidth = 1.5 / s.cam.zoom;
+                    renderCtx.stroke();
+                    renderCtx.setLineDash([]);
+                }
 
                 s.nodes.forEach(n => {
                     if (n.support !== 'none') {
@@ -2740,7 +3132,7 @@
 
                 s.externalForces.forEach(f => {
                     const aRad = f.mathAngle; 
-                    const len = 80 / s.cam.zoom;
+                    const len = 120 / s.cam.zoom;
                     let headX, headY, tailX, tailY;
                     
                     if (f.actionDirection === 'away') {
@@ -2761,10 +3153,9 @@
                     renderCtx.beginPath(); renderCtx.moveTo(headX, headY); renderCtx.lineTo(headX - aSize * Math.cos(renderAngle - Math.PI/6), headY - aSize * Math.sin(renderAngle - Math.PI/6)); renderCtx.lineTo(headX - aSize * Math.cos(renderAngle + Math.PI/6), headY - aSize * Math.sin(renderAngle + Math.PI/6));
                     renderCtx.fillStyle = renderCtx.strokeStyle; renderCtx.fill();
                     
-                    // Draw Angle Arc if not horizontal or vertical
                     if (!isV && !isH) {
                         const visualLineRad = (f.actionDirection === 'towards') ? renderAngle + Math.PI : renderAngle;
-                        const bounds = this.drawSmartAngleArc(renderCtx, f.node.x, f.node.y, visualLineRad, 35 / s.cam.zoom, fc, f.angleLabelOffset, `bold ${12/s.cam.zoom}px Roboto`, f.reference, 1/s.cam.zoom);
+                        this.drawSmartAngleArc(renderCtx, f.node.x, f.node.y, visualLineRad, 35 / s.cam.zoom, fc, f.angleLabelOffset, `bold ${12/s.cam.zoom}px Roboto`, f.reference, 1/s.cam.zoom);
                     }
 
                     renderCtx.font = `bold ${16/s.cam.zoom}px Roboto`; renderCtx.textAlign = 'center'; 
@@ -2773,7 +3164,7 @@
                     const textX = tailX - Math.cos(renderAngle) * textOffset;
                     const textY = tailY - Math.sin(renderAngle) * textOffset;
                     
-                    const txt = `${App.math.toDisp(f.mag)} ${s.globalUnit}`;
+                    const txt = `${parseFloat(App.math.toDisp(f.mag).toFixed(4))} ${s.globalUnit}`;
                     const tW = renderCtx.measureText(txt).width;
                     renderCtx.fillStyle = 'rgba(255, 255, 255, 0.7)';
                     renderCtx.fillRect(textX - tW/2 - 4, textY - 12/s.cam.zoom, tW + 8, 20/s.cam.zoom);
@@ -2807,7 +3198,7 @@
                         renderCtx.lineTo(headX - aSize * Math.cos(rA + Math.PI/6), headY - aSize * Math.sin(rA + Math.PI/6));
                         renderCtx.fillStyle = '#d97706'; renderCtx.fill();
                         
-                        const txt = `R: ${App.math.toDisp(rMag).toFixed(1)} ${s.globalUnit}`;
+                        const txt = `R: ${App.math.format2SF(App.math.toDisp(rMag))} ${s.globalUnit}`;
                         const fontSize = 16 / s.cam.zoom;
                         renderCtx.font = `bold ${fontSize}px Roboto, sans-serif`;
                         
@@ -3017,7 +3408,20 @@
             }
         };
 
-
+        const preloadedLesson = ``;
+        window.onload = () => {
+            App.init();
+            if (preloadedLesson.trim().length > 10) {
+                App.loadStateJSON(preloadedLesson);
+                const sidebar = document.getElementById('sidebarContainer'); if(sidebar) sidebar.style.display = 'none';
+                const topToolbar = document.getElementById('topToolbar'); if(topToolbar) topToolbar.style.display = 'none';
+                const appContainer = document.getElementById('appContainer'); if(appContainer) appContainer.classList.remove('p-4', 'gap-4');
+                const canvasContainer = document.getElementById('canvasContainer'); if(canvasContainer) canvasContainer.classList.remove('rounded-3xl', 'border');
+                document.getElementById('resultsPanel').classList.remove('bottom-6', 'right-6'); document.getElementById('resultsPanel').classList.add('bottom-2', 'right-2');
+                setTimeout(() => { App.resize(); App.fitToScreen(); }, 50); 
+            }
+        };
+    
         /* ---- Engineering Science Scotland additions ----
            ?design=<url of a saved .json>  opens that structure
            &view                           hides the toolbox (used when embedded in the course notes) */
@@ -3043,19 +3447,6 @@
                     .catch(function (err) { console.warn('NODEarama: could not load design', url, err); });
             });
         })();
-        const preloadedLesson = ``;
-        window.onload = () => {
-            App.init();
-            if (preloadedLesson.trim().length > 10) {
-                App.loadStateJSON(preloadedLesson);
-                const sidebar = document.getElementById('sidebarContainer'); if(sidebar) sidebar.style.display = 'none';
-                const topToolbar = document.getElementById('topToolbar'); if(topToolbar) topToolbar.style.display = 'none';
-                const appContainer = document.getElementById('appContainer'); if(appContainer) appContainer.classList.remove('p-4', 'gap-4');
-                const canvasContainer = document.getElementById('canvasContainer'); if(canvasContainer) canvasContainer.classList.remove('rounded-3xl', 'border');
-                document.getElementById('resultsPanel').classList.remove('bottom-6', 'right-6'); document.getElementById('resultsPanel').classList.add('bottom-2', 'right-2');
-                setTimeout(() => { App.resize(); App.fitToScreen(); }, 50); 
-            }
-        };
     </script>
 </body>
 </html>

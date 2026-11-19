@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- 
-    NOGRIND SIMULATOR V1.4.2
+    NOGRIND SIMULATOR V1.5
     ---------------------------------------------------
     This is intended for educational use only and is not to be sold for profit
     developed by Peter Strain with Gemini.
@@ -10,7 +10,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NoGrind Sim V1.4.2</title>
+    <title>NoGrind Sim V1.5</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <!-- Three.js Library -->
@@ -103,7 +103,7 @@
                 <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-pink-500 text-white rounded-xl flex items-center justify-center shadow-lg hover:scale-105 transition-transform cursor-pointer">
                     <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                 </div>
-                <h1 class="text-xl font-bold text-slate-700 tracking-tight leading-none">NoGrind<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500">Sim</span> <span class="text-xs text-slate-400 font-mono ml-1">V1.4.2</span></h1>
+                <h1 class="text-xl font-bold text-slate-700 tracking-tight leading-none">NoGrind<span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500">Sim</span> <span class="text-xs text-slate-400 font-mono ml-1">V1.5</span></h1>
             </div>
             
             <div class="h-8 w-px bg-slate-200 mx-2 rounded-full"></div>
@@ -831,26 +831,46 @@
             const group = new THREE.Group();
             const data = getDriveShapeData(r1 - 0.5, r2 - 0.5, dist, 1.5, -0.2);
             
-            const geo = new THREE.ExtrudeGeometry(data.shape, { depth: 0.4, bevelEnabled: false });
-            geo.translate(0, 0, -0.2); 
-            const plateMat = new THREE.MeshStandardMaterial({ color: 0xcbd5e1, metalness: 0.8, roughness: 0.3 });
-            
-            const frontPlate = new THREE.Mesh(geo, plateMat);
-            frontPlate.position.z = 1.0;
-            group.add(frontPlate);
-            const backPlate = new THREE.Mesh(geo, plateMat);
-            backPlate.position.z = -1.0;
-            group.add(backPlate);
-
             const pathLength = data.p.getLength();
             const pitch = 3.5;
-            const numPins = Math.max(4, Math.floor(pathLength / pitch));
-            const pinGeo = new THREE.CylinderGeometry(0.5, 0.5, 2.6, 8);
+            let numPins = Math.max(4, Math.floor(pathLength / pitch));
+            if (numPins % 2 !== 0) numPins++; // force even for alternating links
+            
+            const pinGeo = new THREE.CylinderGeometry(0.6, 0.6, 3.8, 8);
             pinGeo.rotateX(Math.PI/2);
-            const pinMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, metalness: 1.0, roughness: 0.2 }); 
-            const instMesh = new THREE.InstancedMesh(pinGeo, pinMat, numPins);
-            group.add(instMesh);
-            group.userData = { path: data.p, length: pathLength, numPins: numPins, instMesh: instMesh, offset: 0 };
+            const pinMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, metalness: 0.9, roughness: 0.4 }); 
+            const pinMesh = new THREE.InstancedMesh(pinGeo, pinMat, numPins);
+            
+            const pw = pitch / 2;
+            const pr = 1.3;
+            const plateShape = new THREE.Shape();
+            plateShape.absarc(-pw, 0, pr, Math.PI/2, 3*Math.PI/2, false);
+            plateShape.lineTo(pw, -pr);
+            plateShape.absarc(pw, 0, pr, -Math.PI/2, Math.PI/2, false);
+            plateShape.lineTo(-pw, pr);
+            
+            const plateGeo = new THREE.ExtrudeGeometry(plateShape, { depth: 0.25, bevelEnabled: true, bevelSegments: 1, steps: 1, bevelSize: 0.1, bevelThickness: 0.1 });
+            plateGeo.center();
+            
+            const outerPlateMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.7, roughness: 0.5 });
+            const innerPlateMat = new THREE.MeshStandardMaterial({ color: 0x64748b, metalness: 0.7, roughness: 0.6 });
+            
+            const outerPlates = new THREE.InstancedMesh(plateGeo, outerPlateMat, numPins); 
+            const innerPlates = new THREE.InstancedMesh(plateGeo, innerPlateMat, numPins); 
+
+            group.add(pinMesh);
+            group.add(outerPlates);
+            group.add(innerPlates);
+
+            group.userData = { 
+                path: data.p, 
+                length: pathLength, 
+                numPins: numPins, 
+                pinMesh: pinMesh, 
+                outerPlates: outerPlates,
+                innerPlates: innerPlates,
+                offset: 0 
+            };
             return group;
         }
 
@@ -909,24 +929,56 @@
         }
 
         function updateChainPins(visualGroup) {
-            if(!visualGroup || !visualGroup.userData.instMesh) return;
+            if(!visualGroup || !visualGroup.userData.pinMesh) return;
             const data = visualGroup.userData;
             const dummy = new THREE.Object3D();
             
             let normOffset = (data.offset % data.length) / data.length;
             if (normOffset < 0) normOffset += 1;
             
+            let outerIdx = 0;
+            let innerIdx = 0;
+
             for(let i=0; i<data.numPins; i++) {
                 let u = (i / data.numPins) + normOffset;
                 if (u > 1) u -= 1;
                 const pt = data.path.getPointAt(u);
+                
                 dummy.position.set(pt.x, pt.y, 0);
-                const tangent = data.path.getTangentAt(u);
-                dummy.rotation.z = Math.atan2(tangent.y, tangent.x);
+                dummy.rotation.set(0,0,0);
                 dummy.updateMatrix();
-                data.instMesh.setMatrixAt(i, dummy.matrix);
+                data.pinMesh.setMatrixAt(i, dummy.matrix);
+
+                let u_mid = u + (0.5 / data.numPins);
+                if (u_mid > 1) u_mid -= 1;
+
+                const ptMid = data.path.getPointAt(u_mid);
+                const tangent = data.path.getTangentAt(u_mid);
+                const angle = Math.atan2(tangent.y, tangent.x);
+
+                dummy.position.set(ptMid.x, ptMid.y, 0);
+                dummy.rotation.set(0, 0, angle);
+                
+                if (i % 2 === 0) {
+                    dummy.position.z = 1.35;
+                    dummy.updateMatrix();
+                    data.outerPlates.setMatrixAt(outerIdx++, dummy.matrix);
+                    dummy.position.z = -1.35;
+                    dummy.updateMatrix();
+                    data.outerPlates.setMatrixAt(outerIdx++, dummy.matrix);
+                } else {
+                    dummy.position.z = 0.65;
+                    dummy.updateMatrix();
+                    data.innerPlates.setMatrixAt(innerIdx++, dummy.matrix);
+                    dummy.position.z = -0.65;
+                    dummy.updateMatrix();
+                    data.innerPlates.setMatrixAt(innerIdx++, dummy.matrix);
+                }
             }
-            data.instMesh.instanceMatrix.needsUpdate = true;
+            
+            data.pinMesh.instanceMatrix.needsUpdate = true;
+            data.outerPlates.instanceMatrix.needsUpdate = true;
+            data.innerPlates.instanceMatrix.needsUpdate = true;
         }
 
         // --- GRAPH & NODE SYSTEM ---
@@ -1469,6 +1521,8 @@
         window.spawnGhost = function(type) {
             if(isSimulating) return;
             dragMode = type;
+            controls.enabled = false;
+            
             let param = 20;
             if (type === 'belt' || type.startsWith('worm_drive')) param = 40;
             if (type === 'cassette_drive') param = 34;
@@ -1715,7 +1769,42 @@
             }
         });
 
-        window.addEventListener('pointerdown', (e) => {
+       window.addEventListener('pointerdown', (e) => {
+            if(e.target.closest('.panel') || e.target.closest('.gear-label') || e.target.closest('.tool-btn') || e.target.closest('.comp-card')) return;
+
+            // Update coordinates immediately for iPads (which might not fire pointermove on a quick tap)
+            if (container) {
+                const r = container.getBoundingClientRect();
+                mouse2.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+                mouse2.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+            }
+
+            // PREVENT placement on touch-down so iPad users can drag their finger
+            if(dragMode && ghostNode) {
+                return; 
+            }
+
+            raycaster2.setFromCamera(mouse2, camera);
+            const intersects = raycaster2.intersectObjects(scene.children, true);
+            
+            let clickedNode = null;
+            for(let i=0; i<intersects.length; i++) {
+                let obj = intersects[i].object;
+                while(obj && !obj.userData.node) obj = obj.parent;
+                if(obj && obj.userData.node) { clickedNode = obj.userData.node; break; }
+            }
+
+            if (clickedNode && clickedNode.type === 'motor') {
+                motorInputDirection *= -1;
+                isMotorCutoff = false; 
+                updateDirButtons();
+                if (isSimulating) calculateKinematics();
+            }
+
+            selectNode(clickedNode);
+        });
+
+        window.addEventListener('pointerup', (e) => {
             if(e.target.closest('.panel') || e.target.closest('.gear-label') || e.target.closest('.tool-btn') || e.target.closest('.comp-card')) return;
 
             if(dragMode && ghostNode) {
@@ -1820,30 +1909,11 @@
                     scene.remove(ghostNode);
                     ghostNode = null;
                     container.style.cursor = isPanMode ? 'grab' : 'crosshair';
+controls.enabled = true;
                 } else {
                     showToast("Must snap to an existing green point!");
                 }
-                return;
             }
-
-            raycaster2.setFromCamera(mouse2, camera);
-            const intersects = raycaster2.intersectObjects(scene.children, true);
-            
-            let clickedNode = null;
-            for(let i=0; i<intersects.length; i++) {
-                let obj = intersects[i].object;
-                while(obj && !obj.userData.node) obj = obj.parent;
-                if(obj && obj.userData.node) { clickedNode = obj.userData.node; break; }
-            }
-
-            if (clickedNode && clickedNode.type === 'motor') {
-                motorInputDirection *= -1;
-                isMotorCutoff = false; 
-                updateDirButtons();
-                if (isSimulating) calculateKinematics();
-            }
-
-            selectNode(clickedNode);
         });
 
         // UI Updates
@@ -2203,6 +2273,7 @@
                     if(ghostNode) scene.remove(ghostNode);
                     ghostNode = null;
                     container.style.cursor = isPanMode ? 'grab' : 'crosshair';
+controls.enabled = true;
                     showToast("Placement cancelled.");
                 } else {
                     selectNode(null);
@@ -2340,12 +2411,24 @@
                     if (n.type === 'rack') {
                         const v = Math.abs(Math.round((n.parent.speed / 60) * Math.PI * 2 * n.parent.radius * 10) / 10);
                         const rackDir = -1 * n.parent.dir * Math.sign(n.parent.speed);
-                        d = rackDir > 0 ? "RIGHT ➔" : "LEFT ⬅";
+                        
+                        const worldVel = new THREE.Vector3(rackDir, 0, 0).applyEuler(n.meshGroup.rotation);
+                        let arrow = "";
+                        if (Math.abs(worldVel.x) > Math.abs(worldVel.z)) arrow = worldVel.x > 0 ? "➔" : "⬅";
+                        else arrow = worldVel.z > 0 ? "⬇" : "⬆";
+
+                        d = rackDir > 0 ? `FWD ${arrow}` : `REV ${arrow}`;
                         rpmStr = `${v} mm s⁻¹`;
                     } else if (n.type === 'nut') {
                         const v = Math.abs(Math.round((n.parent.speed / 60) * 12 * 10) / 10); 
                         const nutDir = -1 * n.parent.dir * Math.sign(n.parent.speed);
-                        d = nutDir > 0 ? "OUT ➔" : "IN ⬅";
+
+                        const worldVel = new THREE.Vector3(0, 0, nutDir).applyEuler(n.meshGroup.rotation);
+                        let arrow = "";
+                        if (Math.abs(worldVel.x) > Math.abs(worldVel.z)) arrow = worldVel.x > 0 ? "➔" : "⬅";
+                        else arrow = worldVel.z > 0 ? "⬇" : "⬆";
+
+                        d = nutDir > 0 ? `OUT ${arrow}` : `IN ${arrow}`;
                         rpmStr = `${v} mm s⁻¹`;
                     } else {
                         const r = Math.abs(Math.round(n.speed * 100) / 100);
@@ -2492,12 +2575,24 @@
                 if (n.type === 'rack') {
                     const v = Math.abs(Math.round((n.parent.speed / 60) * Math.PI * 2 * n.parent.radius * 10) / 10);
                     const rackDir = -1 * n.parent.dir * Math.sign(n.parent.speed);
-                    const d = rackDir > 0 ? "RIGHT ➔" : "LEFT ⬅";
+                    
+                    const worldVel = new THREE.Vector3(rackDir, 0, 0).applyEuler(n.meshGroup.rotation);
+                    let arrow = "";
+                    if (Math.abs(worldVel.x) > Math.abs(worldVel.z)) arrow = worldVel.x > 0 ? "➔" : "⬅";
+                    else arrow = worldVel.z > 0 ? "⬇" : "⬆";
+
+                    const d = rackDir > 0 ? `FWD ${arrow}` : `REV ${arrow}`;
                     html += `<div class="label-rpm">${v} mm s⁻¹</div><span class="dir-tag">${d}</span>`;
                 } else if (n.type === 'nut') {
                     const v = Math.abs(Math.round((n.parent.speed / 60) * 12 * 10) / 10); 
                     const nutDir = -1 * n.parent.dir * Math.sign(n.parent.speed);
-                    const d = nutDir > 0 ? "OUT ➔" : "IN ⬅";
+
+                    const worldVel = new THREE.Vector3(0, 0, nutDir).applyEuler(n.meshGroup.rotation);
+                    let arrow = "";
+                    if (Math.abs(worldVel.x) > Math.abs(worldVel.z)) arrow = worldVel.x > 0 ? "➔" : "⬅";
+                    else arrow = worldVel.z > 0 ? "⬇" : "⬆";
+
+                    const d = nutDir > 0 ? `OUT ${arrow}` : `IN ${arrow}`;
                     html += `<div class="label-rpm">${v} mm s⁻¹</div><span class="dir-tag">${d}</span>`;
                 } else {
                     const r = Math.abs(Math.round(n.speed * 100) / 100);
@@ -2663,10 +2758,8 @@
                 const canvasContainer = document.getElementById('canvasContainer');
                 if(canvasContainer) canvasContainer.classList.remove('rounded-3xl', 'border');
 
-                // 2b. EMBEDDED PAGE FIX: when this sim sits inside a course-notes page,
-                // let the mouse wheel scroll the page instead of zooming the sim.
-                // Zoom still works with Ctrl + scroll (or a trackpad pinch).
-                // Opened full screen in its own tab, the sim zooms normally.
+                // 2b. ESS: when this sim sits inside a course-notes page, let the mouse wheel
+                // scroll the page instead of zooming the sim (Ctrl + scroll still zooms).
                 if (window.self !== window.top) {
                     controls.enableZoom = false;
                     renderer.domElement.addEventListener('wheel', (e) => {
