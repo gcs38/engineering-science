@@ -1,0 +1,3324 @@
+<!DOCTYPE html>
+<!--
+  MECHANISMS ANIMATIONS BY NOSTRAINSIMULATION
+  Integrated with the NoGrindSim V1.4.2 3D Drive-Train Engine & JSON Loader
+  Uncluttered 3D CAD Viewport Edition (No Floating Data Callout Labels)
+  Developed for Higher Engineering Science Revision
+
+  EMBED / DEEP-LINK OPTIONS (used by the ESS Higher Drive Systems course notes)
+    ?mech=ratchet|couplings|bearings|clutches|gears|worm|rack   open straight into one mechanism
+    &variant=Flanged                                            starting sub-model (e.g. Universal, Muff, Journal, Positive)
+    &only=Flanged,Muff                                          limit the sub-model buttons to these
+    &embed=1                                                    iframe mode: no header, no notes panel, full-width 3D view
+-->
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mechanisms animations by NoStrainSimulation</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts matching NoGrindSim V1.4.2 / NoStrainSimulation -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Nunito:wght@700;800;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 Icons -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <!-- Three.js r128 & OrbitControls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            background-color: #f0f4f9;
+            color: #1e293b;
+            font-family: 'Roboto', sans-serif;
+            user-select: none;
+        }
+        .font-nunito { font-family: 'Nunito', sans-serif; }
+        .font-mono-tech { font-family: 'JetBrains Mono', monospace; }
+
+        /* Subtle scrollbars matching NoGrindSim */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 999px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+
+        /* Dashboard Mechanism Cards */
+        .mech-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 24px;
+            box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+            transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+        }
+        .mech-card:hover {
+            transform: translateY(-4px);
+            border-color: #3b82f6;
+            box-shadow: 0 14px 28px -8px rgba(59, 130, 246, 0.20);
+        }
+
+        /* Range Slider (Blue-to-Pink NoStrain / NoGrind Accent) */
+        input[type="range"].ng-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            background: #e2e8f0;
+            height: 6px;
+            border-radius: 999px;
+            outline: none;
+        }
+        input[type="range"].ng-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3b82f6, #ec4899);
+            border: 2px solid #ffffff;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(59, 130, 246, 0.45);
+        }
+        input[type="range"].ng-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #3b82f6;
+            border: 2px solid #ffffff;
+            cursor: pointer;
+        }
+
+        /* 3D Canvas Viewport Cursor */
+        #three-container { cursor: grab; touch-action: none; }
+        #three-container:active { cursor: grabbing; }
+
+        /* Embedded (iframe) mode for the ESS course notes */
+        body.embed > header { display: none !important; }
+        body.embed #dashboard { display: none !important; }
+        body.embed #detail-view { padding: 0 !important; transition: none !important; }
+        body.embed #canvasContainer { width: 100% !important; height: 100% !important; border-radius: 0 !important; border: none !important; }
+        body.embed #notes-panel { display: none !important; }
+        body.embed #back-btn { display: none !important; }
+        body.embed #clutch-es-note { display: none !important; }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden bg-[#f0f4f9] text-slate-800">
+
+    <!-- ==================== FIXED TOP HEADER BAR ==================== -->
+    <header class="h-16 bg-white z-40 flex items-center justify-between px-4 sm:px-6 shadow-sm border-b border-slate-200 shrink-0 relative">
+        <!-- Subtle NoStrainSimulation Pink-Orange-Yellow Top Accent Bar -->
+        <div class="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400"></div>
+
+        <div class="flex items-center gap-3 cursor-pointer" onclick="goBack()">
+            <!-- Official NoStrainSimulation Logo with Offline Fallback Emblem -->
+            <img src="https://drive.google.com/thumbnail?id=1wJGMykeYz4_GvXneRUbn2t5UOnn4FgQD&sz=w1000" alt="NoStrainSimulation Logo" class="w-10 h-10 object-contain drop-shadow-sm hover:scale-105 transition-transform shrink-0" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+            <div style="display:none; background: linear-gradient(135deg, #f05252 0%, #e845a7 50%, #fce97a 100%);" class="w-10 h-10 rounded-xl shadow-md items-center justify-center text-white font-black text-2xl font-nunito shrink-0 hover:scale-105 transition-transform" aria-hidden="true">Ɛ</div>
+            <div class="min-w-0">
+                <div class="flex items-baseline gap-1.5 sm:gap-2 flex-wrap">
+                    <h1 class="text-base sm:text-xl font-black text-slate-800 tracking-tight leading-none font-nunito truncate">
+                        Mechanisms animations
+                    </h1>
+                    <span class="text-xs sm:text-sm font-extrabold text-slate-500 font-nunito whitespace-nowrap">
+                        by <span class="text-slate-800">No<span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400">Strain</span>Simulation</span>
+                    </span>
+                </div>
+                <p class="text-[11px] text-slate-400 font-medium hidden md:block mt-0.5">
+                    Higher Engineering Science &bull; Interactive 3D Mechanisms &amp; NoGrindSim Viewer
+                </p>
+            </div>
+        </div>
+
+        <div class="flex items-center gap-2 sm:gap-3 shrink-0">
+            <!-- Active Mechanism Breadcrumb Pill -->
+            <div class="hidden lg:flex items-center gap-2 bg-slate-50 px-3.5 py-1.5 rounded-full border border-slate-200 shadow-inner text-xs font-bold text-slate-600">
+                <span class="w-2 h-2 rounded-full bg-gradient-to-r from-pink-500 via-orange-400 to-yellow-400"></span>
+                <span id="header-active-name">Select Mechanism</span>
+            </div>
+
+            <!-- Global Load NoGrind .json Button -->
+            <label class="px-3.5 sm:px-4 py-2 bg-gradient-to-r from-blue-500 to-pink-500 hover:from-blue-600 hover:to-pink-600 text-white rounded-full font-bold text-xs shadow-md shadow-slate-300 transition-all flex items-center gap-2 cursor-pointer active:scale-95" title="Open any .json file exported from NoGrindSim V1.4.2">
+                <input type="file" id="globalNoGrindLoad" accept=".json" class="hidden">
+                <i class="fas fa-folder-open"></i>
+                <span class="hidden sm:inline">Load NoGrind .json</span>
+                <span class="sm:hidden">.json</span>
+            </label>
+        </div>
+    </header>
+
+    <!-- Non-blocking Toast Notification (replaces alert()) -->
+    <div id="toast" class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-slate-800 text-white px-6 py-3 rounded-full font-bold text-xs sm:text-sm shadow-xl opacity-0 transition-all duration-300 pointer-events-none z-50 transform scale-95 text-center"></div>
+
+    <!-- ==================== MAIN WORKSPACE ==================== -->
+    <main id="main-container" class="flex-grow relative overflow-hidden">
+
+        <!-- DASHBOARD VIEW -->
+        <div id="dashboard" class="absolute inset-0 overflow-y-auto p-4 sm:p-8 transition-opacity duration-300">
+            <div class="max-w-7xl mx-auto pb-12">
+                <!-- Hero Intro Card -->
+                <div class="bg-white rounded-3xl p-6 sm:p-8 mb-6 border border-slate-200 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-pink-50 via-orange-50 to-amber-50 text-pink-600 border border-pink-200/80 text-[11px] font-bold uppercase tracking-wider mb-2">
+                            <i class="fas fa-graduation-cap text-orange-400"></i> Higher Engineering Science
+                        </span>
+                        <h2 class="text-2xl sm:text-3xl font-black text-slate-800 font-nunito tracking-tight">
+                            Interactive Mechanical Systems Explorer
+                        </h2>
+                        <p class="text-slate-500 text-sm sm:text-base mt-1 max-w-2xl">
+                            Select any mechanism below to inspect its clean 3D motion, engineering principles, advantages, limitations, and real-world uses &mdash; or open your own <strong class="text-slate-700">NoGrindSim (.json)</strong> file directly.
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap items-center gap-2 shrink-0">
+                        <span class="px-3.5 py-2 rounded-2xl bg-[#f0f4f9] border border-slate-200 text-xs font-bold text-slate-600">
+                            <i class="fas fa-cubes text-blue-500 mr-1.5"></i>7 Higher Mechanisms
+                        </span>
+                        <span class="px-3.5 py-2 rounded-2xl bg-[#f0f4f9] border border-slate-200 text-xs font-bold text-slate-600">
+                            <i class="fas fa-bolt text-pink-500 mr-1.5"></i>NoGrindSim V1.4.2 Engine
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 7 Mechanism Cards Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="card-grid">
+                    <!-- Populated via JS -->
+                </div>
+            </div>
+        </div>
+
+        <!-- DETAIL / 3D SIMULATION VIEW -->
+        <div id="detail-view" class="absolute inset-0 bg-[#f0f4f9] flex flex-col lg:flex-row p-3 sm:p-4 gap-3 sm:gap-4 transform translate-x-full transition-transform duration-300 ease-in-out z-20">
+
+            <!-- Left 3/5 Panel: Clean Uncluttered 3D Viewport Card -->
+            <div class="w-full lg:w-3/5 h-[55%] lg:h-full bg-white rounded-3xl shadow-sm border border-slate-200 flex flex-col relative overflow-hidden" id="canvasContainer">
+
+                <!-- 3D WebGL Canvas (No floating label overlays or SVG leader lines) -->
+                <div id="three-container" class="absolute inset-0 w-full h-full"></div>
+
+                <!-- Top Floating HUD: Back Button + Compact Telemetry / Status Pill -->
+                <div class="absolute top-3.5 left-3.5 right-3.5 z-30 flex items-center justify-between pointer-events-none gap-2">
+                    <button id="back-btn" onclick="goBack()" class="pointer-events-auto bg-white/95 hover:bg-slate-50 text-slate-700 text-xs sm:text-sm font-bold py-2 px-4 border border-slate-200 rounded-full shadow-md flex items-center gap-2 transition active:scale-95">
+                        <i class="fas fa-arrow-left text-blue-500"></i> <span>Back</span>
+                    </button>
+
+                    <!-- Compact Corner Telemetry / Status Badge -->
+                    <div id="telemetry-pill" class="pointer-events-auto bg-white/95 border border-slate-200 rounded-full px-3.5 py-1.5 shadow-md flex items-center gap-2 text-[11px] font-bold text-slate-700 transition-colors">
+                        <span id="sim-status-dot" class="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0"></span>
+                        <span id="telemetry-text" class="font-mono-tech whitespace-nowrap">LIVE 3D VIEW</span>
+                    </div>
+                </div>
+
+                <!-- Compact Orbit Hint Pill (Top-Right under Telemetry) -->
+                <div class="absolute top-14 right-3.5 z-30 hidden sm:flex items-center pointer-events-none">
+                    <div class="bg-white/85 backdrop-blur border border-slate-200 shadow-sm rounded-full px-3 py-1 text-[10px] font-bold text-slate-500 tracking-wide uppercase">
+                        Left: Orbit &nbsp;|&nbsp; Right: Pan &nbsp;|&nbsp; Scroll: Zoom
+                    </div>
+                </div>
+
+                <!-- Subtle Higher ES Info Pill for Clutches -->
+                <div id="clutch-es-note" class="hidden absolute top-14 left-3.5 z-30 max-w-xs sm:max-w-sm bg-white/95 backdrop-blur border border-blue-200 shadow-md rounded-2xl px-3.5 py-2 pointer-events-none">
+                    <div class="flex items-start gap-2">
+                        <i class="fas fa-graduation-cap text-blue-500 text-xs mt-0.5 shrink-0"></i>
+                        <p id="clutch-es-note-text" class="text-[11px] leading-snug text-slate-600 font-medium"></p>
+                    </div>
+                </div>
+
+                <!-- Compact Floating Glassmorphic Bottom Control Dock -->
+                <div id="controls-dock" class="absolute bottom-3 left-1/2 -translate-x-1/2 max-w-[96%] bg-white/92 backdrop-blur-md px-3 sm:px-3.5 py-1.5 rounded-full shadow-lg border border-slate-200 flex flex-wrap items-center justify-center gap-1.5 sm:gap-2 z-30">
+                    <!-- Play / Pause Button -->
+                    <button id="play-pause-btn" onclick="togglePlayPause()" class="px-3.5 py-1.5 bg-gradient-to-r from-blue-500 to-pink-500 hover:from-blue-600 hover:to-pink-600 text-white rounded-full font-bold text-xs shadow-sm transition flex items-center gap-1.5 active:scale-95">
+                        <i id="play-pause-icon" class="fas fa-pause"></i>
+                        <span id="play-pause-label">Pause</span>
+                    </button>
+
+                    <!-- Mechanism-specific controls injected dynamically -->
+                    <div id="controls-overlay" class="flex flex-wrap items-center justify-center gap-1.5 sm:gap-2"></div>
+
+                    <!-- Reset Camera Button -->
+                    <button onclick="resetCamera()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center transition active:scale-95" title="Reset &amp; Centre Camera">
+                        <i class="fas fa-expand text-xs"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Right 2/5 Panel: Scrollable Revision Notes (Synchronised with Highlighted Sub-Model) -->
+            <div id="notes-panel" class="w-full lg:w-2/5 h-[45%] lg:h-full bg-white rounded-3xl shadow-sm border border-slate-200 overflow-y-auto p-5 sm:p-7 select-text">
+                <div id="info-content" class="max-w-prose mx-auto pb-6">
+                    <!-- Populated dynamically via JS -->
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        // =========================================================================
+        // 1. HIGHER ENGINEERING SCIENCE CURRICULUM DATA (UK ENGLISH)
+        //    Every sub-variant has its own matched title, description, advantages,
+        //    limitations, and real-world uses so the revision panel always matches
+        //    the currently highlighted 3D model.
+        // =========================================================================
+        const EMBED = (() => {
+            const p = new URLSearchParams(window.location.search);
+            return {
+                mech: p.get('mech'),
+                variant: p.get('variant'),
+                only: p.get('only') ? p.get('only').split(',').map(x => x.trim()) : null,
+                embed: p.get('embed') === '1'
+            };
+        })();
+        if (EMBED.embed) document.body.classList.add('embed');
+        const embedVariant = (mech, fallback) => (EMBED.mech === mech && EMBED.variant) ? EMBED.variant : fallback;
+
+        const mechanisms = [
+            {
+                id: 'gears',
+                title: 'Simple & Compound Gear Trains',
+                subtitle: 'Compound (12T–24T–12T–24T) & Simple (12T–24T)',
+                tag: 'NOGRIND SIM',
+                isNoGrind: true,
+                icon: 'fa-cogs',
+                grad: 'from-blue-500 to-indigo-500',
+                badgeClass: 'bg-blue-50 text-blue-600 border-blue-200',
+                desc: 'Used to transmit rotational motion and torque between parallel shafts while changing speed and mechanical advantage. Switch between Compound and Simple gear trains to compare velocity ratios and compactness.',
+                variants: {
+                    gears_compound: {
+                        title: 'Compound Gear Train',
+                        subtitle: '4:1 Velocity Ratio (12T–24T–12T–24T)',
+                        desc: 'A compound gear train mounts two gears of different sizes on a shared intermediate shaft so they rotate together at the same angular speed. This allows the velocity ratio of each meshing stage to multiply together (2:1 &times; 2:1 = 4:1) in a compact footprint.',
+                        advantages: [
+                            'Produces a much larger velocity ratio (speed reduction or increase) than a simple gear train.',
+                            'Takes up significantly less space than a simple gear train designed for the same velocity ratio.',
+                            'Positive drive with zero slip (unlike belt drives) and high power transmission efficiency.'
+                        ],
+                        limitations: [
+                            'More complex and expensive to manufacture and assemble than a simple gear train.',
+                            'Can be noisy at high operating speeds.',
+                            'Requires regular lubrication to minimise tooth wear and heat generation.'
+                        ],
+                        uses: [
+                            'Car and lorry gearboxes (matching speed vs torque)',
+                            'Factory machinery (lathes and milling machines)',
+                            'Construction equipment (e.g. tower cranes)',
+                            'Mechanical clocks and watches'
+                        ]
+                    },
+                    gears_simple: {
+                        title: 'Simple Gear Train',
+                        subtitle: '2:1 Velocity Ratio (12T–24T)',
+                        desc: 'A simple gear train has only one gear mounted on each shaft. The driver gear meshes directly with the driven gear to transmit rotational motion and torque, reversing the direction of rotation between each meshing pair.',
+                        advantages: [
+                            'Simple, robust construction that is easier and cheaper to manufacture than a compound train.',
+                            'Positive drive with zero slip for accurate speed ratios.',
+                            'Idler gears can be added easily to span distance or match input/output rotation direction.'
+                        ],
+                        limitations: [
+                            'Limited velocity ratio &mdash; achieving a high ratio requires a very large driven gear, taking up excessive space.',
+                            'Can be noisy at high operating speeds.',
+                            'Requires regular lubrication to minimise tooth wear and friction.'
+                        ],
+                        uses: [
+                            'Basic hand drills and whisks',
+                            'Printing press rollers',
+                            'Simple electric motor reducers',
+                            'Timing gears in engines'
+                        ]
+                    }
+                }
+            },
+            {
+                id: 'worm',
+                title: 'Worm & Wheel / Worm & Nut',
+                subtitle: '90° High-Ratio Drive & Worm and Nut Linear Drive',
+                tag: 'NOGRIND SIM',
+                isNoGrind: true,
+                icon: 'fa-screwdriver',
+                grad: 'from-purple-500 to-pink-500',
+                badgeClass: 'bg-purple-50 text-purple-600 border-purple-200',
+                desc: 'Threaded screw drives used for high mechanical advantage and safety. Switch between the 90° Worm and Wheel rotary reducer and the Worm and Nut linear drive.',
+                variants: {
+                    worm_wheel: {
+                        title: 'Worm and Wheel',
+                        subtitle: '90° High-Ratio Drive (36:1 Velocity Ratio)',
+                        desc: 'Used to create a right-angled (90°) drive system with a very high velocity ratio. A single-start threaded worm (equivalent to one gear tooth) meshes with a 36-tooth worm wheel. Primarily used in lifting systems because it cannot be back-driven.',
+                        advantages: [
+                            '<strong>Safety:</strong> The system will not overhaul &mdash; the output load cannot reverse-drive the input worm.',
+                            'Very high velocity ratio achieved in a single, compact stage.',
+                            'Quiet and smooth rotary operation.'
+                        ],
+                        limitations: [
+                            'High sliding friction between the worm thread and wheel teeth generates heat.',
+                            'Lower mechanical efficiency compared to standard spur gears.',
+                            'Requires continuous lubrication to prevent rapid wear.'
+                        ],
+                        uses: [
+                            'Lifting systems and hoists',
+                            'Winches (load held securely without input force)',
+                            'Guitar tuning pegs',
+                            'Conveyor drive reducers'
+                        ]
+                    },
+                    worm_leadscrew: {
+                        title: 'Worm and Nut',
+                        subtitle: 'Rotary-to-Linear Screw Drive',
+                        desc: 'A worm and nut mechanism converts the rotary motion of a threaded shaft (worm) into controlled, high-force linear motion of a travelling nut. Each full revolution of the worm advances the nut by one thread pitch.',
+                        advantages: [
+                            '<strong>Self-locking:</strong> Shallow thread angle prevents the nut from overhauling under heavy axial loads.',
+                            'Produces very large linear clamping or lifting forces from a small input torque.',
+                            'Provides precise, fine linear positioning.'
+                        ],
+                        limitations: [
+                            'High sliding friction between the mating threads leads to heat and lower efficiency.',
+                            'Linear travel speed is relatively slow compared to a rack and pinion.',
+                            'Threads wear over time and require lubrication to prevent seizing.'
+                        ],
+                        uses: [
+                            'Bench vices and G-clamps',
+                            'Car scissor jacks and screw presses',
+                            'Lathe carriage and milling machine table feeds',
+                            'Linear actuators and 3D printer Z-axes'
+                        ]
+                    }
+                }
+            },
+            {
+                id: 'rack',
+                title: 'Rack and Pinion',
+                subtitle: '20T Spur Pinion & 180 mm Linear Rack',
+                tag: 'NOGRIND SIM',
+                isNoGrind: true,
+                icon: 'fa-ruler-horizontal',
+                grad: 'from-emerald-500 to-teal-500',
+                badgeClass: 'bg-emerald-50 text-emerald-600 border-emerald-200',
+                desc: 'A mechanism composed of a circular gear wheel (pinion) meshing with a straight toothed bar (rack). Its primary function is to convert rotary motion into controlled linear motion, or vice versa.',
+                advantages: [
+                    'Provides precise, controlled linear movement directly proportional to pinion revolutions.',
+                    'Simple, robust, and positive-drive mechanical construction with zero slip.'
+                ],
+                limitations: [
+                    'Finite length of travel (limited by the physical length of the rack).',
+                    'Backlash between meshing teeth can reduce positioning accuracy over time.'
+                ],
+                uses: [
+                    'Car steering mechanisms',
+                    'Pillar drill and lathe feed systems',
+                    'Automated sliding gates',
+                    'Stairlifts and mountain rack railways'
+                ]
+            },
+            {
+                id: 'ratchet',
+                title: 'Ratchet and Pawl',
+                subtitle: 'One-Way Mechanical Safety Lock',
+                tag: '3D CAD SIM',
+                isNoGrind: false,
+                icon: 'fa-lock',
+                grad: 'from-rose-500 to-pink-500',
+                badgeClass: 'bg-rose-50 text-rose-600 border-rose-200',
+                desc: 'A mechanical safety device designed to prevent a system from overhauling. It allows rotation of a drum or shaft in one direction only while a pivoted, spring-loaded pawl drops into the asymmetric saw-teeth and locks solidly if reverse rotation is attempted.',
+                advantages: [
+                    '<strong>Safety:</strong> Acts as a vital safety feature in lifting systems by stopping the output load from dropping.',
+                    'Provides a simple, reliable, positive mechanical locking action without electrical power.'
+                ],
+                limitations: [
+                    'Produces a repetitive clicking noise during forward motion.',
+                    'Saw-teeth and pawl nose experience impact wear over time under heavy loads.',
+                    'Allows slight reverse rollback before the pawl seats fully against the next tooth face.'
+                ],
+                uses: [
+                    'Socket sets and ratchet spanners',
+                    'Lifting systems and cable winches (safety brake)',
+                    'Fishing reels and cable ties',
+                    'Clockwork mechanisms and turnstiles'
+                ]
+            },
+            {
+                id: 'couplings',
+                title: 'Couplings',
+                subtitle: 'Universal • Flanged • Muff • Flexible',
+                tag: '3D CAD SIM',
+                isNoGrind: false,
+                icon: 'fa-link',
+                grad: 'from-blue-500 to-pink-500',
+                badgeClass: 'bg-indigo-50 text-indigo-600 border-indigo-200',
+                desc: 'Devices used to join two rotating shafts together to transmit motion and torque. Switch between Universal, Flanged, Muff, and Flexible couplings to compare alignment tolerances.',
+                variants: {
+                    Universal: {
+                        title: 'Universal Joint (Hooke’s Joint)',
+                        subtitle: 'Angular Misalignment Coupling (Up to 20°)',
+                        desc: 'A universal joint connects two shafts whose axes intersect at an angle. Two forged U-shaped yokes are connected via a central cross-shaped spider with needle-bearing caps, allowing continuous torque transmission across a bend.',
+                        advantages: [
+                            'Transmits high torque reliably between non-aligned shafts meeting at an angle.',
+                            'Accommodates dynamic angular movement while the shafts are rotating (e.g. vehicle suspension travel).'
+                        ],
+                        limitations: [
+                            'Typically transmits motion through an angle of up to <strong>20° only</strong> &mdash; larger angles cause severe output speed pulsation.',
+                            'Requires lubrication of the spider cross bearings and wears under heavy angular loads.'
+                        ],
+                        uses: [
+                            'Vehicle propeller / drive shafts',
+                            'Car steering columns',
+                            'Agricultural tractor PTO shafts',
+                            'Socket wrench universal adapters'
+                        ]
+                    },
+                    Flanged: {
+                        title: 'Flanged Coupling',
+                        subtitle: 'Heavy-Duty Rigid Shaft Coupling',
+                        desc: 'A rigid coupling consisting of two flanged metal hubs keyed directly onto the ends of two accurately aligned shafts. The mating flanges are bolted tightly together to transmit high torque as a single solid unit.',
+                        advantages: [
+                            'Transmits very high torque rigidly with zero slip.',
+                            'Allows straightforward unbolting for maintenance, inspection, or motor replacement.'
+                        ],
+                        limitations: [
+                            'Requires very accurate axial and angular alignment between the two shafts.',
+                            'Cannot damp vibration or cushion sudden shock loads.'
+                        ],
+                        uses: [
+                            'Heavy industrial motor-to-pump drives',
+                            'Marine propeller shafts',
+                            'Large electric generator sets',
+                            'Industrial gearbox output shafts'
+                        ]
+                    },
+                    Muff: {
+                        title: 'Muff (Sleeve) Coupling',
+                        subtitle: 'Compact Rigid Sleeve Coupling',
+                        desc: 'The simplest type of rigid coupling, made from a hollow metal cylinder (muff or sleeve) fitted over the butt-joined ends of two aligned shafts and locked against rotation using a single sunk feather key.',
+                        advantages: [
+                            'Very simple, compact, and inexpensive to manufacture.',
+                            'Smooth cylindrical outer surface with no projecting bolt heads, improving safety around rotating shafts.'
+                        ],
+                        limitations: [
+                            'Requires precise alignment of both shafts prior to assembly.',
+                            'Difficult to assemble or disassemble because the sleeve must slide axially along the shaft.'
+                        ],
+                        uses: [
+                            'Light-to-medium duty line shafts',
+                            'Compact workshop machinery drives',
+                            'Small pumps and conveyor rollers',
+                            'Long shaft extensions in confined spaces'
+                        ]
+                    },
+                    Flexible: {
+                        title: 'Flexible (Jaw) Coupling',
+                        subtitle: 'Elastomeric Spider Coupling (Up to 5°)',
+                        desc: 'A flexible coupling made of two metallic three-jaw hubs interlocked with a resilient elastomeric (rubber/polyurethane) star spider. The flexible insert transmits torque whilst absorbing minor shaft misalignment and shock.',
+                        advantages: [
+                            'Accommodates small angular and parallel shaft misalignments without stressing bearings.',
+                            'Damps vibration and cushions sudden starting shock loads.',
+                            'Requires no lubrication and provides electrical isolation between shafts.'
+                        ],
+                        limitations: [
+                            'Only accommodates small angular misalignments (typically up to <strong>5°</strong>).',
+                            'The elastomeric spider wears or perishes over time and transmits less torque than a rigid flanged coupling.'
+                        ],
+                        uses: [
+                            'Electric motor-to-pump connections',
+                            'CNC machine tool spindles',
+                            'Industrial fans and blowers',
+                            'Compressors and conveyor drives'
+                        ]
+                    }
+                }
+            },
+            {
+                id: 'bearings',
+                title: 'Bearings',
+                subtitle: 'Ball • Roller • Journal • Thrust',
+                tag: '3D CAD SIM',
+                isNoGrind: false,
+                icon: 'fa-dot-circle',
+                grad: 'from-cyan-500 to-blue-500',
+                badgeClass: 'bg-cyan-50 text-cyan-600 border-cyan-200',
+                desc: 'Components that support a rotating shaft and reduce friction while carrying radial or axial loads. Switch between Ball, Roller, Journal, and Thrust bearings to compare contact geometry.',
+                variants: {
+                    Ball: {
+                        title: 'Ball Bearing',
+                        subtitle: 'Point-Contact Rolling Element Bearing',
+                        desc: 'Uses hardened steel spherical balls rolling between precision-ground inner and outer raceways. Replacing sliding friction with point-contact rolling motion allows smooth, high-speed shaft rotation.',
+                        advantages: [
+                            'Very low rolling friction, improving mechanical efficiency and reducing heat.',
+                            'Suitable for high rotational speeds and supports radial loads plus light axial loads.'
+                        ],
+                        limitations: [
+                            'Point contact concentrates stress, limiting maximum heavy radial and shock load capacity compared to roller bearings.',
+                            'Acts as a sacrificial wear part requiring sealing, lubrication, and eventual replacement.'
+                        ],
+                        uses: [
+                            'Bicycle and car wheel hubs',
+                            'Electric motor rotors',
+                            'Skateboard and rollerblade wheels',
+                            'Household appliances (washing machines)'
+                        ]
+                    },
+                    Roller: {
+                        title: 'Roller Bearing',
+                        subtitle: 'Line-Contact Heavy Radial Bearing',
+                        desc: 'Uses hardened cylindrical rollers instead of spheres between the inner and outer races. Because each roller makes line contact across its full width, radial loads are distributed over a much larger surface area.',
+                        advantages: [
+                            'Line contact supports much heavier radial loads and shock loads than an equivalent-sized ball bearing.',
+                            'Low rolling friction keeps energy losses and operating temperatures low.'
+                        ],
+                        limitations: [
+                            'Standard cylindrical roller bearings cannot support significant axial (thrust) loads.',
+                            'Generally lower maximum operating speed than ball bearings and sensitive to shaft misalignment.'
+                        ],
+                        uses: [
+                            'Heavy-duty industrial gearboxes',
+                            'Steel mill rollers and conveyor drums',
+                            'Railway axle boxes',
+                            'Crane hoists and heavy axles'
+                        ]
+                    },
+                    Journal: {
+                        title: 'Split Journal Bearing',
+                        subtitle: 'Hydrodynamic Oil-Film Plain Bearing',
+                        desc: 'A plain split-housing (plummer block) bearing in which a rotating steel shaft (the journal) is supported inside a softer bronze bearing bush. A continuous oil supply forms a thin pressurised hydrodynamic film that prevents metal-to-metal contact.',
+                        advantages: [
+                            'Split cap and shells allow easy installation and replacement without sliding components off the end of long shafts.',
+                            'Very quiet operation and capable of supporting heavy radial and shock loads once the oil film forms.'
+                        ],
+                        limitations: [
+                            'Higher starting friction before the rotating shaft builds up the lubricating oil film.',
+                            'Requires a reliable, continuous supply of lubricant to prevent overheating and seizing.',
+                            'Bronze shells are sacrificial wear components that must be replaced periodically.'
+                        ],
+                        uses: [
+                            'Internal combustion engine crankshafts and camshafts',
+                            'Supporting long industrial and marine propeller shafts',
+                            'Steam and gas turbines',
+                            'Heavy-duty pumps and compressors'
+                        ]
+                    },
+                    Thrust: {
+                        title: 'Thrust Bearing',
+                        subtitle: 'Axial Load Rolling Bearing',
+                        desc: 'Specifically engineered to support axial (thrust) loads acting parallel to the shaft axis. Hardened steel balls roll between flat grooved upper and lower raceway washers to carry heavy downward or axial forces freely.',
+                        advantages: [
+                            'Efficiently carries heavy axial (thrust) loads while allowing smooth shaft rotation.',
+                            'Greatly reduces axial rubbing friction, wear, and heat under vertical loads.'
+                        ],
+                        limitations: [
+                            'Not designed to support radial loads on its own (usually paired with a radial bearing).',
+                            'Requires axial preload and lubrication to keep the rolling balls properly seated.'
+                        ],
+                        uses: [
+                            'Crane hooks and heavy swivels',
+                            'Turntables and revolving stools',
+                            'Car clutch release (throw-out) bearings',
+                            'Vertical turbine and drill-press spindles'
+                        ]
+                    }
+                }
+            },
+            {
+                id: 'clutches',
+                title: 'Clutches',
+                subtitle: 'Friction • Positive (Dog)',
+                tag: '3D CAD SIM',
+                isNoGrind: false,
+                icon: 'fa-circle-pause',
+                grad: 'from-pink-500 to-rose-500',
+                badgeClass: 'bg-pink-50 text-pink-600 border-pink-200',
+                desc: 'Devices that allow two rotating shafts to be connected and disconnected on demand. Switch between Friction and Positive (Dog) clutches to compare smooth slip engagement against zero-slip interlocking.',
+                variants: {
+                    Friction: {
+                        title: 'Friction Clutch',
+                        subtitle: 'Spring-Loaded Friction Plate Clutch',
+                        desc: 'Uses high-friction linings pressed together by axial compression springs to transmit torque between a rotating driving flywheel and a driven splined output shaft. Controlled slip allows smooth spin-up from rest.',
+                        advantages: [
+                            'Allows smooth connection and disconnection of drive whilst the input shaft is already rotating.',
+                            'Cushions sudden shock loads and can slip intentionally as an overload torque limiter.'
+                        ],
+                        limitations: [
+                            'Slippage during engagement dissipates mechanical energy as heat.',
+                            'Friction linings gradually wear down over time and require eventual replacement.'
+                        ],
+                        uses: [
+                            'Car and motorcycle manual gearboxes',
+                            'Power drill torque-limiting clutches',
+                            'Chainsaws (centrifugal friction clutch)',
+                            'Industrial press and conveyor drives'
+                        ]
+                    },
+                    Positive: {
+                        title: 'Positive (Dog) Clutch',
+                        subtitle: 'Interlocking Zero-Slip Jaw Clutch',
+                        desc: 'Connects two shafts directly by sliding a splined hub with machined interlocking jaws (dogs) into matching recesses on the driving hub, creating a solid mechanical lock.',
+                        advantages: [
+                            'Provides 100% positive drive with <strong>zero slip</strong> and maximum torque efficiency.',
+                            'Generates no friction heat during operation and stays compact for high torque loads.'
+                        ],
+                        limitations: [
+                            'Shafts must be <strong>stationary or synchronised</strong> before engagement to avoid clashing and jaw damage.',
+                            'Cannot slip to cushion sudden shock loads or overloads.'
+                        ],
+                        uses: [
+                            'Motorsport dog-ring gearboxes',
+                            'Heavy machinery and tractor PTO engagement',
+                            'Winch drum free-spool locks',
+                            'Lathe feed-box selectors'
+                        ]
+                    }
+                }
+            }
+        ];
+
+        // Helper to resolve the active variant object for the right-hand revision panel
+        function getActiveVariantData(mechId) {
+            const mech = mechanisms.find(m => m.id === mechId);
+            if (!mech) return null;
+            if (!mech.variants) return mech;
+
+            let vKey = null;
+            if (mechId === 'gears')     vKey = ngCurrentPresetKey || 'gears_compound';
+            else if (mechId === 'worm') vKey = ngCurrentPresetKey || 'worm_wheel';
+            else if (mechId === 'couplings') vKey = cadState.couplingType;
+            else if (mechId === 'bearings')  vKey = cadState.bearingType;
+            else if (mechId === 'clutches')  vKey = cadState.clutchType;
+
+            const variant = mech.variants[vKey];
+            if (!variant) return mech;
+            return {
+                ...mech,
+                title: variant.title,
+                subtitle: variant.subtitle,
+                desc: variant.desc,
+                advantages: variant.advantages,
+                limitations: variant.limitations,
+                uses: variant.uses
+            };
+        }
+
+        // =========================================================================
+        // 2. SHARED THREE.JS SCENE, ORBITCONTROLS & APPLICATION STATE
+        // =========================================================================
+        const container = document.getElementById('canvasContainer');
+        const threeContainer = document.getElementById('three-container');
+
+        let renderer, scene, camera, controls, gridHelper;
+        let animationId = null;
+        const clock = new THREE.Clock();
+
+        let currentMechId = null;
+        let activeEngine = 'cad'; // 'nogrind' | 'cad'
+        let isPaused = false;
+        let simSpeedMultiplier = 1.0;
+
+        // Toast Helper (never uses alert/confirm)
+        let toastTimer = null;
+        function showToast(msg) {
+            const t = document.getElementById('toast');
+            if (!t) return;
+            t.innerHTML = msg;
+            t.style.opacity = '1';
+            t.style.transform = 'translate(-50%, 0) scale(1)';
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                t.style.opacity = '0';
+                t.style.transform = 'translate(-50%, 0) scale(0.95)';
+            }, 3000);
+        }
+
+        function setTelemetry(text, variant = 'default') {
+            const el = document.getElementById('telemetry-text');
+            const pill = document.getElementById('telemetry-pill');
+            if (el && el.innerText !== text) el.innerText = text;
+            if (!pill) return;
+
+            if (variant === 'warn') {
+                pill.className = 'pointer-events-auto bg-amber-50 border border-amber-300 rounded-full px-3.5 py-1.5 shadow-md flex items-center gap-2 text-[11px] font-bold text-amber-700 transition-colors';
+            } else if (variant === 'danger') {
+                pill.className = 'pointer-events-auto bg-rose-50 border border-rose-300 rounded-full px-3.5 py-1.5 shadow-md flex items-center gap-2 text-[11px] font-bold text-rose-700 transition-colors';
+            } else if (variant === 'success') {
+                pill.className = 'pointer-events-auto bg-emerald-50 border border-emerald-300 rounded-full px-3.5 py-1.5 shadow-md flex items-center gap-2 text-[11px] font-bold text-emerald-700 transition-colors';
+            } else {
+                pill.className = 'pointer-events-auto bg-white/95 border border-slate-200 rounded-full px-3.5 py-1.5 shadow-md flex items-center gap-2 text-[11px] font-bold text-slate-700 transition-colors';
+            }
+        }
+
+        function initThreeCore() {
+            if (renderer) return;
+
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(44, 1, 1, 3000);
+            camera.position.set(0, 50, 140);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, preserveDrawingBuffer: true });
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            threeContainer.appendChild(renderer.domElement);
+
+            if (typeof THREE.OrbitControls !== 'undefined') {
+                controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.06;
+                controls.maxDistance = 900;
+                controls.minDistance = 16;
+                controls.screenSpacePanning = true;
+            }
+
+            // Studio Lighting matching NoGrindSim V1.4.2
+            scene.add(new THREE.AmbientLight(0xffffff, 1.15));
+
+            const dirLight = new THREE.DirectionalLight(0xffffff, 0.80);
+            dirLight.position.set(50, 100, 60);
+            dirLight.castShadow = true;
+            scene.add(dirLight);
+
+            const pinkFill = new THREE.DirectionalLight(0xec4899, 0.34);
+            pinkFill.position.set(-50, -20, -50);
+            scene.add(pinkFill);
+
+            const blueFill = new THREE.DirectionalLight(0x3b82f6, 0.38);
+            blueFill.position.set(50, -20, 50);
+            scene.add(blueFill);
+
+            gridHelper = new THREE.GridHelper(1000, 100, 0x94a3b8, 0xe2e8f0);
+            gridHelper.position.y = -30;
+            scene.add(gridHelper);
+        }
+
+        function resizeViewport() {
+            if (!renderer || !camera || !container) return;
+            const w = container.clientWidth || 600;
+            const h = container.clientHeight || 400;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+        }
+
+        // =========================================================================
+        // 3. INTEGRATED NOGRINDSIM V1.4.2 3D ENGINE (CLEAN — NO FLOATING LABELS)
+        // =========================================================================
+        const ngGeoCache = {};
+        const ngColors = [0x3b82f6, 0x8b5cf6, 0xd946ef, 0xec4899, 0x0ea5e9];
+        let ngColorIdx = 0;
+
+        let ngNodes = [];
+        let ngMotorSpeed = 60;
+        let ngMotorDir = 1;
+        let ngMotorCutoff = false;
+        let ngAutoBounce = true;
+        let ngTargetGridY = -30;
+        let ngRootGroup = null;
+        let ngCurrentPresetKey = null;
+
+        function ngGetRadius(teeth) { return teeth * 0.5; }
+
+        function ngAddLighteningHoles(shape, radius) {
+            if (radius > 8) {
+                const numHoles = Math.max(3, Math.min(16, Math.floor(radius / 4.0)));
+                const holeCenterDist = (radius + 2) / 2;
+                const maxHoleR_bounds = (radius - 2.5) - holeCenterDist;
+                const maxHoleR_neigh = (Math.PI * holeCenterDist / numHoles) - 0.5;
+                const holeR = Math.min(maxHoleR_bounds, maxHoleR_neigh);
+                if (holeR > 1.2) {
+                    for (let i = 0; i < numHoles; i++) {
+                        const a = (i * Math.PI * 2) / numHoles;
+                        const circle = new THREE.Path();
+                        circle.absarc(Math.cos(a) * holeCenterDist, Math.sin(a) * holeCenterDist, holeR, 0, Math.PI * 2, true);
+                        shape.holes.push(circle);
+                    }
+                }
+            }
+        }
+
+        function ngGetGearShape(teeth) {
+            const radius = ngGetRadius(teeth);
+            const shape = new THREE.Shape();
+            const steps = teeth * 4;
+            for (let i = 0; i <= steps; i++) {
+                const angle = (i / steps) * Math.PI * 2;
+                const phase = i % 4;
+                let r = radius, a = angle;
+                const taper = 0.15 / Math.max(1, radius);
+                if (phase === 1) { a += taper; r += 1.2; }
+                if (phase === 2) { a -= taper; r += 1.2; }
+                if (phase === 0) { a -= taper; r -= 0.5; }
+                if (phase === 3) { a += taper; r -= 0.5; }
+                if (i === 0) shape.moveTo(Math.cos(a) * r, Math.sin(a) * r);
+                else shape.lineTo(Math.cos(a) * r, Math.sin(a) * r);
+            }
+            const centerHole = new THREE.Path();
+            centerHole.absarc(0, 0, 1.5, 0, Math.PI * 2, true);
+            shape.holes.push(centerHole);
+            ngAddLighteningHoles(shape, radius);
+            return shape;
+        }
+
+        function ngCreateGearGeometry(teeth) {
+            const key = 'gear_' + teeth;
+            if (ngGeoCache[key]) return ngGeoCache[key];
+            const geo = new THREE.ExtrudeGeometry(ngGetGearShape(teeth), {
+                depth: 3, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.3, bevelThickness: 0.3
+            });
+            geo.center();
+            return (ngGeoCache[key] = geo);
+        }
+
+        function ngCreateWormWheelGeometry(teeth) {
+            const key = 'wormwheel_' + teeth;
+            if (ngGeoCache[key]) return ngGeoCache[key];
+            const geo = new THREE.ExtrudeGeometry(ngGetGearShape(teeth), {
+                depth: 6, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.3, bevelThickness: 0.3
+            });
+            geo.center();
+            return (ngGeoCache[key] = geo);
+        }
+
+        function ngCreateSprocketGeometry(teeth) {
+            const key = 'sprocket_' + teeth;
+            if (ngGeoCache[key]) return ngGeoCache[key];
+            const radius = ngGetRadius(teeth);
+            const shape = new THREE.Shape();
+            const steps = teeth * 2;
+            for (let i = 0; i <= steps; i++) {
+                const angle = (i / steps) * Math.PI * 2;
+                const r = (i % 2 === 0) ? radius + 1 : radius - 1.5;
+                if (i === 0) shape.moveTo(Math.cos(angle) * r, Math.sin(angle) * r);
+                else shape.lineTo(Math.cos(angle) * r, Math.sin(angle) * r);
+            }
+            const centerHole = new THREE.Path();
+            centerHole.absarc(0, 0, 1.5, 0, Math.PI * 2, true);
+            shape.holes.push(centerHole);
+            ngAddLighteningHoles(shape, radius);
+            const geo = new THREE.ExtrudeGeometry(shape, { depth: 1.5, bevelEnabled: true, bevelSegments: 1, steps: 1, bevelSize: 0.2, bevelThickness: 0.2 });
+            geo.center();
+            return (ngGeoCache[key] = geo);
+        }
+
+        function ngCreatePulleyGeometry(diameter) {
+            const key = 'pulley_' + diameter;
+            if (ngGeoCache[key]) return ngGeoCache[key];
+            const r = Math.max(5, diameter * 0.5);
+            const pts = r > 6 ? [
+                new THREE.Vector2(1.5, -4), new THREE.Vector2(3.5, -4), new THREE.Vector2(3.5, -1.5),
+                new THREE.Vector2(r - 2.5, -1.5), new THREE.Vector2(r - 2.5, -4), new THREE.Vector2(r, -4),
+                new THREE.Vector2(r, -2), new THREE.Vector2(r - 2.5, 0), new THREE.Vector2(r, 2),
+                new THREE.Vector2(r, 4), new THREE.Vector2(r - 2.5, 4), new THREE.Vector2(r - 2.5, 1.5),
+                new THREE.Vector2(3.5, 1.5), new THREE.Vector2(3.5, 4), new THREE.Vector2(1.5, 4)
+            ] : [
+                new THREE.Vector2(1.5, -4), new THREE.Vector2(r, -4), new THREE.Vector2(r, -2),
+                new THREE.Vector2(r - 1.5, 0), new THREE.Vector2(r, 2), new THREE.Vector2(r, 4), new THREE.Vector2(1.5, 4)
+            ];
+            const geo = new THREE.LatheGeometry(pts, 32);
+            geo.rotateX(Math.PI / 2);
+            geo.computeVertexNormals();
+            return (ngGeoCache[key] = geo);
+        }
+
+        function ngCreateRackGeometry(length) {
+            const key = 'rack_' + length;
+            if (ngGeoCache[key]) return ngGeoCache[key];
+            const shape = new THREE.Shape();
+            const numTeeth = Math.max(2, Math.floor(length / Math.PI));
+            const halfLen = (numTeeth * Math.PI) / 2;
+            shape.moveTo(-halfLen, -4);
+            shape.lineTo(halfLen, -4);
+            shape.lineTo(halfLen, -1.2);
+            for (let i = Math.floor(numTeeth / 2); i >= -Math.ceil(numTeeth / 2); i--) {
+                const cx = i * Math.PI;
+                if (cx + 0.8 > halfLen + 0.1 || cx - 0.8 < -halfLen - 0.1) continue;
+                shape.lineTo(cx + 0.8, -1.2);
+                shape.lineTo(cx + 0.4, 0.5);
+                shape.lineTo(cx - 0.4, 0.5);
+                shape.lineTo(cx - 0.8, -1.2);
+            }
+            shape.lineTo(-halfLen, -1.2);
+            shape.closePath();
+            const geo = new THREE.ExtrudeGeometry(shape, { depth: 3, bevelEnabled: true, bevelSegments: 1, steps: 1, bevelSize: 0.2, bevelThickness: 0.2 });
+            geo.translate(0, 0, -1.5);
+            return (ngGeoCache[key] = geo);
+        }
+
+        function ngCreateWormVisual() {
+            const group = new THREE.Group();
+            const length = 30, coreR = 3.5, peakR = 6.5;
+            const geo = new THREE.CylinderGeometry(peakR, peakR, length, 56, 100);
+            geo.rotateX(Math.PI / 2);
+            const pos = geo.attributes.position;
+            for (let i = 0; i < pos.count; i++) {
+                const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+                const len = Math.hypot(x, y);
+                if (len < 0.1) continue;
+                let phase = Math.atan2(y, x) - (z * 2);
+                phase = phase % (Math.PI * 2);
+                if (phase > Math.PI) phase -= Math.PI * 2;
+                if (phase < -Math.PI) phase += Math.PI * 2;
+                const t = Math.abs(phase) / Math.PI;
+                let r = coreR;
+                if (t < 0.08) r = peakR;
+                else if (t < 0.35) r = peakR - (peakR - coreR) * ((t - 0.08) / 0.27);
+                const endDist = Math.abs(z);
+                if (endDist > length / 2 - 2) r -= ((endDist - (length / 2 - 2)) / 2) * (r - coreR);
+                pos.setX(i, (x / len) * r);
+                pos.setY(i, (y / len) * r);
+            }
+            geo.computeVertexNormals();
+            geo.translate(0, 0, length / 2);
+            group.add(new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xcbd5e1, metalness: 0.88, roughness: 0.22 })));
+            return group;
+        }
+
+        function ngCreateLeadScrewVisual(length) {
+            const group = new THREE.Group();
+            const coreR = 4, peakR = 8, pitch = 12;
+            const segZ = Math.min(320, Math.floor(length));
+            const geo = new THREE.CylinderGeometry(peakR, peakR, length, 32, segZ);
+            geo.rotateX(Math.PI / 2);
+            const pos = geo.attributes.position;
+            for (let i = 0; i < pos.count; i++) {
+                const x = pos.getX(i), y = pos.getY(i), z = pos.getZ(i);
+                const len = Math.hypot(x, y);
+                if (len < 0.1) continue;
+                let phase = Math.atan2(y, x) + (z * 2 * Math.PI / pitch);
+                phase = phase % (Math.PI * 2);
+                if (phase > Math.PI) phase -= Math.PI * 2;
+                if (phase < -Math.PI) phase += Math.PI * 2;
+                const t = Math.abs(phase) / Math.PI;
+                let r = coreR;
+                if (t < 0.1) r = peakR;
+                else if (t < 0.4) r = peakR - (peakR - coreR) * ((t - 0.1) / 0.3);
+                const endDist = Math.abs(z);
+                if (endDist > length / 2 - 2) r -= ((endDist - (length / 2 - 2)) / 2) * (r - coreR);
+                pos.setX(i, (x / len) * r);
+                pos.setY(i, (y / len) * r);
+            }
+            geo.computeVertexNormals();
+            geo.translate(0, 0, length / 2);
+            group.add(new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0xcbd5e1, metalness: 0.88, roughness: 0.22 })));
+            return group;
+        }
+
+        function ngCreateNutVisual() {
+            const shape = new THREE.Shape();
+            const s = 12;
+            shape.moveTo(-s, -s); shape.lineTo(s, -s); shape.lineTo(s, s); shape.lineTo(-s, s); shape.closePath();
+            const hole = new THREE.Path();
+            hole.absarc(0, 0, 8.2, 0, Math.PI * 2, true);
+            shape.holes.push(hole);
+            const geo = new THREE.ExtrudeGeometry(shape, { depth: 16, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.5, bevelThickness: 0.5 });
+            geo.center();
+            return new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.7, roughness: 0.45 }));
+        }
+
+        function ngGetDriveShapeData(pr1, pr2, dist, outerW, innerHW) {
+            const diff = Math.max(-0.999, Math.min(0.999, (pr2 - pr1) / dist));
+            const t = Math.asin(diff);
+            const shape = new THREE.Shape();
+            shape.absarc(0, 0, pr1 + outerW, Math.PI / 2 + t, 3 * Math.PI / 2 - t, false);
+            shape.absarc(dist, 0, pr2 + outerW, 3 * Math.PI / 2 - t, Math.PI / 2 + t, false);
+            shape.closePath();
+            const hole = new THREE.Path();
+            hole.absarc(0, 0, pr1 - innerHW, 3 * Math.PI / 2 - t, Math.PI / 2 + t, true);
+            hole.absarc(dist, 0, pr2 - innerHW, Math.PI / 2 + t, 3 * Math.PI / 2 - t, true);
+            hole.closePath();
+            shape.holes.push(hole);
+
+            const p = new THREE.Path();
+            const startX = pr1 * Math.cos(Math.PI / 2 + t), startY = pr1 * Math.sin(Math.PI / 2 + t);
+            const bot2X = dist + pr2 * Math.cos(3 * Math.PI / 2 - t), bot2Y = pr2 * Math.sin(3 * Math.PI / 2 - t);
+            p.absarc(0, 0, pr1, Math.PI / 2 + t, 3 * Math.PI / 2 - t, false);
+            p.lineTo(bot2X, bot2Y);
+            p.absarc(dist, 0, pr2, 3 * Math.PI / 2 - t, Math.PI / 2 + t, false);
+            p.lineTo(startX, startY);
+            return { shape, p, t };
+        }
+
+        function ngCreateChainVisual(r1, r2, dist) {
+            const group = new THREE.Group();
+            const data = ngGetDriveShapeData(r1 - 0.5, r2 - 0.5, dist, 1.5, -0.2);
+            const pathLength = data.p.getLength();
+            let numPins = Math.max(4, Math.floor(pathLength / 3.5));
+            if (numPins % 2 !== 0) numPins++;
+            const pinGeo = new THREE.CylinderGeometry(0.6, 0.6, 3.8, 8);
+            pinGeo.rotateX(Math.PI / 2);
+            const pinMesh = new THREE.InstancedMesh(pinGeo, new THREE.MeshStandardMaterial({ color: 0xf8fafc, metalness: 0.9, roughness: 0.4 }), numPins);
+
+            const pw = 1.75, pr = 1.3;
+            const plateShape = new THREE.Shape();
+            plateShape.absarc(-pw, 0, pr, Math.PI / 2, 3 * Math.PI / 2, false);
+            plateShape.lineTo(pw, -pr);
+            plateShape.absarc(pw, 0, pr, -Math.PI / 2, Math.PI / 2, false);
+            plateShape.lineTo(-pw, pr);
+            const plateGeo = new THREE.ExtrudeGeometry(plateShape, { depth: 0.25, bevelEnabled: true, bevelSegments: 1, steps: 1, bevelSize: 0.1, bevelThickness: 0.1 });
+            plateGeo.center();
+
+            const outerPlates = new THREE.InstancedMesh(plateGeo, new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.7, roughness: 0.5 }), numPins);
+            const innerPlates = new THREE.InstancedMesh(plateGeo, new THREE.MeshStandardMaterial({ color: 0x64748b, metalness: 0.7, roughness: 0.6 }), numPins);
+            group.add(pinMesh, outerPlates, innerPlates);
+            group.userData = { path: data.p, length: pathLength, numPins, pinMesh, outerPlates, innerPlates, offset: 0 };
+            return group;
+        }
+
+        function ngUpdateChainPins(visualGroup) {
+            if (!visualGroup || !visualGroup.userData.pinMesh) return;
+            const data = visualGroup.userData;
+            const dummy = new THREE.Object3D();
+            let normOffset = (data.offset % data.length) / data.length;
+            if (normOffset < 0) normOffset += 1;
+            let outerIdx = 0, innerIdx = 0;
+
+            for (let i = 0; i < data.numPins; i++) {
+                let u = (i / data.numPins) + normOffset;
+                if (u > 1) u -= 1;
+                const pt = data.path.getPointAt(u);
+                dummy.position.set(pt.x, pt.y, 0);
+                dummy.rotation.set(0, 0, 0);
+                dummy.updateMatrix();
+                data.pinMesh.setMatrixAt(i, dummy.matrix);
+
+                let uMid = u + 0.5 / data.numPins;
+                if (uMid > 1) uMid -= 1;
+                const ptMid = data.path.getPointAt(uMid);
+                const tan = data.path.getTangentAt(uMid);
+                dummy.position.set(ptMid.x, ptMid.y, 0);
+                dummy.rotation.set(0, 0, Math.atan2(tan.y, tan.x));
+
+                if (i % 2 === 0) {
+                    dummy.position.z = 1.35; dummy.updateMatrix(); data.outerPlates.setMatrixAt(outerIdx++, dummy.matrix);
+                    dummy.position.z = -1.35; dummy.updateMatrix(); data.outerPlates.setMatrixAt(outerIdx++, dummy.matrix);
+                } else {
+                    dummy.position.z = 0.65; dummy.updateMatrix(); data.innerPlates.setMatrixAt(innerIdx++, dummy.matrix);
+                    dummy.position.z = -0.65; dummy.updateMatrix(); data.innerPlates.setMatrixAt(innerIdx++, dummy.matrix);
+                }
+            }
+            data.pinMesh.instanceMatrix.needsUpdate = true;
+            data.outerPlates.instanceMatrix.needsUpdate = true;
+            data.innerPlates.instanceMatrix.needsUpdate = true;
+        }
+
+        function ngCreateBeltVisual(r1, r2, dist) {
+            const group = new THREE.Group();
+            const data = ngGetDriveShapeData(r1 - 1.5, r2 - 1.5, dist, 1.0, 0.0);
+            const geo = new THREE.ExtrudeGeometry(data.shape, { depth: 2.5, bevelEnabled: false });
+            geo.translate(0, 0, -1.25);
+            group.add(new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ color: 0x1f2937, roughness: 0.9, metalness: 0.1 })));
+            return group;
+        }
+
+        class NGNode {
+            constructor(type, param = 20) {
+                this.id = Math.random().toString(36).substr(2, 9);
+                this.type = type;
+                this.length = (type === 'rack' || type === 'leadscrew') ? param : 0;
+
+                if (type === 'cassette') {
+                    this.gearSizes = [34, 28, 24, 21, 18, 15, 13, 11];
+                    this.activeGearIdx = 0;
+                    this.teeth = this.gearSizes[0];
+                } else {
+                    this.teeth = (type === 'rack' || type === 'leadscrew') ? 0 : param;
+                }
+
+                if (type === 'motor') this.radius = 14;
+                else if (type === 'worm') this.radius = 10;
+                else if (type === 'rack') this.radius = 0;
+                else if (type === 'leadscrew') this.radius = 8;
+                else if (type === 'nut') this.radius = 12;
+                else this.radius = ngGetRadius(this.teeth);
+
+                this.label = type === 'motor' ? 'Input' : '';
+                this.axis = 'z';
+                this.parent = null;
+                this.linkType = null;
+                this.linkDir = null;
+                this.children = [];
+                this.speed = 0;
+                this.dir = 1;
+                this.angle = 0;
+                this.linearPosition = type === 'nut' ? 8 : 0;
+                this.basePosition = new THREE.Vector3();
+
+                this.meshGroup = new THREE.Group();
+                this.rotGroup = new THREE.Group();
+                this.meshGroup.add(this.rotGroup);
+                ngRootGroup.add(this.meshGroup);
+
+                this.buildVisuals();
+            }
+
+            buildVisuals() {
+                for (let i = this.meshGroup.children.length - 1; i >= 0; i--) {
+                    if (this.meshGroup.children[i] !== this.rotGroup) this.meshGroup.remove(this.meshGroup.children[i]);
+                }
+                while (this.rotGroup.children.length > 0) this.rotGroup.remove(this.rotGroup.children[0]);
+
+                if (this.type !== 'rack' && this.type !== 'leadscrew' && this.type !== 'nut' && this.type !== 'cassette') {
+                    this.radius = this.type === 'motor' ? 14 : (this.type === 'worm' ? 10 : ngGetRadius(this.teeth));
+                }
+
+                const motorMat = new THREE.MeshStandardMaterial({ color: 0x18181b, roughness: 0.8, metalness: 0.2 });
+                const motorAccent = new THREE.MeshStandardMaterial({ color: 0x27272a, roughness: 0.6, metalness: 0.4 });
+                const axleMat = new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.9, roughness: 0.2 });
+
+                if (this.type === 'motor') {
+                    const motorLen = 35;
+                    const geo = new THREE.CylinderGeometry(this.radius, this.radius, motorLen, 32);
+                    geo.rotateX(Math.PI / 2);
+                    geo.translate(0, 0, -motorLen / 2 - 2);
+                    this.coreMesh = new THREE.Mesh(geo, motorMat);
+
+                    const flangeGeo = new THREE.CylinderGeometry(this.radius + 2, this.radius + 2, 4, 32);
+                    flangeGeo.rotateX(Math.PI / 2); flangeGeo.translate(0, 0, -2);
+                    this.coreMesh.add(new THREE.Mesh(flangeGeo, motorAccent));
+
+                    const capGeo = new THREE.CylinderGeometry(this.radius - 1, this.radius - 1, 6, 32);
+                    capGeo.rotateX(Math.PI / 2); capGeo.translate(0, 0, -motorLen - 5);
+                    this.coreMesh.add(new THREE.Mesh(capGeo, motorAccent));
+                    this.meshGroup.add(this.coreMesh);
+                } else if (this.type === 'sprocket') {
+                    this.coreMesh = new THREE.Mesh(ngCreateSprocketGeometry(this.teeth), new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.3, metalness: 0.9 }));
+                    this.rotGroup.add(this.coreMesh);
+                } else if (this.type === 'pulley') {
+                    this.coreMesh = new THREE.Mesh(ngCreatePulleyGeometry(this.teeth), new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.4, metalness: 0.7 }));
+                    this.rotGroup.add(this.coreMesh);
+                } else if (this.type === 'worm_wheel') {
+                    if (!this.color) this.color = ngColors[ngColorIdx++ % ngColors.length];
+                    this.coreMesh = new THREE.Mesh(ngCreateWormWheelGeometry(this.teeth), new THREE.MeshStandardMaterial({ color: this.color, roughness: 0.3, metalness: 0.6 }));
+                    this.rotGroup.add(this.coreMesh);
+                } else if (this.type === 'worm') {
+                    this.coreMesh = ngCreateWormVisual();
+                    this.rotGroup.add(this.coreMesh);
+                } else if (this.type === 'rack') {
+                    this.coreMesh = new THREE.Mesh(ngCreateRackGeometry(this.length), new THREE.MeshStandardMaterial({ color: 0x94a3b8, roughness: 0.45, metalness: 0.78 }));
+                    this.meshGroup.add(this.coreMesh);
+                } else if (this.type === 'leadscrew') {
+                    this.coreMesh = ngCreateLeadScrewVisual(this.length);
+                    this.rotGroup.add(this.coreMesh);
+                } else if (this.type === 'nut') {
+                    this.coreMesh = ngCreateNutVisual();
+                    this.meshGroup.add(this.coreMesh);
+                } else if (this.type === 'cassette') {
+                    this.coreMesh = new THREE.Group();
+                    const mat = new THREE.MeshStandardMaterial({ color: 0x64748b, roughness: 0.5, metalness: 0.8 });
+                    this.gearSizes.forEach((t, i) => {
+                        const m = new THREE.Mesh(ngCreateSprocketGeometry(t), mat);
+                        m.position.z = i * 2.5;
+                        this.coreMesh.add(m);
+                    });
+                    this.coreMesh.position.z = -this.activeGearIdx * 2.5;
+                    this.rotGroup.add(this.coreMesh);
+                } else {
+                    if (!this.color) this.color = ngColors[ngColorIdx++ % ngColors.length];
+                    this.coreMesh = new THREE.Mesh(ngCreateGearGeometry(this.teeth), new THREE.MeshStandardMaterial({ color: this.color, roughness: 0.3, metalness: 0.6 }));
+                    this.rotGroup.add(this.coreMesh);
+                }
+
+                // Axles & White Rotation Marker Strips
+                if (this.type !== 'rack' && this.type !== 'leadscrew' && this.type !== 'nut') {
+                    let axleLen = this.type === 'pulley' ? 16 : (this.type === 'worm_wheel' ? 16 : 12);
+                    if (this.type === 'motor') axleLen = 25;
+                    if (this.type === 'worm') axleLen = 40;
+                    if (this.type === 'cassette') axleLen = 45;
+
+                    const axle = new THREE.Mesh(new THREE.CylinderGeometry(2.5, 2.5, axleLen, 16), axleMat);
+                    axle.rotation.x = Math.PI / 2;
+                    if (this.type === 'motor') axle.position.z = 6;
+                    if (this.type === 'cassette') axle.position.z = (7 * 2.5) / 2 - (this.activeGearIdx * 2.5);
+                    this.rotGroup.add(axle);
+
+                    if (this.type === 'motor') {
+                        const collarGeo = new THREE.CylinderGeometry(this.radius - 3, this.radius - 3, 1.5, 32);
+                        collarGeo.rotateX(Math.PI / 2);
+                        const collar = new THREE.Mesh(collarGeo, new THREE.MeshStandardMaterial({ color: 0x3f3f46, metalness: 0.5, roughness: 0.6 }));
+                        collar.position.z = 0.75;
+                        this.rotGroup.add(collar);
+
+                        const marker = new THREE.Mesh(new THREE.BoxGeometry(this.radius - 2, 1.5, 1.6), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+                        marker.position.set((this.radius - 2) / 2 - 1, 0, 0.75);
+                        this.rotGroup.add(marker);
+                    } else if (this.type !== 'worm' && this.type !== 'cassette') {
+                        let mDepth = 4.5;
+                        if (this.type === 'pulley') mDepth = 9.0;
+                        else if (this.type === 'worm_wheel') mDepth = 7.5;
+                        else if (this.type === 'sprocket') mDepth = 3.0;
+                        const marker = new THREE.Mesh(new THREE.BoxGeometry(this.radius - 1, 1.5, mDepth), new THREE.MeshBasicMaterial({ color: 0xffffff }));
+                        marker.position.x = (this.radius - 1) / 2;
+                        this.rotGroup.add(marker);
+                    }
+                }
+            }
+
+            destroy() {
+                if (this.meshGroup && this.meshGroup.parent) this.meshGroup.parent.remove(this.meshGroup);
+                if (this.linkVisual && this.linkVisual.parent) this.linkVisual.parent.remove(this.linkVisual);
+            }
+        }
+
+        function ngClearScene() {
+            ngNodes.forEach(n => n.destroy());
+            ngNodes = [];
+            if (ngRootGroup) {
+                scene.remove(ngRootGroup);
+                ngRootGroup = null;
+            }
+        }
+
+        function ngUpdateTreePositions() {
+            if (ngNodes.length === 0) return;
+            const root = ngNodes[0];
+            root.meshGroup.position.set(0, 0, 0);
+            root.meshGroup.rotation.y = 0;
+            root.axis = 'z';
+
+            ngNodes.forEach(n => {
+                if (n.linkVisual && n.linkVisual.parent) {
+                    n.linkVisual.parent.remove(n.linkVisual);
+                    n.linkVisual = null;
+                }
+            });
+
+            function layout(node) {
+                node.children.forEach(child => {
+                    let nx = node.meshGroup.position.x;
+                    let ny = node.meshGroup.position.y;
+                    let nz = node.meshGroup.position.z;
+
+                    if (child.linkType === 'axle') {
+                        child.axis = node.axis;
+                        let offsetF = 12, offsetB = -12;
+                        if (node.type === 'worm') { offsetF = 30; offsetB = 0; }
+                        const localOffset = child.linkDir === 'f' ? offsetF : offsetB;
+                        const delta = new THREE.Vector3(0, 0, localOffset).applyEuler(node.meshGroup.rotation);
+                        nx += delta.x; ny += delta.y; nz += delta.z;
+
+                        let baseRotY = child.axis === 'x' ? Math.PI / 2 : 0;
+                        if (child.linkDir === 'b' && (child.type === 'leadscrew' || child.type === 'worm')) baseRotY += Math.PI;
+                        child.meshGroup.rotation.y = baseRotY;
+                    } else if (['mesh', 'chain', 'belt', 'worm_mesh', 'rack_mesh'].includes(child.linkType)) {
+                        let dist = node.radius + child.radius + 0.2;
+                        if (child.linkType === 'chain' || child.linkType === 'belt') {
+                            dist = Math.max(60, node.radius + child.radius + 20);
+                            child.axis = node.axis;
+                        } else if (child.linkType === 'worm_mesh') {
+                            dist = 6.5 + child.radius;
+                            child.axis = node.axis === 'z' ? 'x' : 'z';
+                            const shift = new THREE.Vector3(0, 0, 15).applyEuler(node.meshGroup.rotation);
+                            nx += shift.x; ny += shift.y; nz += shift.z;
+                        } else if (child.linkType === 'rack_mesh') {
+                            // Exact pitch-line clearance so pinion teeth sit cleanly in rack valleys
+                            dist = node.radius + 0.25;
+                            child.axis = node.axis;
+                        } else {
+                            child.axis = node.axis;
+                        }
+
+                        if (node.axis === 'z') {
+                            if (child.linkDir === 'r') nx += dist;
+                            if (child.linkDir === 'l') nx -= dist;
+                            if (child.linkDir === 'u') ny += dist;
+                            if (child.linkDir === 'd') ny -= dist;
+                        } else {
+                            if (child.linkDir === 'r') nz += dist;
+                            if (child.linkDir === 'l') nz -= dist;
+                            if (child.linkDir === 'u') ny += dist;
+                            if (child.linkDir === 'd') ny -= dist;
+                        }
+
+                        child.meshGroup.rotation.y = child.axis === 'x' ? Math.PI / 2 : 0;
+
+                        if (child.linkType === 'chain' || child.linkType === 'belt') {
+                            const cv = child.linkType === 'belt'
+                                ? ngCreateBeltVisual(node.radius, child.radius, dist)
+                                : ngCreateChainVisual(node.radius, child.radius, dist);
+                            if (child.linkType === 'chain') ngUpdateChainPins(cv);
+                            cv.position.set(node.meshGroup.position.x, node.meshGroup.position.y, node.meshGroup.position.z);
+                            if (node.axis === 'x') cv.rotation.y = Math.PI / 2;
+                            ngRootGroup.add(cv);
+                            child.linkVisual = cv;
+                        }
+                    } else if (child.linkType === 'nut_thread') {
+                        child.axis = node.axis;
+                        child.meshGroup.rotation.copy(node.meshGroup.rotation);
+                    }
+
+                    child.basePosition = new THREE.Vector3(nx, ny, nz);
+                    child.meshGroup.position.copy(child.basePosition);
+
+                    if (child.type === 'rack') child.meshGroup.translateX(child.linearPosition || 0);
+                    if (child.type === 'nut') child.meshGroup.translateZ(child.linearPosition || 0);
+
+                    layout(child);
+                });
+            }
+
+            root.basePosition = new THREE.Vector3(0, 0, 0);
+            layout(root);
+
+            let lowestY = 0;
+            ngNodes.forEach(n => {
+                let r = n.radius;
+                if (n.type === 'rack') r = 4;
+                if (n.type === 'nut') r = 16;
+                const bottom = n.meshGroup.position.y - r - 10;
+                if (bottom < lowestY) lowestY = bottom;
+            });
+            ngTargetGridY = Math.min(-28, lowestY - 14);
+        }
+
+        function ngCalculateKinematics() {
+            if (ngNodes.length === 0) return;
+            ngNodes.forEach(n => { n.speed = 0; n.dir = 1; });
+            const root = ngNodes[0];
+            root.speed = ngMotorSpeed;
+            root.dir = ngMotorDir;
+
+            const queue = [root];
+            while (queue.length > 0) {
+                const curr = queue.shift();
+                curr.children.forEach(child => {
+                    if (child.linkType === 'axle') {
+                        child.speed = curr.speed;
+                        child.dir = curr.dir;
+                    } else if (child.linkType === 'nut_thread') {
+                        child.speed = curr.speed;
+                        child.dir = curr.dir;
+                        child.angle = 0;
+                    } else if (['mesh', 'chain', 'belt', 'worm_mesh', 'rack_mesh'].includes(child.linkType)) {
+                        let vr = child.teeth / curr.teeth;
+                        if (child.linkType === 'worm_mesh') vr = child.teeth / 1.0;
+                        if (child.linkType === 'rack_mesh') vr = 1.0;
+                        child.speed = curr.speed / vr;
+
+                        if (['chain', 'belt', 'worm_mesh', 'rack_mesh'].includes(child.linkType)) {
+                            child.dir = curr.dir;
+                            if (child.linkType === 'worm_mesh') child.angle = curr.angle / vr;
+                            else if (child.linkType !== 'rack_mesh') child.angle = curr.angle * (curr.teeth / child.teeth);
+                        } else {
+                            child.dir = curr.dir * -1;
+                            child.angle = curr.angle * -(curr.teeth / child.teeth);
+                            if (['u', 'd', 'r', 'l'].includes(child.linkDir)) {
+                                child.angle += Math.PI / child.teeth;
+                            }
+                        }
+                    }
+                    queue.push(child);
+                });
+            }
+        }
+
+        // Built-in NoGrindSim V1.4.2 JSON Presets for Higher Mechanisms
+        const NOGRIND_PRESETS = {
+            gears_compound: {
+                motorSpeed: 60,
+                motorDir: 1,
+                nodes: [
+                    { id: 'm1', type: 'motor', param: 20, label: 'Input Motor', axis: 'z', parentId: null, linkType: null, linkDir: null },
+                    { id: 'g1', type: 'gear', param: 12, label: 'Driver A (12T)', parentId: 'm1', linkType: 'axle', linkDir: 'f' },
+                    { id: 'g2', type: 'gear', param: 24, label: 'Driven B (24T)', parentId: 'g1', linkType: 'mesh', linkDir: 'r' },
+                    { id: 'g3', type: 'gear', param: 12, label: 'Compound C (12T)', parentId: 'g2', linkType: 'axle', linkDir: 'f' },
+                    { id: 'g4', type: 'gear', param: 24, label: 'Output D (24T)', parentId: 'g3', linkType: 'mesh', linkDir: 'r' }
+                ]
+            },
+            gears_simple: {
+                motorSpeed: 60,
+                motorDir: 1,
+                nodes: [
+                    { id: 'm1', type: 'motor', param: 20, label: 'Input Motor', axis: 'z', parentId: null, linkType: null, linkDir: null },
+                    { id: 'g1', type: 'gear', param: 12, label: 'Driver A (12T)', parentId: 'm1', linkType: 'axle', linkDir: 'f' },
+                    { id: 'g2', type: 'gear', param: 24, label: 'Driven B (24T)', parentId: 'g1', linkType: 'mesh', linkDir: 'r' }
+                ]
+            },
+            worm_wheel: {
+                motorSpeed: 120,
+                motorDir: 1,
+                nodes: [
+                    { id: 'm1', type: 'motor', param: 20, label: 'Input Motor', axis: 'z', parentId: null, linkType: null, linkDir: null },
+                    { id: 'w1', type: 'worm', param: 20, label: 'Worm (1-Tooth Eq.)', parentId: 'm1', linkType: 'axle', linkDir: 'f' },
+                    { id: 'ww1', type: 'worm_wheel', param: 36, label: 'Worm Wheel (36T)', parentId: 'w1', linkType: 'worm_mesh', linkDir: 'u' }
+                ]
+            },
+            worm_leadscrew: {
+                motorSpeed: 90,
+                motorDir: 1,
+                nodes: [
+                    { id: 'm1', type: 'motor', param: 20, label: 'Input Motor', axis: 'z', parentId: null, linkType: null, linkDir: null },
+                    { id: 'ls1', type: 'leadscrew', param: 110, label: 'Threaded Worm Shaft', parentId: 'm1', linkType: 'axle', linkDir: 'f' },
+                    { id: 'nut1', type: 'nut', param: 0, label: 'Travelling Nut', parentId: 'ls1', linkType: 'nut_thread', linkDir: 'f', linearPosition: 30 }
+                ]
+            },
+            rack_pinion: {
+                motorSpeed: 45,
+                motorDir: 1,
+                nodes: [
+                    { id: 'm1', type: 'motor', param: 20, label: 'Input Motor', axis: 'z', parentId: null, linkType: null, linkDir: null },
+                    { id: 'p1', type: 'gear', param: 20, label: 'Pinion (20T)', parentId: 'm1', linkType: 'axle', linkDir: 'f' },
+                    { id: 'r1', type: 'rack', param: 180, label: 'Linear Rack', parentId: 'p1', linkType: 'rack_mesh', linkDir: 'd', linearPosition: 0 }
+                ]
+            }
+        };
+
+        function ngLoadJSONObject(parsed) {
+            clearActiveScene();
+            activeEngine = 'nogrind';
+            ngColorIdx = 0;
+            ngMotorCutoff = false;
+            ngRootGroup = new THREE.Group();
+            scene.add(ngRootGroup);
+
+            ngMotorSpeed = parsed.motorSpeed || 60;
+            ngMotorDir = parsed.motorDir || 1;
+
+            const nodeMap = {};
+            (parsed.nodes || []).forEach(d => {
+                const n = new NGNode(d.type, d.param);
+                n.id = d.id;
+                if (d.axis) n.axis = d.axis;
+                if (d.label !== undefined) n.label = d.label;
+                if (d.linearPosition !== undefined) n.linearPosition = d.linearPosition;
+                if (d.type === 'cassette' && d.activeGearIdx !== undefined) {
+                    n.activeGearIdx = d.activeGearIdx;
+                    n.teeth = n.gearSizes[n.activeGearIdx];
+                    n.radius = ngGetRadius(n.teeth);
+                    n.buildVisuals();
+                }
+                nodeMap[n.id] = n;
+                ngNodes.push(n);
+            });
+
+            (parsed.nodes || []).forEach(d => {
+                if (d.parentId && nodeMap[d.parentId]) {
+                    const child = nodeMap[d.id];
+                    child.parent = nodeMap[d.parentId];
+                    child.linkType = d.linkType;
+                    child.linkDir = d.linkDir;
+                    child.parent.children.push(child);
+                }
+            });
+
+            ngUpdateTreePositions();
+            ngCalculateKinematics();
+
+            // Subtle initial tooth phase alignment for Rack & Pinion so pinion teeth sit cleanly in rack valleys
+            ngNodes.forEach(n => {
+                if (n.type === 'rack' && n.parent && n.parent.teeth) {
+                    n.parent.angle = (0.125 * Math.PI * 2) / n.parent.teeth;
+                    if (n.parent.rotGroup) n.parent.rotGroup.rotation.z = n.parent.angle;
+                }
+            });
+
+            if (parsed.camera && parsed.camera.pos && parsed.camera.target) {
+                camera.position.set(parsed.camera.pos.x, parsed.camera.pos.y, parsed.camera.pos.z);
+                if (controls) {
+                    controls.target.set(parsed.camera.target.x, parsed.camera.target.y, parsed.camera.target.z);
+                    controls.update();
+                }
+            } else {
+                ngCenterCamera();
+            }
+        }
+
+        // Frames every NoGrindSim preset cleanly above the floating bottom control dock
+        function ngCenterCamera() {
+            if (ngNodes.length === 0) return;
+            const box = new THREE.Box3();
+            ngNodes.forEach(n => box.union(new THREE.Box3().setFromObject(n.meshGroup)));
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+            const maxDim = Math.max(size.x, size.y, size.z, 42);
+            const fov = camera.fov * (Math.PI / 180);
+
+            const aspect = Math.max(0.6, camera.aspect || 1.3);
+            const fitWidthDist = (size.x / 2) / (Math.tan(fov / 2) * aspect);
+            const fitHeightDist = (Math.max(size.y, size.z) / 2) / Math.tan(fov / 2);
+            let camDist = Math.max(fitWidthDist, fitHeightDist, maxDim * 0.65) * 1.65;
+            camDist = Math.max(camDist, 88);
+
+            const dockOffsetY = -camDist * 0.085;
+            const target = new THREE.Vector3(center.x, center.y + dockOffsetY, center.z);
+
+            const isWorm = ngNodes.some(n => n.type === 'worm' || n.type === 'leadscrew');
+            const azimX = isWorm ? 0.52 : 0.22;
+            const elevY = isWorm ? 0.30 : 0.24;
+
+            camera.position.set(
+                target.x + camDist * azimX,
+                target.y + camDist * elevY,
+                target.z + camDist
+            );
+            if (controls) {
+                controls.target.copy(target);
+                controls.update();
+            } else {
+                camera.lookAt(target);
+            }
+        }
+
+        // =========================================================================
+        // 4. CUSTOM MACHINED 3D CAD ENGINE (Ratchet, Couplings, Bearings, Clutches)
+        // =========================================================================
+        let cadRootGroup = null;
+        let cadState = {
+            ratchetDir: 1,
+            ratchetAngle: 0,
+            ratchetPawlDisplayAngle: 0,
+            ratchetLockBlend: 0,
+            ratchetParts: {},
+
+            couplingType: 'Universal',
+            uJointBendDeg: 20,
+            uJointAngle: 0,
+            uJointParts: {},
+            flexBendDeg: 4,
+            flexAngle: 0,
+            flexParts: {},
+            couplingMeshes: [],
+
+            bearingType: 'Ball',
+            bearingCutaway: false,
+            bearingAngle: 0,
+            bearingParts: {},
+
+            clutchType: 'Friction',
+            clutchEngaged: false,
+            clutchPhase: 'disengaged',
+            clutchGap: 6.5,
+            clutchHubX: 13.5,
+            clutchInAngle: 0,
+            clutchOutAngle: 0,
+            clutchOutVel: 0,
+            clutchLockedOffset: Math.PI / 4,
+            clutchParts: {}
+        };
+
+        function getCADMaterials() {
+            return {
+                steel:       new THREE.MeshStandardMaterial({ color: 0x94a3b8, metalness: 0.72, roughness: 0.25 }),
+                lightSteel:  new THREE.MeshStandardMaterial({ color: 0xe2e8f0, metalness: 0.68, roughness: 0.20 }),
+                chrome:      new THREE.MeshStandardMaterial({ color: 0xf1f5f9, metalness: 0.88, roughness: 0.14 }),
+                slateHub:    new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.62, roughness: 0.30 }),
+                darkAlloy:   new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.65, roughness: 0.34 }),
+                midAlloy:    new THREE.MeshStandardMaterial({ color: 0x475569, metalness: 0.60, roughness: 0.34 }),
+                castIron:    new THREE.MeshStandardMaterial({ color: 0x3b495e, metalness: 0.55, roughness: 0.44 }),
+                blue:        new THREE.MeshStandardMaterial({ color: 0x3b82f6, metalness: 0.50, roughness: 0.28 }),
+                pink:        new THREE.MeshStandardMaterial({ color: 0xec4899, metalness: 0.50, roughness: 0.28 }),
+                dogPink:     new THREE.MeshStandardMaterial({ color: 0xf472b6, metalness: 0.45, roughness: 0.26 }),
+                deepPink:    new THREE.MeshStandardMaterial({ color: 0xdb2777, metalness: 0.52, roughness: 0.28 }),
+                purple:      new THREE.MeshStandardMaterial({ color: 0x8b5cf6, metalness: 0.52, roughness: 0.28 }),
+                redRubber:   new THREE.MeshStandardMaterial({ color: 0xef4444, metalness: 0.12, roughness: 0.65 }),
+                amber:       new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.72, roughness: 0.24 }),
+                brass:       new THREE.MeshStandardMaterial({ color: 0xd97706, metalness: 0.76, roughness: 0.26 }),
+                oilFilm:     new THREE.MeshStandardMaterial({ color: 0xf59e0b, metalness: 0.12, roughness: 0.18, transparent: true, opacity: 0.58 }),
+                oilStreak:   new THREE.MeshStandardMaterial({ color: 0xfef08a, metalness: 0.10, roughness: 0.15, transparent: true, opacity: 0.72 }),
+                bronze:      new THREE.MeshStandardMaterial({ color: 0xd49b35, metalness: 0.74, roughness: 0.26 }),
+                glassBronze: new THREE.MeshStandardMaterial({ color: 0xd49b35, metalness: 0.25, roughness: 0.25, transparent: true, opacity: 0.38 }),
+                glassBlue:   new THREE.MeshStandardMaterial({ color: 0x3b82f6, metalness: 0.15, roughness: 0.18, transparent: true, opacity: 0.36 }),
+                glassPlate:  new THREE.MeshStandardMaterial({ color: 0x64748b, metalness: 0.20, roughness: 0.30, transparent: true, opacity: 0.24 }),
+                glassCap:    new THREE.MeshStandardMaterial({ color: 0x64748b, metalness: 0.25, roughness: 0.28, transparent: true, opacity: 0.26 }),
+                darkBore:    new THREE.MeshStandardMaterial({ color: 0x0f172a, metalness: 0.30, roughness: 0.70 }),
+                frictionPad: new THREE.MeshStandardMaterial({ color: 0xbe185d, metalness: 0.15, roughness: 0.65 })
+            };
+        }
+        // Exact circle-circle intersection helper for Ratchet & Pawl contact geometry.
+        // Wheel centre at (0, 0), pivot at (px, py) to the upper-right, pawl arm built along local -X of length armLen.
+        // Returns contact point (cx, cy), contactWorldAngle, and a small, branch-cut-free pawlAngle around 0 rad.
+        function solveRatchetPawlAngle(px, py, armLen, r) {
+            const d = Math.hypot(px, py);
+            const cosAlpha = Math.max(-1, Math.min(1, (d * d + r * r - armLen * armLen) / (2 * d * r)));
+            const baseAngle = Math.atan2(py, px);
+            const contactWorldAngle = baseAngle + Math.acos(cosAlpha);
+            const cx = Math.cos(contactWorldAngle) * r;
+            const cy = Math.sin(contactWorldAngle) * r;
+            // Local -X arm rotated by pawlAngle points from (px, py) to (cx, cy) without crossing the ±PI branch cut
+            const pawlAngle = Math.atan2(-(cy - py), -(cx - px));
+            return { cx, cy, contactWorldAngle, pawlAngle };
+        }
+
+        // Sculpted U-shaped clevis yoke with cylindrical bearing ears and snap-ring accents
+        function createSculptedYoke(matYoke, matAccent, matDark, isOutput = false) {
+            const group = new THREE.Group();
+            const hub = new THREE.Mesh(new THREE.CylinderGeometry(5.2, 5.6, 5.2, 32), matYoke);
+            hub.rotation.z = Math.PI / 2; hub.position.x = -11.5;
+            group.add(hub);
+
+            const collar = new THREE.Mesh(new THREE.CylinderGeometry(4.3, 5.2, 1.4, 32), matAccent);
+            collar.rotation.z = Math.PI / 2; collar.position.x = -14.6;
+            group.add(collar);
+
+            const armShape = new THREE.Shape();
+            armShape.moveTo(-10.5, 3.0);
+            armShape.quadraticCurveTo(-7.2, 8.8, -1.5, 9.5);
+            armShape.lineTo(0.8, 9.5);
+            armShape.lineTo(0.8, 7.0);
+            armShape.lineTo(-1.5, 7.0);
+            armShape.quadraticCurveTo(-5.8, 6.4, -8.8, 2.2);
+            armShape.lineTo(-10.5, 2.2);
+            armShape.closePath();
+
+            const armExtrude = new THREE.ExtrudeGeometry(armShape, {
+                depth: 4.8, bevelEnabled: true, bevelThickness: 0.45, bevelSize: 0.35, bevelSegments: 3
+            });
+            armExtrude.translate(0, 0, -2.4);
+
+            const topArm = new THREE.Mesh(armExtrude, matYoke);
+            const botArm = new THREE.Mesh(armExtrude, matYoke);
+            botArm.scale.y = -1;
+            group.add(topArm, botArm);
+
+            [-8.25, 8.25].forEach(yPos => {
+                const ear = new THREE.Mesh(new THREE.CylinderGeometry(3.4, 3.4, 2.7, 32), matYoke);
+                ear.position.set(0, yPos, 0);
+                const bore = new THREE.Mesh(new THREE.CylinderGeometry(2.35, 2.35, 2.85, 24), matDark);
+                bore.position.set(0, yPos, 0);
+                const ring = new THREE.Mesh(new THREE.TorusGeometry(2.55, 0.22, 12, 28), matAccent);
+                ring.rotation.x = Math.PI / 2;
+                ring.position.set(0, yPos + (yPos > 0 ? 1.38 : -1.38), 0);
+                group.add(ear, bore, ring);
+            });
+
+            if (isOutput) {
+                group.scale.x = -1;
+                group.rotation.x = Math.PI / 2;
+            }
+            return group;
+        }
+
+        function createMachinedShaft(length, radius, xCenter, matShaft, matStripe, matKey) {
+            const g = new THREE.Group();
+            const cyl = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, length, 32), matShaft);
+            cyl.rotation.z = Math.PI / 2; cyl.position.x = xCenter;
+            g.add(cyl);
+
+            const stripe = new THREE.Mesh(new THREE.BoxGeometry(length * 0.85, 0.55, 0.55), matStripe);
+            stripe.position.set(xCenter, radius - 0.24, 0);
+            g.add(stripe);
+
+            const keyX = xCenter < 0 ? xCenter + length * 0.35 : xCenter - length * 0.35;
+            const key = new THREE.Mesh(new THREE.BoxGeometry(5.2, 0.9, 0.9), matKey);
+            key.position.set(keyX, -radius + 0.36, 0);
+            g.add(key);
+            return g;
+        }
+
+        function createAnnularDogToothGeometry(innerR, outerR, spanRad, axialLen, protrudeRight = true) {
+            const bevelT = 0.22;
+            const bevelS = 0.12;
+            const midR = (innerR + outerR) * 0.5;
+            const halfSpan = Math.max(0.05, spanRad * 0.5 - (bevelS / midR));
+            const coreDepth = Math.max(0.5, axialLen - 2 * bevelT);
+
+            const shape = new THREE.Shape();
+            shape.absarc(0, 0, outerR, -halfSpan, halfSpan, false);
+            shape.absarc(0, 0, innerR, halfSpan, -halfSpan, true);
+            shape.closePath();
+
+            const geo = new THREE.ExtrudeGeometry(shape, {
+                depth: coreDepth,
+                bevelEnabled: true,
+                bevelThickness: bevelT,
+                bevelSize: bevelS,
+                bevelSegments: 2,
+                curveSegments: 24
+            });
+
+            geo.translate(0, 0, bevelT);
+            geo.rotateY(Math.PI / 2);
+            if (!protrudeRight) geo.translate(-axialLen, 0, 0);
+            geo.computeVertexNormals();
+            return geo;
+        }
+
+        function createBeveledHubGeometry(innerR, outerR, length, bevel = 0.35) {
+            const pts = [
+                new THREE.Vector2(innerR, 0),
+                new THREE.Vector2(outerR - bevel, 0),
+                new THREE.Vector2(outerR, bevel),
+                new THREE.Vector2(outerR, length - bevel),
+                new THREE.Vector2(outerR - bevel, length),
+                new THREE.Vector2(innerR, length),
+                new THREE.Vector2(innerR, 0)
+            ];
+            const geo = new THREE.LatheGeometry(pts, 40);
+            geo.rotateZ(-Math.PI / 2);
+            geo.computeVertexNormals();
+            return geo;
+        }
+
+        function createSplinedShaft(xStart, xEnd, coreR, matShaft, matSpline, matIndexSpline) {
+            const g = new THREE.Group();
+            const len = xEnd - xStart;
+            const xCenter = (xStart + xEnd) * 0.5;
+
+            const core = new THREE.Mesh(new THREE.CylinderGeometry(coreR, coreR, len, 32), matShaft);
+            core.rotation.z = Math.PI / 2;
+            core.position.x = xCenter;
+            g.add(core);
+
+            const nose = new THREE.Mesh(new THREE.CylinderGeometry(coreR - 0.45, coreR, 0.3, 32), matShaft);
+            nose.rotation.z = Math.PI / 2;
+            nose.position.x = xStart - 0.15;
+            g.add(nose);
+
+            const splineLen = len - 1.2;
+            const ribGeo = new THREE.BoxGeometry(splineLen, 0.64, 0.72);
+            for (let i = 0; i < 6; i++) {
+                const a = (Math.PI * 2 * i) / 6;
+                const rib = new THREE.Mesh(ribGeo, i === 0 ? matIndexSpline : matSpline);
+                const rMid = coreR - 0.04;
+                rib.position.set(xCenter + 0.1, Math.cos(a) * rMid, Math.sin(a) * rMid);
+                rib.rotation.x = -a;
+                g.add(rib);
+            }
+            return g;
+        }
+
+        function createHelicalSpringMesh(length, coilRadius, wireRadius, turns, mat) {
+            const pts = [];
+            const steps = turns * 18;
+            for (let i = 0; i <= steps; i++) {
+                const t = i / steps;
+                const ang = t * turns * Math.PI * 2;
+                pts.push(new THREE.Vector3(t * length, Math.cos(ang) * coilRadius, Math.sin(ang) * coilRadius));
+            }
+            const curve = new THREE.CatmullRomCurve3(pts);
+            return new THREE.Mesh(new THREE.TubeGeometry(curve, steps, wireRadius, 8, false), mat);
+        }
+
+        // Helper for a hex bolt head + washer + threaded shank along Y axis
+        function createHexBolt(shankR, shankLen, headR, headH, matBolt, matWasher) {
+            const g = new THREE.Group();
+            const head = new THREE.Mesh(new THREE.CylinderGeometry(headR, headR, headH, 6), matBolt);
+            head.position.y = headH * 0.5;
+            const washer = new THREE.Mesh(new THREE.CylinderGeometry(headR * 1.22, headR * 1.22, 0.35, 24), matWasher);
+            washer.position.y = -0.175;
+            const shank = new THREE.Mesh(new THREE.CylinderGeometry(shankR, shankR, shankLen, 16), matBolt);
+            shank.position.y = -shankLen * 0.5;
+            g.add(head, washer, shank);
+            return g;
+        }
+
+        function clearActiveScene() {
+            ngClearScene();
+            if (cadRootGroup) {
+                scene.remove(cadRootGroup);
+                cadRootGroup = null;
+            }
+        }
+
+        function buildCADMechanism(id) {
+            clearActiveScene();
+            activeEngine = 'cad';
+            cadRootGroup = new THREE.Group();
+            scene.add(cadRootGroup);
+            const M = getCADMaterials();
+            ngTargetGridY = -18;
+
+            // =================================================================
+            // REBUILT RATCHET AND PAWL (Open 3D CAD, No Intersecting Plane, Soft Contact)
+            // =================================================================
+            if (id === 'ratchet') {
+                const teeth = 12;
+                const rRoot = 7.0;
+                const rTip = 9.2;
+                const steepFrac = 0.08;
+                const step = (Math.PI * 2) / teeth;
+
+                const wheelCenterY = 0;
+                const pivotRelX = 10.6;
+                const pivotRelY = 8.5;
+                const pawlArmLen = 10.6;
+
+                // 1. Precision 12-Tooth Saw-Tooth Ratchet Wheel (Open 3D CAD — no backplate plane)
+                const wheelShape = new THREE.Shape();
+                for (let i = 0; i < teeth; i++) {
+                    const a0 = i * step;
+                    const aSteep = a0 + step * steepFrac;
+                    const aNext = (i + 1) * step;
+                    if (i === 0) wheelShape.moveTo(Math.cos(a0) * rRoot, Math.sin(a0) * rRoot);
+                    else wheelShape.lineTo(Math.cos(a0) * rRoot, Math.sin(a0) * rRoot);
+                    // Steep locking face
+                    wheelShape.lineTo(Math.cos(aSteep) * rTip, Math.sin(aSteep) * rTip);
+                    // Gentle ramped back slope
+                    wheelShape.lineTo(Math.cos(aNext) * rRoot, Math.sin(aNext) * rRoot);
+                }
+                wheelShape.closePath();
+
+                const wheelBore = new THREE.Path();
+                wheelBore.absarc(0, 0, 2.2, 0, Math.PI * 2, true);
+                wheelShape.holes.push(wheelBore);
+
+                // 6 Machined lightening holes around the web
+                for (let i = 0; i < 6; i++) {
+                    const ha = (i * Math.PI * 2) / 6;
+                    const hole = new THREE.Path();
+                    hole.absarc(Math.cos(ha) * 4.6, Math.sin(ha) * 4.6, 1.05, 0, Math.PI * 2, true);
+                    wheelShape.holes.push(hole);
+                }
+
+                const wheelGeo = new THREE.ExtrudeGeometry(wheelShape, {
+                    depth: 3.0, bevelEnabled: true, bevelThickness: 0.22, bevelSize: 0.16, bevelSegments: 2
+                });
+                wheelGeo.translate(0, 0, -1.5);
+
+                const wheelGroup = new THREE.Group();
+                wheelGroup.position.set(0, wheelCenterY, 0);
+                const wheelMat = M.blue.clone();
+                wheelGroup.add(new THREE.Mesh(wheelGeo, wheelMat));
+
+                // Stepped hub collar, drive shaft, sunk key, and rotation index stripe
+                const hubRing = new THREE.Mesh(new THREE.CylinderGeometry(3.2, 3.4, 3.8, 32), M.slateHub);
+                hubRing.rotation.x = Math.PI / 2;
+                const drumShaft = new THREE.Mesh(new THREE.CylinderGeometry(2.15, 2.15, 11.0, 28), M.steel);
+                drumShaft.rotation.x = Math.PI / 2;
+                const key = new THREE.Mesh(new THREE.BoxGeometry(0.6, 0.75, 4.6), M.amber);
+                key.position.set(0, 2.1, 3.0);
+                const indexStripe = new THREE.Mesh(new THREE.BoxGeometry(3.4, 0.45, 3.55), M.amber);
+                indexStripe.position.set(4.7, 0, 0);
+                wheelGroup.add(hubRing, drumShaft, key, indexStripe);
+
+                // 2. Stationary Pivot Post & Leaf Spring Anchor (Strictly to the side — no intersecting plane)
+                const mountGroup = new THREE.Group();
+                const pivotCollar = new THREE.Mesh(new THREE.CylinderGeometry(2.2, 2.5, 2.0, 28), M.darkAlloy);
+                pivotCollar.rotation.x = Math.PI / 2;
+                pivotCollar.position.set(pivotRelX, wheelCenterY + pivotRelY, -2.5);
+
+                const pivotPin = new THREE.Mesh(new THREE.CylinderGeometry(1.02, 1.02, 6.2, 24), M.brass);
+                pivotPin.rotation.x = Math.PI / 2;
+                pivotPin.position.set(pivotRelX, wheelCenterY + pivotRelY, -0.5);
+
+                const circlip = new THREE.Mesh(new THREE.TorusGeometry(1.18, 0.16, 10, 24), M.amber);
+                circlip.position.set(pivotRelX, wheelCenterY + pivotRelY, 1.75);
+
+                // Compact spring post & curved leaf spring pressing gently on the pawl spine
+                const springPost = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 0.75, 3.2, 16), M.brass);
+                springPost.rotation.x = Math.PI / 2;
+                springPost.position.set(pivotRelX - 1.2, wheelCenterY + pivotRelY + 2.8, -0.8);
+
+                const leafSpring = new THREE.Mesh(new THREE.BoxGeometry(6.4, 0.24, 1.4), M.amber);
+                leafSpring.position.set(pivotRelX - 4.2, wheelCenterY + pivotRelY + 2.1, 0);
+                leafSpring.rotation.z = 0.20;
+
+                mountGroup.add(pivotCollar, pivotPin, circlip, springPost, leafSpring);
+
+                // 3. Forged Curved Mechanical Pawl built along local -X (Pivot at 0,0; chisel nose at -pawlArmLen, 0)
+                const pawlPivot = new THREE.Group();
+                pawlPivot.position.set(pivotRelX, wheelCenterY + pivotRelY, 0);
+
+                const pawlShape = new THREE.Shape();
+                // Pivot eye outer arc on the +X side
+                pawlShape.absarc(0, 0, 1.9, -Math.PI * 0.52, Math.PI * 0.52, false);
+                // Top curved spine arching smoothly to the left (-X)
+                pawlShape.quadraticCurveTo(-pawlArmLen * 0.52, 1.85, -pawlArmLen + 0.35, 0.72);
+                // Hardened engagement chisel nose right at (-pawlArmLen, 0)
+                pawlShape.lineTo(-pawlArmLen, -0.05);
+                pawlShape.lineTo(-pawlArmLen + 1.3, -0.82);
+                // Underside curve returning to pivot eye
+                pawlShape.quadraticCurveTo(-pawlArmLen * 0.52, -1.15, -0.2, -1.88);
+                pawlShape.closePath();
+
+                const pawlHole = new THREE.Path();
+                pawlHole.absarc(0, 0, 1.05, 0, Math.PI * 2, true);
+                pawlShape.holes.push(pawlHole);
+
+                const pawlGeo = new THREE.ExtrudeGeometry(pawlShape, {
+                    depth: 2.6, bevelEnabled: true, bevelThickness: 0.2, bevelSize: 0.14, bevelSegments: 2
+                });
+                pawlGeo.translate(0, 0, -1.3);
+                const pawlBody = new THREE.Mesh(pawlGeo, M.darkAlloy);
+
+                // Distinct crimson/pink hardened contact nose tip
+                const noseTip = new THREE.Mesh(new THREE.BoxGeometry(1.65, 0.92, 2.74), M.pink);
+                noseTip.position.set(-pawlArmLen + 0.85, -0.02, 0);
+                noseTip.rotation.z = -0.08;
+
+                pawlPivot.add(pawlBody, noseTip);
+
+                // Set exact initial resting angle (small positive angle ~ +0.14 rad, zero wrap-around)
+                const initSolve = solveRatchetPawlAngle(pivotRelX, pivotRelY, pawlArmLen, rRoot);
+                cadState.ratchetPawlDisplayAngle = initSolve.pawlAngle;
+                cadState.ratchetLockBlend = 0;
+                pawlPivot.rotation.z = initSolve.pawlAngle;
+
+                cadRootGroup.add(mountGroup, wheelGroup, pawlPivot);
+                cadState.ratchetParts = {
+                    wheelGroup, wheelMat, pawlPivot, leafSpring,
+                    teeth, rRoot, rTip, steepFrac,
+                    pivotRelX, pivotRelY, pawlArmLen, wheelCenterY
+                };
+            }
+            // =================================================================
+            // COUPLINGS (Universal, Flanged, Muff, Flexible)
+            // =================================================================
+            else if (id === 'couplings') {
+                cadState.uJointParts = {};
+                cadState.couplingMeshes = [];
+                const type = cadState.couplingType;
+
+                if (type === 'Universal') {
+                    const inputGroup = new THREE.Group();
+                    inputGroup.add(createMachinedShaft(20, 3.2, -24, M.steel, M.blue, M.amber));
+                    inputGroup.add(createSculptedYoke(M.darkAlloy, M.blue, M.darkBore, false));
+                    cadRootGroup.add(inputGroup);
+
+                    const outputAnchor = new THREE.Group();
+                    outputAnchor.rotation.z = -THREE.MathUtils.degToRad(cadState.uJointBendDeg);
+                    cadRootGroup.add(outputAnchor);
+
+                    const outputGroup = new THREE.Group();
+                    outputGroup.add(createMachinedShaft(20, 3.2, 24, M.steel, M.pink, M.amber));
+                    outputGroup.add(createSculptedYoke(M.midAlloy, M.pink, M.darkBore, true));
+                    outputAnchor.add(outputGroup);
+
+                    const crossGroup = new THREE.Group();
+                    crossGroup.add(new THREE.Mesh(new THREE.SphereGeometry(3.3, 24, 24), M.darkAlloy));
+                    const pinY = new THREE.Mesh(new THREE.CylinderGeometry(1.85, 1.85, 19.4, 24), M.lightSteel);
+                    const pinZ = new THREE.Mesh(new THREE.CylinderGeometry(1.85, 1.85, 19.4, 24), M.lightSteel);
+                    pinZ.rotation.x = Math.PI / 2;
+                    crossGroup.add(pinY, pinZ);
+
+                    const capGeo = new THREE.CylinderGeometry(2.15, 2.15, 1.15, 24);
+                    [-9.4, 9.4].forEach(pos => {
+                        const capY = new THREE.Mesh(capGeo, M.brass); capY.position.set(0, pos, 0);
+                        const capZ = new THREE.Mesh(capGeo, M.brass); capZ.rotation.x = Math.PI / 2; capZ.position.set(0, 0, pos);
+                        crossGroup.add(capY, capZ);
+                    });
+
+                    cadRootGroup.add(crossGroup);
+                    cadState.uJointParts = { input: inputGroup, outputAnchor, output: outputGroup, cross: crossGroup };
+                }
+                else if (type === 'Flanged') {
+                    const g = new THREE.Group();
+                    g.add(createMachinedShaft(26, 4.2, -17, M.steel, M.blue, M.amber));
+                    g.add(createMachinedShaft(26, 4.2, 17, M.steel, M.pink, M.amber));
+
+                    const fL = new THREE.Mesh(new THREE.CylinderGeometry(13.5, 13.5, 3.2, 40), M.darkAlloy);
+                    fL.rotation.z = Math.PI / 2; fL.position.x = -1.7;
+                    const fR = new THREE.Mesh(new THREE.CylinderGeometry(13.5, 13.5, 3.2, 40), M.midAlloy);
+                    fR.rotation.z = Math.PI / 2; fR.position.x = 1.7;
+                    g.add(fL, fR);
+
+                    [-5.5, 5.5].forEach(xPos => {
+                        const hub = new THREE.Mesh(new THREE.CylinderGeometry(6.8, 6.8, 5, 32), xPos < 0 ? M.darkAlloy : M.midAlloy);
+                        hub.rotation.z = Math.PI / 2; hub.position.x = xPos;
+                        g.add(hub);
+                    });
+
+                    for (let i = 0; i < 6; i++) {
+                        const a = (Math.PI * 2 * i) / 6;
+                        const y = Math.cos(a) * 9.8, z = Math.sin(a) * 9.8;
+                        const shank = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.0, 8.6, 12), M.lightSteel);
+                        shank.rotation.z = Math.PI / 2; shank.position.set(0, y, z);
+                        g.add(shank);
+                        [-4.2, 4.2].forEach(bx => {
+                            const head = new THREE.Mesh(new THREE.CylinderGeometry(1.75, 1.75, 1.3, 6), M.amber);
+                            head.rotation.z = Math.PI / 2; head.position.set(bx, y, z);
+                            g.add(head);
+                        });
+                    }
+                    cadRootGroup.add(g);
+                    cadState.couplingMeshes.push(g);
+                }
+                else if (type === 'Muff') {
+                    const g = new THREE.Group();
+                    const sL = new THREE.Mesh(new THREE.CylinderGeometry(4.5, 4.5, 28, 32), M.steel);
+                    sL.rotation.z = Math.PI / 2; sL.position.x = -14.3;
+                    const sR = new THREE.Mesh(new THREE.CylinderGeometry(4.5, 4.5, 28, 32), M.steel);
+                    sR.rotation.z = Math.PI / 2; sR.position.x = 14.3;
+                    const muff = new THREE.Mesh(new THREE.CylinderGeometry(8.2, 8.2, 24, 36), M.glassBlue);
+                    muff.rotation.z = Math.PI / 2;
+                    [-12, 12].forEach(xPos => {
+                        const ring = new THREE.Mesh(new THREE.TorusGeometry(8.2, 0.35, 12, 36), M.blue);
+                        ring.rotation.y = Math.PI / 2; ring.position.x = xPos;
+                        g.add(ring);
+                    });
+                    const key = new THREE.Mesh(new THREE.BoxGeometry(20, 2.2, 2.2), M.amber);
+                    key.position.y = 4.4;
+                    g.add(sL, sR, muff, key);
+                    cadRootGroup.add(g);
+                    cadState.couplingMeshes.push(g);
+                }
+                else if (type === 'Flexible') {
+                    cadState.flexParts = {};
+                    const beta = THREE.MathUtils.degToRad(cadState.flexBendDeg);
+
+                    const leftGroup = new THREE.Group();
+                    leftGroup.add(createMachinedShaft(22, 4.0, -19.3, M.steel, M.blue, M.amber));
+                    const hL = new THREE.Mesh(createBeveledHubGeometry(4.0, 10.5, 6.5, 0.4), M.darkAlloy);
+                    hL.position.x = -10.3;
+                    leftGroup.add(hL);
+
+                    const jawGeoL = createAnnularDogToothGeometry(5.6, 10.1, THREE.MathUtils.degToRad(40), 5.6, true);
+                    for (let i = 0; i < 3; i++) {
+                        const jL = new THREE.Mesh(jawGeoL, M.darkAlloy);
+                        jL.position.x = -3.8;
+                        jL.rotation.x = (Math.PI * 2 * i) / 3;
+                        leftGroup.add(jL);
+                    }
+                    cadRootGroup.add(leftGroup);
+
+                    const outputAnchor = new THREE.Group();
+                    outputAnchor.rotation.z = -beta;
+                    cadRootGroup.add(outputAnchor);
+
+                    const rightGroup = new THREE.Group();
+                    rightGroup.add(createMachinedShaft(22, 4.0, 19.3, M.steel, M.pink, M.amber));
+                    const hR = new THREE.Mesh(createBeveledHubGeometry(4.0, 10.5, 6.5, 0.4), M.midAlloy);
+                    hR.position.x = 3.8;
+                    rightGroup.add(hR);
+
+                    const jawGeoR = createAnnularDogToothGeometry(5.6, 10.1, THREE.MathUtils.degToRad(40), 5.6, false);
+                    for (let i = 0; i < 3; i++) {
+                        const jR = new THREE.Mesh(jawGeoR, M.midAlloy);
+                        jR.position.x = 3.8;
+                        jR.rotation.x = (Math.PI * 2 * i) / 3 + Math.PI / 3;
+                        rightGroup.add(jR);
+                    }
+                    outputAnchor.add(rightGroup);
+
+                    const spiderGroup = new THREE.Group();
+                    spiderGroup.rotation.z = -beta * 0.5;
+                    const sHub = new THREE.Mesh(new THREE.CylinderGeometry(5.4, 5.4, 5.0, 28), M.redRubber);
+                    sHub.rotation.z = Math.PI / 2;
+                    spiderGroup.add(sHub);
+                    const spiderLegGeo = createAnnularDogToothGeometry(4.8, 10.1, THREE.MathUtils.degToRad(18), 5.2, true);
+                    for (let i = 0; i < 6; i++) {
+                        const leg = new THREE.Mesh(spiderLegGeo, M.redRubber);
+                        leg.position.x = -2.6;
+                        leg.rotation.x = (Math.PI * 2 * i) / 6 + Math.PI / 6;
+                        spiderGroup.add(leg);
+                    }
+                    cadRootGroup.add(spiderGroup);
+
+                    cadState.flexParts = { leftGroup, outputAnchor, rightGroup, spiderGroup };
+                }
+            }
+            // =================================================================
+            // BEARINGS (Ball, Roller, REBUILT Split Journal, Thrust)
+            // =================================================================
+            else if (id === 'bearings') {
+                const type = cadState.bearingType;
+                const cut = cadState.bearingCutaway;
+                cadState.bearingParts = {};
+
+                if (type === 'Ball' || type === 'Roller') {
+                    const depth = type === 'Ball' ? 4.4 : 5.2;
+                    const oShape = new THREE.Shape(); oShape.absarc(0, 0, 10.5, 0, Math.PI * 2, false);
+                    const oHole = new THREE.Path(); oHole.absarc(0, 0, 8.6, 0, Math.PI * 2, true); oShape.holes.push(oHole);
+                    const oGeo = new THREE.ExtrudeGeometry(oShape, { depth, bevelEnabled: true, bevelThickness: 0.25, bevelSize: 0.2, bevelSegments: 2 });
+                    oGeo.translate(0, 0, -depth / 2);
+                    const outerRing = new THREE.Mesh(oGeo, cut ? M.glassBlue : M.darkAlloy);
+
+                    const innerGroup = new THREE.Group();
+                    const iShape = new THREE.Shape(); iShape.absarc(0, 0, 5.4, 0, Math.PI * 2, false);
+                    const iHole = new THREE.Path(); iHole.absarc(0, 0, 3.6, 0, Math.PI * 2, true); iShape.holes.push(iHole);
+                    const iGeo = new THREE.ExtrudeGeometry(iShape, { depth: depth + 0.2, bevelEnabled: true, bevelThickness: 0.2, bevelSize: 0.15, bevelSegments: 2 });
+                    iGeo.translate(0, 0, -(depth + 0.2) / 2);
+                    innerGroup.add(new THREE.Mesh(iGeo, type === 'Ball' ? M.blue : M.purple));
+
+                    const shaft = new THREE.Mesh(new THREE.CylinderGeometry(3.55, 3.55, 16, 32), M.steel);
+                    shaft.rotation.x = Math.PI / 2;
+                    const key = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.9, 14), M.amber);
+                    key.position.set(0, 3.45, 0);
+                    innerGroup.add(shaft, key);
+
+                    const cageGroup = new THREE.Group();
+                    const rollingEls = [];
+                    const count = type === 'Ball' ? 10 : 12;
+                    for (let i = 0; i < count; i++) {
+                        const a = (Math.PI * 2 * i) / count;
+                        const holder = new THREE.Group();
+                        holder.position.set(Math.cos(a) * 7.0, Math.sin(a) * 7.0, 0);
+
+                        if (type === 'Ball') {
+                            const b = new THREE.Mesh(new THREE.SphereGeometry(1.56, 24, 24), M.chrome);
+                            const band = new THREE.Mesh(new THREE.TorusGeometry(1.54, 0.08, 8, 20), M.blue);
+                            holder.add(b, band);
+                        } else {
+                            const rCyl = new THREE.Mesh(new THREE.CylinderGeometry(1.46, 1.46, 4.4, 20), M.chrome);
+                            rCyl.rotation.x = Math.PI / 2;
+                            const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.28, 2.95, 4.48), M.purple);
+                            holder.add(rCyl, stripe);
+                        }
+                        cageGroup.add(holder);
+                        rollingEls.push(holder);
+                    }
+                    cadRootGroup.add(outerRing, innerGroup, cageGroup);
+                    cadState.bearingParts = { innerGroup, cageGroup, rollingEls };
+                }
+                else if (type === 'Journal') {
+                    // REBUILT SPLIT PEDESTAL (PLUMMER BLOCK) JOURNAL BEARING
+                    // 1. Lower Cast-Iron Pedestal Base with Mounting Feet & Semi-Circular Bore
+                    const lowerShape = new THREE.Shape();
+                    lowerShape.moveTo(-14.2, -8.4);
+                    lowerShape.lineTo(14.2, -8.4);
+                    lowerShape.lineTo(14.2, -5.6);
+                    lowerShape.lineTo(10.6, -5.6);
+                    lowerShape.lineTo(10.6, -0.06);
+                    lowerShape.lineTo(6.22, -0.06);
+                    // Lower semi-circular bore cradle (clockwise from 0 to -PI)
+                    lowerShape.absarc(0, 0, 6.22, 0, Math.PI, true);
+                    lowerShape.lineTo(-10.6, -0.06);
+                    lowerShape.lineTo(-10.6, -5.6);
+                    lowerShape.lineTo(-14.2, -5.6);
+                    lowerShape.closePath();
+
+                    const lowerGeo = new THREE.ExtrudeGeometry(lowerShape, {
+                        depth: 7.4, bevelEnabled: true, bevelThickness: 0.28, bevelSize: 0.22, bevelSegments: 2, curveSegments: 36
+                    });
+                    lowerGeo.translate(0, 0, -3.7);
+                    cadRootGroup.add(new THREE.Mesh(lowerGeo, M.castIron));
+
+                    // Baseplate Mounting Bolts securing pedestal feet to machine bed
+                    [[-12.4, -2.0], [-12.4, 2.0], [12.4, -2.0], [12.4, 2.0]].forEach(([bx, bz]) => {
+                        const footBolt = createHexBolt(0.65, 2.8, 1.15, 0.9, M.lightSteel, M.steel);
+                        footBolt.position.set(bx, -5.4, bz);
+                        cadRootGroup.add(footBolt);
+                    });
+
+                    // 2. Removable Upper Split Bearing Cap (turns translucent in X-Ray mode)
+                    const capShape = new THREE.Shape();
+                    capShape.moveTo(-10.6, 0.08);
+                    capShape.lineTo(-6.22, 0.08);
+                    // Upper semi-circular bore (PI down to 0, clockwise)
+                    capShape.absarc(0, 0, 6.22, Math.PI, 0, true);
+                    capShape.lineTo(10.6, 0.08);
+                    capShape.lineTo(10.6, 2.9);
+                    capShape.lineTo(8.1, 2.9);
+                    // Upper arched crown
+                    capShape.absarc(0, 0, 8.6, 0.34, Math.PI - 0.34, false);
+                    capShape.lineTo(-10.6, 2.9);
+                    capShape.closePath();
+
+                    const capGeo = new THREE.ExtrudeGeometry(capShape, {
+                        depth: 7.4, bevelEnabled: true, bevelThickness: 0.28, bevelSize: 0.22, bevelSegments: 2, curveSegments: 36
+                    });
+                    capGeo.translate(0, 0, -3.7);
+                    cadRootGroup.add(new THREE.Mesh(capGeo, cut ? M.glassCap : M.darkAlloy));
+
+                    // Heavy Cap Clamping Studs & Hex Nuts on both sides of the split joint
+                    [-9.1, 9.1].forEach(bx => {
+                        const capBolt = createHexBolt(0.72, 6.2, 1.35, 1.15, M.amber, M.lightSteel);
+                        capBolt.position.set(bx, 3.15, 0);
+                        cadRootGroup.add(capBolt);
+                    });
+
+                    // 3. Brass Oil-Cup Lubricator Boss & Vertical Oil Feed Channel
+                    const oilBoss = new THREE.Mesh(new THREE.CylinderGeometry(1.75, 2.1, 1.6, 24), M.brass);
+                    oilBoss.position.set(0, 9.2, 0);
+                    const oilSightGlass = new THREE.Mesh(new THREE.CylinderGeometry(1.45, 1.45, 2.0, 24), M.oilFilm);
+                    oilSightGlass.position.set(0, 10.9, 0);
+                    const oilLid = new THREE.Mesh(new THREE.CylinderGeometry(1.7, 1.7, 0.55, 24), M.brass);
+                    oilLid.position.set(0, 12.1, 0);
+                    const oilChannel = new THREE.Mesh(new THREE.CylinderGeometry(0.52, 0.52, 4.2, 16), M.oilFilm);
+                    oilChannel.position.set(0, 6.8, 0);
+                    cadRootGroup.add(oilBoss, oilSightGlass, oilLid, oilChannel);
+
+                    // 4. Split Flanged Bronze Bearing Bush (Lower Shell + Upper Shell)
+                    // Lower bronze half-shell (solid)
+                    const lowerBushShape = new THREE.Shape();
+                    lowerBushShape.absarc(0, 0, 6.18, Math.PI, Math.PI * 2, false);
+                    lowerBushShape.absarc(0, 0, 4.92, Math.PI * 2, Math.PI, true);
+                    lowerBushShape.closePath();
+                    const lowerBushGeo = new THREE.ExtrudeGeometry(lowerBushShape, {
+                        depth: 8.8, bevelEnabled: true, bevelThickness: 0.16, bevelSize: 0.12, bevelSegments: 2, curveSegments: 36
+                    });
+                    lowerBushGeo.translate(0, 0, -4.4);
+                    cadRootGroup.add(new THREE.Mesh(lowerBushGeo, M.bronze));
+
+                    // Upper bronze half-shell (translucent in X-Ray mode to expose oil film & shaft)
+                    const upperBushShape = new THREE.Shape();
+                    upperBushShape.absarc(0, 0, 6.18, 0.015, Math.PI - 0.015, false);
+                    upperBushShape.absarc(0, 0, 4.92, Math.PI - 0.015, 0.015, true);
+                    upperBushShape.closePath();
+                    const upperBushGeo = new THREE.ExtrudeGeometry(upperBushShape, {
+                        depth: 8.8, bevelEnabled: true, bevelThickness: 0.16, bevelSize: 0.12, bevelSegments: 2, curveSegments: 36
+                    });
+                    upperBushGeo.translate(0, 0, -4.4);
+                    cadRootGroup.add(new THREE.Mesh(upperBushGeo, cut ? M.glassBronze : M.bronze));
+
+                    // Front & rear bronze flanged collars so the sacrificial bush is unmistakably visible
+                    [-4.35, 4.35].forEach(zPos => {
+                        const flShape = new THREE.Shape();
+                        flShape.absarc(0, 0, 6.95, 0, Math.PI * 2, false);
+                        const flHole = new THREE.Path();
+                        flHole.absarc(0, 0, 4.92, 0, Math.PI * 2, true);
+                        flShape.holes.push(flHole);
+                        const flGeo = new THREE.ExtrudeGeometry(flShape, { depth: 0.55, bevelEnabled: true, bevelThickness: 0.08, bevelSize: 0.08, bevelSegments: 2, curveSegments: 36 });
+                        flGeo.translate(0, 0, zPos - 0.275);
+                        cadRootGroup.add(new THREE.Mesh(flGeo, cut ? M.glassBronze : M.bronze));
+                    });
+
+                    // 5. Hydrodynamic Lubricating Oil Film (Annular Sleeve + Animated Shear Streaks)
+                    const oilFilmGroup = new THREE.Group();
+                    const filmShape = new THREE.Shape();
+                    filmShape.absarc(0, 0, 4.89, 0, Math.PI * 2, false);
+                    const filmHole = new THREE.Path();
+                    filmHole.absarc(0, 0, 4.58, 0, Math.PI * 2, true);
+                    filmShape.holes.push(filmHole);
+                    const filmGeo = new THREE.ExtrudeGeometry(filmShape, { depth: 9.1, bevelEnabled: false, curveSegments: 36 });
+                    filmGeo.translate(0, 0, -4.55);
+                    oilFilmGroup.add(new THREE.Mesh(filmGeo, M.oilFilm));
+
+                    // 6 subtle luminous oil flow ribbons moving at hydrodynamic half-speed
+                    for (let i = 0; i < 6; i++) {
+                        const oa = (Math.PI * 2 * i) / 6;
+                        const streak = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.55, 8.9), M.oilStreak);
+                        streak.position.set(Math.cos(oa) * 4.74, Math.sin(oa) * 4.74, 0);
+                        streak.rotation.z = oa;
+                        oilFilmGroup.add(streak);
+                    }
+                    cadRootGroup.add(oilFilmGroup);
+
+                    // 6. Rotating Precision-Turned Steel Journal Shaft
+                    const shaftGroup = new THREE.Group();
+                    const shaftMain = new THREE.Mesh(new THREE.CylinderGeometry(4.55, 4.55, 24, 36), M.steel);
+                    shaftMain.rotation.x = Math.PI / 2;
+                    // Chamfered shaft end caps
+                    [-12.25, 12.25].forEach(zEnd => {
+                        const cap = new THREE.Mesh(
+                            new THREE.CylinderGeometry(zEnd > 0 ? 4.15 : 4.55, zEnd > 0 ? 4.55 : 4.15, 0.5, 36),
+                            M.lightSteel
+                        );
+                        cap.rotation.x = Math.PI / 2;
+                        cap.position.z = zEnd;
+                        shaftGroup.add(cap);
+                    });
+                    // High-contrast rotation indicator stripe & keyway
+                    const indicator = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.42, 23.4), M.blue);
+                    indicator.position.set(0, 4.40, 0);
+                    const keyBar = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.7, 5.5), M.amber);
+                    keyBar.position.set(0, -4.35, 8.5);
+                    shaftGroup.add(shaftMain, indicator, keyBar);
+
+                    cadRootGroup.add(shaftGroup);
+                    cadState.bearingParts = { shaftGroup, oilFilmGroup };
+                }
+                else if (type === 'Thrust') {
+                    const lowerW = new THREE.Mesh(new THREE.CylinderGeometry(8.5, 9.2, 2.2, 36), cut ? M.glassPlate : M.darkAlloy);
+                    lowerW.position.y = -2.4;
+
+                    const upperGroup = new THREE.Group();
+                    const upperW = new THREE.Mesh(new THREE.CylinderGeometry(8.5, 8.5, 2.2, 36), cut ? M.glassBlue : M.blue);
+                    upperW.position.y = 2.4;
+                    const vShaft = new THREE.Mesh(new THREE.CylinderGeometry(3.4, 3.4, 18, 32), M.steel);
+                    const stripe = new THREE.Mesh(new THREE.BoxGeometry(0.8, 16, 0.8), M.amber);
+                    stripe.position.set(3.25, 0, 0);
+                    upperGroup.add(upperW, vShaft, stripe);
+
+                    const cageGroup = new THREE.Group();
+                    const thrustBalls = [];
+                    for (let i = 0; i < 10; i++) {
+                        const a = (Math.PI * 2 * i) / 10;
+                        const b = new THREE.Mesh(new THREE.SphereGeometry(1.32, 20, 20), M.chrome);
+                        b.position.set(Math.cos(a) * 6.2, 0, Math.sin(a) * 6.2);
+                        cageGroup.add(b);
+                        thrustBalls.push(b);
+                    }
+                    [-5.6, 5.6].forEach(xPos => {
+                        const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.45, 0.45, 4.0, 12), M.redRubber);
+                        stem.position.set(xPos, 7.4, 0);
+                        const cone = new THREE.Mesh(new THREE.ConeGeometry(1.15, 2.1, 16), M.redRubber);
+                        cone.rotation.x = Math.PI; cone.position.set(xPos, 4.8, 0);
+                        cadRootGroup.add(stem, cone);
+                    });
+
+                    cadRootGroup.add(lowerW, upperGroup, cageGroup);
+                    cadState.bearingParts = { upperGroup, cageGroup, thrustBalls };
+                }
+            }
+            // =================================================================
+            // CLUTCHES (Friction & Positive Dog)
+            // =================================================================
+            else if (id === 'clutches') {
+                cadState.clutchParts = {};
+                const type = cadState.clutchType;
+
+                if (type === 'Friction') {
+                    const leftGroup = new THREE.Group();
+                    leftGroup.add(createMachinedShaft(19, 3.0, -14.5, M.steel, M.blue, M.amber));
+                    const flywheel = new THREE.Mesh(createBeveledHubGeometry(3.0, 10.5, 2.4, 0.3), M.slateHub);
+                    flywheel.position.x = -5.4;
+                    const liningL = new THREE.Mesh(new THREE.CylinderGeometry(9.6, 9.6, 0.8, 36), M.frictionPad);
+                    liningL.rotation.z = Math.PI / 2; liningL.position.x = -2.6;
+                    leftGroup.add(flywheel, liningL);
+
+                    const rightPlateGroup = new THREE.Group();
+                    const liningR = new THREE.Mesh(new THREE.CylinderGeometry(9.6, 9.6, 0.8, 36), M.frictionPad);
+                    liningR.rotation.z = Math.PI / 2; liningR.position.x = 0.4;
+                    const pPlate = new THREE.Mesh(createBeveledHubGeometry(3.28, 10.2, 2.0, 0.28), M.pink);
+                    pPlate.position.x = 0.8;
+                    const collar = new THREE.Mesh(createBeveledHubGeometry(3.28, 4.9, 4.2, 0.25), M.midAlloy);
+                    collar.position.x = 2.8;
+                    rightPlateGroup.add(liningR, pPlate, collar);
+
+                    const springMat = M.amber;
+                    const backingRing = new THREE.Mesh(createBeveledHubGeometry(4.9, 8.8, 1.0, 0.2), M.darkAlloy);
+                    backingRing.position.x = 6.2;
+                    rightPlateGroup.add(backingRing);
+                    for (let i = 0; i < 4; i++) {
+                        const a = (Math.PI * 2 * i) / 4 + Math.PI / 4;
+                        const spr = createHelicalSpringMesh(3.5, 0.85, 0.18, 5, springMat);
+                        spr.position.set(2.75, Math.cos(a) * 6.9, Math.sin(a) * 6.9);
+                        rightPlateGroup.add(spr);
+                    }
+                    rightPlateGroup.position.x = -2.18 + cadState.clutchGap;
+
+                    const rightShaftGroup = new THREE.Group();
+                    rightShaftGroup.add(createSplinedShaft(-1.2, 26.5, 2.92, M.steel, M.lightSteel, M.pink));
+
+                    cadRootGroup.add(leftGroup, rightPlateGroup, rightShaftGroup);
+                    cadState.clutchParts = { leftGroup, rightPlateGroup, rightShaftGroup };
+                } else {
+                    const toothSpanRad = THREE.MathUtils.degToRad(36);
+                    const innerR = 4.6, outerR = 8.4, toothLen = 6.0;
+
+                    const leftGroup = new THREE.Group();
+                    leftGroup.add(createMachinedShaft(18, 3.0, -17.5, M.steel, M.blue, M.amber));
+
+                    const leftBoss = new THREE.Mesh(createBeveledHubGeometry(2.95, 5.4, 2.6, 0.25), M.darkAlloy);
+                    leftBoss.position.x = -11.1;
+                    const leftHub = new THREE.Mesh(createBeveledHubGeometry(2.95, 8.8, 5.0, 0.35), M.slateHub);
+                    leftHub.position.x = -8.5;
+                    const leftFaceCap = new THREE.Mesh(new THREE.CylinderGeometry(4.65, 4.65, 0.2, 32), M.darkBore);
+                    leftFaceCap.rotation.z = Math.PI / 2; leftFaceCap.position.x = -3.55;
+                    leftGroup.add(leftBoss, leftHub, leftFaceCap);
+
+                    const leftToothGeo = createAnnularDogToothGeometry(innerR, outerR, toothSpanRad, toothLen, true);
+                    for (let i = 0; i < 4; i++) {
+                        const toothL = new THREE.Mesh(leftToothGeo, M.blue);
+                        toothL.position.x = -3.5;
+                        toothL.rotation.x = i * (Math.PI / 2);
+                        leftGroup.add(toothL);
+                    }
+
+                    const rightPlateGroup = new THREE.Group();
+                    const rightHub = new THREE.Mesh(createBeveledHubGeometry(3.32, 8.8, 5.0, 0.35), M.pink);
+                    rightHub.position.x = 0;
+                    const rightBoreSleeve = new THREE.Mesh(new THREE.CylinderGeometry(3.35, 3.35, 8.2, 32, 1, true), M.darkBore);
+                    rightBoreSleeve.rotation.z = Math.PI / 2; rightBoreSleeve.position.x = 4.2;
+
+                    const collarPts = [
+                        new THREE.Vector2(3.32, 5.0),
+                        new THREE.Vector2(5.6, 5.0),
+                        new THREE.Vector2(5.8, 5.2),
+                        new THREE.Vector2(5.8, 6.0),
+                        new THREE.Vector2(4.7, 6.15),
+                        new THREE.Vector2(4.7, 7.35),
+                        new THREE.Vector2(5.8, 7.5),
+                        new THREE.Vector2(5.8, 8.3),
+                        new THREE.Vector2(5.5, 8.5),
+                        new THREE.Vector2(3.32, 8.5)
+                    ];
+                    const collarGeo = new THREE.LatheGeometry(collarPts, 36);
+                    collarGeo.rotateZ(-Math.PI / 2);
+                    collarGeo.computeVertexNormals();
+                    const rightCollar = new THREE.Mesh(collarGeo, M.deepPink);
+                    rightPlateGroup.add(rightHub, rightBoreSleeve, rightCollar);
+
+                    const rightToothGeo = createAnnularDogToothGeometry(innerR, outerR, toothSpanRad, toothLen, false);
+                    for (let i = 0; i < 4; i++) {
+                        const toothR = new THREE.Mesh(rightToothGeo, M.dogPink);
+                        toothR.position.x = 0;
+                        toothR.rotation.x = i * (Math.PI / 2);
+                        rightPlateGroup.add(toothR);
+                    }
+                    rightPlateGroup.position.x = cadState.clutchHubX;
+
+                    const rightShaftGroup = new THREE.Group();
+                    rightShaftGroup.add(createSplinedShaft(2.8, 29.5, 2.92, M.steel, M.lightSteel, M.amber));
+
+                    cadRootGroup.add(leftGroup, rightPlateGroup, rightShaftGroup);
+                    cadState.clutchParts = { leftGroup, rightPlateGroup, rightShaftGroup };
+                }
+            }
+            cadCenterCamera(id);
+        }
+
+        function cadCenterCamera(id) {
+            if (!camera) return;
+            const posMap = {
+                ratchet:   [4, 6, 42],
+                couplings: [20, 17, 50],
+                bearings:  cadState.bearingType === 'Journal' ? [20, 15, 40] : [17, 14, 38],
+                clutches:  [14, 14, 48]
+            };
+            const targetMap = {
+                ratchet:   [1.2, -0.8, 0],
+                couplings: [0, -2.0, 0],
+                bearings:  cadState.bearingType === 'Journal' ? [0, -0.5, 0] : [0, -1.8, 0],
+                clutches:  [2.5, -2.0, 0]
+            };
+            const p = posMap[id] || [18, 15, 48];
+            const t = targetMap[id] || [0, -2.0, 0];
+            camera.position.set(p[0], p[1], p[2]);
+            if (controls) {
+                controls.target.set(t[0], t[1], t[2]);
+                controls.update();
+            } else {
+                camera.lookAt(t[0], t[1], t[2]);
+            }
+        }
+
+        // =========================================================================
+        // 5. UNIFIED 3D ANIMATION LOOP
+        // =========================================================================
+        let viewportVisible = true;
+        if ('IntersectionObserver' in window) {
+            new IntersectionObserver(entries => {
+                entries.forEach(e => { viewportVisible = e.isIntersecting; });
+            }).observe(document.getElementById('three-container'));
+        }
+
+        function animateLoop() {
+            animationId = requestAnimationFrame(animateLoop);
+            const rawDt = Math.min(clock.getDelta(), 0.05);
+            if (!viewportVisible) return; // save the GPU when scrolled out of view
+
+            if (gridHelper) gridHelper.position.y += (ngTargetGridY - gridHelper.position.y) * 0.1;
+            if (controls) controls.update();
+
+            if (activeEngine === 'nogrind') {
+                const moveDt = (isPaused || ngMotorCutoff) ? 0 : rawDt * simSpeedMultiplier;
+
+                ngNodes.forEach(n => {
+                    const rps = n.speed / 60;
+                    n.angle -= (rps * Math.PI * 2 * n.dir * moveDt);
+                    if (n.rotGroup) n.rotGroup.rotation.z = n.angle;
+
+                    if (n.type === 'rack' && n.parent) {
+                        const parentRps = n.parent.speed / 60;
+                        const linearSpeed = Math.abs(parentRps) * Math.PI * 2 * n.parent.radius;
+                        n.linearPosition += (-1 * n.parent.dir * Math.sign(n.parent.speed)) * linearSpeed * moveDt;
+
+                        const maxTravel = Math.max(18, (n.length / 2) - n.parent.radius - 12);
+                        if (Math.abs(n.linearPosition) > maxTravel) {
+                            n.linearPosition = Math.sign(n.linearPosition) * maxTravel;
+                            if (ngAutoBounce) {
+                                ngMotorDir *= -1;
+                                ngCalculateKinematics();
+                            } else if (!ngMotorCutoff) {
+                                ngMotorCutoff = true;
+                                showToast('Rack travel limit reached — click Reverse to continue.');
+                            }
+                        }
+                        n.meshGroup.position.copy(n.basePosition);
+                        const moveVec = new THREE.Vector3(n.linearPosition, 0, 0).applyEuler(n.meshGroup.rotation);
+                        n.meshGroup.position.add(moveVec);
+                    }
+
+                    // Worm & Nut Travelling Nut
+                    if (n.type === 'nut' && n.parent) {
+                        const parentRps = n.parent.speed / 60;
+                        const linearSpeed = Math.abs(parentRps) * 12;
+                        n.linearPosition += (-1 * n.parent.dir * Math.sign(n.parent.speed)) * linearSpeed * moveDt;
+
+                        const minT = 10, maxT = n.parent.length - 10;
+                        if (n.linearPosition < minT || n.linearPosition > maxT) {
+                            n.linearPosition = Math.max(minT, Math.min(maxT, n.linearPosition));
+                            if (ngAutoBounce) {
+                                ngMotorDir *= -1;
+                                ngCalculateKinematics();
+                            } else if (!ngMotorCutoff) {
+                                ngMotorCutoff = true;
+                                showToast('Worm & nut travel limit reached — click Reverse to continue.');
+                            }
+                        }
+                        n.meshGroup.position.copy(n.basePosition);
+                        const moveVec = new THREE.Vector3(0, 0, n.linearPosition).applyEuler(n.meshGroup.rotation);
+                        n.meshGroup.position.add(moveVec);
+                    }
+
+                    if (n.linkVisual && n.parent && n.linkType === 'chain') {
+                        const parentRps = n.parent.speed / 60;
+                        const linearSpeed = Math.abs(parentRps) * Math.PI * 2 * n.parent.radius;
+                        n.linkVisual.userData.offset += (n.parent.dir > 0 ? -1 : 1) * linearSpeed * moveDt;
+                        ngUpdateChainPins(n.linkVisual);
+                    }
+                });
+
+                const dirStr = ngMotorDir > 0 ? 'CW ↻' : 'ACW ↺';
+                if (currentMechId === 'gears') {
+                    const modeStr = ngCurrentPresetKey === 'gears_simple' ? 'SIMPLE TRAIN (2:1)' : 'COMPOUND TRAIN (4:1)';
+                    setTelemetry(`${modeStr} • ${dirStr}`);
+                } else if (currentMechId === 'worm') {
+                    const modeStr = ngCurrentPresetKey === 'worm_leadscrew' ? 'WORM & NUT' : 'WORM & WHEEL (90°)';
+                    setTelemetry(`${modeStr} • ${dirStr}`);
+                } else if (currentMechId === 'rack') {
+                    const travelDir = ngMotorDir > 0 ? 'RACK ← LEFT' : 'RACK → RIGHT';
+                    setTelemetry(`PINION ${dirStr} • ${travelDir}`);
+                } else {
+                    setTelemetry(`NOGRIND MODEL • ${dirStr}`);
+                }
+            }
+            else if (activeEngine === 'cad') {
+                const dt = isPaused ? 0 : rawDt * 1.9 * simSpeedMultiplier;
+
+                // REBUILT RATCHET & PAWL — SMOOTH, BRANCH-CUT-FREE CONTACT & SOFT LOCKING
+                if (currentMechId === 'ratchet') {
+                    const P = cadState.ratchetParts;
+                    if (P.wheelGroup && P.pawlPivot) {
+                        const step = (Math.PI * 2) / P.teeth;
+                        const refSolve = solveRatchetPawlAngle(P.pivotRelX, P.pivotRelY, P.pawlArmLen, (P.rRoot + P.rTip) * 0.5);
+                        const contactWorldAngle = refSolve.contactWorldAngle;
+
+                        let status = 'FORWARD (ACW • ALLOWED)';
+                        let locked = false;
+
+                        if (cadState.ratchetDir === 1) {
+                            // Forward ACW rotation: pawl glides smoothly up each ramped back slope
+                            cadState.ratchetAngle += dt * 0.75;
+                        } else {
+                            // Attempted CW reverse rotation: ease gently back until seated against the steep tooth face
+                            const aLocal = contactWorldAngle - cadState.ratchetAngle;
+                            const lockALocal = Math.ceil((aLocal - 0.015 * step) / step) * step;
+                            const lockWheelAngle = contactWorldAngle - lockALocal;
+                            const remaining = cadState.ratchetAngle - lockWheelAngle;
+
+                            if (remaining <= 0.008) {
+                                // Smoothly cushioned settle into lock position (no abrupt snap)
+                                cadState.ratchetAngle += (lockWheelAngle - cadState.ratchetAngle) * Math.min(1, rawDt * 18);
+                                locked = true;
+                                status = 'REVERSE (CW • LOCKED)';
+                            } else {
+                                // Soft deceleration as the tooth face approaches the pawl nose
+                                const approachSpeed = Math.min(dt * 0.75, remaining * Math.min(1, rawDt * 12) + dt * 0.12);
+                                cadState.ratchetAngle = Math.max(lockWheelAngle, cadState.ratchetAngle - approachSpeed);
+                                status = 'REVERSE (ENGAGING LOCK...)';
+                            }
+                        }
+
+                        // Compute exact tooth surface radius under the pawl nose for current wheelAngle
+                        const aLocalNow = contactWorldAngle - cadState.ratchetAngle;
+                        const phaseNow = (((aLocalNow % step) + step) % step) / step;
+
+                        let targetRadius = P.rRoot;
+                        if (locked) {
+                            targetRadius = P.rRoot;
+                        } else if (phaseNow <= P.steepFrac) {
+                            // Smooth cubic ease across the crest to soften the collision transition
+                            const u = phaseNow / P.steepFrac;
+                            const smoothU = u * u * (3 - 2 * u);
+                            targetRadius = P.rRoot + (P.rTip - P.rRoot) * smoothU;
+                        } else {
+                            // Gentle ramped back slope from rTip down to rRoot
+                            const u = (phaseNow - P.steepFrac) / (1 - P.steepFrac);
+                            targetRadius = P.rTip - (P.rTip - P.rRoot) * u;
+                        }
+
+                        const exact = solveRatchetPawlAngle(P.pivotRelX, P.pivotRelY, P.pawlArmLen, targetRadius);
+
+                        // Soft, natural spring-damped tracking: responsive when lifted up (-angle), cushioned when dropping (+angle)
+                        const isLifting = exact.pawlAngle < cadState.ratchetPawlDisplayAngle;
+                        const followRate = isLifting ? 22.0 : 11.0;
+                        cadState.ratchetPawlDisplayAngle += (exact.pawlAngle - cadState.ratchetPawlDisplayAngle) * Math.min(1, rawDt * followRate);
+
+                        P.wheelGroup.rotation.z = cadState.ratchetAngle;
+                        P.pawlPivot.rotation.z = cadState.ratchetPawlDisplayAngle;
+
+                        // Gently flex the leaf spring with pawl lift
+                        if (P.leafSpring) {
+                            const lift = Math.max(0, (targetRadius - P.rRoot) / (P.rTip - P.rRoot));
+                            P.leafSpring.rotation.z = 0.20 - lift * 0.10;
+                            P.leafSpring.position.y = P.wheelCenterY + P.pivotRelY + 2.1 + lift * 0.35;
+                        }
+
+                        // Soft colour blend between blue (free) and rose-red (locked)
+                        const targetBlend = locked ? 1 : 0;
+                        cadState.ratchetLockBlend += (targetBlend - cadState.ratchetLockBlend) * Math.min(1, rawDt * 10);
+                        P.wheelMat.color.setHex(0x3b82f6).lerp(new THREE.Color(0xe11d48), cadState.ratchetLockBlend);
+
+                        setTelemetry(status, locked ? 'danger' : 'success');
+                    }
+                }
+                else if (currentMechId === 'couplings') {
+                    const type = cadState.couplingType;
+                    const U = cadState.uJointParts;
+                    if (type === 'Universal' && U.input && U.output && U.cross) {
+                        cadState.uJointAngle += dt * 1.1;
+                        const beta = THREE.MathUtils.degToRad(cadState.uJointBendDeg);
+                        const theta = cadState.uJointAngle;
+
+                        U.input.rotation.x = theta;
+                        const phi = Math.atan2(Math.sin(theta), Math.cos(theta) * Math.cos(beta));
+                        U.output.rotation.x = phi;
+
+                        const u1 = new THREE.Vector3(0, Math.cos(theta), Math.sin(theta)).normalize();
+                        const u2 = new THREE.Vector3(
+                            -Math.sin(phi) * Math.sin(beta),
+                            -Math.sin(phi) * Math.cos(beta),
+                            Math.cos(phi)
+                        ).normalize();
+                        const eX = new THREE.Vector3().crossVectors(u1, u2).normalize();
+                        U.cross.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(eX, u1, u2));
+
+                        const ratio = Math.cos(beta) / (1 - Math.pow(Math.sin(beta) * Math.cos(theta), 2));
+                        const isOver20 = cadState.uJointBendDeg > 20;
+                        setTelemetry(
+                            `BEND: ${cadState.uJointBendDeg}° • ω_out/ω_in: ${ratio.toFixed(2)}×${isOver20 ? ' (>20° LIMIT)' : ''}`,
+                            isOver20 ? 'warn' : 'default'
+                        );
+                    } else if (type === 'Flexible' && cadState.flexParts.leftGroup && cadState.flexParts.rightGroup) {
+                        cadState.flexAngle += dt * 1.1;
+                        const F = cadState.flexParts;
+                        const beta = THREE.MathUtils.degToRad(cadState.flexBendDeg);
+                        F.leftGroup.rotation.x = cadState.flexAngle;
+                        F.rightGroup.rotation.x = cadState.flexAngle;
+                        if (F.outputAnchor) F.outputAnchor.rotation.z = -beta;
+                        if (F.spiderGroup) {
+                            F.spiderGroup.rotation.z = -beta * 0.5;
+                            F.spiderGroup.rotation.x = cadState.flexAngle;
+                        }
+                        const isOver5 = cadState.flexBendDeg > 5;
+                        setTelemetry(
+                            `MISALIGN: ${cadState.flexBendDeg}° • 1:1 DRIVE${isOver5 ? ' (>5° LIMIT)' : ''}`,
+                            isOver5 ? 'warn' : 'default'
+                        );
+                    } else {
+                        cadState.couplingMeshes.forEach(m => { m.rotation.x += dt * 1.1; });
+                        setTelemetry(`${type.toUpperCase()} COUPLING • 1:1 DRIVE`);
+                    }
+                }
+                else if (currentMechId === 'bearings') {
+                    cadState.bearingAngle += dt * 1.4;
+                    const a = cadState.bearingAngle;
+                    const P = cadState.bearingParts;
+                    const type = cadState.bearingType;
+                    if (type === 'Ball' || type === 'Roller') {
+                        if (P.innerGroup) P.innerGroup.rotation.z = a;
+                        if (P.cageGroup) P.cageGroup.rotation.z = a * 0.44;
+                        if (P.rollingEls) {
+                            P.rollingEls.forEach(el => { el.rotation.z = -a * 2.2; });
+                        }
+                        setTelemetry(`${type.toUpperCase()} BEARING • ${type === 'Ball' ? 'POINT' : 'LINE'} CONTACT`);
+                    } else if (type === 'Journal') {
+                        if (P.shaftGroup) P.shaftGroup.rotation.z = a * 1.3;
+                        // Hydrodynamic oil film shears at half the shaft rotational speed
+                        if (P.oilFilmGroup) P.oilFilmGroup.rotation.z = a * 0.65;
+                        setTelemetry('SPLIT JOURNAL BEARING • OIL FILM');
+                    } else if (type === 'Thrust') {
+                        if (P.upperGroup) P.upperGroup.rotation.y = a;
+                        if (P.cageGroup) P.cageGroup.rotation.y = a * 0.5;
+                        setTelemetry('THRUST BEARING • AXIAL LOAD');
+                    }
+                }
+                else if (currentMechId === 'clutches') {
+                    const P = cadState.clutchParts;
+                    if (P.leftGroup && P.rightPlateGroup && P.rightShaftGroup) {
+                        const dTheta = dt * 1.45;
+                        const inVel = (rawDt > 0 && !isPaused) ? (dTheta / rawDt) : 0;
+                        cadState.clutchInAngle += dTheta;
+                        P.leftGroup.rotation.x = cadState.clutchInAngle;
+
+                        if (cadState.clutchType === 'Friction') {
+                            const targetGap = cadState.clutchEngaged ? 0.0 : 6.5;
+                            cadState.clutchGap += (targetGap - cadState.clutchGap) * Math.min(1, rawDt * 11.0);
+                            if (Math.abs(targetGap - cadState.clutchGap) < 0.02) cadState.clutchGap = targetGap;
+
+                            const contactFactor = Math.max(0, 1 - cadState.clutchGap / 1.8);
+                            if (!isPaused) {
+                                if (contactFactor > 0.01) {
+                                    cadState.clutchOutVel += (inVel - cadState.clutchOutVel) * Math.min(1, rawDt * 5.0 * contactFactor);
+                                } else {
+                                    cadState.clutchOutVel *= Math.pow(0.08, rawDt);
+                                    if (Math.abs(cadState.clutchOutVel) < 0.01) cadState.clutchOutVel = 0;
+                                }
+                                cadState.clutchOutAngle += cadState.clutchOutVel * rawDt;
+                            }
+
+                            P.rightPlateGroup.position.x = -2.18 + cadState.clutchGap;
+                            P.rightPlateGroup.rotation.x = cadState.clutchOutAngle;
+                            P.rightShaftGroup.rotation.x = cadState.clutchOutAngle;
+
+                            const speedRatio = inVel > 0.05 ? (cadState.clutchOutVel / inVel) : (contactFactor > 0.9 ? 1 : 0);
+                            const st = contactFactor < 0.05
+                                ? 'DISENGAGED'
+                                : (speedRatio > 0.94 ? 'ENGAGED' : 'SLIPPING (SPIN-UP)');
+                            setTelemetry(`FRICTION CLUTCH • ${st}`, st === 'ENGAGED' ? 'success' : 'default');
+                        } else {
+                            const DISENGAGED_X = 13.5;
+                            const ENGAGED_X = 3.5;
+                            const CLEAR_X = 8.5;
+                            const slideStep = rawDt * 26.0;
+
+                            if (cadState.clutchEngaged) {
+                                if (cadState.clutchPhase === 'disengaged' || cadState.clutchPhase === 'disengaging') {
+                                    cadState.clutchPhase = 'aligning';
+                                }
+
+                                if (cadState.clutchPhase === 'aligning') {
+                                    cadState.clutchHubX = Math.min(DISENGAGED_X, cadState.clutchHubX + slideStep);
+
+                                    const k = Math.round((cadState.clutchOutAngle - cadState.clutchInAngle - Math.PI / 4) / (Math.PI / 2));
+                                    const targetOffset = Math.PI / 4 + k * (Math.PI / 2);
+                                    const targetAngle = cadState.clutchInAngle + targetOffset;
+                                    const err = targetAngle - cadState.clutchOutAngle;
+                                    const maxAlignStep = Math.abs(dTheta) + rawDt * 5.2 * Math.max(0.6, simSpeedMultiplier);
+
+                                    cadState.clutchOutAngle += Math.sign(err) * Math.min(Math.abs(err), maxAlignStep);
+
+                                    if (Math.abs(targetAngle - cadState.clutchOutAngle) <= 0.015 && cadState.clutchHubX >= CLEAR_X) {
+                                        cadState.clutchLockedOffset = targetOffset;
+                                        cadState.clutchOutAngle = cadState.clutchInAngle + cadState.clutchLockedOffset;
+                                        cadState.clutchPhase = 'engaging';
+                                    }
+                                    setTelemetry('POSITIVE CLUTCH • ALIGNING JAWS...', 'warn');
+                                } else if (cadState.clutchPhase === 'engaging') {
+                                    cadState.clutchOutAngle = cadState.clutchInAngle + cadState.clutchLockedOffset;
+                                    cadState.clutchHubX = Math.max(ENGAGED_X, cadState.clutchHubX - slideStep);
+                                    cadState.clutchOutVel = inVel;
+                                    if (cadState.clutchHubX <= ENGAGED_X + 0.005) {
+                                        cadState.clutchHubX = ENGAGED_X;
+                                        cadState.clutchPhase = 'locked';
+                                    }
+                                    setTelemetry('POSITIVE CLUTCH • ENGAGING JAWS', 'success');
+                                } else {
+                                    cadState.clutchHubX = ENGAGED_X;
+                                    cadState.clutchOutAngle = cadState.clutchInAngle + cadState.clutchLockedOffset;
+                                    cadState.clutchOutVel = inVel;
+                                    setTelemetry('POSITIVE CLUTCH • LOCKED (ZERO SLIP)', 'success');
+                                }
+                            } else {
+                                if (cadState.clutchPhase === 'aligning') {
+                                    cadState.clutchPhase = 'disengaged';
+                                } else if (cadState.clutchPhase === 'locked' || cadState.clutchPhase === 'engaging') {
+                                    cadState.clutchPhase = 'disengaging';
+                                }
+
+                                if (cadState.clutchPhase === 'disengaging') {
+                                    cadState.clutchHubX = Math.min(DISENGAGED_X, cadState.clutchHubX + slideStep);
+                                    if (cadState.clutchHubX <= CLEAR_X) {
+                                        cadState.clutchOutAngle = cadState.clutchInAngle + cadState.clutchLockedOffset;
+                                        cadState.clutchOutVel = inVel;
+                                    } else {
+                                        cadState.clutchPhase = 'disengaged';
+                                    }
+                                    setTelemetry('POSITIVE CLUTCH • DISENGAGING JAWS');
+                                } else {
+                                    cadState.clutchHubX = Math.min(DISENGAGED_X, cadState.clutchHubX + slideStep);
+                                    if (!isPaused) {
+                                        cadState.clutchOutVel *= Math.pow(0.06, rawDt);
+                                        if (Math.abs(cadState.clutchOutVel) < 0.01) cadState.clutchOutVel = 0;
+                                        cadState.clutchOutAngle += cadState.clutchOutVel * rawDt;
+                                    }
+                                    setTelemetry('POSITIVE CLUTCH • DISENGAGED');
+                                }
+                            }
+
+                            P.rightPlateGroup.position.x = cadState.clutchHubX;
+                            P.rightPlateGroup.rotation.x = cadState.clutchOutAngle;
+                            P.rightShaftGroup.rotation.x = cadState.clutchOutAngle;
+                        }
+                    }
+                }
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        // =========================================================================
+        // 6. DASHBOARD, DYNAMIC THEORY PANEL, CONTROLS DOCK & NOGRIND .JSON LOADER
+        // =========================================================================
+        function renderDashboard() {
+            const grid = document.getElementById('card-grid');
+            grid.innerHTML = '';
+
+            mechanisms.forEach(mech => {
+                const card = document.createElement('div');
+                card.className = 'mech-card p-6 cursor-pointer flex flex-col justify-between group';
+                card.onclick = () => openDetail(mech.id);
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="w-12 h-12 rounded-2xl bg-gradient-to-br ${mech.grad} text-white flex items-center justify-center shadow-md group-hover:scale-105 transition-transform">
+                                <i class="fas ${mech.icon} text-lg"></i>
+                            </div>
+                            <span class="px-2.5 py-1 text-[10px] font-bold uppercase tracking-wider rounded-full border ${mech.badgeClass}">
+                                ${mech.tag}
+                            </span>
+                        </div>
+                        <h3 class="font-black text-lg text-slate-800 font-nunito group-hover:text-blue-600 transition">${mech.title}</h3>
+                        <p class="text-xs font-medium text-slate-400 mt-0.5">${mech.subtitle}</p>
+                        <p class="text-xs sm:text-sm text-slate-600 mt-3 line-clamp-2 leading-relaxed">${mech.desc}</p>
+                    </div>
+                    <div class="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold">
+                        <span class="text-slate-400">${mech.isNoGrind ? 'NoGrindSim 3D Engine' : 'Interactive 3D CAD'}</span>
+                        <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-pink-500 flex items-center gap-1.5 group-hover:translate-x-1 transition-transform">
+                            Explore <i class="fas fa-arrow-right text-pink-500"></i>
+                        </span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function renderTheoryPanel(mechIdOrObj, customFilename = null) {
+            const infoDiv = document.getElementById('info-content');
+            if (customFilename) {
+                const compSummary = ngNodes.map(n => n.label || n.type).join(', ');
+                infoDiv.innerHTML = `
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-600 border border-blue-200 text-[11px] font-bold uppercase tracking-wider mb-3">
+                        <i class="fas fa-file-code"></i> Imported NoGrindSim Model
+                    </span>
+                    <h2 class="text-2xl font-black text-slate-800 font-nunito">${customFilename}</h2>
+                    <p class="text-sm text-slate-500 mt-1 mb-6">Running natively inside the integrated NoGrindSim V1.4.2 3D viewer with an uncluttered viewport.</p>
+
+                    <div class="space-y-4">
+                        <div class="bg-[#f0f4f9] rounded-2xl p-4 sm:p-5 border border-slate-200">
+                            <h3 class="text-xs font-black uppercase tracking-wider text-slate-500 mb-2">Viewer Controls</h3>
+                            <ul class="space-y-2 text-sm text-slate-700">
+                                <li><i class="fas fa-cube text-blue-500 mr-2"></i><strong>Left-drag</strong> to orbit, <strong>Right-drag</strong> to pan, and <strong>Scroll</strong> to zoom around the assembly.</li>
+                                <li><i class="fas fa-sync-alt text-pink-500 mr-2"></i>Click <strong>Reverse</strong> to flip input motor rotation and observe direction changes.</li>
+                                <li><i class="fas fa-sliders-h text-blue-500 mr-2"></i>Use the <strong>Speed</strong> slider or <strong>Pause</strong> button to examine meshing teeth clearly.</li>
+                            </ul>
+                        </div>
+                        <div class="bg-blue-50/70 rounded-2xl p-4 sm:p-5 border border-blue-100">
+                            <h3 class="text-xs font-black uppercase tracking-wider text-blue-700 mb-1">Assembly Nodes (${ngNodes.length})</h3>
+                            <p class="text-sm text-slate-700 font-medium">${compSummary || 'Custom drive train'}</p>
+                        </div>
+                    </div>
+                `;
+                return;
+            }
+
+            const data = typeof mechIdOrObj === 'string'
+                ? getActiveVariantData(mechIdOrObj)
+                : (mechIdOrObj ? getActiveVariantData(mechIdOrObj.id) : null);
+            if (!data) return;
+
+            // Keep the top header pill synchronised with the exact highlighted sub-model
+            const headerName = document.getElementById('header-active-name');
+            if (headerName) headerName.innerText = data.title;
+
+            infoDiv.innerHTML = `
+                <div class="flex flex-wrap items-center gap-2 mb-2.5">
+                    <span class="px-3 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-full border ${data.badgeClass}">${data.tag}</span>
+                    <span class="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Higher Engineering Science</span>
+                </div>
+                <h2 class="text-2xl sm:text-3xl font-black text-slate-800 font-nunito tracking-tight">${data.title}</h2>
+                <p class="text-xs sm:text-sm font-bold text-blue-500 mt-1">${data.subtitle}</p>
+
+                <div class="mt-6 space-y-4">
+                    <div class="bg-[#f0f4f9] border border-slate-200/80 rounded-2xl p-4 sm:p-5">
+                        <h3 class="text-xs font-black uppercase tracking-wider text-slate-500 mb-2 flex items-center gap-2">
+                            <i class="fas fa-info-circle text-blue-500"></i> Description &amp; Operation
+                        </h3>
+                        <p class="text-sm sm:text-[15px] leading-relaxed text-slate-700">${data.desc}</p>
+                    </div>
+
+                    <div class="bg-emerald-50/70 border border-emerald-200/80 rounded-2xl p-4 sm:p-5">
+                        <h3 class="text-xs font-black uppercase tracking-wider text-emerald-700 mb-2.5 flex items-center gap-2">
+                            <i class="fas fa-thumbs-up"></i> Advantages
+                        </h3>
+                        <ul class="space-y-2 text-sm text-slate-700">
+                            ${data.advantages.map(a => `<li class="flex items-start gap-2"><span class="text-emerald-500 mt-0.5"><i class="fas fa-check-circle text-xs"></i></span><span>${a}</span></li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="bg-amber-50/70 border border-amber-200/80 rounded-2xl p-4 sm:p-5">
+                        <h3 class="text-xs font-black uppercase tracking-wider text-amber-700 mb-2.5 flex items-center gap-2">
+                            <i class="fas fa-exclamation-triangle"></i> Limitations
+                        </h3>
+                        <ul class="space-y-2 text-sm text-slate-700">
+                            ${data.limitations.map(l => `<li class="flex items-start gap-2"><span class="text-amber-500 mt-0.5"><i class="fas fa-minus-circle text-xs"></i></span><span>${l}</span></li>`).join('')}
+                        </ul>
+                    </div>
+
+                    <div class="bg-blue-50/60 border border-blue-200/70 rounded-2xl p-4 sm:p-5">
+                        <h3 class="text-xs font-black uppercase tracking-wider text-blue-700 mb-2.5 flex items-center gap-2">
+                            <i class="fas fa-globe-americas"></i> Real-World Uses
+                        </h3>
+                        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-slate-700">
+                            ${data.uses.map(u => `<li class="bg-white border border-blue-100 rounded-xl px-3 py-2 flex items-start gap-2"><i class="fas fa-chevron-right text-pink-500 text-[10px] mt-1.5"></i><span>${u}</span></li>`).join('')}
+                        </ul>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openDetail(id, customJSON = null, customFilename = null) {
+            initThreeCore();
+            currentMechId = id;
+            isPaused = false;
+            simSpeedMultiplier = 1.0;
+            ngAutoBounce = true;
+            updatePlayPauseUI();
+            updateClutchESNote(id);
+
+            const dash = document.getElementById('dashboard');
+            dash.style.opacity = '0';
+            setTimeout(() => {
+                dash.style.display = 'none';
+                document.getElementById('detail-view').classList.remove('translate-x-full');
+                resizeViewport();
+
+                if (customJSON) {
+                    ngLoadJSONObject(customJSON);
+                    setupControls('custom', true);
+                    document.getElementById('header-active-name').innerText = customFilename || 'Custom Model';
+                    renderTheoryPanel(null, customFilename);
+                } else {
+                    if (id === 'gears') {
+                        ngCurrentPresetKey = embedVariant('gears', 'gears_compound');
+                        ngLoadJSONObject(NOGRIND_PRESETS[ngCurrentPresetKey] || NOGRIND_PRESETS.gears_compound);
+                    } else if (id === 'worm') {
+                        ngCurrentPresetKey = embedVariant('worm', 'worm_wheel');
+                        ngLoadJSONObject(NOGRIND_PRESETS[ngCurrentPresetKey] || NOGRIND_PRESETS.worm_wheel);
+                    } else if (id === 'rack') {
+                        ngCurrentPresetKey = 'rack_pinion';
+                        ngLoadJSONObject(NOGRIND_PRESETS.rack_pinion);
+                    } else {
+                        if (id === 'couplings') {
+                            cadState.couplingType = embedVariant('couplings', 'Universal');
+                            cadState.uJointBendDeg = 20;
+                            cadState.uJointAngle = 0;
+                            cadState.flexBendDeg = 4;
+                            cadState.flexAngle = 0;
+                        }
+                        if (id === 'bearings')  { cadState.bearingType = embedVariant('bearings', 'Ball'); cadState.bearingCutaway = false; }
+                        if (id === 'clutches')  {
+                            cadState.clutchType = embedVariant('clutches', 'Friction');
+                            cadState.clutchEngaged = false;
+                            cadState.clutchPhase = 'disengaged';
+                            cadState.clutchGap = 6.5;
+                            cadState.clutchHubX = 13.5;
+                            cadState.clutchOutVel = 0;
+                            updateClutchESNote('clutches');
+                        }
+                        if (id === 'ratchet')   { cadState.ratchetDir = 1; cadState.ratchetAngle = 0; }
+                        buildCADMechanism(id);
+                    }
+                    setupControls(id, false);
+                    renderTheoryPanel(id, null);
+                }
+
+                if (animationId) cancelAnimationFrame(animationId);
+                clock.getDelta();
+                animateLoop();
+            }, 220);
+        }
+
+        function updateClutchESNote(id) {
+            const box = document.getElementById('clutch-es-note');
+            const txt = document.getElementById('clutch-es-note-text');
+            if (!box || !txt) return;
+            if (id !== 'clutches') {
+                box.classList.add('hidden');
+                return;
+            }
+            box.classList.remove('hidden');
+            if (cadState.clutchType === 'Positive') {
+                txt.innerHTML = '<strong>Higher ES Reminder:</strong> Positive (dog) clutches transmit torque with <strong>zero slip</strong> and must be <strong>stationary or synchronised</strong> before the jaws engage.';
+            } else {
+                txt.innerHTML = '<strong>Higher ES Reminder:</strong> Friction clutches engage smoothly whilst spinning by allowing brief <strong>slip</strong> between linings, though this produces heat and wear.';
+            }
+        }
+
+        function goBack() {
+            if (!currentMechId) return;
+            if (animationId) cancelAnimationFrame(animationId);
+            clearActiveScene();
+            updateClutchESNote(null);
+
+            document.getElementById('detail-view').classList.add('translate-x-full');
+            document.getElementById('header-active-name').innerText = 'Select Mechanism';
+
+            setTimeout(() => {
+                const dash = document.getElementById('dashboard');
+                dash.style.display = 'block';
+                void dash.offsetWidth;
+                dash.style.opacity = '1';
+                currentMechId = null;
+            }, 220);
+        }
+
+        function togglePlayPause() {
+            isPaused = !isPaused;
+            updatePlayPauseUI();
+        }
+
+        function updatePlayPauseUI() {
+            const icon = document.getElementById('play-pause-icon');
+            const label = document.getElementById('play-pause-label');
+            const dot = document.getElementById('sim-status-dot');
+            if (isPaused) {
+                icon.className = 'fas fa-play';
+                label.innerText = 'Play';
+                dot.className = 'w-2.5 h-2.5 rounded-full bg-amber-400 shrink-0';
+            } else {
+                icon.className = 'fas fa-pause';
+                label.innerText = 'Pause';
+                dot.className = 'w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0';
+            }
+        }
+
+        function resetCamera() {
+            if (activeEngine === 'nogrind') ngCenterCamera();
+            else cadCenterCamera(currentMechId);
+        }
+
+        function makePillGroup(options, getVal, onSelect) {
+            const wrap = document.createElement('div');
+            if (EMBED.only && EMBED.mech === currentMechId) {
+                options = options.filter(o => EMBED.only.includes(o));
+                if (options.length <= 1) { wrap.style.display = 'none'; return wrap; }
+            }
+            wrap.className = 'flex items-center bg-slate-100 rounded-full p-0.5 border border-slate-200';
+            const refresh = () => {
+                Array.from(wrap.children).forEach((btn, i) => {
+                    btn.className = options[i] === getVal()
+                        ? 'px-3 py-1 rounded-full text-xs font-bold bg-white text-blue-600 shadow-sm transition'
+                        : 'px-3 py-1 rounded-full text-xs font-bold text-slate-500 hover:text-slate-800 transition';
+                });
+            };
+            options.forEach(opt => {
+                const b = document.createElement('button');
+                b.innerText = opt;
+                b.onclick = () => { onSelect(opt); refresh(); };
+                wrap.appendChild(b);
+            });
+            refresh();
+            return wrap;
+        }
+
+        function appendNoGrindCommonControls(containerEl) {
+            const revBtn = document.createElement('button');
+            revBtn.className = 'px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 transition flex items-center gap-1.5 active:scale-95';
+            revBtn.innerHTML = '<i class="fas fa-sync-alt text-blue-500"></i> Reverse';
+            revBtn.onclick = () => {
+                ngMotorDir *= -1;
+                ngMotorCutoff = false;
+                ngCalculateKinematics();
+            };
+            containerEl.appendChild(revBtn);
+
+            const spdWrap = document.createElement('div');
+            spdWrap.className = 'flex items-center gap-2 pl-2 border-l border-slate-200';
+            spdWrap.innerHTML = `
+                <span class="text-[11px] font-bold text-slate-400">Speed</span>
+                <input type="range" min="0.2" max="2.5" step="0.1" value="${simSpeedMultiplier}" class="ng-slider w-16 sm:w-20">
+                <span class="text-xs font-mono-tech font-bold text-slate-700 w-8">${simSpeedMultiplier.toFixed(1)}x</span>
+            `;
+            const inp = spdWrap.querySelector('input');
+            const out = spdWrap.querySelector('span:last-child');
+            inp.oninput = e => {
+                simSpeedMultiplier = parseFloat(e.target.value);
+                out.innerText = `${simSpeedMultiplier.toFixed(1)}x`;
+            };
+            containerEl.appendChild(spdWrap);
+        }
+
+        function setupControls(id, isCustomNoGrind = false) {
+            const controlsDiv = document.getElementById('controls-overlay');
+            controlsDiv.innerHTML = '';
+
+            if (isCustomNoGrind) {
+                appendNoGrindCommonControls(controlsDiv);
+                return;
+            }
+
+            if (id === 'gears') {
+                controlsDiv.appendChild(makePillGroup(
+                    ['Compound', 'Simple'],
+                    () => ngCurrentPresetKey === 'gears_simple' ? 'Simple' : 'Compound',
+                    val => {
+                        ngCurrentPresetKey = val === 'Simple' ? 'gears_simple' : 'gears_compound';
+                        ngLoadJSONObject(NOGRIND_PRESETS[ngCurrentPresetKey]);
+                        renderTheoryPanel('gears');
+                    }
+                ));
+                appendNoGrindCommonControls(controlsDiv);
+            }
+            else if (id === 'worm') {
+                controlsDiv.appendChild(makePillGroup(
+                    ['Worm & Wheel', 'Worm & Nut'],
+                    () => ngCurrentPresetKey === 'worm_leadscrew' ? 'Worm & Nut' : 'Worm & Wheel',
+                    val => {
+                        ngCurrentPresetKey = val === 'Worm & Nut' ? 'worm_leadscrew' : 'worm_wheel';
+                        ngLoadJSONObject(NOGRIND_PRESETS[ngCurrentPresetKey]);
+                        renderTheoryPanel('worm');
+                    }
+                ));
+                appendNoGrindCommonControls(controlsDiv);
+            }
+            else if (id === 'rack') {
+                const bounceBtn = document.createElement('button');
+                bounceBtn.className = 'px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 transition active:scale-95';
+                bounceBtn.innerHTML = '<i class="fas fa-exchange-alt mr-1"></i> Auto-Sweep: ON';
+                bounceBtn.onclick = () => {
+                    ngAutoBounce = !ngAutoBounce;
+                    ngMotorCutoff = false;
+                    bounceBtn.innerHTML = `<i class="fas fa-exchange-alt mr-1"></i> Auto-Sweep: ${ngAutoBounce ? 'ON' : 'OFF'}`;
+                    bounceBtn.className = ngAutoBounce
+                        ? 'px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 transition active:scale-95'
+                        : 'px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 text-slate-500 transition active:scale-95';
+                };
+                controlsDiv.appendChild(bounceBtn);
+                appendNoGrindCommonControls(controlsDiv);
+            }
+            else if (id === 'ratchet') {
+                const dirBtn = document.createElement('button');
+                dirBtn.className = 'px-4 py-1.5 rounded-full text-xs font-bold bg-rose-50 text-rose-600 border border-rose-200 hover:bg-rose-100 transition flex items-center gap-1.5 active:scale-95';
+                dirBtn.innerHTML = '<i class="fas fa-sync-alt"></i> Switch Direction';
+                dirBtn.onclick = () => { cadState.ratchetDir *= -1; };
+                controlsDiv.appendChild(dirBtn);
+            }
+            else if (id === 'couplings') {
+                const bendWrap = document.createElement('div');
+                bendWrap.className = 'flex items-center gap-2 pl-2 border-l border-slate-200';
+                bendWrap.innerHTML = `
+                    <span class="text-[11px] font-bold text-slate-400">Bend</span>
+                    <input type="range" min="0" max="35" value="${cadState.uJointBendDeg}" class="ng-slider w-20 sm:w-24">
+                    <span class="text-xs font-mono-tech font-bold text-blue-600 w-8 text-right">${cadState.uJointBendDeg}°</span>
+                `;
+                const lbl = bendWrap.querySelector('span:first-child');
+                const sl = bendWrap.querySelector('input');
+                const sp = bendWrap.querySelector('span:last-child');
+
+                const syncAngleSlider = () => {
+                    const type = cadState.couplingType;
+                    const show = type === 'Universal' || type === 'Flexible';
+                    bendWrap.classList.toggle('hidden', !show);
+                    if (!show) return;
+
+                    if (type === 'Universal') {
+                        lbl.innerText = 'Bend';
+                        sl.min = '0';
+                        sl.max = '35';
+                        sl.value = cadState.uJointBendDeg;
+                        sp.innerText = `${cadState.uJointBendDeg}°`;
+                        sp.className = cadState.uJointBendDeg > 20
+                            ? 'text-xs font-mono-tech font-bold text-rose-600 w-8 text-right'
+                            : 'text-xs font-mono-tech font-bold text-blue-600 w-8 text-right';
+                    } else if (type === 'Flexible') {
+                        lbl.innerText = 'Angle';
+                        sl.min = '0';
+                        sl.max = '10';
+                        sl.value = cadState.flexBendDeg;
+                        sp.innerText = `${cadState.flexBendDeg}°`;
+                        sp.className = cadState.flexBendDeg > 5
+                            ? 'text-xs font-mono-tech font-bold text-rose-600 w-8 text-right'
+                            : 'text-xs font-mono-tech font-bold text-blue-600 w-8 text-right';
+                    }
+                };
+
+                sl.oninput = e => {
+                    const deg = parseInt(e.target.value, 10);
+                    if (cadState.couplingType === 'Universal') {
+                        cadState.uJointBendDeg = deg;
+                        if (cadState.uJointParts.outputAnchor) {
+                            cadState.uJointParts.outputAnchor.rotation.z = -THREE.MathUtils.degToRad(deg);
+                        }
+                    } else if (cadState.couplingType === 'Flexible') {
+                        cadState.flexBendDeg = deg;
+                        const beta = THREE.MathUtils.degToRad(deg);
+                        if (cadState.flexParts.outputAnchor) cadState.flexParts.outputAnchor.rotation.z = -beta;
+                        if (cadState.flexParts.spiderGroup) cadState.flexParts.spiderGroup.rotation.z = -beta * 0.5;
+                    }
+                    syncAngleSlider();
+                };
+
+                controlsDiv.appendChild(makePillGroup(
+                    ['Universal', 'Flanged', 'Muff', 'Flexible'],
+                    () => cadState.couplingType,
+                    val => {
+                        cadState.couplingType = val;
+                        syncAngleSlider();
+                        buildCADMechanism('couplings');
+                        renderTheoryPanel('couplings');
+                    }
+                ));
+                syncAngleSlider();
+                controlsDiv.appendChild(bendWrap);
+            }
+            else if (id === 'bearings') {
+                controlsDiv.appendChild(makePillGroup(
+                    ['Ball', 'Roller', 'Journal', 'Thrust'],
+                    () => cadState.bearingType,
+                    val => {
+                        cadState.bearingType = val;
+                        buildCADMechanism('bearings');
+                        renderTheoryPanel('bearings');
+                    }
+                ));
+                const xrayBtn = document.createElement('button');
+                xrayBtn.className = 'px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-600 transition active:scale-95';
+                xrayBtn.innerHTML = '<i class="fas fa-eye text-blue-500 mr-1"></i> X-Ray';
+                xrayBtn.onclick = () => {
+                    cadState.bearingCutaway = !cadState.bearingCutaway;
+                    xrayBtn.className = cadState.bearingCutaway
+                        ? 'px-3 py-1.5 rounded-full text-xs font-bold bg-blue-50 text-blue-600 border border-blue-200 transition active:scale-95'
+                        : 'px-3 py-1.5 rounded-full text-xs font-bold bg-slate-100 hover:bg-slate-200 text-slate-600 transition active:scale-95';
+                    buildCADMechanism('bearings');
+                };
+                controlsDiv.appendChild(xrayBtn);
+            }
+            else if (id === 'clutches') {
+                const engBtn = document.createElement('button');
+                engBtn.className = 'px-4 py-1.5 rounded-full text-xs font-bold bg-pink-50 text-pink-600 border border-pink-200 hover:bg-pink-100 transition active:scale-95';
+                engBtn.innerHTML = '<i class="fas fa-compress-arrows-alt mr-1.5"></i> Engage';
+                engBtn.onclick = () => {
+                    cadState.clutchEngaged = !cadState.clutchEngaged;
+                    engBtn.innerHTML = cadState.clutchEngaged
+                        ? '<i class="fas fa-expand-arrows-alt mr-1.5"></i> Disengage'
+                        : '<i class="fas fa-compress-arrows-alt mr-1.5"></i> Engage';
+                    engBtn.className = cadState.clutchEngaged
+                        ? 'px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-100 transition active:scale-95'
+                        : 'px-4 py-1.5 rounded-full text-xs font-bold bg-pink-50 text-pink-600 border border-pink-200 hover:bg-pink-100 transition active:scale-95';
+                };
+
+                controlsDiv.appendChild(makePillGroup(
+                    ['Friction', 'Positive'],
+                    () => cadState.clutchType,
+                    val => {
+                        cadState.clutchType = val;
+                        cadState.clutchEngaged = false;
+                        cadState.clutchPhase = 'disengaged';
+                        cadState.clutchGap = 6.5;
+                        cadState.clutchHubX = 13.5;
+                        cadState.clutchOutVel = 0;
+                        engBtn.innerHTML = '<i class="fas fa-compress-arrows-alt mr-1.5"></i> Engage';
+                        engBtn.className = 'px-4 py-1.5 rounded-full text-xs font-bold bg-pink-50 text-pink-600 border border-pink-200 hover:bg-pink-100 transition active:scale-95';
+                        updateClutchESNote('clutches');
+                        buildCADMechanism('clutches');
+                        renderTheoryPanel('clutches');
+                    }
+                ));
+                controlsDiv.appendChild(engBtn);
+            }
+        }
+
+        // Global NoGrindSim .json File Loader
+        document.getElementById('globalNoGrindLoad').addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = evt => {
+                try {
+                    const parsed = JSON.parse(evt.target.result);
+                    if (!parsed || !Array.isArray(parsed.nodes)) {
+                        showToast('Invalid file: please choose a .json exported from NoGrindSim.');
+                        return;
+                    }
+                    const cleanName = file.name.replace(/\.json$/i, '');
+                    if (currentMechId) {
+                        currentMechId = 'custom';
+                        updateClutchESNote(null);
+                        ngLoadJSONObject(parsed);
+                        setupControls('custom', true);
+                        renderTheoryPanel(null, cleanName);
+                        document.getElementById('header-active-name').innerText = cleanName;
+                    } else {
+                        openDetail('custom', parsed, cleanName);
+                    }
+                    showToast(`Loaded NoGrindSim model: ${cleanName}`);
+                } catch (err) {
+                    console.error(err);
+                    showToast('Could not parse NoGrindSim JSON file.');
+                }
+                e.target.value = '';
+            };
+            reader.readAsText(file);
+        });
+
+        window.addEventListener('resize', resizeViewport);
+        window.onload = () => {
+            renderDashboard();
+            if (EMBED.mech && mechanisms.some(m => m.id === EMBED.mech)) openDetail(EMBED.mech);
+        };
+    </script>
+</body>
+</html>
