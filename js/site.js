@@ -623,13 +623,13 @@ function renderTeacherDocs(topicKey, containerId) {
    ============================================================ */
 var NOTES_CHECKED = {
   'higher-systems-approach':  true,
-  'higher-energy-efficiency': false,
+  'higher-energy-efficiency': true,
   'higher-roles-impacts':     false,
   'higher-analogue':          true,
   'higher-digital':           true,
   'higher-control':           false,
   'higher-drive-systems':     false,
-  'higher-pneumatics':        false,
+  'higher-pneumatics':        true,
   'higher-structures-forces': false,
   'higher-materials':         true
 };
