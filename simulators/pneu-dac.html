@@ -3,7 +3,7 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>No Pressure Sim V4.0.1</title>
+ <title>No Pressure Sim V4.0.2</title>
  <script src="https://cdn.tailwindcss.com"></script>
  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
  <style>
@@ -76,7 +76,7 @@
  <line x1="62" y1="62" x2="62" y2="76" stroke-width="3.5" />
  </svg>
  </div>
- <h1 class="text-lg font-bold text-slate-700 tracking-tight whitespace-nowrap hidden sm:block">No Pressure <span class="text-orange-600">Sim</span> <span class="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-mono ml-1 border border-orange-200">V4.0.1</span></h1>
+ <h1 class="text-lg font-bold text-slate-700 tracking-tight whitespace-nowrap hidden sm:block">No Pressure <span class="text-orange-600">Sim</span> <span class="text-xs bg-orange-100 text-orange-700 px-2 py-0.5 rounded-full font-mono ml-1 border border-orange-200">V4.0.2</span></h1>
  </div>
  
  <div class="h-8 w-px bg-slate-300 mx-1 rounded-full hidden sm:block"></div>
@@ -223,7 +223,10 @@
  <div class="comp-card" data-type="valve52doublesol"><canvas width="150" height="68" class="w-full h-[64px] object-contain pointer-events-none"></canvas><span class="card-label">Double Solenoid</span></div>
  </div>
  </div>
-
+<button type="button" class="acc-btn" onclick="openValveCreator()">
+ <span>Custom Valve Creator</span>
+ <span class="text-slate-400 text-xs font-bold leading-none">+</span>
+ </button>
  <div class="sidebar-group">
  <button class="acc-btn" aria-expanded="false" onclick="toggleMenu('menu-cyl', this)">
  <span>Cylinders</span>
@@ -243,6 +246,7 @@
  <div id="menu-flow" class="submenu grid grid-cols-2 gap-2">
  <div class="comp-card" data-type="restrictor"><canvas width="150" height="68" class="w-full h-[64px] object-contain pointer-events-none"></canvas><span class="card-label">Restrictor</span></div>
  <div class="comp-card" data-type="unidir"><canvas width="150" height="68" class="w-full h-[64px] object-contain pointer-events-none"></canvas><span class="card-label">Uni-Directional Restrictor</span></div>
+ <div class="comp-card" data-type="nonreturn"><canvas width="150" height="68" class="w-full h-[64px] object-contain pointer-events-none"></canvas><span class="card-label">Non-Return Valve</span></div>
  <div class="comp-card" data-type="shuttle"><canvas width="150" height="68" class="w-full h-[64px] object-contain pointer-events-none"></canvas><span class="card-label">Shuttle Valve</span></div>
  <div class="comp-card" data-type="reservoir"><canvas width="150" height="68" class="w-full h-[64px] object-contain pointer-events-none"></canvas><span class="card-label">Reservoir</span></div>
  <div class="comp-card" data-type="tpiece"><canvas width="150" height="68" class="w-full h-[64px] object-contain pointer-events-none"></canvas><span class="card-label">T-Piece</span></div>
@@ -315,8 +319,9 @@
  <label class="text-[10px] font-bold text-slate-500 uppercase">Component Label (e.g. Valve A)</label>
  <div class="flex gap-2 mt-1"><input type="text" id="propLabel" class="flex-1 bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-sm font-bold text-slate-700 focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Label"><button id="btnSetProp" type="button" class="bg-orange-600 text-white px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-orange-700 shadow-md shadow-orange-200">SET</button></div>
  </div>
- <div id="insp-mech" class="hidden pt-3 mt-3 border-t border-orange-200 bg-orange-50 p-2.5 rounded-xl shadow-inner">
- <label class="text-[10px] font-black text-orange-800 uppercase flex items-center gap-1 mb-1">
+ <div id="insp-mech" class="hidden pt-3 mt-3 border-t border-orange-200 bg-orange-50 p-2.5 rounded-xl shadow-inner space-y-3">
+ <div id="insp-mech-left">
+ <label id="lblMechLeft" class="text-[10px] font-black text-orange-800 uppercase flex items-center gap-1 mb-1">
  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
  Mechanical Link ID
  </label>
@@ -326,12 +331,31 @@
  <div id="insp-trip-pos" class="hidden mt-3 pt-2.5 border-t border-orange-200/80">
  <label class="text-[10px] font-black text-orange-800 uppercase mb-1 block">Trip Position (% of Stroke)</label>
  <div class="flex items-center justify-between mb-1 px-0.5">
- <span class="text-[9px] text-orange-700/70 font-bold">Instroked (5%)</span>
+ <span class="text-[9px] text-orange-700/70 font-bold">Instroked (0%)</span>
  <span id="tripPosVal" class="text-xs font-mono text-orange-700 font-black">85%</span>
- <span class="text-[9px] text-orange-700/70 font-bold">Outstroked (95%)</span>
+ <span class="text-[9px] text-orange-700/70 font-bold">Outstroked (100%)</span>
  </div>
- <input type="range" id="propTripPos" min="5" max="95" step="1" value="85" class="w-full h-1.5 bg-orange-200 rounded-lg appearance-none cursor-pointer accent-orange-600">
+ <input type="range" id="propTripPos" min="0" max="100" step="1" value="85" class="w-full h-1.5 bg-orange-200 rounded-lg appearance-none cursor-pointer accent-orange-600">
  <p class="text-[9px] text-orange-700/80 mt-1 font-medium leading-tight">Fires a 300ms pulse only when passing this position in the linked direction (+ outstroke / - instroke).</p>
+ </div>
+ </div>
+
+ <div id="insp-mech-right" class="hidden pt-2.5 border-t border-orange-200/80">
+ <label class="text-[10px] font-black text-orange-800 uppercase flex items-center gap-1 mb-1">
+ <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+ Mechanical Link ID (Return Side)
+ </label>
+ <input type="text" id="propMechRight" class="w-full bg-white border-2 border-orange-300 rounded-lg px-3 py-1.5 text-sm font-black text-orange-900 uppercase focus:ring-2 focus:border-orange-500 outline-none placeholder-orange-300" placeholder="e.g. B-">
+
+ <div id="insp-trip-pos-right" class="hidden mt-3 pt-2.5 border-t border-orange-200/80">
+ <label class="text-[10px] font-black text-orange-800 uppercase mb-1 block">Return Trip Position (% of Stroke)</label>
+ <div class="flex items-center justify-between mb-1 px-0.5">
+ <span class="text-[9px] text-orange-700/70 font-bold">Instroked (0%)</span>
+ <span id="tripPosValRight" class="text-xs font-mono text-orange-700 font-black">85%</span>
+ <span class="text-[9px] text-orange-700/70 font-bold">Outstroked (100%)</span>
+ </div>
+ <input type="range" id="propTripPosRight" min="0" max="100" step="1" value="85" class="w-full h-1.5 bg-orange-200 rounded-lg appearance-none cursor-pointer accent-orange-600">
+ </div>
  </div>
  </div>
 
@@ -450,7 +474,79 @@
  </div>
  </div>
  </div>
+<!-- Valve Creator Modal -->
+ <div id="valveCreatorModal" class="hidden fixed inset-0 z-[125] flex items-center justify-center p-4" style="background:rgba(15,23,42,.72);backdrop-filter:blur(6px);">
+ <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden border border-slate-200 flex flex-col">
+ <div class="bg-gradient-to-r from-red-600 via-orange-500 to-amber-500 px-6 py-4 flex justify-between items-center">
+ <div>
+ <span class="px-2 py-0.5 bg-white/20 text-white border border-white/30 rounded-full text-[10px] font-black tracking-wider uppercase">Custom Component</span>
+ <h3 class="text-lg font-black text-white mt-0.5">Valve Creator</h3>
+ </div>
+ <button onclick="closeValveCreator()" class="w-8 h-8 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center font-bold">✕</button>
+ </div>
 
+ <div class="p-5 space-y-4">
+ <div class="bg-slate-50 border border-slate-200 rounded-2xl p-2 flex flex-col items-center justify-center">
+ <canvas id="vcPreviewCanvas" width="320" height="120" class="w-full h-[120px] object-contain"></canvas>
+ <span id="vcPreviewSummary" class="text-[11px] font-bold text-slate-500 mt-1">3/2 Valve • Spring – Push Button</span>
+ </div>
+
+ <div class="grid grid-cols-2 gap-3">
+ <div>
+ <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Valve Type</label>
+ <select id="vcWays" onchange="updateVCPreview()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-orange-500">
+ <option value="2">2/2 Valve</option>
+ <option value="3" selected>3/2 Valve</option>
+ <option value="5">5/2 Valve</option>
+ </select>
+ </div>
+ <div id="vcStateWrap">
+ <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Resting State</label>
+ <select id="vcNormOpen" onchange="updateVCPreview()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-orange-500">
+ <option value="false">Normally Closed (NC)</option>
+ <option value="true">Normally Open (NO)</option>
+ </select>
+ </div>
+ </div>
+
+ <div class="grid grid-cols-2 gap-3">
+ <div>
+ <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Left Actuator (Active)</label>
+ <select id="vcLeftAct" onchange="updateVCPreview()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-orange-500">
+ <option value="spring">Spring (Active)</option>
+ <option value="button">Push Button</option>
+ <option value="lever">Lever</option>
+ <option value="roller">Roller</option>
+ <option value="rollertrip">Roller Trip</option>
+ <option value="plunger">Plunger</option>
+ <option value="pilot">Pilot Air (14)</option>
+ <option value="diaphragm">Diaphragm (14)</option>
+ <option value="solenoid">Solenoid (14)</option>
+ </select>
+ </div>
+ <div>
+ <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Right Actuator (Return)</label>
+ <select id="vcRightAct" onchange="updateVCPreview()" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs font-bold text-slate-700 outline-none focus:ring-2 focus:ring-orange-500">
+ <option value="button">Push Button</option>
+ <option value="spring">Spring Return</option>
+ <option value="lever">Lever</option>
+ <option value="roller">Roller</option>
+ <option value="rollertrip">Roller Trip</option>
+ <option value="plunger">Plunger</option>
+ <option value="pilot">Pilot Air (12)</option>
+ <option value="diaphragm">Diaphragm (12)</option>
+ <option value="solenoid">Solenoid (12)</option>
+ </select>
+ </div>
+ </div>
+ </div>
+
+ <div class="px-5 py-3.5 bg-slate-50 border-t border-slate-200 flex justify-end gap-2">
+ <button type="button" onclick="closeValveCreator()" class="px-4 py-2 rounded-xl text-slate-500 hover:bg-slate-200 font-bold text-xs transition-colors">Cancel</button>
+ <button type="button" onclick="addCustomValve()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-red-600 to-orange-500 text-white hover:brightness-110 font-bold text-xs shadow-md shadow-orange-200 transition-all">Add to Canvas</button>
+ </div>
+ </div>
+ </div>
  <script>
  function toggleMenu(id, btn) { 
  const m=document.getElementById(id); const i=btn.querySelector('.rotate-icon'); 
@@ -863,14 +959,16 @@
  constructor(type, x, y, ways, lAct, rAct, lbl, p14, p12, p14Lbl, p12Lbl) {
  super(type, x, y); 
  this.ways = ways; this.cfg = {lAct, rAct, lbl, p14, p12, p14Lbl, p12Lbl};
- this.startPos = (ways===5 && type !== 'valve52spring' && type !== 'valve52sol'); 
+ this.startPos = (lAct === 'spring' && rAct !== 'spring') || (ways===5 && rAct !== 'spring' && lAct !== 'spring'); 
 this.active = this.startPos; this.spoolPos = this.active ? 1 : 0; this.normallyOpen = false;
- this.tripPos = 85; this.pulseTimer = 0;
- if (ways === 3) this.rot = 90;
+ this.tripPos = 85; this.pulseTimer = 0; this.held = false;
+ this.mechR = false; this.mechIdR = ""; this.tripPosR = 85; this.pulseTimerR = 0; this.heldR = false;
+ if (ways <= 3) this.rot = 90;
  
- const pDist = ways === 3 ? 90 : 110;
+ const pDist = ways <= 3 ? 90 : 110;
 
- if (ways === 3) { this.addP('1', -10, 25, 'in'); this.addP('2', -10, -25, 'out'); this.addP('3', 10, 25, 'ex', true); } 
+ if (ways === 2) { this.addP('1', 0, 25, 'in'); this.addP('2', 0, -25, 'out'); }
+ else if (ways === 3) { this.addP('1', -10, 25, 'in'); this.addP('2', -10, -25, 'out'); this.addP('3', 10, 25, 'ex', true); } 
  else { this.addP('1', 0, 25, 'in'); this.addP('4', -20, -25, 'out'); this.addP('2', 20, -25, 'out'); }
  
  if(p14) this.addP('14', -pDist, 0, 'pilot');
@@ -886,13 +984,13 @@ this.active = this.startPos; this.spoolPos = this.active ? 1 : 0; this.normallyO
  if(this.flipV) ly=-ly;
  if(this.flipH) lx=-lx;
 
- const hw = this.ways === 3 ? 40 : 50;
+ const hw = this.ways <= 3 ? 40 : 50;
  const hh = 30;
- const pDist = this.ways === 3 ? 90 : 110;
+ const pDist = this.ways <= 3 ? 90 : 110;
 
  if (state.viewMode === 'symbol') {
  // Account for the spool offset so the entire shifted valve body + actuators (button, lever, roller, etc.) are clickable
- const is32 = this.ways === 3;
+ const is32 = this.ways <= 3;
  const isNC = is32 ? !this.normallyOpen : true;
  const sp = this.spoolPos !== undefined ? this.spoolPos : (this.active ? 1 : 0);
  const effectivePos = isNC ? sp : 1 - sp;
@@ -910,40 +1008,59 @@ this.active = this.startPos; this.spoolPos = this.active ? 1 : 0; this.normallyO
 
  return false;
  }
-  update(dt) {
- if (this.type === 'valve32rollertrip') {
- if (this.pulseTimer > 0) {
- this.pulseTimer = Math.max(0, this.pulseTimer - dt);
- this.mech = true;
- } else {
- this.mech = false;
+ update(dt) {
+ const lAct = this.cfg.lAct, rAct = this.cfg.rAct;
+ if (lAct === 'rollertrip') {
+ if (this.pulseTimer > 0) this.pulseTimer = Math.max(0, this.pulseTimer - dt);
+ this.mech = this.held || this.pulseTimer > 0;
  }
- this.active = this.mech;
- } else if (this.type === 'valve32roller' || this.type === 'valve32plunger') {
- this.active = this.mech;
- } else {
- const port14 = this.ports.find(p=>p.id==='14');
- const port12 = this.ports.find(p=>p.id==='12');
- 
- const isSig = (p, act) => p && p.p > 0.1 && !p.sinking && (Boolean(p.elec) === (act === 'solenoid'));
- const p14Active = isSig(port14, this.cfg.lAct);
- const p12Active = isSig(port12, this.cfg.rAct);
+ if (rAct === 'rollertrip') {
+ if (this.pulseTimerR > 0) this.pulseTimerR = Math.max(0, this.pulseTimerR - dt);
+ this.mechR = this.heldR || this.pulseTimerR > 0;
+ }
 
- if(this.cfg.p12) {
- if (p14Active && !p12Active) this.active = true; else if (p12Active && !p14Active) this.active = false;
- } else if(this.cfg.p14) { this.active = p14Active || this.manual; } 
- else { this.active = this.manual; }
+ const port14 = this.ports.find(p => p.id === '14');
+ const port12 = this.ports.find(p => p.id === '12');
+ const isSig = (p, act) => p && p.p > 0.1 && !p.sinking && (Boolean(p.elec) === (act === 'solenoid'));
+ const isManual = act => act === 'button' || act === 'lever';
+ const isMech = act => act === 'roller' || act === 'rollertrip' || act === 'plunger';
+
+ const sideActive = (act, port, side) => {
+ if (act === 'spring') return false;
+ if (['pilot', 'diaphragm', 'solenoid'].includes(act)) return isSig(port, act);
+ if (isMech(act)) return side === 'left' ? this.mech : this.mechR;
+ if (isManual(act)) return this.manual;
+ return false;
+ };
+
+ const lOn = sideActive(lAct, port14, 'left');
+ const rOn = sideActive(rAct, port12, 'right');
+
+ if (lAct === 'spring' && rAct !== 'spring') {
+ // Spring holds valve in active state; right actuator pushes it inactive (NOT function)
+ this.active = !rOn;
+ } else if (rAct === 'spring' && lAct !== 'spring') {
+ // Standard spring return
+ this.active = lOn;
+ } else if (isManual(lAct) && isManual(rAct)) {
+ // Double manual (e.g. Lever–Lever) toggles on click
+ this.active = this.manual;
+ } else {
+ // Bistable (e.g. Pilot–Pilot, Button–Pilot, Solenoid–Solenoid)
+ if (lOn && !rOn) this.active = true;
+ else if (rOn && !lOn) this.active = false;
  }
  }
- getConnections() {
+getConnections() {
+ if (this.ways === 2) return (this.active ^ this.normallyOpen) ? [[0, 1]] : [];
  if (this.ways === 3) return (this.active ^ this.normallyOpen) ? [[0, 1]] : [[1, 2]];
  return this.active ? [[0, 1], [2, this.pEx3]] : [[0, 2], [1, this.pEx5]];
  }
  drawBlock(ctx) {
- const hw = this.ways === 3 ? 40 : 50, hh = 25;
- const pDist = this.ways === 3 ? 90 : 110;
+ const hw = this.ways <= 3 ? 40 : 50, hh = 25;
+ const pDist = this.ways <= 3 ? 90 : 110;
 
- ctx.fillStyle = (this.ways===3 ? (this.active ^ this.normallyOpen) : this.active) ? "#dbeafe" : "#fff"; 
+ ctx.fillStyle = (this.ways <= 3 ? (this.active ^ this.normallyOpen) : this.active) ? "#dbeafe" : "#fff";
  ctx.lineWidth=2; ctx.strokeStyle='#1e293b';
  ctx.fillRect(-hw,-hh,hw*2,hh*2); ctx.strokeRect(-hw,-hh,hw*2,hh*2);
  
@@ -967,7 +1084,9 @@ this.active = this.startPos; this.spoolPos = this.active ? 1 : 0; this.normallyO
  
  if (window.showNames) {
  ctx.fillStyle="#666"; ctx.font=(this.ways===3?"bold ":"")+"9px Roboto"; ctx.textAlign="center";
- if (this.ways === 3) {
+if (this.ways === 2) {
+ drawCompText(ctx, "IN (1)", 0, 38, this.flipV, this.flipH); drawCompText(ctx, "OUT (2)", 0, -38, this.flipV, this.flipH);
+ } else if (this.ways === 3) {
  drawCompText(ctx, "IN (1)", -10, 38, this.flipV, this.flipH); drawCompText(ctx, "OUT (2)", -10, -38, this.flipV, this.flipH);
  } else {
  drawCompText(ctx, this.type==='valve52sol'||this.type==='valve52spring' ? "OUT L (4)" : "4", -20, -38, this.flipV, this.flipH); 
@@ -979,19 +1098,25 @@ this.active = this.startPos; this.spoolPos = this.active ? 1 : 0; this.normallyO
  }
  
  if(this.lbl) { ctx.fillStyle="#334155"; ctx.font="bold 11px Roboto"; drawCompText(ctx, this.lbl, 0, -45, this.flipV, this.flipH); }
- if(this.mechId && (this.type==='valve32roller' || this.type==='valve32rollertrip' || this.type==='valve32plunger')) { 
-ctx.fillStyle=this.mech ? "#ef4444" : "#ea580c"; 
-ctx.font="900 12px Roboto"; 
-const badgeTxt = this.type === 'valve32rollertrip' ? `${this.mechId} (${this.tripPos ?? 85}%)` : this.mechId;
+ if(this.mechId && ['roller','rollertrip','plunger'].includes(this.cfg.lAct)) { 
+ ctx.fillStyle = this.mech ? "#ef4444" : "#ea580c"; 
+ ctx.font = "900 12px Roboto"; 
+ const badgeTxt = this.cfg.lAct === 'rollertrip' ? `${this.mechId} (${this.tripPos ?? 85}%)` : this.mechId;
  drawCompText(ctx, badgeTxt, -45, -45, this.flipV, this.flipH); 
-}
+ }
+ if(this.mechIdR && ['roller','rollertrip','plunger'].includes(this.cfg.rAct)) { 
+ ctx.fillStyle = this.mechR ? "#ef4444" : "#ea580c"; 
+ ctx.font = "900 12px Roboto"; 
+ const badgeTxtR = this.cfg.rAct === 'rollertrip' ? `${this.mechIdR} (${this.tripPosR ?? 85}%)` : this.mechIdR;
+ drawCompText(ctx, badgeTxtR, 45, -45, this.flipV, this.flipH); 
+ }
  }
  drawSymbol(ctx) {
  const target = this.active ? 1 : 0;
  if (this.spoolPos === undefined) this.spoolPos = target;
  if (state.sim) this.spoolPos += (target - this.spoolPos) * 0.3; else this.spoolPos = target; 
 
- const is32 = this.ways === 3;
+ const is32 = this.ways <= 3;
  const isNC = is32 ? !this.normallyOpen : true;
  const effectivePos = isNC ? this.spoolPos : 1 - this.spoolPos;
  const offset = is32 ? -20 + (effectivePos * 40) : -50 + (effectivePos * 50); 
@@ -1031,7 +1156,15 @@ const badgeTxt = this.type === 'valve32rollertrip' ? `${this.mechId} (${this.tri
  ctx.fillRect(boxX, -25, boxW, 50); ctx.strokeRect(boxX, -25, boxW, 50);
  ctx.beginPath(); ctx.moveTo(midX, -25); ctx.lineTo(midX, 25); ctx.stroke(); 
 
- if (is32) {
+ if (this.ways === 2) {
+ // Left box (active): straight arrow from Port 1 to Port 2
+ drawArrow(ctx, -20, 25, -20, -25, getCol(isActive && (pIn || pO2)));
+ // Right box (resting): both ports blocked with T-bars
+ ctx.strokeStyle = getCol(isResting && pO2);
+ ctx.beginPath(); ctx.moveTo(20, -25); ctx.lineTo(20, -15); ctx.moveTo(15, -15); ctx.lineTo(25, -15); ctx.stroke();
+ ctx.strokeStyle = getCol(isResting && pIn);
+ ctx.beginPath(); ctx.moveTo(20, 25); ctx.lineTo(20, 15); ctx.moveTo(15, 15); ctx.lineTo(25, 15); ctx.stroke();
+ } else if (this.ways === 3) {
  drawArrow(ctx, -30, 25, -30, -25, getCol(isActive && (pIn || pO2))); 
  ctx.strokeStyle = getCol(isResting && pEx3);
  ctx.beginPath(); ctx.moveTo(-10, 25); ctx.lineTo(-10, 15); ctx.moveTo(-15, 15); ctx.lineTo(-5, 15); ctx.stroke();
@@ -1072,16 +1205,18 @@ const badgeTxt = this.type === 'valve32rollertrip' ? `${this.mechId} (${this.tri
  ctx.restore();
  };
 
- if (is32) {
+ if (this.ways === 3) {
  drawExhaust(10, 25);
- } else {
+ } else if (this.ways === 5) {
  drawExhaust(-20, 25);
  drawExhaust(20, 25);
  }
 
  if (window.showNames) {
  ctx.fillStyle="#666"; ctx.font="bold 9px Roboto"; ctx.textAlign="center";
- if (is32) {
+ if (this.ways === 2) {
+ drawCompText(ctx, "1", 0, 35, this.flipV, this.flipH); drawCompText(ctx, "2", 0, -35, this.flipV, this.flipH);
+ } else if (this.ways === 3) {
  drawCompText(ctx, "1", -10, 35, this.flipV, this.flipH); drawCompText(ctx, "2", -10, -35, this.flipV, this.flipH); drawCompText(ctx, "3", 10, 43, this.flipV, this.flipH); 
  } else {
  drawCompText(ctx, "4", -20, -35, this.flipV, this.flipH); drawCompText(ctx, "2", 20, -35, this.flipV, this.flipH); drawCompText(ctx, "5", -20, 43, this.flipV, this.flipH); 
@@ -1091,12 +1226,18 @@ const badgeTxt = this.type === 'valve32rollertrip' ? `${this.mechId} (${this.tri
  if(this.cfg.p12) drawCompText(ctx, this.cfg.p12Lbl, pDist, -15, this.flipV, this.flipH); 
  }
  if(this.lbl) { ctx.fillStyle="#334155"; ctx.font="bold 11px Roboto"; drawCompText(ctx, this.lbl, 0, -45, this.flipV, this.flipH); }
- if(this.mechId && (this.type==='valve32roller' || this.type==='valve32rollertrip' || this.type==='valve32plunger')) { 
-ctx.fillStyle=this.mech ? "#ef4444" : "#ea580c"; 
-ctx.font="900 12px Roboto"; 
-const badgeTxt = this.type === 'valve32rollertrip' ? `${this.mechId} (${this.tripPos ?? 85}%)` : this.mechId;
+ if(this.mechId && ['roller','rollertrip','plunger'].includes(this.cfg.lAct)) { 
+ ctx.fillStyle = this.mech ? "#ef4444" : "#ea580c"; 
+ ctx.font = "900 12px Roboto"; 
+ const badgeTxt = this.cfg.lAct === 'rollertrip' ? `${this.mechId} (${this.tripPos ?? 85}%)` : this.mechId;
  drawCompText(ctx, badgeTxt, -45, -45, this.flipV, this.flipH); 
-}
+ }
+ if(this.mechIdR && ['roller','rollertrip','plunger'].includes(this.cfg.rAct)) { 
+ ctx.fillStyle = this.mechR ? "#ef4444" : "#ea580c"; 
+ ctx.font = "900 12px Roboto"; 
+ const badgeTxtR = this.cfg.rAct === 'rollertrip' ? `${this.mechIdR} (${this.tripPosR ?? 85}%)` : this.mechIdR;
+ drawCompText(ctx, badgeTxtR, 45, -45, this.flipV, this.flipH); 
+ }
  }
  }
 
@@ -1173,7 +1314,56 @@ const badgeTxt = this.type === 'valve32rollertrip' ? `${this.mechId} (${this.tri
  }
  }
  }
+class NonReturn extends Component {
+ constructor(x, y) { super('nonreturn', x, y); this.addP('1', -35, 0, 'io'); this.addP('2', 35, 0, 'io'); this.ballPos = 0; }
+ update(dt) {
+ const flowing = this.ports[0].p > 0 && !this.ports[0].sinking;
+ const target = flowing ? 7 : 0;
+ if (state.sim) this.ballPos += (target - this.ballPos) * (15 * dt); else this.ballPos = target;
+ }
+ getConnections() { return [[0, 1]]; }
+ getFlowScale(fromIdx, toIdx) { return (fromIdx === 0 && toIdx === 1) ? 1.0 : 0; }
+ drawBlock(ctx) {
+ const hw = 35, hh = 22;
+ ctx.fillStyle = "#fff"; ctx.lineWidth = 2; ctx.strokeStyle = '#1e293b';
+ ctx.fillRect(-hw, -hh, hw * 2, hh * 2); ctx.strokeRect(-hw, -hh, hw * 2, hh * 2);
+ ctx.fillStyle = "#1e293b"; ctx.font = "bold 9.5px Roboto"; ctx.textAlign = "center";
+ drawCompText(ctx, "Non-Return", 0, -6, this.flipV, this.flipH);
+ ctx.fillStyle = "#3b82f6"; ctx.font = "bold 9px Roboto";
+ drawCompText(ctx, "Free →", 0, 8, this.flipV, this.flipH);
+ }
+ drawSymbol(ctx) {
+ const colOff = "#1e293b";
+ const p1Flow = state.sim && this.ports[0].p > 0 && !this.ports[0].sinking;
+ const p2Flow = state.sim && this.ports[1].p > 0 && !this.ports[1].sinking;
+ ctx.strokeStyle = colOff; ctx.lineWidth = 2; ctx.lineCap = "round"; ctx.lineJoin = "round";
 
+ // Inlet line (Port 1 -> V-seat) and Outlet line (ball -> Port 2)
+ ctx.beginPath();
+ ctx.moveTo(-35, 0); ctx.lineTo(-9, 0);
+ ctx.moveTo(this.ballPos + 7, 0); ctx.lineTo(35, 0);
+ ctx.stroke();
+
+ if (p1Flow) drawArrow(ctx, -35, 0, -14, 0, CFG.col.on);
+ if (p2Flow) drawArrow(ctx, 14, 0, 35, 0, CFG.col.on);
+
+ // V-shaped seat (blocks right-to-left backflow)
+ ctx.strokeStyle = colOff; ctx.lineWidth = 2;
+ ctx.beginPath();
+ ctx.moveTo(2, -11); ctx.lineTo(-9, 0); ctx.lineTo(2, 11);
+ ctx.stroke();
+
+ // Ball
+ ctx.fillStyle = "#ffffff"; ctx.strokeStyle = colOff; ctx.lineWidth = 2;
+ ctx.beginPath(); ctx.arc(this.ballPos, 0, 7, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+
+ if (window.showNames) {
+ ctx.fillStyle = "#666"; ctx.font = "bold 9px Roboto"; ctx.textAlign = "center";
+ drawCompText(ctx, "1", -25, 12, this.flipV, this.flipH);
+ drawCompText(ctx, "2", 25, 12, this.flipV, this.flipH);
+ }
+ }
+ }
  class Junction extends Component { 
  constructor(x,y) { super('tpiece',x,y); this.addP('1',-30,0,'io'); this.addP('2',30,0,'io'); this.addP('3',0,30,'io'); }
  getConnections() { return [[0,1],[1,2],[0,2]]; } 
@@ -1239,8 +1429,8 @@ const badgeTxt = this.type === 'valve32rollertrip' ? `${this.mechId} (${this.tri
  this.d = d; 
 this.ext = 0; 
 this.prevExt = 0; 
-this.addP('1', -80, 25, 'in'); 
- if(d) this.addP('2', 80, 25, 'in'); 
+this.addP('1', -95, 20, 'in'); 
+ if(d) this.addP('2', 95, 20, 'in');
 
  this.boreDia = 12; 
  this.rodDia = 5;
@@ -1277,11 +1467,16 @@ this.addP('1', -80, 25, 'in');
  speedMultOut = Math.min(Math.max(speedMultOut, 15), 500);
  speedMultIn = Math.min(Math.max(speedMultIn, 15), 500);
 
+ const p1Piped = state.pipes.some(l => l.p1 === p1 || l.p2 === p1);
+ const p2Piped = p2 ? state.pipes.some(l => l.p1 === p2 || l.p2 === p2) : false;
+
  if (netForce > 0.1) { 
  let flowOut = 1.0; 
- if (p2 && p2.ex) flowOut = p2.flow; 
+ if (p2) {
+ if (p2.ex) flowOut = p2.flow;
+ else if (p2Piped) flowOut = P2_active ? 0.05 : 0;
+ }
  if (Flow1 < 0.9 && ( !this.d || Flow1 < flowOut )) isJudder = true; 
- if (this.d && !p2.ex && P2_active) flowOut = 0.05;
 
  let move = speedMultOut * dt * Math.min(Flow1, flowOut); 
  if(isJudder) move = ((state.anim % 10) < 5) ? 0 : move * 2.0; 
@@ -1290,19 +1485,20 @@ this.addP('1', -80, 25, 'in');
  else if (netForce < -0.1 || (!P1_active && !this.d)) { 
  let flowIn = this.d ? Flow2 : 1.0; 
  let flowOut = 1.0; 
- if(p1.ex) flowOut = p1.flow; 
+ if (p1.ex) flowOut = p1.flow;
+ else if (p1Piped) flowOut = P1_active ? 0.05 : 0;
  if (this.d && flowIn < 0.9 && flowIn < flowOut) isJudder = true; 
 
- let move = (!this.d && !P1_active) ? (250 * dt) : (speedMultIn * dt * Math.min(flowIn, flowOut)); 
+ let move = (!this.d && !P1_active) ? (250 * dt * flowOut) : (speedMultIn * dt * Math.min(flowIn, flowOut)); 
  if(isJudder) move = ((state.anim % 10) < 5) ? 0 : move * 2.0; 
  this.ext = Math.max(0, this.ext - move); 
  }
  }
  drawBlock(ctx) {
- const maxStroke = 180; 
+ const maxStroke = 162; 
  const pistonW = 14;
- const pistonX = -96 + (this.ext / 100) * maxStroke; 
- const rodLength = 220;
+ const pistonX = -88 + (this.ext / 100) * maxStroke; 
+ const rodLength = 212;
  
  ctx.fillStyle = "#fff"; ctx.fillRect(-100, -20, 200, 40); 
 
@@ -1351,11 +1547,11 @@ this.addP('1', -80, 25, 'in');
  const linkId = (this.mechId || (this.lbl ? this.lbl : "")).toUpperCase().trim();
  if(linkId) { 
 ctx.save(); ctx.setLineDash([3,3]); ctx.lineWidth=1.5;
- ctx.fillStyle='#fff7ed'; ctx.fillRect(124, -38, 28, 14); ctx.fillRect(304, -38, 28, 14);
- ctx.strokeStyle='#fdba74'; ctx.strokeRect(124, -38, 28, 14); ctx.strokeRect(304, -38, 28, 14); 
+ctx.fillStyle='#fff7ed'; ctx.fillRect(124, -38, 28, 14); ctx.fillRect(286, -38, 28, 14);
+ ctx.strokeStyle='#fdba74'; ctx.strokeRect(124, -38, 28, 14); ctx.strokeRect(286, -38, 28, 14); 
 ctx.fillStyle='#ea580c'; ctx.font = "900 10px Roboto";
  drawCompText(ctx, linkId+'-', 138, -31, this.flipV, this.flipH); 
-drawCompText(ctx, linkId+'+', 318, -31, this.flipV, this.flipH); 
+drawCompText(ctx, linkId+'+', 300, -31, this.flipV, this.flipH); 
 
  // Draw any linked Roller Trip markers at their user-set % along the stroke
  state.comps.forEach(v => {
@@ -1363,7 +1559,7 @@ drawCompText(ctx, linkId+'+', 318, -31, this.flipV, this.flipH);
  const vLbl = (v.mechId || getEffectiveLabel(v) || "").toUpperCase().trim();
  if (vLbl === linkId + '+' || vLbl === linkId + '-') {
  const pct = v.tripPos !== undefined ? v.tripPos : 85;
- const tripX = 138 + (pct / 100) * 180;
+ const tripX = 138 + (pct / 100) * 162;
  ctx.fillStyle = v.mech ? '#fee2e2' : '#ffedd5';
  ctx.strokeStyle = v.mech ? '#ef4444' : '#f97316';
  ctx.fillRect(tripX - 18, 24, 36, 14);
@@ -1384,7 +1580,21 @@ drawCompText(ctx, linkId+'+', 318, -31, this.flipV, this.flipH);
  drawBlock(ctx) { ctx.fillStyle = "#ffffff"; ctx.lineWidth = 2; ctx.strokeStyle = '#1e293b'; ctx.beginPath(); ctx.roundRect(-30, -30, 60, 60, 8); ctx.fill(); ctx.stroke(); ctx.fillStyle = '#334155'; ctx.font = 'bold 10px Roboto'; ctx.textAlign = 'center'; drawCompText(ctx, "SIGNAL", 0, -18, this.flipV, this.flipH); ctx.beginPath(); ctx.arc(0, 10, 14, 0, Math.PI*2); ctx.fillStyle = this.manual ? "#22c55e" : "#ef4444"; ctx.fill(); ctx.stroke(); ctx.fillStyle = "#ffffff"; ctx.font = "bold 9px Roboto"; drawCompText(ctx, this.manual ? "ON" : "OFF", 0, 10, this.flipV, this.flipH); if (window.showNames) { ctx.fillStyle = "#64748b"; ctx.font = "bold 9px Roboto"; drawCompText(ctx, "OUT", 45, 0, this.flipV, this.flipH); } }
  }
 
- function createComponent(type, x, y) {
+ function createComponent(type, x, y, customCfg = null) {
+ if (type === 'valve_custom' && customCfg) {
+ const { ways, lAct, rAct, normallyOpen } = customCfg;
+ const isSigAct = a => ['pilot', 'diaphragm', 'solenoid'].includes(a);
+ const actShort = { spring:'Spr', button:'Btn', lever:'Lvr', roller:'Rlr', rollertrip:'Trip', plunger:'Plg', solenoid:'Sol', pilot:'Plt', diaphragm:'Dia' };
+ const portLbl = (a, num) => a === 'solenoid' ? `SOL (${num})` : a === 'diaphragm' ? `DIA (${num})` : `PL (${num})`;
+ const p14 = isSigAct(lAct), p12 = isSigAct(rAct);
+ const lNum = ways === 5 ? '14' : '12';
+ const rNum = ways === 5 ? '12' : '10';
+ const lbl = `${actShort[lAct] || lAct}-${actShort[rAct] || rAct} ${ways}/2`;
+ const v = new GenericValve('valve_custom', x, y, ways, lAct, rAct, lbl, p14, p12, p14 ? portLbl(lAct, lNum) : '', p12 ? portLbl(rAct, rNum) : '');
+ v.customCfg = { ways, lAct, rAct };
+ if (ways <= 3 && normallyOpen) v.normallyOpen = true;
+ return v;
+ }
  switch(type) {
  case 'supply': return new Supply(x,y); case 'manifold': return new Manifold(x,y);
  case 'valve32': return new GenericValve(type,x,y,3,'button','spring',"Button 3/2",false,false);
@@ -1405,6 +1615,7 @@ drawCompText(ctx, linkId+'+', 318, -31, this.flipV, this.flipH);
  case 'shuttle': return new Shuttle(x,y); 
  case 'restrictor': return new Restrictor(x,y);
  case 'unidir': return new UniDirectional(x,y);
+ case 'nonreturn': return new NonReturn(x,y);
  case 'reservoir': return new Reservoir(x,y); case 'tpiece': return new Junction(x,y);
  case 'bleed': return new AirBleed(x,y); case 'signal': case 'switch': return new Switch(x,y); 
  case 'text': return new TextNote(x,y); case 'sup': return new Supply(x,y); case 'fc': return new UniDirectional(x,y);
@@ -1452,7 +1663,7 @@ drawCompText(ctx, linkId+'+', 318, -31, this.flipV, this.flipH);
  const conns = curr.parent.getConnections(); const currIdx = curr.parent.ports.indexOf(curr);
  conns.forEach(pair => {
  let nextIdx = -1; if(pair[0] === currIdx) nextIdx = pair[1]; else if(pair[1] === currIdx) nextIdx = pair[0];
- if(nextIdx !== -1) { let nextPort = curr.parent.ports[nextIdx]; let scale = curr.parent.getFlowScale(currIdx, nextIdx); let newFlow = currentFlow * scale; queue.push({p: nextPort, f: newFlow, elec: isElec}); }
+ if(nextIdx !== -1) { let nextPort = curr.parent.ports[nextIdx]; let scale = curr.parent.getFlowScale(currIdx, nextIdx); if (scale > 0) { let newFlow = currentFlow * scale; queue.push({p: nextPort, f: newFlow, elec: isElec}); } }
  });
  }
  }
@@ -1477,10 +1688,10 @@ drawCompText(ctx, linkId+'+', 318, -31, this.flipV, this.flipH);
  let nextIdx = (pair[0]===pIdx)?pair[1] : (pair[1]===pIdx)?pair[0]:-1;
  if(nextIdx !== -1) {
  let nextP = p.parent.ports[nextIdx];
- if(!nextP.ex) { 
+if(!nextP.ex) { 
  let scale = p.parent.getFlowScale(pIdx, nextIdx);
- if (p.parent.type === 'unidir') scale = p.parent.getFlowScale(nextIdx, pIdx); 
- nextP.flow = p.flow * scale; nextP.ex=true; exQueue.push(nextP); 
+ if (p.parent.type === 'unidir' || p.parent.type === 'nonreturn') scale = p.parent.getFlowScale(nextIdx, pIdx); 
+ if (scale > 0) { nextP.flow = p.flow * scale; nextP.ex=true; exQueue.push(nextP); }
  }
  }
  });
@@ -1503,36 +1714,50 @@ drawCompText(ctx, linkId+'+', 318, -31, this.flipV, this.flipH);
  }
  }
 
- function solveMechanical() {
+function solveMechanical() {
  state.comps.forEach(c => {
- if(c.type === 'valve32roller' || c.type === 'valve32plunger') c.mech = false;
+ if (!c.cfg) return;
+ if (['roller','plunger'].includes(c.cfg.lAct)) c.mech = false;
+ if (c.cfg.lAct === 'rollertrip') c.held = false;
+ if (['roller','plunger'].includes(c.cfg.rAct)) c.mechR = false;
+ if (c.cfg.rAct === 'rollertrip') c.heldR = false;
  });
+
+ const evalSide = (v, act, label, tripPos, isRight, prev, curr, lblPlus, lblMinus) => {
+ if (!label) return;
+ if (act === 'roller' || act === 'plunger') {
+ if ((label === lblMinus && curr <= 2) || (label === lblPlus && curr >= 98)) {
+ if (isRight) v.mechR = true; else v.mech = true;
+ }
+ } else if (act === 'rollertrip') {
+ const targetPos = tripPos !== undefined ? Number(tripPos) : 85;
+ if (label === lblPlus && targetPos >= 100) {
+ if (curr >= 99) { if (isRight) v.heldR = true; else v.held = true; }
+ } else if (label === lblMinus && targetPos <= 0) {
+ if (curr <= 1) { if (isRight) v.heldR = true; else v.held = true; }
+ } else {
+ const triggered = (label === lblPlus && prev < targetPos && curr >= targetPos) ||
+ (label === lblMinus && ((targetPos >= 100 && prev >= 100 && curr < 100) || (prev > targetPos && curr <= targetPos)));
+ if (triggered) { if (isRight) v.pulseTimerR = 0.3; else v.pulseTimer = 0.3; }
+ }
+ if (isRight) v.mechR = v.heldR || v.pulseTimerR > 0;
+ else v.mech = v.held || v.pulseTimer > 0;
+ }
+ };
+
  state.comps.forEach(c => {
  if(c.type === 'sac' || c.type === 'dac') {
  const prev = c.prevExt !== undefined ? c.prevExt : c.ext;
  const curr = c.ext;
  const cylLabel = (c.mechId || getEffectiveLabel(c) || "").toUpperCase().trim();
  if (cylLabel) {
- const lblMinus = cylLabel + "-"; 
-const lblPlus = cylLabel + "+";
+ const lblMinus = cylLabel + "-", lblPlus = cylLabel + "+";
  state.comps.forEach(v => {
- const valveLabel = (v.mechId || getEffectiveLabel(v) || "").toUpperCase().trim();
- if(v.type === 'valve32roller' || v.type === 'valve32plunger') {
- if(valveLabel === lblMinus && curr <= 2) v.mech = true;
- if(valveLabel === lblPlus && curr >= 98) v.mech = true;
- } else if(v.type === 'valve32rollertrip') {
- const targetPos = v.tripPos !== undefined ? Number(v.tripPos) : 85;
- // Outstroke direction (+): trigger 300ms pulse only when passing targetPos moving outwards
- if(valveLabel === lblPlus && prev < targetPos && curr >= targetPos) {
- v.pulseTimer = 0.3;
- v.mech = true;
- }
- // Instroke direction (-): trigger 300ms pulse only when passing targetPos moving inwards
- if(valveLabel === lblMinus && prev > targetPos && curr <= targetPos) {
- v.pulseTimer = 0.3;
- v.mech = true;
- }
- }
+ if (!v.cfg) return;
+ const lblL = (v.mechId || getEffectiveLabel(v) || "").toUpperCase().trim();
+ const lblR = (v.mechIdR || "").toUpperCase().trim();
+ evalSide(v, v.cfg.lAct, lblL, v.tripPos, false, prev, curr, lblPlus, lblMinus);
+ evalSide(v, v.cfg.rAct, lblR, v.tripPosR, true, prev, curr, lblPlus, lblMinus);
  });
  }
  c.prevExt = curr;
@@ -1705,8 +1930,10 @@ const lblPlus = cylLabel + "+";
  const c = state.comps[i]; 
  if(c.hit(p.x, p.y)) { 
  hitAny = true;
- if (c.type === 'valve32' || c.type === 'valve32lever' || c.type === 'valve32leverlever') { 
- if (c.latching || c.type === 'valve32leverlever') { 
+ const hasManualAct = c.cfg && (['button','lever'].includes(c.cfg.lAct) || ['button','lever'].includes(c.cfg.rAct));
+ const isDoubleManual = c.cfg && ['button','lever'].includes(c.cfg.lAct) && ['button','lever'].includes(c.cfg.rAct);
+ if (hasManualAct) { 
+if (c.latching || isDoubleManual) {
  c.toggle(); 
  } else { 
  c.manual = true; 
@@ -2081,7 +2308,7 @@ const lblPlus = cylLabel + "+";
  let inPort = curr.parent.ports.find(p => p.id === '1');
  if (inPort && !visited.has(inPort)) { visited.add(inPort); q.push(inPort); }
  }
- } else if (['shuttle', 'unidir', 'restrictor', 'tpiece'].includes(pType)) {
+ } else if (['shuttle', 'unidir', 'restrictor', 'tpiece', 'nonreturn'].includes(pType)) {
  curr.parent.ports.forEach(p => {
  if (!visited.has(p)) { visited.add(p); q.push(p); }
  });
@@ -2097,18 +2324,37 @@ const lblPlus = cylLabel + "+";
  el.classList.remove('hidden'); 
  const obj = state.sel.obj, isC = state.sel.type === 'c', show = (id, cond) => document.getElementById(id).classList.toggle('hidden', !cond);
  
- show('insp-props', isC && (obj.type.startsWith('valve') || ['sac', 'dac', 'switch', 'signal', 'shuttle', 'unidir', 'restrictor', 'reservoir', 'bleed'].includes(obj.type)));
+ show('insp-props', isC && (obj.type.startsWith('valve') || ['sac', 'dac', 'switch', 'signal', 'shuttle', 'unidir', 'restrictor', 'nonreturn', 'reservoir', 'bleed'].includes(obj.type)));
  if(isC && document.getElementById('propLabel')) document.getElementById('propLabel').value = obj.lbl || '';
  
- show('insp-mech', isC && ['sac', 'dac', 'valve32roller', 'valve32rollertrip', 'valve32plunger'].includes(obj.type));
- if(isC && document.getElementById('propMech')) document.getElementById('propMech').value = obj.mechId || '';
- show('insp-trip-pos', isC && obj.type === 'valve32rollertrip');
- if(isC && obj.type === 'valve32rollertrip') {
+ const hasMechL = obj.cfg && ['roller','rollertrip','plunger'].includes(obj.cfg.lAct);
+ const hasMechR = obj.cfg && ['roller','rollertrip','plunger'].includes(obj.cfg.rAct);
+ const hasTripL = obj.cfg && obj.cfg.lAct === 'rollertrip';
+ const hasTripR = obj.cfg && obj.cfg.rAct === 'rollertrip';
+ const hasManual = obj.cfg && (['button','lever'].includes(obj.cfg.lAct) || ['button','lever'].includes(obj.cfg.rAct));
+ const isCyl = ['sac', 'dac'].includes(obj.type);
+
+ show('insp-mech', isC && (isCyl || hasMechL || hasMechR));
+ show('insp-mech-left', isC && (isCyl || hasMechL));
+ if(isC && document.getElementById('propMech')) {
+ document.getElementById('propMech').value = obj.mechId || '';
+ document.getElementById('lblMechLeft').lastChild.textContent = (hasMechL && hasMechR) ? ' Mechanical Link ID (Active Side)' : ' Mechanical Link ID';
+ }
+ show('insp-trip-pos', isC && hasTripL);
+ if(isC && hasTripL) {
  const tp = obj.tripPos !== undefined ? obj.tripPos : 85;
  document.getElementById('propTripPos').value = tp;
  document.getElementById('tripPosVal').innerText = Math.round(tp) + '%';
  }
- 
+
+ show('insp-mech-right', isC && hasMechR);
+ if(isC && hasMechR) document.getElementById('propMechRight').value = obj.mechIdR || '';
+ show('insp-trip-pos-right', isC && hasTripR);
+ if(isC && hasTripR) {
+ const tpR = obj.tripPosR !== undefined ? obj.tripPosR : 85;
+ document.getElementById('propTripPosRight').value = tpR;
+ document.getElementById('tripPosValRight').innerText = Math.round(tpR) + '%';
+ }
  show('insp-flow', isC && (obj.type === 'unidir' || obj.type === 'restrictor'));
  if(isC && (obj.type === 'unidir' || obj.type === 'restrictor')) { document.getElementById('propRestrict').value = obj.restrict; document.getElementById('restrictVal').innerText = Math.round(obj.restrict*100)+'%'; }
  
@@ -2118,21 +2364,21 @@ const lblPlus = cylLabel + "+";
  document.getElementById('capVal').innerText = Math.round((obj.capacity !== undefined ? obj.capacity : 1.0) * 100) + '%'; 
  }
 
- show('insp-valve', isC && obj.type.startsWith('valve52'));
- if(isC && obj.type.startsWith('valve52')) {
+ show('insp-valve', isC && obj.ways === 5);
+ if(isC && obj.ways === 5) {
  const isLeft = obj.startPos !== false; 
  document.getElementById('btnValveLeft').className = isLeft ? "flex-1 py-1.5 rounded-lg text-xs font-bold bg-orange-600 text-white shadow-md shadow-orange-200" : "flex-1 py-1.5 rounded-lg text-xs font-bold border border-slate-200 bg-white text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors";
  document.getElementById('btnValveRight').className = !isLeft ? "flex-1 py-1.5 rounded-lg text-xs font-bold bg-orange-600 text-white shadow-md shadow-orange-200" : "flex-1 py-1.5 rounded-lg text-xs font-bold border border-slate-200 bg-white text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors";
  }
  
- show('insp-valve32', isC && ['valve32', 'valve32lever', 'valve32leverlever', 'valve32roller', 'valve32rollertrip', 'valve32plunger', 'valve32sol', 'valve32pilot', 'valve32dia'].includes(obj.type));
+ show('insp-valve32', isC && obj.ways <= 3);
  if(isC && obj.normallyOpen !== undefined) {
  const isNC = !obj.normallyOpen;
  document.getElementById('btnValveNC').className = isNC ? "flex-1 py-1.5 rounded-lg text-xs font-bold bg-orange-600 text-white shadow-md shadow-orange-200" : "flex-1 py-1.5 rounded-lg text-xs font-bold border border-slate-200 bg-white text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors";
  document.getElementById('btnValveNO').className = !isNC ? "flex-1 py-1.5 rounded-lg text-xs font-bold bg-orange-600 text-white shadow-md shadow-orange-200" : "flex-1 py-1.5 rounded-lg text-xs font-bold border border-slate-200 bg-white text-slate-600 hover:bg-orange-50 hover:text-orange-600 transition-colors";
  }
- show('insp-latching', isC && (obj.type === 'valve32' || obj.type === 'valve32lever'));
- if(isC && (obj.type === 'valve32' || obj.type === 'valve32lever')) {
+ show('insp-latching', isC && hasManual);
+ if(isC && hasManual) {
  document.getElementById('propLatching').checked = !!obj.latching;
  }
  show('insp-text', isC && obj.type === 'text');
@@ -2223,7 +2469,7 @@ const lblPlus = cylLabel + "+";
  components: state.comps.map(c => ({ 
  id: c.id, type: c.type, x: c.x, y: c.y, rot: c.rot, lbl: c.lbl || "", restrict: c.restrict || 0,
  capacity: c.capacity || 1.0, capped: c.capped || false, manual: c.manual || false, flipV: c.flipV || false, flipH: c.flipH || false, startPos: c.startPos, text: c.text, fontSize: c.fontSize, normallyOpen: c.normallyOpen, 
- pressure: c.pressure, boreDia: c.boreDia, rodDia: c.rodDia, latching: c.latching, mechId: c.mechId || "", tripPos: c.tripPos !== undefined ? c.tripPos : 85
+ pressure: c.pressure, boreDia: c.boreDia, rodDia: c.rodDia, latching: c.latching, mechId: c.mechId || "", tripPos: c.tripPos !== undefined ? c.tripPos : 85, mechIdR: c.mechIdR || "", tripPosR: c.tripPosR !== undefined ? c.tripPosR : 85, customCfg: c.customCfg || null
  })),
  pipes: state.pipes.map(p => ({ p1_comp: p.p1.parent.id, p1_idx: p.p1.parent.ports.indexOf(p.p1), p2_comp: p.p2.parent.id, p2_idx: p.p2.parent.ports.indexOf(p.p2), points: p.points, color: p.color, halo: p.halo, dashed: p.dashed || false }))
  });
@@ -2234,7 +2480,7 @@ const lblPlus = cylLabel + "+";
  const data = JSON.parse(jsonStr); if(!data.components || !data.pipes) return;
  state.comps = []; state.pipes = []; state.sel = null;
  data.components.forEach(d => {
- let c = createComponent(d.type, Number(d.x)||0, Number(d.y)||0);
+ let c = createComponent(d.type, Number(d.x)||0, Number(d.y)||0, d.customCfg || null);
  if(c) { 
  c.id = d.id || c.id; 
  c.rot = Number(d.rot) || 0; 
@@ -2253,7 +2499,7 @@ const lblPlus = cylLabel + "+";
  c.pressure = d.pressure !== undefined ? d.pressure : c.pressure;
  c.boreDia = d.boreDia !== undefined ? d.boreDia : c.boreDia;
  c.rodDia = d.rodDia !== undefined ? d.rodDia : c.rodDia;
- c.latching = d.latching !== undefined ? d.latching : false; c.mechId = d.mechId || ""; c.tripPos = d.tripPos !== undefined ? Number(d.tripPos) : 85; }
+c.latching = d.latching !== undefined ? d.latching : false; c.mechId = d.mechId || ""; c.tripPos = d.tripPos !== undefined ? Number(d.tripPos) : 85; c.mechIdR = d.mechIdR || ""; c.tripPosR = d.tripPosR !== undefined ? Number(d.tripPosR) : 85; }
  });
  data.pipes.forEach(p => {
  const c1 = state.comps.find(x => x.id === p.p1_comp); const c2 = state.comps.find(x => x.id === p.p2_comp);
@@ -2299,7 +2545,7 @@ const lblPlus = cylLabel + "+";
  if ((e.ctrlKey || e.metaKey) && (e.key === 'c' || e.key === 'C')) {
  if (state.multiSel.length > 0 && !state.sim) {
  clipboard = state.multiSel.filter(s => s.type === 'c').map(s => {
- const c = s.obj; return { type: c.type, rot: c.rot, flipV: c.flipV, flipH: c.flipH, lbl: c.lbl, restrict: c.restrict, capacity: c.capacity, capped: c.capped, manual: c.manual, startPos: c.startPos, text: c.text, fontSize: c.fontSize, normallyOpen: c.normallyOpen, mechId: c.mechId, tripPos: c.tripPos, dx: c.x - state.ms.x, dy: c.y - state.ms.y };
+ const c = s.obj; return { type: c.type, customCfg: c.customCfg || null, rot: c.rot, flipV: c.flipV, flipH: c.flipH, lbl: c.lbl, restrict: c.restrict, capacity: c.capacity, capped: c.capped, manual: c.manual, startPos: c.startPos, text: c.text, fontSize: c.fontSize, normallyOpen: c.normallyOpen, mechId: c.mechId, tripPos: c.tripPos, mechIdR: c.mechIdR, tripPosR: c.tripPosR, dx: c.x - state.ms.x, dy: c.y - state.ms.y };
  });
  }
  }
@@ -2307,12 +2553,13 @@ const lblPlus = cylLabel + "+";
  if (clipboard && clipboard.length > 0 && !state.sim) {
  state.multiSel = [];
  clipboard.forEach(clip => {
- let newC = createComponent(clip.type, snap(state.ms.x + clip.dx), snap(state.ms.y + clip.dy));
+ let newC = createComponent(clip.type, snap(state.ms.x + clip.dx), snap(state.ms.y + clip.dy), clip.customCfg || null);
  if(newC) {
  newC.rot = clip.rot; newC.flipV = clip.flipV; newC.flipH = clip.flipH; newC.lbl = clip.lbl; newC.restrict = clip.restrict; newC.capacity = clip.capacity || 1.0; newC.capped = clip.capped;
  if(clip.startPos !== undefined) { newC.startPos = clip.startPos; newC.active = newC.startPos; }
  if(clip.text !== undefined) newC.text = clip.text; if(clip.fontSize !== undefined) newC.fontSize = clip.fontSize; if(clip.normallyOpen !== undefined) newC.normallyOpen = clip.normallyOpen;
  if(clip.mechId !== undefined) newC.mechId = clip.mechId; if(clip.tripPos !== undefined) newC.tripPos = clip.tripPos;
+ if(clip.mechIdR !== undefined) newC.mechIdR = clip.mechIdR; if(clip.tripPosR !== undefined) newC.tripPosR = clip.tripPosR;
  state.comps.push(newC); state.multiSel.push({type: 'c', obj: newC});
  }
  });
@@ -2329,7 +2576,7 @@ const lblPlus = cylLabel + "+";
  const ind = document.getElementById('simLiveIndicator');
  if(ind) { ind.classList.remove('hidden'); ind.style.display = 'flex'; }
  ['btnDelete', 'btnClear', 'btnUndo', 'btnRedo'].forEach(id => document.getElementById(id).classList.add('opacity-50', 'cursor-not-allowed')); 
- state.comps.forEach(c => { if(c.type === 'sac' || c.type === 'dac') c.prevExt = c.ext; if(c.type === 'valve32rollertrip') { c.pulseTimer = 0; c.mech = false; } });
+ state.comps.forEach(c => { if(c.type === 'sac' || c.type === 'dac') c.prevExt = c.ext; if(c.cfg) { c.pulseTimer = 0; c.held = false; c.mech = false; c.pulseTimerR = 0; c.heldR = false; c.mechR = false; } });
  loop(); 
 });
 
@@ -2341,7 +2588,7 @@ const lblPlus = cylLabel + "+";
  if(ind) { ind.classList.add('hidden'); ind.style.display = 'none'; }
  ['btnDelete', 'btnClear'].forEach(id => document.getElementById(id).classList.remove('opacity-50', 'cursor-not-allowed')); 
  updateHistoryButtons(); 
- state.comps.forEach(c => { c.ports.forEach(p => p.p=0); if(c.type.startsWith('valve52')) c.active = c.startPos !== undefined ? c.startPos : false; if(c.type === 'valve32rollertrip') { c.pulseTimer = 0; c.mech = false; c.active = false; } if(c.type === 'sac' || c.type === 'dac') c.prevExt = c.ext; if(c.spoolPos !== undefined) c.spoolPos = c.active ? 1 : 0; });
+ state.comps.forEach(c => { c.ports.forEach(p => p.p=0); if(c.cfg) { c.active = c.startPos !== undefined ? c.startPos : false; c.pulseTimer = 0; c.held = false; c.mech = false; c.pulseTimerR = 0; c.heldR = false; c.mechR = false; } if(c.type === 'sac' || c.type === 'dac') c.prevExt = c.ext; if(c.spoolPos !== undefined) c.spoolPos = c.active ? 1 : 0; });
  state.pipes.forEach(p=>p.p=0); 
  draw();
  });
@@ -2373,19 +2620,28 @@ const lblPlus = cylLabel + "+";
  safeBind('propPressure', 'oninput', (e) => { if(state.sel?.type==='c' && (state.sel.obj.type==='supply' || state.sel.obj.type==='manifold')) { let val = parseFloat(e.target.value); state.sel.obj.pressure = isNaN(val) ? 0 : val; updInsp(); recordState(); }});
  safeBind('propBore', 'oninput', (e) => { if(state.sel?.type==='c' && (state.sel.obj.type==='sac' || state.sel.obj.type==='dac')) { let val = parseFloat(e.target.value); state.sel.obj.boreDia = isNaN(val) ? 0 : val; updInsp(); recordState(); }});
  safeBind('propRod', 'oninput', (e) => { if(state.sel?.type==='c' && (state.sel.obj.type==='sac' || state.sel.obj.type==='dac')) { let val = parseFloat(e.target.value); state.sel.obj.rodDia = isNaN(val) ? 0 : val; updInsp(); recordState(); }});
- safeBind('propLatching', 'onchange', (e) => { if(state.sel?.type==='c' && (state.sel.obj.type==='valve32' || state.sel.obj.type==='valve32lever')) { state.sel.obj.latching = e.target.checked; recordState(); }});
- safeBind('btnValveLeft', 'onclick', () => { if(state.sel?.type==='c' && state.sel.obj.type.startsWith('valve52')) { state.sel.obj.startPos = true; state.sel.obj.active = true; state.sel.obj.spoolPos = 1; recordState(); updInsp(); draw(); } });
- safeBind('btnValveRight', 'onclick', () => { if(state.sel?.type==='c' && state.sel.obj.type.startsWith('valve52')) { state.sel.obj.startPos = false; state.sel.obj.active = false; state.sel.obj.spoolPos = 0; recordState(); updInsp(); draw(); } });
+safeBind('propLatching', 'onchange', (e) => { if(state.sel?.type==='c' && state.sel.obj.cfg) { state.sel.obj.latching = e.target.checked; recordState(); }});
+ safeBind('btnValveLeft', 'onclick', () => { if(state.sel?.type==='c' && state.sel.obj.ways === 5) { state.sel.obj.startPos = true; state.sel.obj.active = true; state.sel.obj.spoolPos = 1; recordState(); updInsp(); draw(); } });
+ safeBind('btnValveRight', 'onclick', () => { if(state.sel?.type==='c' && state.sel.obj.ways === 5) { state.sel.obj.startPos = false; state.sel.obj.active = false; state.sel.obj.spoolPos = 0; recordState(); updInsp(); draw(); } });
  safeBind('btnValveNC', 'onclick', () => { if(state.sel?.type==='c') { state.sel.obj.normallyOpen = false; recordState(); updInsp(); draw(); } });
  safeBind('btnValveNO', 'onclick', () => { if(state.sel?.type==='c') { state.sel.obj.normallyOpen = true; recordState(); updInsp(); draw(); } });
  safeBind('simSpeed', 'oninput', (e) => { document.getElementById('speedVal').innerText = parseFloat(e.target.value).toFixed(1) + 'x'; });
  safeBind('btnSetProp', 'onclick', () => { if(state.sel?.type==='c') { state.sel.obj.lbl = document.getElementById('propLabel').value; recordState(); draw(); } });
  safeBind('propLabel', 'onchange', (e) => { if(state.sel?.type==='c') { state.sel.obj.lbl = e.target.value; recordState(); draw(); } });
  safeBind('propMech', 'oninput', (e) => { if(state.sel?.type==='c') { state.sel.obj.mechId = e.target.value.toUpperCase(); recordState(); draw(); } });
+ safeBind('propMechRight', 'oninput', (e) => { if(state.sel?.type==='c') { state.sel.obj.mechIdR = e.target.value.toUpperCase(); recordState(); draw(); } });
  safeBind('propTripPos', 'oninput', (e) => {
- if(state.sel?.type==='c' && state.sel.obj.type === 'valve32rollertrip') {
- state.sel.obj.tripPos = parseInt(e.target.value, 10) || 85;
+ if(state.sel?.type==='c' && state.sel.obj.cfg && state.sel.obj.cfg.lAct === 'rollertrip') {
+ state.sel.obj.tripPos = isNaN(parseInt(e.target.value, 10)) ? 85 : parseInt(e.target.value, 10);
  document.getElementById('tripPosVal').innerText = state.sel.obj.tripPos + '%';
+ if(!state.sim) recordState();
+ draw();
+ }
+ });
+ safeBind('propTripPosRight', 'oninput', (e) => {
+ if(state.sel?.type==='c' && state.sel.obj.cfg && state.sel.obj.cfg.rAct === 'rollertrip') {
+ state.sel.obj.tripPosR = isNaN(parseInt(e.target.value, 10)) ? 85 : parseInt(e.target.value, 10);
+ document.getElementById('tripPosValRight').innerText = state.sel.obj.tripPosR + '%';
  if(!state.sim) recordState();
  draw();
  }
@@ -2416,7 +2672,7 @@ const lblPlus = cylLabel + "+";
  const fileName = `circuit_${d.getHours()}-${d.getMinutes()}.json`;
  const jsonStr = getStateJSON(); 
  const data = JSON.parse(jsonStr); 
- data.version = "V4.0.1";
+ data.version = "V4.0.2";
  const finalJson = JSON.stringify(data, null, 2);
 
  const blob = new Blob([finalJson], {type: "application/json"}); 
@@ -2980,6 +3236,10 @@ const lblPlus = cylLabel + "+";
  case 'valve32dia': return `diaphragm 3/2 valve ${nameStr}`.trim();
  case 'signal': return `electrical switch ${nameStr}`.trim();
  case 'bleed': return `air bleed ${nameStr}`.trim();
+ case 'valve_custom': {
+ const names = { spring:'spring', button:'push button', lever:'lever', roller:'roller', rollertrip:'roller trip', plunger:'plunger', solenoid:'solenoid', pilot:'pilot', diaphragm:'diaphragm' };
+ return `${names[v.cfg.lAct] || v.cfg.lAct}–${names[v.cfg.rAct] || v.cfg.rAct} ${v.ways}/2 valve ${nameStr}`.trim();
+ }
  default: return `3/2 valve ${nameStr}`.trim();
  }
  }
@@ -3432,7 +3692,7 @@ const lblPlus = cylLabel + "+";
  </head>
  <body>
  <div class="header-line">
- <h1>NoPressure<span style="color:#ea580c">Sim V4.0.1</span></h1>
+ <h1>NoPressure<span style="color:#ea580c">Sim V4.0.2</span></h1>
  <h2>Circuit & Calculations Report</h2>
  </div>
  
@@ -3592,7 +3852,7 @@ const lblPlus = cylLabel + "+";
       "id": "r7v5fdxiw",
       "type": "dac",
       "x": 485,
-      "y": 120,
+      "y": 125,
       "rot": 0,
       "lbl": "",
       "restrict": 0,
@@ -3685,7 +3945,7 @@ const lblPlus = cylLabel + "+";
           "y": 195
         },
         {
-          "x": 405,
+          "x": 390,
           "y": 195
         }
       ],
@@ -3703,7 +3963,7 @@ const lblPlus = cylLabel + "+";
           "y": 200
         },
         {
-          "x": 565,
+          "x": 580,
           "y": 200
         }
       ],
@@ -3711,7 +3971,7 @@ const lblPlus = cylLabel + "+";
       "dashed": false
     }
   ],
-  "version": "V4.0.1"
+  "version": "V4.0.2"
 }`; 
 
  function renderSidebarIcons() {
@@ -3764,8 +4024,8 @@ const lblPlus = cylLabel + "+";
  cCtx.translate(0, 2);
  } else if (type === 'unidir') {
  s = 0.65;
- } else if (type === 'restrictor') {
- s = 0.75;
+ } else if (type === 'nonreturn') {
+ s = 0.85;
  } else if (type === 'shuttle') {
  s = 0.78;
  cCtx.translate(0, 3);
@@ -3803,7 +4063,84 @@ const lblPlus = cylLabel + "+";
  state.viewMode = oldViewMode;
  window.showNames = oldShowNames;
  }
+// --- VALVE CREATOR LOGIC ---
+ function openValveCreator() {
+ if (state.sim) return;
+ document.getElementById('valveCreatorModal').classList.remove('hidden');
+ updateVCPreview();
+ }
 
+ function closeValveCreator() {
+ document.getElementById('valveCreatorModal').classList.add('hidden');
+ }
+
+ function updateVCPreview() {
+ const ways = parseInt(document.getElementById('vcWays').value, 10);
+ const lAct = document.getElementById('vcLeftAct').value;
+ const rAct = document.getElementById('vcRightAct').value;
+ const normOpen = document.getElementById('vcNormOpen').value === 'true';
+
+ const lNum = ways === 5 ? '14' : '12';
+ const rNum = ways === 5 ? '12' : '10';
+ const updOpts = (selId, num) => {
+ const sel = document.getElementById(selId);
+ sel.querySelector('option[value="pilot"]').text = `Pilot Air (${num})`;
+ sel.querySelector('option[value="diaphragm"]').text = `Diaphragm (${num})`;
+ sel.querySelector('option[value="solenoid"]').text = `Solenoid (${num})`;
+ };
+ updOpts('vcLeftAct', lNum);
+ updOpts('vcRightAct', rNum);
+
+ const nice = { spring:'Spring', button:'Push Button', lever:'Lever', roller:'Roller', rollertrip:'Roller Trip', plunger:'Plunger', solenoid:'Solenoid', pilot:'Pilot Air', diaphragm:'Diaphragm' };
+ document.getElementById('vcPreviewSummary').innerText = `${ways}/2 Valve • ${nice[lAct]} – ${nice[rAct]}`;
+
+ const canvas = document.getElementById('vcPreviewCanvas');
+ const pCtx = canvas.getContext('2d');
+ const dpr = window.devicePixelRatio || 2;
+ canvas.width = 320 * dpr; canvas.height = 120 * dpr;
+ pCtx.save();
+ pCtx.scale(dpr, dpr);
+ pCtx.clearRect(0, 0, 320, 120);
+
+ const oldMode = state.viewMode, oldNames = window.showNames;
+ state.viewMode = 'symbol'; window.showNames = true;
+
+ const tempV = createComponent('valve_custom', 0, 0, { ways, lAct, rAct, normallyOpen: normOpen });
+ tempV.rot = 0;
+ pCtx.translate(160, 62);
+ pCtx.scale(ways === 5 ? 0.85 : 0.95, ways === 5 ? 0.85 : 0.95);
+ tempV.drawSymbol(pCtx);
+
+ tempV.ports.forEach(p => {
+ if (p.hidden) return;
+ pCtx.beginPath(); pCtx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+ pCtx.fillStyle = '#ef4444'; pCtx.fill();
+ });
+
+ pCtx.restore();
+ state.viewMode = oldMode; window.showNames = oldNames;
+ }
+
+ function addCustomValve() {
+ const ways = parseInt(document.getElementById('vcWays').value, 10);
+ const lAct = document.getElementById('vcLeftAct').value;
+ const rAct = document.getElementById('vcRightAct').value;
+ const normOpen = ways <= 3 && document.getElementById('vcNormOpen').value === 'true';
+
+ const cx = snap((cvs.width / 2 - view.x) / view.scale);
+ const cy = snap((cvs.height / 2 - view.y) / view.scale);
+ const v = createComponent('valve_custom', cx, cy, { ways, lAct, rAct, normallyOpen: normOpen });
+
+ if (v) {
+ state.comps.push(v);
+ state.multiSel = [{ type: 'c', obj: v }];
+ state.sel = state.multiSel[0];
+ updInsp();
+ recordState();
+ draw();
+ }
+ closeValveCreator();
+ }
  window.onload = () => {
  renderSidebarIcons();
 

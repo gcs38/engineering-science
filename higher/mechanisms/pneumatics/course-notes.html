@@ -254,7 +254,7 @@
   <nav class="sidebar" id="sidebar"></nav>
   <div class="main">
     <div class="hero" id="top" style="position:relative;">
-      <div style="position:absolute;top:14px;right:20px;font-size:11px;color:#94a3b8;">Last updated: 26 November 2026, 12:45</div>
+      <div style="position:absolute;top:14px;right:20px;font-size:11px;color:#94a3b8;">Last updated: 26 November 2026, 13:30</div>
       <div class="hero-label">Higher &middot; Mechanisms and Structures &rsaquo; Pneumatics</div>
       <h1 class="hero-title">&#x1F4A8; Pneumatics &mdash; Course Notes</h1>
       <p class="hero-sub">Describing circuits with up to three cylinders, signal conflict and group air, time delays, electro-pneumatics and fault finding</p>
@@ -292,7 +292,7 @@
         </div>
         <div class="sim-instruction">Press the push button 3/2 valve and watch the cylinder outstroke, actuate the roller 3/2 valve and instroke automatically.</div>
         <div class="sim-wrap"><iframe style="height:auto;aspect-ratio:780 / 590;max-height:590px;min-height:220px;" class="sim-iframe" src="../../../../simulators/pneu-semi-auto.html" title="No Pressure Sim &mdash; Semi-automatic circuit (recap)" loading="lazy"></iframe></div>
-        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.1</div>
+        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.2</div>
       </div>
 
       <p class="notes-p">This is how the semi-automatic circuit would be described in an exam answer: <em>When the push button 3/2 valve is actuated, pilot air is sent to the 5/2 valve, causing it to change state and outstroke the cylinder. When the cylinder is fully outstroked, the roller 3/2 valve is actuated, sending pilot air to the other side of the 5/2 valve, resetting it and instroking the cylinder.</em> Every Higher circuit in these notes is built from this idea.</p>
@@ -312,7 +312,7 @@
         </div>
         <div class="sim-instruction">Click the air bleed to block it and watch the diaphragm 3/2 valve change state.</div>
         <div class="sim-wrap"><iframe style="height:auto;aspect-ratio:780 / 330;max-height:330px;min-height:220px;" class="sim-iframe" src="../../../../simulators/pneu-air-bleed.html" title="No Pressure Sim &mdash; Air bleed and diaphragm valve" loading="lazy"></iframe></div>
-        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.1</div>
+        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.2</div>
       </div>
 
       <div class="assignment" id="assignment-task1">
@@ -373,7 +373,7 @@
         </div>
         <div class="sim-instruction">Press V1 to start the sequence. The pilot lines are colour coded: <strong style="color:#16a34a">green lines carry the signals that outstroke a cylinder</strong> (to port 14) and <strong style="color:#dc2626">red lines carry the signals that instroke a cylinder</strong> (to port 12). Watch which roller valve each cylinder actuates and compare what you see with the worked example below.</div>
         <div class="sim-wrap"><iframe style="height:auto;aspect-ratio:1552 / 680;max-height:680px;min-height:220px;" class="sim-iframe" src="../../../../simulators/hpn-two-cylinder.html" title="No Pressure Sim &mdash; Two cylinders A+ B+ A&minus; B&minus;" loading="lazy"></iframe></div>
-        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.1</div>
+        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.2</div>
       </div>
 
       <div class="worked-example"><div class="worked-example-title">Worked example &mdash; describing the A+ B+ A&minus; B&minus; circuit</div><div class="step"><div class="step-num">1</div><div class="step-content">When V1 is actuated, it sends pilot air to port 14 of VA, which changes state, so <strong>CA outstrokes</strong>.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">When CA is fully outstroked it actuates V3, which sends pilot air to port 14 of VB, changing its state so that <strong>CB outstrokes</strong>.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">When CB is fully outstroked it actuates V2, which sends pilot air to port 12 of VA, changing its state so that <strong>CA instrokes</strong>.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">When CA is fully instroked it actuates V4, which sends pilot air to port 12 of VB, changing its state so that <strong>CB instrokes</strong>.</div></div><div class="step"><div class="step-num">5</div><div class="step-content">Both cylinders are now instroked and the circuit waits for V1 to be actuated again.</div></div></div>
@@ -424,7 +424,7 @@
         </div>
         <div class="sim-instruction">Press V1 to try to start the sequence. Nothing happens! Look at the pilot lines on both sides of VA before you read on.</div>
         <div class="sim-wrap"><iframe style="height:auto;aspect-ratio:1552 / 680;max-height:680px;min-height:220px;" class="sim-iframe" src="../../../../simulators/hpn-signal-conflict.html" title="No Pressure Sim &mdash; A+ B+ B&minus; A&minus; with simple rollers" loading="lazy"></iframe></div>
-        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.1</div>
+        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.2</div>
       </div>
 
       <p class="notes-p">At the start, cylinder B is instroked, so the roller valve V2 (B&minus;) is actuated and sends a <strong>continuous</strong> pilot signal to port 12 of VA. When V1 is pressed, VA receives pilot air on port 14 as well. A pilot/pilot 5/2 valve with a signal on <strong>both</strong> sides cannot change state &mdash; it stays (or &ldquo;locks&rdquo;) in the state it is already in &mdash; so cylinder A never moves. This is called <strong>signal conflict</strong> (or opposing signals).</p>
@@ -445,7 +445,7 @@
         </div>
         <div class="sim-instruction">Press V1 and release it. Watch V2 change state as soon as CB starts to outstroke, and change back when CB reaches V4. Compare what you see with the worked example below.</div>
         <div class="sim-wrap"><iframe style="height:auto;aspect-ratio:1552 / 680;max-height:680px;min-height:220px;" class="sim-iframe" src="../../../../simulators/hpn-pilot-cut-off.html" title="No Pressure Sim &mdash; A+ B+ (A&minus; B&minus;) with a pilot/pilot cut-off valve" loading="lazy"></iframe></div>
-        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.1</div>
+        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.2</div>
       </div>
 
 <div class="worked-example"><div class="worked-example-title">Worked example &mdash; describing the cut-off circuit</div><div class="step"><div class="step-num">1</div><div class="step-content">When V1 is actuated, it sends pilot air to port 14 of VA, which changes state, so <strong>CA outstrokes</strong>.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">When CA is fully outstroked it actuates V3. Its pilot air passes through V2 to port 14 of VB, changing its state so that <strong>CB outstrokes</strong>.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">As CB starts to outstroke, main air from VB is also sent through the T-piece to port 12 of V2. V2 changes state and cuts off the signal from V3 to VB, so there will be no signal conflict at VB.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">When CB is fully outstroked it actuates V4, which sends pilot air to port 12 of VA and port 12 of VB, so <strong>CA and CB instroke together</strong>. V4 also sends pilot air to port 14 of V2, resetting it for the next cycle.</div></div><div class="step"><div class="step-num">5</div><div class="step-content">Both cylinders are now instroked and the circuit waits for V1 to be actuated again.</div></div></div>
@@ -464,7 +464,7 @@
         </div>
         <div class="sim-instruction">V3 (A+) trips as cylinder A passes 90% of its outstroke and V2 (B&minus;) trips as cylinder B passes 10% on its way back in. Test 1: click V1 on, then straight back off. Test 2: click V1 on and leave it on. Record what happens in Task 3. If the circuit gets stuck, press <strong>&#x27F3; Reset</strong> to start it again, and reset before each test.</div>
         <div class="sim-wrap"><iframe style="height:auto;aspect-ratio:1552 / 680;max-height:680px;min-height:220px;" class="sim-iframe" src="../../../../simulators/hpn-roller-trip.html" title="No Pressure Sim &mdash; A+ B+ B&minus; A&minus; with roller trips" loading="lazy"></iframe></div>
-        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.1</div>
+        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.2</div>
       </div>
 
       <div class="sim-embed-section">
@@ -474,7 +474,7 @@
         </div>
         <div class="sim-instruction">Here A clamps, B stamps, then both instroke together. V2 is a cut-off valve: it supplies V3 only while B is instroked. Test 1: click V1 on, then straight back off. Test 2: click V1 on and leave it on. Press <strong>&#x27F3; Reset</strong> before each test.</div>
         <div class="sim-wrap"><iframe style="height:auto;aspect-ratio:1552 / 710;max-height:710px;min-height:220px;" class="sim-iframe" src="../../../../simulators/hpn-cut-off-lever.html" title="No Pressure Sim &mdash; A+ B+ (A&minus; B&minus;) with a cut-off valve" loading="lazy"></iframe></div>
-        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.1</div>
+        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.2</div>
       </div>
 
       <p class="notes-p">Both circuits work if V1 is pressed and released, but they fail if V1 stays actuated, because a continuous start signal is itself a new conflict. The pilot/pilot cut-off circuit has the same weakness: hold V1 down in that simulator and CB keeps trying to outstroke again while CA stays out. A real operator could easily hold a button down, so none of these circuits is fully reliable. The reliable answer at Higher is <strong>group air</strong> (Section 4), which uses the same idea as a cut-off valve &mdash; switching off the air supply to the valves that would conflict &mdash; for the whole circuit at once.</p>
@@ -532,7 +532,7 @@
         </div>
         <div class="sim-instruction">Press V1 and release it. The air lines are colour coded: <strong style="color:#16a34a">Group 1 air in green</strong> and <strong style="color:#dc2626">Group 2 air in red</strong>. The centre of each line turns dark blue when it has air, so you can see which group is live. Then press and hold V1 to see the cycle repeat.</div>
         <div class="sim-wrap"><iframe style="height:auto;aspect-ratio:1552 / 1150;max-height:1150px;min-height:220px;" class="sim-iframe" src="../../../../simulators/hpn-group-air.html" title="No Pressure Sim &mdash; Group air A+ B+ B&minus; A&minus;" loading="lazy"></iframe></div>
-        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.1</div>
+        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.2</div>
       </div>
 
       <div class="worked-example"><div class="worked-example-title">Worked example &mdash; describing the group air circuit</div><div class="step"><div class="step-num">1</div><div class="step-content">When V1 is actuated, Group 1 air is sent as pilot air to V2, which changes state, so <strong>CA outstrokes</strong>.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">When CA is fully outstroked it actuates V4, which sends pilot air to V5, changing its state so that <strong>CB outstrokes</strong>.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">When CB is fully outstroked it actuates V7, which sends pilot air to the group valve. The group valve changes state, cutting off Group 1 air (green lines) and supplying Group 2 air (red lines). Group 2 air also pilots V5, changing its state so that <strong>CB instrokes</strong>.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">When CB is fully instroked it actuates V6 (now supplied with Group 2 air), which sends pilot air to V2. There is no Group 1 air to oppose it, so V2 changes state and <strong>CA instrokes</strong>.</div></div><div class="step"><div class="step-num">5</div><div class="step-content">When CA is fully instroked it actuates V3, which sends Group 2 air to the group valve, switching the air back to Group 1. The cycle repeats until V1 is no longer actuated.</div></div></div>
@@ -567,7 +567,7 @@
         </div>
         <div class="sim-instruction">Press valve 1 to run the circuit. Trace each group line yourself before you write.</div>
         <div class="sim-wrap"><iframe style="height:auto;aspect-ratio:1552 / 1150;max-height:1150px;min-height:220px;" class="sim-iframe" src="../../../../simulators/hpn-describe-practice.html" title="No Pressure Sim &mdash; Describe this circuit" loading="lazy"></iframe></div>
-        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.1</div>
+        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.2</div>
       </div>
             <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-t5h"></span></div>
             <div class="answer-box" contenteditable="true" data-key="hpn-t5h" data-placeholder="Describe the operation in full sentences..." style="min-height:160px;"></div>
@@ -592,7 +592,7 @@
         </div>
         <div class="sim-instruction">Press V1 to start. After B outstrokes there is a pause while the reservoir fills through the UDR, then C outstrokes.</div>
         <div class="sim-wrap"><iframe style="height:auto;aspect-ratio:2122 / 910;max-height:910px;min-height:220px;" class="sim-iframe" src="../../../../simulators/hpn-three-cylinder.html" title="No Pressure Sim &mdash; Three cylinders with a time delay" loading="lazy"></iframe></div>
-        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.1</div>
+        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.2</div>
       </div>
 
       <div class="worked-example"><div class="worked-example-title">Worked example &mdash; describing the three-cylinder circuit</div><div class="step"><div class="step-num">1</div><div class="step-content">When V1 is actuated, it sends pilot air to port 14 of VA, which changes state, so <strong>CA outstrokes</strong>.</div></div><div class="step"><div class="step-num">2</div><div class="step-content">When CA is fully outstroked it actuates V3, which sends pilot air to port 14 of VB, changing its state so that <strong>CB outstrokes</strong>.</div></div><div class="step"><div class="step-num">3</div><div class="step-content">When CB is fully outstroked it actuates V5. Its pilot air passes through the UDR, which restricts the flow, and slowly fills the reservoir. When the reservoir pressure is high enough, VC changes state, so <strong>after a delay, CC outstrokes</strong>.</div></div><div class="step"><div class="step-num">4</div><div class="step-content">When CC is fully outstroked it actuates V2, which sends pilot air to port 12 of VA, so <strong>CA instrokes</strong>. When CA is fully instroked it actuates V4, which sends pilot air to port 12 of VB, so <strong>CB instrokes</strong>. When CB is fully instroked it actuates V6, which sends pilot air to port 12 of VC, so <strong>CC instrokes</strong>.</div></div><div class="step"><div class="step-num">5</div><div class="step-content">When CB instrokes, V5 is released and the reservoir exhausts quickly back through the free direction of the UDR, ready for the next cycle. The circuit waits for V1.</div></div></div>
@@ -639,7 +639,7 @@
         </div>
         <div class="sim-instruction">Click V1 to switch the lever on and watch the cycle repeat. Click it again part way through a cycle to switch it off: the machine finishes the cycle before it stops.</div>
         <div class="sim-wrap"><iframe style="height:auto;aspect-ratio:1712 / 680;max-height:680px;min-height:220px;" class="sim-iframe" src="../../../../simulators/hpn-auto-cycle.html" title="No Pressure Sim &mdash; Fully automatic A+ B+ A&minus; B&minus; with on/off lever" loading="lazy"></iframe></div>
-        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.1</div>
+        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.2</div>
       </div>
 
       <h2 class="notes-h2">Safety features</h2>
@@ -685,7 +685,7 @@
         </div>
         <div class="sim-instruction">The two SIGNAL boxes stand in for two microcontroller output pins. Click &ldquo;pin 6&rdquo; on and off: the cylinder outstrokes and stays out. Then switch &ldquo;pin 7&rdquo; on and off. What happens if both are on?</div>
         <div class="sim-wrap"><iframe style="height:auto;aspect-ratio:790 / 480;max-height:480px;min-height:220px;" class="sim-iframe" src="../../../../simulators/hpn-electro.html" title="No Pressure Sim &mdash; Double solenoid 5/2 valve" loading="lazy"></iframe></div>
-        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.1</div>
+        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.2</div>
       </div>
 
       <p class="notes-p">A microcontroller output pin cannot supply enough current to drive a solenoid directly, so it switches the solenoid through a transistor or MOSFET. You will meet this interface circuit in the <a href="../../electronics/analogue/course-notes.html">Higher Analogue Electronics notes</a>, and the programs are written as in the <a href="../../electronics/control/course-notes.html">Higher Programmable Control notes</a>.</p>
@@ -748,7 +748,7 @@
         </div>
         <div class="sim-instruction">Press V1 to run the circuit.</div>
         <div class="sim-wrap"><iframe style="height:auto;aspect-ratio:1552 / 710;max-height:710px;min-height:220px;" class="sim-iframe" src="../../../../simulators/hpn-cut-off.html" title="No Pressure Sim &mdash; Cask stamping circuit" loading="lazy"></iframe></div>
-        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.1</div>
+        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.2</div>
       </div>
       <div class="assignment" id="assignment-exam1">
         <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 1 &mdash; Cask stamping</div></div>
@@ -782,7 +782,7 @@
         </div>
         <div class="sim-instruction">Press V1 and release it to run one cycle.</div>
         <div class="sim-wrap"><iframe style="height:auto;aspect-ratio:1552 / 1150;max-height:1150px;min-height:220px;" class="sim-iframe" src="../../../../simulators/hpn-group-air.html" title="No Pressure Sim &mdash; Lid press group air circuit" loading="lazy"></iframe></div>
-        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.1</div>
+        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.2</div>
       </div>
       <div class="assignment" id="assignment-exam2">
         <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 2 &mdash; Lid press</div></div>
@@ -861,6 +861,41 @@
         </div>
         <div class="task-download-row">
           <button class="task-download-btn" onclick="downloadTaskPDF('assignment-exam4', 'Question 4 &mdash; Gantry clamp')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
+        </div>
+      </div>
+      <h2 class="notes-h2">Question 5 &mdash; Hose crimping press</h2>
+      <div class="key-point"><strong>2/2 valves.</strong> A 2/2 valve has two ports and two states. In one state it lets air flow through; in the other it blocks the flow. The 2/2 valves below are pilot&ndash;pilot valves, so a pilot signal on one side opens them and a pilot signal on the other side closes them again. Used with uni-directional restrictors, they let a circuit choose <strong>which</strong> restrictor the exhaust air must pass through, and so choose the speed of the cylinder. A circuit like this appeared in the 2018 Higher paper.</div>
+      <p class="notes-p">A company in Aberdeen crimps metal fittings onto hydraulic hoses for offshore equipment. Large fittings must be crimped slowly; small fittings can be crimped more quickly. The operator presses V1 or V2 when a hose is in position. Restrictor R1 is set to restrict the air flow more than restrictor R2. V4 and V5 are 2/2 valves.</p>
+      <div class="sim-embed-section">
+        <div class="sim-embed-header">
+          <div class="sim-embed-title"><span>&#x1F4A8;</span> No Pressure Sim &mdash; Hose crimping press</div>
+          <a href="../../../../simulators/hpn-speed-select.html" target="_blank" class="sim-fullscreen-btn">&#x26F6; Full screen</a>
+        </div>
+        <div class="sim-instruction">Press and release V1 and watch the speed of CA. Then press and release V2. Watch which 2/2 valve opens each time, and which restrictor the exhaust air passes through.</div>
+        <div class="sim-wrap"><iframe style="height:auto;aspect-ratio:1552 / 1050;max-height:1050px;min-height:220px;" class="sim-iframe" src="../../../../simulators/hpn-speed-select.html" title="No Pressure Sim &mdash; Hose crimping press" loading="lazy"></iframe></div>
+        <div class="sim-ver" style="font-size:10px;line-height:1.3;color:#94a3b8;margin-top:4px;text-align:right;">No Pressure Sim V4.0.2</div>
+      </div>
+      <div class="assignment" id="assignment-exam5">
+        <div class="assignment-header"><div class="assignment-title">&#x1F50D; Question 5 &mdash; Hose crimping press</div></div>
+        <div class="assignment-body">
+          <div class="task-item">
+            <div class="task-q">(a) Describe, with reference to all of the components, the operation of the circuit when V1 is pressed and released, and then V2 is pressed and released. <span class="marks">7</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e5a"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e5a" data-placeholder="Describe the operation in full sentences..." style="min-height:160px;"></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(b) Explain the function of the non-return valve. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e5b"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e5b" data-placeholder="Type your answer here..."></div>
+          </div>
+          <div class="task-item">
+            <div class="task-q">(c) State, with a reason, which push button the operator should use for the large fittings. <span class="marks">2</span></div>
+            <div class="answer-label">Answer <span class="saved-indicator" id="ind-hpn-e5c"></span></div>
+            <div class="answer-box" contenteditable="true" data-key="hpn-e5c" data-placeholder="Type your answer here..."></div>
+          </div>
+        </div>
+        <div class="task-download-row">
+          <button class="task-download-btn" onclick="downloadTaskPDF('assignment-exam5', 'Question 5 &mdash; Hose crimping press')">&#x2B07;&#xFE0F; Download my answers (PDF)</button>
         </div>
       </div>
 
@@ -1124,6 +1159,7 @@ const ALL_TASK_PANELS = [
   ['assignment-exam2', 'Question 2 \u2014 Lid press'],
   ['assignment-exam3', 'Question 3 \u2014 Bottling line'],
   ['assignment-exam4', 'Question 4 \u2014 Gantry clamp'],
+  ['assignment-exam5', 'Question 5 \u2014 Hose crimping press'],
   ['assignment-dc1', 'Challenge 1 \u2014 Label press'],
   ['assignment-dc2', 'Challenge 2 \u2014 Pastry pusher'],
   ['assignment-dc3', 'Challenge 3 \u2014 Hinge test rig']
