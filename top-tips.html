@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://engineeringsciencescotland.goatcounter.com; connect-src 'self' https://engineeringsciencescotland.goatcounter.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Top Tips — significant figures, units, prefixes and written answers — Engineering Science Scotland</title>
+  <title>Top Tips — choose your level — Engineering Science Scotland</title>
   <link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
@@ -44,6 +44,9 @@
 .tt-tool input{width:170px;}
 .tt-out{font-size:14px;line-height:1.7;color:var(--gray-900);margin-top:6px;}
 .tt-out .big{font-size:20px;font-weight:700;color:var(--teal-800);}
+.tt-pick{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;}
+.tt-level{display:block;text-decoration:none;transition:border-color .15s ease,box-shadow .15s ease;}
+.tt-level:hover{border-color:var(--teal-400);box-shadow:0 4px 14px rgba(0,0,0,.06);}
 @media print{.topbar,.tt-nav,.tt-tool,.footer{display:none!important;} .tt-card{break-inside:avoid;}}
 </style>
 <nav class="topbar">
@@ -65,199 +68,18 @@
 <div class="tt-wrap">
   <div class="home-hero" style="padding-bottom:26px;">
     <h1 class="home-hero-title">Top <span>Tips</span></h1>
-    <p class="home-hero-sub" style="max-width:none;">How to set out your answers so you don&rsquo;t lose marks &mdash; significant figures, units, prefixes and written (describe and explain) answers. These apply at National&nbsp;5, Higher and Advanced Higher.</p>
+    <p class="home-hero-sub" style="max-width:none;">How to set out your answers so you don&rsquo;t lose marks &mdash; significant figures, units, prefixes and written (describe and explain) answers. There is now a separate version for each level.</p>
   </div>
   <div class="tt-body">
-    <p class="tt-intro">The advice below is based on the general marking principles that Qualifications Scotland (formerly SQA) publishes with every Engineering Science marking scheme. The principles are the same at all three levels.</p>
-    <nav class="tt-nav">
-      <a href="#sig-figs">Significant figures</a><a href="#rounding">When to round</a><a href="#units">Units</a><a href="#prefixes">Prefixes</a><a href="#working">Showing working</a><a href="#describe">Describe and explain</a><a href="#checklist">Exam checklist</a>
-    </nav>
-
-    <section class="tt-card" id="sig-figs">
-      <h2>&#x1F522; Significant figures</h2>
-      <p class="tt-lead">Rounding your final answer is expected &mdash; but there is a generous tolerance.</p>
-      <div class="tt-rule">Round your final answer to a sensible number of significant figures. In recent exams the marking schemes almost always give the expected answer to <strong>2 significant figures</strong>, and accept anything from <strong>one figure fewer to two figures more</strong>.</div>
-      <p>So if the expected answer is given to 2 significant figures, answers with <strong>1, 2, 3 or 4</strong> significant figures get the mark (if the value is right). Copying down every digit on your calculator can <strong>lose</strong> the mark, because it has far more than two extra figures.</p>
-      <div class="tt-table-wrap"><table class="tt-table">
-        <tr><th>Calculator shows 23.78397106&nbsp;kN<br>(expected answer: 24&nbsp;kN, 2&nbsp;s.f.)</th><th>Significant figures</th><th>Mark?</th></tr>
-        <tr><td class="mono">20 kN</td><td>1</td><td class="ok">&#x2713; accepted (one fewer)</td></tr>
-        <tr><td class="mono">24 kN</td><td>2</td><td class="ok">&#x2713; expected answer</td></tr>
-        <tr><td class="mono">23.8 kN</td><td>3</td><td class="ok">&#x2713; accepted</td></tr>
-        <tr><td class="mono">23.78 kN</td><td>4</td><td class="ok">&#x2713; accepted (two more)</td></tr>
-        <tr><td class="mono">23.784 kN</td><td>5</td><td class="no">&#x2717; too many figures</td></tr>
-        <tr><td class="mono">23.78397106 kN</td><td>10</td><td class="no">&#x2717; too many figures</td></tr>
-        <tr><td>23.8 with a recurring dot over the 8</td><td>infinite</td><td class="no">&#x2717; not accepted</td></tr>
-      </table></div>
-      <h3>Counting significant figures</h3>
-      <ul>
-        <li>Start counting at the <strong>first non-zero digit</strong>. Zeros in front don&rsquo;t count: 0.018&nbsp;A has <strong>2</strong> s.f.</li>
-        <li>Zeros between other digits count: 4.07&nbsp;V has <strong>3</strong> s.f.</li>
-        <li>Zeros at the end of a whole number are unclear: is 210&nbsp;000&nbsp;J two figures or six? Writing <strong>210&nbsp;kJ</strong> or <strong>2.1&nbsp;&times;&nbsp;10<sup>5</sup>&nbsp;J</strong> makes it clear &mdash; another good reason to use prefixes.</li>
-        <li>To round, look at the next digit: <strong>5 or more, round up</strong>; 4 or less, leave it.</li>
-      </ul>
-      <h3>How many should I use?</h3>
-      <p>Give your final answer to <strong>2 significant figures</strong>. Almost all exam questions give their data to 2 significant figures, and good practice is to give the answer to the same number of significant figures as the data. It also matches the recent marking schemes and sits in the middle of the accepted window. If a question asks for a specific number of figures or decimal places, do exactly what it asks.</p>
-      <p>Watch out for whole numbers: 3&nbsp;m to 2 significant figures is <strong>3.0&nbsp;m</strong>, and 0.5&nbsp;A is <strong>0.50&nbsp;A</strong>.</p>
-      <div class="tt-tool" id="sf-tool">
-        <div class="tt-tool-title">Try it &mdash; rounding checker</div>
-        <label for="sf-num">Calculator answer</label><input id="sf-num" type="text" inputmode="decimal" value="23.78397106">
-        <label for="sf-n">Round to</label><select id="sf-n"><option>1</option><option selected>2</option><option>3</option><option>4</option></select><span style="font-size:13px;color:var(--gray-600);">significant figures</span>
-        <div class="tt-out" id="sf-out"></div>
-      </div>
-      <p class="tt-src">Source: general marking principle (e) in the National 5, Higher and Advanced Higher Engineering Science marking instructions.</p>
-    </section>
-
-    <section class="tt-card" id="rounding">
-      <h2>&#x23F1;&#xFE0F; When to round</h2>
-      <div class="tt-rule">Round the <strong>final answer only</strong>. Keep the full calculator value for every step in between.</div>
-      <p>The marking schemes carry the full calculator value through each stage (for example 23.78397106), and only round at the end. If you round too early, your final answer can drift outside the accepted range.</p>
-      <ul>
-        <li>Use your calculator&rsquo;s <strong>Ans</strong> key or memory to carry values forward rather than retyping a rounded number.</li>
-        <li>If you do write an intermediate value down, write it to at least 4 significant figures.</li>
-        <li>Use the <strong>&pi; button</strong> on your calculator, not 3.14. The course reports say this gives more accurate answers, and 3.14 can push an answer outside the accepted range.</li>
-        <li>If you make an error (or round) early, you can still earn marks for later steps that are done correctly using your value &mdash; markers apply &ldquo;follow-through&rdquo;. But it is safer not to rely on it.</li>
-      </ul>
-    </section>
-
-    <section class="tt-card" id="units">
-      <h2>&#x1F4CF; Units</h2>
-      <div class="tt-rule">A final answer needs its <strong>unit</strong>. Marks are usually given for &ldquo;final answer <em>with unit</em>&rdquo; &mdash; a correct number with no unit, or the wrong unit, may not get the mark.</div>
-      <ul>
-        <li>Any clear format is accepted: <span class="mono">m s<sup>&minus;1</sup></span>, <span class="mono">m/s</span> or <em>metres per second</em>.</li>
-        <li>Some quantities are ratios and have <strong>no unit</strong>: efficiency, velocity ratio, gear ratio, current gain h<sub>FE</sub>, voltage gain, strain and factor of safety.</li>
-        <li>Rotational speed: write <span class="mono">rev min<sup>&minus;1</sup></span> or <span class="mono">rev s<sup>&minus;1</sup></span>. Marking schemes have specifically said <strong>do not accept RPM</strong>.</li>
-        <li><strong>Pressure and stress</strong> are written <span class="mono">Nmm<sup>&minus;2</sup></span>, which is how the data booklet writes them. It means exactly the same as N/mm<sup>2</sup>, newtons per square millimetre: the power &minus;2 means &ldquo;per mm<sup>2</sup>&rdquo;, just as <span class="mono">s<sup>&minus;1</sup></span> means &ldquo;per second&rdquo;. So a cylinder supplied at 0.50&nbsp;Nmm<sup>&minus;2</sup> has 0.50&nbsp;N pushing on every square millimetre of the piston.</li>
-        <li>For pressure and stress, <strong>Nmm<sup>&minus;2</sup> is the expected unit</strong>. You don&rsquo;t need to convert areas to m<sup>2</sup> unless the question asks for N&nbsp;m<sup>&minus;2</sup> or Pa. If you do use N&nbsp;m<sup>&minus;2</sup> or Pa, you must convert the area to m<sup>2</sup> first. The course reports mention this mistake every year.</li>
-        <li>Young&rsquo;s modulus is often in <span class="mono">kNmm<sup>&minus;2</sup></span> &mdash; make sure the units of stress and E match before dividing.</li>
-      </ul>
-    </section>
-
-    <section class="tt-card" id="prefixes">
-      <h2>&#x1F50D; Prefixes</h2>
-      <p class="tt-lead">Prefixes stop you writing long strings of zeros &mdash; and make your significant figures clear.</p>
-      <div class="tt-table-wrap"><table class="tt-table">
-        <tr><th>Prefix</th><th>Symbol</th><th>Multiply by</th><th>Power of ten</th><th>Examples in Engineering Science</th></tr>
-        <tr><td>giga</td><td>G</td><td>1&nbsp;000&nbsp;000&nbsp;000</td><td>10<sup>9</sup></td><td>GW (power stations), GJ</td></tr>
-        <tr><td>mega</td><td>M</td><td>1&nbsp;000&nbsp;000</td><td>10<sup>6</sup></td><td>M&Omega;, MJ, MW, MPa</td></tr>
-        <tr><td>kilo</td><td>k</td><td>1&nbsp;000</td><td>10<sup>3</sup></td><td>k&Omega;, kN, kJ, kW</td></tr>
-        <tr><td><em>(none)</em></td><td></td><td>1</td><td>10<sup>0</sup></td><td>&Omega;, N, J, W, V, A</td></tr>
-        <tr><td>milli</td><td>m</td><td>0.001</td><td>10<sup>&minus;3</sup></td><td>mA, mV, mm, ms</td></tr>
-        <tr><td>micro</td><td>&micro;</td><td>0.000&nbsp;001</td><td>10<sup>&minus;6</sup></td><td>&micro;A (base currents), &micro;F, &micro;s</td></tr>
-        <tr><td>nano</td><td>n</td><td>0.000&nbsp;000&nbsp;001</td><td>10<sup>&minus;9</sup></td><td>nF, ns</td></tr>
-        <tr><td>pico</td><td>p</td><td>0.000&nbsp;000&nbsp;000&nbsp;001</td><td>10<sup>&minus;12</sup></td><td>pF</td></tr>
-      </table></div>
-      <div class="tt-warn"><strong>Capital or small letter matters.</strong> <strong>M</strong> (mega, a million) and <strong>m</strong> (milli, a thousandth) differ by a factor of a billion. A 2.2&nbsp;M&Omega; resistor is not a 2.2&nbsp;m&Omega; resistor!</div>
-      <h3>Converting</h3>
-      <ul>
-        <li><strong>Big unit &rarr; small unit: multiply.</strong> 4.7&nbsp;k&Omega; = 4.7 &times; 1000 = 4700&nbsp;&Omega;.</li>
-        <li><strong>Small unit &rarr; big unit: divide.</strong> 18&nbsp;mA = <span class="frac"><span class="frac-n">18</span><span class="frac-d">1000</span></span> = 0.018&nbsp;A.</li>
-        <li>On a calculator, type 4.7&nbsp;k&Omega; as <span class="mono">4.7&times;10<sup>3</sup></span> (the <span class="mono">&times;10<sup>x</sup></span> or <span class="mono">EXP</span> key). The <span class="mono">ENG</span> key shows answers in steps of 10<sup>3</sup>, which match the prefixes.</li>
-        <li><strong>Squared units square the prefix:</strong> 1&nbsp;m = 1000&nbsp;mm, but 1&nbsp;m<sup>2</sup> = 1&nbsp;000&nbsp;000&nbsp;mm<sup>2</sup>. 1&nbsp;Nmm<sup>&minus;2</sup> = 1&nbsp;MPa.</li>
-      </ul>
-      <h3>Shortcuts that keep the prefixes</h3>
-      <p>Some prefix pairs work together, so you can skip the conversion: <strong>volts divided by k&Omega; gives mA</strong>, and <strong>mA &times; k&Omega; = V</strong>. For example, <span class="frac"><span class="frac-n">12&nbsp;V</span><span class="frac-d">4.7&nbsp;k&Omega;</span></span> = 2.55&nbsp;mA. If in doubt, convert everything to base units first.</p>
-      <div class="tt-tool" id="px-tool">
-        <div class="tt-tool-title">Try it &mdash; prefix converter</div>
-        <input id="px-num" type="text" inputmode="decimal" value="0.000556667" aria-label="Value">
-        <select id="px-from" aria-label="From prefix"></select>
-        <span style="font-size:13px;color:var(--gray-600);margin-right:12px;">to</span>
-        <select id="px-to" aria-label="To prefix"></select>
-        <div class="tt-out" id="px-out"></div>
-      </div>
-    </section>
-
-    <section class="tt-card" id="working">
-      <h2>&#x270D;&#xFE0F; Showing your working</h2>
-      <p>Unless a question asks you to show working, a correct final answer with its unit gets <strong>full marks on its own</strong>. But if the final answer is wrong, working is the only way to pick up marks &mdash; marking schemes give marks for the steps along the way.</p>
-      <ol>
-        <li>Write the <strong>formula</strong>.</li>
-        <li><strong>Substitute</strong> the numbers (in consistent units).</li>
-        <li><strong>Rearrange</strong> (transpose) if needed.</li>
-        <li>Give the <strong>final answer, rounded, with its unit</strong>.</li>
-      </ol>
-      <p>If a separate box is given for the final answer, only that box is marked &mdash; make sure your answer is in it.</p>
-    </section>
-
-    <section class="tt-card" id="describe">
-      <h2>&#x1F4AC; Describe and explain answers</h2>
-      <p class="tt-lead">Written answers lose more marks than calculations. Every recent course report says that answers were not detailed enough.</p>
-      <div class="tt-rule">Each mark needs its own clear point. Use the labels on the diagram, use the correct engineering words, and link everything to the context in the question.</div>
-      <h3>&ldquo;Explain&rdquo;: give a cause and its effect</h3>
-      <p>Give <strong>one cause</strong> that fits the context, and the <strong>effect</strong> it leads to. Giving two causes, or a cause with an effect that doesn&rsquo;t follow from it, does not get full marks.</p>
-      <h3>&ldquo;Describe&rdquo;: take the reader through it step by step</h3>
-      <ul>
-        <li><strong>Name each component by its label</strong> (R1, V3, CA, the thermistor) and say what it does at each step.</li>
-        <li><strong>Follow the chain from input to output.</strong> For example: the light level falls, so the LDR&rsquo;s resistance rises, so V<sub>in</sub> rises, so the op-amp output goes high, so the transistor switches on and the lamp lights. Answer the exact thing the question asks about, such as the change in resistance or the change in V<sub>in</sub>.</li>
-        <li><strong>Quote the values.</strong> If the question or your earlier answer gives switching voltages, use them: &ldquo;above 7.5&nbsp;V the motor runs at full speed&rdquo;. Some marks are only given when the values are referred to.</li>
-        <li><strong>Cover every condition.</strong> If a circuit behaves differently below, between and above two reference voltages, describe all three ranges.</li>
-        <li><strong>Pneumatics:</strong> 3/2 valves <strong>actuate</strong> (and unactuate), 5/2 valves <strong>change state</strong>, pilot air is <strong>sent</strong> or <strong>cut off</strong>, and cylinders <strong>outstroke</strong> or <strong>instroke</strong>. &ldquo;A goes out and hits a valve&rdquo; gets no marks.</li>
-        <li><strong>Control systems:</strong> say whether the system is open or closed loop. For closed loop, say that the <strong>sensor measures the actual output</strong> and feeds it back, the <strong>control sub-system compares the set value with the actual value</strong>, and what <strong>action</strong> is taken when there is an error and when there is none.</li>
-      </ul>
-      <h3>Roles of engineers</h3>
-      <ul>
-        <li>Give <strong>two different tasks</strong>, each one <strong>specific to the context</strong>. &ldquo;Design the structure&rdquo; or &ldquo;develop the circuit&rdquo; are too general to get the mark.</li>
-        <li>If the question names a phase (design, development, testing), make sure your tasks belong to that phase.</li>
-        <li>If you are asked how an engineer uses <strong>mathematics</strong>, name the actual calculation and what it finds, for example &ldquo;calculating the torque on the motor shaft to choose a suitable motor&rdquo;.</li>
-        <li>Know the difference between an <strong>electrical</strong> engineer (power supply, cabling, distribution) and an <strong>electronic</strong> engineer (control circuits, sensors, microcontrollers).</li>
-      </ul>
-      <h3>Emerging technologies</h3>
-      <p>An emerging technology must be <strong>new and not yet in commercial use</strong>. Technologies that are already widely sold, such as electric vehicles, have not been accepted.</p>
-      <p class="tt-src">Source: Qualifications Scotland course reports for National&nbsp;5 and Higher Engineering Science, 2024&ndash;2026.</p>
-    </section>
-
-    <section class="tt-card" id="checklist">
-      <h2>&#x2705; Exam checklist</h2>
-      <ul>
-        <li>Kept the full calculator value until the end?</li>
-        <li>Rounded the final answer &mdash; 2 significant figures is a safe default?</li>
-        <li>Unit included, with the right prefix (and capital/small letter)?</li>
-        <li>Ratio answers (efficiency, gain, factor of safety) left without a unit?</li>
-        <li>Used the &pi; button rather than 3.14?</li>
-        <li>Written answers: labels used, correct terms, one clear point for each mark, values quoted, linked to the context?</li>
-        <li>Does the answer make sense? (A base current of 3&nbsp;A, or an efficiency of 140%, means something has gone wrong.)</li>
-      </ul>
-    </section>
+    <div class="tt-pick">
+      <a class="tt-card tt-level" href="n5/top-tips/index.html"><h2>National&nbsp;5</h2><p>Top tips for the National&nbsp;5 exam and assignment.</p></a>
+      <a class="tt-card tt-level" href="higher/top-tips/index.html"><h2>Higher</h2><p>Top tips for the Higher exam and assignment.</p></a>
+    </div>
+    <p class="tt-intro" style="margin-top:6px;">You can also find Top tips in the left-hand menu of each level, under <strong>Course Assessment</strong>.</p>
   </div>
 </div>
 <footer class="footer"><span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span><a href="teacher/login.html">Teacher area</a></footer>
 <script src="js/site.js"></script>
-<script>
-(function () {
-  function fmt(x, n) {
-    if (!isFinite(x)) return '';
-    if (x === 0) return '0';
-    var e = Math.floor(Math.log10(Math.abs(x)));
-    var dp = Math.max(0, n - 1 - e);
-    var r = Number(x.toPrecision(n));
-    return dp > 0 ? r.toFixed(Math.min(dp, 12)) : String(Math.round(r));
-  }
-  var num = document.getElementById('sf-num'), sel = document.getElementById('sf-n'), out = document.getElementById('sf-out');
-  function sf() {
-    var x = parseFloat(String(num.value).replace(/,/g, '').replace(/\s/g, ''));
-    if (isNaN(x)) { out.textContent = 'Type a number.'; return; }
-    var n = +sel.value;
-    var h = 'Rounded to ' + n + ' s.f.: <span class="big">' + fmt(x, n) + '</span>';
-    var lo = Math.max(1, n - 1), hi = n + 2, acc = [];
-    for (var k = lo; k <= hi; k++) acc.push(fmt(x, k));
-    h += '<br>If the expected answer is given to ' + n + ' s.f., all of these get the mark: <strong>' + acc.join(', ') + '</strong>.';
-    out.innerHTML = h;
-  }
-  num.addEventListener('input', sf); sel.addEventListener('change', sf); sf();
 
-  var P = [['G', 9, 'giga (G)'], ['M', 6, 'mega (M)'], ['k', 3, 'kilo (k)'], ['', 0, 'no prefix'], ['m', -3, 'milli (m)'], ['\u00B5', -6, 'micro (\u00B5)'], ['n', -9, 'nano (n)'], ['p', -12, 'pico (p)']];
-  var f = document.getElementById('px-from'), t = document.getElementById('px-to'), pn = document.getElementById('px-num'), po = document.getElementById('px-out');
-  P.forEach(function (p, i) { f.add(new Option(p[2], i)); t.add(new Option(p[2], i)); });
-  f.value = 3; t.value = 4;
-  function px() {
-    var x = parseFloat(String(pn.value).replace(/,/g, '').replace(/\s/g, ''));
-    if (isNaN(x)) { po.textContent = 'Type a number.'; return; }
-    var a = P[f.value], b = P[t.value], y = x * Math.pow(10, a[1] - b[1]);
-    var s = Math.abs(y) >= 1e-4 && Math.abs(y) < 1e9 ? String(Number(y.toPrecision(10))) : y.toExponential(4);
-    var op = a[1] > b[1] ? 'multiply by ' + Math.pow(10, a[1] - b[1]).toLocaleString('en-GB') : (a[1] < b[1] ? 'divide by ' + Math.pow(10, b[1] - a[1]).toLocaleString('en-GB') : 'no change');
-    po.innerHTML = '<span class="big">' + s + ' ' + b[0] + '</span> &nbsp;(' + op + ')';
-  }
-  [pn, f, t].forEach(function (el) { el.addEventListener('input', px); el.addEventListener('change', px); }); px();
-})();
-</script>
 </body>
 </html>

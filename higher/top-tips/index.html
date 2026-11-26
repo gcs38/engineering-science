@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Top tips &mdash; Higher &mdash; Engineering Science Scotland</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .ca-wrap{max-width:960px;}
+    .ca-facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin:6px 0 22px;}
+    .ca-fact{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:14px 16px;}
+    .ca-fact-big{font-family:"DM Serif Display",serif;font-size:26px;color:var(--teal-800);line-height:1.1;}
+    .ca-fact-sub{font-size:12.5px;color:var(--gray-600);margin-top:4px;line-height:1.45;}
+    .ca-card{background:var(--white);border:1px solid var(--gray-200);border-radius:14px;padding:20px 22px;margin:0 0 20px;scroll-margin-top:90px;}
+    .ca-card h2{font-family:"DM Serif Display",serif;font-size:22px;color:var(--teal-800);margin:0 0 10px;display:flex;align-items:center;gap:9px;}
+    .ca-card h3{font-size:15px;color:var(--gray-900);margin:18px 0 6px;}
+    .ca-card p,.ca-card li{font-size:14px;line-height:1.7;color:var(--gray-600);}
+    .ca-card p{margin:0 0 10px;} .ca-card ul{margin:0 0 10px;padding-left:22px;} .ca-card li{margin-bottom:5px;}
+    .ca-card strong{color:var(--gray-900);}
+    .ca-rule{background:var(--teal-50);border-left:4px solid var(--teal-400);border-radius:0 10px 10px 0;padding:11px 15px;margin:10px 0 14px;font-size:14px;line-height:1.6;color:var(--teal-800);font-weight:600;}
+    .ca-warn{background:#fff7ed;border-left:4px solid #f97316;border-radius:0 10px 10px 0;padding:11px 15px;margin:10px 0 14px;font-size:13.5px;line-height:1.6;color:#9a3412;}
+    .ca-skill{border-top:1px solid var(--gray-200);padding-top:12px;margin-top:14px;}
+    .ca-skill:first-of-type{border-top:none;padding-top:0;}
+    .ca-skill-title{font-size:15px;font-weight:700;color:var(--gray-900);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+    .ca-tag{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:20px;}
+    .ca-tag.hard{background:#fef2f2;color:#b91c1c;} .ca-tag.good{background:#dcfce7;color:#166534;}
+    .ca-table-wrap{overflow-x:auto;}
+    .ca-table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0 6px;}
+    .ca-table th{background:var(--teal-800);color:#fff;text-align:left;padding:8px 10px;font-size:12.5px;}
+    .ca-table td{border-bottom:1px solid var(--gray-200);padding:8px 10px;color:var(--gray-600);vertical-align:top;line-height:1.5;}
+    .ca-table tr:nth-child(even) td{background:var(--gray-50);}
+    .ca-table a{color:var(--teal-600);}
+    .ca-src{font-size:12px;color:var(--gray-400);font-style:italic;margin-top:8px!important;}
+    .paper-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:8px;}
+    .paper-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:16px 16px 14px;display:flex;flex-direction:column;}
+    .paper-card.empty{background:var(--gray-50);border-style:dashed;}
+    .paper-year{font-family:"DM Serif Display",serif;font-size:22px;color:var(--teal-800);line-height:1.1;}
+    .paper-ctx{font-size:13px;font-weight:600;color:var(--gray-900);margin:3px 0 2px;}
+    .paper-note{font-size:11.5px;color:var(--gray-400);margin-bottom:10px;line-height:1.4;}
+    .paper-links{display:flex;flex-direction:column;gap:6px;margin-top:auto;}
+    .paper-btn{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;background:var(--teal-50);color:var(--teal-800);border:1px solid var(--teal-100);transition:all .15s ease;}
+    .paper-btn:hover{background:var(--teal-400);border-color:var(--teal-400);color:#fff;}
+    .paper-btn.mi{background:#f5f3ff;color:#5b21b6;border-color:#ddd6fe;}
+    .paper-btn.mi:hover{background:#6d28d9;border-color:#6d28d9;color:#fff;}
+    .paper-btn.na{background:transparent;color:var(--gray-400);border:1px dashed var(--gray-200);cursor:default;font-weight:500;}
+    .ca-ack{font-size:11.5px;color:var(--gray-400);line-height:1.55;margin-top:14px;}
+    .ca-updated{font-size:11px;color:#94a3b8;text-align:right;margin:-4px 0 10px;}
+    .ca-jump{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px;}
+    .ca-jump a{font-size:13px;font-weight:700;color:var(--teal-800);background:var(--teal-50);border:1px solid var(--teal-100);border-radius:999px;padding:6px 13px;text-decoration:none;}
+    .ca-jump a:hover{background:var(--teal-100);}
+    @media print{.ca-jump,.paper-grid{display:none!important;}}
+
+.tt-intro{font-size:15px;line-height:1.7;color:var(--gray-600);margin:0 0 18px;}
+.tt-nav{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 26px;}
+.tt-nav a{font-size:13px;font-weight:700;color:var(--teal-800);background:var(--teal-50);border:1px solid var(--teal-100);border-radius:999px;padding:6px 13px;text-decoration:none;}
+.tt-nav a:hover{background:var(--teal-100);}
+.tt-card{background:#fff;border:1px solid var(--gray-200);border-radius:14px;padding:22px 24px;margin:0 0 22px;scroll-margin-top:90px;}
+.tt-card h2{font-family:"DM Serif Display",serif;font-size:23px;color:var(--teal-800);margin:0 0 4px;display:flex;align-items:center;gap:10px;}
+.tt-card h3{font-size:15px;color:var(--gray-900);margin:20px 0 8px;}
+.tt-card p,.tt-card li{font-size:14px;line-height:1.75;color:var(--gray-600);}
+.tt-card p{margin:0 0 10px;} .tt-card ul,.tt-card ol{margin:0 0 12px;padding-left:22px;} .tt-card li{margin-bottom:5px;}
+.tt-card strong{color:var(--gray-900);}
+.tt-lead{font-size:13px;color:var(--gray-400);margin:0 0 14px!important;}
+.tt-rule{background:var(--teal-50);border-left:4px solid var(--teal-400);border-radius:0 10px 10px 0;padding:12px 16px;margin:12px 0 16px;font-size:14.5px;line-height:1.65;color:var(--teal-800);font-weight:600;}
+.tt-warn{background:#fff7ed;border-left:4px solid #f97316;border-radius:0 10px 10px 0;padding:12px 16px;margin:12px 0 16px;font-size:14px;line-height:1.6;color:#9a3412;}
+.tt-src{font-size:12px;color:var(--gray-400);font-style:italic;margin-top:6px!important;}
+.tt-table{width:100%;border-collapse:collapse;font-size:13.5px;margin:10px 0 16px;}
+.tt-table th{background:var(--teal-800);color:#fff;text-align:left;padding:8px 11px;font-size:12.5px;}
+.tt-table td{border-bottom:1px solid var(--gray-200);padding:8px 11px;color:var(--gray-600);vertical-align:top;}
+.tt-table tr:nth-child(even) td{background:var(--gray-50);}
+.tt-table-wrap{overflow-x:auto;}
+.tt-table td.ok{color:#15803d;font-weight:700;} .tt-table td.no{color:#b91c1c;font-weight:700;}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;line-height:1.25;}
+.frac .frac-n{border-bottom:1.5px solid currentColor;padding:0 4px 2px;}
+.frac .frac-d{padding:2px 4px 0;}
+.mono{font-family:"JetBrains Mono",Consolas,monospace;font-size:13px;}
+.tt-tool{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:12px;padding:16px 18px;margin:14px 0 6px;}
+.tt-tool-title{font-size:12px;font-weight:700;color:var(--teal-600);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
+.tt-tool label{font-size:13px;color:var(--gray-600);font-weight:600;margin-right:6px;}
+.tt-tool input,.tt-tool select{font:inherit;font-size:14px;padding:7px 10px;border:1.5px solid var(--gray-200);border-radius:8px;background:#fff;margin:0 12px 8px 0;}
+.tt-tool input{width:170px;}
+.tt-out{font-size:14px;line-height:1.7;color:var(--gray-900);margin-top:6px;}
+.tt-out .big{font-size:20px;font-weight:700;color:var(--teal-800);}
+@media print{.tt-nav,.tt-tool{display:none!important;} .tt-card{break-inside:avoid;}}
+  </style>
+</head>
+<body>
+<nav class="topbar"><a href="../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../n5/index.html" class="level-tab" data-level="n5">National 5</a><a href="../../higher/index.html" class="level-tab active" data-level="higher">Higher</a><a href="../../ah/mechanisms/index.html" class="level-tab" data-level="ah">Advanced Higher</a></div><div class="topbar-right"><a href="../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+<div class="layout">
+  <nav class="sidebar" id="sidebar"></nav>
+  <div class="main">
+    <div class="hero">
+      <div class="hero-label">Higher &middot; Exam technique</div>
+      <h1 class="hero-title">Top tips</h1>
+      <p class="hero-sub">How to set out your answers at Higher so you don&rsquo;t lose marks: significant figures, units, prefixes and full written descriptions.</p>
+      <div class="breadcrumb"><a href="../../index.html">Home</a> &rsaquo; <a href="../index.html">Higher</a> &rsaquo; <span>Top tips</span></div>
+    </div>
+    <div class="content ca-wrap">
+      <div class="ca-updated">Last updated: 26 November 2026, 14:15</div>
+      <div class="esschk-banner no">&#x1F4DD; <strong>Not checked yet.</strong> This page is new and has not yet been checked by a second Engineering Science teacher. The advice is based on the published Qualifications Scotland course reports, but it is not endorsed by Qualifications Scotland. Please use the Feedback button to tell us about anything that needs to be fixed or could be improved.</div>
+
+    <p class="tt-intro">How to set out your answers so you don&rsquo;t lose marks. The advice is based on the general marking principles in every Higher Engineering Science marking scheme and on the Higher course reports. You can use the <strong>Higher data booklet</strong> in the exam and the assignment, so get to know where everything is in it.</p>
+    <nav class="tt-nav">
+      <a href="#sig-figs">Significant figures</a><a href="#rounding">When to round</a><a href="#units">Units</a><a href="#prefixes">Prefixes</a><a href="#working">Showing working</a><a href="#describe">Describe and explain</a><a href="#checklist">Exam checklist</a>
+    </nav>
+
+    <section class="tt-card" id="sig-figs">
+      <h2>&#x1F522; Significant figures</h2>
+      <p class="tt-lead">Rounding your final answer is expected &mdash; but there is a generous tolerance.</p>
+      <div class="tt-rule">Round your final answer to a sensible number of significant figures. In recent Higher exams the marking schemes almost always give the expected answer to <strong>2 significant figures</strong>, and accept anything from <strong>one figure fewer to two figures more</strong>.</div>
+      <p>So if the expected answer is given to 2 significant figures, answers with <strong>1, 2, 3 or 4</strong> significant figures get the mark (if the value is right). Copying down every digit on your calculator can <strong>lose</strong> the mark, because it has far more than two extra figures.</p>
+      <div class="tt-table-wrap"><table class="tt-table">
+        <tr><th>Calculator shows 23.78397106&nbsp;kN<br>(expected answer: 24&nbsp;kN, 2&nbsp;s.f.)</th><th>Significant figures</th><th>Mark?</th></tr>
+        <tr><td class="mono">20 kN</td><td>1</td><td class="ok">&#x2713; accepted (one fewer)</td></tr>
+        <tr><td class="mono">24 kN</td><td>2</td><td class="ok">&#x2713; expected answer</td></tr>
+        <tr><td class="mono">23.8 kN</td><td>3</td><td class="ok">&#x2713; accepted</td></tr>
+        <tr><td class="mono">23.78 kN</td><td>4</td><td class="ok">&#x2713; accepted (two more)</td></tr>
+        <tr><td class="mono">23.784 kN</td><td>5</td><td class="no">&#x2717; too many figures</td></tr>
+        <tr><td class="mono">23.78397106 kN</td><td>10</td><td class="no">&#x2717; too many figures</td></tr>
+        <tr><td>23.8 with a recurring dot over the 8</td><td>infinite</td><td class="no">&#x2717; not accepted</td></tr>
+      </table></div>
+      <h3>Counting significant figures</h3>
+      <ul>
+        <li>Start counting at the <strong>first non-zero digit</strong>. Zeros in front don&rsquo;t count: 0.018&nbsp;A has <strong>2</strong> s.f.</li>
+        <li>Zeros between other digits count: 4.07&nbsp;V has <strong>3</strong> s.f.</li>
+        <li>Zeros at the end of a whole number are unclear: is 210&nbsp;000&nbsp;J two figures or six? Writing <strong>210&nbsp;kJ</strong> or <strong>2.1&nbsp;&times;&nbsp;10<sup>5</sup>&nbsp;J</strong> makes it clear &mdash; another good reason to use prefixes.</li>
+        <li>To round, look at the next digit: <strong>5 or more, round up</strong>; 4 or less, leave it.</li>
+      </ul>
+      <h3>How many should I use?</h3>
+      <p>Give your final answer to <strong>2 significant figures</strong>. Almost all exam questions give their data to 2 significant figures, and good practice is to give the answer to the same number of significant figures as the data. It also matches the recent marking schemes and sits in the middle of the accepted window. If a question asks for a specific number of figures or decimal places, do exactly what it asks.</p>
+      <p>Watch out for whole numbers: 3&nbsp;m to 2 significant figures is <strong>3.0&nbsp;m</strong>, and 0.5&nbsp;A is <strong>0.50&nbsp;A</strong>.</p>
+      <div class="tt-tool" id="sf-tool">
+        <div class="tt-tool-title">Try it &mdash; rounding checker</div>
+        <label for="sf-num">Calculator answer</label><input id="sf-num" type="text" inputmode="decimal" value="23.78397106">
+        <label for="sf-n">Round to</label><select id="sf-n"><option>1</option><option selected>2</option><option>3</option><option>4</option></select><span style="font-size:13px;color:var(--gray-600);">significant figures</span>
+        <div class="tt-out" id="sf-out"></div>
+      </div>
+      <p class="tt-src">Source: general marking principle (e) in the Higher Engineering Science marking instructions.</p>
+    </section>
+
+    <section class="tt-card" id="rounding">
+      <h2>&#x23F1;&#xFE0F; When to round</h2>
+      <div class="tt-rule">Round the <strong>final answer only</strong>. Keep the full calculator value for every step in between.</div>
+      <p>The marking schemes carry the full calculator value through each stage, and only round at the end. If you round too early, your final answer can drift outside the accepted range.</p>
+      <ul>
+        <li>Use your calculator&rsquo;s <strong>Ans</strong> key or memory to carry values forward rather than retyping a rounded number.</li>
+        <li>If you do write an intermediate value down, write it to at least 4 significant figures.</li>
+        <li>Use the <strong>&pi; button</strong> on your calculator, not 3.14. The course reports say this gives more accurate answers, and 3.14 can push an answer outside the accepted range.</li>
+        <li>If you make an error (or round) early, you can still earn marks for later steps that are done correctly using your value &mdash; markers apply &ldquo;follow-through&rdquo;. But it is safer not to rely on it.</li>
+      </ul>
+    </section>
+
+    <section class="tt-card" id="units">
+      <h2>&#x1F4CF; Units</h2>
+      <div class="tt-rule">A final answer needs its <strong>unit</strong>. Marks are usually given for &ldquo;final answer <em>with unit</em>&rdquo; &mdash; a correct number with no unit, or the wrong unit, may not get the mark.</div>
+      <ul>
+        <li>Any clear format is accepted: <span class="mono">m s<sup>&minus;1</sup></span>, <span class="mono">m/s</span> or <em>metres per second</em>.</li>
+        <li>Some quantities are ratios and have <strong>no unit</strong>: efficiency, velocity ratio, gear ratio, current gain h<sub>FE</sub>, voltage gain, strain and factor of safety.</li>
+        <li>Rotational speed: write <span class="mono">rev min<sup>&minus;1</sup></span> or <span class="mono">rev s<sup>&minus;1</sup></span>. Marking schemes have specifically said <strong>do not accept RPM</strong>.</li>
+        <li><strong>Pressure and stress</strong> are written <span class="mono">Nmm<sup>&minus;2</sup></span>, which is how the data booklet writes them. It means exactly the same as N/mm<sup>2</sup>, newtons per square millimetre: the power &minus;2 means &ldquo;per mm<sup>2</sup>&rdquo;, just as <span class="mono">s<sup>&minus;1</sup></span> means &ldquo;per second&rdquo;. So a cylinder supplied at 0.50&nbsp;Nmm<sup>&minus;2</sup> has 0.50&nbsp;N pushing on every square millimetre of the piston.</li>
+        <li>For pressure and stress, <strong>Nmm<sup>&minus;2</sup> is the expected unit</strong>. You don&rsquo;t need to convert areas to m<sup>2</sup> unless the question asks for N&nbsp;m<sup>&minus;2</sup> or Pa. If you do use N&nbsp;m<sup>&minus;2</sup> or Pa, you must convert the area to m<sup>2</sup> first. The course reports mention this mistake every year.</li>
+        <li>Young&rsquo;s modulus is often in <span class="mono">kNmm<sup>&minus;2</sup></span>. Make sure the units of stress and E match before dividing.</li>
+        <li>Forces in a structure are <strong>vectors</strong>. When a question asks for a reaction or a resultant, give its <strong>size and its direction</strong> (for example 12&nbsp;kN at 35&deg; to the horizontal). The 2025 course report picked out the direction as a common omission.</li>
+        <li>Power dissipated in a transistor or MOSFET is in <strong>W</strong> (or mW). Use the voltage <em>across</em> the device, not the supply voltage.</li>
+      </ul>
+    </section>
+
+    <section class="tt-card" id="prefixes">
+      <h2>&#x1F50D; Prefixes</h2>
+      <p class="tt-lead">Prefixes stop you writing long strings of zeros &mdash; and make your significant figures clear.</p>
+      <div class="tt-table-wrap"><table class="tt-table">
+        <tr><th>Prefix</th><th>Symbol</th><th>Multiply by</th><th>Power of ten</th><th>Examples in Engineering Science</th></tr>
+        <tr><td>giga</td><td>G</td><td>1&nbsp;000&nbsp;000&nbsp;000</td><td>10<sup>9</sup></td><td>GW (power stations), GJ</td></tr>
+        <tr><td>mega</td><td>M</td><td>1&nbsp;000&nbsp;000</td><td>10<sup>6</sup></td><td>M&Omega;, MJ, MW, MPa</td></tr>
+        <tr><td>kilo</td><td>k</td><td>1&nbsp;000</td><td>10<sup>3</sup></td><td>k&Omega;, kN, kJ, kW</td></tr>
+        <tr><td><em>(none)</em></td><td></td><td>1</td><td>10<sup>0</sup></td><td>&Omega;, N, J, W, V, A</td></tr>
+        <tr><td>milli</td><td>m</td><td>0.001</td><td>10<sup>&minus;3</sup></td><td>mA, mV, mm, ms</td></tr>
+        <tr><td>micro</td><td>&micro;</td><td>0.000&nbsp;001</td><td>10<sup>&minus;6</sup></td><td>&micro;A (base currents), &micro;F, &micro;s</td></tr>
+        <tr><td>nano</td><td>n</td><td>0.000&nbsp;000&nbsp;001</td><td>10<sup>&minus;9</sup></td><td>nF, ns</td></tr>
+        <tr><td>pico</td><td>p</td><td>0.000&nbsp;000&nbsp;000&nbsp;001</td><td>10<sup>&minus;12</sup></td><td>pF</td></tr>
+      </table></div>
+      <div class="tt-warn"><strong>Capital or small letter matters.</strong> <strong>M</strong> (mega, a million) and <strong>m</strong> (milli, a thousandth) differ by a factor of a billion. A 2.2&nbsp;M&Omega; resistor is not a 2.2&nbsp;m&Omega; resistor!</div>
+      <h3>Converting</h3>
+      <ul>
+        <li><strong>Big unit &rarr; small unit: multiply.</strong> 4.7&nbsp;k&Omega; = 4.7 &times; 1000 = 4700&nbsp;&Omega;.</li>
+        <li><strong>Small unit &rarr; big unit: divide.</strong> 18&nbsp;mA = <span class="frac"><span class="frac-n">18</span><span class="frac-d">1000</span></span> = 0.018&nbsp;A.</li>
+        <li>On a calculator, type 4.7&nbsp;k&Omega; as <span class="mono">4.7&times;10<sup>3</sup></span> (the <span class="mono">&times;10<sup>x</sup></span> or <span class="mono">EXP</span> key). The <span class="mono">ENG</span> key shows answers in steps of 10<sup>3</sup>, which match the prefixes.</li>
+        <li><strong>Squared units square the prefix:</strong> 1&nbsp;m = 1000&nbsp;mm, but 1&nbsp;m<sup>2</sup> = 1&nbsp;000&nbsp;000&nbsp;mm<sup>2</sup>. 1&nbsp;Nmm<sup>&minus;2</sup> = 1&nbsp;MPa.</li>
+      </ul>
+      <h3>Shortcuts that keep the prefixes</h3>
+      <p>Some prefix pairs work together, so you can skip the conversion: <strong>volts divided by k&Omega; gives mA</strong>, and <strong>mA &times; k&Omega; = V</strong>. For example, <span class="frac"><span class="frac-n">12&nbsp;V</span><span class="frac-d">4.7&nbsp;k&Omega;</span></span> = 2.55&nbsp;mA. If in doubt, convert everything to base units first.</p>
+      <div class="tt-tool" id="px-tool">
+        <div class="tt-tool-title">Try it &mdash; prefix converter</div>
+        <input id="px-num" type="text" inputmode="decimal" value="0.000556667" aria-label="Value">
+        <select id="px-from" aria-label="From prefix"></select>
+        <span style="font-size:13px;color:var(--gray-600);margin-right:12px;">to</span>
+        <select id="px-to" aria-label="To prefix"></select>
+        <div class="tt-out" id="px-out"></div>
+      </div>
+    </section>
+
+    <section class="tt-card" id="working">
+      <h2>&#x270D;&#xFE0F; Showing your working</h2>
+      <p>Unless a question asks you to show working, a correct final answer with its unit gets <strong>full marks on its own</strong>. But if the final answer is wrong, working is the only way to pick up marks &mdash; marking schemes give marks for the steps along the way.</p>
+      <ol>
+        <li>Write the <strong>formula</strong>.</li>
+        <li><strong>Substitute</strong> the numbers (in consistent units).</li>
+        <li><strong>Rearrange</strong> (transpose) if needed.</li>
+        <li>Give the <strong>final answer, rounded, with its unit</strong>.</li>
+      </ol>
+      <p>Many Higher questions have several stages, for example finding a current, then a voltage, then a power. Label each value you find so the marker can follow it, and so you can pick up follow-through marks if an early stage goes wrong.</p>
+      <p>If a separate box is given for the final answer, only that box is marked &mdash; make sure your answer is in it.</p>
+    </section>
+
+    <section class="tt-card" id="describe">
+      <h2>&#x1F4AC; Describe and explain answers</h2>
+      <p class="tt-lead">Written answers lose more marks than calculations. Every recent Higher course report says that answers were not detailed enough for Higher.</p>
+      <div class="tt-rule">Each mark needs its own clear point. Use the labels on the diagram, use the correct engineering words, and link everything to the context in the question.</div>
+      <h3>&ldquo;Explain&rdquo;: give a cause and its effect</h3>
+      <p>Give <strong>one cause</strong> that fits the context, and the <strong>effect</strong> it leads to. Giving two causes, or a cause with an effect that doesn&rsquo;t follow from it, does not get full marks.</p>
+      <h3>&ldquo;Describe&rdquo;: take the reader through it step by step</h3>
+      <ul>
+        <li><strong>Name each component by its label</strong> (R1, V3, CA, the thermistor) and say what it does at each step.</li>
+        <li><strong>Follow the chain from input to output.</strong> For example: the temperature rises, so the thermistor&rsquo;s resistance falls, so V<sub>2</sub> rises above V<sub>1</sub>, so the op-amp output goes high, so the MOSFET switches on and the fan runs. Answer the exact thing the question asks about.</li><li><strong>Quote the values.</strong> If the question or your earlier answer gives switching voltages, use them: &ldquo;above 7.5&nbsp;V the motor runs at full speed&rdquo;. Some marks are only given when the values are referred to.</li><li><strong>Cover every condition.</strong> If a circuit behaves differently below, between and above two reference voltages, describe all three ranges (2025).</li>
+        <li><strong>Pneumatics:</strong> describe the <strong>whole</strong> sequence, valve by valve. 3/2 valves <strong>actuate</strong> and <strong>unactuate</strong> (say when a valve is released), 5/2 valves <strong>change state</strong>, pilot air is <strong>sent</strong> or <strong>cut off</strong>, restrictors <strong>slow</strong> the cylinder, and cylinders <strong>outstroke</strong> or <strong>instroke</strong>. &ldquo;A goes out and hits a valve&rdquo; gets no marks.</li>
+        <li><strong>Control systems:</strong> for closed loop, say that the <strong>sensor measures the actual output</strong>, the <strong>control sub-system compares the set value with the actual value</strong>, and what <strong>action</strong> is taken. If asked why two-state (on/off) control is unsuitable, link the reason to the context (2024).</li>
+      </ul>
+      <h3>Roles of engineers</h3>
+      <ul><li>Give <strong>two different tasks</strong>, each one <strong>specific to the context</strong>. &ldquo;Design the structure&rdquo; or &ldquo;develop the circuit&rdquo; are too general to get the mark.</li><li>If the question names a phase (design, development, testing), make sure your tasks belong to that phase. The 2026 course report picked this out for the development phase.</li><li>If you are asked how an engineer uses <strong>mathematics</strong>, name the actual calculation and what it finds, for example &ldquo;calculating the torque on the motor shaft to choose a suitable motor&rdquo;.</li><li>If you are asked for <strong>skills</strong> rather than tasks, give a skill (for example &ldquo;analysing loads on a structure&rdquo;) that fits that engineer and the context.</li></ul>
+      <h3>Emerging technologies</h3>
+      <p>An emerging technology must be <strong>new and not yet in commercial use</strong>. Technologies that are already widely sold, such as electric vehicles, have not been accepted.</p>
+      <h3>Design reasons</h3>
+      <ul>
+        <li>When asked why a <strong>factor of safety</strong> is used, give a reason linked to the context, for example variation in the material, extra loads or wear over time.</li>
+        <li>When reading material properties from a <strong>stress&ndash;strain graph</strong>, say which part of the graph you used (the elastic limit, the yield point, the UTS).</li>
+      </ul>
+      <p class="tt-src">Source: Qualifications Scotland Higher Engineering Science course reports, 2024&ndash;2026.</p>
+    </section>
+
+    <section class="tt-card" id="checklist">
+      <h2>&#x2705; Exam checklist</h2>
+      <ul><li>Kept the full calculator value until the end?</li><li>Rounded the final answer &mdash; 2 significant figures is a safe default?</li><li>Unit included, with the right prefix (and capital/small letter)?</li><li>Ratio answers (efficiency, gain, factor of safety) left without a unit?</li><li>Used the &pi; button rather than 3.14?</li><li>Reaction and resultant forces given with a direction as well as a size?</li><li>Written answers: labels used, correct terms, one clear point for each mark, values quoted, linked to the context?</li><li>Does the answer make sense? (A base current of 3&nbsp;A, or an efficiency of 140%, means something has gone wrong.)</li></ul>
+    </section>
+
+    </div>
+  </div>
+</div>
+<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span><a href="../../teacher/login.html">Teacher area</a></footer>
+<script src="../../js/site.js"></script><script src="../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("higher","../../");</script><script>
+(function () {
+  function fmt(x, n) {
+    if (!isFinite(x)) return '';
+    if (x === 0) return '0';
+    var e = Math.floor(Math.log10(Math.abs(x)));
+    var dp = Math.max(0, n - 1 - e);
+    var r = Number(x.toPrecision(n));
+    return dp > 0 ? r.toFixed(Math.min(dp, 12)) : String(Math.round(r));
+  }
+  var num = document.getElementById('sf-num'), sel = document.getElementById('sf-n'), out = document.getElementById('sf-out');
+  function sf() {
+    var x = parseFloat(String(num.value).replace(/,/g, '').replace(/\s/g, ''));
+    if (isNaN(x)) { out.textContent = 'Type a number.'; return; }
+    var n = +sel.value;
+    var h = 'Rounded to ' + n + ' s.f.: <span class="big">' + fmt(x, n) + '</span>';
+    var lo = Math.max(1, n - 1), hi = n + 2, acc = [];
+    for (var k = lo; k <= hi; k++) acc.push(fmt(x, k));
+    h += '<br>If the expected answer is given to ' + n + ' s.f., all of these get the mark: <strong>' + acc.join(', ') + '</strong>.';
+    out.innerHTML = h;
+  }
+  num.addEventListener('input', sf); sel.addEventListener('change', sf); sf();
+
+  var P = [['G', 9, 'giga (G)'], ['M', 6, 'mega (M)'], ['k', 3, 'kilo (k)'], ['', 0, 'no prefix'], ['m', -3, 'milli (m)'], ['\u00B5', -6, 'micro (\u00B5)'], ['n', -9, 'nano (n)'], ['p', -12, 'pico (p)']];
+  var f = document.getElementById('px-from'), t = document.getElementById('px-to'), pn = document.getElementById('px-num'), po = document.getElementById('px-out');
+  P.forEach(function (p, i) { f.add(new Option(p[2], i)); t.add(new Option(p[2], i)); });
+  f.value = 3; t.value = 4;
+  function px() {
+    var x = parseFloat(String(pn.value).replace(/,/g, '').replace(/\s/g, ''));
+    if (isNaN(x)) { po.textContent = 'Type a number.'; return; }
+    var a = P[f.value], b = P[t.value], y = x * Math.pow(10, a[1] - b[1]);
+    var s = Math.abs(y) >= 1e-4 && Math.abs(y) < 1e9 ? String(Number(y.toPrecision(10))) : y.toExponential(4);
+    var op = a[1] > b[1] ? 'multiply by ' + Math.pow(10, a[1] - b[1]).toLocaleString('en-GB') : (a[1] < b[1] ? 'divide by ' + Math.pow(10, b[1] - a[1]).toLocaleString('en-GB') : 'no change');
+    po.innerHTML = '<span class="big">' + s + ' ' + b[0] + '</span> &nbsp;(' + op + ')';
+  }
+  [pn, f, t].forEach(function (el) { el.addEventListener('input', px); el.addEventListener('change', px); }); px();
+})();
+</script>
+</body>
+</html>
