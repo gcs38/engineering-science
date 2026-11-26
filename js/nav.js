@@ -75,6 +75,7 @@ function buildSidebar(level, depth) {
   });
 
   var n5 = `
+    <div class="sb-group-title">Course Contents</div>
     <div class="sb-section">
       <button class="sb-section-btn" onclick="toggleSection('ctx-n5')">
         <span class="sb-section-title">Engineering contexts</span>
@@ -112,9 +113,15 @@ function buildSidebar(level, depth) {
         <a class="sb-subtopic" href="${d}n5/mechanisms/structures-forces/index.html">Structures and forces</a>
         <a class="sb-subtopic" href="${d}n5/mechanisms/materials/index.html">Materials</a>
       </div>
+    </div>
+    <div class="sb-group-title">Course Assessment</div>
+    <div class="sb-assess">
+      <a class="sb-subtopic" href="${d}n5/assignment/index.html">The assignment<span class="sb-unchecked" title="This page has not yet been checked">not checked</span></a>
+      <a class="sb-subtopic" href="${d}n5/exam/index.html">The exam<span class="sb-unchecked" title="This page has not yet been checked">not checked</span></a>
     </div>`;
 
   var higher = `
+    <div class="sb-group-title">Course Contents</div>
     <div class="sb-section">
       <button class="sb-section-btn" onclick="toggleSection('ctx-h')">
         <span class="sb-section-title">Engineering contexts</span>
@@ -151,6 +158,11 @@ function buildSidebar(level, depth) {
         <a class="sb-subtopic" href="${d}higher/mechanisms/structures-forces/index.html">Structures and forces</a>
         <a class="sb-subtopic" href="${d}higher/mechanisms/materials/index.html">Materials</a>
       </div>
+    </div>
+    <div class="sb-group-title">Course Assessment</div>
+    <div class="sb-assess">
+      <a class="sb-subtopic" href="${d}higher/assignment/index.html">The assignment<span class="sb-unchecked" title="This page has not yet been checked">not checked</span></a>
+      <a class="sb-subtopic" href="${d}higher/exam/index.html">The exam<span class="sb-unchecked" title="This page has not yet been checked">not checked</span></a>
     </div>`;
 
   var ah = `
