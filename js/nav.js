@@ -91,7 +91,7 @@ function buildSidebar(level, depth) {
     </div>
     <div class="sb-section">
       <button class="sb-section-btn" onclick="toggleSection('elec-n5')">
-        <span class="sb-section-title">Electronics and control</span>
+        <span class="sb-section-title">Electronics &amp; control</span>
         <span class="sb-chevron open" id="elec-n5-chev">›</span>
       </button>
       <div class="sb-children open" id="elec-n5-children">
@@ -103,7 +103,7 @@ function buildSidebar(level, depth) {
     </div>
     <div class="sb-section">
       <button class="sb-section-btn" onclick="toggleSection('mech-n5')">
-        <span class="sb-section-title">Mechanisms and structures</span>
+        <span class="sb-section-title">Mechanisms &amp; structures</span>
         <span class="sb-chevron open" id="mech-n5-chev">›</span>
       </button>
       <div class="sb-children open" id="mech-n5-children">
@@ -138,7 +138,7 @@ function buildSidebar(level, depth) {
     </div>
     <div class="sb-section">
       <button class="sb-section-btn" onclick="toggleSection('elec-h')">
-        <span class="sb-section-title">Electronics and control</span>
+        <span class="sb-section-title">Electronics &amp; control</span>
         <span class="sb-chevron open" id="elec-h-chev">›</span>
       </button>
       <div class="sb-children open" id="elec-h-children">
@@ -150,7 +150,7 @@ function buildSidebar(level, depth) {
     </div>
     <div class="sb-section">
       <button class="sb-section-btn" onclick="toggleSection('mech-h')">
-        <span class="sb-section-title">Mechanisms and structures</span>
+        <span class="sb-section-title">Mechanisms &amp; structures</span>
         <span class="sb-chevron open" id="mech-h-chev">›</span>
       </button>
       <div class="sb-children open" id="mech-h-children">
@@ -184,7 +184,7 @@ function buildSidebar(level, depth) {
     </div>
     <div class="sb-section">
       <button class="sb-section-btn" onclick="toggleSection('elec-ah')">
-        <span class="sb-section-title">Electronics and control</span>
+        <span class="sb-section-title">Electronics &amp; control</span>
         <span class="sb-chevron open" id="elec-ah-chev">›</span>
       </button>
       <div class="sb-children open" id="elec-ah-children">
@@ -198,7 +198,7 @@ function buildSidebar(level, depth) {
     </div>
     <div class="sb-section">
       <button class="sb-section-btn" onclick="toggleSection('mech-ah')">
-        <span class="sb-section-title">Mechanisms and structures</span>
+        <span class="sb-section-title">Mechanisms &amp; structures</span>
         <span class="sb-chevron open" id="mech-ah-chev">›</span>
       </button>
       <div class="sb-children open" id="mech-ah-children">
