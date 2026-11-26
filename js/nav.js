@@ -119,7 +119,7 @@ function buildSidebar(level, depth) {
       <a class="sb-subtopic" href="${d}n5/assignment/index.html">The assignment<span class="sb-unchecked" title="This page has not yet been checked">not checked</span></a>
       <a class="sb-subtopic" href="${d}n5/exam/index.html">The exam<span class="sb-unchecked" title="This page has not yet been checked">not checked</span></a>
       <a class="sb-subtopic" href="${d}n5/data-booklet/N4-N5_Engineering-Science_Data-Booklet.pdf" target="_blank" rel="noopener" title="Qualifications Scotland data booklet (January 2026), opens as a PDF in a new tab">The data booklet</a>
-      <a class="sb-subtopic sb-tips" href="${d}n5/top-tips/index.html">&#x1F4A1; Top tips<span class="sb-unchecked" title="This page has not yet been checked">not checked</span></a>
+      <a class="sb-subtopic sb-tips" href="${d}n5/top-tips/index.html">Top tips<span class="sb-unchecked" title="This page has not yet been checked">not checked</span></a>
     </div>`;
 
   var higher = `
@@ -166,7 +166,7 @@ function buildSidebar(level, depth) {
       <a class="sb-subtopic" href="${d}higher/assignment/index.html">The assignment<span class="sb-unchecked" title="This page has not yet been checked">not checked</span></a>
       <a class="sb-subtopic" href="${d}higher/exam/index.html">The exam<span class="sb-unchecked" title="This page has not yet been checked">not checked</span></a>
       <a class="sb-subtopic" href="${d}higher/data-booklet/NH_Engineering-Science_Data-Booklet.pdf" target="_blank" rel="noopener" title="Qualifications Scotland data booklet (January 2026), opens as a PDF in a new tab">The data booklet</a>
-      <a class="sb-subtopic sb-tips" href="${d}higher/top-tips/index.html">&#x1F4A1; Top tips<span class="sb-unchecked" title="This page has not yet been checked">not checked</span></a>
+      <a class="sb-subtopic sb-tips" href="${d}higher/top-tips/index.html">Top tips<span class="sb-unchecked" title="This page has not yet been checked">not checked</span></a>
     </div>`;
 
   var ah = `
