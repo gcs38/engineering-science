@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://gc.zgo.at; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://engineeringsciencescotland.goatcounter.com; connect-src 'self' https://engineeringsciencescotland.goatcounter.com; font-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Top Tips — significant figures, units and prefixes — Engineering Science Scotland</title>
+  <title>Top Tips — significant figures, units, prefixes and written answers — Engineering Science Scotland</title>
   <link rel="stylesheet" href="css/style.css?v=4">
 </head>
 <body>
@@ -33,6 +33,9 @@
 .tt-table tr:nth-child(even) td{background:var(--gray-50);}
 .tt-table-wrap{overflow-x:auto;}
 .tt-table td.ok{color:#15803d;font-weight:700;} .tt-table td.no{color:#b91c1c;font-weight:700;}
+.frac{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 3px;line-height:1.25;}
+.frac .frac-n{border-bottom:1.5px solid currentColor;padding:0 4px 2px;}
+.frac .frac-d{padding:2px 4px 0;}
 .mono{font-family:"JetBrains Mono",Consolas,monospace;font-size:13px;}
 .tt-tool{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:12px;padding:16px 18px;margin:14px 0 6px;}
 .tt-tool-title{font-size:12px;font-weight:700;color:var(--teal-600);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px;}
@@ -62,12 +65,12 @@
 <div class="tt-wrap">
   <div class="home-hero" style="padding-bottom:26px;">
     <h1 class="home-hero-title">Top <span>Tips</span></h1>
-    <p class="home-hero-sub" style="max-width:none;">How to set out numerical answers so you don&rsquo;t lose marks &mdash; significant figures, units and prefixes. These apply at National&nbsp;5, Higher and Advanced Higher.</p>
+    <p class="home-hero-sub" style="max-width:none;">How to set out your answers so you don&rsquo;t lose marks &mdash; significant figures, units, prefixes and written (describe and explain) answers. These apply at National&nbsp;5, Higher and Advanced Higher.</p>
   </div>
   <div class="tt-body">
     <p class="tt-intro">The advice below is based on the general marking principles that Qualifications Scotland (formerly SQA) publishes with every Engineering Science marking scheme. The principles are the same at all three levels.</p>
     <nav class="tt-nav">
-      <a href="#sig-figs">Significant figures</a><a href="#rounding">When to round</a><a href="#units">Units</a><a href="#prefixes">Prefixes</a><a href="#working">Showing working</a><a href="#checklist">Exam checklist</a>
+      <a href="#sig-figs">Significant figures</a><a href="#rounding">When to round</a><a href="#units">Units</a><a href="#prefixes">Prefixes</a><a href="#working">Showing working</a><a href="#describe">Describe and explain</a><a href="#checklist">Exam checklist</a>
     </nav>
 
     <section class="tt-card" id="sig-figs">
@@ -111,6 +114,7 @@
       <ul>
         <li>Use your calculator&rsquo;s <strong>Ans</strong> key or memory to carry values forward rather than retyping a rounded number.</li>
         <li>If you do write an intermediate value down, write it to at least 4 significant figures.</li>
+        <li>Use the <strong>&pi; button</strong> on your calculator, not 3.14. The course reports say this gives more accurate answers, and 3.14 can push an answer outside the accepted range.</li>
         <li>If you make an error (or round) early, you can still earn marks for later steps that are done correctly using your value &mdash; markers apply &ldquo;follow-through&rdquo;. But it is safer not to rely on it.</li>
       </ul>
     </section>
@@ -123,6 +127,7 @@
         <li>Some quantities are ratios and have <strong>no unit</strong>: efficiency, velocity ratio, gear ratio, current gain h<sub>FE</sub>, voltage gain, strain and factor of safety.</li>
         <li>Rotational speed: write <span class="mono">rev min<sup>&minus;1</sup></span> or <span class="mono">rev s<sup>&minus;1</sup></span>. Marking schemes have specifically said <strong>do not accept RPM</strong>.</li>
         <li><strong>Pressure and stress</strong> are written <span class="mono">Nmm<sup>&minus;2</sup></span>, which is how the data booklet writes them. It means exactly the same as N/mm<sup>2</sup>, newtons per square millimetre: the power &minus;2 means &ldquo;per mm<sup>2</sup>&rdquo;, just as <span class="mono">s<sup>&minus;1</sup></span> means &ldquo;per second&rdquo;. So a cylinder supplied at 0.50&nbsp;Nmm<sup>&minus;2</sup> has 0.50&nbsp;N pushing on every square millimetre of the piston.</li>
+        <li>For pressure and stress, <strong>Nmm<sup>&minus;2</sup> is the expected unit</strong>. You don&rsquo;t need to convert areas to m<sup>2</sup> unless the question asks for N&nbsp;m<sup>&minus;2</sup> or Pa. If you do use N&nbsp;m<sup>&minus;2</sup> or Pa, you must convert the area to m<sup>2</sup> first. The course reports mention this mistake every year.</li>
         <li>Young&rsquo;s modulus is often in <span class="mono">kNmm<sup>&minus;2</sup></span> &mdash; make sure the units of stress and E match before dividing.</li>
       </ul>
     </section>
@@ -145,12 +150,12 @@
       <h3>Converting</h3>
       <ul>
         <li><strong>Big unit &rarr; small unit: multiply.</strong> 4.7&nbsp;k&Omega; = 4.7 &times; 1000 = 4700&nbsp;&Omega;.</li>
-        <li><strong>Small unit &rarr; big unit: divide.</strong> 18&nbsp;mA = 18 &divide; 1000 = 0.018&nbsp;A.</li>
+        <li><strong>Small unit &rarr; big unit: divide.</strong> 18&nbsp;mA = <span class="frac"><span class="frac-n">18</span><span class="frac-d">1000</span></span> = 0.018&nbsp;A.</li>
         <li>On a calculator, type 4.7&nbsp;k&Omega; as <span class="mono">4.7&times;10<sup>3</sup></span> (the <span class="mono">&times;10<sup>x</sup></span> or <span class="mono">EXP</span> key). The <span class="mono">ENG</span> key shows answers in steps of 10<sup>3</sup>, which match the prefixes.</li>
         <li><strong>Squared units square the prefix:</strong> 1&nbsp;m = 1000&nbsp;mm, but 1&nbsp;m<sup>2</sup> = 1&nbsp;000&nbsp;000&nbsp;mm<sup>2</sup>. 1&nbsp;Nmm<sup>&minus;2</sup> = 1&nbsp;MPa.</li>
       </ul>
       <h3>Shortcuts that keep the prefixes</h3>
-      <p>Some prefix pairs work together, so you can skip the conversion: <strong>V &divide; k&Omega; = mA</strong>, and <strong>mA &times; k&Omega; = V</strong>. For example, 12&nbsp;V &divide; 4.7&nbsp;k&Omega; = 2.55&nbsp;mA. If in doubt, convert everything to base units first.</p>
+      <p>Some prefix pairs work together, so you can skip the conversion: <strong>volts divided by k&Omega; gives mA</strong>, and <strong>mA &times; k&Omega; = V</strong>. For example, <span class="frac"><span class="frac-n">12&nbsp;V</span><span class="frac-d">4.7&nbsp;k&Omega;</span></span> = 2.55&nbsp;mA. If in doubt, convert everything to base units first.</p>
       <div class="tt-tool" id="px-tool">
         <div class="tt-tool-title">Try it &mdash; prefix converter</div>
         <input id="px-num" type="text" inputmode="decimal" value="0.000556667" aria-label="Value">
@@ -173,6 +178,33 @@
       <p>If a separate box is given for the final answer, only that box is marked &mdash; make sure your answer is in it.</p>
     </section>
 
+    <section class="tt-card" id="describe">
+      <h2>&#x1F4AC; Describe and explain answers</h2>
+      <p class="tt-lead">Written answers lose more marks than calculations. Every recent course report says that answers were not detailed enough.</p>
+      <div class="tt-rule">Each mark needs its own clear point. Use the labels on the diagram, use the correct engineering words, and link everything to the context in the question.</div>
+      <h3>&ldquo;Explain&rdquo;: give a cause and its effect</h3>
+      <p>Give <strong>one cause</strong> that fits the context, and the <strong>effect</strong> it leads to. Giving two causes, or a cause with an effect that doesn&rsquo;t follow from it, does not get full marks.</p>
+      <h3>&ldquo;Describe&rdquo;: take the reader through it step by step</h3>
+      <ul>
+        <li><strong>Name each component by its label</strong> (R1, V3, CA, the thermistor) and say what it does at each step.</li>
+        <li><strong>Follow the chain from input to output.</strong> For example: the light level falls, so the LDR&rsquo;s resistance rises, so V<sub>in</sub> rises, so the op-amp output goes high, so the transistor switches on and the lamp lights. Answer the exact thing the question asks about, such as the change in resistance or the change in V<sub>in</sub>.</li>
+        <li><strong>Quote the values.</strong> If the question or your earlier answer gives switching voltages, use them: &ldquo;above 7.5&nbsp;V the motor runs at full speed&rdquo;. Some marks are only given when the values are referred to.</li>
+        <li><strong>Cover every condition.</strong> If a circuit behaves differently below, between and above two reference voltages, describe all three ranges.</li>
+        <li><strong>Pneumatics:</strong> 3/2 valves <strong>actuate</strong> (and unactuate), 5/2 valves <strong>change state</strong>, pilot air is <strong>sent</strong> or <strong>cut off</strong>, and cylinders <strong>outstroke</strong> or <strong>instroke</strong>. &ldquo;A goes out and hits a valve&rdquo; gets no marks.</li>
+        <li><strong>Control systems:</strong> say whether the system is open or closed loop. For closed loop, say that the <strong>sensor measures the actual output</strong> and feeds it back, the <strong>control sub-system compares the set value with the actual value</strong>, and what <strong>action</strong> is taken when there is an error and when there is none.</li>
+      </ul>
+      <h3>Roles of engineers</h3>
+      <ul>
+        <li>Give <strong>two different tasks</strong>, each one <strong>specific to the context</strong>. &ldquo;Design the structure&rdquo; or &ldquo;develop the circuit&rdquo; are too general to get the mark.</li>
+        <li>If the question names a phase (design, development, testing), make sure your tasks belong to that phase.</li>
+        <li>If you are asked how an engineer uses <strong>mathematics</strong>, name the actual calculation and what it finds, for example &ldquo;calculating the torque on the motor shaft to choose a suitable motor&rdquo;.</li>
+        <li>Know the difference between an <strong>electrical</strong> engineer (power supply, cabling, distribution) and an <strong>electronic</strong> engineer (control circuits, sensors, microcontrollers).</li>
+      </ul>
+      <h3>Emerging technologies</h3>
+      <p>An emerging technology must be <strong>new and not yet in commercial use</strong>. Technologies that are already widely sold, such as electric vehicles, have not been accepted.</p>
+      <p class="tt-src">Source: Qualifications Scotland course reports for National&nbsp;5 and Higher Engineering Science, 2024&ndash;2026.</p>
+    </section>
+
     <section class="tt-card" id="checklist">
       <h2>&#x2705; Exam checklist</h2>
       <ul>
@@ -180,6 +212,8 @@
         <li>Rounded the final answer &mdash; 2 significant figures is a safe default?</li>
         <li>Unit included, with the right prefix (and capital/small letter)?</li>
         <li>Ratio answers (efficiency, gain, factor of safety) left without a unit?</li>
+        <li>Used the &pi; button rather than 3.14?</li>
+        <li>Written answers: labels used, correct terms, one clear point for each mark, values quoted, linked to the context?</li>
         <li>Does the answer make sense? (A base current of 3&nbsp;A, or an efficiency of 140%, means something has gone wrong.)</li>
       </ul>
     </section>

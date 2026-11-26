@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>The assignment &mdash; National 5 &mdash; Engineering Science Scotland</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .ca-wrap{max-width:960px;}
+    .ca-facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin:6px 0 22px;}
+    .ca-fact{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:14px 16px;}
+    .ca-fact-big{font-family:"DM Serif Display",serif;font-size:26px;color:var(--teal-800);line-height:1.1;}
+    .ca-fact-sub{font-size:12.5px;color:var(--gray-600);margin-top:4px;line-height:1.45;}
+    .ca-card{background:var(--white);border:1px solid var(--gray-200);border-radius:14px;padding:20px 22px;margin:0 0 20px;scroll-margin-top:90px;}
+    .ca-card h2{font-family:"DM Serif Display",serif;font-size:22px;color:var(--teal-800);margin:0 0 10px;display:flex;align-items:center;gap:9px;}
+    .ca-card h3{font-size:15px;color:var(--gray-900);margin:18px 0 6px;}
+    .ca-card p,.ca-card li{font-size:14px;line-height:1.7;color:var(--gray-600);}
+    .ca-card p{margin:0 0 10px;} .ca-card ul{margin:0 0 10px;padding-left:22px;} .ca-card li{margin-bottom:5px;}
+    .ca-card strong{color:var(--gray-900);}
+    .ca-rule{background:var(--teal-50);border-left:4px solid var(--teal-400);border-radius:0 10px 10px 0;padding:11px 15px;margin:10px 0 14px;font-size:14px;line-height:1.6;color:var(--teal-800);font-weight:600;}
+    .ca-warn{background:#fff7ed;border-left:4px solid #f97316;border-radius:0 10px 10px 0;padding:11px 15px;margin:10px 0 14px;font-size:13.5px;line-height:1.6;color:#9a3412;}
+    .ca-skill{border-top:1px solid var(--gray-200);padding-top:12px;margin-top:14px;}
+    .ca-skill:first-of-type{border-top:none;padding-top:0;}
+    .ca-skill-title{font-size:15px;font-weight:700;color:var(--gray-900);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+    .ca-tag{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:20px;}
+    .ca-tag.hard{background:#fef2f2;color:#b91c1c;} .ca-tag.good{background:#dcfce7;color:#166534;}
+    .ca-table-wrap{overflow-x:auto;}
+    .ca-table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0 6px;}
+    .ca-table th{background:var(--teal-800);color:#fff;text-align:left;padding:8px 10px;font-size:12.5px;}
+    .ca-table td{border-bottom:1px solid var(--gray-200);padding:8px 10px;color:var(--gray-600);vertical-align:top;line-height:1.5;}
+    .ca-table tr:nth-child(even) td{background:var(--gray-50);}
+    .ca-table a{color:var(--teal-600);}
+    .ca-src{font-size:12px;color:var(--gray-400);font-style:italic;margin-top:8px!important;}
+    .paper-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:8px;}
+    .paper-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:16px 16px 14px;display:flex;flex-direction:column;}
+    .paper-card.empty{background:var(--gray-50);border-style:dashed;}
+    .paper-year{font-family:"DM Serif Display",serif;font-size:22px;color:var(--teal-800);line-height:1.1;}
+    .paper-ctx{font-size:13px;font-weight:600;color:var(--gray-900);margin:3px 0 2px;}
+    .paper-note{font-size:11.5px;color:var(--gray-400);margin-bottom:10px;line-height:1.4;}
+    .paper-links{display:flex;flex-direction:column;gap:6px;margin-top:auto;}
+    .paper-btn{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;background:var(--teal-50);color:var(--teal-800);border:1px solid var(--teal-100);transition:all .15s ease;}
+    .paper-btn:hover{background:var(--teal-400);border-color:var(--teal-400);color:#fff;}
+    .paper-btn.mi{background:#f5f3ff;color:#5b21b6;border-color:#ddd6fe;}
+    .paper-btn.mi:hover{background:#6d28d9;border-color:#6d28d9;color:#fff;}
+    .paper-btn.na{background:transparent;color:var(--gray-400);border:1px dashed var(--gray-200);cursor:default;font-weight:500;}
+    .ca-ack{font-size:11.5px;color:var(--gray-400);line-height:1.55;margin-top:14px;}
+    .ca-updated{font-size:11px;color:#94a3b8;text-align:right;margin:-4px 0 10px;}
+    .ca-jump{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px;}
+    .ca-jump a{font-size:13px;font-weight:700;color:var(--teal-800);background:var(--teal-50);border:1px solid var(--teal-100);border-radius:999px;padding:6px 13px;text-decoration:none;}
+    .ca-jump a:hover{background:var(--teal-100);}
+    @media print{.ca-jump,.paper-grid{display:none!important;}}
+  </style>
+</head>
+<body>
+<nav class="topbar"><a href="../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../n5/index.html" class="level-tab active" data-level="n5">National 5</a><a href="../../higher/index.html" class="level-tab" data-level="higher">Higher</a><a href="../../ah/mechanisms/index.html" class="level-tab" data-level="ah">Advanced Higher</a></div><div class="topbar-right"><a href="../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+<div class="layout">
+  <nav class="sidebar" id="sidebar"></nav>
+  <div class="main">
+    <div class="hero">
+      <div class="hero-label">National 5 &middot; Course assessment</div>
+      <h1 class="hero-title">The assignment</h1>
+      <p class="hero-sub">What the assignment involves, how to get the marks, and past assignments with their marking instructions.</p>
+      <div class="breadcrumb"><a href="../../index.html">Home</a> &rsaquo; <a href="../index.html">National 5</a> &rsaquo; <span>The assignment</span></div>
+    </div>
+    <div class="content ca-wrap">
+      <div class="ca-updated">Last updated: 26 November 2026, 12:45</div>
+      <div class="esschk-banner no">&#x1F4DD; <strong>Not checked yet.</strong> This page is new and has not yet been checked by a second Engineering Science teacher. The advice is based on the published Qualifications Scotland course reports, but it is not endorsed by Qualifications Scotland. Please use the Feedback button to tell us about anything that needs to be fixed or could be improved.</div>
+
+      <nav class="ca-jump"><a href="#about">About the assignment</a><a href="#skills">How to get the marks</a><a href="#evaluate">Writing an evaluation</a><a href="#past">Past assignments</a></nav>
+
+      <section class="ca-card" id="about">
+        <h2>&#x1F9F0; About the assignment</h2>
+        <div class="ca-facts">
+          <div class="ca-fact"><div class="ca-fact-big">50 marks</div><div class="ca-fact-sub">out of 160 for the whole course &mdash; about 31% of your grade</div></div>
+          <div class="ca-fact"><div class="ca-fact-big">8 hours</div><div class="ca-fact-sub">in class, over consecutive lessons, once all of the course has been taught</div></div>
+          <div class="ca-fact"><div class="ca-fact-big">Closed book</div><div class="ca-fact-sub">only the National 4/5 data booklet and any data sheets supplied with the task</div></div>
+          <div class="ca-fact"><div class="ca-fact-big">Set and marked</div><div class="ca-fact-sub">by Qualifications Scotland, not by your teacher</div></div>
+        </div>
+        <p>The assignment gives you an engineering problem in a real context, split into a number of tasks. Each task tells you the situation, what you have to do and what evidence to hand in. Recent tasks have included system and sub-system diagrams, a microcontroller and flowchart, a sensing circuit, a gear train, a logic circuit and a pneumatic circuit.</p>
+        <p>In the tasks you will <strong>analyse</strong> the problem, <strong>design</strong> a solution, <strong>build</strong> it by simulating or constructing it, <strong>test</strong> it and make changes, and <strong>evaluate</strong> it against the specification.</p>
+        <h3>The rules</h3>
+        <ul>
+          <li>You work on your own, in class, under a high degree of supervision. You can&rsquo;t use notes, the internet, email, a phone or AI.</li>
+          <li>You can use normal classroom equipment: simulation software, pneumatics, mechanisms and electronics kits, and a PC.</li>
+          <li>Your teacher can&rsquo;t help you with the tasks or comment on your work.</li>
+          <li>A new assignment is set every year, and it is only valid for that session.</li>
+          <li>Your work is marked by Qualifications Scotland, so <strong>every screenshot and photograph must be clear</strong>.</li>
+        </ul>
+        <p class="ca-src">Source: Qualifications Scotland National 5 Engineering Science specimen assignment (2024) and course reports.</p>
+      </section>
+
+      <section class="ca-card" id="skills">
+        <h2>&#x1F3AF; How to get the marks</h2>
+        <p>The course reports for 2024, 2025 and 2026 say that candidates do well at building circuits and completing truth tables, but lose marks on <strong>diagrams, test descriptions and evaluations</strong>.</p>
+        <div class="ca-skill"><div class="ca-skill-title">Read every task carefully </div><ul><li>Tasks can look very like ones in earlier assignments but ask for something quite different. Read exactly what each task asks for.</li><li>If a task asks you to name components, give <strong>every</strong> name at the same level of detail.</li></ul></div>
+        <div class="ca-skill"><div class="ca-skill-title">System and sub-system diagrams <span class="ca-tag hard">Most demanding</span></div><ul><li>In a <strong>system diagram</strong>, show the <strong>external inputs and outputs</strong> of the whole system (for example temperature in, movement out), not a list of components.</li><li>A <strong>sub-system diagram</strong> is different. It shows the sub-systems inside the system and how they connect. Don&rsquo;t just copy the inputs and outputs from the system diagram.</li><li>Decide whether the system is <strong>open loop</strong> or <strong>closed loop</strong>. Only add feedback if there really is a sensor measuring the output. Show every feedback connection, with arrows in the right direction.</li><li>Practise drawing these diagrams. Every recent report asks for more practice. <a href="../contexts/systems-approach/index.html">Systems approach notes</a></li></ul></div>
+        <div class="ca-skill"><div class="ca-skill-title">Building (simulating or constructing) <span class="ca-tag good">Usually done well</span></div><ul><li>Check the <strong>orientation of every component</strong>, especially the battery symbol. This was a common error in 2024 and 2025.</li><li>For a microcontroller task, choose a suitable microcontroller in your software. Don&rsquo;t rename its pins to match the task. Your code must match the flowchart and the pin numbers given in the task.</li><li>For a logic circuit, include suitable <strong>input devices</strong> and label the inputs clearly so it can be tested.</li><li>For a pneumatic circuit, make sure your evidence shows that the <strong>compressed air supply is connected</strong>.</li><li>For a gear train, label the gear sizes. If a task asks for a <strong>compound</strong> gear train that reduces speed, check that yours does.</li></ul></div>
+        <div class="ca-skill"><div class="ca-skill-title">Testing <span class="ca-tag hard">Most demanding</span></div><ul><li>Describe expected and actual results in terms of the <strong>components named in the task</strong>, for example the motor, the LED, the relay or V<sub>out</sub>. &ldquo;It worked&rdquo; gets no marks.</li><li>If the task asks for expected results in terms of V<sub>out</sub>, give them in terms of V<sub>out</sub>.</li><li>Your test results must match what your simulation actually does.</li><li>Planned changes must be specific: say exactly what you will change in the flowchart or circuit, and why.</li></ul></div>
+        <div class="ca-skill"><div class="ca-skill-title">Evaluating and suggesting improvements <span class="ca-tag hard">Most demanding</span></div><ul><li>For each point in the specification, say whether it is met <strong>and explain why</strong>, giving a cause and its effect, for example &ldquo;the piston outstroked slowly because the flow restrictor limits the exhaust air&rdquo;.</li><li>Refer to the specification and the context in the task.</li><li>An improvement must <strong>solve the problem you identified</strong> and benefit the person using the system, for example by making it safer.</li></ul></div>
+        <p class="ca-src">Source: Qualifications Scotland National 5 Engineering Science course reports, 2024, 2025 and 2026.</p>
+      </section>
+
+      <section class="ca-card" id="evaluate">
+        <h2>&#x270D;&#xFE0F; Writing an evaluation</h2>
+        <div class="ca-rule">For every point in the specification: was it met? &rarr; how do you know (what happened in your test)? &rarr; why did it happen (cause and effect)?</div>
+        <p>This made-up example shows the difference. It is not from a real assignment.</p>
+        <div class="ca-table-wrap"><table class="ca-table">
+          <tr><th>Specification point</th><th>Weak evaluation</th><th>Better evaluation</th></tr>
+          <tr><td>The lamp must come on when it gets dark.</td><td>&ldquo;Yes, this is met.&rdquo;</td><td>&ldquo;This is met. When I covered the LDR, its resistance increased, so V<sub>out</sub> rose to 1.2&nbsp;V. This switched the transistor on and the lamp came on.&rdquo;</td></tr>
+          <tr><td>The gate must open slowly.</td><td>&ldquo;The piston goes out.&rdquo;</td><td>&ldquo;This is met. The flow control valve restricts the air leaving the cylinder, so the piston outstrokes slowly and the gate opens slowly.&rdquo;</td></tr>
+        </table></div>
+      </section>
+
+      <section class="ca-card" id="past">
+        <h2>&#x1F5C2;&#xFE0F; Past assignments</h2>
+        <p>Working through past assignments is the best preparation. Try them in timed conditions, then compare your answers with the marking instructions.</p>
+        <div class="paper-grid">
+          <div class="paper-card empty"><div class="paper-year">2026</div><div class="paper-note">Session 2025&ndash;26</div><div class="paper-links"><span class="paper-btn na">Assignment &mdash; to be added</span><span class="paper-btn na">Worksheets &mdash; to be added</span><span class="paper-btn na">Marking instructions &mdash; to be added</span></div></div><div class="paper-card empty"><div class="paper-year">2025</div><div class="paper-note">Session 2024&ndash;25</div><div class="paper-links"><span class="paper-btn na">Assignment &mdash; to be added</span><span class="paper-btn na">Worksheets &mdash; to be added</span><span class="paper-btn na">Marking instructions &mdash; to be added</span></div></div><div class="paper-card empty"><div class="paper-year">2024</div><div class="paper-note">Session 2023&ndash;24</div><div class="paper-links"><span class="paper-btn na">Assignment &mdash; to be added</span><span class="paper-btn na">Worksheets &mdash; to be added</span><span class="paper-btn na">Marking instructions &mdash; to be added</span></div></div><div class="paper-card empty"><div class="paper-year">Specimen</div><div class="paper-note">Mail sorting depot (specimen, 2024)</div><div class="paper-links"><span class="paper-btn na">Assignment &mdash; to be added</span><span class="paper-btn na">Worksheets &mdash; to be added</span><span class="paper-btn na">Marking instructions &mdash; to be added</span></div></div>
+          <div class="paper-card empty"><div class="paper-year">Earlier years</div><div class="paper-note"></div><div class="paper-links"><span class="paper-btn na">Assignment &mdash; to be added</span><span class="paper-btn na">Marking instructions &mdash; to be added</span></div></div>
+        </div>
+        <div class="ca-warn"><strong>For ESS teachers adding papers:</strong> only add an assignment here once its session has finished and Qualifications Scotland has published it as a past paper. Each assignment is issued to centres in confidence for the session it is valid for. Put the PDF in the <span style="font-family:monospace;">papers</span> folder beside this page, then change the card&rsquo;s &ldquo;to be added&rdquo; line into a link.</div>
+        <p class="ca-ack">&copy; Qualifications Scotland (formerly SQA). Question papers, assignments and marking instructions are reproduced here on a non-commercial basis, in support of Qualifications Scotland qualifications, as their copyright notice allows. All past papers are also available from the <a href="https://www.sqa.org.uk/pastpapers/findpastpaper.htm" target="_blank" rel="noopener">Qualifications Scotland past papers page</a>.</p>
+        <p class="ca-ack">Qualifications Scotland&rsquo;s <a href="https://www.understandingstandards.org.uk" target="_blank" rel="noopener">Understanding Standards</a> website has marked candidate evidence with commentary.</p>
+      </section>
+
+    </div>
+  </div>
+</div>
+<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span><a href="../../teacher/login.html">Teacher area</a></footer>
+<script src="../../js/site.js"></script><script src="../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../");</script>
+</body>
+</html>

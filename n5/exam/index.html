@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>The exam &mdash; National 5 &mdash; Engineering Science Scotland</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <style>
+    .ca-wrap{max-width:960px;}
+    .ca-facts{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin:6px 0 22px;}
+    .ca-fact{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:14px 16px;}
+    .ca-fact-big{font-family:"DM Serif Display",serif;font-size:26px;color:var(--teal-800);line-height:1.1;}
+    .ca-fact-sub{font-size:12.5px;color:var(--gray-600);margin-top:4px;line-height:1.45;}
+    .ca-card{background:var(--white);border:1px solid var(--gray-200);border-radius:14px;padding:20px 22px;margin:0 0 20px;scroll-margin-top:90px;}
+    .ca-card h2{font-family:"DM Serif Display",serif;font-size:22px;color:var(--teal-800);margin:0 0 10px;display:flex;align-items:center;gap:9px;}
+    .ca-card h3{font-size:15px;color:var(--gray-900);margin:18px 0 6px;}
+    .ca-card p,.ca-card li{font-size:14px;line-height:1.7;color:var(--gray-600);}
+    .ca-card p{margin:0 0 10px;} .ca-card ul{margin:0 0 10px;padding-left:22px;} .ca-card li{margin-bottom:5px;}
+    .ca-card strong{color:var(--gray-900);}
+    .ca-rule{background:var(--teal-50);border-left:4px solid var(--teal-400);border-radius:0 10px 10px 0;padding:11px 15px;margin:10px 0 14px;font-size:14px;line-height:1.6;color:var(--teal-800);font-weight:600;}
+    .ca-warn{background:#fff7ed;border-left:4px solid #f97316;border-radius:0 10px 10px 0;padding:11px 15px;margin:10px 0 14px;font-size:13.5px;line-height:1.6;color:#9a3412;}
+    .ca-skill{border-top:1px solid var(--gray-200);padding-top:12px;margin-top:14px;}
+    .ca-skill:first-of-type{border-top:none;padding-top:0;}
+    .ca-skill-title{font-size:15px;font-weight:700;color:var(--gray-900);margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+    .ca-tag{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:2px 8px;border-radius:20px;}
+    .ca-tag.hard{background:#fef2f2;color:#b91c1c;} .ca-tag.good{background:#dcfce7;color:#166534;}
+    .ca-table-wrap{overflow-x:auto;}
+    .ca-table{width:100%;border-collapse:collapse;font-size:13.5px;margin:8px 0 6px;}
+    .ca-table th{background:var(--teal-800);color:#fff;text-align:left;padding:8px 10px;font-size:12.5px;}
+    .ca-table td{border-bottom:1px solid var(--gray-200);padding:8px 10px;color:var(--gray-600);vertical-align:top;line-height:1.5;}
+    .ca-table tr:nth-child(even) td{background:var(--gray-50);}
+    .ca-table a{color:var(--teal-600);}
+    .ca-src{font-size:12px;color:var(--gray-400);font-style:italic;margin-top:8px!important;}
+    .paper-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px;margin-top:8px;}
+    .paper-card{background:var(--white);border:1px solid var(--gray-200);border-radius:var(--radius-lg);padding:16px 16px 14px;display:flex;flex-direction:column;}
+    .paper-card.empty{background:var(--gray-50);border-style:dashed;}
+    .paper-year{font-family:"DM Serif Display",serif;font-size:22px;color:var(--teal-800);line-height:1.1;}
+    .paper-ctx{font-size:13px;font-weight:600;color:var(--gray-900);margin:3px 0 2px;}
+    .paper-note{font-size:11.5px;color:var(--gray-400);margin-bottom:10px;line-height:1.4;}
+    .paper-links{display:flex;flex-direction:column;gap:6px;margin-top:auto;}
+    .paper-btn{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:600;text-decoration:none;background:var(--teal-50);color:var(--teal-800);border:1px solid var(--teal-100);transition:all .15s ease;}
+    .paper-btn:hover{background:var(--teal-400);border-color:var(--teal-400);color:#fff;}
+    .paper-btn.mi{background:#f5f3ff;color:#5b21b6;border-color:#ddd6fe;}
+    .paper-btn.mi:hover{background:#6d28d9;border-color:#6d28d9;color:#fff;}
+    .paper-btn.na{background:transparent;color:var(--gray-400);border:1px dashed var(--gray-200);cursor:default;font-weight:500;}
+    .ca-ack{font-size:11.5px;color:var(--gray-400);line-height:1.55;margin-top:14px;}
+    .ca-updated{font-size:11px;color:#94a3b8;text-align:right;margin:-4px 0 10px;}
+    .ca-jump{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px;}
+    .ca-jump a{font-size:13px;font-weight:700;color:var(--teal-800);background:var(--teal-50);border:1px solid var(--teal-100);border-radius:999px;padding:6px 13px;text-decoration:none;}
+    .ca-jump a:hover{background:var(--teal-100);}
+    @media print{.ca-jump,.paper-grid{display:none!important;}}
+  </style>
+</head>
+<body>
+<nav class="topbar"><a href="../../index.html" class="logo"><div class="logo-mark"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12M4 4l12 12M16 4L4 16" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg></div><div class="logo-text"><span class="logo-title">Engineering Science Scotland</span><span class="logo-sub">Resource Hub</span></div></a><div class="level-tabs"><a href="../../n5/index.html" class="level-tab active" data-level="n5">National 5</a><a href="../../higher/index.html" class="level-tab" data-level="higher">Higher</a><a href="../../ah/mechanisms/index.html" class="level-tab" data-level="ah">Advanced Higher</a></div><div class="topbar-right"><a href="../../teacher/login.html" class="teacher-btn"><svg viewBox="0 0 16 16" fill="none"><rect x="3" y="7" width="10" height="8" rx="1.5" stroke="currentColor" stroke-width="1.3"/><path d="M5.5 7V5a2.5 2.5 0 015 0v2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>Teacher area</a></div></nav>
+<div class="layout">
+  <nav class="sidebar" id="sidebar"></nav>
+  <div class="main">
+    <div class="hero">
+      <div class="hero-label">National 5 &middot; Course assessment</div>
+      <h1 class="hero-title">The exam</h1>
+      <p class="hero-sub">What the question paper involves, advice from the course reports, the questions candidates found hardest, and past papers with marking instructions.</p>
+      <div class="breadcrumb"><a href="../../index.html">Home</a> &rsaquo; <a href="../index.html">National 5</a> &rsaquo; <span>The exam</span></div>
+    </div>
+    <div class="content ca-wrap">
+      <div class="ca-updated">Last updated: 26 November 2026, 12:45</div>
+      <div class="esschk-banner no">&#x1F4DD; <strong>Not checked yet.</strong> This page is new and has not yet been checked by a second Engineering Science teacher. The advice is based on the published Qualifications Scotland course reports, but it is not endorsed by Qualifications Scotland. Please use the Feedback button to tell us about anything that needs to be fixed or could be improved.</div>
+
+      <nav class="ca-jump"><a href="#about">About the exam</a><a href="#advice">Advice from the course reports</a><a href="#demanding">Questions candidates found hard</a><a href="#past">Past papers</a></nav>
+
+      <section class="ca-card" id="about">
+        <h2>&#x1F4DD; About the exam</h2>
+        <div class="ca-facts">
+          <div class="ca-fact"><div class="ca-fact-big">110 marks</div><div class="ca-fact-sub">out of 160 for the whole course &mdash; about 69% of your grade</div></div>
+          <div class="ca-fact"><div class="ca-fact-big">1 h 50 min</div><div class="ca-fact-sub">one question paper, sat in the exam diet in April or May</div></div>
+          <div class="ca-fact"><div class="ca-fact-big">Section 1</div><div class="ca-fact-sub">20 marks of shorter questions</div></div>
+          <div class="ca-fact"><div class="ca-fact-big">Section 2</div><div class="ca-fact-sub">90 marks of longer, structured questions</div></div>
+        </div>
+        <ul>
+          <li>Answer <strong>all</strong> the questions. Any part of the course specification can be tested.</li>
+          <li>You are given the <strong>National 4/5 Engineering Science data booklet</strong>. Use its formulae and methods.</li>
+          <li>Show your working and give units. See <a href="../../top-tips.html">Top Tips</a> for significant figures, units and prefixes.</li>
+        </ul>
+        <p class="ca-src">Source: Qualifications Scotland National 5 Engineering Science course specification and question papers.</p>
+      </section>
+
+      <section class="ca-card" id="advice">
+        <h2>&#x1F3AF; Advice from the course reports</h2>
+        <div class="ca-skill"><div class="ca-skill-title">&ldquo;Explain&rdquo; questions <span class="ca-tag hard">Most demanding</span></div><ul><li>Give <strong>one cause</strong> that fits the context and the <strong>effect</strong> it leads to. Two causes, or a cause with an unrelated effect, will not get full marks. <a href="../../top-tips.html#describe">Top Tips: describe and explain</a></li></ul></div>
+        <div class="ca-skill"><div class="ca-skill-title">Pneumatics <span class="ca-tag hard">Most demanding</span></div><ul><li>Use the correct terms: 3/2 valves <strong>actuate</strong>, 5/2 valves <strong>change state</strong>, and pistons <strong>outstroke</strong> or <strong>instroke</strong>. This has been in every recent report. <a href="../mechanisms/pneumatics/index.html">Pneumatics notes</a></li><li>Learn the names of the symbols, including main air, exhaust air, pilot air and the diaphragm actuator.</li></ul></div>
+        <div class="ca-skill"><div class="ca-skill-title">Units for pressure and stress </div><ul><li>The expected unit is <strong>Nmm<sup>&minus;2</sup></strong>. Don&rsquo;t convert the area to m<sup>2</sup> unless the question asks for it. If you do give the answer in N&nbsp;m<sup>&minus;2</sup> or Pa, you must convert the area to m<sup>2</sup> first.</li><li>Work out the piston <strong>area</strong> first. Don&rsquo;t put the diameter straight into the pressure formula.</li></ul></div>
+        <div class="ca-skill"><div class="ca-skill-title">Describing systems </div><ul><li>Say whether the system is open or closed loop.</li><li>For a closed-loop system, say that the <strong>sensor measures the actual output</strong> and feeds it back, that the <strong>control sub-system compares the set level with the actual level</strong>, and what happens to the output when there is an error and when there is none.</li></ul></div>
+        <div class="ca-skill"><div class="ca-skill-title">Analogue circuits </div><ul><li>Answer the exact thing the question asks about, such as the change in the LDR&rsquo;s resistance or the change in V<sub>in</sub>, and follow the chain from input to output.</li></ul></div>
+        <div class="ca-skill"><div class="ca-skill-title">Roles of engineers </div><ul><li>Give <strong>two different</strong> problem-solving tasks, each linked to the context. Avoid general statements such as &ldquo;design the structure&rdquo; or &ldquo;develop the circuit&rdquo;. <a href="../contexts/roles-disciplines/index.html">Roles and disciplines notes</a></li></ul></div>
+        <div class="ca-skill"><div class="ca-skill-title">Emerging technologies </div><ul><li>An emerging technology must be new and <strong>not yet in commercial use</strong>. Artificial intelligence, electric vehicles and self-driving cars have not earned full marks.</li></ul></div>
+        <p class="ca-src">Source: Qualifications Scotland National 5 Engineering Science course reports, 2024, 2025 and 2026.</p>
+      </section>
+
+      <section class="ca-card" id="demanding">
+        <h2>&#x1F9D7; Questions candidates found hard</h2>
+        <p>These are the questions the course reports singled out as demanding. Try them in the past papers, then revise the topic using the link.</p>
+        <div class="ca-table-wrap"><table class="ca-table">
+          <tr><th>Year</th><th>Question</th><th>What candidates found hard</th><th>Revise it</th></tr>
+          <tr><td>2026</td><td>1</td><td>Naming the main air, exhaust air and pilot air symbols</td><td><a href="../mechanisms/pneumatics/index.html">Pneumatics</a></td></tr><tr><td>2026</td><td>7(a), 11(d)</td><td>Describing a system: the motor is an internal part; the jobs of the control sub-system and the sensor</td><td><a href="../contexts/systems-approach/index.html">Systems approach</a></td></tr><tr><td>2026</td><td>8(a), 9(a), 10(d)</td><td>Two different, specific tasks for each type of engineer, in context</td><td><a href="../contexts/roles-disciplines/index.html">Roles and disciplines</a></td></tr><tr><td>2026</td><td>8(c)</td><td>Naming a compound gear train</td><td><a href="../mechanisms/drive-systems/index.html">Drive systems</a></td></tr><tr><td>2026</td><td>10(a)</td><td>Describing an LDR circuit: light level, LDR resistance and V<sub>in</sub></td><td><a href="../electronics/analogue/index.html">Analogue electronics</a></td></tr><tr><td>2026</td><td>14</td><td>Piping a 5/2 valve to a double-acting cylinder; naming a diaphragm actuator; air pressure units</td><td><a href="../mechanisms/pneumatics/index.html">Pneumatics</a></td></tr><tr><td>2025</td><td>2(c)</td><td>Recognising a fixed loop in a flowchart</td><td><a href="../electronics/control/index.html">Control systems</a></td></tr><tr><td>2025</td><td>3(b)</td><td>The difference between an electrical and an electronic engineer</td><td><a href="../contexts/roles-disciplines/index.html">Roles and disciplines</a></td></tr><tr><td>2025</td><td>8(a), 8(b)</td><td>AND control made by piping two valves; pneumatic terminology</td><td><a href="../mechanisms/pneumatics/index.html">Pneumatics</a></td></tr><tr><td>2025</td><td>8(d)(ii)</td><td>Pressure in Nmm<sup>&minus;2</sup> (or converting the area to m<sup>2</sup> if using Pa)</td><td><a href="../../top-tips.html#units">Top Tips: units</a></td></tr><tr><td>2025</td><td>9(c)</td><td>Choosing a transistor to switch on a lamp</td><td><a href="../electronics/analogue/index.html">Analogue electronics</a></td></tr><tr><td>2025</td><td>12(c)</td><td>The control sub-system and sensor in a closed-loop system</td><td><a href="../contexts/systems-approach/index.html">Systems approach</a></td></tr><tr><td>2024</td><td>4(b), 9(a)</td><td>Effect of an idler gear on output speed; using the data booklet method for speed</td><td><a href="../mechanisms/drive-systems/index.html">Drive systems</a></td></tr><tr><td>2024</td><td>8(c), 10(d)</td><td>Effect of changing resistance on voltage and current; describing a thermistor circuit using its resistance and V<sub>out</sub></td><td><a href="../electronics/analogue/index.html">Analogue electronics</a></td></tr><tr><td>2024</td><td>8(d)</td><td>Explaining an advantage of simulation: one cause with its effect</td><td><a href="../../top-tips.html#describe">Top Tips: explain</a></td></tr><tr><td>2024</td><td>10(e)</td><td>Naming a genuinely emerging technology</td><td><a href="../contexts/impacts/index.html">Impacts of engineering</a></td></tr><tr><td>2024</td><td>12(a)</td><td>Linking climate change to greenhouse gases</td><td><a href="../contexts/energy-efficiency/index.html">Energy and efficiency</a></td></tr><tr><td>2024</td><td>14(a)(i)</td><td>Using moments to find a reaction force</td><td><a href="../mechanisms/structures-forces/index.html">Structures and forces</a></td></tr><tr><td>2024</td><td>15</td><td>Pneumatic terminology; area of a piston and units for pressure</td><td><a href="../mechanisms/pneumatics/index.html">Pneumatics</a></td></tr>
+        </table></div>
+      </section>
+
+      <section class="ca-card" id="past">
+        <h2>&#x1F5C2;&#xFE0F; Past papers</h2>
+        <p>Use past papers in timed conditions, then mark them with the marking instructions. Read the &ldquo;additional guidance&rdquo; column: it shows what earned each mark.</p>
+        <div class="paper-grid">
+          <div class="paper-card empty"><div class="paper-year">2026</div><div class="paper-note">Question paper and marking instructions</div><div class="paper-links"><span class="paper-btn na">Question paper &mdash; to be added</span><span class="paper-btn na">Marking instructions &mdash; to be added</span></div></div><div class="paper-card empty"><div class="paper-year">2025</div><div class="paper-note">Question paper and marking instructions</div><div class="paper-links"><span class="paper-btn na">Question paper &mdash; to be added</span><span class="paper-btn na">Marking instructions &mdash; to be added</span></div></div><div class="paper-card empty"><div class="paper-year">2024</div><div class="paper-note">Question paper and marking instructions</div><div class="paper-links"><span class="paper-btn na">Question paper &mdash; to be added</span><span class="paper-btn na">Marking instructions &mdash; to be added</span></div></div><div class="paper-card empty"><div class="paper-year">2023</div><div class="paper-note">Question paper and marking instructions</div><div class="paper-links"><span class="paper-btn na">Question paper &mdash; to be added</span><span class="paper-btn na">Marking instructions &mdash; to be added</span></div></div><div class="paper-card empty"><div class="paper-year">2022</div><div class="paper-note">Question paper and marking instructions</div><div class="paper-links"><span class="paper-btn na">Question paper &mdash; to be added</span><span class="paper-btn na">Marking instructions &mdash; to be added</span></div></div>
+          <div class="paper-card empty"><div class="paper-year">Specimen</div><div class="paper-note">Qualifications Scotland specimen question paper</div><div class="paper-links"><span class="paper-btn na">Question paper &mdash; to be added</span><span class="paper-btn na">Marking instructions &mdash; to be added</span></div></div>
+        </div>
+        <p class="ca-ack">&copy; Qualifications Scotland (formerly SQA). Question papers, assignments and marking instructions are reproduced here on a non-commercial basis, in support of Qualifications Scotland qualifications, as their copyright notice allows. All past papers are also available from the <a href="https://www.sqa.org.uk/pastpapers/findpastpaper.htm" target="_blank" rel="noopener">Qualifications Scotland past papers page</a>.</p>
+      </section>
+
+    </div>
+  </div>
+</div>
+<footer class="footer"><span>Engineering Science Scotland &middot; Aligned to Qualifications Scotland course specifications</span><a href="../../teacher/login.html">Teacher area</a></footer>
+<script src="../../js/site.js"></script><script src="../../js/nav.js"></script>
+<script>document.getElementById("sidebar").innerHTML=buildSidebar("n5","../../");</script>
+</body>
+</html>
