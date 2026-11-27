@@ -536,6 +536,53 @@
             controls.update();
         }
 
+        // ESS: "?fit=1" frames the loaded mechanism in the panel, keeping the saved viewing angle.
+        // "?fit=pinion" frames the pinion plus the section of rack beneath it.
+        function fitView(margin, mode) {
+            if (nodes.length === 0) return;
+            margin = margin || 0.82;
+            scene.updateMatrixWorld(true);
+            const boxOf = n => new THREE.Box3().setFromObject(n.meshGroup);
+            let box = new THREE.Box3();
+            if (mode === 'pinion' && nodes.some(n => n.type === 'gear')) {
+                nodes.filter(n => n.type === 'gear').forEach(n => box.union(boxOf(n)));
+                nodes.filter(n => n.type === 'rack').forEach(n => {
+                    const r = boxOf(n);
+                    box.min.y = Math.min(box.min.y, r.min.y); box.max.y = Math.max(box.max.y, r.max.y);
+                    box.min.z = Math.min(box.min.z, r.min.z); box.max.z = Math.max(box.max.z, r.max.z);
+                    const extra = (box.max.x - box.min.x) * 0.35;   // show a little rack either side
+                    box.min.x -= extra; box.max.x += extra;
+                });
+            } else {
+                nodes.forEach(n => box.union(boxOf(n)));
+            }
+            if (box.isEmpty()) return;
+            const center = box.getCenter(new THREE.Vector3());
+            const dir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
+            const up = new THREE.Vector3(0, 1, 0);
+            const right = new THREE.Vector3().crossVectors(up, dir).normalize();
+            const camUp = new THREE.Vector3().crossVectors(dir, right).normalize();
+            const tanV = Math.tan(camera.fov * Math.PI / 360) * margin;
+            const tanH = tanV * camera.aspect;
+            let dist = 0, minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+            const corners = [];
+            for (let i = 0; i < 8; i++) {
+                corners.push(new THREE.Vector3(i & 1 ? box.max.x : box.min.x, i & 2 ? box.max.y : box.min.y, i & 4 ? box.max.z : box.min.z).sub(center));
+            }
+            corners.forEach(c => { const x = c.dot(right), y = c.dot(camUp); minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y); });
+            const shift = right.clone().multiplyScalar((minX + maxX) / 2).add(camUp.clone().multiplyScalar((minY + maxY) / 2));
+            center.add(shift);
+            corners.forEach(c => {
+                c.sub(shift);
+                const x = Math.abs(c.dot(right)), y = Math.abs(c.dot(camUp)), z = c.dot(dir);
+                dist = Math.max(dist, z + x / tanH, z + y / tanV);
+            });
+            dist = THREE.MathUtils.clamp(dist, controls.minDistance, controls.maxDistance);
+            controls.target.copy(center);
+            camera.position.copy(center).add(dir.multiplyScalar(dist));
+            controls.update();
+        }
+
         // --- SAFE GEOMETRY GENERATORS ---
         const geoCache = {};
 
@@ -2778,6 +2825,9 @@ controls.enabled = true;
                 setTimeout(() => {
                     resize();
                     document.getElementById('btnSim')?.click();
+                    const fitMode = new URLSearchParams(window.location.search).get('fit');
+                    if (fitMode === '1') setTimeout(() => { resize(); fitView(); }, 120);
+                    else if (fitMode === 'pinion') setTimeout(() => { resize(); fitView(0.75, 'pinion'); }, 120);
                 }, 50); // Reduced delay since there is no sidebar animation
                 
             } else {

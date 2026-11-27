@@ -538,16 +538,28 @@
 
 
         // ESS: "?fit=1" frames the loaded mechanism in the panel, keeping the saved viewing angle.
-        function fitView(margin, types) {
+        // "?fit=pinion" frames the pinion plus the section of rack beneath it.
+        function fitView(margin, mode) {
             if (nodes.length === 0) return;
             margin = margin || 0.82;
-            const box = new THREE.Box3();
-            const pick = types ? nodes.filter(n => types.includes(n.type)) : nodes;
-            (pick.length ? pick : nodes).forEach(n => box.union(new THREE.Box3().setFromObject(n.meshGroup)));
+            scene.updateMatrixWorld(true);
+            const boxOf = n => new THREE.Box3().setFromObject(n.meshGroup);
+            let box = new THREE.Box3();
+            if (mode === 'pinion' && nodes.some(n => n.type === 'gear')) {
+                nodes.filter(n => n.type === 'gear').forEach(n => box.union(boxOf(n)));
+                nodes.filter(n => n.type === 'rack').forEach(n => {
+                    const r = boxOf(n);
+                    box.min.y = Math.min(box.min.y, r.min.y); box.max.y = Math.max(box.max.y, r.max.y);
+                    box.min.z = Math.min(box.min.z, r.min.z); box.max.z = Math.max(box.max.z, r.max.z);
+                    const extra = (box.max.x - box.min.x) * 0.35;   // show a little rack either side
+                    box.min.x -= extra; box.max.x += extra;
+                });
+            } else {
+                nodes.forEach(n => box.union(boxOf(n)));
+            }
             if (box.isEmpty()) return;
             const center = box.getCenter(new THREE.Vector3());
             const dir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
-            // camera basis for this viewing direction
             const up = new THREE.Vector3(0, 1, 0);
             const right = new THREE.Vector3().crossVectors(up, dir).normalize();
             const camUp = new THREE.Vector3().crossVectors(dir, right).normalize();
@@ -558,7 +570,6 @@
             for (let i = 0; i < 8; i++) {
                 corners.push(new THREE.Vector3(i & 1 ? box.max.x : box.min.x, i & 2 ? box.max.y : box.min.y, i & 4 ? box.max.z : box.min.z).sub(center));
             }
-            // centre the projected outline, then find the distance that fits every corner
             corners.forEach(c => { const x = c.dot(right), y = c.dot(camUp); minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y); });
             const shift = right.clone().multiplyScalar((minX + maxX) / 2).add(camUp.clone().multiplyScalar((minY + maxY) / 2));
             center.add(shift);
@@ -2817,7 +2828,7 @@ controls.enabled = true;
                     document.getElementById('btnSim')?.click();
                     const fitMode = new URLSearchParams(window.location.search).get('fit');
                     if (fitMode === '1') setTimeout(() => { resize(); fitView(); }, 120);
-                    else if (fitMode === 'pinion') setTimeout(() => { resize(); fitView(0.6, ['gear']); }, 120);
+                    else if (fitMode === 'pinion') setTimeout(() => { resize(); fitView(0.75, 'pinion'); }, 120);
                 }, 50); // Reduced delay since there is no sidebar animation
                 
             } else {
