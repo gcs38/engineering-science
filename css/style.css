@@ -17,6 +17,10 @@
   --gray-600: #5F5E5A;
   --gray-900: #1C1C1A;
   --white: #ffffff;
+  --orange: #E8710A;
+  --orange-dark: #C25A00;
+  --orange-50: #FFF3E8;
+  --orange-100: #FFD9B8;
   --sidebar-w: 260px;
   --topbar-h: 52px;
   --radius-sm: 6px;
@@ -364,3 +368,35 @@ button.teacher-btn { font-family: inherit; }
   .logo-title { font-size: 12px; }
   .logo-sub { letter-spacing: 2px; }
 }
+
+/* ── HOME PAGE: deeper level cards with quick links (Nov 2026) ── */
+.home-hero::after { content: ''; position: absolute; left: 40px; bottom: 0; width: 120px; height: 4px; background: var(--orange); }
+.stat-val { color: var(--orange); }
+.level-cards { align-items: stretch; }
+.level-card { display: flex; flex-direction: column; }
+.level-card:hover { transform: none; }
+.lc-head { display: block; text-decoration: none; color: inherit; }
+.lc-head .lc-body { padding-bottom: 6px; }
+a.lc-head:hover .lc-title { color: var(--teal-600); }
+.lc-group { font-size: 10px; font-weight: 700; letter-spacing: .7px; text-transform: uppercase; color: var(--gray-400); padding: 8px 18px 4px; }
+.lc-ic { width: 20px; height: 20px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.lc-area { display: flex; align-items: center; gap: 10px; padding: 9px 18px; text-decoration: none; color: var(--gray-900); border-left: 3px solid transparent; transition: all var(--transition); }
+.lc-area .lc-ic { color: var(--teal-600); }
+.lc-area:hover { background: var(--orange-50); border-left-color: var(--orange); }
+.lc-area:hover .lc-ic, .lc-area:hover .lc-chev { color: var(--orange); }
+.lc-area-text { display: flex; flex-direction: column; min-width: 0; }
+.lc-area-t { font-size: 14px; font-weight: 600; }
+.lc-area-s { font-size: 11.5px; color: var(--gray-400); }
+.lc-chev { margin-left: auto; color: var(--gray-400); font-size: 16px; }
+.lc-assess { margin: 10px 14px 16px; padding: 10px; border-radius: 12px; background: var(--orange-50); border: 1px solid var(--orange-100); }
+.lc-assess-label { font-size: 10px; font-weight: 700; letter-spacing: .7px; text-transform: uppercase; color: var(--orange-dark); margin: 0 2px 8px; }
+.lc-quick { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.lc-qbtn { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; text-align: center; min-height: 74px; padding: 8px 6px; border-radius: 9px; background: var(--white); border: 1px solid var(--orange-100); color: var(--gray-900); font-size: 12px; font-weight: 600; line-height: 1.25; text-decoration: none; transition: all var(--transition); }
+.lc-qbtn .lc-ic { color: var(--orange); }
+.lc-qbtn:hover { background: var(--orange); border-color: var(--orange); color: var(--white); }
+.lc-qbtn:hover .lc-ic { color: var(--white); }
+.level-card .lc-footer { margin-top: auto; }
+.lc-all { font-size: 11px; font-weight: 600; color: var(--teal-600); text-decoration: none; }
+.lc-all:hover { color: var(--orange-dark); }
+.level-card-disabled .lc-area:hover, .level-card-disabled .lc-qbtn:hover { background: inherit; border-left-color: transparent; color: inherit; }
+@media (max-width: 768px) { .home-hero::after { left: 16px; } }
