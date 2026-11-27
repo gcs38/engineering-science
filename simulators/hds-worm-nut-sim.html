@@ -536,6 +536,42 @@
             controls.update();
         }
 
+
+        // ESS: "?fit=1" frames the loaded mechanism in the panel, keeping the saved viewing angle.
+        function fitView(margin) {
+            if (nodes.length === 0) return;
+            margin = margin || 0.82;
+            const box = new THREE.Box3();
+            nodes.forEach(n => box.union(new THREE.Box3().setFromObject(n.meshGroup)));
+            if (box.isEmpty()) return;
+            const center = box.getCenter(new THREE.Vector3());
+            const dir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
+            // camera basis for this viewing direction
+            const up = new THREE.Vector3(0, 1, 0);
+            const right = new THREE.Vector3().crossVectors(up, dir).normalize();
+            const camUp = new THREE.Vector3().crossVectors(dir, right).normalize();
+            const tanV = Math.tan(camera.fov * Math.PI / 360) * margin;
+            const tanH = tanV * camera.aspect;
+            let dist = 0, minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+            const corners = [];
+            for (let i = 0; i < 8; i++) {
+                corners.push(new THREE.Vector3(i & 1 ? box.max.x : box.min.x, i & 2 ? box.max.y : box.min.y, i & 4 ? box.max.z : box.min.z).sub(center));
+            }
+            // centre the projected outline, then find the distance that fits every corner
+            corners.forEach(c => { const x = c.dot(right), y = c.dot(camUp); minX = Math.min(minX, x); maxX = Math.max(maxX, x); minY = Math.min(minY, y); maxY = Math.max(maxY, y); });
+            const shift = right.clone().multiplyScalar((minX + maxX) / 2).add(camUp.clone().multiplyScalar((minY + maxY) / 2));
+            center.add(shift);
+            corners.forEach(c => {
+                c.sub(shift);
+                const x = Math.abs(c.dot(right)), y = Math.abs(c.dot(camUp)), z = c.dot(dir);
+                dist = Math.max(dist, z + x / tanH, z + y / tanV);
+            });
+            dist = THREE.MathUtils.clamp(dist, controls.minDistance, controls.maxDistance);
+            controls.target.copy(center);
+            camera.position.copy(center).add(dir.multiplyScalar(dist));
+            controls.update();
+        }
+
         // --- SAFE GEOMETRY GENERATORS ---
         const geoCache = {};
 
@@ -2778,6 +2814,7 @@ controls.enabled = true;
                 setTimeout(() => {
                     resize();
                     document.getElementById('btnSim')?.click();
+                    if (new URLSearchParams(window.location.search).get('fit') === '1') setTimeout(() => { resize(); fitView(); }, 120);
                 }, 50); // Reduced delay since there is no sidebar animation
                 
             } else {
