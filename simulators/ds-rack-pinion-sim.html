@@ -538,11 +538,12 @@
 
 
         // ESS: "?fit=1" frames the loaded mechanism in the panel, keeping the saved viewing angle.
-        function fitView(margin) {
+        function fitView(margin, types) {
             if (nodes.length === 0) return;
             margin = margin || 0.82;
             const box = new THREE.Box3();
-            nodes.forEach(n => box.union(new THREE.Box3().setFromObject(n.meshGroup)));
+            const pick = types ? nodes.filter(n => types.includes(n.type)) : nodes;
+            (pick.length ? pick : nodes).forEach(n => box.union(new THREE.Box3().setFromObject(n.meshGroup)));
             if (box.isEmpty()) return;
             const center = box.getCenter(new THREE.Vector3());
             const dir = new THREE.Vector3().subVectors(camera.position, controls.target).normalize();
@@ -2814,7 +2815,9 @@ controls.enabled = true;
                 setTimeout(() => {
                     resize();
                     document.getElementById('btnSim')?.click();
-                    if (new URLSearchParams(window.location.search).get('fit') === '1') setTimeout(() => { resize(); fitView(); }, 120);
+                    const fitMode = new URLSearchParams(window.location.search).get('fit');
+                    if (fitMode === '1') setTimeout(() => { resize(); fitView(); }, 120);
+                    else if (fitMode === 'pinion') setTimeout(() => { resize(); fitView(0.6, ['gear']); }, 120);
                 }, 50); // Reduced delay since there is no sidebar animation
                 
             } else {
