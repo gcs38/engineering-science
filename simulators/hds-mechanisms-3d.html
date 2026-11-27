@@ -10,6 +10,7 @@
     &variant=Flanged                                            starting sub-model (e.g. Universal, Muff, Journal, Positive)
     &only=Flanged,Muff                                          limit the sub-model buttons to these
     &embed=1                                                    iframe mode: no header, no notes panel, full-width 3D view
+    &zoom=2                                                     embedded view starts closer in (NoGrind models: gears, worm, rack)
 -->
 <html lang="en-GB">
 <head>
@@ -263,7 +264,8 @@
                 mech: p.get('mech'),
                 variant: p.get('variant'),
                 only: p.get('only') ? p.get('only').split(',').map(x => x.trim()) : null,
-                embed: p.get('embed') === '1'
+                embed: p.get('embed') === '1',
+                zoom: parseFloat(p.get('zoom')) || 1
             };
         })();
         if (EMBED.embed) document.body.classList.add('embed');
@@ -1539,6 +1541,8 @@
                 target.y + camDist * elevY,
                 target.z + camDist
             );
+            // ESS: "&zoom=2" moves the camera closer to the target (embedded course-notes views)
+            if (EMBED.zoom > 1) camera.position.sub(target).divideScalar(EMBED.zoom).add(target);
             if (controls) {
                 controls.target.copy(target);
                 controls.update();
