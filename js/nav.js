@@ -163,7 +163,7 @@ function buildSidebar(level, depth) {
     </div>
     <div class="sb-group-title">Course Assessment</div>
     <div class="sb-assess">
-      <a class="sb-subtopic" href="${d}higher/assignment/index.html">The assignment<span class="sb-unchecked" title="This page has not yet been checked">not checked</span></a>
+      <a class="sb-subtopic" href="${d}higher/assignment/index.html">The assignment</a>
       <a class="sb-subtopic" href="${d}higher/exam/index.html">The exam<span class="sb-unchecked" title="This page has not yet been checked">not checked</span></a>
       <a class="sb-subtopic" href="${d}higher/data-booklet/NH_Engineering-Science_Data-Booklet.pdf" target="_blank" rel="noopener" title="Qualifications Scotland data booklet (January 2026), opens as a PDF in a new tab">The data booklet</a>
       <a class="sb-subtopic sb-tips" href="${d}higher/top-tips/index.html">Top tips<span class="sb-unchecked" title="This page has not yet been checked">not checked</span></a>
