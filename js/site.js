@@ -618,7 +618,7 @@ function renderTeacherDocs(topicKey, containerId) {
 var NOTES_CHECKED = {
   'higher-systems-approach':  true,
   'higher-energy-efficiency': true,
-  'higher-roles-impacts':     false,
+  'higher-roles-impacts':     true,
   'higher-analogue':          true,
   'higher-digital':           true,
   'higher-control':           false,
